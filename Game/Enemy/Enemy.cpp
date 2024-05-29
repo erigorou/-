@@ -14,6 +14,11 @@
 
 #include "Game/Enemy/Enemy.h"
 
+#include "Interface/IState.h"
+
+// 固定値
+const float Enemy::ENEMY_SPEED = 0.05f;
+
 // --------------------------------
 //  コンストラクタ
 // --------------------------------
@@ -51,16 +56,39 @@ void Enemy::Initialize(
 	// ワールド行列の初期か
 	m_worldMatrix  = DirectX::SimpleMath::Matrix::Identity;
 
+	// 待機状態を取得する
+	m_enemyIdling = std::make_unique<EnemyIdling>(this);
+	m_enemyIdling->Initialize();
+
+	// 初期のステートを待機状態に割り当てる
+	m_currentState = m_enemyIdling.get();
 }
 
 // --------------------------------
 //  更新処理
 // --------------------------------
-void Enemy::Update()
+void Enemy::ChangeState(IState* newState)
+{
+	// 新規の状態遷移前に事後更新を行う
+	m_currentState->PostUpdate();
+	// 新規の状態を現在の状態に設定する
+	m_currentState = newState;
+	// 新規の状態遷移後に事前更新を行う
+	m_currentState->PreUpdate();
+}
+
+
+// --------------------------------
+//  更新処理
+// --------------------------------
+void Enemy::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
 	m_worldMatrix = Matrix::CreateScale(Vector3(2.0f, 2.0f, 2.0f));
+
+	// ステータスを更新しまーす
+	m_currentState->Update(elapsedTime);
 
 	// キー入力を受け付ける。
 	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
@@ -89,6 +117,9 @@ void Enemy::Render(
 	const CommonResources* resources
 	)
 {
+	// ステートのほうを表示する
+	m_currentState->Render(context,states,view,projection, resources);
+
 	// モデルを描画する
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 

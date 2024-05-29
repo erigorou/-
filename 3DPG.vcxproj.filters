@@ -50,6 +50,12 @@
     <Filter Include="Game\SkyeBox">
       <UniqueIdentifier>{68f7eb33-ead5-4734-9401-6b45700ba808}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Interface">
+      <UniqueIdentifier>{243f97e3-a568-45bc-a743-e2d22edb83cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Enemy\States">
+      <UniqueIdentifier>{1339674d-cabd-4de4-b6ed-64f07f0ae300}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -108,6 +114,12 @@
     <ClInclude Include="Game\SkyeBox\SkyeBox.h">
       <Filter>Game\SkyeBox</Filter>
     </ClInclude>
+    <ClInclude Include="Interface\IState.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Enemy\States\EnemyIdling.h">
+      <Filter>Game\Enemy\States</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -154,6 +166,9 @@
     </ClCompile>
     <ClCompile Include="Game\SkyeBox\SkyeBox.cpp">
       <Filter>Game\SkyeBox</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Enemy\States\EnemyIdling.cpp">
+      <Filter>Game\Enemy\States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

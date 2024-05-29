@@ -102,7 +102,7 @@ void PlayScene::Update(float elapsedTime)
 	);
 
 	// 敵の更新処理
-	m_enemy->Update();
+	m_enemy->Update(elapsedTime);
 
 
 	// カメラの回転行列の作成	引数にはプレイヤーの回転角を入れる
@@ -139,7 +139,10 @@ void PlayScene::Render()
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = m_commonResources->GetDebugString();
 	debugString->AddString("Play Scene");
-	debugString->AddString("Camera Angle : %f" ,XMConvertToDegrees(m_camera->GetCameraAngle()));
+	debugString->AddString("Play Scene");
+	debugString->AddString("Camera Angle : %f", XMConvertToDegrees(m_camera->GetCameraAngle()));
+	debugString->AddString("Player Angle : %f", XMConvertToDegrees(m_player->GetAngle()));
+
 }
 
 //---------------------------------------------------------

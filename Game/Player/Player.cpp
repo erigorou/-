@@ -124,11 +124,15 @@ void Player::MovePlayer()
 	if (keyboardState.D)
 		m_angle -= 1.0f;
 
-	(m_angle <= 360) ? m_angle : 0.0f;
-
+	// 回転角度の範囲を -180 から 180 度に収める
+	if (m_angle > 180.0f)
+		m_angle -= 360.0f;
+	else if (m_angle < -180.0f)
+		m_angle += 360.0f;
 
 	// 移動量を正規化する
-	m_velocity.Normalize();
+	if (m_velocity.LengthSquared() > 0.0f)
+		m_velocity.Normalize();
 
 	// 移動量を補正する
 	m_velocity *= PLAYER_SPEED;
@@ -169,7 +173,7 @@ void Player::Render(
 
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
-	debugString->AddString("m_angle : %f", m_angle);
+	debugString->AddString("m_angle : %f", XMConvertToDegrees( m_angle));
 	debugString->AddString("m_position.x : %f", m_position.x);
 	debugString->AddString("m_position.y : %f", m_position.y);
 	debugString->AddString("m_position.z : %f", m_position.z);
