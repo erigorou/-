@@ -97,8 +97,7 @@ void PlayScene::Update(float elapsedTime)
 
 	// プレイヤーの更新処理
 	m_player->Update(
-		m_enemy->GetPosition(),
-		m_camera->GetCameraAngle()
+		m_enemy->GetPosition()
 	);
 
 	// 敵の更新処理
@@ -113,7 +112,8 @@ void PlayScene::Update(float elapsedTime)
 
 	// カメラの更新
 	m_camera->Update
-		(m_player->GetPosition(), m_enemy->GetPosition(), matrix);
+		//(m_player->GetPosition(), m_enemy->GetPosition(), matrix);
+		(SimpleMath::Vector3(0.0f, 0.5f, 5.0f), m_enemy->GetPosition(), matrix);
 }
 
 //---------------------------------------------------------

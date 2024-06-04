@@ -1,1 +1,4 @@
-﻿  3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe
+﻿  Player.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\Player.cpp(48,31): warning C4100: 'states': 引数は関数の本体部で 1 度も参照されません。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\Player.cpp(47,29): warning C4100: 'context': 引数は関数の本体部で 1 度も参照されません。
+  3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe

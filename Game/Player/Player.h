@@ -27,8 +27,7 @@ public:
 	);
 	// 更新処理
 	void Update(
-		DirectX::SimpleMath::Vector3 enemyPos,
-		float cameraAngle
+		DirectX::SimpleMath::Vector3 enemyPos
 	);
 
 	// 描画処理
@@ -42,8 +41,10 @@ public:
 
 	// 終了処理
 	void Finalize();
+	// 回転角の計算
+	void CaluclationAngle(DirectX::SimpleMath::Vector3 enemyPos);
 	// Matrixの計算
-	void CalculationMatrix();
+	void CaluclationMatrix();
 	// 移動の管理
 	void MovePlayer();
 
@@ -54,8 +55,6 @@ private:
 	DirectX::SimpleMath::Vector3 m_velocity;
 	// 角度
 	float m_angle;
-	// カメラの角度
-	float m_cameraAngle;
 
 	// プレイヤー用のワールド行列
 	DirectX::SimpleMath::Matrix m_worldMatrix;

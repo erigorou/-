@@ -26,9 +26,8 @@ const float Player::PLAYER_SPEED = 0.05f;
 Player::Player()
 	:
 	m_model{},
-	m_position{},
-	m_angle{},
-	m_cameraAngle{},
+	m_position{0, 0, 5},
+	m_angle{0.f},
 	m_worldMatrix{}
 {
 }
@@ -56,43 +55,41 @@ void Player::Initialize(
 	fx->SetDirectory(L"Resources/Models");
 	// モデルを読み込む
 	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/momotaro.cmo", *fx);
-
-	// 座標の初期設定
-	m_position = SimpleMath::Vector3(4.0f, 0.0f, 2.0f);
-	// 速度の初期化
-	m_velocity = SimpleMath::Vector3::Zero;
-	// 回転の初期値
-	m_angle = 0.0f;
-	// カメラの回転角の初期化
-	m_cameraAngle = 0.0f;
 }
 
 // --------------------------------
 //  更新処理
 // --------------------------------
 void Player::Update(
-	DirectX::SimpleMath::Vector3 enemyPos,
-	float cameraAngle
+	DirectX::SimpleMath::Vector3 enemyPos
 	)
 {
 	using namespace DirectX::SimpleMath;
-
-	// このクラスでカメラのアングルを使用できるようにする
-	m_cameraAngle = cameraAngle;
-
-	m_angle = -cameraAngle;
-
-	// プレイヤーの回転を加味した計算を行う
-	Matrix matrix = Matrix::CreateRotationY(-cameraAngle);	// カメラの回転を与える
-
+	// 敵の位置を比較して回転角を計算する
+	CaluclationAngle(enemyPos);
 	// プレイヤーの移動
 	MovePlayer();
+	// ワールド座標の更新
+	CaluclationMatrix();
+}
 
-	// 回転を加味して実際に移動する
-	m_position += Vector3::Transform(m_velocity, matrix);
 
-	// ワールドマトリクスの計算
-	CalculationMatrix();
+// ----------------------------------------
+//  敵の位置からプレイヤーの回転角を求める
+// ----------------------------------------
+void Player::CaluclationAngle(DirectX::SimpleMath::Vector3 enemyPos)
+{
+	using namespace DirectX::SimpleMath;
+
+	Vector3 forward = m_position - enemyPos;	// 敵の方向をベクトルで取得
+	forward.Normalize();						// 正規化
+
+	Vector3 worldForward = Vector3::Forward;			// ワールド座標の前方ベクトルを作成
+	float dotProduct = forward.Dot(worldForward);		// 内積を取得
+	m_angle = acosf(dotProduct);						// 内積から角度を取得(弧度法)
+
+	Vector3 crossProduct = forward.Cross(worldForward);	// カメラの前方向ベクトルが右方向に向いているかどうかで符号を決定
+	m_angle = (crossProduct.y < 0)? -m_angle: m_angle;	// -180 ~ 180に収める。
 }
 
 
@@ -103,55 +100,44 @@ void Player::Update(
 void Player::MovePlayer()
 {
 	using namespace DirectX;
+	using namespace DirectX::SimpleMath;
 
 	// キー入力を受け付ける。
 	Keyboard::State keyboardState = Keyboard::Get().GetState();
 
-	// 速度値をリセットする
-	m_velocity = SimpleMath::Vector3::Zero;
+	m_velocity = SimpleMath::Vector3::Zero;	// 速度値をリセットする
 
-	if (keyboardState.Up)	// 「↑」で前進
-		m_velocity += SimpleMath::Vector3::Forward;
-	if (keyboardState.Down)	// 「↓」で後退
-		m_velocity += SimpleMath::Vector3::Backward;
-	if (keyboardState.Left)	// 「←」で左移動
- 		m_velocity += SimpleMath::Vector3::Left;
-	if (keyboardState.Right)// 「→」で右移動
-		m_velocity += SimpleMath::Vector3::Right;
+	if (keyboardState.Up)
+		m_velocity += Vector3::Forward;	// 「↑」で前進
+	if (keyboardState.Down)
+		m_velocity += Vector3::Backward;// 「↓」で後退
+	if (keyboardState.Left)
+ 		m_velocity += Vector3::Left;	// 「←」で左移動
+	if (keyboardState.Right)
+		m_velocity += Vector3::Right;	// 「→」で右移動
 
-	if (keyboardState.A)
-		m_angle += 1.0f;
-	if (keyboardState.D)
-		m_angle -= 1.0f;
+	if (m_velocity.LengthSquared() > 0.0f)		// 移動量がある場合：
+		m_velocity.Normalize();					// 移動量を正規化する
 
-	// 回転角度の範囲を -180 から 180 度に収める
-	if (m_angle > 180.0f)
-		m_angle -= 360.0f;
-	else if (m_angle < -180.0f)
-		m_angle += 360.0f;
+	m_velocity *= PLAYER_SPEED;					// 移動量を補正する
 
-	// 移動量を正規化する
-	if (m_velocity.LengthSquared() > 0.0f)
-		m_velocity.Normalize();
+	m_position += Vector3::Transform(-m_velocity, Matrix::CreateRotationY(-m_angle));	// 移動量を座標に反映
 
-	// 移動量を補正する
-	m_velocity *= PLAYER_SPEED;
 }
 
 
 // --------------------------------
 //  ワールド行列の計算
 // --------------------------------
-void Player::CalculationMatrix()
+void Player::CaluclationMatrix()
 {
-	using namespace DirectX;
-
+	using namespace DirectX::SimpleMath;
 	// 行列の計算を行う
-	m_worldMatrix = SimpleMath::Matrix::Identity;
+	m_worldMatrix = Matrix::Identity;		// 更新ごとに初期化を行う
 	m_worldMatrix
-		*= SimpleMath::Matrix::CreateTranslation(SimpleMath::Vector3::Zero)		// 初期地点に移動
-		*= SimpleMath::Matrix::CreateRotationY(m_angle)							// 回転を適用
-		*= SimpleMath::Matrix::CreateTranslation(m_position);					// 座標を移動させる
+		*= Matrix::CreateTranslation(Vector3::Zero)					// 原点で操作を行う
+		*= Matrix::CreateRotationY(-m_angle)						// 敵の方向を見るように設定する
+		*= Matrix::CreateTranslation(m_position);					// 座標を移動させる
 }
 
 
@@ -170,6 +156,8 @@ void Player::Render(
 
 	// モデルを描画する
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
+
+	m_model->Draw(context, *states, SimpleMath::Matrix::Identity, view, projection);
 
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
