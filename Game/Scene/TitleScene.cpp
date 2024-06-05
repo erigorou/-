@@ -19,13 +19,13 @@ using namespace DirectX::SimpleMath;
 //---------------------------------------------------------
 TitleScene::TitleScene()
 	:
-	m_commonResources{},
 	m_spriteBatch{},
 	m_spriteFont{},
 	m_texture{},
 	m_texCenter{},
 	m_isChangeScene{}
 {
+	m_commonResources = CommonResources::GetInstance();
 }
 
 //---------------------------------------------------------
@@ -39,10 +39,8 @@ TitleScene::~TitleScene()
 //---------------------------------------------------------
 // ‰Šú‰»‚·‚é
 //---------------------------------------------------------
-void TitleScene::Initialize(CommonResources* resources)
+void TitleScene::Initialize()
 {
-	assert(resources);
-	m_commonResources = resources;
 
 	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
 	auto context = m_commonResources->GetDeviceResources()->GetD3DDeviceContext();

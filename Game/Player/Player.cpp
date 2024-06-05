@@ -135,8 +135,8 @@ void Player::CaluclationMatrix()
 	// 行列の計算を行う
 	m_worldMatrix = Matrix::Identity;		// 更新ごとに初期化を行う
 	m_worldMatrix
-		*= Matrix::CreateTranslation(Vector3::Zero)					// 原点で操作を行う
-		*= Matrix::CreateRotationY(-m_angle)						// 敵の方向を見るように設定する
+		*= Matrix::CreateTranslation(Vector3::Zero)					// 原点に移動
+		*= Matrix::CreateRotationY	(-m_angle)						// 敵の方向を見るように設定する
 		*= Matrix::CreateTranslation(m_position);					// 座標を移動させる
 }
 

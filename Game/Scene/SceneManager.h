@@ -19,7 +19,7 @@ public:
 	SceneManager();
 	~SceneManager();
 
-	void Initialize(CommonResources* resources);
+	void Initialize();
 	void Update(float elapsedTime);
 	void Render();
 	void Finalize();

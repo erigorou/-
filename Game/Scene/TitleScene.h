@@ -42,7 +42,7 @@ public:
     TitleScene();
     ~TitleScene() override;
 
-    void Initialize(CommonResources* resources) override;
+    void Initialize() override;
     void Update(float elapsedTime)override;
     void Render() override;
     void Finalize() override;

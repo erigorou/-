@@ -6,6 +6,24 @@
 #include "CommonResources.h"
 #include <cassert>
 
+
+std::unique_ptr<CommonResources> CommonResources::m_resources = nullptr;
+
+//---------------------------------------------------------
+// コンストラクタ
+//---------------------------------------------------------
+CommonResources* const CommonResources::GetInstance()
+{
+	if (m_resources == nullptr)
+	{
+		// CommonResourcesクラスのインスタンスを生成する
+		m_resources.reset(new CommonResources());
+	}
+	// CommonResourcesクラスのインスタンスを返す
+	return m_resources.get();
+}
+
+
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------

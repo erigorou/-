@@ -28,6 +28,7 @@ Game::Game() noexcept(false)
     //   Add DX::DeviceResources::c_AllowTearing to opt-in to variable rate displays.
     //   Add DX::DeviceResources::c_EnableHDR for HDR10 display.
     m_deviceResources->RegisterDeviceNotify(this);
+    m_commonResources = CommonResources::GetInstance();
 }
 
 // Initialize the Direct3D resources required to run.
@@ -69,8 +70,8 @@ void Game::Initialize(HWND window, int width, int height)
         L"Resources/Fonts/SegoeUI_18.spritefont"
     );
 
-    // 共通リソースを作成する
-    m_commonResources = std::make_unique<CommonResources>();
+    //// 共通リソースを作成する
+    //m_commonResources = std::make_unique<CommonResources>();
 
     // シーンへ渡す共通リソースを設定する
     m_commonResources->Initialize(
@@ -81,9 +82,12 @@ void Game::Initialize(HWND window, int width, int height)
         m_inputManager.get()
     );
 
+
+
+
     // シーンマネージャを初期化する
     m_sceneManager = std::make_unique<SceneManager>();
-    m_sceneManager->Initialize(m_commonResources.get());
+    m_sceneManager->Initialize();
 
     // ★追記ココまで↑↑↑★
 }

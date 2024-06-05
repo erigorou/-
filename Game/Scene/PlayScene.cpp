@@ -31,6 +31,7 @@ PlayScene::PlayScene()
 	m_isChangeScene{},
 	m_player{}
 {
+	m_commonResources = CommonResources::GetInstance();
 }
 
 //---------------------------------------------------------
@@ -44,12 +45,9 @@ PlayScene::~PlayScene()
 //---------------------------------------------------------
 // ‰Šú‰»‚·‚é
 //---------------------------------------------------------
-void PlayScene::Initialize(CommonResources* resources)
+void PlayScene::Initialize()
 {
 	using namespace DirectX;
-
-	assert(resources);
-	m_commonResources = resources;
 
 	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
 	auto context = m_commonResources->GetDeviceResources()->GetD3DDeviceContext();
@@ -112,8 +110,7 @@ void PlayScene::Update(float elapsedTime)
 
 	// ƒJƒƒ‰‚ÌXV
 	m_camera->Update
-		//(m_player->GetPosition(), m_enemy->GetPosition(), matrix);
-		(SimpleMath::Vector3(0.0f, 0.5f, 5.0f), m_enemy->GetPosition(), matrix);
+		(m_player->GetPosition(), m_enemy->GetPosition(), matrix);
 }
 
 //---------------------------------------------------------

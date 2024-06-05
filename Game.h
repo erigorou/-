@@ -75,7 +75,7 @@ private:
     std::unique_ptr<DirectX::CommonStates>  m_commonStates;
 
     // コモンリソース
-    std::unique_ptr<CommonResources>        m_commonResources;
+    CommonResources*                        m_commonResources;
 
     // デバッグストリング
     std::unique_ptr<mylib::DebugString>     m_debugString;

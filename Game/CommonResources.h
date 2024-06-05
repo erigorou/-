@@ -32,10 +32,16 @@ private:
 
 	mylib::InputManager* m_inputManager;
 
+	// リソース
+	static std::unique_ptr<CommonResources> m_resources;
+private:
+	CommonResources();
 
 public:
-	CommonResources();
 	~CommonResources() = default;
+
+	// Resoucesクラスのインスタンスを取得する
+	static CommonResources* const GetInstance();
 
 	void Initialize(
 		DX::StepTimer* timer,

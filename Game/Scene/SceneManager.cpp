@@ -22,6 +22,7 @@ SceneManager::SceneManager()
 	m_currentScene{},
 	m_commonResources{}
 {
+	m_commonResources = CommonResources::GetInstance();
 }
 
 //---------------------------------------------------------
@@ -35,11 +36,8 @@ SceneManager::~SceneManager()
 //---------------------------------------------------------
 // ‰Šú‰»‚·‚é
 //---------------------------------------------------------
-void SceneManager::Initialize(CommonResources* resources)
+void SceneManager::Initialize()
 {
-	assert(resources);
-	m_commonResources = resources;
-
 	ChangeScene(IScene::SceneID::PLAY);
 }
 
@@ -109,7 +107,7 @@ void SceneManager::CreateScene(IScene::SceneID sceneID)
 	}
 
 	assert(m_currentScene && "SceneManager::CreateScene::ŽŸ‚ÌƒV[ƒ“‚ª¶¬‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½I");
-	m_currentScene->Initialize(m_commonResources);
+	m_currentScene->Initialize();
 }
 
 //---------------------------------------------------------

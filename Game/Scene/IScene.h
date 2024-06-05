@@ -30,7 +30,7 @@ public:
 public:
 	virtual ~IScene() = default;
 
-	virtual void Initialize(CommonResources* resources) = 0;
+	virtual void Initialize() = 0;
 
 	virtual void Update(float elapsedTime) = 0;
 
