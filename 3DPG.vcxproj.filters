@@ -59,6 +59,15 @@
     <Filter Include="BehaviourTree">
       <UniqueIdentifier>{973bd5a2-a7eb-4a26-ba88-39329a8a412c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BehaviorTree">
+      <UniqueIdentifier>{8c37a461-d70e-4aae-81d1-31c1d4ebd3ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BehaviorTree\Header">
+      <UniqueIdentifier>{e6443207-2afa-455b-987f-4cc9b7364377}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BehaviorTree\Source">
+      <UniqueIdentifier>{ee8b4a00-f6e7-425b-b430-e74895875501}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -123,6 +132,21 @@
     <ClInclude Include="Game\Enemy\States\EnemyIdling.h">
       <Filter>Game\Enemy\States</Filter>
     </ClInclude>
+    <ClInclude Include="BehaviourTree\Header\Action.h">
+      <Filter>BehaviorTree\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviourTree\Header\BehaviorTree.h">
+      <Filter>BehaviorTree\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviourTree\Header\IfDecorator.h">
+      <Filter>BehaviorTree\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviourTree\Header\Selector.h">
+      <Filter>BehaviorTree\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviourTree\Header\Sequence.h">
+      <Filter>BehaviorTree\Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -172,6 +196,21 @@
     </ClCompile>
     <ClCompile Include="Game\Enemy\States\EnemyIdling.cpp">
       <Filter>Game\Enemy\States</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviourTree\Source\Action.cpp">
+      <Filter>BehaviorTree\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviourTree\Source\BehaviorTree.cpp">
+      <Filter>BehaviorTree\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviourTree\Source\IfDecorator.cpp">
+      <Filter>BehaviorTree\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviourTree\Source\Selector.cpp">
+      <Filter>BehaviorTree\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviourTree\Source\Sequence.cpp">
+      <Filter>BehaviorTree\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

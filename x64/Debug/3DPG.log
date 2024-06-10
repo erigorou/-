@@ -1,30 +1,8 @@
-﻿  pch.cpp
-  DeviceResources.cpp
-  Game.cpp
-  Camera.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Camera\Camera.cpp(32,37): warning C4100: 'rotate': 引数は関数の本体部で 1 度も参照されません。
-  CommonResources.cpp
-  Enemy.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\Enemy.cpp(42,31): warning C4100: 'states': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\Enemy.cpp(41,29): warning C4100: 'context': 引数は関数の本体部で 1 度も参照されません。
-  EnemyIdling.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\EnemyIdling.cpp(63,37): warning C4100: 'projection': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\EnemyIdling.cpp(62,37): warning C4100: 'view': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\EnemyIdling.cpp(61,25): warning C4100: 'states': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\EnemyIdling.cpp(60,23): warning C4100: 'context': 引数は関数の本体部で 1 度も参照されません。
-  Player.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\Player.cpp(48,31): warning C4100: 'states': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\Player.cpp(47,29): warning C4100: 'context': 引数は関数の本体部で 1 度も参照されません。
-  PlayScene.cpp
-  SceneManager.cpp
-  TitleScene.cpp
-  SkyeBox.cpp
-  DebugDraw.cpp
-  DebugCamera.cpp
-  DebugString.cpp
-  GridFloor.cpp
-  InputManager.cpp
-  Main.cpp
+﻿  Action.cpp
+  BehaviorTree.cpp
+  IfDecorator.cpp
+  Selector.cpp
+  Sequence.cpp
   コードを生成中...
      ライブラリ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.lib とオブジェクト C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exp を作成中
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe

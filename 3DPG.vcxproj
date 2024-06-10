@@ -180,6 +180,11 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BehaviourTree\Header\Action.h" />
+    <ClInclude Include="BehaviourTree\Header\BehaviorTree.h" />
+    <ClInclude Include="BehaviourTree\Header\IfDecorator.h" />
+    <ClInclude Include="BehaviourTree\Header\Selector.h" />
+    <ClInclude Include="BehaviourTree\Header\Sequence.h" />
     <ClInclude Include="DeviceResources.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Game\Camera\Camera.h" />
@@ -204,6 +209,11 @@
     <ClInclude Include="StepTimer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BehaviourTree\Source\Action.cpp" />
+    <ClCompile Include="BehaviourTree\Source\BehaviorTree.cpp" />
+    <ClCompile Include="BehaviourTree\Source\IfDecorator.cpp" />
+    <ClCompile Include="BehaviourTree\Source\Selector.cpp" />
+    <ClCompile Include="BehaviourTree\Source\Sequence.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Game\Camera\Camera.cpp" />
