@@ -56,6 +56,9 @@
     <Filter Include="Game\Enemy\States">
       <UniqueIdentifier>{1339674d-cabd-4de4-b6ed-64f07f0ae300}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BehaviourTree">
+      <UniqueIdentifier>{973bd5a2-a7eb-4a26-ba88-39329a8a412c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
