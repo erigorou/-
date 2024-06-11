@@ -28,8 +28,7 @@ public:
 		ID3D11DeviceContext* context,
 		DirectX::CommonStates* states,
 		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection,
-		const CommonResources* resources) = 0;
+		const DirectX::SimpleMath::Matrix& projection) = 0;
 	// Œãˆ—‚ğs‚¤
 	virtual void Finalize() = 0;
 };

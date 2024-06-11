@@ -1,2 +1,7 @@
-﻿  Action.cpp
+﻿  PlayerIdling.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\PlayerIdling.cpp(58,37): warning C4100: 'projection': 引数は関数の本体部で 1 度も参照されません。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\PlayerIdling.cpp(57,37): warning C4100: 'view': 引数は関数の本体部で 1 度も参照されません。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\PlayerIdling.cpp(56,25): warning C4100: 'states': 引数は関数の本体部で 1 度も参照されません。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\PlayerIdling.cpp(55,23): warning C4100: 'context': 引数は関数の本体部で 1 度も参照されません。
+     ライブラリ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.lib とオブジェクト C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exp を作成中
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe

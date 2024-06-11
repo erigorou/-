@@ -10,6 +10,10 @@ public:
     virtual std::string name() = 0;
 };
 
+// メモ　＊＊＊＊＊＊＊＊＊＊＊＊
+// compositeパターン **************************
+
+
 // 椅子から立つアクション
 class Action1 : public Action {
 public:

@@ -26,8 +26,7 @@ public:
 		ID3D11DeviceContext* context,
 		DirectX::CommonStates* states,
 		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection,
-		const CommonResources* resources) override;
+		const DirectX::SimpleMath::Matrix& projection) override;
 	// èIóπèàóù
 	void Finalize() override;
 
@@ -41,4 +40,4 @@ private:
 	Enemy* m_enemy;
 };
 
-#endif		// PLAYER_IDLING_DEFINED
+#endif		// ENEMY_IDLING_DEFINED

@@ -10,6 +10,7 @@ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\CommonRes
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\Enemy.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\Enemy.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\EnemyIdling.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\EnemyIdling.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\Player.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\Player.obj
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\PlayerIdling.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\PlayerIdling.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Scene\PlayScene.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\PlayScene.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Scene\SceneManager.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\SceneManager.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Scene\TitleScene.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\TitleScene.obj

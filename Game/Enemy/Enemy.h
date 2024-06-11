@@ -40,8 +40,7 @@ public:
 		ID3D11DeviceContext* context,
 		DirectX::CommonStates* states,
 		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection,
-		const CommonResources* resources);
+		const DirectX::SimpleMath::Matrix& projection);
 	// I—¹ˆ—
 	void Finalize();
 

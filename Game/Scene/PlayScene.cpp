@@ -94,9 +94,7 @@ void PlayScene::Update(float elapsedTime)
 	UNREFERENCED_PARAMETER(elapsedTime);
 
 	// プレイヤーの更新処理
-	m_player->Update(
-		m_enemy->GetPosition()
-	);
+	m_player->Update(m_enemy->GetPosition());
 
 	// 敵の更新処理
 	m_enemy->Update(elapsedTime);
@@ -105,12 +103,10 @@ void PlayScene::Update(float elapsedTime)
 	// カメラの回転行列の作成	引数にはプレイヤーの回転角を入れる
 	SimpleMath::Matrix matrix
 		= SimpleMath::Matrix::CreateRotationY(
-			XMConvertToRadians(m_player->GetAngle())
-		);
+			XMConvertToRadians(m_player->GetAngle()));
 
 	// カメラの更新
-	m_camera->Update
-		(m_player->GetPosition(), m_enemy->GetPosition(), matrix);
+	m_camera->Update(m_player->GetPosition(), m_enemy->GetPosition(), matrix);
 }
 
 //---------------------------------------------------------
@@ -130,7 +126,7 @@ void PlayScene::Render()
 	// プレイヤーの描画を行う
 	m_player->Render(context, states, view, m_projection, m_commonResources);
 	// 敵の描画を行う
-	m_enemy->Render(context, states, view, m_projection, m_commonResources);
+	m_enemy->Render(context, states, view, m_projection);
 
 
 	// デバッグ情報を「DebugString」で表示する

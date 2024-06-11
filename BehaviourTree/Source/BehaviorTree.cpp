@@ -31,7 +31,9 @@ BehaviorTree::BehaviorTree() {
     root->addAction(action6);
 }
 
+
 // ビヘイビアツリーを実行する
-bool BehaviorTree::run() {
+bool BehaviorTree::run()
+{
     return root->execute();
 }

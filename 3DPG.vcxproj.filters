@@ -68,6 +68,15 @@
     <Filter Include="BehaviorTree\Source">
       <UniqueIdentifier>{ee8b4a00-f6e7-425b-b430-e74895875501}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Player\State">
+      <UniqueIdentifier>{18f602b1-3a60-4dc5-872b-caed41ed98ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Player\State\Source">
+      <UniqueIdentifier>{b124caf6-95f9-48e7-8767-9e6e32b2d262}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Player\State\Header">
+      <UniqueIdentifier>{676e3e1c-a2f2-45fd-a237-80555766cf27}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -147,6 +156,9 @@
     <ClInclude Include="BehaviourTree\Header\Sequence.h">
       <Filter>BehaviorTree\Header</Filter>
     </ClInclude>
+    <ClInclude Include="Game\Player\State\PlayerIdling.h">
+      <Filter>Game\Player\State\Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -211,6 +223,9 @@
     </ClCompile>
     <ClCompile Include="BehaviourTree\Source\Sequence.cpp">
       <Filter>BehaviorTree\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Player\State\PlayerIdling.cpp">
+      <Filter>Game\Player\State\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

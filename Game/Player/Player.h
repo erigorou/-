@@ -60,4 +60,5 @@ private:
 	DirectX::SimpleMath::Matrix m_worldMatrix;
 	// ƒ‚ƒfƒ‹
 	std::unique_ptr<DirectX::Model> m_model;
+
 };

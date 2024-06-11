@@ -94,16 +94,14 @@ void Enemy::Update(float elapsedTime)
 	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
 
 	if (keyboardState.F1)
-	{
-		m_position += Vector3(0.01f, 0.0f, 0.0f);
-	}
+	{m_position += Vector3(0.01f, 0.0f, 0.0f);}
+
 	if (keyboardState.F2)
-	{
-		m_position -= Vector3(0.01f, 0.0f, 0.0f);
-	}
+	{m_position -= Vector3(0.01f, 0.0f, 0.0f);}
 
 	if (keyboardState.Enter)
 	{
+		// ビヘイビアツリーを実行。
 		m_pBT->run();
 	}
 
@@ -118,12 +116,14 @@ void Enemy::Render(
 	ID3D11DeviceContext* context,
 	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection,
-	const CommonResources* resources
+	const DirectX::SimpleMath::Matrix& projection
 	)
 {
-	// ステートのほうを表示する
-	m_currentState->Render(context,states,view,projection, resources);
+	// リソースを取得
+	CommonResources* resources = CommonResources::GetInstance();
+
+	// ステートを表示する
+	m_currentState->Render(context,states,view,projection);
 
 	// モデルを描画する
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);

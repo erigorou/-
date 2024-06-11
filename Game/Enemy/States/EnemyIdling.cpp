@@ -60,10 +60,12 @@ void EnemyIdling::Render(
 	ID3D11DeviceContext* context,
 	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection,
-	const CommonResources* resources
+	const DirectX::SimpleMath::Matrix& projection
 	)
 {
+	// リソースの取得
+	CommonResources* resources = CommonResources::GetInstance();
+
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
 	debugString->AddString("State:EnemyIdling");
