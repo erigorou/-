@@ -23,6 +23,10 @@ const float Enemy::ENEMY_SPEED = 0.05f;
 //  コンストラクタ
 // --------------------------------
 Enemy::Enemy()
+	:
+	 m_position{0.0f, 0.0f, 0.0f}
+	,m_angle{0.0f}
+	,m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
 {
 }
 
@@ -49,19 +53,15 @@ void Enemy::Initialize(
 	// モデルを読み込む(仮でサイコロを読み込む)
 	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/akaoni.cmo", *fx);
 
-	// 座標の初期設定
-	m_position = DirectX::SimpleMath::Vector3{ 0.0f, 0.0f, 0.0f };
-	// 回転角
-	m_angle = 0.0f;
-	// ワールド行列の初期か
-	m_worldMatrix  = DirectX::SimpleMath::Matrix::Identity;
-
 	// 待機状態を取得する
 	m_enemyIdling = std::make_unique<EnemyIdling>(this);
 	m_enemyIdling->Initialize();
 
 	// 初期のステートを待機状態に割り当てる
 	m_currentState = m_enemyIdling.get();
+
+	// ビヘイビアツリーを取得
+	m_pBT = std::make_unique<BehaviorTree>();
 }
 
 // --------------------------------
@@ -102,6 +102,11 @@ void Enemy::Update(float elapsedTime)
 		m_position -= Vector3(0.01f, 0.0f, 0.0f);
 	}
 
+	if (keyboardState.Enter)
+	{
+		m_pBT->run();
+	}
+
 	m_worldMatrix *= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);
 }
 
@@ -128,6 +133,8 @@ void Enemy::Render(
 	debugString->AddString("enemyPos.x : %f", m_position.x);
 	debugString->AddString("enemyPos.y : %f", m_position.y);
 	debugString->AddString("enemyPos.z : %f", m_position.z);
+
+
 }
 
 

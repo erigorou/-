@@ -4,6 +4,9 @@
 // 以下ステート
 #include "Game/Enemy/States/EnemyIdling.h"
 
+// ビヘイビアツリー
+#include "BehaviourTree/Header/BehaviorTree.h"
+
 
 class Enemy
 {
@@ -57,6 +60,9 @@ private:
 
 	// 現在のステート（ステートパターン）
 	IState* m_currentState;
+
+	// ビヘイビアツリー
+	std::unique_ptr<BehaviorTree> m_pBT;
 
 private:
 	std::unique_ptr<EnemyIdling> m_enemyIdling;

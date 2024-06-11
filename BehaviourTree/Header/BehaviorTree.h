@@ -8,6 +8,11 @@
 class BehaviorTree {
 public:
     BehaviorTree();
+
+    /// <summary>
+    /// root‚É\’z‚³‚ê‚½BT‚ğÀs‚·‚é
+    /// </summary>
+    /// <returns>¬Œ÷ or ¸”s</returns>
     bool run();
 
 private:

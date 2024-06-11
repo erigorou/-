@@ -3,6 +3,14 @@
 #include "BehaviourTree/Header/Action.h"
 #include <iostream>
 
+
+// -------------------------------
+//
+// Enemyのステートを書き込む。
+//
+// -------------------------------
+
+
 // 椅子から立つアクションの実行
 bool Action1::execute() {
     std::cout << "Executing Action: " << name() << std::endl;
