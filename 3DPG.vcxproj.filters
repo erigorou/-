@@ -156,7 +156,10 @@
     <ClInclude Include="BehaviourTree\Header\Sequence.h">
       <Filter>BehaviorTree\Header</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Player\State\PlayerIdling.h">
+    <ClInclude Include="Game\Player\State\Header\PlayerDodging.h">
+      <Filter>Game\Player\State\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Player\State\Header\PlayerIdling.h">
       <Filter>Game\Player\State\Header</Filter>
     </ClInclude>
   </ItemGroup>
@@ -224,7 +227,10 @@
     <ClCompile Include="BehaviourTree\Source\Sequence.cpp">
       <Filter>BehaviorTree\Source</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Player\State\PlayerIdling.cpp">
+    <ClCompile Include="Game\Player\State\Source\PlayerIdling.cpp">
+      <Filter>Game\Player\State\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Player\State\Source\PlayerDodging.cpp">
       <Filter>Game\Player\State\Source</Filter>
     </ClCompile>
   </ItemGroup>

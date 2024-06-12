@@ -38,7 +38,7 @@ void EnemyIdling::PreUpdate()
 
 
 // 更新処理
-void EnemyIdling::Update(const float& elapsedTime)
+void EnemyIdling::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3& parentPos)
 {
 	// このステートになってからの時間を計測
 	m_totalSeconds += elapsedTime;

@@ -1,5 +1,8 @@
-
 #pragma once
+#include "Interface/IState.h"
+
+#include "Game/Player/State/Header/PlayerIdling.h"
+#include "Game/Player/State/Header/PlayerDodging.h"
 
 class Player
 {
@@ -9,9 +12,16 @@ public:
 
 public:
 	// プレイヤーの座標を取得する
-	DirectX::SimpleMath::Vector3 GetPosition() { return m_position; }
+	DirectX::SimpleMath::Vector3 GetPosition() const { return m_position; }
+	// プレイヤーの速度を取得する
+	DirectX::SimpleMath::Vector3 GetVelocity() const { return m_velocity; }
 	// プレイヤーの回転角を取得する
-	float GetAngle() { return m_angle; }
+	float GetAngle() const { return m_angle; }
+	// プレイヤーのアイドリングステートを取得
+	PlayerIdling* GetPlayerIdlingState() const { return m_playerIdling.get(); }
+	// プレイヤーのダッジングステートを取得
+	PlayerDodging* GetPlayerDodgingState() const { return m_playerDodging.get(); }
+
 
 public:
 	// コンストラクタ
@@ -25,9 +35,14 @@ public:
 		const ID3D11DeviceContext* context,
 		const DirectX::CommonStates* states
 	);
+
+	// 新しい状態に遷移する
+	void ChangeState(IState* newState);
+
 	// 更新処理
 	void Update(
-		DirectX::SimpleMath::Vector3 enemyPos
+		const DirectX::SimpleMath::Vector3 enemyPos,
+		const float elapsedTime
 	);
 
 	// 描画処理
@@ -42,9 +57,9 @@ public:
 	// 終了処理
 	void Finalize();
 	// 回転角の計算
-	void CaluclationAngle(DirectX::SimpleMath::Vector3 enemyPos);
+	void CalculationAngle(DirectX::SimpleMath::Vector3 const enemyPos);
 	// Matrixの計算
-	void CaluclationMatrix();
+	void CalculationMatrix();
 	// 移動の管理
 	void MovePlayer();
 
@@ -61,4 +76,10 @@ private:
 	// モデル
 	std::unique_ptr<DirectX::Model> m_model;
 
+	// 現在のステート
+	IState* m_currentState;
+	// プレイヤーのアイドリングステート
+	std::unique_ptr<PlayerIdling> m_playerIdling;
+	// プレイヤーのダッジングステート
+	std::unique_ptr<PlayerDodging> m_playerDodging;
 };

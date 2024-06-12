@@ -28,7 +28,8 @@ Player::Player()
 	m_model{},
 	m_position{0, 0, 5},
 	m_angle{0.f},
-	m_worldMatrix{}
+	m_worldMatrix{},
+	m_currentState{}
 {
 }
 
@@ -55,29 +56,60 @@ void Player::Initialize(
 	fx->SetDirectory(L"Resources/Models");
 	// モデルを読み込む
 	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/momotaro.cmo", *fx);
+	// アイドリングステートを取得
+	m_playerIdling = std::make_unique<PlayerIdling>(this);
+	// アイドリングステートの初期化
+	m_playerIdling->Initialize();
+	// ダッジングステートを取得
+	m_playerDodging = std::make_unique<PlayerDodging>(this);
+	// ダッジングステートを初期化
+	m_playerDodging->Initialize();
+	// 最初のステートを設定
+	m_currentState = m_playerIdling.get();
 }
+
+
+/// <summary>
+/// ステートを変更する
+/// </summary>
+/// <param name="newState">変更したいステート</param>
+void Player::ChangeState(IState* newState)
+{
+	// 事後更新処理を行う
+	m_currentState->PostUpdate();
+	// 現在のステートを変更する
+	m_currentState = newState;
+	// 新しいステートの事前更新を行う
+	m_currentState->PreUpdate();
+}
+
 
 // --------------------------------
 //  更新処理
 // --------------------------------
 void Player::Update(
-	DirectX::SimpleMath::Vector3 enemyPos
+	const DirectX::SimpleMath::Vector3 enemyPos,	// 敵の座標
+	const float elapsedTime				   // 前Fからの経過時間
 	)
 {
-	using namespace DirectX::SimpleMath;
+	// ステートの更新
+	m_currentState->Update(elapsedTime, m_position);
+
+	// いずれここは1行のみにする　＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+
 	// 敵の位置を比較して回転角を計算する
-	CaluclationAngle(enemyPos);
-	// プレイヤーの移動
-	MovePlayer();
+	CalculationAngle(enemyPos);
+	//// プレイヤーの移動
+	//MovePlayer();
 	// ワールド座標の更新
-	CaluclationMatrix();
+	CalculationMatrix();
 }
 
 
 // ----------------------------------------
 //  敵の位置からプレイヤーの回転角を求める
 // ----------------------------------------
-void Player::CaluclationAngle(DirectX::SimpleMath::Vector3 enemyPos)
+void Player::CalculationAngle(DirectX::SimpleMath::Vector3 const enemyPos)
 {
 	using namespace DirectX::SimpleMath;
 
@@ -129,7 +161,7 @@ void Player::MovePlayer()
 // --------------------------------
 //  ワールド行列の計算
 // --------------------------------
-void Player::CaluclationMatrix()
+void Player::CalculationMatrix()
 {
 	using namespace DirectX::SimpleMath;
 	// 行列の計算を行う
@@ -157,7 +189,12 @@ void Player::Render(
 	// モデルを描画する
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 
-	m_model->Draw(context, *states, SimpleMath::Matrix::Identity, view, projection);
+	// ステートで描画する
+	m_currentState->Render(
+		context,
+		states,
+		view,
+		projection);
 
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();

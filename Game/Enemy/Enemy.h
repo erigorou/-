@@ -1,11 +1,7 @@
 #pragma once	// 多重読み込み防止
-
 #include "Interface/IState.h"
-// 以下ステート
-#include "Game/Enemy/States/EnemyIdling.h"
-
-// ビヘイビアツリー
-#include "BehaviourTree/Header/BehaviorTree.h"
+#include "Game/Enemy/States/EnemyIdling.h"	// 待機ステート
+#include "BehaviourTree/Header/BehaviorTree.h"	// ビヘイビアツリー
 
 
 class Enemy

@@ -94,7 +94,7 @@ void PlayScene::Update(float elapsedTime)
 	UNREFERENCED_PARAMETER(elapsedTime);
 
 	// プレイヤーの更新処理
-	m_player->Update(m_enemy->GetPosition());
+	m_player->Update(m_enemy->GetPosition(), elapsedTime);
 
 	// 敵の更新処理
 	m_enemy->Update(elapsedTime);

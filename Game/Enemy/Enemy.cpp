@@ -88,7 +88,7 @@ void Enemy::Update(float elapsedTime)
 	m_worldMatrix = Matrix::CreateScale(Vector3(2.0f, 2.0f, 2.0f));
 
 	// ステータスを更新しまーす
-	m_currentState->Update(elapsedTime);
+	m_currentState->Update(elapsedTime, m_position);
 
 	// キー入力を受け付ける。
 	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
