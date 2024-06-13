@@ -10,17 +10,18 @@
 #ifndef ISTATE_DEFINED
 #define ISTATE_DEFINED
 
+#include <cassert>
 
 class IState
 {
 public:
 	virtual ~IState() = default;
 	// 初期化する
-	virtual void Initialize() = 0;
+	virtual void Initialize(DirectX::Model* model) = 0;
 	// 事前更新する
 	virtual void PreUpdate() = 0;
 	// 更新する
-	virtual void Update(const float& elapsedTime, DirectX::SimpleMath::Vector3& parentPos) = 0;
+	virtual void Update(const float& elapsedTime,DirectX::SimpleMath::Vector3& parentPos) = 0;
 	// 事後更新する
 	virtual void PostUpdate() = 0;
 	// 描画する

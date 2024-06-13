@@ -22,7 +22,7 @@ public:
 	// デストラクタ
 	~PlayerIdling() override;
 	// 初期化する
-	void Initialize() override;
+	void Initialize(DirectX::Model* model) override;
 	// 事前更新する
 	void PreUpdate() override;
 	// 更新処理する
@@ -41,10 +41,10 @@ public:
 private:
 	// 総時間
 	float m_totalSeconds;
-	// 終了時間
-	float m_finishTime;
 	// プレイヤー
 	Player* m_player;
+	// モデル
+	DirectX::Model* m_model;
 };
 
 #endif  // PLAYER_IDLING_DEFINED

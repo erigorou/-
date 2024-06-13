@@ -24,8 +24,10 @@ EnemyIdling::~EnemyIdling()
 
 
 // 初期化処理
-void EnemyIdling::Initialize()
+void EnemyIdling::Initialize(DirectX::Model* model)
 {
+	// モデルの取得
+	m_model = model;
 }
 
 
@@ -40,11 +42,10 @@ void EnemyIdling::PreUpdate()
 // 更新処理
 void EnemyIdling::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3& parentPos)
 {
-	// このステートになってからの時間を計測
-	m_totalSeconds += elapsedTime;
+	// elapsedTime使わないけどエラー出さないでねって文
+	UNREFERENCED_PARAMETER(elapsedTime);
 
-
-
+	// ここにビヘイビアツリーを入れる
 }
 
 
@@ -65,6 +66,8 @@ void EnemyIdling::Render(
 {
 	// リソースの取得
 	CommonResources* resources = CommonResources::GetInstance();
+
+
 
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();

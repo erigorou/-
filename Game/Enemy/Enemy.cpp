@@ -55,7 +55,7 @@ void Enemy::Initialize(
 
 	// 待機状態を取得する
 	m_enemyIdling = std::make_unique<EnemyIdling>(this);
-	m_enemyIdling->Initialize();
+	m_enemyIdling->Initialize(m_model.get());
 
 	// 初期のステートを待機状態に割り当てる
 	m_currentState = m_enemyIdling.get();

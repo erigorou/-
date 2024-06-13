@@ -59,11 +59,11 @@ void Player::Initialize(
 	// アイドリングステートを取得
 	m_playerIdling = std::make_unique<PlayerIdling>(this);
 	// アイドリングステートの初期化
-	m_playerIdling->Initialize();
+	m_playerIdling->Initialize(m_model.get());
 	// ダッジングステートを取得
 	m_playerDodging = std::make_unique<PlayerDodging>(this);
 	// ダッジングステートを初期化
-	m_playerDodging->Initialize();
+	m_playerDodging->Initialize(m_model.get());
 	// 最初のステートを設定
 	m_currentState = m_playerIdling.get();
 }

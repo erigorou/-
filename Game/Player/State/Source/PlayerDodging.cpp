@@ -26,8 +26,10 @@ PlayerDodging::~PlayerDodging()
 
 
 // 初期化処理
-void PlayerDodging::Initialize()
+void PlayerDodging::Initialize(DirectX::Model* model)
 {
+	// モデルを取得する
+	m_model = model;
 }
 
 // 事前更新処理
@@ -42,6 +44,9 @@ void PlayerDodging::PreUpdate()
 // 更新処理
 void PlayerDodging::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3& parentPos)
 {
+	using namespace DirectX;
+	using namespace DirectX::SimpleMath;
+
 	// ステートの経過時間を記録する
 	m_totalSeconds += elapsedTime;
 
@@ -52,8 +57,12 @@ void PlayerDodging::Update(const float& elapsedTime, DirectX::SimpleMath::Vector
 		return;
 	}
 
-	parentPos += m_direction  * 2;
-
+	// プレイヤーの回転を取得
+	Matrix angle = Matrix::CreateRotationY(-m_player->GetAngle());
+	// 速度を設定
+	Vector3 velocity = -m_direction * 2;
+	// 移動量を座標に反映させながら座標を移動させる。
+	parentPos +=Vector3::Transform(velocity,angle);
 }
 
 

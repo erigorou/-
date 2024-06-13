@@ -14,7 +14,7 @@ public:
 	// デストラクタ
 	~EnemyIdling() override;
 	// 初期化する
-	void Initialize() override;
+	void Initialize(DirectX::Model* model) override;
 	// 事前更新する
 	void PreUpdate() override;
 	// 更新処理する
@@ -38,6 +38,8 @@ private:
 	float m_finishTime;
 	// 敵
 	Enemy* m_enemy;
+	// モデル
+	DirectX::Model* m_model;
 };
 
 #endif		// ENEMY_IDLING_DEFINED

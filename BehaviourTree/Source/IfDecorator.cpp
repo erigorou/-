@@ -7,7 +7,8 @@
 bool IfDecorator::execute() {
     // ‚±‚±‚Å‚Íƒfƒ‚‚Æ‚µ‚Äè‡’l‚ð200‚Æ‰¼’è‚·‚é
     int possession = 200;
-    if (possession >= threshold) {
+    if (possession >= threshold)
+    {
         return action->execute();
     }
     std::cout << "ðŒ‚ð–ž‚½‚µ‚Ä‚¢‚Ü‚¹‚ñ: " << threshold << std::endl;

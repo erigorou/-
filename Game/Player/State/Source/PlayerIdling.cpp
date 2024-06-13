@@ -12,6 +12,7 @@ PlayerIdling::PlayerIdling(Player* player)
 	:
 	 m_player(player)
 	,m_totalSeconds()
+	,m_model()
 {
 }
 
@@ -22,8 +23,10 @@ PlayerIdling::~PlayerIdling()
 
 
 // 初期化処理
-void PlayerIdling::Initialize()
+void PlayerIdling::Initialize(DirectX::Model* model)
 {
+	// モデルを取得する
+	m_model = model;
 }
 
 // 事前更新処理
@@ -34,13 +37,13 @@ void PlayerIdling::PreUpdate()
 }
 
 // 更新処理
-void PlayerIdling::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3& parentPos)
+void PlayerIdling::Update(const float& elapsedTime,  DirectX::SimpleMath::Vector3& parentPos)
 {
+	// elapsedTime使わないけどエラー出さないでねって文
+	UNREFERENCED_PARAMETER(elapsedTime);
+
 	// キー入力を受け付ける。
 	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
-
-	// ステートの経過時間を記録する
-	m_totalSeconds += elapsedTime;
 
 	// プレイヤーの移動
 	m_player->MovePlayer();
@@ -71,6 +74,7 @@ void PlayerIdling::Render(
 {
 	// コモンリソースを取得する
 	CommonResources* resources = CommonResources::GetInstance();
+
 
 	// デバッグ文字の描画
 	auto debugString = resources->GetDebugString();
