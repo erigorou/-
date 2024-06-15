@@ -186,6 +186,33 @@ void Player::Render(
 {
 	using namespace DirectX;
 
+	// モデルのエフェクト情報を更新する
+	m_model->UpdateEffects([](DirectX::IEffect* effect)
+		{
+			// ベーシックエフェクトを設定する
+			BasicEffect* basicEffect = dynamic_cast<BasicEffect*>(effect);
+			if (basicEffect)
+			{
+				// ライトを有効化する
+				basicEffect->SetLightingEnabled(true);
+
+				// アンビエントライトの設定
+				basicEffect->SetAmbientLightColor(Colors::Gray); // 適切なアンビエント色を設定
+
+				// 必要に応じてライトの設定を行う
+				basicEffect->SetLightEnabled(0, true);
+				basicEffect->SetLightDiffuseColor(0, Colors::White); // ディフューズ色を設定
+				basicEffect->SetLightSpecularColor(0, Colors::White); // スペキュラー色を設定
+
+				basicEffect->SetLightEnabled(1, false); // 追加のライトが不要なら無効化
+				basicEffect->SetLightEnabled(2, false); // 追加のライトが不要なら無効化
+
+				// モデルの自発光色を黒に設定して無効化
+				basicEffect->SetEmissiveColor(Colors::Black);
+			}
+		}
+	);
+
 	// モデルを描画する
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 

@@ -1,8 +1,4 @@
-﻿  EnemyIdling.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\EnemyIdling.cpp(43,82): warning C4100: 'parentPos': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\EnemyIdling.cpp(43,39): warning C4100: 'elapsedTime': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\EnemyIdling.cpp(62,37): warning C4100: 'projection': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\EnemyIdling.cpp(61,37): warning C4100: 'view': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\EnemyIdling.cpp(60,25): warning C4100: 'states': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\EnemyIdling.cpp(59,23): warning C4100: 'context': 引数は関数の本体部で 1 度も参照されません。
-  3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe
+﻿  SkyeSphere.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\SkyeSphere.cpp(36,7): warning C4189: 'commonResources': ローカル変数が初期化されましたが、参照されていません
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\SkyeSphere.cpp(50,18): error C2511: 'void SkyeSphere::DrawSkyeSphere(ID3D11DeviceContext1 *,DirectX::DX11::CommonStates *,DirectX::SimpleMath::Matrix,DirectX::SimpleMath::Matrix)': オーバーロードされたメンバー関数が 'SkyeSphere' にありません。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\SkyeSphere.h(5,7): message : 'SkyeSphere' の宣言を確認してください

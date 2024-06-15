@@ -47,9 +47,6 @@
     <Filter Include="Game\Enemy">
       <UniqueIdentifier>{76110301-5e4e-48d6-b8d7-5f926ef53a7c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\SkyeBox">
-      <UniqueIdentifier>{68f7eb33-ead5-4734-9401-6b45700ba808}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Interface">
       <UniqueIdentifier>{243f97e3-a568-45bc-a743-e2d22edb83cc}</UniqueIdentifier>
     </Filter>
@@ -132,9 +129,6 @@
     <ClInclude Include="Game\Player\Player.h">
       <Filter>Game\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SkyeBox\SkyeBox.h">
-      <Filter>Game\SkyeBox</Filter>
-    </ClInclude>
     <ClInclude Include="Interface\IState.h">
       <Filter>Interface</Filter>
     </ClInclude>
@@ -161,6 +155,9 @@
     </ClInclude>
     <ClInclude Include="Game\Player\State\Header\PlayerIdling.h">
       <Filter>Game\Player\State\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\MyLib\SkyeSphere.h">
+      <Filter>Libraries\MyLib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -206,9 +203,6 @@
     <ClCompile Include="Game\Player\Player.cpp">
       <Filter>Game\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Game\SkyeBox\SkyeBox.cpp">
-      <Filter>Game\SkyeBox</Filter>
-    </ClCompile>
     <ClCompile Include="Game\Enemy\States\EnemyIdling.cpp">
       <Filter>Game\Enemy\States</Filter>
     </ClCompile>
@@ -232,6 +226,9 @@
     </ClCompile>
     <ClCompile Include="Game\Player\State\Source\PlayerDodging.cpp">
       <Filter>Game\Player\State\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\MyLib\SkyeSphere.cpp">
+      <Filter>Libraries\MyLib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

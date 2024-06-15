@@ -19,6 +19,7 @@ class PlayerDodging : public IState
 private:
 	// 固定値
 	static const float DODGING_TIME;
+	static const float DODGE_FUNCTION;
 
 public:
 	// コンストラクタ
@@ -47,6 +48,8 @@ private:
 	float m_totalSeconds;
 	// 終了時間
 	float m_finishTime;
+	// プレイヤーの移動速度
+	DirectX::SimpleMath::Vector3 m_velocity;
 	// プレイヤー
 	Player* m_player;
 	// モデル

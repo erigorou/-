@@ -46,6 +46,7 @@ void EnemyIdling::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3&
 	UNREFERENCED_PARAMETER(elapsedTime);
 
 	// ここにビヘイビアツリーを入れる
+
 }
 
 
