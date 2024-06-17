@@ -7,6 +7,8 @@
 #include <unordered_map>
 #include "Game/Camera/Camera.h"
 
+#include "Libraries/MyLib/SkySphere.h"
+
 // 前方宣言
 class CommonResources;
 class Player;
@@ -21,14 +23,15 @@ private:
 	// デバッグカメラ
 	std::unique_ptr<mylib::DebugCamera> m_debugCamera;
 	// 格子床
-	std::unique_ptr<mylib::GridFloor> m_gridFloor;
+	std::unique_ptr<mylib::GridFloor>	m_gridFloor;
 	// 射影行列
-	DirectX::SimpleMath::Matrix m_projection;
+	DirectX::SimpleMath::Matrix			m_projection;
 	// シーンチェンジフラグ
 	bool m_isChangeScene;
 	// TPSカメラ
-	std::unique_ptr<Camera> m_camera;
-
+	std::unique_ptr<Camera>				m_camera;
+	// 天球
+	std::unique_ptr<SkySphere>			m_skySphere;
 
 public:
 	PlayScene();

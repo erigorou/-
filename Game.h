@@ -69,22 +69,14 @@ private:
     DX::StepTimer                           m_timer;
 
 
-    // ★追記ココから↓↓↓★
-
     // コモンステート
     std::unique_ptr<DirectX::CommonStates>  m_commonStates;
-
     // コモンリソース
     CommonResources*                        m_commonResources;
-
     // デバッグストリング
     std::unique_ptr<mylib::DebugString>     m_debugString;
-
     // 入力マネージャ
     std::unique_ptr<mylib::InputManager>    m_inputManager;
-
     // シーンマネージャ
     std::unique_ptr<SceneManager>           m_sceneManager;
-
-    // ★追記ココまで↑↑↑★
 };

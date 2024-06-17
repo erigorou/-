@@ -45,13 +45,9 @@ void Game::Initialize(HWND window, int width, int height)
 
     // TODO: Change the timer settings if you want something other than the default variable timestep mode.
     // e.g. for 60 FPS fixed timestep update logic, call:
-    /*
+
     m_timer.SetFixedTimeStep(true);
     m_timer.SetTargetElapsedSeconds(1.0 / 60);
-    */
-
-
-    // ★追記ココから↓↓↓★
 
     // デバイスとコンテキストを取得する
     auto device  = m_deviceResources->GetD3DDevice();
@@ -69,10 +65,6 @@ void Game::Initialize(HWND window, int width, int height)
         context,
         L"Resources/Fonts/SegoeUI_18.spritefont"
     );
-
-    //// 共通リソースを作成する
-    //m_commonResources = std::make_unique<CommonResources>();
-
     // シーンへ渡す共通リソースを設定する
     m_commonResources->Initialize(
         &m_timer,
@@ -82,14 +74,9 @@ void Game::Initialize(HWND window, int width, int height)
         m_inputManager.get()
     );
 
-
-
-
     // シーンマネージャを初期化する
     m_sceneManager = std::make_unique<SceneManager>();
     m_sceneManager->Initialize();
-
-    // ★追記ココまで↑↑↑★
 }
 
 #pragma region Frame Update
@@ -147,11 +134,6 @@ void Game::Render()
 
     m_deviceResources->PIXBeginEvent(L"Render");
     auto context = m_deviceResources->GetD3DDeviceContext();
-
-    // TODO: Add your rendering code here.
-
-
-    // ★追記ココから↓↓↓★
 
     UNREFERENCED_PARAMETER(context);
 

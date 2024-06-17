@@ -1,4 +1,2 @@
-﻿  SkyeSphere.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\SkyeSphere.cpp(36,7): warning C4189: 'commonResources': ローカル変数が初期化されましたが、参照されていません
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\SkyeSphere.cpp(50,18): error C2511: 'void SkyeSphere::DrawSkyeSphere(ID3D11DeviceContext1 *,DirectX::DX11::CommonStates *,DirectX::SimpleMath::Matrix,DirectX::SimpleMath::Matrix)': オーバーロードされたメンバー関数が 'SkyeSphere' にありません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\SkyeSphere.h(5,7): message : 'SkyeSphere' の宣言を確認してください
+﻿  PlayScene.cpp
+  3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe

@@ -24,12 +24,13 @@
 //---------------------------------------------------------
 PlayScene::PlayScene()
 	:
-	m_commonResources{},
-	m_debugCamera{},
-	m_gridFloor{},
-	m_projection{},
-	m_isChangeScene{},
-	m_player{}
+	m_commonResources{}
+	,m_debugCamera{}
+	,m_gridFloor{}
+	,m_projection{}
+	,m_isChangeScene{}
+	,m_player{}
+	,m_skySphere{}
 {
 	m_commonResources = CommonResources::GetInstance();
 }
@@ -39,7 +40,6 @@ PlayScene::PlayScene()
 //---------------------------------------------------------
 PlayScene::~PlayScene()
 {
-	// do nothing.
 }
 
 //---------------------------------------------------------
@@ -67,7 +67,7 @@ void PlayScene::Initialize()
 	m_projection = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
 		XMConvertToRadians(45.0f),
 		static_cast<float>(rect.right) / static_cast<float>(rect.bottom),
-		0.1f, 100.0f
+		0.1f, 10000.0f
 	);
 
 	// TPSカメラを取得する
@@ -76,11 +76,15 @@ void PlayScene::Initialize()
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
 
-	// プレイヤーの生成
+	// 天球の生成とモデルの読み込み
+	m_skySphere = std::make_unique<SkySphere>();
+	m_skySphere->LoadSkySphereModel(device);
+
+	// プレイヤーの生成と初期化
 	m_player = std::make_unique<Player>();
 	m_player->Initialize(device, context, states);
 
-	// 鬼の生成
+	// 鬼の生成と初期化
 	m_enemy = std::make_unique<Enemy>();
 	m_enemy->Initialize(device, context, states);
 }
@@ -109,6 +113,7 @@ void PlayScene::Update(float elapsedTime)
 	m_camera->Update(m_player->GetPosition(), m_enemy->GetPosition(), matrix);
 }
 
+
 //---------------------------------------------------------
 // 描画する
 //---------------------------------------------------------
@@ -118,9 +123,10 @@ void PlayScene::Render()
 
 	auto context = m_commonResources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = m_commonResources->GetCommonStates();
-
 	// ビュー行列を取得する
 	const SimpleMath::Matrix& view = m_camera->GetViewMatrix();
+	// 天球の描画
+	m_skySphere->DrawSkySphere(context, states, view, m_projection);
 	// 格子床を描画する
 	m_gridFloor->Render(context, view, m_projection);
 	// プレイヤーの描画を行う

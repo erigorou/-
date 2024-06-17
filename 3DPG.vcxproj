@@ -206,7 +206,7 @@
     <ClInclude Include="Libraries\MyLib\GridFloor.h" />
     <ClInclude Include="Libraries\MyLib\InputManager.h" />
     <ClInclude Include="Libraries\MyLib\MemoryLeakDetector.h" />
-    <ClInclude Include="Libraries\MyLib\SkyeSphere.h" />
+    <ClInclude Include="Libraries\MyLib\SkySphere.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="StepTimer.h" />
   </ItemGroup>
@@ -233,7 +233,7 @@
     <ClCompile Include="Libraries\MyLib\DebugString.cpp" />
     <ClCompile Include="Libraries\MyLib\GridFloor.cpp" />
     <ClCompile Include="Libraries\MyLib\InputManager.cpp" />
-    <ClCompile Include="Libraries\MyLib\SkyeSphere.cpp" />
+    <ClCompile Include="Libraries\MyLib\SkySphere.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
