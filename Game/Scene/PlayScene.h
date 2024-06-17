@@ -8,6 +8,7 @@
 #include "Game/Camera/Camera.h"
 
 #include "Libraries/MyLib/SkySphere.h"
+#include "Effects/Particle.h"
 
 // 前方宣言
 class CommonResources;
@@ -32,6 +33,8 @@ private:
 	std::unique_ptr<Camera>				m_camera;
 	// 天球
 	std::unique_ptr<SkySphere>			m_skySphere;
+	// パーティクル
+	std::unique_ptr<Particle>			m_particles;
 
 public:
 	PlayScene();
