@@ -162,6 +162,7 @@
     <ClInclude Include="Effects\Header\DustTrailParticle.h" />
     <ClInclude Include="Effects\Particle.h" />
     <ClInclude Include="Libraries\MyLib\BinaryFile.h" />
+    <ClInclude Include="Libraries\MyLib\Math.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />

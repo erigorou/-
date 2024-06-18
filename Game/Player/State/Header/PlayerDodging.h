@@ -18,9 +18,10 @@ class PlayerDodging : public IState
 {
 private:
 	// 固定値
-	static const float DODGING_TIME;
-	static const float DODGE_FUNCTION;
 
+	static const float DODGING_TIME;		// 回避全体の時間
+	static const float DODGE_FUNCTION;		// 回避時の摩擦
+	static const int   TRUNCATION_DIGIT;	// 少数〇〇桁以下削除
 public:
 	// コンストラクタ
 	PlayerDodging(Player* player);

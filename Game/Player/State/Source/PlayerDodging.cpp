@@ -10,6 +10,7 @@
 // 固定値
 const float PlayerDodging::DODGING_TIME = 1.0f;
 const float PlayerDodging::DODGE_FUNCTION = 0.9f;
+const int   PlayerDodging::TRUNCATION_DIGIT = 5;
 
 // コンストラクタ
 PlayerDodging::PlayerDodging(Player* player)
@@ -62,8 +63,11 @@ void PlayerDodging::Update(const float& elapsedTime, DirectX::SimpleMath::Vector
 	Matrix angle = Matrix::CreateRotationY(-m_player->GetAngle());
 	// 速度を設定
 	m_velocity *= DODGE_FUNCTION;
+
+
+
 	// 移動量を座標に反映させながら座標を移動させる。
-	parentPos +=Vector3::Transform(m_velocity,angle);
+	parentPos -=Vector3::Transform(m_velocity,angle);
 }
 
 
@@ -97,4 +101,3 @@ void PlayerDodging::Render(
 void PlayerDodging::Finalize()
 {
 }
-

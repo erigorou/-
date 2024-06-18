@@ -48,7 +48,7 @@ void PlayerIdling::Update(const float& elapsedTime,  DirectX::SimpleMath::Vector
 	// プレイヤーの移動
 	m_player->MovePlayer();
 
-
+	// 左シフトで回避
 	if (keyboardState.LeftShift)
 	{
 		m_player->ChangeState(m_player->GetPlayerDodgingState());

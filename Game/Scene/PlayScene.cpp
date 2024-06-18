@@ -133,16 +133,16 @@ void PlayScene::Render()
 	const SimpleMath::Matrix& view = m_camera->GetViewMatrix();
 	// 天球の描画
 	m_skySphere->DrawSkySphere(context, states, view, m_projection);
+	// 格子床を描画する
+	m_gridFloor->Render(context, view, m_projection);
+	// 敵の描画を行う
+	m_enemy->Render(context, states, view, m_projection);
 	// パーティクルのビルボード作成
 	m_particles->CreateBillboard(m_camera->GetTargetPosition(), m_camera->GetEyePosition(), DirectX::SimpleMath::Vector3::Up);
 	// パーティクルの描画
 	m_particles->Render(view, m_projection);
-	// 格子床を描画する
-	m_gridFloor->Render(context, view, m_projection);
 	// プレイヤーの描画を行う
 	m_player->Render(context, states, view, m_projection, m_commonResources);
-	// 敵の描画を行う
-	m_enemy->Render(context, states, view, m_projection);
 
 
 	// デバッグ情報を「DebugString」で表示する

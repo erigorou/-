@@ -284,6 +284,8 @@ void Particle::Render(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Mat
 	// •`‰æˆ—
 	m_batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &m_vertices[0], m_vertices.size());
 
+	m_batch->End();
+
 	//	ƒVƒF[ƒ_‚Ì“o˜^‚ð‰ðœ‚µ‚Ä‚¨‚­
 	context->VSSetShader(nullptr, nullptr, 0);
 	context->GSSetShader(nullptr, nullptr, 0);
