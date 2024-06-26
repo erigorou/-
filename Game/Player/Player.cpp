@@ -11,6 +11,7 @@
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
+#include "Libraries/Microsoft/DebugDraw.h"
 #include "Libraries/MyLib/Math.h"
 
 #include "Game/Player/Player.h"
@@ -30,7 +31,8 @@ Player::Player()
 	m_position{0, 0, 5},
 	m_angle{0.f},
 	m_worldMatrix{},
-	m_currentState{}
+	m_currentState{},
+	m_boundingSphereBody{}
 {
 }
 
@@ -47,19 +49,48 @@ Player::~Player()
 // --------------------------------
 //  イニシャライズ
 // --------------------------------
-void Player::Initialize(
-	 ID3D11Device* device,
-	const ID3D11DeviceContext* context,
-	const DirectX::CommonStates* states
-	)
+void Player::Initialize()
 {
 	using namespace DirectX;
+	CommonResources* resources = CommonResources::GetInstance();
+
+	auto device = resources->GetDeviceResources()->GetD3DDevice();
+	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
+	auto states = resources->GetCommonStates();
+
 
 	// モデルを読み込む準備
 	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
 	fx->SetDirectory(L"Resources/Models");
 	// モデルを読み込む
 	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/momotaro.cmo", *fx);
+	// ステートの作成
+	CreateState();
+	// 体の当たり判定の生成
+	m_boundingSphereBody = DirectX::BoundingSphere();
+	// 体の当たり判定のサイズや座標を設定
+	m_boundingSphereBody.Radius = 0.3f;
+
+	// ベーシックエフェクトを作成する
+	m_basicEffect = std::make_unique<BasicEffect>(device);
+	m_basicEffect->SetVertexColorEnabled(true);
+	// 入力レイアウトを作成する
+	DX::ThrowIfFailed(
+		CreateInputLayoutFromEffect<VertexPositionColor>(
+			device,
+			m_basicEffect.get(),
+			m_inputLayout.ReleaseAndGetAddressOf())
+	);
+	// プリミティブバッチの作成
+	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
+}
+
+
+// --------------------------------
+//  ステートを作成する
+// --------------------------------
+void Player::CreateState()
+{
 	// アイドリングステートを取得
 	m_playerIdling = std::make_unique<PlayerIdling>(this);
 	// アイドリングステートの初期化
@@ -123,6 +154,9 @@ void Player::Update(
 	CalculationAngle(enemyPos);
 	// ワールド座標の更新
 	CalculationMatrix();
+	// 当たり判定の座標を更新
+	m_boundingSphereBody.Center = m_position;
+
 }
 
 
@@ -172,7 +206,6 @@ void Player::MovePlayer()
 		m_velocity.Normalize();					// 移動量を正規化する
 
 	m_velocity *= PLAYER_SPEED;					// 移動量を補正する
-
 	m_velocity = Math::truncate_vector(m_velocity, 2);
 
 	m_position += Vector3::Transform(-m_velocity, Matrix::CreateRotationY(-m_angle));	// 移動量を座標に反映
@@ -198,6 +231,7 @@ void Player::CalculationMatrix()
 //  表示処理
 // --------------------------------
 void Player::Render(
+	ID3D11Device* device,
 	ID3D11DeviceContext* context,
 	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
@@ -216,18 +250,15 @@ void Player::Render(
 			{
 				// ライトを有効化する
 				basicEffect->SetLightingEnabled(true);
-
 				// アンビエントライトの設定
 				basicEffect->SetAmbientLightColor(Colors::Gray); // 適切なアンビエント色を設定
-
 				// 必要に応じてライトの設定を行う
 				basicEffect->SetLightEnabled(0, true);
-				basicEffect->SetLightDiffuseColor(0, Colors::White); // ディフューズ色を設定
+				basicEffect->SetLightDiffuseColor(0, Colors::White);  // ディフューズ色を設定
 				basicEffect->SetLightSpecularColor(0, Colors::White); // スペキュラー色を設定
 
 				basicEffect->SetLightEnabled(1, false); // 追加のライトが不要なら無効化
 				basicEffect->SetLightEnabled(2, false); // 追加のライトが不要なら無効化
-
 				// モデルの自発光色を黒に設定して無効化
 				basicEffect->SetEmissiveColor(Colors::Black);
 			}
@@ -244,6 +275,9 @@ void Player::Render(
 		view,
 		projection);
 
+	// 境界球の描画
+	DrawBoundingSphere(device, context, states, view, projection);
+
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
 	debugString->AddString("m_angle : %f", XMConvertToDegrees( m_angle));
@@ -254,8 +288,42 @@ void Player::Render(
 
 
 // --------------------------------
+// 境界球を表示
+// --------------------------------
+void Player::DrawBoundingSphere(
+	ID3D11Device* device,
+	ID3D11DeviceContext* context,
+	DirectX::CommonStates* states,
+	const DirectX::SimpleMath::Matrix& view,
+	const DirectX::SimpleMath::Matrix& projection)
+{
+	using namespace DirectX;
+	using namespace DirectX::SimpleMath;
+
+
+	context->OMSetBlendState(states->Opaque(), nullptr, 0xFFFFFFFF);
+	context->OMSetDepthStencilState(states->DepthRead(), 0);
+	context->RSSetState(states->CullNone());
+	context->IASetInputLayout(m_inputLayout.Get());
+	//** デバッグドローでは、ワールド変換いらない
+	m_basicEffect->SetView(view);
+	m_basicEffect->SetProjection(projection);
+	m_basicEffect->Apply(context);
+	// 描画
+	m_primitiveBatch->Begin();
+	DX::Draw(
+		m_primitiveBatch.get(),	// プリミティブバッチ
+		m_boundingSphereBody,	// 描画したい境界球
+		Colors::DarkRed			// 色
+	);
+	m_primitiveBatch->End();
+}
+
+
+// --------------------------------
 //  終了処理
 // --------------------------------
 void Player::Finalize()
 {
 }
+

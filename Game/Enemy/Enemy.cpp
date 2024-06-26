@@ -11,6 +11,7 @@
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
+#include "Libraries/Microsoft/DebugDraw.h"
 
 #include "Game/Enemy/Enemy.h"
 
@@ -40,29 +41,60 @@ Enemy::~Enemy()
 // --------------------------------
 //  イニシャライズ
 // --------------------------------
-void Enemy::Initialize(
-	ID3D11Device* device,
-	const ID3D11DeviceContext* context,
-	const DirectX::CommonStates* states
-	)
+void Enemy::Initialize()
 {
+	CommonResources* resources = CommonResources::GetInstance();
+
+	auto device = resources->GetDeviceResources()->GetD3DDevice();
+	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
+	auto states = resources->GetCommonStates();
+
 	// モデルを読み込む準備
 	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
 	fx->SetDirectory(L"Resources/Models");
-
 	// モデルを読み込む(仮でサイコロを読み込む)
 	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/akaoni.cmo", *fx);
 
+	// ビヘイビアツリーを取得
+	m_pBT = std::make_unique<BehaviorTree>();
+
+	// ステートの作成
+	CreateState();
+	// 体の当たり判定の生成
+	m_boundingSphereBody = DirectX::BoundingSphere();
+	// 体の当たり判定のサイズや座標を設定
+	m_boundingSphereBody.Radius = 0.6f;
+
+	// ベーシックエフェクトを作成する
+	m_basicEffect = std::make_unique<DirectX::BasicEffect>(device);
+	m_basicEffect->SetVertexColorEnabled(true);
+	// 入力レイアウトを作成する
+	DX::ThrowIfFailed(
+		DirectX::CreateInputLayoutFromEffect<DirectX::VertexPositionColor>(
+			device,
+			m_basicEffect.get(),
+			m_inputLayout.ReleaseAndGetAddressOf())
+	);
+	// プリミティブバッチの作成
+	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
+}
+
+
+
+// --------------------------------
+//  更新処理
+// --------------------------------
+void Enemy::CreateState()
+{
 	// 待機状態を取得する
 	m_enemyIdling = std::make_unique<EnemyIdling>(this);
 	m_enemyIdling->Initialize(m_model.get());
 
 	// 初期のステートを待機状態に割り当てる
 	m_currentState = m_enemyIdling.get();
-
-	// ビヘイビアツリーを取得
-	m_pBT = std::make_unique<BehaviorTree>();
 }
+
+
 
 // --------------------------------
 //  更新処理
@@ -113,11 +145,11 @@ void Enemy::Update(float elapsedTime)
 //  表示処理
 // --------------------------------
 void Enemy::Render(
+	ID3D11Device* device,
 	ID3D11DeviceContext* context,
 	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection
-	)
+	const DirectX::SimpleMath::Matrix& projection)
 {
 	// リソースを取得
 	CommonResources* resources = CommonResources::GetInstance();
@@ -128,6 +160,9 @@ void Enemy::Render(
 	// モデルを描画する
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 
+	// 境界球の描画
+	DrawBoundingSphere(device, context, states, view, projection);
+
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
 	debugString->AddString("enemyPos.x : %f", m_position.x);
@@ -135,6 +170,39 @@ void Enemy::Render(
 	debugString->AddString("enemyPos.z : %f", m_position.z);
 
 
+}
+
+
+// --------------------------------
+// 境界球を表示
+// --------------------------------
+void Enemy::DrawBoundingSphere(
+	ID3D11Device* device,
+	ID3D11DeviceContext* context,
+	DirectX::CommonStates* states,
+	const DirectX::SimpleMath::Matrix& view,
+	const DirectX::SimpleMath::Matrix& projection)
+{
+	using namespace DirectX;
+	using namespace DirectX::SimpleMath;
+
+
+	context->OMSetBlendState(states->Opaque(), nullptr, 0xFFFFFFFF);
+	context->OMSetDepthStencilState(states->DepthRead(), 0);
+	context->RSSetState(states->CullNone());
+	context->IASetInputLayout(m_inputLayout.Get());
+	//** デバッグドローでは、ワールド変換いらない
+	m_basicEffect->SetView(view);
+	m_basicEffect->SetProjection(projection);
+	m_basicEffect->Apply(context);
+	// 描画
+	m_primitiveBatch->Begin();
+	DX::Draw(
+		m_primitiveBatch.get(),	// プリミティブバッチ
+		m_boundingSphereBody,	// 描画したい境界球
+		Colors::DarkRed			// 色
+	);
+	m_primitiveBatch->End();
 }
 
 

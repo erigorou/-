@@ -35,32 +35,34 @@ public:
 	~Player();
 
 	// 初期化処理
-	void Initialize(
-		 ID3D11Device* device,
-		const ID3D11DeviceContext* context,
-		const DirectX::CommonStates* states
-	);
-
+	void Initialize();
+	// ステートの作成関数
+	void CreateState();
 	// 新しい状態に遷移する
 	void ChangeState(IState* newState);
-
 	// 時間計測を行う
 	void TimeComparison(float& nowTime, const float totalTime, IState* newState, const float elapsedTime);
-
 	// 更新処理
 	void Update(
 		const DirectX::SimpleMath::Vector3 enemyPos,
 		const float elapsedTime
 	);
-
 	// 描画処理
 	void Render(
+		ID3D11Device* device,
 		ID3D11DeviceContext* context,
 		DirectX::CommonStates* states,
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& projection,
 		const CommonResources* resources
 	);
+	// 境界球の描画
+	void DrawBoundingSphere(
+		ID3D11Device* device,
+		ID3D11DeviceContext* context,
+		DirectX::CommonStates* states,
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& projection);
 
 	// 終了処理
 	void Finalize();
@@ -92,4 +94,13 @@ private:
 	std::unique_ptr<PlayerDodging> m_playerDodging;
 	// プレイヤーのアタッキングステート
 	std::unique_ptr<PlayerAttacking> m_playerAttacking;
+
+	// バウンディングスフィア
+	DirectX::BoundingSphere m_boundingSphereBody;
+
+	// ベーシックエフェクト
+	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
+	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
+	// 入力レイアウト
+	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
 };

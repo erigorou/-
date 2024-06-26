@@ -86,11 +86,11 @@ void PlayScene::Initialize()
 
 	// プレイヤーの生成と初期化
 	m_player = std::make_unique<Player>();
-	m_player->Initialize(device, context, states);
+	m_player->Initialize();
 
 	// 鬼の生成と初期化
 	m_enemy = std::make_unique<Enemy>();
-	m_enemy->Initialize(device, context, states);
+	m_enemy->Initialize();
 }
 
 //---------------------------------------------------------
@@ -127,6 +127,7 @@ void PlayScene::Render()
 {
 	using namespace DirectX;
 
+	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
 	auto context = m_commonResources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = m_commonResources->GetCommonStates();
 	// ビュー行列を取得する
@@ -136,13 +137,13 @@ void PlayScene::Render()
 	// 格子床を描画する
 	m_gridFloor->Render(context, view, m_projection);
 	// 敵の描画を行う
-	m_enemy->Render(context, states, view, m_projection);
+	m_enemy->Render(device, context, states, view, m_projection);
 	// パーティクルのビルボード作成
 	m_particles->CreateBillboard(m_camera->GetTargetPosition(), m_camera->GetEyePosition(), DirectX::SimpleMath::Vector3::Up);
 	// パーティクルの描画
 	m_particles->Render(view, m_projection);
 	// プレイヤーの描画を行う
-	m_player->Render(context, states, view, m_projection, m_commonResources);
+	m_player->Render(device ,context, states, view, m_projection, m_commonResources);
 
 
 	// デバッグ情報を「DebugString」で表示する

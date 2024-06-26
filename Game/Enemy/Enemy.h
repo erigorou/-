@@ -26,13 +26,22 @@ public:
 	// デストラクタ
 	~Enemy();
 	// 初期化処理
-	void Initialize(ID3D11Device* device, const ID3D11DeviceContext* context, const DirectX::CommonStates* states );
+	void Initialize();
+	// ステートの作成処理
+	void CreateState();
 	// 新しい状態に遷移する（ステートパターン）
 	void ChangeState(IState* newState);
 	// 更新処理
 	void Update(float elapsedTime);
 	// 描画処理
 	void Render(
+		ID3D11Device* device,
+		ID3D11DeviceContext* context,
+		DirectX::CommonStates* states,
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& projection);
+	void DrawBoundingSphere(
+		ID3D11Device* device,
 		ID3D11DeviceContext* context,
 		DirectX::CommonStates* states,
 		const DirectX::SimpleMath::Matrix& view,
@@ -59,6 +68,14 @@ private:
 	// ビヘイビアツリー
 	std::unique_ptr<BehaviorTree> m_pBT;
 
+	// バウンディングスフィア
+	DirectX::BoundingSphere m_boundingSphereBody;
+	// ベーシックエフェクト
+	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
+	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
+	// 入力レイアウト
+	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
 private:
+	// 待機ステート
 	std::unique_ptr<EnemyIdling> m_enemyIdling;
 };
