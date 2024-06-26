@@ -44,16 +44,18 @@ void PlayerIdling::Update(const float& elapsedTime,  DirectX::SimpleMath::Vector
 
 	// キー入力を受け付ける。
 	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
-
 	// プレイヤーの移動
 	m_player->MovePlayer();
-
-	// 左シフトで回避
-	if (keyboardState.LeftShift)
+	// 左シフトの入力　&& 移動中なら
+	if (keyboardState.LeftShift && m_player->GetVelocity() != DirectX::SimpleMath::Vector3::Zero)
 	{
 		m_player->ChangeState(m_player->GetPlayerDodgingState());
 	}
-
+	// Xの入力
+	if (keyboardState.X)
+	{
+		m_player->ChangeState(m_player->GetPlayerAttackingState());
+	}
 }
 
 
@@ -75,10 +77,9 @@ void PlayerIdling::Render(
 	// コモンリソースを取得する
 	CommonResources* resources = CommonResources::GetInstance();
 
-
-	// デバッグ文字の描画
-	auto debugString = resources->GetDebugString();
-	debugString->AddString("PlayerIdling");
+	//// デバッグ文字の描画
+	//auto debugString = resources->GetDebugString();
+	//debugString->AddString("PlayerIdling");
 }
 
 

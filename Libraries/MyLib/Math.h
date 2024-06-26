@@ -7,13 +7,20 @@
 #pragma once
 #include "pch.h"
 
+using namespace DirectX::SimpleMath;
 
 class Math
 {
 	// 関数の宣言
-private:
+public:
 
-	float truncate(const float num, const float prec)
+	/// <summary>
+	/// 小数点第〇〇位より下を切り捨てる処理
+	/// </summary>
+	/// <param name="num">切り捨てる数</param>
+	/// <param name="prec">小数点第〇〇位</param>
+	/// <returns>切り捨てた値</returns>
+	static float truncate_float(const float num, const int prec)
 	{
 		// 指定された制度に基づいてスケールを計算
 		float scale = std::pow(10.f, prec);
@@ -22,36 +29,19 @@ private:
 	};
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-	// シングルトン化させるための情報や関数
-private:
-	// Math
-	static std::unique_ptr<Math> m_math;
-
-public:
-	// Mathクラスのインスタンスを取得する
-	static Math* const GetInstance()
+	/// <summary>
+	/// 小数点第〇〇位より下を切り捨てる処理
+	/// </summary>
+	/// <param name="num">切り捨てる数</param>
+	/// <param name="prec">小数点第〇〇位</param>
+	/// <returns>切り捨てた値</returns>
+	static Vector3 truncate_vector(Vector3 num, const int prec)
 	{
-		if (m_math == nullptr)
-		{
-			// Mathクラスのインスタンスを生成する
-			m_math.reset(new Math());
-		}
-		// Mathクラスのインスタンスを返す
-		return m_math.get();
+		// x,y,zをそれぞれ切り捨てする
+		num.x = truncate_float(num.x, prec);
+		num.y = truncate_float(num.y, prec);
+		num.z = truncate_float(num.z, prec);
+		// 計算結果を返す
+		return num;
 	}
 };
-
-// クラス外で初期化
-std::unique_ptr<Math> Math::m_math = nullptr;

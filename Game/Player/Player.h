@@ -1,8 +1,9 @@
 #pragma once
 #include "Interface/IState.h"
 
-#include "Game/Player/State/Header/PlayerIdling.h"
-#include "Game/Player/State/Header/PlayerDodging.h"
+#include "Game/Player/State/Header/PlayerIdling.h"		// 待機状態
+#include "Game/Player/State/Header/PlayerDodging.h"		// 回避状態
+#include "Game/Player/State/Header/PlayerAttacking.h"	// 攻撃状態
 
 class Player
 {
@@ -17,10 +18,14 @@ public:
 	DirectX::SimpleMath::Vector3 GetVelocity() const { return m_velocity; }
 	// プレイヤーの回転角を取得する
 	float GetAngle() const { return m_angle; }
+
+
 	// プレイヤーのアイドリングステートを取得
 	PlayerIdling* GetPlayerIdlingState() const { return m_playerIdling.get(); }
 	// プレイヤーのダッジングステートを取得
 	PlayerDodging* GetPlayerDodgingState() const { return m_playerDodging.get(); }
+	// プレイヤーのアタッキングステートを取得
+	PlayerAttacking* GetPlayerAttackingState() const { return m_playerAttacking.get(); }
 
 
 public:
@@ -38,6 +43,9 @@ public:
 
 	// 新しい状態に遷移する
 	void ChangeState(IState* newState);
+
+	// 時間計測を行う
+	void TimeComparison(float& nowTime, const float totalTime, IState* newState, const float elapsedTime);
 
 	// 更新処理
 	void Update(
@@ -82,4 +90,6 @@ private:
 	std::unique_ptr<PlayerIdling> m_playerIdling;
 	// プレイヤーのダッジングステート
 	std::unique_ptr<PlayerDodging> m_playerDodging;
+	// プレイヤーのアタッキングステート
+	std::unique_ptr<PlayerAttacking> m_playerAttacking;
 };

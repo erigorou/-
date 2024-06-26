@@ -11,6 +11,7 @@
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
+#include "Libraries/MyLib/Math.h"
 
 #include "Game/Player/Player.h"
 
@@ -33,12 +34,15 @@ Player::Player()
 {
 }
 
+
 // --------------------------------
 //  デストラクタ
 // --------------------------------
 Player::~Player()
 {
 }
+
+
 
 // --------------------------------
 //  イニシャライズ
@@ -64,6 +68,10 @@ void Player::Initialize(
 	m_playerDodging = std::make_unique<PlayerDodging>(this);
 	// ダッジングステートを初期化
 	m_playerDodging->Initialize(m_model.get());
+	// アタッキングステートを取得
+	m_playerAttacking = std::make_unique<PlayerAttacking>(this);
+	// アタッキングステートを初期化
+	m_playerAttacking->Initialize(m_model.get());
 	// 最初のステートを設定
 	m_currentState = m_playerIdling.get();
 }
@@ -84,6 +92,20 @@ void Player::ChangeState(IState* newState)
 }
 
 
+// 時間回帰処理
+void Player::TimeComparison(float& nowTime, const float totalTime, IState* newState, const float elapsedTime)
+{
+	// 定められた時間になったら
+	if (nowTime >= totalTime)
+	{
+		// シーンを変更
+		ChangeState(newState);
+		return;
+	}
+	// 時間の計測を行う
+	nowTime += elapsedTime;
+}
+
 // --------------------------------
 //  更新処理
 // --------------------------------
@@ -99,8 +121,6 @@ void Player::Update(
 
 	// 敵の位置を比較して回転角を計算する
 	CalculationAngle(enemyPos);
-	//// プレイヤーの移動
-	//MovePlayer();
 	// ワールド座標の更新
 	CalculationMatrix();
 }
@@ -153,8 +173,9 @@ void Player::MovePlayer()
 
 	m_velocity *= PLAYER_SPEED;					// 移動量を補正する
 
-	m_position += Vector3::Transform(-m_velocity, Matrix::CreateRotationY(-m_angle));	// 移動量を座標に反映
+	m_velocity = Math::truncate_vector(m_velocity, 2);
 
+	m_position += Vector3::Transform(-m_velocity, Matrix::CreateRotationY(-m_angle));	// 移動量を座標に反映
 }
 
 

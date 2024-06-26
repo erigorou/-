@@ -59,4 +59,4 @@ private:
 	DirectX::SimpleMath::Vector3 m_direction;
 };
 
-#endif  // PLAYER_IDLING_DEFINED
+#endif  // PLAYER_DODGING_DEFINED

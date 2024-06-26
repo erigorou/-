@@ -3,6 +3,7 @@
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
+#include "Libraries/MyLib/Math.h"
 
 #include "Game/Player/Player.h"
 #include "Game/Player/State/Header/PlayerDodging.h"
@@ -10,7 +11,7 @@
 // 固定値
 const float PlayerDodging::DODGING_TIME = 1.0f;
 const float PlayerDodging::DODGE_FUNCTION = 0.9f;
-const int   PlayerDodging::TRUNCATION_DIGIT = 5;
+const int   PlayerDodging::TRUNCATION_DIGIT = 3;
 
 // コンストラクタ
 PlayerDodging::PlayerDodging(Player* player)
@@ -49,23 +50,14 @@ void PlayerDodging::Update(const float& elapsedTime, DirectX::SimpleMath::Vector
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
-	// ステートの経過時間を記録する
-	m_totalSeconds += elapsedTime;
-
-	if (m_totalSeconds >= DODGING_TIME)
-	{
-		// 一定時間経過後にシーンを待機に戻す
-		m_player->ChangeState(m_player->GetPlayerIdlingState());
-		return;
-	}
-
+	// ステート開始から時間を計測、一定時間で別のStateへ遷移させる
+	m_player->TimeComparison(m_totalSeconds, DODGING_TIME, m_player->GetPlayerIdlingState(), elapsedTime);
 	// プレイヤーの回転を取得
 	Matrix angle = Matrix::CreateRotationY(-m_player->GetAngle());
 	// 速度を設定
 	m_velocity *= DODGE_FUNCTION;
-
-
-
+	// 端数を消し飛ばす。
+	m_velocity = Math::truncate_vector(m_velocity, TRUNCATION_DIGIT);
 	// 移動量を座標に反映させながら座標を移動させる。
 	parentPos -=Vector3::Transform(m_velocity,angle);
 }
@@ -92,7 +84,6 @@ void PlayerDodging::Render(
 	// デバッグ文字の描画
 	auto debugString = resources->GetDebugString();
 	debugString->AddString("PlayerDodging");
-	debugString->AddString("Dodging::Direction = [ %f, %f, %f ]", m_direction.x, m_direction.y, m_direction.z);
 
 }
 
