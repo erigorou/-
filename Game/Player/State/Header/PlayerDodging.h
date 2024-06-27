@@ -23,6 +23,9 @@ private:
 	static const float DODGE_FUNCTION;		// 回避時の摩擦
 	static const int   TRUNCATION_DIGIT;	// 少数〇〇桁以下削除
 public:
+	// 体の当たり判定を取得
+	DirectX::BoundingSphere GetBoundingSphereBody() { return m_boundingSphereBody; };
+public:
 	// コンストラクタ
 	PlayerDodging(Player* player);
 	// デストラクタ
@@ -57,6 +60,9 @@ private:
 	DirectX::Model* m_model;
 	// 回避方向を取得するための向き
 	DirectX::SimpleMath::Vector3 m_direction;
+
+	// 体の当たり判定
+	DirectX::BoundingSphere m_boundingSphereBody;
 };
 
 #endif  // PLAYER_DODGING_DEFINED

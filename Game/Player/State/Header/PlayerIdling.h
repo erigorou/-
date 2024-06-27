@@ -17,6 +17,10 @@ class Player;
 class PlayerIdling : public IState
 {
 public:
+	// 体の当たり判定を取得
+	DirectX::BoundingSphere GetBoundingSphereBody() { return m_boundingSphereBody; };
+
+public:
 	// コンストラクタ
 	PlayerIdling(Player* player);
 	// デストラクタ
@@ -45,6 +49,8 @@ private:
 	Player* m_player;
 	// モデル
 	DirectX::Model* m_model;
+	// 体の当たり判定
+	DirectX::BoundingSphere m_boundingSphereBody;
 };
 
 #endif  // PLAYER_IDLING_DEFINED

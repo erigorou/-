@@ -1,5 +1,7 @@
 #pragma once	// 多重読み込み防止
 #include "Interface/IState.h"
+#include "Game/Scene/PlayScene.h"
+
 #include "Game/Enemy/States/EnemyIdling.h"	// 待機ステート
 #include "BehaviourTree/Header/BehaviorTree.h"	// ビヘイビアツリー
 
@@ -22,7 +24,7 @@ public:
 
 public:
 	// コンストラクタ
-	Enemy();
+	Enemy(PlayScene* playScene);
 	// デストラクタ
 	~Enemy();
 	// 初期化処理
@@ -45,7 +47,8 @@ public:
 		ID3D11DeviceContext* context,
 		DirectX::CommonStates* states,
 		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection);
+		const DirectX::SimpleMath::Matrix& projection,
+		const DirectX::BoundingSphere boundingSphere);
 	// 終了処理
 	void Finalize();
 
@@ -64,18 +67,19 @@ private:
 
 	// 現在のステート（ステートパターン）
 	IState* m_currentState;
+	// 待機ステート
+	std::unique_ptr<EnemyIdling> m_enemyIdling;
 
 	// ビヘイビアツリー
 	std::unique_ptr<BehaviorTree> m_pBT;
 
-	// バウンディングスフィア
-	DirectX::BoundingSphere m_boundingSphereBody;
+
+private:
 	// ベーシックエフェクト
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
 	// 入力レイアウト
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
-private:
-	// 待機ステート
-	std::unique_ptr<EnemyIdling> m_enemyIdling;
+	// プレイシーン(当たり判定の処理に使用)
+	PlayScene* m_playScene;
 };

@@ -25,14 +25,14 @@ const float Player::PLAYER_SPEED = 0.05f;
 // --------------------------------
 //  コンストラクタ
 // --------------------------------
-Player::Player()
+Player::Player(PlayScene* playScene)
 	:
+	m_playScene(playScene),
 	m_model{},
 	m_position{0, 0, 5},
 	m_angle{0.f},
 	m_worldMatrix{},
-	m_currentState{},
-	m_boundingSphereBody{}
+	m_currentState{}
 {
 }
 
@@ -66,10 +66,6 @@ void Player::Initialize()
 	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/momotaro.cmo", *fx);
 	// ステートの作成
 	CreateState();
-	// 体の当たり判定の生成
-	m_boundingSphereBody = DirectX::BoundingSphere();
-	// 体の当たり判定のサイズや座標を設定
-	m_boundingSphereBody.Radius = 0.3f;
 
 	// ベーシックエフェクトを作成する
 	m_basicEffect = std::make_unique<BasicEffect>(device);
@@ -154,9 +150,6 @@ void Player::Update(
 	CalculationAngle(enemyPos);
 	// ワールド座標の更新
 	CalculationMatrix();
-	// 当たり判定の座標を更新
-	m_boundingSphereBody.Center = m_position;
-
 }
 
 
@@ -276,7 +269,8 @@ void Player::Render(
 		projection);
 
 	// 境界球の描画
-	DrawBoundingSphere(device, context, states, view, projection);
+	// 体の境界球の描画
+	DrawBoundingSphere(device, context, states, view, projection,m_currentState->GetBoundingSphereBody());
 
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
@@ -295,7 +289,8 @@ void Player::DrawBoundingSphere(
 	ID3D11DeviceContext* context,
 	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection)
+	const DirectX::SimpleMath::Matrix& projection,
+	const DirectX::BoundingSphere boundingSphere)
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
@@ -313,7 +308,7 @@ void Player::DrawBoundingSphere(
 	m_primitiveBatch->Begin();
 	DX::Draw(
 		m_primitiveBatch.get(),	// プリミティブバッチ
-		m_boundingSphereBody,	// 描画したい境界球
+		boundingSphere,			// 境界球
 		Colors::DarkRed			// 色
 	);
 	m_primitiveBatch->End();

@@ -21,6 +21,10 @@ public:
 	static const float ATTACKING_TIME;
 
 public:
+	// 体の境界球を取得
+	DirectX::BoundingSphere GetBoundingSphereBody() { return m_boundingSphereBody; }
+
+public:
 	// コンストラクタ
 	PlayerAttacking(Player* player);
 	// デストラクタ
@@ -49,6 +53,8 @@ private:
 	Player* m_player;
 	// モデル
 	DirectX::Model* m_model;
+	// 体の境界球
+	DirectX::BoundingSphere m_boundingSphereBody;
 };
 
 #endif  // PLAYER_ATTACKING_DEFINED

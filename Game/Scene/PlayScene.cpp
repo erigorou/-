@@ -85,11 +85,11 @@ void PlayScene::Initialize()
 	m_particles->Create();
 
 	// ƒvƒŒƒCƒ„[‚Ì¶¬‚Æ‰Šú‰»
-	m_player = std::make_unique<Player>();
+	m_player = std::make_unique<Player>(this);
 	m_player->Initialize();
 
 	// ‹S‚Ì¶¬‚Æ‰Šú‰»
-	m_enemy = std::make_unique<Enemy>();
+	m_enemy = std::make_unique<Enemy>(this);
 	m_enemy->Initialize();
 }
 

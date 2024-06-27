@@ -23,9 +23,10 @@ const float Enemy::ENEMY_SPEED = 0.05f;
 // --------------------------------
 //  コンストラクタ
 // --------------------------------
-Enemy::Enemy()
+Enemy::Enemy(PlayScene* playScene)
 	:
-	 m_position{0.0f, 0.0f, 0.0f}
+	m_playScene(playScene)
+	,m_position{0.0f, 0.0f, 0.0f}
 	,m_angle{0.0f}
 	,m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
 {
@@ -60,10 +61,6 @@ void Enemy::Initialize()
 
 	// ステートの作成
 	CreateState();
-	// 体の当たり判定の生成
-	m_boundingSphereBody = DirectX::BoundingSphere();
-	// 体の当たり判定のサイズや座標を設定
-	m_boundingSphereBody.Radius = 0.6f;
 
 	// ベーシックエフェクトを作成する
 	m_basicEffect = std::make_unique<DirectX::BasicEffect>(device);
@@ -161,7 +158,7 @@ void Enemy::Render(
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 
 	// 境界球の描画
-	DrawBoundingSphere(device, context, states, view, projection);
+	DrawBoundingSphere(device, context, states, view, projection, m_currentState->GetBoundingSphereBody());
 
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
@@ -181,7 +178,9 @@ void Enemy::DrawBoundingSphere(
 	ID3D11DeviceContext* context,
 	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection)
+	const DirectX::SimpleMath::Matrix& projection,
+	const DirectX::BoundingSphere boundingSphere
+	)
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
@@ -199,7 +198,7 @@ void Enemy::DrawBoundingSphere(
 	m_primitiveBatch->Begin();
 	DX::Draw(
 		m_primitiveBatch.get(),	// プリミティブバッチ
-		m_boundingSphereBody,	// 描画したい境界球
+		boundingSphere,			// 描画したい境界球
 		Colors::DarkRed			// 色
 	);
 	m_primitiveBatch->End();

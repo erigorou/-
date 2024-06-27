@@ -1,5 +1,6 @@
 #pragma once
 #include "Interface/IState.h"
+#include "Game/Scene/PlayScene.h"
 
 #include "Game/Player/State/Header/PlayerIdling.h"		// 待機状態
 #include "Game/Player/State/Header/PlayerDodging.h"		// 回避状態
@@ -27,10 +28,12 @@ public:
 	// プレイヤーのアタッキングステートを取得
 	PlayerAttacking* GetPlayerAttackingState() const { return m_playerAttacking.get(); }
 
+	// プレイシーンの情報を取得する
+	PlayScene* GetPlayScene()const { return m_playScene; }
 
 public:
 	// コンストラクタ
-	Player();
+	Player(PlayScene* playScene);
 	// デストラクタ
 	~Player();
 
@@ -62,7 +65,8 @@ public:
 		ID3D11DeviceContext* context,
 		DirectX::CommonStates* states,
 		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection);
+		const DirectX::SimpleMath::Matrix& projection,
+		const DirectX::BoundingSphere boundingSphere);
 
 	// 終了処理
 	void Finalize();
@@ -95,12 +99,13 @@ private:
 	// プレイヤーのアタッキングステート
 	std::unique_ptr<PlayerAttacking> m_playerAttacking;
 
-	// バウンディングスフィア
-	DirectX::BoundingSphere m_boundingSphereBody;
-
 	// ベーシックエフェクト
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
 	// 入力レイアウト
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
+
+private:
+	// プレイシーン(他のオブジェクトの情報の取得などに使う)
+	PlayScene* m_playScene;
 };

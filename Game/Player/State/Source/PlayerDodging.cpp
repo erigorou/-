@@ -33,6 +33,10 @@ void PlayerDodging::Initialize(DirectX::Model* model)
 {
 	// モデルを取得する
 	m_model = model;
+	// 体の当たり判定の生成
+	m_boundingSphereBody = DirectX::BoundingSphere();
+	// 体の当たり判定のサイズや座標を設定
+	m_boundingSphereBody.Radius = 0.3f;
 }
 
 // 事前更新処理
@@ -60,6 +64,8 @@ void PlayerDodging::Update(const float& elapsedTime, DirectX::SimpleMath::Vector
 	m_velocity = Math::truncate_vector(m_velocity, TRUNCATION_DIGIT);
 	// 移動量を座標に反映させながら座標を移動させる。
 	parentPos -=Vector3::Transform(m_velocity,angle);
+	// 体の境界球の位置を更新
+	m_boundingSphereBody.Center = parentPos;
 }
 
 
@@ -78,6 +84,8 @@ void PlayerDodging::Render(
 	const DirectX::SimpleMath::Matrix& projection
 	)
 {
+	UNREFERENCED_PARAMETER(context, states, view, projection, m_model);
+
 	// コモンリソースを取得する
 	CommonResources* resources = CommonResources::GetInstance();
 

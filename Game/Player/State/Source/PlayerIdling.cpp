@@ -16,6 +16,7 @@ PlayerIdling::PlayerIdling(Player* player)
 {
 }
 
+
 // デストラクタ
 PlayerIdling::~PlayerIdling()
 {
@@ -27,7 +28,12 @@ void PlayerIdling::Initialize(DirectX::Model* model)
 {
 	// モデルを取得する
 	m_model = model;
+	// 体の当たり判定の生成
+	m_boundingSphereBody = DirectX::BoundingSphere();
+	// 体の当たり判定のサイズや座標を設定
+	m_boundingSphereBody.Radius = 0.3f;
 }
+
 
 // 事前更新処理
 void PlayerIdling::PreUpdate()
@@ -35,6 +41,7 @@ void PlayerIdling::PreUpdate()
 	// 経過時間の初期化
 	m_totalSeconds = 0.f;
 }
+
 
 // 更新処理
 void PlayerIdling::Update(const float& elapsedTime,  DirectX::SimpleMath::Vector3& parentPos)
@@ -56,7 +63,14 @@ void PlayerIdling::Update(const float& elapsedTime,  DirectX::SimpleMath::Vector
 	{
 		m_player->ChangeState(m_player->GetPlayerAttackingState());
 	}
+	// 当たり判定の座標を更新
+	m_boundingSphereBody.Center = parentPos;
 }
+
+
+
+
+
 
 
 // 事後更新処理

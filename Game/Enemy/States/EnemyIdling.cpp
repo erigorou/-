@@ -28,6 +28,11 @@ void EnemyIdling::Initialize(DirectX::Model* model)
 {
 	// モデルの取得
 	m_model = model;
+
+	// 体の当たり判定の生成
+	m_boundingSphereBody = DirectX::BoundingSphere();
+	// 体の当たり判定のサイズや座標を設定
+	m_boundingSphereBody.Radius = 0.6f;
 }
 
 
@@ -47,6 +52,15 @@ void EnemyIdling::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3&
 
 	// ここにビヘイビアツリーを入れる
 
+	// 体の境界球の位置を更新
+	m_boundingSphereBody.Center = parentPos;
+}
+
+
+// プレイヤーの体との当たり判定を行う
+void EnemyIdling::CheckHitPlayerBody()
+{
+
 }
 
 
@@ -65,6 +79,8 @@ void EnemyIdling::Render(
 	const DirectX::SimpleMath::Matrix& projection
 	)
 {
+	UNREFERENCED_PARAMETER(context, states, view, projection, m_model);
+
 	// リソースの取得
 	CommonResources* resources = CommonResources::GetInstance();
 

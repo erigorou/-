@@ -22,6 +22,7 @@ PlayerAttacking::PlayerAttacking(Player* player)
 	 m_player(player)
 	,m_totalSeconds()
 	,m_model()
+	,m_boundingSphereBody()
 {
 }
 
@@ -36,6 +37,9 @@ void PlayerAttacking::Initialize(DirectX::Model* model)
 {
 	// モデルを取得する
 	m_model = model;
+	// 体の境界球を作成
+	m_boundingSphereBody = DirectX::BoundingSphere();
+	m_boundingSphereBody.Radius = 0.3f;
 }
 
 // 事前更新処理
@@ -52,6 +56,8 @@ void PlayerAttacking::Update(const float& elapsedTime,  DirectX::SimpleMath::Vec
 	UNREFERENCED_PARAMETER(parentPos);
 	// 時間を計測し、一定時間経過でステートを遷移
 	m_player->TimeComparison(m_totalSeconds, ATTACKING_TIME, m_player->GetPlayerIdlingState(), elapsedTime);
+	// 体の境界球の位置を更新
+	m_boundingSphereBody.Center = parentPos;
 }
 
 
@@ -70,6 +76,7 @@ void PlayerAttacking::Render(
 	const DirectX::SimpleMath::Matrix& projection
 	)
 {
+	UNREFERENCED_PARAMETER(context, states, view, projection, m_model);
 	// コモンリソースを取得する
 	CommonResources* resources = CommonResources::GetInstance();
 }
