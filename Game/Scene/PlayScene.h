@@ -18,6 +18,10 @@ class Enemy;
 class PlayScene final :
     public IScene
 {
+public:
+	Player* GetPlayer() { return m_player.get(); }
+	Enemy*  GetEnemy()  { return m_enemy.get(); }
+
 private:
 	// ‹¤’ÊƒŠƒ\[ƒX
 	CommonResources* m_commonResources;

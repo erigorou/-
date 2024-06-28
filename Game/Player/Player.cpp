@@ -234,6 +234,8 @@ void Player::Render(
 {
 	using namespace DirectX;
 
+	context->OMSetDepthStencilState(states->DepthDefault(), 0);	// 深度値を参照して書き込む
+
 	// モデルのエフェクト情報を更新する
 	m_model->UpdateEffects([](DirectX::IEffect* effect)
 		{

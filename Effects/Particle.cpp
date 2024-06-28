@@ -120,7 +120,7 @@ void Particle::CreateTrailDust(float elapsedTimer)
 	// パーティクル(１つ)を生成
 	DustTrialParticle dTP(
 		0.5f,																					//	生存時間(s)
-		SimpleMath::Vector3(m_playerPosition.x, m_playerPosition.y, m_playerPosition.z),		//	基準座標
+		SimpleMath::Vector3(m_playerPosition.x, m_playerPosition.y, m_playerPosition.z),	//	基準座標
 		SimpleMath::Vector3(-m_playerVelocity.x, 1.0f, -m_playerVelocity.z),					//	速度
 		SimpleMath::Vector3(1.0f, 0.2f, 1.0f),													//	加速度
 		SimpleMath::Vector3(0.6f, 0.6f, 0.6f), SimpleMath::Vector3(0.9f, 0.9f, 0.9f),			//	初期スケール、最終スケール
@@ -188,12 +188,14 @@ void Particle::CreateShader()
 /// </summary>
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">射影行列</param>
-void Particle::Render(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj)
+void Particle::Render(DirectX::CommonStates* states, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj)
 {
 	using namespace DirectX;
 
 	ID3D11DeviceContext1* context = m_pDR->GetD3DDeviceContext();
 	//	頂点情報(板ポリゴンの４頂点の座標情報）
+
+
 
 	DirectX::SimpleMath::Vector3 cameraDir = m_cameraTarget - m_cameraPosition;
 	cameraDir.Normalize();
@@ -258,9 +260,11 @@ void Particle::Render(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Mat
 	//	透明判定処理
 	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
 
-	// 深度バッファの書き込みを無効にする
-	context->OMSetDepthStencilState(m_states->DepthNone(), 0);
+	//// 深度バッファの書き込みを無効にする
+	//context->OMSetDepthStencilState(m_states->DepthNone(), 0);
 
+	// 深度値を参照して書き込む
+	context->OMSetDepthStencilState(states->DepthDefault(), 0);
 	//	カリングはなし
 	context->RSSetState(m_states->CullNone());
 

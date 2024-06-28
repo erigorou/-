@@ -56,6 +56,8 @@ void SkySphere::DrawSkySphere(
 {
 	using namespace DirectX;
 
+	context->OMSetDepthStencilState(states->DepthDefault(), 0);	// 深度値を参照して書き込む
+
 	// モデルのエフェクト情報を更新する処理
 	m_skySphereModel->UpdateEffects([](DirectX::IEffect* effect)
 		{

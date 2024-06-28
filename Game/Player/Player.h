@@ -78,12 +78,15 @@ public:
 	void MovePlayer();
 
 private:
+	// 体力
+	int m_HP;
 	// 位置
 	DirectX::SimpleMath::Vector3 m_position;
 	// 速度
 	DirectX::SimpleMath::Vector3 m_velocity;
 	// 角度
 	float m_angle;
+
 
 	// プレイヤー用のワールド行列
 	DirectX::SimpleMath::Matrix m_worldMatrix;

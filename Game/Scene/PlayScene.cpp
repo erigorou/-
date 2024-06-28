@@ -138,18 +138,16 @@ void PlayScene::Render()
 	m_gridFloor->Render(context, view, m_projection);
 	// 敵の描画を行う
 	m_enemy->Render(device, context, states, view, m_projection);
+	// プレイヤーの描画を行う
+	m_player->Render(device, context, states, view, m_projection, m_commonResources);
 	// パーティクルのビルボード作成
 	m_particles->CreateBillboard(m_camera->GetTargetPosition(), m_camera->GetEyePosition(), DirectX::SimpleMath::Vector3::Up);
 	// パーティクルの描画
-	m_particles->Render(view, m_projection);
-	// プレイヤーの描画を行う
-	m_player->Render(device ,context, states, view, m_projection, m_commonResources);
+	m_particles->Render(states, view, m_projection);
 
 
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = m_commonResources->GetDebugString();
-	debugString->AddString("Play Scene");
-	debugString->AddString("Play Scene");
 	debugString->AddString("Camera Angle : %f", XMConvertToDegrees(m_camera->GetCameraAngle()));
 	debugString->AddString("Player Angle : %f", XMConvertToDegrees(m_player->GetAngle()));
 
