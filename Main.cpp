@@ -40,6 +40,18 @@ extern "C"
 // Entry point
 int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
+    static bool s_fullscreen = false;
+
+    // 画面モード選択
+    if (MessageBox(NULL, L"フルスクリーンにしますか？", L"画面モード設定", MB_YESNO) == IDYES)
+    {
+        s_fullscreen = true;
+    }
+    else
+    {
+        s_fullscreen = false;
+    }
+
     // ★追記★
 #if defined(_DEBUG)
     mylib::MemoryLeakDetector();
@@ -109,6 +121,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
         GetClientRect(hwnd, &rc);
 
         g_game->Initialize(hwnd, rc.right - rc.left, rc.bottom - rc.top);
+        if (s_fullscreen) g_game->SetFullscreenState(TRUE);
+
     }
 
     // Main message loop
@@ -127,6 +141,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
     }
 
     g_game.reset();
+    if (s_fullscreen) g_game->SetFullscreenState(FALSE);
 
     CoUninitialize();
 
@@ -266,7 +281,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         PostQuitMessage(0);
         break;
 
-    // ★追記ココから★
+        // ★追記ココから★
     case WM_ACTIVATE:
     case WM_INPUT:
     case WM_MOUSEMOVE:
@@ -287,8 +302,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_KEYUP:
     case WM_SYSKEYUP:
         Keyboard::ProcessMessage(message, wParam, lParam);
+        if (wParam == VK_ESCAPE)
+        {
+            ExitGame();
+        }
         break;
-    // ★追記ココまで★
+        // ★追記ココまで★
 
     case WM_SYSKEYDOWN:
         if (wParam == VK_RETURN && (lParam & 0x60000000) == 0x20000000)

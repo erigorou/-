@@ -52,6 +52,15 @@ public:
     // Properties
     void GetDefaultSize( int& width, int& height ) const noexcept;
 
+    // 画面モードを設定する関数（TRUE：フルスクリーン）
+    void SetFullscreenState(BOOL value)
+    {
+        m_fullscreen = value;
+        m_deviceResources->GetSwapChain()->SetFullscreenState(m_fullscreen, nullptr);
+        if (value) m_deviceResources->CreateWindowSizeDependentResources();
+    }
+
+
 private:
 
     void Update(DX::StepTimer const& timer);
@@ -79,4 +88,6 @@ private:
     std::unique_ptr<mylib::InputManager>    m_inputManager;
     // シーンマネージャ
     std::unique_ptr<SceneManager>           m_sceneManager;
+
+    BOOL m_fullscreen;	// ＜―コンストラクタでFALSEで初期化してください。
 };
