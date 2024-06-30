@@ -13,6 +13,7 @@
 #include "Interface/IState.h"
 
 class Player;
+class Enemy;
 
 class PlayerIdling : public IState
 {
@@ -21,8 +22,6 @@ public:
 	DirectX::BoundingSphere GetBoundingSphereBody() { return m_boundingSphereBody; };
 
 public:
-	// コンストラクタ
-	PlayerIdling(Player* player);
 	// デストラクタ
 	~PlayerIdling() override;
 	// 初期化する
@@ -41,6 +40,14 @@ public:
 		const DirectX::SimpleMath::Matrix& projection) override;
 	// 終了処理
 	void Finalize() override;
+
+
+	// コンストラクタ
+	PlayerIdling(Player* player);
+	// 体同士の当たり判定
+	bool CheckBodyCollision();
+	// 体と当たったときの処理
+	void HitBody();
 
 private:
 	// 総時間

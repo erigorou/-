@@ -20,6 +20,8 @@ public:
 	float GetAngle() const { return m_angle; }
 	// 敵のアイドリングを取得する
 	EnemyIdling* GetEnemyIdling() const { return m_enemyIdling.get(); }
+	// 現在のステートを返す
+	IState* GetCurrentState() const { return m_currentState; }
 
 
 public:
