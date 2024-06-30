@@ -4,6 +4,7 @@
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
 
+#include "Game/Enemy/Enemy.h"
 #include "Game/Player/Player.h"
 #include "Game/Player/State/Header/PlayerIdling.h"
 
@@ -69,10 +70,6 @@ void PlayerIdling::Update(const float& elapsedTime,  DirectX::SimpleMath::Vector
 
 
 
-
-
-
-
 // 事後更新処理
 void PlayerIdling::PostUpdate()
 {
@@ -102,3 +99,21 @@ void PlayerIdling::Finalize()
 {
 }
 
+bool PlayerIdling::CheckBodyCollision()
+{
+	// 体の当たったかどうかのフラグ
+	bool hit = false;
+
+	auto player = dynamic_cast<Player*>(m_player);
+	// ボディを取得						プレイヤー → シーン → エネミー → 現在のステート → 体の当たり判定
+	DirectX::BoundingSphere enemyBody = player->GetPlayScene()->GetEnemy()->GetCurrentState()->GetBoundingSphereBody();
+	// ボディ同士の当たり判定を実行する
+	if (m_boundingSphereBody.Intersects(enemyBody))
+	{
+		// 当たってるならtrue
+		hit = true;
+	}
+
+	// ヒットフラグの中身を返す
+	return hit;
+}
