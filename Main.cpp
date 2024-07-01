@@ -140,8 +140,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
         }
     }
 
-    g_game.reset();
     if (s_fullscreen) g_game->SetFullscreenState(FALSE);
+    g_game.reset();
 
     CoUninitialize();
 
@@ -365,5 +365,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 // Exit helper
 void ExitGame() noexcept
 {
+    //// フルスクリーン強制終了
+    //g_game->SetFullscreenState(FALSE);
+    // ゲームの終了
     PostQuitMessage(0);
 }

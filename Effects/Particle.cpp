@@ -260,9 +260,6 @@ void Particle::Render(DirectX::CommonStates* states, DirectX::SimpleMath::Matrix
 	//	透明判定処理
 	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
 
-	//// 深度バッファの書き込みを無効にする
-	//context->OMSetDepthStencilState(m_states->DepthNone(), 0);
-
 	// 深度値を参照して書き込む
 	context->OMSetDepthStencilState(states->DepthDefault(), 0);
 	//	カリングはなし
@@ -295,7 +292,6 @@ void Particle::Render(DirectX::CommonStates* states, DirectX::SimpleMath::Matrix
 	context->VSSetShader(nullptr, nullptr, 0);
 	context->GSSetShader(nullptr, nullptr, 0);
 	context->PSSetShader(nullptr, nullptr, 0);
-
 }
 
 

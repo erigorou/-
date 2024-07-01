@@ -107,14 +107,14 @@ void Game::Update(DX::StepTimer const& timer)
     // キーボードステートを取得する
     const auto& keyboardState = m_inputManager->GetKeyboardState();
 
+    // シーンマネージャを更新する
+    m_sceneManager->Update(elapsedTime);
+
     // 「ECS」キーで終了する
     if (keyboardState.Escape)
     {
         ExitGame();
     }
-
-    // シーンマネージャを更新する
-    m_sceneManager->Update(elapsedTime);
 
     // ★追記ココまで↑↑↑★
 }

@@ -45,7 +45,7 @@ public:
 	// コンストラクタ
 	PlayerIdling(Player* player);
 	// 体同士の当たり判定
-	bool CheckBodyCollision();
+	bool CheckBoundingSphereCollision();
 	// 体と当たったときの処理
 	void HitBody();
 

@@ -1,12 +1,4 @@
-﻿  Enemy.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\Enemy.cpp(51,7): warning C4189: 'states': ローカル変数が初期化されましたが、参照されていません
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\Enemy.cpp(180,16): warning C4100: 'device': 引数は関数の本体部で 1 度も参照されません。
-  EnemyIdling.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\EnemyIdling.cpp(82,2): warning C4002: 関数に似たマクロ呼び出し 'UNREFERENCED_PARAMETER' の引数が多すぎます
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\EnemyIdling.cpp(79,37): warning C4100: 'projection': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\EnemyIdling.cpp(78,37): warning C4100: 'view': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\EnemyIdling.cpp(77,25): warning C4100: 'states': 引数は関数の本体部で 1 度も参照されません。
-  Player.cpp
+﻿  Player.cpp
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\Math.h(26,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\Player.cpp(59,7): warning C4189: 'states': ローカル変数が初期化されましたが、参照されていません
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\Player.cpp(290,16): warning C4100: 'device': 引数は関数の本体部で 1 度も参照されません。
@@ -28,6 +20,8 @@ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\St
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\PlayerIdling.cpp(83,25): warning C4100: 'states': 引数は関数の本体部で 1 度も参照されません。
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\PlayerIdling.cpp(82,23): warning C4100: 'context': 引数は関数の本体部で 1 度も参照されません。
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\PlayerIdling.cpp(89,19): warning C4189: 'resources': ローカル変数が初期化されましたが、参照されていません
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\PlayerIdling.cpp(143,8): warning C4189: 'sumLength': ローカル変数が初期化されましたが、参照されていません
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\PlayerIdling.cpp(141,8): warning C4189: 'diffLength': ローカル変数が初期化されましたが、参照されていません
   PlayScene.cpp
   コードを生成中...
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe
