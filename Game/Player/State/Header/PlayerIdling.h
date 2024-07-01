@@ -47,7 +47,7 @@ public:
 	// ‘Ì“¯m‚Ì“–‚½‚è”»’è
 	bool CheckBoundingSphereCollision();
 	// ‘Ì‚Æ“–‚½‚Á‚½‚Æ‚«‚Ìˆ—
-	void HitBody();
+	DirectX::SimpleMath::Vector3 CalculatingPushBack();
 
 private:
 	// ‘ŠÔ

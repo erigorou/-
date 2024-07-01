@@ -44,4 +44,32 @@ public:
 		// 計算結果を返す
 		return num;
 	}
+
+
+	/// <summary>
+	/// プレイヤーと当たっている時に押し戻しの量を計測する
+	/// </summary>
+	/// <param name="A">押し戻される側のSphere</param>
+	/// <param name="B">固定されるほうのSphere</param>
+	/// <returns>押し戻しの値　[ Aの座標　+= return値 ]</returns>
+	static Vector3 pushBack_BoundingSphere(DirectX::BoundingSphere A, DirectX::BoundingSphere B)
+	{
+		// AとBが当たっていなければ早期リターン
+		if (!A.Intersects(B))	return Vector3::Zero;
+
+		// 衝突判定　プレイヤーが押し戻される--[====================>
+
+		// プレイヤーの中心と敵の中心との差分ベクトル
+		Vector3 diffVec = A.Center - B.Center;
+		// プレイヤーの中心と敵の中心との距離を取得
+		float diffLength = diffVec.Length();
+		// プレイヤーと敵の半径の合計を取得
+		float sumLength = A.Radius + B.Radius;
+		// プレイヤーがめり込んだ距離
+		diffLength = sumLength - diffLength;
+		// 差分ベクトルを正規化する
+		diffVec.Normalize();
+		// 押し戻すベクトルを計算し、返す
+		return diffVec * diffLength;
+	}
 };

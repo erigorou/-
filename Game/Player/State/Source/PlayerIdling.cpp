@@ -3,6 +3,7 @@
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
+#include "Libraries/MyLib/Math.h"
 
 #include "Game/Enemy/Enemy.h"
 #include "Game/Player/Player.h"
@@ -64,7 +65,9 @@ void PlayerIdling::Update(const float& elapsedTime,  DirectX::SimpleMath::Vector
 	{
 		m_player->ChangeState(m_player->GetPlayerAttackingState());
 	}
-	// 当たり判定の座標を更新
+
+	// 埋め込み量の計算をした後にそれを反映させる
+	parentPos += CalculatingPushBack();
 	m_boundingSphereBody.Center = parentPos;
 }
 
@@ -87,10 +90,6 @@ void PlayerIdling::Render(
 {
 	// コモンリソースを取得する
 	CommonResources* resources = CommonResources::GetInstance();
-
-	//// デバッグ文字の描画
-	//auto debugString = resources->GetDebugString();
-	//debugString->AddString("PlayerIdling");
 }
 
 
@@ -100,46 +99,14 @@ void PlayerIdling::Finalize()
 }
 
 
-// 体同士の当たり判定
-bool PlayerIdling::CheckBoundingSphereCollision()
+
+// 体に当たったときに押し戻しをする
+DirectX::SimpleMath::Vector3 PlayerIdling::CalculatingPushBack()
 {
-	// 体の当たったかどうかのフラグ
-	bool hit = false;
-
-	auto player = dynamic_cast<Player*>(m_player);
-	// ボディを取得						プレイヤー → シーン → エネミー → 現在のステート → 体の当たり判定
-	DirectX::BoundingSphere enemyBody = player->GetPlayScene()->GetEnemy()->GetCurrentState()->GetBoundingSphereBody();
-	// ボディ同士の当たり判定を実行する
-	if (m_boundingSphereBody.Intersects(enemyBody))
-	{
-		// 当たってるならTrue
-		hit = true;
-	}
-
-	// ヒットフラグの中身を返す
-	return hit;
-}
-
-
-// 体同士で当たった場合の処理
-void PlayerIdling::HitBody()
-{
-	using namespace DirectX::SimpleMath;
-
 	// プレイヤーを一度変換する
 	auto player = dynamic_cast<Player*>(m_player);
 	// ボディを取得						プレイヤー → シーン → エネミー → 現在のステート → 体の当たり判定
 	DirectX::BoundingSphere enemyBody = player->GetPlayScene()->GetEnemy()->GetCurrentState()->GetBoundingSphereBody();
-	// 当たってない場合は早期リターン
-	if (!m_boundingSphereBody.Intersects(enemyBody))	return;
-
-	// 衝突判定　プレイヤーが押し戻される--[====================>
-
-	// プレイヤーの中心と敵の中心との差分ベクトル
-	Vector3 diffVec = m_boundingSphereBody.Center - enemyBody.Center;
-	// プレイヤーの中心と敵の中心との距離を取得
-	float diffLength = diffVec.Length();
-	// プレイヤーと敵の半径の合計
-	float sumLength = m_boundingSphereBody.Radius + enemyBody.Radius;
-	//
+	// 押し戻し量の計測
+	return Math::pushBack_BoundingSphere(m_boundingSphereBody, enemyBody);
 }
