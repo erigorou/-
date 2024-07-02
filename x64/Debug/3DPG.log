@@ -1,4 +1,2 @@
-﻿  Enemy.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\Enemy.cpp(52,7): warning C4189: 'states': ローカル変数が初期化されましたが、参照されていません
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\Enemy.cpp(182,16): warning C4100: 'device': 引数は関数の本体部で 1 度も参照されません。
+﻿  PlayScene.cpp
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe

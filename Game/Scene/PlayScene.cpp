@@ -67,7 +67,7 @@ void PlayScene::Initialize()
 	m_projection = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
 		XMConvertToRadians(45.0f),
 		static_cast<float>(rect.right) / static_cast<float>(rect.bottom),
-		0.1f, 10000.0f
+		0.1f, 100000.0f
 	);
 
 	// TPSƒJƒƒ‰‚ğæ“¾‚·‚é

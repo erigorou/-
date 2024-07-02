@@ -38,7 +38,7 @@ void Camera::Update(
 )
 {	using namespace DirectX;
 
-	float distance = 40.0f;
+	float distance = 50.0f;
 
 	// プレイヤーからターゲットへのベクトルを計算
 	SimpleMath::Vector3 playerToEnemy = enemyPos - playerPos;
@@ -47,9 +47,11 @@ void Camera::Update(
 	unitVecPlayerToTarget.Normalize();
 	// カメラ位置を計算
 	m_position = playerPos - unitVecPlayerToTarget * distance;
-	m_position.y = 10.0f; // Y座標を固定
+	m_position.y = 20.0f; // Y座標を固定
 	// 注視点を計算
 	m_target = enemyPos + unitVecPlayerToTarget;
+	// 注視点の高さを設定
+	m_target.y = 0.5f;
 	// ビュー行列を更新する
 	CalculateViewMatrix();
 	// カメラのアングルを計算する
@@ -91,3 +93,6 @@ void Camera::CalculateCameraAngle()
 		m_angle = -m_angle;
 	}
 }
+
+
+

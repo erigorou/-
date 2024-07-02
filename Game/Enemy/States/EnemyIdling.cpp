@@ -84,8 +84,6 @@ void EnemyIdling::Render(
 	// リソースの取得
 	CommonResources* resources = CommonResources::GetInstance();
 
-
-
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
 }

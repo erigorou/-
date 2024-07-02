@@ -5,6 +5,10 @@
 class SkySphere
 {
 public:
+	// 固定値
+	static const float SKYSPHERE_SCALE;
+
+public:
 	// コンストラクタ
 	SkySphere();
 	// デストラクタ

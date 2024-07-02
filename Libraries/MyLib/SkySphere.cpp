@@ -10,6 +10,8 @@
 #include "Game/CommonResources.h"
 
 
+const float SkySphere::SKYSPHERE_SCALE = 100.f;
+
 // -------------------------------
 //  コンストラクタ
 // -------------------------------
@@ -78,6 +80,9 @@ void SkySphere::DrawSkySphere(
 
 	// 初期状態のワールドマトリックスを設定
 	SimpleMath::Matrix world = SimpleMath::Matrix::Identity;
+	// サイズを調整する
+	world *= SimpleMath::Matrix::CreateScale(SKYSPHERE_SCALE);
+
 
 	// 天球を描画する
 	m_skySphereModel->Draw(context, *states, world, view, projection);
