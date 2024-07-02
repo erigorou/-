@@ -42,6 +42,8 @@ void PlayerIdling::PreUpdate()
 {
 	// 経過時間の初期化
 	m_totalSeconds = 0.f;
+	// 当たり判定をプレイヤーの位置に修正
+	m_boundingSphereBody.Center = m_player->GetPosition();
 }
 
 

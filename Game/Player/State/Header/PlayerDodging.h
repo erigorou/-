@@ -13,6 +13,7 @@
 #include "Interface/IState.h"
 
 class Player;
+class Enemy;
 
 class PlayerDodging : public IState
 {
@@ -26,8 +27,6 @@ public:
 	// 体の当たり判定を取得
 	DirectX::BoundingSphere GetBoundingSphereBody() { return m_boundingSphereBody; };
 public:
-	// コンストラクタ
-	PlayerDodging(Player* player);
 	// デストラクタ
 	~PlayerDodging() override;
 	// 初期化する
@@ -47,6 +46,10 @@ public:
 	// 終了処理
 	void Finalize() override;
 
+	// コンストラクタ
+	PlayerDodging(Player* player);
+	// 体と当たったときの処理
+	DirectX::SimpleMath::Vector3 CalculatingPushBack();
 private:
 	// 総時間
 	float m_totalSeconds;

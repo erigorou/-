@@ -44,8 +44,6 @@ public:
 
 	// コンストラクタ
 	PlayerIdling(Player* player);
-	// 体同士の当たり判定
-	bool CheckBoundingSphereCollision();
 	// 体と当たったときの処理
 	DirectX::SimpleMath::Vector3 CalculatingPushBack();
 
