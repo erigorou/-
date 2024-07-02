@@ -6,6 +6,7 @@
 
 #pragma once
 #include "pch.h"
+#include "cmath"
 
 using namespace DirectX::SimpleMath;
 
@@ -71,5 +72,16 @@ public:
 		diffVec.Normalize();
 		// 押し戻すベクトルを計算し、返す
 		return diffVec * diffLength;
+	}
+
+
+
+
+	// サイン波の計算
+	// Updateで繰り返す
+	static float CalculatingSinWave(const float totalTime , const float amplitude, const float frequency)
+	{
+		// サイン波の計算結果
+		return amplitude * std::sin(2.0f * DirectX::XM_PI * frequency * totalTime);
 	}
 };

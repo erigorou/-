@@ -132,9 +132,6 @@
     <ClInclude Include="Interface\IState.h">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Enemy\States\EnemyIdling.h">
-      <Filter>Game\Enemy\States</Filter>
-    </ClInclude>
     <ClInclude Include="BehaviourTree\Header\Action.h">
       <Filter>BehaviorTree\Header</Filter>
     </ClInclude>
@@ -164,6 +161,8 @@
     <ClInclude Include="Libraries\MyLib\BinaryFile.h" />
     <ClInclude Include="Libraries\MyLib\Math.h" />
     <ClInclude Include="Game\Player\State\Header\PlayerAttacking.h" />
+    <ClInclude Include="Game\Enemy\States\Header\EnemyIdling.h" />
+    <ClInclude Include="Game\Enemy\States\Header\EnemyApproaching.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -208,9 +207,6 @@
     <ClCompile Include="Game\Player\Player.cpp">
       <Filter>Game\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Enemy\States\EnemyIdling.cpp">
-      <Filter>Game\Enemy\States</Filter>
-    </ClCompile>
     <ClCompile Include="BehaviourTree\Source\Action.cpp">
       <Filter>BehaviorTree\Source</Filter>
     </ClCompile>
@@ -239,6 +235,8 @@
     <ClCompile Include="Effects\Particle.cpp" />
     <ClCompile Include="Libraries\MyLib\BinaryFile.cpp" />
     <ClCompile Include="Game\Player\State\Source\PlayerAttacking.cpp" />
+    <ClCompile Include="Game\Enemy\States\Source\EnemyIdling.cpp" />
+    <ClCompile Include="Game\Enemy\States\Source\EnemyApproaching.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

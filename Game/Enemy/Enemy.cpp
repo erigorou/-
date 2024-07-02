@@ -19,7 +19,7 @@
 
 // 固定値
 const float Enemy::ENEMY_SPEED = 0.05f;
-const float Enemy::ENEMY_SCALE = 0.6f;
+const float Enemy::ENEMY_SCALE = 1.0f;
 
 // --------------------------------
 //  コンストラクタ
@@ -87,7 +87,9 @@ void Enemy::CreateState()
 	// 待機状態を取得する
 	m_enemyIdling = std::make_unique<EnemyIdling>(this);
 	m_enemyIdling->Initialize(m_model.get());
-
+	// 追尾状態を取得する
+	m_enemyApproaching = std::make_unique<EnemyApproaching>(this);
+	m_enemyApproaching->Initialize(m_model.get());
 	// 初期のステートを待機状態に割り当てる
 	m_currentState = m_enemyIdling.get();
 }

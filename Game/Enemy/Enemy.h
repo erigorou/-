@@ -2,7 +2,8 @@
 #include "Interface/IState.h"
 #include "Game/Scene/PlayScene.h"
 
-#include "Game/Enemy/States/EnemyIdling.h"	// 待機ステート
+#include "Game/Enemy/States/Header/EnemyIdling.h"		// 待機ステート
+#include "Game/Enemy/States/Header/EnemyApproaching.h"	// 追尾ステート
 #include "BehaviourTree/Header/BehaviorTree.h"	// ビヘイビアツリー
 
 
@@ -15,12 +16,17 @@ public:
 
 
 public:
+	// プレイシーンを取得する
+	PlayScene* GetPlayScene() const { return m_playScene; }
 	// 鬼の座標を取得する
 	DirectX::SimpleMath::Vector3 GetPosition() const { return m_position; }
 	// 鬼の回転角を取得する
 	float GetAngle() const { return m_angle; }
+
 	// 敵のアイドリングを取得する
 	EnemyIdling* GetEnemyIdling() const { return m_enemyIdling.get(); }
+	// 敵の追尾状態を取得する
+	EnemyApproaching* GetEnemyApproaching() const { return m_enemyApproaching.get(); }
 	// 現在のステートを返す
 	IState* GetCurrentState() const { return m_currentState; }
 
@@ -72,6 +78,8 @@ private:
 	IState* m_currentState;
 	// 待機ステート
 	std::unique_ptr<EnemyIdling> m_enemyIdling;
+	// 追尾ステート
+	std::unique_ptr<EnemyApproaching> m_enemyApproaching;
 
 	// ビヘイビアツリー
 	std::unique_ptr<BehaviorTree> m_pBT;
