@@ -8,10 +8,11 @@
 
 class Enemy
 {
+public:
 	// ŒÅ’è’l
 	static const float ENEMY_SPEED;
+	static const float ENEMY_SCALE;
 
-public:
 
 public:
 	// ‹S‚ÌÀ•W‚ğæ“¾‚·‚é

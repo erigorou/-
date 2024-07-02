@@ -19,7 +19,8 @@
 
 // ここで静的メンバー変数を定義する
 const DirectX::SimpleMath::Vector3 Player::HOME_POSITION(0.0f);
-const float Player::PLAYER_SPEED = 0.05f;
+const float Player::PLAYER_SPEED = 1.0f;
+const float Player::PLAYER_SCALE = 0.3f;
 
 
 // --------------------------------
@@ -29,7 +30,7 @@ Player::Player(PlayScene* playScene)
 	:
 	m_playScene(playScene),
 	m_model{},
-	m_position{0, 0, 5},
+	m_position{0, 0, 40},
 	m_angle{0.f},
 	m_worldMatrix{},
 	m_currentState{}
@@ -215,6 +216,7 @@ void Player::CalculationMatrix()
 	m_worldMatrix = Matrix::Identity;		// 更新ごとに初期化を行う
 	m_worldMatrix
 		*= Matrix::CreateTranslation(Vector3::Zero)					// 原点に移動
+		*= Matrix::CreateScale		(PLAYER_SCALE)					// プレイヤーのサイズ変更
 		*= Matrix::CreateRotationY	(-m_angle)						// 敵の方向を見るように設定する
 		*= Matrix::CreateTranslation(m_position);					// 座標を移動させる
 }

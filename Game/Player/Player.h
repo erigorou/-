@@ -11,6 +11,7 @@ class Player
 public:
 	static const DirectX::SimpleMath::Vector3 HOME_POSITION;
 	static const float PLAYER_SPEED;
+	static const float PLAYER_SCALE;
 
 public:
 	// プレイヤーの座標を取得する

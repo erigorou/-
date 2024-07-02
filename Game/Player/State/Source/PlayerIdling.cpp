@@ -33,7 +33,7 @@ void PlayerIdling::Initialize(DirectX::Model* model)
 	// 体の当たり判定の生成
 	m_boundingSphereBody = DirectX::BoundingSphere();
 	// 体の当たり判定のサイズや座標を設定
-	m_boundingSphereBody.Radius = 0.3f;
+	m_boundingSphereBody.Radius = Player::PLAYER_SCALE * 12.f;
 }
 
 

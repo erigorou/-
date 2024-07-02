@@ -19,6 +19,7 @@
 
 // 固定値
 const float Enemy::ENEMY_SPEED = 0.05f;
+const float Enemy::ENEMY_SCALE = 0.6f;
 
 // --------------------------------
 //  コンストラクタ
@@ -54,7 +55,7 @@ void Enemy::Initialize()
 	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
 	fx->SetDirectory(L"Resources/Models");
 	// モデルを読み込む(仮でサイコロを読み込む)
-	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/akaoni.cmo", *fx);
+	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/oni.cmo", *fx);
 
 	// ビヘイビアツリーを取得
 	m_pBT = std::make_unique<BehaviorTree>();
@@ -114,7 +115,7 @@ void Enemy::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
-	m_worldMatrix = Matrix::CreateScale(Vector3(2.0f, 2.0f, 2.0f));
+	m_worldMatrix = Matrix::Identity;
 
 	// ステータスを更新しまーす
 	m_currentState->Update(elapsedTime, m_position);
@@ -134,7 +135,10 @@ void Enemy::Update(float elapsedTime)
 		m_pBT->run();
 	}
 
-	m_worldMatrix *= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);
+	// ワールド行列の計算
+	m_worldMatrix
+		*= DirectX::SimpleMath::Matrix::CreateScale(ENEMY_SCALE)		// サイズ計算
+		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);	// 位置の設定
 }
 
 
@@ -168,8 +172,6 @@ void Enemy::Render(
 	debugString->AddString("enemyPos.x : %f", m_position.x);
 	debugString->AddString("enemyPos.y : %f", m_position.y);
 	debugString->AddString("enemyPos.z : %f", m_position.z);
-
-
 }
 
 

@@ -32,7 +32,7 @@ void EnemyIdling::Initialize(DirectX::Model* model)
 	// 体の当たり判定の生成
 	m_boundingSphereBody = DirectX::BoundingSphere();
 	// 体の当たり判定のサイズや座標を設定
-	m_boundingSphereBody.Radius = 0.6f;
+	m_boundingSphereBody.Radius = Enemy::ENEMY_SCALE * 12.f;
 }
 
 
@@ -88,7 +88,6 @@ void EnemyIdling::Render(
 
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
-	debugString->AddString("State:EnemyIdling");
 }
 
 
