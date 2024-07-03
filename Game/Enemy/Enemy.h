@@ -20,8 +20,17 @@ public:
 	PlayScene* GetPlayScene() const { return m_playScene; }
 	// ‹S‚ÌÀ•W‚ğæ“¾‚·‚é
 	DirectX::SimpleMath::Vector3 GetPosition() const { return m_position; }
+	// ‹S‚ÌÀ•W‚ğİ’è‚·‚é
+	void SetPosition(const DirectX::SimpleMath::Vector3 pos) { m_position = pos; }
 	// ‹S‚Ì‰ñ“]Šp‚ğæ“¾‚·‚é
 	float GetAngle() const { return m_angle; }
+	// ‹S‚Ì‰ñ“]Šp‚ğİ’è‚·‚é
+	void SetAngle(const float angle){ m_angle = angle; }
+	// “G‚Ìƒ[ƒ‹ƒhÀ•W‚ğæ“¾‚·‚é
+	DirectX::SimpleMath::Matrix	GetWorldMatrix() const { return m_worldMatrix; }
+	// “G‚Ìƒ[ƒ‹ƒhÀ•W‚ğİ’è‚·‚é
+	void SetWorldMatrix(DirectX::SimpleMath::Matrix mat) { m_worldMatrix = mat; }
+
 
 	// “G‚ÌƒAƒCƒhƒŠƒ“ƒO‚ğæ“¾‚·‚é
 	EnemyIdling* GetEnemyIdling() const { return m_enemyIdling.get(); }

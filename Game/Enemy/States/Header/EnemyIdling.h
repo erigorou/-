@@ -4,6 +4,7 @@
 #include "Interface/IState.h"
 
 class Enemy;
+class Player;
 
 // 敵の待機ステートを定義
 class EnemyIdling : public IState
@@ -39,6 +40,9 @@ public:
 
 
 private:
+	// 回転
+	float m_angle;
+
 	// 総時間
 	float m_totalSeconds;
 	// 終了時間

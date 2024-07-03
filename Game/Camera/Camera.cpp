@@ -1,7 +1,6 @@
-// --------------
+// -----------------------------
 // ƒJƒƒ‰‚ğ’Ç‰Á
-//
-// --------------
+// -----------------------------
 
 #include "pch.h"
 #include "Game/Camera/Camera.h"
@@ -93,6 +92,3 @@ void Camera::CalculateCameraAngle()
 		m_angle = -m_angle;
 	}
 }
-
-
-

@@ -1,33 +1,9 @@
-﻿  Particle.cpp
-  Enemy.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\Enemy.cpp(52,7): warning C4189: 'states': ローカル変数が初期化されましたが、参照されていません
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\Enemy.cpp(184,16): warning C4100: 'device': 引数は関数の本体部で 1 度も参照されません。
-  EnemyApproaching.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\Math.h(27,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\EnemyApproaching.cpp(102,2): warning C4002: 関数に似たマクロ呼び出し 'UNREFERENCED_PARAMETER' の引数が多すぎます
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\EnemyApproaching.cpp(99,37): warning C4100: 'projection': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\EnemyApproaching.cpp(98,37): warning C4100: 'view': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\EnemyApproaching.cpp(97,25): warning C4100: 'states': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\EnemyApproaching.cpp(109,7): warning C4189: 'debugString': ローカル変数が初期化されましたが、参照されていません
-  EnemyIdling.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\EnemyIdling.cpp(90,2): warning C4002: 関数に似たマクロ呼び出し 'UNREFERENCED_PARAMETER' の引数が多すぎます
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\EnemyIdling.cpp(87,37): warning C4100: 'projection': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\EnemyIdling.cpp(86,37): warning C4100: 'view': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\EnemyIdling.cpp(85,25): warning C4100: 'states': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\EnemyIdling.cpp(96,7): warning C4189: 'debugString': ローカル変数が初期化されましたが、参照されていません
-  PlayerDodging.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\Math.h(27,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\PlayerDodging.cpp(92,2): warning C4002: 関数に似たマクロ呼び出し 'UNREFERENCED_PARAMETER' の引数が多すぎます
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\PlayerDodging.cpp(89,37): warning C4100: 'projection': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\PlayerDodging.cpp(88,37): warning C4100: 'view': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\PlayerDodging.cpp(87,25): warning C4100: 'states': 引数は関数の本体部で 1 度も参照されません。
-  PlayerIdling.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\Math.h(27,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\PlayerIdling.cpp(90,37): warning C4100: 'projection': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\PlayerIdling.cpp(89,37): warning C4100: 'view': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\PlayerIdling.cpp(88,25): warning C4100: 'states': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\PlayerIdling.cpp(87,23): warning C4100: 'context': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\PlayerIdling.cpp(94,19): warning C4189: 'resources': ローカル変数が初期化されましたが、参照されていません
-  PlayScene.cpp
-  コードを生成中...
+﻿  EnemyApproaching.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\Math.h(25,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\EnemyApproaching.cpp(36,51): warning C4100: 'model': 引数は関数の本体部で 1 度も参照されません。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\EnemyApproaching.cpp(65,87): warning C4100: 'parentPos': 引数は関数の本体部で 1 度も参照されません。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\EnemyApproaching.cpp(133,2): warning C4002: 関数に似たマクロ呼び出し 'UNREFERENCED_PARAMETER' の引数が多すぎます
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\EnemyApproaching.cpp(130,37): warning C4100: 'projection': 引数は関数の本体部で 1 度も参照されません。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\EnemyApproaching.cpp(129,37): warning C4100: 'view': 引数は関数の本体部で 1 度も参照されません。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\EnemyApproaching.cpp(128,25): warning C4100: 'states': 引数は関数の本体部で 1 度も参照されません。
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe

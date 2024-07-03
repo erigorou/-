@@ -19,8 +19,8 @@
 
 // ここで静的メンバー変数を定義する
 const DirectX::SimpleMath::Vector3 Player::HOME_POSITION(0.0f);
-const float Player::PLAYER_SPEED = 1.0f;
-const float Player::PLAYER_SCALE = 0.3f;
+const float Player::PLAYER_SPEED = 0.7f;
+const float Player::PLAYER_SCALE = 0.2f;
 
 
 // --------------------------------
@@ -58,7 +58,6 @@ void Player::Initialize()
 	auto device = resources->GetDeviceResources()->GetD3DDevice();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
-
 
 	// モデルを読み込む準備
 	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
@@ -148,7 +147,7 @@ void Player::Update(
 	// いずれここは1行のみにする　＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 
 	// 敵の位置を比較して回転角を計算する
-	CalculationAngle(enemyPos);
+	m_angle = Math::CalculationAngle(m_position, enemyPos);
 	// ワールド座標の更新
 	CalculationMatrix();
 }
@@ -202,7 +201,7 @@ void Player::MovePlayer()
 	m_velocity *= PLAYER_SPEED;					// 移動量を補正する
 	m_velocity = Math::truncate_vector(m_velocity, 2);
 
-	m_position += Vector3::Transform(-m_velocity, Matrix::CreateRotationY(-m_angle));	// 移動量を座標に反映
+	m_position += Vector3::Transform(m_velocity, Matrix::CreateRotationY(-m_angle));	// 移動量を座標に反映
 }
 
 
@@ -212,13 +211,14 @@ void Player::MovePlayer()
 void Player::CalculationMatrix()
 {
 	using namespace DirectX::SimpleMath;
+	using namespace DirectX;
 	// 行列の計算を行う
 	m_worldMatrix = Matrix::Identity;		// 更新ごとに初期化を行う
 	m_worldMatrix
-		*= Matrix::CreateTranslation(Vector3::Zero)					// 原点に移動
-		*= Matrix::CreateScale		(PLAYER_SCALE)					// プレイヤーのサイズ変更
-		*= Matrix::CreateRotationY	(-m_angle)						// 敵の方向を見るように設定する
-		*= Matrix::CreateTranslation(m_position);					// 座標を移動させる
+		*= Matrix::CreateTranslation(Vector3::Zero)							// 原点に移動
+		*= Matrix::CreateScale		(PLAYER_SCALE)							// プレイヤーのサイズ変更
+		*= Matrix::CreateRotationY	(-m_angle + XMConvertToRadians(180.f))	// 敵の方向を見るように設定する
+		*= Matrix::CreateTranslation(m_position);							// 座標を移動させる
 }
 
 
@@ -313,7 +313,7 @@ void Player::DrawBoundingSphere(
 	DX::Draw(
 		m_primitiveBatch.get(),	// プリミティブバッチ
 		boundingSphere,			// 境界球
-		Colors::DarkRed			// 色
+		Colors::White			// 色
 	);
 	m_primitiveBatch->End();
 }

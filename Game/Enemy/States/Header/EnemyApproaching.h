@@ -39,6 +39,15 @@ public:
 
 
 private:
+	// 座標
+	DirectX::SimpleMath::Vector3 m_position;
+	// 移動速度
+	DirectX::SimpleMath::Vector3 m_velocity;
+	// 回転
+	float m_angle;
+	// ワールド行列
+	DirectX::SimpleMath::Matrix m_worldMat;
+
 	// 総時間
 	float m_totalSeconds;
 	// 終了時間

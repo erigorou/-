@@ -66,7 +66,7 @@ void PlayerDodging::Update(const float& elapsedTime, DirectX::SimpleMath::Vector
 	// 端数を消し飛ばす。
 	m_velocity = Math::truncate_vector(m_velocity, TRUNCATION_DIGIT);
 	// 移動量を座標に反映させながら座標を移動させる。
-	parentPos -=Vector3::Transform(m_velocity,angle);
+	parentPos +=Vector3::Transform(m_velocity,angle);
 
 	// 埋め込み量の計算をした後にそれを反映させる
 	parentPos += CalculatingPushBack();

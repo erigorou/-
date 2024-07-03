@@ -3,14 +3,17 @@
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
+#include "Libraries/MyLib/Math.h"
 
 #include "Game/Enemy/Enemy.h"
+#include "Game/Player/Player.h"
 #include "Game/Enemy/States/Header/EnemyIdling.h"
 
 
 // コンストラクタ
 EnemyIdling::EnemyIdling(Enemy* enemy)
 	:
+	m_angle(0.f),
 	m_enemy(enemy),
 	m_totalSeconds()
 {
@@ -54,9 +57,18 @@ void EnemyIdling::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3&
 
 	// ここにビヘイビアツリーを入れる
 
+		// 敵に近づく処理
+	using namespace DirectX::SimpleMath;
+	// プレイヤーの座標を取得
+	Vector3 playerPos = m_enemy->GetPlayScene()->GetPlayer()->GetPosition();
+	// 敵から見たプレイヤーの位置を計算する
+	m_angle = Math::CalculationAngle(parentPos, playerPos);
+
 	// 体の境界球の位置を更新
 	m_boundingSphereBody.Center = parentPos;
 
+	// 回転角を設定する
+	m_enemy->SetAngle(m_angle);
 
 	if (m_totalSeconds >= 2.f)
 	{
@@ -94,6 +106,7 @@ void EnemyIdling::Render(
 
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
+	debugString->AddString("enemyAngle : %f", m_angle);
 }
 
 

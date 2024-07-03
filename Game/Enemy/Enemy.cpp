@@ -18,8 +18,8 @@
 #include "Interface/IState.h"
 
 // 固定値
-const float Enemy::ENEMY_SPEED = 0.05f;
-const float Enemy::ENEMY_SCALE = 1.0f;
+const float Enemy::ENEMY_SPEED = 0.3f;
+const float Enemy::ENEMY_SCALE = 0.8f;
 
 // --------------------------------
 //  コンストラクタ
@@ -27,8 +27,8 @@ const float Enemy::ENEMY_SCALE = 1.0f;
 Enemy::Enemy(PlayScene* playScene)
 	:
 	m_playScene(playScene)
-	,m_position{0.0f, 0.0f, 0.0f}
-	,m_angle{0.0f}
+	,m_position{0.f, 0.f, 0.f}
+	,m_angle{0.f}
 	,m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
 {
 }
@@ -126,10 +126,11 @@ void Enemy::Update(float elapsedTime)
 	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
 
 	if (keyboardState.F1)
-	{m_position += Vector3(0.01f, 0.0f, 0.0f);}
+	{m_velocity += Vector3::Forward * Enemy::ENEMY_SPEED;}
 
 	if (keyboardState.F2)
-	{m_position -= Vector3(0.01f, 0.0f, 0.0f);}
+	{m_velocity += Vector3::Backward * Enemy::ENEMY_SPEED;}
+
 
 	if (keyboardState.Enter)
 	{
@@ -137,10 +138,15 @@ void Enemy::Update(float elapsedTime)
 		m_pBT->run();
 	}
 
+	m_worldMatrix = DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle + DirectX::XMConvertToRadians(180));	// 回転角の設定
+
+	m_velocity *= Enemy::ENEMY_SPEED;
+	m_position += DirectX::SimpleMath::Vector3::Transform(m_velocity, m_worldMatrix);
+
 	// ワールド行列の計算
 	m_worldMatrix
-		*= DirectX::SimpleMath::Matrix::CreateScale(ENEMY_SCALE)		// サイズ計算
-		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);	// 位置の設定
+		*= DirectX::SimpleMath::Matrix::CreateScale(ENEMY_SCALE)										// サイズ計算
+		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);									// 位置の設定
 }
 
 
@@ -174,6 +180,8 @@ void Enemy::Render(
 	debugString->AddString("enemyPos.x : %f", m_position.x);
 	debugString->AddString("enemyPos.y : %f", m_position.y);
 	debugString->AddString("enemyPos.z : %f", m_position.z);
+	debugString->AddString("enemyAngleTotal : %f", m_angle);
+
 }
 
 
