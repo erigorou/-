@@ -160,9 +160,12 @@
     <ClInclude Include="Effects\Particle.h" />
     <ClInclude Include="Libraries\MyLib\BinaryFile.h" />
     <ClInclude Include="Libraries\MyLib\Math.h" />
-    <ClInclude Include="Game\Player\State\Header\PlayerAttacking.h" />
+    <ClInclude Include="Game\Player\State\Header\PlayerAttacking_1.h" />
     <ClInclude Include="Game\Enemy\States\Header\EnemyIdling.h" />
     <ClInclude Include="Game\Enemy\States\Header\EnemyApproaching.h" />
+    <ClInclude Include="Game\Player\State\Header\PlayerAttacking_2.h" />
+    <ClInclude Include="Game\Player\State\Header\PlayerAttacking_3.h" />
+    <ClInclude Include="Game\Player\State\Header\PlayerAttacking_4.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -234,9 +237,12 @@
     <ClCompile Include="Effects\Source\DustTrailParticle.cpp" />
     <ClCompile Include="Effects\Particle.cpp" />
     <ClCompile Include="Libraries\MyLib\BinaryFile.cpp" />
-    <ClCompile Include="Game\Player\State\Source\PlayerAttacking.cpp" />
+    <ClCompile Include="Game\Player\State\Source\PlayerAttacking_1.cpp" />
     <ClCompile Include="Game\Enemy\States\Source\EnemyIdling.cpp" />
     <ClCompile Include="Game\Enemy\States\Source\EnemyApproaching.cpp" />
+    <ClCompile Include="Game\Player\State\Source\PlayerAttacking_2.cpp" />
+    <ClCompile Include="Game\Player\State\Source\PlayerAttacking_3.cpp" />
+    <ClCompile Include="Game\Player\State\Source\PlayerAttacking_4.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

@@ -13,7 +13,10 @@ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\Ene
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\EnemyApproaching.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\EnemyApproaching.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\EnemyIdling.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\EnemyIdling.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\Player.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\Player.obj
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\PlayerAttacking.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\PlayerAttacking.obj
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\PlayerAttacking_1.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\PlayerAttacking_1.obj
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\PlayerAttacking_2.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\PlayerAttacking_2.obj
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\PlayerAttacking_3.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\PlayerAttacking_3.obj
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\PlayerAttacking_4.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\PlayerAttacking_4.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\PlayerIdling.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\PlayerIdling.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\PlayerDodging.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\PlayerDodging.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Scene\PlayScene.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\PlayScene.obj

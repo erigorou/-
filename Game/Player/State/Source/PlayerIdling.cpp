@@ -53,20 +53,23 @@ void PlayerIdling::Update(const float& elapsedTime,  DirectX::SimpleMath::Vector
 	// elapsedTime使わないけどエラー出さないでねって文
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	// キー入力を受け付ける。
-	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
+	// キーボードの入力を取得する
+	m_keyboardState = DirectX::Keyboard::Get().GetState();
+
 	// プレイヤーの移動
 	m_player->MovePlayer();
+
 	// 左シフトの入力　&& 移動中なら
-	if (keyboardState.LeftShift && m_player->GetVelocity() != DirectX::SimpleMath::Vector3::Zero)
+	if (m_keyboardState.LeftShift && m_player->GetVelocity() != DirectX::SimpleMath::Vector3::Zero)
 	{
 		m_player->ChangeState(m_player->GetPlayerDodgingState());
 	}
 	// Xの入力
-	if (keyboardState.X)
+	if (m_keyboardState.X)
 	{
-		m_player->ChangeState(m_player->GetPlayerAttackingState());
+		m_player->ChangeState(m_player->GetPlayerAttackingState1());
 	}
+
 
 	// 埋め込み量の計算をした後にそれを反映させる
 	parentPos += CalculatingPushBack();

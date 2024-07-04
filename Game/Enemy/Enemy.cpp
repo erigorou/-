@@ -18,7 +18,7 @@
 #include "Interface/IState.h"
 
 // 固定値
-const float Enemy::ENEMY_SPEED = 0.3f;
+const float Enemy::ENEMY_SPEED = 0.2f;
 const float Enemy::ENEMY_SCALE = 0.8f;
 
 // --------------------------------
@@ -101,6 +101,8 @@ void Enemy::CreateState()
 // --------------------------------
 void Enemy::ChangeState(IState* newState)
 {
+	// おんなじステートを更新しようとしたら戻る
+	if (m_currentState == newState) return;
 	// 新規の状態遷移前に事後更新を行う
 	m_currentState->PostUpdate();
 	// 新規の状態を現在の状態に設定する
@@ -145,8 +147,8 @@ void Enemy::Update(float elapsedTime)
 
 	// ワールド行列の計算
 	m_worldMatrix
-		*= DirectX::SimpleMath::Matrix::CreateScale(ENEMY_SCALE)										// サイズ計算
-		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);									// 位置の設定
+		*= DirectX::SimpleMath::Matrix::CreateScale(ENEMY_SCALE)			// サイズ計算
+		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);		// 位置の設定
 }
 
 
@@ -177,10 +179,7 @@ void Enemy::Render(
 
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
-	debugString->AddString("enemyPos.x : %f", m_position.x);
-	debugString->AddString("enemyPos.y : %f", m_position.y);
-	debugString->AddString("enemyPos.z : %f", m_position.z);
-	debugString->AddString("enemyAngleTotal : %f", m_angle);
+	debugString->AddString("enemyPos : %f : %f : %f", m_position.x, m_position.y, m_position.z);
 
 }
 

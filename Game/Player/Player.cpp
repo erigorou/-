@@ -21,6 +21,7 @@
 const DirectX::SimpleMath::Vector3 Player::HOME_POSITION(0.0f);
 const float Player::PLAYER_SPEED = 0.7f;
 const float Player::PLAYER_SCALE = 0.2f;
+const float Player::APPLIED_ATTACK_TIME = 1.0f;
 
 
 // --------------------------------
@@ -59,6 +60,9 @@ void Player::Initialize()
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
 
+	// キー入力を生成（全体で使う）
+	m_keyboardState = DirectX::Keyboard::Get().GetState();
+
 	// モデルを読み込む準備
 	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
 	fx->SetDirectory(L"Resources/Models");
@@ -95,10 +99,20 @@ void Player::CreateState()
 	m_playerDodging = std::make_unique<PlayerDodging>(this);
 	// ダッジングステートを初期化
 	m_playerDodging->Initialize(m_model.get());
-	// アタッキングステートを取得
-	m_playerAttacking = std::make_unique<PlayerAttacking>(this);
-	// アタッキングステートを初期化
-	m_playerAttacking->Initialize(m_model.get());
+
+	// アタッキングステート1を取得
+	m_playerAttacking_1 = std::make_unique<PlayerAttacking_1>(this);
+	m_playerAttacking_2 = std::make_unique<PlayerAttacking_2>(this);
+	m_playerAttacking_3 = std::make_unique<PlayerAttacking_3>(this);
+	m_playerAttacking_4 = std::make_unique<PlayerAttacking_4>(this);
+
+	// アタッキングステート1を初期化
+	m_playerAttacking_1->Initialize(m_model.get());
+	m_playerAttacking_2->Initialize(m_model.get());
+	m_playerAttacking_3->Initialize(m_model.get());
+	m_playerAttacking_4->Initialize(m_model.get());
+
+
 	// 最初のステートを設定
 	m_currentState = m_playerIdling.get();
 }
@@ -110,6 +124,8 @@ void Player::CreateState()
 /// <param name="newState">変更したいステート</param>
 void Player::ChangeState(IState* newState)
 {
+	// 同じステートで更新しようとすると早期リターン
+	if (m_currentState == newState) return;
 	// 事後更新処理を行う
 	m_currentState->PostUpdate();
 	// 現在のステートを変更する
@@ -278,10 +294,7 @@ void Player::Render(
 
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
-	debugString->AddString("m_angle : %f", XMConvertToDegrees( m_angle));
-	debugString->AddString("m_position.x : %f", m_position.x);
-	debugString->AddString("m_position.y : %f", m_position.y);
-	debugString->AddString("m_position.z : %f", m_position.z);
+	debugString->AddString("m_position : %f :%f :%f", m_position.x, m_position.y, m_position.z);
 }
 
 

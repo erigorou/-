@@ -4,14 +4,23 @@
 
 #include "Game/Player/State/Header/PlayerIdling.h"		// 待機状態
 #include "Game/Player/State/Header/PlayerDodging.h"		// 回避状態
-#include "Game/Player/State/Header/PlayerAttacking.h"	// 攻撃状態
+#include "Game/Player/State/Header/PlayerAttacking_1.h"	// 攻撃状態1
+#include "Game/Player/State/Header/PlayerAttacking_2.h"	// 攻撃状態2
+#include "Game/Player/State/Header/PlayerAttacking_3.h"	// 攻撃状態3
+#include "Game/Player/State/Header/PlayerAttacking_4.h"	// 攻撃状態4
+
 
 class Player
 {
 public:
+	// 初期座標
 	static const DirectX::SimpleMath::Vector3 HOME_POSITION;
+	// 速さ
 	static const float PLAYER_SPEED;
+	// 大きさ
 	static const float PLAYER_SCALE;
+	// 攻撃が適用される時間
+	static const float APPLIED_ATTACK_TIME;
 
 public:
 	// プレイヤーの座標を取得する
@@ -26,11 +35,17 @@ public:
 	PlayerIdling* GetPlayerIdlingState() const { return m_playerIdling.get(); }
 	// プレイヤーのダッジングステートを取得
 	PlayerDodging* GetPlayerDodgingState() const { return m_playerDodging.get(); }
+
 	// プレイヤーのアタッキングステートを取得
-	PlayerAttacking* GetPlayerAttackingState() const { return m_playerAttacking.get(); }
+	PlayerAttacking_1* GetPlayerAttackingState1() const { return m_playerAttacking_1.get(); }
+	PlayerAttacking_2* GetPlayerAttackingState2() const { return m_playerAttacking_2.get(); }
+	PlayerAttacking_3* GetPlayerAttackingState3() const { return m_playerAttacking_3.get(); }
+	PlayerAttacking_4* GetPlayerAttackingState4() const { return m_playerAttacking_4.get(); }
 
 	// プレイシーンの情報を取得する
 	PlayScene* GetPlayScene()const { return m_playScene; }
+	// キーボードの情報を取得する
+	DirectX::Keyboard::State GetKeyboardState() const { return m_keyboardState; }
 
 public:
 	// コンストラクタ
@@ -100,8 +115,14 @@ private:
 	std::unique_ptr<PlayerIdling> m_playerIdling;
 	// プレイヤーのダッジングステート
 	std::unique_ptr<PlayerDodging> m_playerDodging;
+
 	// プレイヤーのアタッキングステート
-	std::unique_ptr<PlayerAttacking> m_playerAttacking;
+	std::unique_ptr<PlayerAttacking_1> m_playerAttacking_1;
+	std::unique_ptr<PlayerAttacking_2> m_playerAttacking_2;
+	std::unique_ptr<PlayerAttacking_3> m_playerAttacking_3;
+	std::unique_ptr<PlayerAttacking_4> m_playerAttacking_4;
+
+
 
 	// ベーシックエフェクト
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
@@ -112,4 +133,6 @@ private:
 private:
 	// プレイシーン(他のオブジェクトの情報の取得などに使う)
 	PlayScene* m_playScene;
+	// キーボードの入力
+	DirectX::Keyboard::State m_keyboardState;
 };

@@ -96,7 +96,7 @@ void EnemyApproaching::Update(const float& elapsedTime, DirectX::SimpleMath::Vec
 	// 2秒経過で待機モーションに変更
 	if (m_totalSeconds >= 2.f)
 	{
-		//m_enemy->ChangeState(m_enemy->GetEnemyIdling());
+		m_enemy->ChangeState(m_enemy->GetEnemyIdling());
 	}
 
 	// 回転角を設定する
@@ -140,7 +140,6 @@ void EnemyApproaching::Render(
 	CommonResources* resources = CommonResources::GetInstance();
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
-	debugString->AddString("enemyAngle : %f, : %f, : %f", m_velocity.x, m_velocity.y, m_velocity.z);
 }
 
 

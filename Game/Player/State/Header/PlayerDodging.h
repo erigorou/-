@@ -66,6 +66,9 @@ private:
 
 	// 体の当たり判定
 	DirectX::BoundingSphere m_boundingSphereBody;
+
+	// キーボードの入力
+	DirectX::Keyboard::State m_keyboardState;
 };
 
 #endif  // PLAYER_DODGING_DEFINED

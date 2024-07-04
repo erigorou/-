@@ -10,7 +10,7 @@
 #include "Game/Player/State/Header/PlayerDodging.h"
 
 // 固定値
-const float PlayerDodging::DODGING_TIME = 1.0f;
+const float PlayerDodging::DODGING_TIME = 0.6f;
 const float PlayerDodging::DODGE_FUNCTION = 0.9f;
 const int   PlayerDodging::TRUNCATION_DIGIT = 3;
 
@@ -37,7 +37,7 @@ void PlayerDodging::Initialize(DirectX::Model* model)
 	// 体の当たり判定の生成
 	m_boundingSphereBody = DirectX::BoundingSphere();
 	// 体の当たり判定のサイズや座標を設定
-	m_boundingSphereBody.Radius = 0.3f;
+	m_boundingSphereBody.Radius = Player::PLAYER_SCALE * 12.f;
 }
 
 // 事前更新処理
@@ -89,7 +89,13 @@ void PlayerDodging::Render(
 	const DirectX::SimpleMath::Matrix& projection
 	)
 {
-	UNREFERENCED_PARAMETER(context, states, view, projection, m_model);
+	UNREFERENCED_PARAMETER(states);
+	UNREFERENCED_PARAMETER(view);
+	UNREFERENCED_PARAMETER(projection);
+	UNREFERENCED_PARAMETER(m_model);
+
+
+
 
 	// コモンリソースを取得する
 	CommonResources* resources = CommonResources::GetInstance();
