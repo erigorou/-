@@ -44,8 +44,10 @@ public:
 
 	// プレイシーンの情報を取得する
 	PlayScene* GetPlayScene()const { return m_playScene; }
-	// キーボードの情報を取得する
+	// キーボードの情報を取得する(長押しのみ対応)
 	DirectX::Keyboard::State GetKeyboardState() const { return m_keyboardState; }
+	// キーボードの情報を取得する（単押しのみ対応）
+	DirectX::Keyboard::KeyboardStateTracker GetKeyboardTracker() const { return m_tracker; }
 
 public:
 	// コンストラクタ
@@ -135,4 +137,5 @@ private:
 	PlayScene* m_playScene;
 	// キーボードの入力
 	DirectX::Keyboard::State m_keyboardState;
+	DirectX::Keyboard::KeyboardStateTracker m_tracker;
 };

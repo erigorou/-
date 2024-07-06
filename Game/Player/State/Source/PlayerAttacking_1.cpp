@@ -34,8 +34,6 @@ PlayerAttacking_1::~PlayerAttacking_1()
 // 初期化処理
 void PlayerAttacking_1::Initialize(DirectX::Model* model)
 {
-	// キーボードを取得する
-	m_keyboardState = DirectX::Keyboard::Get().GetState();
 	// モデルを取得する
 	m_model = model;
 	// 体の境界球を作成
@@ -57,11 +55,8 @@ void PlayerAttacking_1::Update(const float& elapsedTime,  DirectX::SimpleMath::V
 	// parentPos使わないけどエラー出さないでねって文
 	UNREFERENCED_PARAMETER(parentPos);
 
-	// キーボードの入力を取得する
-	m_keyboardState = DirectX::Keyboard::Get().GetState();
-	// トラッカーの実装
-	DirectX::Keyboard::KeyboardStateTracker tracker;
-	tracker.Update(m_keyboardState);
+	// キーボードのトラッカー
+	DirectX::Keyboard::KeyboardStateTracker tracker = m_player->GetKeyboardTracker();
 
 	// １回目の攻撃中に攻撃ボタンを押す
 	if (tracker.IsKeyPressed(DirectX::Keyboard::X))
@@ -74,8 +69,6 @@ void PlayerAttacking_1::Update(const float& elapsedTime,  DirectX::SimpleMath::V
 	m_player->TimeComparison(m_totalSeconds, Player::APPLIED_ATTACK_TIME, m_player->GetPlayerIdlingState(), elapsedTime);
 	// 体の境界球の位置を更新
 	m_boundingSphereBody.Center = parentPos;
-
-
 }
 
 

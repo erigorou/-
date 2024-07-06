@@ -70,8 +70,6 @@ void PlayerAttacking_3::Update(const float& elapsedTime,  DirectX::SimpleMath::V
 	m_player->TimeComparison(m_totalSeconds, Player::APPLIED_ATTACK_TIME, m_player->GetPlayerIdlingState(), elapsedTime);
 	// ‘Ì‚Ì‹«ŠE‹…‚ÌˆÊ’u‚ğXV
 	m_boundingSphereBody.Center = parentPos;
-
-
 }
 
 

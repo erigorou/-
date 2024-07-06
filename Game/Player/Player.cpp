@@ -34,7 +34,9 @@ Player::Player(PlayScene* playScene)
 	m_position{0, 0, 40},
 	m_angle{0.f},
 	m_worldMatrix{},
-	m_currentState{}
+	m_currentState{},
+	m_keyboardState{},
+	m_tracker{}
 {
 }
 
@@ -157,6 +159,9 @@ void Player::Update(
 	const float elapsedTime				   // 前Fからの経過時間
 	)
 {
+	// キー入力を取得（全体で使う）
+	m_tracker.Update(m_keyboardState);
+
 	// ステートの更新
 	m_currentState->Update(elapsedTime, m_position);
 
