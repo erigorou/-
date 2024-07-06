@@ -20,6 +20,7 @@ PlayerAttacking_1::PlayerAttacking_1(Player* player)
 	:
 	 m_player(player)
 	,m_totalSeconds()
+	,m_attackElapsedTime()
 	,m_model()
 	,m_boundingSphereBody()
 {
@@ -55,14 +56,22 @@ void PlayerAttacking_1::Update(const float& elapsedTime,  DirectX::SimpleMath::V
 	// parentPos使わないけどエラー出さないでねって文
 	UNREFERENCED_PARAMETER(parentPos);
 
-	// キーボードのトラッカー
-	DirectX::Keyboard::KeyboardStateTracker tracker = m_player->GetKeyboardTracker();
+	// 押したときだけ反応するキーボード
+	DirectX::Keyboard::State keyboard = DirectX::Keyboard::Get().GetState();
+	DirectX::Keyboard::KeyboardStateTracker tracker;
+	tracker.Update(keyboard);
 
 	// １回目の攻撃中に攻撃ボタンを押す
-	if (tracker.IsKeyPressed(DirectX::Keyboard::X))
+	if (tracker.IsKeyPressed(DirectX::Keyboard::D1))
 	{
 		// ２回目の攻撃にステートを変更する
 		m_player->ChangeState(m_player->GetPlayerAttackingState2());
+	}
+
+	// 左シフトで回避
+	if (tracker.IsKeyPressed(DirectX::Keyboard::LeftShift))
+	{
+		m_player->ChangeState(m_player->GetPlayerDodgingState());
 	}
 
 	// 時間を計測し、一定時間経過でステートを遷移
@@ -87,7 +96,12 @@ void PlayerAttacking_1::Render(
 	const DirectX::SimpleMath::Matrix& projection
 	)
 {
-	UNREFERENCED_PARAMETER(context, states, view, projection, m_model);
+	UNREFERENCED_PARAMETER(context);
+	UNREFERENCED_PARAMETER(states);
+	UNREFERENCED_PARAMETER(view);
+	UNREFERENCED_PARAMETER(projection);
+	UNREFERENCED_PARAMETER(m_model);
+
 	// コモンリソースを取得する
 	CommonResources* resources = CommonResources::GetInstance();
 

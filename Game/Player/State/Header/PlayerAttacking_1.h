@@ -49,10 +49,10 @@ private:
 	// 座標
 	DirectX::SimpleMath::Vector3 m_position;
 	// 速度
-	DirectX::SimpleMath::Vector3 m_velocity;
-
+	DirectX::SimpleMath::Vector3 m_velocity; 
+	 
 	// １回の攻撃の間隔
-	unsigned int m_attackElapsedTime;
+	float m_attackElapsedTime;
 
 	// 総時間
 	float m_totalSeconds;
@@ -62,9 +62,6 @@ private:
 	DirectX::Model* m_model;
 	// 体の境界球
 	DirectX::BoundingSphere m_boundingSphereBody;
-
-	// キーボードの入力
-	DirectX::Keyboard::State m_keyboardState;
 };
 
 #endif  // PLAYER_ATTACKING_1_DEFINED

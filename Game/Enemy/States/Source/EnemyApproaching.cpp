@@ -14,13 +14,14 @@
 EnemyApproaching::EnemyApproaching(Enemy* enemy)
 	:
 	m_enemy(enemy),
-	m_position(0.f, 0.f, 0.f),
-	m_velocity(DirectX::SimpleMath::Vector3(0.f, 0.f, 0.f)* Enemy::ENEMY_SPEED),
-	m_angle(0.f),
+	m_position(0.0f, 0.0f, 0.0f),
+	m_velocity(DirectX::SimpleMath::Vector3(0.0f, 0.0f, 0.0f)* Enemy::ENEMY_SPEED),
+	m_model(nullptr),
+	m_angle(0.0f),
 	m_worldMat(DirectX::SimpleMath::Matrix::Identity),
-	m_totalSeconds(0.f),
-	m_amplitude(1.f),
-	m_finishTime(1.f),
+	m_totalSeconds(0.0f),
+	m_amplitude(1.0f),
+	m_finishTime(1.0f),
 	m_frequency(1.0f)
 {
 }
@@ -36,6 +37,8 @@ EnemyApproaching::~EnemyApproaching()
 void EnemyApproaching::Initialize(DirectX::Model* model)
 {
 	using namespace DirectX;
+	// モデルを取得
+	m_model = model;
 	// 速度を設定（前にしか動かない）
 	m_velocity = SimpleMath::Vector3::Forward;
 	// 体の当たり判定の生成
@@ -64,8 +67,7 @@ void EnemyApproaching::PreUpdate()
 // 更新処理
 void EnemyApproaching::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3& parentPos)
 {
-	//// elapsedTime使わないけどエラー出さないでねって文
-	//UNREFERENCED_PARAMETER(elapsedTime);
+	UNREFERENCED_PARAMETER(parentPos);
 	
 	// 合計の時間を計算する
 	m_totalSeconds += elapsedTime;
@@ -132,7 +134,11 @@ void EnemyApproaching::Render(
 	const DirectX::SimpleMath::Matrix& projection
 	)
 {
-	UNREFERENCED_PARAMETER(context, states, view, projection, m_model);
+	UNREFERENCED_PARAMETER(context);
+	UNREFERENCED_PARAMETER(states);
+	UNREFERENCED_PARAMETER(view);
+	UNREFERENCED_PARAMETER(projection);
+	UNREFERENCED_PARAMETER(m_model);
 
 
 
@@ -140,6 +146,9 @@ void EnemyApproaching::Render(
 	CommonResources* resources = CommonResources::GetInstance();
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
+	
+	UNREFERENCED_PARAMETER(debugString);
+
 }
 
 

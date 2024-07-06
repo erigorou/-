@@ -37,6 +37,8 @@ void Camera::Update(
 )
 {	using namespace DirectX;
 
+	UNREFERENCED_PARAMETER(rotate);
+
 	float distance = 90.0f;
 
 	// プレイヤーからターゲットへのベクトルを計算

@@ -99,7 +99,11 @@ void EnemyIdling::Render(
 	const DirectX::SimpleMath::Matrix& projection
 	)
 {
-	UNREFERENCED_PARAMETER(context, states, view, projection, m_model);
+	UNREFERENCED_PARAMETER(context);
+	UNREFERENCED_PARAMETER(states);
+	UNREFERENCED_PARAMETER(view);
+	UNREFERENCED_PARAMETER(projection);
+	UNREFERENCED_PARAMETER(m_model);
 
 	// ÉäÉ\Å[ÉXÇÃéÊìæ
 	CommonResources* resources = CommonResources::GetInstance();

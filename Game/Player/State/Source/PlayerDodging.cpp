@@ -18,8 +18,10 @@ const int   PlayerDodging::TRUNCATION_DIGIT = 3;
 PlayerDodging::PlayerDodging(Player* player)
 	:
 	 m_player(player)
-	,m_totalSeconds()
-	,m_direction()
+	,m_model(nullptr)
+	,m_totalSeconds(0.0f)
+	,m_direction(0.0f, 0.0f, 0.0f)
+	,m_finishTime(0.0f)
 {
 }
 
@@ -89,6 +91,7 @@ void PlayerDodging::Render(
 	const DirectX::SimpleMath::Matrix& projection
 	)
 {
+	UNREFERENCED_PARAMETER(context);
 	UNREFERENCED_PARAMETER(states);
 	UNREFERENCED_PARAMETER(view);
 	UNREFERENCED_PARAMETER(projection);

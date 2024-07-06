@@ -54,17 +54,23 @@ void PlayerAttacking_2::Update(const float& elapsedTime,  DirectX::SimpleMath::V
 	// parentPos使わないけどエラー出さないでねって文
 	UNREFERENCED_PARAMETER(parentPos);
 
-	// キーボードの入力を取得する
-	m_keyboardState = DirectX::Keyboard::Get().GetState();
-	// トラッカーの実装
+	// 押したときだけ反応するキーボード
+	DirectX::Keyboard::State keyboard = DirectX::Keyboard::Get().GetState();
 	DirectX::Keyboard::KeyboardStateTracker tracker;
-	tracker.Update(m_keyboardState);
+	tracker.Update(keyboard);
+
 
 	// 2回目の攻撃中に攻撃ボタンを押す
-	if (tracker.IsKeyPressed(DirectX::Keyboard::X))
+	if (tracker.IsKeyPressed(DirectX::Keyboard::D2))
 	{
 		// 3回目の攻撃にステートを変更する
 		m_player->ChangeState(m_player->GetPlayerAttackingState3());
+	}
+
+	// 左シフトで回避
+	if (tracker.IsKeyPressed(DirectX::Keyboard::LeftShift))
+	{
+		m_player->ChangeState(m_player->GetPlayerDodgingState());
 	}
 
 	// 時間を計測し、一定時間経過でステートを遷移
@@ -89,7 +95,12 @@ void PlayerAttacking_2::Render(
 	const DirectX::SimpleMath::Matrix& projection
 	)
 {
-	UNREFERENCED_PARAMETER(context, states, view, projection, m_model);
+	UNREFERENCED_PARAMETER(context);
+	UNREFERENCED_PARAMETER(states);
+	UNREFERENCED_PARAMETER(view);
+	UNREFERENCED_PARAMETER(projection);
+	UNREFERENCED_PARAMETER(m_model);
+
 	// コモンリソースを取得する
 	CommonResources* resources = CommonResources::GetInstance();
 

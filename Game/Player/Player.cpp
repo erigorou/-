@@ -317,6 +317,8 @@ void Player::DrawBoundingSphere(
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
+	UNREFERENCED_PARAMETER(device);
+
 
 	context->OMSetBlendState(states->Opaque(), nullptr, 0xFFFFFFFF);
 	context->OMSetDepthStencilState(states->DepthRead(), 0);

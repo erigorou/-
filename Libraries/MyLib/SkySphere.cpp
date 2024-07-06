@@ -37,6 +37,8 @@ void SkySphere::LoadSkySphereModel(ID3D11Device* device)
 {
 	auto commonResources = CommonResources::GetInstance();
 
+	UNREFERENCED_PARAMETER(commonResources);
+
 	// ƒ‚ƒfƒ‹‚ğ“Ç‚İ‚Ş€”õ
 	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
 	fx->SetDirectory(L"Resources/Models");

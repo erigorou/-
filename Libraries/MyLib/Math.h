@@ -22,7 +22,7 @@ public:
 	static float truncate_float(const float num, const int prec)
 	{
 		// 指定された制度に基づいてスケールを計算
-		float scale = std::pow(10.f, prec);
+		float scale = static_cast<float>(std::pow(10.0f, prec));
 		// 小数点以下第 "prec" 位　から先を切り捨てし、返す。
 		return std::trunc(num * scale) / scale;
 	};

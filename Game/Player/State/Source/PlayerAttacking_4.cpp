@@ -12,13 +12,14 @@
 
 #include "Game/Player/Player.h"
 #include "Game/Player/State/Header/PlayerAttacking_4.h"
-
+ 
 
 // コンストラクタ
 PlayerAttacking_4::PlayerAttacking_4(Player* player)
 	:
 	 m_player(player)
 	,m_totalSeconds()
+	,m_attackElapsedTime(0.0f)
 	,m_model()
 	,m_boundingSphereBody()
 {
@@ -76,6 +77,7 @@ void PlayerAttacking_4::Render(
 	const DirectX::SimpleMath::Matrix& projection
 	)
 {
+	UNREFERENCED_PARAMETER(context);
 	UNREFERENCED_PARAMETER(states);
 	UNREFERENCED_PARAMETER(view);
 	UNREFERENCED_PARAMETER(projection);

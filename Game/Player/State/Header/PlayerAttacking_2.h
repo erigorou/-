@@ -52,7 +52,7 @@ private:
 	DirectX::SimpleMath::Vector3 m_velocity;
 
 	// ‚P‰ñ‚ÌUŒ‚‚ÌŠÔŠu
-	unsigned int m_attackElapsedTime;
+	float m_attackElapsedTime;
 
 	// ‘ŠÔ
 	float m_totalSeconds;
@@ -62,9 +62,6 @@ private:
 	DirectX::Model* m_model;
 	// ‘Ì‚Ì‹«ŠE‹…
 	DirectX::BoundingSphere m_boundingSphereBody;
-
-	// ƒL[ƒ{[ƒh‚Ì“ü—Í
-	DirectX::Keyboard::State m_keyboardState;
 };
 
 #endif  // PLAYER_ATTACKING_1_DEFINED

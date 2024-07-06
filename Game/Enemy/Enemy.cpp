@@ -51,6 +51,8 @@ void Enemy::Initialize()
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
 
+	UNREFERENCED_PARAMETER(states);
+
 	// ƒ‚ƒfƒ‹‚ğ“Ç‚İ‚Ş€”õ
 	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
 	fx->SetDirectory(L"Resources/Models");
@@ -199,6 +201,7 @@ void Enemy::DrawBoundingSphere(
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
+	UNREFERENCED_PARAMETER(device);
 
 	context->OMSetBlendState(states->Opaque(), nullptr, 0xFFFFFFFF);
 	context->OMSetDepthStencilState(states->DepthRead(), 0);
