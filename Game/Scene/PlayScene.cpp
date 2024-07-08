@@ -19,6 +19,8 @@
 #include "Game/Player/Player.h"
 #include "Game/Enemy/Enemy.h"
 
+#include "Game/Weapon/Sword/Sword.h"
+
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
@@ -30,6 +32,8 @@ PlayScene::PlayScene()
 	,m_projection{}
 	,m_isChangeScene{}
 	,m_player{}
+	,m_sword{}
+	,m_enemy{}
 	,m_skySphere{}
 	,m_particles{}
 {
@@ -76,6 +80,8 @@ void PlayScene::Initialize()
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
 
+	// =================================================
+
 	// 天球の生成とモデルの読み込み
 	m_skySphere = std::make_unique<SkySphere>();
 	m_skySphere->LoadSkySphereModel(device);
@@ -87,6 +93,10 @@ void PlayScene::Initialize()
 	// プレイヤーの生成と初期化
 	m_player = std::make_unique<Player>(this);
 	m_player->Initialize();
+
+	// プレイヤーの武器の生成と初期化
+	m_sword = std::make_unique<Sword>(this);
+	m_sword->Initialize();
 
 	// 鬼の生成と初期化
 	m_enemy = std::make_unique<Enemy>(this);
@@ -103,14 +113,19 @@ void PlayScene::Update(float elapsedTime)
 
 	// プレイヤーの更新処理
 	m_player->Update(m_enemy->GetPosition(), elapsedTime);
+	// プレイヤーの武器の更新処理
+	m_sword->Update(elapsedTime);
+
 	// 敵の更新処理
 	m_enemy->Update(elapsedTime);
+
 	// カメラの回転行列の作成	引数にはプレイヤーの回転角を入れる
 	SimpleMath::Matrix matrix
 		= SimpleMath::Matrix::CreateRotationY(
 			XMConvertToRadians(m_player->GetAngle()));
 	// カメラの更新
 	m_camera->Update(m_player->GetPosition(), m_enemy->GetPosition(), matrix);
+
 	// パーティクルの更新
 	m_particles->Update(
 		elapsedTime,
@@ -140,6 +155,8 @@ void PlayScene::Render()
 	m_enemy->Render(device, context, states, view, m_projection);
 	// プレイヤーの描画を行う
 	m_player->Render(device, context, states, view, m_projection, m_commonResources);
+	// プレイヤーの武器の描画を行う
+	m_sword->Render(device, context, states, view, m_projection, m_commonResources);
 	// パーティクルのビルボード作成
 	m_particles->CreateBillboard(m_camera->GetTargetPosition(), m_camera->GetEyePosition(), DirectX::SimpleMath::Vector3::Up);
 	// パーティクルの描画

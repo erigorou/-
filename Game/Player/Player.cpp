@@ -70,6 +70,7 @@ void Player::Initialize()
 	fx->SetDirectory(L"Resources/Models");
 	// モデルを読み込む
 	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/momotaro.cmo", *fx);
+
 	// ステートの作成
 	CreateState();
 

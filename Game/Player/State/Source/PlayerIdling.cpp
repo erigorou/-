@@ -7,6 +7,7 @@
 
 #include "Game/Enemy/Enemy.h"
 #include "Game/Player/Player.h"
+
 #include "Game/Player/State/Header/PlayerIdling.h"
 
 // コンストラクタ

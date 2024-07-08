@@ -22,6 +22,8 @@ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\St
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Scene\PlayScene.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\PlayScene.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Scene\SceneManager.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\SceneManager.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Scene\TitleScene.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\TitleScene.obj
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Sword\Source\SwordIdling.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\SwordIdling.obj
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Sword\Sword.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\Sword.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\Microsoft\DebugDraw.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\DebugDraw.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\BinaryFile.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\BinaryFile.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\DebugCamera.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\DebugCamera.obj

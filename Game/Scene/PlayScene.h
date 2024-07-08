@@ -12,7 +12,10 @@
 
 // ‘O•ûéŒ¾
 class CommonResources;
+
 class Player;
+class Sword;
+
 class Enemy;
 
 class PlayScene final :
@@ -53,5 +56,7 @@ public:
 
 private:
 	std::unique_ptr<Player> m_player;
+	std::unique_ptr<Sword> m_sword;
+
 	std::unique_ptr<Enemy>  m_enemy;
 };

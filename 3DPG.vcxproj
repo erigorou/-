@@ -206,6 +206,9 @@
     <ClInclude Include="Game\Scene\SceneManager.h" />
     <ClInclude Include="Game\Scene\TitleScene.h" />
     <ClInclude Include="Game\Screen.h" />
+    <ClInclude Include="Interface\IWeapon.h" />
+    <ClInclude Include="Game\Weapon\Sword\Header\SwordIdling.h" />
+    <ClInclude Include="Game\Weapon\Sword\Sword.h" />
     <ClInclude Include="Interface\IState.h" />
     <ClInclude Include="Libraries\Microsoft\DebugDraw.h" />
     <ClInclude Include="Libraries\MyLib\BinaryFile.h" />
@@ -244,6 +247,8 @@
     <ClCompile Include="Game\Scene\PlayScene.cpp" />
     <ClCompile Include="Game\Scene\SceneManager.cpp" />
     <ClCompile Include="Game\Scene\TitleScene.cpp" />
+    <ClCompile Include="Game\Weapon\Sword\Source\SwordIdling.cpp" />
+    <ClCompile Include="Game\Weapon\Sword\Sword.cpp" />
     <ClCompile Include="Libraries\Microsoft\DebugDraw.cpp" />
     <ClCompile Include="Libraries\MyLib\BinaryFile.cpp" />
     <ClCompile Include="Libraries\MyLib\DebugCamera.cpp" />

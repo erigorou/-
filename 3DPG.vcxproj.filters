@@ -166,6 +166,9 @@
     <ClInclude Include="Game\Player\State\Header\PlayerAttacking_2.h" />
     <ClInclude Include="Game\Player\State\Header\PlayerAttacking_3.h" />
     <ClInclude Include="Game\Player\State\Header\PlayerAttacking_4.h" />
+    <ClInclude Include="Game\Weapon\Sword\Sword.h" />
+    <ClInclude Include="Interface\IWeapon.h" />
+    <ClInclude Include="Game\Weapon\Sword\Header\SwordIdling.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -243,6 +246,8 @@
     <ClCompile Include="Game\Player\State\Source\PlayerAttacking_2.cpp" />
     <ClCompile Include="Game\Player\State\Source\PlayerAttacking_3.cpp" />
     <ClCompile Include="Game\Player\State\Source\PlayerAttacking_4.cpp" />
+    <ClCompile Include="Game\Weapon\Sword\Sword.cpp" />
+    <ClCompile Include="Game\Weapon\Sword\Source\SwordIdling.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
