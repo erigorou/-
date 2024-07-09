@@ -147,10 +147,10 @@
     <ClInclude Include="BehaviourTree\Header\Sequence.h">
       <Filter>BehaviorTree\Header</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Player\State\Header\PlayerDodging.h">
+    <ClInclude Include="Game\Player\State\Header\Player_Dodging.h">
       <Filter>Game\Player\State\Header</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Player\State\Header\PlayerIdling.h">
+    <ClInclude Include="Game\Player\State\Header\Player_Idling.h">
       <Filter>Game\Player\State\Header</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\MyLib\SkySphere.h">
@@ -160,15 +160,16 @@
     <ClInclude Include="Effects\Particle.h" />
     <ClInclude Include="Libraries\MyLib\BinaryFile.h" />
     <ClInclude Include="Libraries\MyLib\Math.h" />
-    <ClInclude Include="Game\Player\State\Header\PlayerAttacking_1.h" />
+    <ClInclude Include="Game\Player\State\Header\Player_Attacking_1.h" />
     <ClInclude Include="Game\Enemy\States\Header\EnemyIdling.h" />
     <ClInclude Include="Game\Enemy\States\Header\EnemyApproaching.h" />
-    <ClInclude Include="Game\Player\State\Header\PlayerAttacking_2.h" />
-    <ClInclude Include="Game\Player\State\Header\PlayerAttacking_3.h" />
-    <ClInclude Include="Game\Player\State\Header\PlayerAttacking_4.h" />
+    <ClInclude Include="Game\Player\State\Header\Player_Attacking_2.h" />
+    <ClInclude Include="Game\Player\State\Header\Player_Attacking_3.h" />
+    <ClInclude Include="Game\Player\State\Header\Player_Attacking_4.h" />
     <ClInclude Include="Game\Weapon\Sword\Sword.h" />
     <ClInclude Include="Interface\IWeapon.h" />
-    <ClInclude Include="Game\Weapon\Sword\Header\SwordIdling.h" />
+    <ClInclude Include="Game\Weapon\Sword\Header\Sword_Idling.h" />
+    <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_1.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -228,10 +229,10 @@
     <ClCompile Include="BehaviourTree\Source\Sequence.cpp">
       <Filter>BehaviorTree\Source</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Player\State\Source\PlayerIdling.cpp">
+    <ClCompile Include="Game\Player\State\Source\Player_Idling.cpp">
       <Filter>Game\Player\State\Source</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Player\State\Source\PlayerDodging.cpp">
+    <ClCompile Include="Game\Player\State\Source\Player_Dodging.cpp">
       <Filter>Game\Player\State\Source</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\MyLib\SkySphere.cpp">
@@ -240,14 +241,15 @@
     <ClCompile Include="Effects\Source\DustTrailParticle.cpp" />
     <ClCompile Include="Effects\Particle.cpp" />
     <ClCompile Include="Libraries\MyLib\BinaryFile.cpp" />
-    <ClCompile Include="Game\Player\State\Source\PlayerAttacking_1.cpp" />
+    <ClCompile Include="Game\Player\State\Source\Player_Attacking_1.cpp" />
     <ClCompile Include="Game\Enemy\States\Source\EnemyIdling.cpp" />
     <ClCompile Include="Game\Enemy\States\Source\EnemyApproaching.cpp" />
-    <ClCompile Include="Game\Player\State\Source\PlayerAttacking_2.cpp" />
-    <ClCompile Include="Game\Player\State\Source\PlayerAttacking_3.cpp" />
-    <ClCompile Include="Game\Player\State\Source\PlayerAttacking_4.cpp" />
+    <ClCompile Include="Game\Player\State\Source\Player_Attacking_2.cpp" />
+    <ClCompile Include="Game\Player\State\Source\Player_Attacking_3.cpp" />
+    <ClCompile Include="Game\Player\State\Source\Player_Attacking_4.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Sword.cpp" />
-    <ClCompile Include="Game\Weapon\Sword\Source\SwordIdling.cpp" />
+    <ClCompile Include="Game\Weapon\Sword\Source\Sword_Idling.cpp" />
+    <ClCompile Include="Game\Weapon\Sword\Source\Sword_Attacking_1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

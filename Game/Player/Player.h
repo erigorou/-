@@ -2,12 +2,16 @@
 #include "Interface/IState.h"
 #include "Game/Scene/PlayScene.h"
 
-#include "Game/Player/State/Header/PlayerIdling.h"		// 待機状態
-#include "Game/Player/State/Header/PlayerDodging.h"		// 回避状態
-#include "Game/Player/State/Header/PlayerAttacking_1.h"	// 攻撃状態1
-#include "Game/Player/State/Header/PlayerAttacking_2.h"	// 攻撃状態2
-#include "Game/Player/State/Header/PlayerAttacking_3.h"	// 攻撃状態3
-#include "Game/Player/State/Header/PlayerAttacking_4.h"	// 攻撃状態4
+// プレイヤーに付与されるもの ===========================================
+#include "Game/Weapon/Sword/Sword.h"	// 武器
+
+// プレイヤーの状態 =====================================================
+#include "Game/Player/State/Header/Player_Idling.h"			// 待機状態
+#include "Game/Player/State/Header/Player_Dodging.h"		// 回避状態
+#include "Game/Player/State/Header/Player_Attacking_1.h"	// 攻撃状態１
+#include "Game/Player/State/Header/Player_Attacking_2.h"	// 攻撃状態２
+#include "Game/Player/State/Header/Player_Attacking_3.h"	// 攻撃状態３
+#include "Game/Player/State/Header/Player_Attacking_4.h"	// 攻撃状態４
 
 
 class Player
@@ -111,26 +115,28 @@ private:
 	// モデル
 	std::unique_ptr<DirectX::Model> m_model;
 
-	// 現在のステート
-	IState* m_currentState;
-	// プレイヤーのアイドリングステート
-	std::unique_ptr<PlayerIdling> m_playerIdling;
-	// プレイヤーのダッジングステート
-	std::unique_ptr<PlayerDodging> m_playerDodging;
+	// ステート関連 =================================================
+	IState* m_currentState;										// 現在のステート
+	std::unique_ptr<PlayerIdling> m_playerIdling;				// 待機状態
+	std::unique_ptr<PlayerDodging> m_playerDodging;				// 回避状態
 
-	// プレイヤーのアタッキングステート
-	std::unique_ptr<PlayerAttacking_1> m_playerAttacking_1;
-	std::unique_ptr<PlayerAttacking_2> m_playerAttacking_2;
-	std::unique_ptr<PlayerAttacking_3> m_playerAttacking_3;
-	std::unique_ptr<PlayerAttacking_4> m_playerAttacking_4;
+	std::unique_ptr<PlayerAttacking_1> m_playerAttacking_1;		// 攻撃状態１
+	std::unique_ptr<PlayerAttacking_2> m_playerAttacking_2;		// 攻撃状態２
+	std::unique_ptr<PlayerAttacking_3> m_playerAttacking_3;		// 攻撃状態３
+	std::unique_ptr<PlayerAttacking_4> m_playerAttacking_4;		// 攻撃状態４
 
 
+	// プレイヤーに付与されるもの ============
+	std::unique_ptr<Sword> m_sword;
 
+
+	// シェーダーに使用するもの ==============
 	// ベーシックエフェクト
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
 	// 入力レイアウト
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
+
 
 private:
 	// プレイシーン(他のオブジェクトの情報の取得などに使う)

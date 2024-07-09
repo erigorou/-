@@ -4,8 +4,10 @@
 #include "Interface/IWeapon.h"
 #include "Game/Scene/PlayScene.h"
 
-// 待機ステート
-#include "Game/Weapon/Sword/Header/SwordIdling.h"
+// 剣の状態 ========================================================
+#include "Game/Weapon/Sword/Header/Sword_Idling.h"			// 待機状態
+#include "Game/Weapon/Sword/Header/Sword_Attacking_1.h"		// 攻撃状態１
+
 
 
 class Sword
@@ -21,8 +23,9 @@ public:
 	PlayScene* GetPlayScene()const { return m_playScene; }
 
 
-	// 待機状態を取得する
-	IWeapon* GetIdlingState()const { return m_swordIdling.get(); }
+	// 状態のゲッター
+	IWeapon* GetIdlingState()const { return m_swordIdling.get(); }				// 待機状態
+	IWeapon* GetAttacking_1State()const { return m_swordAttacking_1.get(); }	// 攻撃状態１
 
 public:
 	// コンストラクタ
@@ -34,13 +37,26 @@ public:
 	void Initialize();
 	// 更新処理
 	void Update(float elapsedTime);
+
 	// 描画処理
 	void Render(ID3D11Device* device,
 		ID3D11DeviceContext* context,
 		DirectX::CommonStates* states,
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& projection,
-		const CommonResources* resources);
+		const CommonResources* resources
+	);
+
+	// 境界ボックスの描画
+	void DrawBoundingBox(
+		ID3D11Device* device,
+		ID3D11DeviceContext* context,
+		DirectX::CommonStates* states,
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& projection,
+		const DirectX::BoundingBox boundingBox
+	);
+
 	// 終了処理
 	void Finalize();
 
@@ -65,7 +81,8 @@ private:
 	// 現在のステート
 	IWeapon* m_currentState;
 	// 待機モーション
-	std::unique_ptr<SwordIdling> m_swordIdling;
+	std::unique_ptr<Sword_Idling> m_swordIdling;
+	std::unique_ptr<Sword_Attacking_1> m_swordAttacking_1;
 
 private:
 	// ベーシックエフェクト

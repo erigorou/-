@@ -10,13 +10,16 @@
 // ヘッダー
 #include "Game/CommonResources.h"	
 #include "DeviceResources.h"
+#include "Libraries/MyLib/DebugString.h"
+#include "Libraries/Microsoft/DebugDraw.h"
+#include "DeviceResources.h"
 
 #include "Sword.h"
 #include "Game/Player/Player.h"
 
 
 // 固定値
-const float Sword::SWORD_SCALE = Player::PLAYER_SCALE;
+const float Sword::SWORD_SCALE = Player::PLAYER_SCALE * 2.0f;
 
 // コンストラクタ
 Sword::Sword(PlayScene* playScene)
@@ -75,12 +78,17 @@ void Sword::Initialize()
 // シーンを生成する
 void Sword::CreateState()
 {
-	// 待機ステートを取得する か 初期化する
-	m_swordIdling = std::make_unique<SwordIdling>(this);
+	// ステートを生成する
+	m_swordIdling = std::make_unique<Sword_Idling>(this);
+	m_swordAttacking_1 = std::make_unique<Sword_Attacking_1>(this);
+
+	// ステートを初期化する
 	m_swordIdling->Initialize();
+	m_swordAttacking_1->Initialize();
 
 	// 現在のステートを設定
-	m_currentState = m_swordIdling.get();
+	//m_currentState = m_swordIdling.get();
+	m_currentState = m_swordAttacking_1.get();
 }
 
 // 更新処理
@@ -102,7 +110,46 @@ void Sword::Render(
 {
 	// 現在のステートの描画処理
 	m_currentState->Render(context,states,view,projection);
+
+	// 境界ボックスの描画
+	DrawBoundingBox(device, context, states, view, projection, m_currentState->GetBoundingBox());
 }
+
+// --------------------------------
+// 境界ボックスを表示
+// --------------------------------
+void Sword::DrawBoundingBox(
+	ID3D11Device* device,
+	ID3D11DeviceContext* context,
+	DirectX::CommonStates* states,
+	const DirectX::SimpleMath::Matrix& view,
+	const DirectX::SimpleMath::Matrix& projection,
+	const DirectX::BoundingBox boundingBox)
+{
+	using namespace DirectX;
+	using namespace DirectX::SimpleMath;
+
+	UNREFERENCED_PARAMETER(device);
+
+
+	context->OMSetBlendState(states->Opaque(), nullptr, 0xFFFFFFFF);
+	context->OMSetDepthStencilState(states->DepthRead(), 0);
+	context->RSSetState(states->CullNone());
+	context->IASetInputLayout(m_inputLayout.Get());
+	//** デバッグドローでは、ワールド変換いらない
+	m_basicEffect->SetView(view);
+	m_basicEffect->SetProjection(projection);
+	m_basicEffect->Apply(context);
+	// 描画
+	m_primitiveBatch->Begin();
+	DX::Draw(
+		m_primitiveBatch.get(),	// プリミティブバッチ
+		boundingBox,			// 境界ボックス
+		Colors::Green			// 色
+	);
+	m_primitiveBatch->End();
+}
+
 
 
 // 終了処理

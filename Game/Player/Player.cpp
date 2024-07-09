@@ -15,6 +15,7 @@
 #include "Libraries/MyLib/Math.h"
 
 #include "Game/Player/Player.h"
+#include "Game/Weapon/Sword/Sword.h"
 
 
 // ここで静的メンバー変数を定義する
@@ -297,10 +298,6 @@ void Player::Render(
 	// 境界球の描画
 	// 体の境界球の描画
 	DrawBoundingSphere(device, context, states, view, projection,m_currentState->GetBoundingSphereBody());
-
-	// デバッグ情報を「DebugString」で表示する
-	auto debugString = resources->GetDebugString();
-	debugString->AddString("m_position : %f :%f :%f", m_position.x, m_position.y, m_position.z);
 }
 
 

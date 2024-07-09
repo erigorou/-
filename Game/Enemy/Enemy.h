@@ -83,12 +83,14 @@ private:
 	// モデル
 	std::unique_ptr<DirectX::Model> m_model;
 
+
 	// 現在のステート（ステートパターン）
 	IState* m_currentState;
 	// 待機ステート
 	std::unique_ptr<EnemyIdling> m_enemyIdling;
 	// 追尾ステート
 	std::unique_ptr<EnemyApproaching> m_enemyApproaching;
+
 
 	// ビヘイビアツリー
 	std::unique_ptr<BehaviorTree> m_pBT;
