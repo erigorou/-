@@ -170,6 +170,7 @@
     <ClInclude Include="Interface\IWeapon.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Idling.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_1.h" />
+    <ClInclude Include="Game\Enemy\States\Header\Enemy_HP.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />

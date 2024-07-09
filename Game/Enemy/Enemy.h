@@ -2,9 +2,11 @@
 #include "Interface/IState.h"
 #include "Game/Scene/PlayScene.h"
 
+#include "Game/Enemy/States/Header/Enemy_HP.h"	// HP
+
 #include "Game/Enemy/States/Header/EnemyIdling.h"		// 待機ステート
 #include "Game/Enemy/States/Header/EnemyApproaching.h"	// 追尾ステート
-#include "BehaviourTree/Header/BehaviorTree.h"	// ビヘイビアツリー
+#include "BehaviourTree/Header/BehaviorTree.h"			// ビヘイビアツリー
 
 
 class Enemy
@@ -18,6 +20,8 @@ public:
 public:
 	// プレイシーンを取得する
 	PlayScene* GetPlayScene() const { return m_playScene; }
+	// 鬼のHP管理してるやつを取得する
+	Enemy_HP* GetEnemyHP() const { return m_hp.get(); }
 	// 鬼の座標を取得する
 	DirectX::SimpleMath::Vector3 GetPosition() const { return m_position; }
 	// 鬼の座標を設定する
@@ -84,12 +88,14 @@ private:
 	std::unique_ptr<DirectX::Model> m_model;
 
 
+	// HP
+	std::unique_ptr<Enemy_HP> m_hp;
+
 	// 現在のステート（ステートパターン）
 	IState* m_currentState;
-	// 待機ステート
-	std::unique_ptr<EnemyIdling> m_enemyIdling;
-	// 追尾ステート
-	std::unique_ptr<EnemyApproaching> m_enemyApproaching;
+
+	std::unique_ptr<EnemyIdling> m_enemyIdling;					// 待機ステート
+	std::unique_ptr<EnemyApproaching> m_enemyApproaching;		// 追尾ステート
 
 
 	// ビヘイビアツリー

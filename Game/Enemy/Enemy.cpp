@@ -59,6 +59,10 @@ void Enemy::Initialize()
 	// モデルを読み込む(仮でサイコロを読み込む)
 	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/oni.cmo", *fx);
 
+	// HPを設定
+	m_hp = std::make_unique<Enemy_HP>(5);
+	m_hp->SetHP(5);
+
 	// ビヘイビアツリーを取得
 	m_pBT = std::make_unique<BehaviorTree>();
 

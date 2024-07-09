@@ -132,6 +132,13 @@ void PlayScene::Update(float elapsedTime)
 		m_player->GetPosition(),
 		m_player->GetVelocity()
 	);
+
+
+	// HP‚ª0ˆÈ‰º‚É‚È‚Á‚½‚çƒQ[ƒ€I—¹
+	if (m_enemy->GetEnemyHP()->GetHP() <= 0)
+	{
+		m_isChangeScene = true;
+	}
 }
 
 
