@@ -7,6 +7,7 @@
 
 #include "Game/Enemy/Enemy.h"
 #include "Game/Player/Player.h"
+#include "Game/Weapon/Sword/Sword.h"
 
 #include "Game/Player/State/Header/Player_Idling.h"
 

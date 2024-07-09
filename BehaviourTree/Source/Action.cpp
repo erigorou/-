@@ -12,6 +12,7 @@
 
 
 // 椅子から立つアクションの実行
+// 
 bool Action1::execute() {
     std::cout << "Executing Action: " << name() << std::endl;
     return true;

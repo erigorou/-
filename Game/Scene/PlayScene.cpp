@@ -161,13 +161,6 @@ void PlayScene::Render()
 	m_particles->CreateBillboard(m_camera->GetTargetPosition(), m_camera->GetEyePosition(), DirectX::SimpleMath::Vector3::Up);
 	// パーティクルの描画
 	m_particles->Render(states, view, m_projection);
-
-
-	// デバッグ情報を「DebugString」で表示する
-	auto debugString = m_commonResources->GetDebugString();
-	debugString->AddString("Camera Angle : %f", XMConvertToDegrees(m_camera->GetCameraAngle()));
-	debugString->AddString("Player Angle : %f", XMConvertToDegrees(m_player->GetAngle()));
-
 }
 
 //---------------------------------------------------------

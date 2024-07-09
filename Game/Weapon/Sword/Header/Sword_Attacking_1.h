@@ -57,8 +57,10 @@ private:
 	// このシーンになってからのステート
 	float m_totalSeconds;
 
-	// 剣の当たり判定
+	// 剣の当たり判定1(実際の当たり判定)　
 	DirectX::BoundingBox m_boundingBox;
+	// オリジナルの当たり判定 (オリジナルは生成をするだけのもの)
+	DirectX::BoundingBox m_originalBox;
 
 
 private:

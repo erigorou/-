@@ -18,7 +18,7 @@
 #include "Game/Player/Player.h"
 
 
-// 固定値
+// 固定値									0.7f
 const float Sword::SWORD_SCALE = Player::PLAYER_SCALE * 2.0f;
 
 // コンストラクタ
@@ -87,8 +87,8 @@ void Sword::CreateState()
 	m_swordAttacking_1->Initialize();
 
 	// 現在のステートを設定
-	//m_currentState = m_swordIdling.get();
-	m_currentState = m_swordAttacking_1.get();
+	m_currentState = m_swordIdling.get();
+	//m_currentState = m_swordAttacking_1.get();
 }
 
 // 更新処理

@@ -12,6 +12,7 @@
 #include "Libraries/MyLib/Math.h"
 
 #include "Game/Player/Player.h"
+#include "Game/Weapon/Sword/Sword.h"
 #include "Game/Enemy/Enemy.h"
 #include "Game/Player/State/Header/Player_Attacking_1.h"
 
@@ -50,6 +51,12 @@ void PlayerAttacking_1::PreUpdate()
 {
 	// 経過時間の初期化
 	m_totalSeconds = 0.f;
+	
+	// 武器を攻撃状態に変更
+	m_player->GetPlayScene()->GetSword()->ChangeState(
+		m_player->GetPlayScene()->GetSword()->GetAttacking_1State()
+	);
+
 	// 当たり判定の座標をプレイヤーの座標に変更
 	m_boundingSphereBody.Center = m_player->GetPosition();
 }
@@ -91,7 +98,11 @@ void PlayerAttacking_1::Update(const float& elapsedTime,  DirectX::SimpleMath::V
 // 事後更新処理
 void PlayerAttacking_1::PostUpdate()
 {
-	// 修正点があればここに記載
+
+	// 武器を攻撃状態に変更
+	m_player->GetPlayScene()->GetSword()->ChangeState(
+		m_player->GetPlayScene()->GetSword()->GetIdlingState()
+	);
 }
 
 

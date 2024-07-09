@@ -22,8 +22,9 @@ class PlayScene final :
     public IScene
 {
 public:
-	Player* GetPlayer() { return m_player.get(); }
+	Player* GetPlayer() { return m_player.get();}
 	Enemy*  GetEnemy()  { return m_enemy.get(); }
+	Sword* GetSword()	{ return m_sword.get(); }
 
 private:
 	// ‹¤’ÊƒŠƒ\[ƒX
