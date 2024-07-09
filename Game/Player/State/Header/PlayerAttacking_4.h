@@ -43,6 +43,8 @@ public:
 		const DirectX::SimpleMath::Matrix& projection) override;
 	// I—¹ˆ—
 	void Finalize() override;
+	// ‘Ì‚Æ“–‚½‚Á‚½‚Æ‚«‚Ìˆ—
+	DirectX::SimpleMath::Vector3 CalculatingPushBack();
 
 
 private:
