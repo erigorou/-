@@ -12,10 +12,10 @@
 
 // ‘O•ûéŒ¾
 class CommonResources;
+class BGM_Player;
 
 class Player;
 class Sword;
-
 class Enemy;
 
 class PlayScene final :
@@ -54,6 +54,10 @@ public:
 	void Finalize() override;
 
 	SceneID GetNextSceneID() const;
+
+private:
+	// Œø‰Ê‰¹Ä¶
+	std::unique_ptr<BGM_Player> m_bgm;
 
 private:
 	std::unique_ptr<Player> m_player;

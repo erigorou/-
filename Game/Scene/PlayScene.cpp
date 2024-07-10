@@ -13,6 +13,9 @@
 #include "Libraries/MyLib/InputManager.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 
+// BGM再生するやつ
+#include "Game/Sound/BGM_Player.h"
+
 #include <Model.h>
 #include <cassert>
 
@@ -81,6 +84,10 @@ void PlayScene::Initialize()
 	m_isChangeScene = false;
 
 	// =================================================
+	m_bgm = std::make_unique<BGM_Player>();
+	m_bgm->InitializeFMOD("Resources/Sounds/BGM.ogg");
+
+	// =================================================
 
 	// 天球の生成とモデルの読み込み
 	m_skySphere = std::make_unique<SkySphere>();
@@ -110,6 +117,9 @@ void PlayScene::Update(float elapsedTime)
 {
 	using namespace DirectX;
 	UNREFERENCED_PARAMETER(elapsedTime);
+
+	// BGMの再生
+	m_bgm->Update();
 
 	// プレイヤーの更新処理
 	m_player->Update(m_enemy->GetPosition(), elapsedTime);
@@ -175,6 +185,7 @@ void PlayScene::Render()
 //---------------------------------------------------------
 void PlayScene::Finalize()
 {
+	m_bgm->FinalizeFMOD();
 }
 
 //---------------------------------------------------------
@@ -185,7 +196,7 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 	// シーン変更がある場合
 	if (m_isChangeScene)
 	{
-		return IScene::SceneID::TITLE;
+		return IScene::SceneID::RESULT;
 	}
 
 	// シーン変更がない場合

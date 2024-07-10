@@ -59,10 +59,6 @@ void PlayerAttacking_1::PreUpdate()
 
 	// 当たり判定の座標をプレイヤーの座標に変更
 	m_boundingSphereBody.Center = m_player->GetPosition();
-
-
-	// デバッグ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
-	m_player->GetPlayScene()->GetEnemy()->GetEnemyHP()->ReduceHP(1);
 }
 
 // 更新処理
@@ -107,6 +103,9 @@ void PlayerAttacking_1::PostUpdate()
 	m_player->GetPlayScene()->GetSword()->ChangeState(
 		m_player->GetPlayScene()->GetSword()->GetIdlingState()
 	);
+
+	// デバッグ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+	m_player->GetPlayScene()->GetEnemy()->GetEnemyHP()->ReduceHP(1);
 }
 
 

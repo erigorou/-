@@ -58,7 +58,7 @@ void TitleScene::Initialize()
 	DX::ThrowIfFailed(
 		CreateWICTextureFromFile(
 			device,
-			L"Resources/Textures/TridentLogo.png",
+			L"Resources/Textures/LOGO.png",
 			nullptr,
 			m_texture.ReleaseAndGetAddressOf()
 		)

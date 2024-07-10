@@ -4,8 +4,11 @@
 */
 #include "pch.h"
 #include "SceneManager.h"
+
 #include "TitleScene.h"
 #include "PlayScene.h"
+#include "ResultScene.h"
+
 #include "Game/Screen.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
@@ -38,7 +41,7 @@ SceneManager::~SceneManager()
 //---------------------------------------------------------
 void SceneManager::Initialize()
 {
-	ChangeScene(IScene::SceneID::PLAY);
+	ChangeScene(IScene::SceneID::TITLE);
 }
 
 //---------------------------------------------------------
@@ -99,7 +102,7 @@ void SceneManager::CreateScene(IScene::SceneID sceneID)
 			m_currentScene = std::make_unique<PlayScene>();
 			break;
 		case IScene::SceneID::RESULT:
-			//m_currentScene = std::make_unique<ResultScene>();
+			m_currentScene = std::make_unique<ResultScene>();
 			break;
 		default:
 			assert(!"SceneManager::CreateScene::ÉVÅ[ÉìñºÇ™ë∂ç›ÇµÇ‹ÇπÇÒÅI");

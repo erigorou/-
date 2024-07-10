@@ -171,6 +171,8 @@
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Idling.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_1.h" />
     <ClInclude Include="Game\Enemy\States\Header\Enemy_HP.h" />
+    <ClInclude Include="Game\Sound\BGM_Player.h" />
+    <ClInclude Include="Game\Scene\ResultScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -251,6 +253,8 @@
     <ClCompile Include="Game\Weapon\Sword\Sword.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Idling.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Attacking_1.cpp" />
+    <ClCompile Include="Game\Sound\BGM_Player.cpp" />
+    <ClCompile Include="Game\Scene\ResultScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -268,6 +272,8 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Resources\Shaders\Particle.hlsli" />
+    <None Include="fmod.dll" />
+    <None Include="fmodL.dll" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\ParticleGS.hlsl" />
