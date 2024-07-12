@@ -5,8 +5,7 @@
 #include "Game/Scene/PlayScene.h"
 
 // 金棒の状態 ========================================================
-
-
+#include "Cudgel_Idling.h"
 
 
 class Cudgel
@@ -77,6 +76,8 @@ private:
 private:
 	// 現在のステート
 	IWeapon* m_currentState;
+	// 待機状態
+	std::unique_ptr<Cudgel_Idling> m_idling;
 
 
 private:

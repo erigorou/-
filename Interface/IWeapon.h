@@ -5,6 +5,8 @@
 class IWeapon
 {
 public:
+	// デストラクタ
+	virtual~IWeapon() = default;
 	// 初期化
 	virtual void Initialize() = 0;
 	// 事前処理
