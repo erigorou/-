@@ -173,6 +173,8 @@
     <ClInclude Include="Game\Enemy\States\Header\Enemy_HP.h" />
     <ClInclude Include="Game\Sound\BGM_Player.h" />
     <ClInclude Include="Game\Scene\ResultScene.h" />
+    <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel.h" />
+    <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Idling.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -255,6 +257,8 @@
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Attacking_1.cpp" />
     <ClCompile Include="Game\Sound\BGM_Player.cpp" />
     <ClCompile Include="Game\Scene\ResultScene.cpp" />
+    <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Idling.cpp" />
+    <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

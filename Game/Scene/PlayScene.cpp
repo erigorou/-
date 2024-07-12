@@ -23,6 +23,7 @@
 #include "Game/Enemy/Enemy.h"
 
 #include "Game/Weapon/Sword/Sword.h"
+#include "Game/Weapon/Cudgel/Header/Cudgel.h"
 
 //---------------------------------------------------------
 // コンストラクタ
@@ -37,6 +38,7 @@ PlayScene::PlayScene()
 	,m_player{}
 	,m_sword{}
 	,m_enemy{}
+	,m_cudgel{}
 	,m_skySphere{}
 	,m_particles{}
 {
@@ -108,6 +110,10 @@ void PlayScene::Initialize()
 	// 鬼の生成と初期化
 	m_enemy = std::make_unique<Enemy>(this);
 	m_enemy->Initialize();
+
+	// 鬼の武器を生成と初期化
+	m_cudgel = std::make_unique<Cudgel>(this);
+	m_cudgel->Initialize();
 }
 
 //---------------------------------------------------------

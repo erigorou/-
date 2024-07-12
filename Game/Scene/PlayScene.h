@@ -17,6 +17,7 @@ class BGM_Player;
 class Player;
 class Sword;
 class Enemy;
+class Cudgel;
 
 class PlayScene final :
     public IScene
@@ -25,6 +26,7 @@ public:
 	Player* GetPlayer() { return m_player.get();}
 	Enemy*  GetEnemy()  { return m_enemy.get(); }
 	Sword* GetSword()	{ return m_sword.get(); }
+	Cudgel* GetCudgel() { return m_cudgel.get();}
 
 private:
 	// ã§í ÉäÉ\Å[ÉX
@@ -64,4 +66,5 @@ private:
 	std::unique_ptr<Sword> m_sword;
 
 	std::unique_ptr<Enemy>  m_enemy;
+	std::unique_ptr<Cudgel> m_cudgel;
 };
