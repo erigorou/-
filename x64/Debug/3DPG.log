@@ -1,15 +1,14 @@
-﻿  EnemyApproaching.cpp
-  EnemyIdling.cpp
-  Player.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\Player.cpp(64,7): warning C4189: 'states': ローカル変数が初期化されましたが、参照されていません
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\Player.cpp(257,25): warning C4100: 'resources': 引数は関数の本体部で 1 度も参照されません。
+﻿  Particle.cpp
+  DustTrailParticle.cpp
+  EnemyApproaching.cpp
   Player_Attacking_1.cpp
   Player_Attacking_2.cpp
   Player_Attacking_3.cpp
   Player_Attacking_4.cpp
-  Player_Idling.cpp
   Player_Dodging.cpp
-  PlayScene.cpp
+  Player_Idling.cpp
+  ResultScene.cpp
+  BGM_Player.cpp
   Cudgel.cpp
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel.cpp(43,7): warning C4189: 'states': ローカル変数が初期化されましたが、参照されていません
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel.cpp(85,27): warning C4100: 'elapsedTime': 引数は関数の本体部で 1 度も参照されません。
@@ -20,7 +19,9 @@ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cu
   Sword.cpp
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Sword\Sword.cpp(43,7): warning C4189: 'states': ローカル変数が初期化されましたが、参照されていません
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Sword\Sword.cpp(109,25): warning C4100: 'resources': 引数は関数の本体部で 1 度も参照されません。
-  Main.cpp
+  BinaryFile.cpp
+  SkySphere.cpp
   コードを生成中...
+  LINK : 前回のインクリメンタル リンクで C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe が見つからなかったか、ビルドされませんでした。フル リンクを行います。
      ライブラリ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.lib とオブジェクト C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exp を作成中
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe
