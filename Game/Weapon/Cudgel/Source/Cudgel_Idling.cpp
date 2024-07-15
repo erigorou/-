@@ -12,6 +12,7 @@
 #include "Libraries/MyLib/Math.h"
 
 #include "Game/Player/Player.h"
+#include "Game/Enemy/Enemy.h"
 #include "Game/Weapon/Cudgel/Header/Cudgel_Idling.h"
 #include "Game/Weapon/Cudgel/Header/Cudgel.h"
 
@@ -39,6 +40,7 @@ void Cudgel_Idling::Initialize()
 	using namespace DirectX::SimpleMath;
 	// モデルを取得
 	m_model = m_cudgel->GetModel();
+
 	// ワールド行列を初期化
 	m_worldMatrix = Matrix::Identity;
 }
@@ -52,19 +54,23 @@ void Cudgel_Idling::PreUpdate()
 // 更新処理
 void Cudgel_Idling::Update(float elapsedTime)
 {
+	using namespace DirectX::SimpleMath;
 	using namespace DirectX;
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	// プレイヤーの座標を取得
-	m_position = m_cudgel->GetPlayScene()->GetPlayer()->GetPosition();
-	// プレイヤーの回転を取得
-	m_angle = m_cudgel->GetPlayScene()->GetPlayer()->GetAngle();
+	// 敵を取得
+	auto enemy = m_cudgel->GetPlayScene()->GetEnemy();
 
-	// ワールド行列を更新する
-	m_worldMatrix = Matrix::CreateScale(Cudgel::CUDGEL_SCALE);							// サイズの設定
-	m_worldMatrix *= SimpleMath::Matrix::CreateTranslation(Vector3(4.0f, 0.5f, 0.0f))	// 原点で、少しだけずらす
-		*= SimpleMath::Matrix::CreateRotationY(-m_angle)								// 回転を行う
-		*= SimpleMath::Matrix::CreateTranslation(m_position);							// プレイヤの位置に設定する
+	// 鬼の座標を取得
+	m_position = enemy->GetPosition();
+	// 鬼の回転を取得
+	m_angle	= enemy->GetAngle();
+
+	// ワールド行列を計算する
+	m_worldMatrix = Matrix::CreateScale(Cudgel::CUDGEL_SCALE)		// 大きさの設定　＆　リセット
+		*= Matrix::CreateTranslation(Vector3(14.0f, 2.0f, 0.0f))	// 原点の位置からすこしずらす
+		*= Matrix::CreateRotationY(-m_angle)						// 剣全体の回転を行う
+		*= Matrix::CreateTranslation(m_position);					// 鬼の座標に移動する
 }
 
 // 事後処理

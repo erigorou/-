@@ -132,8 +132,10 @@ void PlayScene::Update(float elapsedTime)
 	// プレイヤーの武器の更新処理
 	m_sword->Update(elapsedTime);
 
-	// 敵の更新処理
+	// 鬼の更新処理
 	m_enemy->Update(elapsedTime);
+	// 鬼の武器の更新処理
+	m_cudgel->Update(elapsedTime);
 
 	// カメラの回転行列の作成	引数にはプレイヤーの回転角を入れる
 	SimpleMath::Matrix matrix
@@ -176,6 +178,8 @@ void PlayScene::Render()
 	m_gridFloor->Render(context, view, m_projection);
 	// 敵の描画を行う
 	m_enemy->Render(device, context, states, view, m_projection);
+	// 敵の武器の描画を行う
+	m_cudgel->Render(device, context, states, view, m_projection);
 	// プレイヤーの描画を行う
 	m_player->Render(device, context, states, view, m_projection, m_commonResources);
 	// プレイヤーの武器の描画を行う

@@ -20,6 +20,9 @@ public:
 	// プレイシーンの取得
 	PlayScene* GetPlayScene()const { return m_playScene; }
 
+	// 金棒の状態の初期化
+	Cudgel_Idling* GetIdling()const { return m_idling.get(); }
+
 
 
 
@@ -39,8 +42,7 @@ public:
 		ID3D11DeviceContext* context,
 		DirectX::CommonStates* states,
 		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection,
-		const CommonResources* resources
+		const DirectX::SimpleMath::Matrix& projection
 	);
 
 	// 境界ボックスの描画

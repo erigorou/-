@@ -55,6 +55,7 @@ public:
 	void Render() override;
 	void Finalize() override;
 
+	void DrawObjects();
 	SceneID GetNextSceneID() const;
 
 private:

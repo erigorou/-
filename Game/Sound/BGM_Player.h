@@ -19,6 +19,10 @@ public:
 
 	// SOUNDで使用したオブジェクトを解放
 	void FinalizeFMOD();
+
+	// 音量を調整する関数
+	void  SetVolume(float volume);
+
 private:
 	FMOD::System* m_system;	// FMODのシステム
 	FMOD::Sound* m_soundBGM;	// BGM用の音声データ

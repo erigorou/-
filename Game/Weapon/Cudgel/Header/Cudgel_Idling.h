@@ -3,6 +3,7 @@
 #include "Interface/IWeapon.h"
 
 class Cudgel;
+class Enemy;
 
 /// <summary>
 /// 待機状態
@@ -50,8 +51,11 @@ private:
 	// モデル
 	DirectX::Model* m_model;
 
-	// 剣の当たり判定
+	// 金棒の当たり判定1(実際の当たり判定)　
 	DirectX::BoundingBox m_boundingBox;
+
+	// オリジナルの当たり判定 (オリジナルは生成をするだけのもの)
+	DirectX::BoundingBox m_originalBox;
 
 private:
 	// 金棒の元

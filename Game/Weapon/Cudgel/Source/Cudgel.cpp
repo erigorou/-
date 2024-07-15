@@ -19,12 +19,13 @@
 
 
 // 固定値									0.7f
-const float Cudgel::CUDGEL_SCALE = Enemy::ENEMY_SCALE * 2.0f;
+const float Cudgel::CUDGEL_SCALE = Enemy::ENEMY_SCALE;
 
 // コンストラクタ
 Cudgel::Cudgel(PlayScene* playScene)
 	:
-	m_playScene(playScene)
+	m_playScene(playScene),
+	m_currentState()
 {
 }
 
@@ -42,7 +43,6 @@ void Cudgel::Initialize()
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
 
-
 	// モデルを生成
 	m_model = std::make_unique<DirectX::Model>();
 
@@ -50,7 +50,7 @@ void Cudgel::Initialize()
 	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
 	fx->SetDirectory(L"Resources/Models");
 	// モデルを読み込む
-	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/nihontou.cmo", *fx);
+	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/cudgel.cmo", *fx);
 
 
 	// ベーシックエフェクトを作成する
@@ -78,14 +78,21 @@ void Cudgel::Initialize()
 // シーンを生成する
 void Cudgel::CreateState()
 {
+	// 状態の生成
+	m_idling = std::make_unique<Cudgel_Idling>(this);	// 待機
 
+	// 状態の初期化
+	m_idling->Initialize();		// 待機
+
+	// 初期状態を指定
+	m_currentState = m_idling.get();
 }
 
 // 更新処理
 void Cudgel::Update(float elapsedTime)
 {
-	//// 現在のステートの更新処理
-	//m_currentState->Update(elapsedTime);
+	// 現在のステートの更新処理
+	m_currentState->Update(elapsedTime);
 }
 
 
@@ -95,11 +102,10 @@ void Cudgel::Render(
 	ID3D11DeviceContext* context,
 	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection,
-	const CommonResources* resources)
+	const DirectX::SimpleMath::Matrix& projection)
 {
-	//// 現在のステートの描画処理
-	//m_currentState->Render(context, states, view, projection);
+	// 現在のステートの描画処理
+	m_currentState->Render(context, states, view, projection);
 
 	// 境界ボックスの描画
 	DrawBoundingBox(device, context, states, view, projection, m_currentState->GetBoundingBox());
