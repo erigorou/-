@@ -24,8 +24,9 @@ const float Cudgel::CUDGEL_SCALE = Enemy::ENEMY_SCALE;
 // コンストラクタ
 Cudgel::Cudgel(PlayScene* playScene)
 	:
-	m_playScene(playScene),
-	m_currentState()
+	m_playScene(playScene)
+	,m_currentState()
+	,m_worldMatrix(DirectX::SimpleMath::Matrix::Identity)
 {
 }
 
@@ -43,16 +44,6 @@ void Cudgel::Initialize()
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
 
-	// モデルを生成
-	m_model = std::make_unique<DirectX::Model>();
-
-	// モデルを読み込む準備
-	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
-	fx->SetDirectory(L"Resources/Models");
-	// モデルを読み込む
-	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/cudgel.cmo", *fx);
-
-
 	// ベーシックエフェクトを作成する
 	m_basicEffect = std::make_unique<DirectX::BasicEffect>(device);
 	m_basicEffect->SetVertexColorEnabled(true);
@@ -68,10 +59,20 @@ void Cudgel::Initialize()
 
 	// ステートを作成
 	CreateState();
+}
 
-	// ワールド座標の初期化
-	m_worldMatrix *= DirectX::SimpleMath::Matrix::CreateScale(CUDGEL_SCALE);
 
+// モデルを生成する
+void Cudgel::CreateModel(ID3D11Device1* device)
+{
+	// モデルを生成
+	m_model = std::make_unique<DirectX::Model>();
+
+	// モデルを読み込む準備
+	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
+	fx->SetDirectory(L"Resources/Models");
+	// モデルを読み込む
+	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/cudgel.cmo", *fx);
 }
 
 
@@ -79,10 +80,12 @@ void Cudgel::Initialize()
 void Cudgel::CreateState()
 {
 	// 状態の生成
-	m_idling = std::make_unique<Cudgel_Idling>(this);	// 待機
+	m_idling = std::make_unique<Cudgel_Idling>(this);			// 待機
+	m_attacking = std::make_unique<Cudgel_Attacking>(this);		// 攻撃
 
 	// 状態の初期化
 	m_idling->Initialize();		// 待機
+	m_attacking->Initialize();	// 攻撃
 
 	// 初期状態を指定
 	m_currentState = m_idling.get();

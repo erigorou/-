@@ -5,8 +5,8 @@
 #include "Game/Scene/PlayScene.h"
 
 // 金棒の状態 ========================================================
-#include "Cudgel_Idling.h"
-
+#include "Cudgel_Idling.h"		// 待機
+#include "Cudgel_Attacking.h"	// 攻撃
 
 class Cudgel
 {
@@ -20,8 +20,10 @@ public:
 	// プレイシーンの取得
 	PlayScene* GetPlayScene()const { return m_playScene; }
 
-	// 金棒の状態の初期化
-	Cudgel_Idling* GetIdling()const { return m_idling.get(); }
+
+	// ===状態の取得================================================================
+	Cudgel_Idling* GetIdling()const { return m_idling.get(); }				// 待機
+	Cudgel_Attacking* GetAttacking()const { return m_attacking.get(); }		// 攻撃
 
 
 
@@ -58,6 +60,8 @@ public:
 	// 終了処理
 	void Finalize();
 
+	// モデルの生成
+	void CreateModel(ID3D11Device1* device);
 	// ステートを生成
 	void CreateState();
 	// ステートを更新する
@@ -80,6 +84,8 @@ private:
 	IWeapon* m_currentState;
 	// 待機状態
 	std::unique_ptr<Cudgel_Idling> m_idling;
+	// 攻撃状態
+	std::unique_ptr<Cudgel_Attacking> m_attacking;
 
 
 private:
