@@ -41,7 +41,7 @@ SceneManager::~SceneManager()
 //---------------------------------------------------------
 void SceneManager::Initialize()
 {
-	ChangeScene(IScene::SceneID::TITLE);
+	ChangeScene(IScene::SceneID::PLAY);
 }
 
 //---------------------------------------------------------

@@ -45,12 +45,16 @@ private:
 	// 速度
 	DirectX::SimpleMath::Vector3 m_velocity;
 	// 角度
-	float m_angle;
+	float m_angleRL;
+	// 上下の角度
+	float m_angleUD;
+
 	// ワールド行列
 	DirectX::SimpleMath::Matrix m_worldMatrix;
 	// モデル
 	DirectX::Model* m_model;
-
+	// 合計時間
+	float m_totalSeconds;
 	// 金棒の当たり判定1(実際の当たり判定)　
 	DirectX::BoundingBox m_boundingBox;
 

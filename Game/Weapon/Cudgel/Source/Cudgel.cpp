@@ -57,6 +57,9 @@ void Cudgel::Initialize()
 	// プリミティブバッチの作成
 	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
 
+	// モデルの生成
+	CreateModel(device);
+
 	// ステートを作成
 	CreateState();
 }

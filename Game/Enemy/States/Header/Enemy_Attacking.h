@@ -1,22 +1,22 @@
 #pragma once
-#ifndef ENEMY_IDLING_DEFINED
-#define ENEMY_IDLING_DEFINED
+#ifndef ENEMY_ATTACKING_DEFINED
+#define ENEMY_ATTACKING_DEFINED
 #include "Interface/IState.h"
 
 class Enemy;
 class Player;
 
 // 敵の待機ステートを定義
-class EnemyIdling : public IState
+class Enemy_Attacking : public IState
 {
 public:
 	// 体の境界球を取得
 	DirectX::BoundingSphere GetBoundingSphereBody() { return m_boundingSphereBody; }
 public:
 	// コンストラクタ
-	EnemyIdling(Enemy* enemy);
+	Enemy_Attacking(Enemy* enemy);
 	// デストラクタ
-	~EnemyIdling() override;
+	~Enemy_Attacking() override;
 	// 初期化する
 	void Initialize(DirectX::Model* model) override;
 	// 事前更新する

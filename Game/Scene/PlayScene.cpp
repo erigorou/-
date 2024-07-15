@@ -172,6 +172,8 @@ void PlayScene::Render()
 	auto states = m_commonResources->GetCommonStates();
 	// ビュー行列を取得する
 	const SimpleMath::Matrix& view = m_camera->GetViewMatrix();
+
+	// ==== オブジェクトの描画 =====================================================================================
 	// 天球の描画
 	m_skySphere->DrawSkySphere(context, states, view, m_projection);
 	// 格子床を描画する
@@ -184,6 +186,8 @@ void PlayScene::Render()
 	m_player->Render(device, context, states, view, m_projection, m_commonResources);
 	// プレイヤーの武器の描画を行う
 	m_sword->Render(device, context, states, view, m_projection, m_commonResources);
+
+	//==== エフェクト系の描画 ======================================================================================
 	// パーティクルのビルボード作成
 	m_particles->CreateBillboard(m_camera->GetTargetPosition(), m_camera->GetEyePosition(), DirectX::SimpleMath::Vector3::Up);
 	// パーティクルの描画

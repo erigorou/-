@@ -197,6 +197,7 @@
     <ClInclude Include="Game\CommonResources.h" />
     <ClInclude Include="Game\Enemy\Enemy.h" />
     <ClInclude Include="Game\Enemy\States\Header\EnemyApproaching.h" />
+    <ClInclude Include="Game\Enemy\States\Header\Enemy_Attacking.h" />
     <ClInclude Include="Game\Enemy\States\Header\EnemyIdling.h" />
     <ClInclude Include="Game\Enemy\States\Header\Enemy_HP.h" />
     <ClInclude Include="Game\Player\Player.h" />
@@ -247,6 +248,7 @@
     <ClCompile Include="Game\CommonResources.cpp" />
     <ClCompile Include="Game\Enemy\Enemy.cpp" />
     <ClCompile Include="Game\Enemy\States\Source\EnemyApproaching.cpp" />
+    <ClCompile Include="Game\Enemy\States\Source\Enemy_Attacking.cpp" />
     <ClCompile Include="Game\Enemy\States\Source\EnemyIdling.cpp" />
     <ClCompile Include="Game\Player\Player.cpp" />
     <ClCompile Include="Game\Player\State\Source\Player_Attacking_1.cpp" />
@@ -261,7 +263,7 @@
     <ClCompile Include="Game\Scene\TitleScene.cpp" />
     <ClCompile Include="Game\Sound\BGM_Player.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel.cpp" />
-    <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Atttacking.cpp" />
+    <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Attacking.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Idling.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Attacking_1.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Idling.cpp" />

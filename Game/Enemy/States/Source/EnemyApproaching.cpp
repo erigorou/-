@@ -7,6 +7,7 @@
 
 #include "Game/Player/Player.h"
 #include "Game/Enemy/Enemy.h"
+#include "Game/Weapon/Cudgel/Header/Cudgel.h"
 #include "Game/Enemy/States/Header/EnemyApproaching.h"
 
 
@@ -61,6 +62,11 @@ void EnemyApproaching::PreUpdate()
 	m_angle = m_enemy->GetAngle();
 	// ワールド行列の設定
 	m_worldMat = m_enemy->GetWorldMatrix();
+
+
+	// デバッグ
+	auto cudgel = m_enemy->GetPlayScene()->GetCudgel();
+	cudgel->ChangeState(cudgel->GetAttacking());
 }
 
 

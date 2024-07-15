@@ -5,33 +5,30 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 
-// 関数を使用するのに必要な引数
 #include "Game/Enemy/Enemy.h"
 #include "Game/Player/Player.h"
 #include "Game/Weapon/Cudgel/Header/Cudgel.h"
-
-// ヘッダーファイル
-#include "Game/Enemy/States/Header/EnemyIdling.h"
+#include "Game/Enemy/States/Header/Enemy_Attacking.h"
 
 
 // コンストラクタ
-EnemyIdling::EnemyIdling(Enemy* enemy)
-	:
-	m_angle(0.f),
-	m_enemy(enemy),
-	m_totalSeconds()
+Enemy_Attacking::Enemy_Attacking(Enemy* enemy)
+	:m_model()
+	,m_angle(0.f)
+	,m_enemy(enemy)
+	,m_totalSeconds()
 {
 }
 
 
 // デストラクタ
-EnemyIdling::~EnemyIdling()
+Enemy_Attacking::~Enemy_Attacking()
 {
 }
 
 
 // 初期化処理
-void EnemyIdling::Initialize(DirectX::Model* model)
+void Enemy_Attacking::Initialize(DirectX::Model* model)
 {
 	// モデルの取得
 	m_model = model;
@@ -44,68 +41,50 @@ void EnemyIdling::Initialize(DirectX::Model* model)
 
 
 // 事前更新処理
-void EnemyIdling::PreUpdate()
+void Enemy_Attacking::PreUpdate()
 {
 	// 経過時間を初期化
-	m_totalSeconds = 0;
+	m_totalSeconds = 0.0f;
 	// 武器のステートを変更
 	auto cudgel = m_enemy->GetPlayScene()->GetCudgel();
 	cudgel->ChangeState(cudgel->GetIdling());
+
 }
 
 
 // 更新処理
-void EnemyIdling::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3& parentPos)
+void Enemy_Attacking::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3& parentPos)
 {
 	using namespace DirectX::SimpleMath;
 
-	// 総合時間を計測
+	// 経過時間の計算
 	m_totalSeconds += elapsedTime;
 
-	// プレイヤーの座標を取得
-	Vector3 playerPos = m_enemy->GetPlayScene()->GetPlayer()->GetPosition();
-	// 敵から見たプレイヤーの位置を計算する
-	m_angle = Math::CalculationAngle(parentPos, playerPos);
 
-	// 体の境界球の位置を更新
-	m_boundingSphereBody.Center = parentPos;
-
-	// 回転角を設定する
-	m_enemy->SetAngle(m_angle);
-
-	if (m_totalSeconds >= 2.f)
+	if (m_totalSeconds >= 2.5f)
 	{
-		// 2秒に一回、どっちかに動く
-		if (rand() % 2 == 0)
-		{
-			// 攻撃をする
-			m_enemy->ChangeState(m_enemy->GetEnemyAttacking());
-		}
-		else
-		{
-			// 追尾をする
-			m_enemy->ChangeState(m_enemy->GetEnemyApproaching());
-		}
+		// 2.5秒で待機状態に変更
+		m_enemy->ChangeState(m_enemy->GetEnemyIdling());
 	}
 }
 
 
 // プレイヤーの体との当たり判定を行う
-void EnemyIdling::CheckHitPlayerBody()
+void Enemy_Attacking::CheckHitPlayerBody()
 {
 
 }
 
 
 // 事後更新処理
-void EnemyIdling::PostUpdate()
+void Enemy_Attacking::PostUpdate()
 {
 	// 修正点があればここに記載
 }
 
 
 // 描画処理
-void EnemyIdling::Render(
+void Enemy_Attacking::Render(
 	ID3D11DeviceContext* context,
 	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
@@ -127,6 +106,6 @@ void EnemyIdling::Render(
 }
 
 
-void EnemyIdling::Finalize()
+void Enemy_Attacking::Finalize()
 {
 }

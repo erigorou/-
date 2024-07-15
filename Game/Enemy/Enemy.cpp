@@ -25,8 +25,11 @@ const float Enemy::ENEMY_SCALE = 0.8f;
 //  コンストラクタ
 // --------------------------------
 Enemy::Enemy(PlayScene* playScene)
-	:
-	m_playScene(playScene)
+	:m_playScene(playScene)
+	,m_currentState()
+	,m_idling()
+	,m_attacking()
+	,m_approaching()
 	,m_position{0.f, 0.f, 0.f}
 	,m_angle{0.f}
 	,m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
@@ -90,14 +93,18 @@ void Enemy::Initialize()
 // --------------------------------
 void Enemy::CreateState()
 {
-	// 待機状態を取得する
-	m_enemyIdling = std::make_unique<EnemyIdling>(this);
-	m_enemyIdling->Initialize(m_model.get());
-	// 追尾状態を取得する
-	m_enemyApproaching = std::make_unique<EnemyApproaching>(this);
-	m_enemyApproaching->Initialize(m_model.get());
+	// === 状態の生成 ====
+	m_idling = std::make_unique<EnemyIdling>(this);				// 待機
+	m_attacking = std::make_unique<Enemy_Attacking>(this);		// 攻撃
+	m_approaching = std::make_unique<EnemyApproaching>(this);	// 追尾
+
+	// === 状態の初期化 ===
+	m_idling->Initialize(m_model.get());		// 待機
+	m_attacking->Initialize(m_model.get());		// 攻撃
+	m_approaching->Initialize(m_model.get());	// 追尾
+
 	// 初期のステートを待機状態に割り当てる
-	m_currentState = m_enemyIdling.get();
+	m_currentState = m_idling.get();
 }
 
 
@@ -183,9 +190,8 @@ void Enemy::Render(
 	// 境界球の描画
 	DrawBoundingSphere(device, context, states, view, projection, m_currentState->GetBoundingSphereBody());
 
-	// デバッグ情報を「DebugString」で表示する
-	auto debugString = resources->GetDebugString();
-	debugString->AddString("enemyPos : %f : %f : %f", m_position.x, m_position.y, m_position.z);
+	//// デバッグ情報を「DebugString」で表示する
+	//auto debugString = resources->GetDebugString();
 
 }
 

@@ -19,12 +19,14 @@
 // コンストラクタ
 Cudgel_Attacking::Cudgel_Attacking(Cudgel* cudgel)
 	:
-	m_cudgel(cudgel),
-	m_position(0.0f, 0.0f, 0.0f),
-	m_velocity(0.0f, 0.0f, 0.0f),
-	m_angle(0.0f),
-	m_worldMatrix(DirectX::SimpleMath::Matrix::Identity),
-	m_model(nullptr)
+	m_cudgel(cudgel)
+	, m_position(0.0f, 0.0f, 0.0f)
+	, m_velocity(0.0f, 0.0f, 0.0f)
+	, m_angleRL(0.0f)
+	, m_angleUD(0.0f)
+	, m_totalSeconds(0.0f)
+	, m_worldMatrix(DirectX::SimpleMath::Matrix::Identity)
+	, m_model(nullptr)
 {
 }
 
@@ -49,6 +51,9 @@ void Cudgel_Attacking::Initialize()
 // 事前処理
 void Cudgel_Attacking::PreUpdate()
 {
+	// 経過時間の初期化
+	m_totalSeconds = 0.0f;
+	m_angleUD = 0.0f;
 }
 
 // 更新処理
@@ -56,10 +61,42 @@ void Cudgel_Attacking::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 	using namespace DirectX;
-	UNREFERENCED_PARAMETER(elapsedTime);
+
+	// 合計時間を計測
+	m_totalSeconds += elapsedTime;
 
 	// 敵を取得
 	auto enemy = m_cudgel->GetPlayScene()->GetEnemy();
+	// 敵の座標を取得
+	m_position = enemy->GetPosition();
+	// 敵の回転角を取得
+	m_angleRL = enemy->GetAngle();
+
+
+	// 0.5秒上にあげて、
+	if (m_totalSeconds < 1.0f)
+	{
+		m_angleUD = XMConvertToRadians(-45.0f * (m_totalSeconds / 0.5f)); // 上げる角度を45度に設定
+	}
+
+	// 0.,2秒間の遅延
+	else if (m_totalSeconds < 1.2f){}
+
+	// 0.2秒振り下ろす。
+	else if (m_totalSeconds < 1.5f)
+	{
+		// 次の0.2秒間で振り下ろす
+		m_angleUD = XMConvertToRadians(-30.0f + 90.0f * ((m_totalSeconds - 1.2f) / 0.2f)); // 90度振り下ろす
+	}
+
+
+	// ワールド行列を更新する
+	m_worldMatrix = Matrix::CreateScale(Cudgel::CUDGEL_SCALE);	// サイズの設定 & 初期化
+	m_worldMatrix 
+		*=Matrix::CreateRotationX(-m_angleUD)								// 縦回転を行う
+		*=Matrix::CreateTranslation(Vector3(10.0f, 10.0f, 8.0f))			// 原点で、少しだけずらす
+		*=Matrix::CreateRotationY(-m_angleRL)								// 横回転を行う
+		*=Matrix::CreateTranslation(m_position);							// プレイヤの位置に設定する
 }
 
 // 事後処理
@@ -80,6 +117,7 @@ void Cudgel_Attacking::Render(ID3D11DeviceContext* context,
 
 	auto debugString = resources->GetDebugString();
 	debugString->AddString("Cudgel, %f : %f : %f", m_position.x, m_position.y, m_position.z);
+	debugString->AddString("angleUD, %f", m_angleUD);
 }
 
 

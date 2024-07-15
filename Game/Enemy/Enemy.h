@@ -4,8 +4,12 @@
 
 #include "Game/Enemy/States/Header/Enemy_HP.h"	// HP
 
-#include "Game/Enemy/States/Header/EnemyIdling.h"		// 待機ステート
-#include "Game/Enemy/States/Header/EnemyApproaching.h"	// 追尾ステート
+// ===== 敵の状態 =================================================================
+#include "Game/Enemy/States/Header/EnemyIdling.h"		// 待機状態
+#include "Game/Enemy/States/Header/Enemy_Attacking.h"	// 攻撃状態
+#include "Game/Enemy/States/Header/EnemyApproaching.h"	// 追尾状態
+
+
 #include "BehaviourTree/Header/BehaviorTree.h"			// ビヘイビアツリー
 
 
@@ -35,11 +39,12 @@ public:
 	// 敵のワールド座標を設定する
 	void SetWorldMatrix(DirectX::SimpleMath::Matrix mat) { m_worldMatrix = mat; }
 
+	// ===== 敵の状態 =================================================================
+	EnemyIdling* GetEnemyIdling() const { return m_idling.get(); }					// 待機状態
+	Enemy_Attacking* GetEnemyAttacking() const { return m_attacking.get(); }		// 攻撃状態
+	EnemyApproaching* GetEnemyApproaching() const { return m_approaching.get(); }	// 追尾状態
 
-	// 敵のアイドリングを取得する
-	EnemyIdling* GetEnemyIdling() const { return m_enemyIdling.get(); }
-	// 敵の追尾状態を取得する
-	EnemyApproaching* GetEnemyApproaching() const { return m_enemyApproaching.get(); }
+
 	// 現在のステートを返す
 	IState* GetCurrentState() const { return m_currentState; }
 
@@ -64,6 +69,7 @@ public:
 		DirectX::CommonStates* states,
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& projection);
+	// 境界球の描画処理
 	void DrawBoundingSphere(
 		ID3D11Device* device,
 		ID3D11DeviceContext* context,
@@ -91,16 +97,14 @@ private:
 	// HP
 	std::unique_ptr<Enemy_HP> m_hp;
 
-	// 現在のステート（ステートパターン）
-	IState* m_currentState;
-
-	std::unique_ptr<EnemyIdling> m_enemyIdling;					// 待機ステート
-	std::unique_ptr<EnemyApproaching> m_enemyApproaching;		// 追尾ステート
-
+	// ==== ステートパターンに使用 =============================================　
+	IState* m_currentState;			// 現在のステート（ステートパターン）
+	std::unique_ptr<EnemyIdling> m_idling;					// 待機状態
+	std::unique_ptr<Enemy_Attacking> m_attacking;			// 攻撃状態
+	std::unique_ptr<EnemyApproaching> m_approaching;		// 追尾状態
 
 	// ビヘイビアツリー
 	std::unique_ptr<BehaviorTree> m_pBT;
-
 
 private:
 	// ベーシックエフェクト
