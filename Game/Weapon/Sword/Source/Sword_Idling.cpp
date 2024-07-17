@@ -60,10 +60,10 @@ void Sword_Idling::Update(float elapsedTime)
 	m_angle = m_sword->GetPlayScene()->GetPlayer()->GetAngle();
 
 	// ワールド行列を更新する
-	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE);							// サイズの設定
-	m_worldMatrix *= SimpleMath::Matrix::CreateTranslation(Vector3(4.0f, 0.5f, 0.0f))	// 原点で、少しだけずらす
-		*= SimpleMath::Matrix::CreateRotationY(-m_angle)								// 回転を行う
-		*= SimpleMath::Matrix::CreateTranslation(m_position);							// プレイヤの位置に設定する
+	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE);													// サイズの設定
+	m_worldMatrix *= SimpleMath::Matrix::CreateTranslation(Sword::SWORD_DIR_FOR_PLAYER)	// 原点で、少しだけずらす
+		*= SimpleMath::Matrix::CreateRotationY(-m_angle)																// 回転を行う
+		*= SimpleMath::Matrix::CreateTranslation(m_position);														// プレイヤの位置に設定する
 }
 
 // 事後処理

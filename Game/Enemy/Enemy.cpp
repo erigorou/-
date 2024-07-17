@@ -18,8 +18,8 @@
 #include "Interface/IState.h"
 
 // 固定値
-const float Enemy::ENEMY_SPEED = 0.2f;
-const float Enemy::ENEMY_SCALE = 0.8f;
+const float Enemy::ENEMY_SPEED = 0.1f;
+const float Enemy::ENEMY_SCALE = 0.4f;
 
 // --------------------------------
 //  コンストラクタ

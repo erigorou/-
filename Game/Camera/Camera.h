@@ -3,6 +3,9 @@
 class Camera
 {
 private:
+	// 固定値
+	static const float CAMERA_POSITION_Y;		// カメラのY座標
+	static const float CAMERA_DIRECTION;		// カメラの距離
 
 	// カメラの座標
 	DirectX::SimpleMath::Vector3 m_position;
@@ -18,6 +21,8 @@ private:
 	DirectX::SimpleMath::Vector3 m_up;
 	// アングル
 	float m_angle;
+	// 注視点の高さ
+	float m_targetHeight;
 
 
 public:

@@ -5,6 +5,8 @@
 #include "pch.h"
 #include "PlayScene.h"
 
+#include <Model.h>
+#include <cassert>
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugCamera.h"
@@ -16,14 +18,15 @@
 // BGM再生するやつ
 #include "Game/Sound/BGM_Player.h"
 
-#include <Model.h>
-#include <cassert>
+// オブジェクト関連　===============================
+#include "Game/Player/Player.h"									// プレイヤー
+#include "Game/Enemy/Enemy.h"								// 鬼
+#include "Game/Weapon/Sword/Sword.h"					// 刀
+#include "Game/Weapon/Cudgel/Header/Cudgel.h"		// 金棒
 
-#include "Game/Player/Player.h"
-#include "Game/Enemy/Enemy.h"
+// ステージ関連 ===================================
+#include "Game/Stage/Floor/Floor.h"							// 床
 
-#include "Game/Weapon/Sword/Sword.h"
-#include "Game/Weapon/Cudgel/Header/Cudgel.h"
 
 //---------------------------------------------------------
 // コンストラクタ
@@ -114,6 +117,9 @@ void PlayScene::Initialize()
 	// 鬼の武器を生成と初期化
 	m_cudgel = std::make_unique<Cudgel>(this);
 	m_cudgel->Initialize();
+
+	// ステージの作成と初期化
+	m_floor = std::make_unique<Floor>(device);
 }
 
 //---------------------------------------------------------
@@ -173,12 +179,15 @@ void PlayScene::Render()
 	// ビュー行列を取得する
 	const SimpleMath::Matrix& view = m_camera->GetViewMatrix();
 
-	// ==== オブジェクトの描画 =====================================================================================
+	// ==== ステージの描画 =========================================================
 	// 天球の描画
 	m_skySphere->DrawSkySphere(context, states, view, m_projection);
 	// 格子床を描画する
 	m_gridFloor->Render(context, view, m_projection);
-	// 敵の描画を行う
+	// 床を描画する
+	m_floor->Render(context, view, m_projection);
+
+	// === オブジェクトの描画 =======================================================
 	m_enemy->Render(device, context, states, view, m_projection);
 	// 敵の武器の描画を行う
 	m_cudgel->Render(device, context, states, view, m_projection);
@@ -187,7 +196,7 @@ void PlayScene::Render()
 	// プレイヤーの武器の描画を行う
 	m_sword->Render(device, context, states, view, m_projection, m_commonResources);
 
-	//==== エフェクト系の描画 ======================================================================================
+	//==== エフェクト系の描画 ======================================================
 	// パーティクルのビルボード作成
 	m_particles->CreateBillboard(m_camera->GetTargetPosition(), m_camera->GetEyePosition(), DirectX::SimpleMath::Vector3::Up);
 	// パーティクルの描画

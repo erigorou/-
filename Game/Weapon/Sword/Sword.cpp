@@ -18,8 +18,9 @@
 #include "Game/Player/Player.h"
 
 
-// 固定値									0.7f
-const float Sword::SWORD_SCALE = Player::PLAYER_SCALE * 2.0f;
+// 固定値															0.7f
+const float Sword::SWORD_SCALE = Player::PLAYER_SCALE * 0.8f;
+const DirectX::SimpleMath::Vector3 Sword::SWORD_DIR_FOR_PLAYER = DirectX::SimpleMath::Vector3(2.0f, 1.0f, 0.0f);
 
 // コンストラクタ
 Sword::Sword(PlayScene* playScene)
@@ -91,7 +92,12 @@ void Sword::CreateState()
 	//m_currentState = m_swordAttacking_1.get();
 }
 
-// 更新処理
+// --------------------------------------------
+/// <summary>
+/// 桃太郎の刀の更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// --------------------------------------------
 void Sword::Update(float elapsedTime)
 {
 	// 現在のステートの更新処理

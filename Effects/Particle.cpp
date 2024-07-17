@@ -110,7 +110,7 @@ void Particle::CreateTrailDust(float elapsedTimer)
 	m_timer_dustTrail += elapsedTimer;
 
 	// 生成時間に満たしてないなら：早期リターン
-	if (m_timer_dustTrail < 0.1f)
+	if (m_timer_dustTrail < 0.05f)
 		return;
 
 	// プレイヤーが移動してなければ：早期ターン
@@ -119,12 +119,12 @@ void Particle::CreateTrailDust(float elapsedTimer)
 
 	// パーティクル(１つ)を生成
 	DustTrialParticle dTP(
-		0.5f,																					//	生存時間(s)
-		SimpleMath::Vector3(m_playerPosition.x, m_playerPosition.y, m_playerPosition.z),		//	基準座標
-		SimpleMath::Vector3(-m_playerVelocity.x, 0.75f, -m_playerVelocity.z),					//	速度
-		SimpleMath::Vector3(1.0f, 0.1f, 1.0f),													//	加速度
-		SimpleMath::Vector3(6.f, 6.f, 6.f), SimpleMath::Vector3(9.f, 9.f, 9.f),					//	初期スケール、最終スケール
-		SimpleMath::Color(1.f, 1.f, 1.f, 1.f), SimpleMath::Color(1.f, 1.f, 1.f, 0.f)			//	初期カラー、最終カラー
+		0.5f,																									//	生存時間(s)
+		Vector3(m_playerPosition.x, m_playerPosition.y, m_playerPosition.z),	//	基準座標
+		Vector3(-m_playerVelocity.x, 0.75f, -m_playerVelocity.z),						//	速度
+		Vector3(1.0f, 0.1f, 1.0f),																		//	加速度
+		Vector3(2.0f, 2.0f, 2.0f), SimpleMath::Vector3(4.0f, 4.0f, 4.0f),				//	初期スケール、最終スケール
+		Color(0.7f, 0.7f, 0.7f, 1.0f), SimpleMath::Color(1.0f, 1.0f, 1.0f, 0.0f)		//	初期カラー、最終カラー
 	);
 
 	// 配列に追加

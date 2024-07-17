@@ -1,11 +1,11 @@
-// プレイヤー（桃太郎）が持つ剣
+// プレイヤー（桃太郎）が持つ刀
 
 #pragma once
 #include "Interface/IWeapon.h"
 #include "Game/Scene/PlayScene.h"
 
 // 剣の状態 ========================================================
-#include "Game/Weapon/Sword/Header/Sword_Idling.h"			// 待機状態
+#include "Game/Weapon/Sword/Header/Sword_Idling.h"					// 待機状態
 #include "Game/Weapon/Sword/Header/Sword_Attacking_1.h"		// 攻撃状態１
 
 
@@ -14,7 +14,8 @@ class Sword
 {
 public:
 	// 固定値
-	static const float SWORD_SCALE;
+	static const float SWORD_SCALE;	// 刀の大きさ
+	static const DirectX::SimpleMath::Vector3 SWORD_DIR_FOR_PLAYER;	// 刀とプレイヤの離れてる距離
 
 public:
 	// モデルを設定する

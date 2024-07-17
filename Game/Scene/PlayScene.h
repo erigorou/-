@@ -19,6 +19,8 @@ class Sword;
 class Enemy;
 class Cudgel;
 
+class Floor;
+
 class PlayScene final :
     public IScene
 {
@@ -63,9 +65,13 @@ private:
 	std::unique_ptr<BGM_Player> m_bgm;
 
 private:
-	std::unique_ptr<Player> m_player;
-	std::unique_ptr<Sword> m_sword;
+	// オブジェクト関連の変数
+	std::unique_ptr<Player> m_player;			// プレイヤー
+	std::unique_ptr<Sword> m_sword;			// 刀
+	std::unique_ptr<Enemy>  m_enemy;		// 鬼
+	std::unique_ptr<Cudgel> m_cudgel;		// 金棒
 
-	std::unique_ptr<Enemy>  m_enemy;
-	std::unique_ptr<Cudgel> m_cudgel;
+private:
+	// ステージ関連の変数
+	std::unique_ptr<Floor> m_floor;			// 床
 };

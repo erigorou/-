@@ -20,8 +20,8 @@
 
 // ここで静的メンバー変数を定義する
 const DirectX::SimpleMath::Vector3 Player::HOME_POSITION(0.0f);
-const float Player::PLAYER_SPEED = 0.7f;
-const float Player::PLAYER_SCALE = 0.2f;
+const float Player::PLAYER_SPEED = 0.35f;
+const float Player::PLAYER_SCALE = 0.1f;
 const float Player::APPLIED_ATTACK_TIME = 1.0f;
 
 
@@ -153,17 +153,18 @@ void Player::TimeComparison(float& nowTime, const float totalTime, IState* newSt
 	nowTime += elapsedTime;
 }
 
-// --------------------------------
-//  更新処理
-// --------------------------------
+// ----------------------------------------------
+/// <summary>
+/// プレイヤーの更新処理
+/// </summary>
+/// <param name="enemyPos">敵の座標</param>
+/// <param name="elapsedTime">経過時間</param>
+// ---------------------------------------------
 void Player::Update(
-	const DirectX::SimpleMath::Vector3 enemyPos,	// 敵の座標
-	const float elapsedTime				   // 前Fからの経過時間
+	const DirectX::SimpleMath::Vector3 enemyPos,
+	const float elapsedTime
 	)
 {
-	// キー入力を取得（全体で使う）
-	m_tracker.Update(m_keyboardState);
-
 	// ステートの更新
 	m_currentState->Update(elapsedTime, m_position);
 
@@ -183,12 +184,12 @@ void Player::CalculationAngle(DirectX::SimpleMath::Vector3 const enemyPos)
 {
 	using namespace DirectX::SimpleMath;
 
-	Vector3 forward = m_position - enemyPos;	// 敵の方向をベクトルで取得
-	forward.Normalize();						// 正規化
+	Vector3 forward = m_position - enemyPos;		// 敵の方向をベクトルで取得
+	forward.Normalize();										// 正規化
 
 	Vector3 worldForward = Vector3::Forward;			// ワールド座標の前方ベクトルを作成
-	float dotProduct = forward.Dot(worldForward);		// 内積を取得
-	m_angle = acosf(dotProduct);						// 内積から角度を取得(弧度法)
+	float dotProduct = forward.Dot(worldForward);	// 内積を取得
+	m_angle = acosf(dotProduct);								// 内積から角度を取得(弧度法)
 
 	Vector3 crossProduct = forward.Cross(worldForward);	// カメラの前方向ベクトルが右方向に向いているかどうかで符号を決定
 	m_angle = (crossProduct.y < 0)? -m_angle: m_angle;	// -180 ~ 180に収める。
@@ -238,10 +239,10 @@ void Player::CalculationMatrix()
 	// 行列の計算を行う
 	m_worldMatrix = Matrix::Identity;		// 更新ごとに初期化を行う
 	m_worldMatrix
-		*= Matrix::CreateTranslation(Vector3::Zero)							// 原点に移動
-		*= Matrix::CreateScale		(PLAYER_SCALE)							// プレイヤーのサイズ変更
+		*= Matrix::CreateTranslation(Vector3::Zero)										// 原点に移動
+		*= Matrix::CreateScale		(PLAYER_SCALE)										// プレイヤーのサイズ変更
 		*= Matrix::CreateRotationY	(-m_angle + XMConvertToRadians(180.f))	// 敵の方向を見るように設定する
-		*= Matrix::CreateTranslation(m_position);							// 座標を移動させる
+		*= Matrix::CreateTranslation(m_position);											// 座標を移動させる
 }
 
 
@@ -295,9 +296,8 @@ void Player::Render(
 		view,
 		projection);
 
-	// 境界球の描画
-	// 体の境界球の描画
-	DrawBoundingSphere(device, context, states, view, projection,m_currentState->GetBoundingSphereBody());
+	//// 体の境界球の描画
+	//DrawBoundingSphere(device, context, states, view, projection,m_currentState->GetBoundingSphereBody());
 }
 
 

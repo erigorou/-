@@ -6,19 +6,25 @@
 #include "Game/Camera/Camera.h"
 #include "Game/Screen.h"
 
+// 固定値
+const float Camera::CAMERA_POSITION_Y = 10.0f;		// カメラの高さ
+const float Camera::CAMERA_DIRECTION = 30.0f;		// カメラの距離
 
 //-------------------------------------------------------------------
-// コンストラクタ
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="target">注視点</param>
 //-------------------------------------------------------------------
 Camera::Camera(const DirectX::SimpleMath::Vector3& target)
-	:
-	m_view{},
-	m_projection{},
-	m_eye{},
-	m_target{ target },
-	m_up{ DirectX::SimpleMath::Vector3::UnitY },
-	m_position{},
-	m_angle{}
+	:m_view{}
+	,m_projection{}
+	,m_eye{}
+	,m_target{ target }
+	,m_up{ DirectX::SimpleMath::Vector3::UnitY }
+	,m_position{}
+	,m_angle{}
+	,m_targetHeight{5.0f}
 {
 }
 
@@ -39,20 +45,18 @@ void Camera::Update(
 
 	UNREFERENCED_PARAMETER(rotate);
 
-	float distance = 90.0f;
-
 	// プレイヤーからターゲットへのベクトルを計算
 	SimpleMath::Vector3 playerToEnemy = enemyPos - playerPos;
 	// ベクトルを正規化して単位ベクトルを取得
 	SimpleMath::Vector3 unitVecPlayerToTarget = playerToEnemy;
 	unitVecPlayerToTarget.Normalize();
 	// カメラ位置を計算
-	m_position = playerPos - unitVecPlayerToTarget * distance;
-	m_position.y = 20.0f; // Y座標を固定
+	m_position = playerPos - unitVecPlayerToTarget * CAMERA_DIRECTION;
+	m_position.y = CAMERA_POSITION_Y; // Y座標を固定
 	// 注視点を計算
 	m_target = enemyPos + unitVecPlayerToTarget;
 	// 注視点の高さを設定
-	m_target.y = 0.5f;
+	m_target.y = m_targetHeight;
 	// ビュー行列を更新する
 	CalculateViewMatrix();
 	// カメラのアングルを計算する
@@ -60,7 +64,9 @@ void Camera::Update(
 }
 
 //-------------------------------------------------------------------
-// ビュー行列を計算する
+/// <summary>
+/// カメラのビュー行列を
+/// </summary>
 //-------------------------------------------------------------------
 void Camera::CalculateViewMatrix()
 {
@@ -68,7 +74,9 @@ void Camera::CalculateViewMatrix()
 }
 
 //-------------------------------------------------------------------
-// カメラのアングルを計算する
+/// <summary>
+/// カメラのアングルを計算する
+/// </summary>
 //-------------------------------------------------------------------
 void Camera::CalculateCameraAngle()
 {
