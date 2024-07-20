@@ -15,8 +15,8 @@
 #include "Libraries/MyLib/InputManager.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 
-// BGM再生するやつ
-#include "Game/Sound/BGM_Player.h"
+// システム面 ====================================
+#include "Game/Sound/BGM_Player.h"	// BGM再生
 
 // オブジェクト関連　===============================
 #include "Game/Player/Player.h"									// プレイヤー
@@ -26,6 +26,7 @@
 
 // ステージ関連 ===================================
 #include "Game/Stage/Floor/Floor.h"							// 床
+#include "Game/Stage/Wall/Wall.h"							// 壁
 
 
 //---------------------------------------------------------
@@ -118,8 +119,11 @@ void PlayScene::Initialize()
 	m_cudgel = std::make_unique<Cudgel>(this);
 	m_cudgel->Initialize();
 
-	// ステージの作成と初期化
+	// 床の作成と初期化
 	m_floor = std::make_unique<Floor>(device);
+	// 壁の生成と初期化
+	m_wall = std::make_unique<Wall>();
+	m_wall->Initialize();
 }
 
 //---------------------------------------------------------
@@ -186,8 +190,11 @@ void PlayScene::Render()
 	m_gridFloor->Render(context, view, m_projection);
 	// 床を描画する
 	m_floor->Render(context, view, m_projection);
+	// 壁を描画する
+	m_wall->Render(context, states, view, m_projection);
 
 	// === オブジェクトの描画 =======================================================
+	// 敵の描画
 	m_enemy->Render(device, context, states, view, m_projection);
 	// 敵の武器の描画を行う
 	m_cudgel->Render(device, context, states, view, m_projection);

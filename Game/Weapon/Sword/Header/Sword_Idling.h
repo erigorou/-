@@ -11,6 +11,10 @@ class Sword;
 class Sword_Idling : public IWeapon
 {
 public:
+	// ŒÅ’è’l
+	static const float ROTX;
+	static const float ROTY;
+
 
 	// •Ší‚Ì“–‚½‚è”»’è‚ğæ“¾‚·‚éŠÖ”
 	DirectX::BoundingBox GetBoundingBox(){ return m_boundingBox; }

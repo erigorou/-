@@ -296,8 +296,20 @@ void Player::Render(
 		view,
 		projection);
 
-	//// ‘Ì‚Ì‹«ŠE‹…‚Ì•`‰æ
-	//DrawBoundingSphere(device, context, states, view, projection,m_currentState->GetBoundingSphereBody());
+	// ‘Ì‚Ì‹«ŠE‹…‚Ì•`‰æ
+	DrawBoundingSphere(device, context, states, view, projection, m_currentState->GetBoundingSphereBody());
+
+	Vector3 XLine = m_position;
+	XLine.x += 5.0f;
+
+	// DrawLine
+	m_primitiveBatch->Begin();
+	m_primitiveBatch->DrawLine(VertexPositionColor(m_position, DirectX::Colors::Red), VertexPositionColor(XLine, DirectX::Colors::Red));
+	m_primitiveBatch->End();
+
+
+	// X²‚ÉÂ‚¢ü
+	// Z²‚ÉÔ‚¢ü
 }
 
 

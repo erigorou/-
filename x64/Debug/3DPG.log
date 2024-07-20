@@ -1,2 +1,4 @@
-﻿  Camera.cpp
+﻿  Wall.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Stage\Wall\Wall.cpp(37,7): warning C4189: 'context': ローカル変数が初期化されましたが、参照されていません
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Stage\Wall\Wall.cpp(38,7): warning C4189: 'states': ローカル変数が初期化されましたが、参照されていません
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe
