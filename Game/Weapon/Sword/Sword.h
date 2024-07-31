@@ -54,8 +54,7 @@ public:
 		ID3D11DeviceContext* context,
 		DirectX::CommonStates* states,
 		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection,
-		const DirectX::BoundingBox boundingBox
+		const DirectX::SimpleMath::Matrix& projection
 	);
 
 	// I—¹ˆ—

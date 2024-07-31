@@ -24,5 +24,5 @@ public:
 	// I—¹ˆ—
 	virtual void Finalize() = 0;
 	// •Ší‚Ì“–‚½‚è”»’è‚ğæ“¾‚·‚éŠÖ”
-	virtual DirectX::BoundingBox GetBoundingBox() = 0;
+	virtual DirectX::BoundingOrientedBox GetBoundingBox() = 0;
 };

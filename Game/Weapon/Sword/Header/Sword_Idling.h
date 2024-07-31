@@ -17,7 +17,7 @@ public:
 
 
 	// 武器の当たり判定を取得する関数
-	DirectX::BoundingBox GetBoundingBox(){ return m_boundingBox; }
+	DirectX::BoundingOrientedBox GetBoundingBox(){ return m_boundingBox; }
 
 	// コンストラクタ
 	Sword_Idling(Sword* sword);
@@ -53,7 +53,9 @@ private:
 	DirectX::Model* m_model;
 
 	// 剣の当たり判定
-	DirectX::BoundingBox m_boundingBox;
+	DirectX::BoundingOrientedBox m_boundingBox;
+	// オリジナルの当たり判定 (オリジナルは生成をするだけのもの)
+	DirectX::BoundingOrientedBox m_originalBox;
 
 private:
 	// ソードの元を取得

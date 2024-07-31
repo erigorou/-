@@ -40,6 +40,8 @@ void Sword_Idling::Initialize()
 	m_model = m_sword->GetModel();
 	// ワールド行列を初期化
 	m_worldMatrix = Matrix::Identity;
+	// 当たり判定
+	m_boundingBox = DirectX::BoundingOrientedBox();
 }
 
 
@@ -60,10 +62,10 @@ void Sword_Idling::Update(float elapsedTime)
 	m_angle = m_sword->GetPlayScene()->GetPlayer()->GetAngle();
 
 	// ワールド行列を更新する
-	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE);													// サイズの設定
-	m_worldMatrix *= SimpleMath::Matrix::CreateTranslation(Sword::SWORD_DIR_FOR_PLAYER)	// 原点で、少しだけずらす
-		*= SimpleMath::Matrix::CreateRotationY(-m_angle)																// 回転を行う
-		*= SimpleMath::Matrix::CreateTranslation(m_position);														// プレイヤの位置に設定する
+	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE);								// サイズの設定
+	m_worldMatrix *= SimpleMath::Matrix::CreateTranslation(Sword::SWORD_DIR_FOR_PLAYER)		// 原点で、少しだけずらす
+		*= SimpleMath::Matrix::CreateRotationY(-m_angle)									// 回転を行う
+		*= SimpleMath::Matrix::CreateTranslation(m_position);								// プレイヤの位置に設定する
 }
 
 // 事後処理

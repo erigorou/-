@@ -12,9 +12,10 @@ class Cudgel
 {
 public:
 	// 固定値
-	static const float CUDGEL_SCALE;
+	static const float CUDGEL_SCALE;	// 大きさ
+	static const DirectX::SimpleMath::Vector3 DIRECTION_ENEMY;	// 敵との離れている距離
 
-public:
+
 	// モデルを設定する
 	DirectX::Model* GetModel()const { return m_model.get(); }
 	// プレイシーンの取得
@@ -53,8 +54,7 @@ public:
 		ID3D11DeviceContext* context,
 		DirectX::CommonStates* states,
 		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection,
-		const DirectX::BoundingBox boundingBox
+		const DirectX::SimpleMath::Matrix& projection
 	);
 
 	// 終了処理

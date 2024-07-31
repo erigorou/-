@@ -80,29 +80,31 @@ void Cudgel_Attacking::Update(float elapsedTime)
 	}
 
 	// 0.,2•bŠÔ‚Ì’x‰„
-	else if (m_totalSeconds < 1.2f){}
+	else if (m_totalSeconds < 1.4f){}
 
 	// 0.2•bU‚è‰º‚ë‚·B
-	else if (m_totalSeconds < 1.5f)
+	else if (m_totalSeconds < 1.7f)
 	{
 		// ŽŸ‚Ì0.2•bŠÔ‚ÅU‚è‰º‚ë‚·
-		m_angleUD = XMConvertToRadians(-30.0f + 90.0f * ((m_totalSeconds - 1.2f) / 0.2f)); // 90“xU‚è‰º‚ë‚·
+		m_angleUD = XMConvertToRadians(-30.0f + 90.0f * ((m_totalSeconds - 1.4f) / 0.2f)); // 90“xU‚è‰º‚ë‚·
 	}
 
 
 	// ƒ[ƒ‹ƒhs—ñ‚ðXV‚·‚é
 	m_worldMatrix = Matrix::CreateScale(Cudgel::CUDGEL_SCALE);	// ƒTƒCƒY‚ÌÝ’è & ‰Šú‰»
-	m_worldMatrix 
-		*=Matrix::CreateRotationX(-m_angleUD)								// c‰ñ“]‚ðs‚¤
-		*=Matrix::CreateTranslation(Vector3(10.0f, 10.0f, 8.0f))			// Œ´“_‚ÅA­‚µ‚¾‚¯‚¸‚ç‚·
-		*=Matrix::CreateRotationY(-m_angleRL)								// ‰¡‰ñ“]‚ðs‚¤
-		*=Matrix::CreateTranslation(m_position);							// ƒvƒŒƒCƒ„‚ÌˆÊ’u‚ÉÝ’è‚·‚é
+	m_worldMatrix
+		*= Matrix::CreateTranslation(Vector3(0.0f, 1.0f, 0.0f))			// Œ´“_‚©‚ç‚·‚±‚µ‚¸‚ç‚·
+		*= Matrix::CreateRotationX(-m_angleUD)							// c‰ñ“]‚ðs‚¤
+		*= Matrix::CreateTranslation(Cudgel::DIRECTION_ENEMY)			// ƒvƒŒƒCƒ„[‚ÌˆÊ’u‚É‚¸‚ç‚·
+		*= Matrix::CreateRotationY(-m_angleRL)							// ‰¡‰ñ“]‚ðs‚¤
+		*= Matrix::CreateTranslation(m_position);						// ƒvƒŒƒCƒ„‚ÌˆÊ’u‚ÉÝ’è‚·‚é
 }
 
 // Ž–Œãˆ—
 void Cudgel_Attacking::PostUpdate()
 {
 }
+
 
 // •`‰æˆ—
 void Cudgel_Attacking::Render(ID3D11DeviceContext* context,
@@ -115,9 +117,12 @@ void Cudgel_Attacking::Render(ID3D11DeviceContext* context,
 	// ƒ‚ƒfƒ‹‚ð•`‰æ‚·‚é
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 
+
+#ifdef _DEBUG
 	auto debugString = resources->GetDebugString();
 	debugString->AddString("Cudgel, %f : %f : %f", m_position.x, m_position.y, m_position.z);
 	debugString->AddString("angleUD, %f", m_angleUD);
+#endif // _DEBUG
 }
 
 

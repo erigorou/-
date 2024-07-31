@@ -47,8 +47,7 @@ void Enemy_Attacking::PreUpdate()
 	m_totalSeconds = 0.0f;
 	// 武器のステートを変更
 	auto cudgel = m_enemy->GetPlayScene()->GetCudgel();
-	cudgel->ChangeState(cudgel->GetIdling());
-
+	cudgel->ChangeState(cudgel->GetAttacking());
 }
 
 
@@ -66,6 +65,9 @@ void Enemy_Attacking::Update(const float& elapsedTime, DirectX::SimpleMath::Vect
 		// 2.5秒で待機状態に変更
 		m_enemy->ChangeState(m_enemy->GetEnemyIdling());
 	}
+
+	// 当たり判定の位置を調整する
+	m_boundingSphereBody.Center = parentPos;
 }
 
 
@@ -79,7 +81,9 @@ void Enemy_Attacking::CheckHitPlayerBody()
 // 事後更新処理
 void Enemy_Attacking::PostUpdate()
 {
-	// 修正点があればここに記載
+	// 武器のステートを変更する
+	auto cudgel = m_enemy->GetPlayScene()->GetCudgel();
+	cudgel->ChangeState(cudgel->GetIdling());
 }
 
 
@@ -100,9 +104,11 @@ void Enemy_Attacking::Render(
 	// リソースの取得
 	CommonResources* resources = CommonResources::GetInstance();
 
-	// デバッグ情報を「DebugString」で表示する
+#ifdef _DEBUG
+		// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
 	debugString->AddString("enemyAngle : %f", m_angle);
+#endif // _DEBUG
 }
 
 

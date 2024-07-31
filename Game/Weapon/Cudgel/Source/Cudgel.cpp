@@ -19,7 +19,8 @@
 
 
 // 固定値									0.7f
-const float Cudgel::CUDGEL_SCALE = Enemy::ENEMY_SCALE;
+const float Cudgel::CUDGEL_SCALE = Enemy::ENEMY_SCALE * 1.1f;
+const DirectX::SimpleMath::Vector3 Cudgel::DIRECTION_ENEMY = { 5.0f, 5.0f, 0.0f };
 
 // コンストラクタ
 Cudgel::Cudgel(PlayScene* playScene)
@@ -114,7 +115,7 @@ void Cudgel::Render(
 	m_currentState->Render(context, states, view, projection);
 
 	// 境界ボックスの描画
-	DrawBoundingBox(device, context, states, view, projection, m_currentState->GetBoundingBox());
+	DrawBoundingBox(device, context, states, view, projection);
 }
 
 // --------------------------------
@@ -125,8 +126,8 @@ void Cudgel::DrawBoundingBox(
 	ID3D11DeviceContext* context,
 	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection,
-	const DirectX::BoundingBox boundingBox)
+	const DirectX::SimpleMath::Matrix& projection
+	)
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
@@ -145,9 +146,9 @@ void Cudgel::DrawBoundingBox(
 	// 描画
 	m_primitiveBatch->Begin();
 	DX::Draw(
-		m_primitiveBatch.get(),	// プリミティブバッチ
-		boundingBox,			// 境界ボックス
-		Colors::Green			// 色
+		m_primitiveBatch.get(),				// プリミティブバッチ
+		m_currentState->GetBoundingBox(),	// 当たり判定
+		Colors::White						// 色
 	);
 	m_primitiveBatch->End();
 }

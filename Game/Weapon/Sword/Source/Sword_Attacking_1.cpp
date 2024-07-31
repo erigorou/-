@@ -52,15 +52,10 @@ void Sword_Attacking_1::Initialize()
 
 	// 境界ボックスを生成
 	// いずれOBBにする
-	m_boundingBox = DirectX::BoundingBox();
+	m_boundingBox = DirectX::BoundingOrientedBox();
 
-	//// オリジナルを生成と初期化
-	//DirectX::BoundingOrientedBox::CreateFromPoints(m_originalBox, m_position, Vector3(10.0f, 50.0f, 10.0f));
-
-	// いずれOBBにする
-	m_originalBox = DirectX::BoundingBox();
-	// サイズをモデルから取得する必要がある
-
+	// OBBの生成をする原型
+	m_originalBox = DirectX::BoundingOrientedBox();
 }
 
 
@@ -71,9 +66,6 @@ void Sword_Attacking_1::PreUpdate()
 	m_totalSeconds = 0.0f;
 	// 境界ボックスの場所をリセット
 	m_boundingBox.Center = DirectX::SimpleMath::Vector3::Zero;
-
-
-	// デバッグで敵のHPを減らす
 }
 
 // 更新処理
@@ -104,12 +96,13 @@ void Sword_Attacking_1::Update(float elapsedTime)
 		*= SimpleMath::Matrix::CreateRotationX(RADIAN_90)								// 90度横に向ける
 		*= SimpleMath::Matrix::CreateTranslation(Vector3(1.0f, 2.0f, 0.0f))				// 原点で、少しだけずらす
 		*= SimpleMath::Matrix::CreateRotationY(-m_angle)								// プレイヤーの横になるよう回転を行う
-		*= SimpleMath::Matrix::CreateRotationY(m_rot.y)								// 回転
+		*= SimpleMath::Matrix::CreateRotationY(m_rot.y)									// 回転
 		*= SimpleMath::Matrix::CreateTranslation(m_position);							// プレイヤの位置に設定する
 
 
-	// バウンディングボックスにも反映させる
+	// 当たり判定にもワールド行列の計算を行う
 	m_originalBox.Transform(m_boundingBox, m_worldMatrix);
+
 
 	// 1秒経過でステート変更
 	if (m_totalSeconds >= 1.0f)
@@ -136,8 +129,11 @@ void Sword_Attacking_1::Render(ID3D11DeviceContext* context,
 	// モデルを描画する
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 
+
+#ifdef _DEBUG
 	auto debugString = resources->GetDebugString();
 	debugString->AddString("sword, %f : %f : %f", m_position.x, m_position.y, m_position.z);
+#endif // _DEBUG
 }
 
 

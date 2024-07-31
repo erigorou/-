@@ -16,7 +16,7 @@ public:
 	/// 金棒の当たり判定を取得する
 	/// </summary>
 	/// <returns>箱の当たり判定</returns>
-	DirectX::BoundingBox GetBoundingBox() { return m_boundingBox; }
+	DirectX::BoundingOrientedBox GetBoundingBox()override { return m_boundingBox; }
 
 	// コンストラクタ
 	Cudgel_Attacking(Cudgel* cudgel);
@@ -56,10 +56,10 @@ private:
 	// 合計時間
 	float m_totalSeconds;
 	// 金棒の当たり判定1(実際の当たり判定)　
-	DirectX::BoundingBox m_boundingBox;
+	DirectX::BoundingOrientedBox m_boundingBox;
 
 	// オリジナルの当たり判定 (オリジナルは生成をするだけのもの)
-	DirectX::BoundingBox m_originalBox;
+	DirectX::BoundingOrientedBox m_originalBox;
 
 private:
 	// 金棒の元

@@ -68,7 +68,7 @@ void Cudgel_Idling::Update(float elapsedTime)
 
 	// ワールド行列を計算する
 	m_worldMatrix = Matrix::CreateScale(Cudgel::CUDGEL_SCALE)		// 大きさの設定　＆　リセット
-		*= Matrix::CreateTranslation(Vector3(14.0f, 2.0f, 0.0f))	// 原点の位置からすこしずらす
+		*= Matrix::CreateTranslation(Cudgel::DIRECTION_ENEMY)		// 原点の位置からすこしずらす
 		*= Matrix::CreateRotationY(-m_angle)						// 剣全体の回転を行う
 		*= Matrix::CreateTranslation(m_position);					// 鬼の座標に移動する
 }

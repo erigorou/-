@@ -187,12 +187,10 @@ void Enemy::Render(
 	// モデルを描画する
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 
+#ifdef _DEBUG
 	// 境界球の描画
 	DrawBoundingSphere(device, context, states, view, projection, m_currentState->GetBoundingSphereBody());
-
-	//// デバッグ情報を「DebugString」で表示する
-	//auto debugString = resources->GetDebugString();
-
+#endif // _DEBUG
 }
 
 

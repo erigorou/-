@@ -16,7 +16,7 @@ public:
 
 
 	// 境界ボックスの当たり判定を渡す
-	DirectX::BoundingBox GetBoundingBox(){ return m_boundingBox; }
+	DirectX::BoundingOrientedBox GetBoundingBox(){ return m_boundingBox; }
 
 
 	// コンストラクタ
@@ -58,9 +58,9 @@ private:
 	float m_totalSeconds;
 
 	// 剣の当たり判定1(実際の当たり判定)　
-	DirectX::BoundingBox m_boundingBox;
+	DirectX::BoundingOrientedBox m_boundingBox;
 	// オリジナルの当たり判定 (オリジナルは生成をするだけのもの)
-	DirectX::BoundingBox m_originalBox;
+	DirectX::BoundingOrientedBox m_originalBox;
 
 
 private:

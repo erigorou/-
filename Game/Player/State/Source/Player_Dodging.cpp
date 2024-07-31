@@ -10,7 +10,7 @@
 #include "Game/Player/State/Header/Player_Dodging.h"
 
 // 固定値
-const float PlayerDodging::DODGING_TIME = 0.6f;
+const float PlayerDodging::DODGING_TIME = 0.5f;
 const float PlayerDodging::DODGE_FUNCTION = 0.9f;
 const int   PlayerDodging::TRUNCATION_DIGIT = 3;
 
@@ -61,6 +61,7 @@ void PlayerDodging::Update(const float& elapsedTime, DirectX::SimpleMath::Vector
 
 	// ステート開始から時間を計測、一定時間で別のStateへ遷移させる
 	m_player->TimeComparison(m_totalSeconds, DODGING_TIME, m_player->GetPlayerIdlingState(), elapsedTime);
+
 	// プレイヤーの回転を取得
 	Matrix angle = Matrix::CreateRotationY(-m_player->GetAngle());
 	// 速度を設定

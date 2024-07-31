@@ -8,6 +8,10 @@
 class Floor
 {
 public:
+	// 固定値
+	static const float SIZE;
+
+
 	// コンストラクタ
 	Floor(ID3D11Device1* device);
 	// デストラクタ
