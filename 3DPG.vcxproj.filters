@@ -179,6 +179,8 @@
     <ClInclude Include="Game\Enemy\States\Header\Enemy_Attacking.h" />
     <ClInclude Include="Game\Stage\Floor\Floor.h" />
     <ClInclude Include="Game\Stage\Wall\Wall.h" />
+    <ClInclude Include="Libraries\MyLib\Collision.h" />
+    <ClInclude Include="Interface\IParticle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />

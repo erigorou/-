@@ -119,12 +119,12 @@ void Particle::CreateTrailDust(float elapsedTimer)
 
 	// パーティクル(１つ)を生成
 	DustTrialParticle dTP(
-		0.5f,																									//	生存時間(s)
-		Vector3(m_playerPosition.x, m_playerPosition.y, m_playerPosition.z),	//	基準座標
-		Vector3(-m_playerVelocity.x, 0.75f, -m_playerVelocity.z),						//	速度
-		Vector3(1.0f, 0.1f, 1.0f),																		//	加速度
-		Vector3(2.0f, 2.0f, 2.0f), SimpleMath::Vector3(4.0f, 4.0f, 4.0f),				//	初期スケール、最終スケール
-		Color(0.7f, 0.7f, 0.7f, 1.0f), SimpleMath::Color(1.0f, 1.0f, 1.0f, 0.0f)		//	初期カラー、最終カラー
+		0.5f,																		//	生存時間(s)
+		Vector3(m_playerPosition.x, m_playerPosition.y, m_playerPosition.z),		//	基準座標
+		Vector3(-m_playerVelocity.x, 0.75f, -m_playerVelocity.z),					//	速度
+		Vector3(1.0f, 0.1f, 1.0f),													//	加速度
+		Vector3(2.0f, 2.0f, 2.0f), SimpleMath::Vector3(4.0f, 4.0f, 4.0f),			//	初期スケール、最終スケール
+		Color(0.7f, 0.7f, 0.7f, 1.0f), SimpleMath::Color(1.0f, 1.0f, 1.0f, 0.0f)	//	初期カラー、最終カラー
 	);
 
 	// 配列に追加

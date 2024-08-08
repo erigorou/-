@@ -4,6 +4,7 @@
 //
 // -------------------------------------
 #include "pch.h"
+#include "Interface/IParticle.h"
 #include "Effects/Header/DustTrailParticle.h"
 
 // I—¹ŠÔ

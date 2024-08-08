@@ -10,11 +10,20 @@
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
+#include "Libraries/MyLib/Collision.h"
 
 #include "Game/Player/Player.h"
 #include "Game/Enemy/Enemy.h"
 #include "Game/Weapon/Cudgel/Header/Cudgel_Attacking.h"
 #include "Game/Weapon/Cudgel/Header/Cudgel.h"
+
+
+// 固定値 ==================================
+const float Cudgel_Attacking::CHARGE_TIME = 1.0f;	// 振りかざし時間
+const float Cudgel_Attacking::WINDUP_TIME = 1.4f;	// 待機
+const float Cudgel_Attacking::ATTACK_TIME = 1.7f;	// 降り下ろし
+
+
 
 // コンストラクタ
 Cudgel_Attacking::Cudgel_Attacking(Cudgel* cudgel)
@@ -45,6 +54,9 @@ void Cudgel_Attacking::Initialize()
 
 	// ワールド行列を初期化
 	m_worldMatrix = Matrix::Identity;
+
+	// モデルの大きさに合わせてOBBを設定する
+	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model);
 }
 
 
@@ -73,20 +85,20 @@ void Cudgel_Attacking::Update(float elapsedTime)
 	m_angleRL = enemy->GetAngle();
 
 
-	// 0.5秒上にあげて、
-	if (m_totalSeconds < 1.0f)
+	// 1秒上にあげて、
+	if (m_totalSeconds < CHARGE_TIME)
 	{
-		m_angleUD = XMConvertToRadians(-45.0f * (m_totalSeconds / 0.5f)); // 上げる角度を45度に設定
+		m_angleUD = XMConvertToRadians(-20.0f * (m_totalSeconds / 0.5f)); // 上げる角度を20度に設定
 	}
 
-	// 0.,2秒間の遅延
-	else if (m_totalSeconds < 1.4f){}
+	// 0.,4秒間の遅延
+	else if (m_totalSeconds < WINDUP_TIME){}
 
-	// 0.2秒振り下ろす。
-	else if (m_totalSeconds < 1.7f)
+	// 0.3秒振り下ろす。
+	else if (m_totalSeconds < ATTACK_TIME)
 	{
 		// 次の0.2秒間で振り下ろす
-		m_angleUD = XMConvertToRadians(-30.0f + 90.0f * ((m_totalSeconds - 1.4f) / 0.2f)); // 90度振り下ろす
+		m_angleUD = XMConvertToRadians(-30.0f + 85.0f * ((m_totalSeconds - 1.4f) / 0.3f)); // 85度振り下ろす
 	}
 
 
@@ -98,6 +110,9 @@ void Cudgel_Attacking::Update(float elapsedTime)
 		*= Matrix::CreateTranslation(Cudgel::DIRECTION_ENEMY)			// プレイヤーの位置にずらす
 		*= Matrix::CreateRotationY(-m_angleRL)							// 横回転を行う
 		*= Matrix::CreateTranslation(m_position);						// プレイヤの位置に設定する
+
+	// 当たり判定を反映させる
+	m_originalBox.Transform(m_boundingBox, m_worldMatrix);
 }
 
 // 事後処理

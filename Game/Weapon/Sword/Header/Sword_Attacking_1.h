@@ -62,7 +62,6 @@ private:
 	// オリジナルの当たり判定 (オリジナルは生成をするだけのもの)
 	DirectX::BoundingOrientedBox m_originalBox;
 
-
 private:
 	// ソードの元を取得
 	Sword* m_sword;

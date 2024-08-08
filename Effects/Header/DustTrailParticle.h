@@ -6,8 +6,9 @@
 
 #pragma once
 #include "pch.h"
+#include "Interface/IParticle.h"
 
-class DustTrialParticle
+class DustTrialParticle : public IParticle
 {
 public:
 	// ゲッター************************************
@@ -53,7 +54,7 @@ public:
 		float life,
 		DirectX::SimpleMath::Vector3 pos,													// 初期座標
 		DirectX::SimpleMath::Vector3 velocity,												// 初期速度
-		DirectX::SimpleMath::Vector3 accelerator,												// 加速度
+		DirectX::SimpleMath::Vector3 accelerator,											// 加速度
 		DirectX::SimpleMath::Vector3 startScale, DirectX::SimpleMath::Vector3 endScale,		// 初期サイズと最終サイズ
 		DirectX::SimpleMath::Color startColor, DirectX::SimpleMath::Color endColor			// 初期カラーと最終カラー
 	);

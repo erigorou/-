@@ -10,8 +10,8 @@
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
+#include "Libraries/MyLib/Collision.h"
 
-#include "Game/Weapon/Sword/Sword.h"
 #include "Game/Player/Player.h"
 #include "Game/Weapon/Sword/Header/Sword_Attacking_1.h"
 
@@ -50,12 +50,8 @@ void Sword_Attacking_1::Initialize()
 	// ワールド行列を初期化
 	m_worldMatrix = Matrix::Identity;
 
-	// 境界ボックスを生成
-	// いずれOBBにする
-	m_boundingBox = DirectX::BoundingOrientedBox();
-
-	// OBBの生成をする原型
-	m_originalBox = DirectX::BoundingOrientedBox();
+	// モデルの大きさに合わせてOBBを設定する
+	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model);
 }
 
 

@@ -53,6 +53,8 @@ private:
 
 	// 金棒の当たり判定1(実際の当たり判定)　
 	DirectX::BoundingOrientedBox m_boundingBox;
+	// オリジナルの当たり判定 (オリジナルは生成をするだけのもの)
+	DirectX::BoundingOrientedBox m_originalBox;
 
 
 private:

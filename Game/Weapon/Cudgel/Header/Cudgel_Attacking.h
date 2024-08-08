@@ -5,12 +5,21 @@
 class Cudgel;
 class Enemy;
 
+
+
 /// <summary>
 /// 攻撃状態
 /// </summary>
 class Cudgel_Attacking : public IWeapon
 {
 public:
+	// 固定値
+	static const float CHARGE_TIME;	// 攻撃の貯めモーションの時間
+	static const float WINDUP_TIME;	// 攻撃する前の時間
+	static const float ATTACK_TIME;	// 攻撃する時間
+	static const float END_TIME;	// 攻撃（全体）が終了する時間
+
+
 
 	/// <summary>
 	/// 金棒の当たり判定を取得する

@@ -10,6 +10,7 @@
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
+#include "Libraries/MyLib/Collision.h"
 
 #include "Game/Player/Player.h"
 #include "Game/Enemy/Enemy.h"
@@ -43,6 +44,8 @@ void Cudgel_Idling::Initialize()
 
 	// ワールド行列を初期化
 	m_worldMatrix = Matrix::Identity;
+	// モデルの大きさに合わせてOBBを設定する
+	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model);
 }
 
 
@@ -71,6 +74,9 @@ void Cudgel_Idling::Update(float elapsedTime)
 		*= Matrix::CreateTranslation(Cudgel::DIRECTION_ENEMY)		// 原点の位置からすこしずらす
 		*= Matrix::CreateRotationY(-m_angle)						// 剣全体の回転を行う
 		*= Matrix::CreateTranslation(m_position);					// 鬼の座標に移動する
+
+	// 当たり判定を移動させる。
+	m_originalBox.Transform(m_boundingBox, m_worldMatrix);
 }
 
 // 事後処理

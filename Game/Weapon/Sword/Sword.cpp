@@ -137,7 +137,6 @@ void Sword::DrawBoundingBox(
 
 	UNREFERENCED_PARAMETER(device);
 
-
 	context->OMSetBlendState(states->Opaque(), nullptr, 0xFFFFFFFF);
 	context->OMSetDepthStencilState(states->DepthRead(), 0);
 	context->RSSetState(states->CullNone());
@@ -146,6 +145,7 @@ void Sword::DrawBoundingBox(
 	m_basicEffect->SetView(view);
 	m_basicEffect->SetProjection(projection);
 	m_basicEffect->Apply(context);
+
 	// •`‰æ
 	m_primitiveBatch->Begin();
 	DX::Draw(

@@ -59,12 +59,12 @@ void Enemy_Attacking::Update(const float& elapsedTime, DirectX::SimpleMath::Vect
 	// 経過時間の計算
 	m_totalSeconds += elapsedTime;
 
-
 	if (m_totalSeconds >= 2.5f)
 	{
 		// 2.5秒で待機状態に変更
 		m_enemy->ChangeState(m_enemy->GetEnemyIdling());
 	}
+
 
 	// 当たり判定の位置を調整する
 	m_boundingSphereBody.Center = parentPos;
