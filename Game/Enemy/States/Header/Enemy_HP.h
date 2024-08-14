@@ -6,6 +6,7 @@
 class Enemy_HP
 {
 public:
+
 	// HPを取得する処理
 	int  GetHP() const { return m_hp; }
 	// HPを設定する処理
@@ -16,16 +17,14 @@ public:
 	// HPを増やす処理
 	void AddHP(const int add) { m_hp += add; }
 
-public:
-
 	// コンストラクタ
 	Enemy_HP(int hp)
-		:
-		m_hp(hp)
+		:m_hp(hp)
 	{}
 
 
-private:	// 変数
+private:	
+	// 変数
 	int m_hp;
 };
 
