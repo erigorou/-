@@ -22,7 +22,6 @@ public:
 		:m_hp(hp)
 	{}
 
-
 private:	
 	// •Ï”
 	int m_hp;

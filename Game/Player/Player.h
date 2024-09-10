@@ -106,6 +106,8 @@ private:
 	DirectX::SimpleMath::Vector3 m_position;
 	// ‘¬“x
 	DirectX::SimpleMath::Vector3 m_velocity;
+	// ‰Á‘¬“x
+	DirectX::SimpleMath::Vector3 m_acceleration;
 	// Šp“x
 	float m_angle;
 

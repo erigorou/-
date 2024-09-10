@@ -181,7 +181,9 @@
     <ClInclude Include="Game\Stage\Wall\Wall.h" />
     <ClInclude Include="Libraries\MyLib\Collision.h" />
     <ClInclude Include="Interface\IParticle.h" />
-    <ClInclude Include="Interface\IGaugeUI.h" />
+    <ClInclude Include="Interface\IUserInterface.h" />
+    <ClInclude Include="Game\UI\PlaySceneUIManager\Header\PlaySceneUIManager.h" />
+    <ClInclude Include="Game\UI\Header\Gauge.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -270,6 +272,8 @@
     <ClCompile Include="Game\Enemy\States\Source\Enemy_Attacking.cpp" />
     <ClCompile Include="Game\Stage\Floor\Floor.cpp" />
     <ClCompile Include="Game\Stage\Wall\Wall.cpp" />
+    <ClCompile Include="Game\UI\PlaySceneUIManager\Source\PlaySceneUIManager.cpp" />
+    <ClCompile Include="Game\UI\Source\Gauge.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

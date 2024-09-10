@@ -94,11 +94,16 @@ void Cudgel_Attacking::Update(float elapsedTime)
 	// 0.,4•bŠÔ‚Ì’x‰„
 	else if (m_totalSeconds < WINDUP_TIME){}
 
+
 	// 0.3•bU‚è‰º‚ë‚·B
 	else if (m_totalSeconds < ATTACK_TIME)
 	{
 		// ŽŸ‚Ì0.2•bŠÔ‚ÅU‚è‰º‚ë‚·
-		m_angleUD = XMConvertToRadians(-30.0f + 85.0f * ((m_totalSeconds - 1.4f) / 0.3f)); // 85“xU‚è‰º‚ë‚·
+		m_angleUD = XMConvertToRadians(-30.0f + 135.0f * ((m_totalSeconds - 1.4f) / 0.3f)); // 85“xU‚è‰º‚ë‚·
+	}
+	else
+	{
+		int i = 0;
 	}
 
 

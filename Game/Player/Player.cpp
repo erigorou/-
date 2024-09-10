@@ -20,7 +20,7 @@
 
 // ここで静的メンバー変数を定義する
 const DirectX::SimpleMath::Vector3 Player::HOME_POSITION(0.0f);
-const float Player::PLAYER_SPEED = 0.35f;
+const float Player::PLAYER_SPEED = 0.05f;
 const float Player::PLAYER_SCALE = 0.1f;
 const float Player::APPLIED_ATTACK_TIME = 1.0f;
 
@@ -32,8 +32,9 @@ Player::Player(PlayScene* playScene)
 	:
 	m_playScene(playScene),
 	m_model{},
-	m_position{0, 0, 40},
-	m_angle{0.f},
+	m_position{ 0, 0, 40 },
+	m_angle{ 0.f },
+	m_acceleration{},
 	m_worldMatrix{},
 	m_currentState{},
 	m_keyboardState{},
@@ -208,24 +209,69 @@ void Player::MovePlayer()
 	// キー入力を受け付ける。
 	Keyboard::State keyboardState = Keyboard::Get().GetState();
 
-	m_velocity = SimpleMath::Vector3::Zero;	// 速度値をリセットする
+	Vector3 inputVelocity = Vector3::Zero;
+	Vector3 moveVelocity = Vector3::Zero;
 
 	if (keyboardState.Up)
-		m_velocity += Vector3::Forward;	// 「↑」で前進
+		inputVelocity += Vector3::Forward;	// 「↑」で前進
 	if (keyboardState.Down)
-		m_velocity += Vector3::Backward;// 「↓」で後退
+		inputVelocity += Vector3::Backward;	// 「↓」で後退
 	if (keyboardState.Left)
- 		m_velocity += Vector3::Left;	// 「←」で左移動
+ 		inputVelocity += Vector3::Left;		// 「←」で左移動
 	if (keyboardState.Right)
-		m_velocity += Vector3::Right;	// 「→」で右移動
+		inputVelocity += Vector3::Right;	// 「→」で右移動
+	
+	inputVelocity.Normalize();
 
-	if (m_velocity.LengthSquared() > 0.0f)		// 移動量がある場合：
-		m_velocity.Normalize();					// 移動量を正規化する
+	if (inputVelocity == Vector3::Zero)	// 入力があった
+	{
+		float accelerationLength = m_acceleration.Length();				// 速度の長さを取得する
 
-	m_velocity *= PLAYER_SPEED;					// 移動量を補正する
-	m_velocity = Math::truncate_vector(m_velocity, 2);
 
-	m_position += Vector3::Transform(m_velocity, Matrix::CreateRotationY(-m_angle));	// 移動量を座標に反映
+		// 0の近似値より大きい場合
+		if (accelerationLength >= FLT_EPSILON)
+		{
+			Vector3 accelerationNormal = m_acceleration / accelerationLength;// 保持する加速度の正規化ベクトルを取得する
+			// 摩擦
+			float friction = 0.05f;
+			accelerationLength -= friction;
+
+			// 加速度が（ー）になるときにリセットする
+			if (accelerationLength < 0.0f)	accelerationLength = 0.0f;
+
+			m_acceleration = accelerationNormal * accelerationLength;
+			moveVelocity += m_acceleration;								// 基本速度に加速度を上書きする
+		}
+
+	}
+	else // 入力がなかった
+	{
+		// 基本移動量を計算する
+		moveVelocity += inputVelocity * PLAYER_SPEED;
+
+		// 加速度
+		float acceleration = 0.05f;
+		// 加速度の計算を行う
+		m_acceleration += inputVelocity * acceleration;
+
+		// 長さの二乗が取得できる(上限下限関係なく行うため)
+		if (m_acceleration.LengthSquared() > 1)
+		{
+			// 加速度の上限を１に設定する
+			m_acceleration.Normalize();
+
+			m_acceleration *= 1.0f;
+		}
+
+		// 基本移動に加速度を上乗せする
+		moveVelocity += m_acceleration;
+
+		// 速度を保存する
+		m_velocity = moveVelocity;
+
+	}
+
+	m_position += Vector3::Transform(moveVelocity, Matrix::CreateRotationY(-m_angle));	// 移動量を座標に反映
 }
 
 

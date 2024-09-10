@@ -216,11 +216,13 @@
     <ClInclude Include="Game\Sound\BGM_Player.h" />
     <ClInclude Include="Game\Stage\Floor\Floor.h" />
     <ClInclude Include="Game\Stage\Wall\Wall.h" />
+    <ClInclude Include="Game\UI\Header\Gauge.h" />
+    <ClInclude Include="Game\UI\PlaySceneUIManager\Header\PlaySceneUIManager.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Attacking.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Idling.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_1.h" />
-    <ClInclude Include="Interface\IGaugeUI.h" />
+    <ClInclude Include="Interface\IUserInterface.h" />
     <ClInclude Include="Interface\IParticle.h" />
     <ClInclude Include="Interface\IWeapon.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Idling.h" />
@@ -269,6 +271,8 @@
     <ClCompile Include="Game\Sound\BGM_Player.cpp" />
     <ClCompile Include="Game\Stage\Floor\Floor.cpp" />
     <ClCompile Include="Game\Stage\Wall\Wall.cpp" />
+    <ClCompile Include="Game\UI\PlaySceneUIManager\Source\PlaySceneUIManager.cpp" />
+    <ClCompile Include="Game\UI\Source\Gauge.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Attacking.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Idling.cpp" />
