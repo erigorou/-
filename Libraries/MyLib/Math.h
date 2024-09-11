@@ -105,3 +105,11 @@ public:
 		return angle;		// 角度（ラジアン単位）を返す
 	}
 };
+
+
+
+// clamp
+
+// 01clamp 0~1の間で値を返してくれるclamp
+
+// イージング

@@ -131,16 +131,22 @@ void Player::ChangeState(IState* newState)
 {
 	// 同じステートで更新しようとすると早期リターン
 	if (m_currentState == newState) return;
-	// 事後更新処理を行う
-	m_currentState->PostUpdate();
-	// 現在のステートを変更する
-	m_currentState = newState;
-	// 新しいステートの事前更新を行う
-	m_currentState->PreUpdate();
+
+	m_currentState->PostUpdate();	// 事後更新処理を行う
+	m_currentState = newState;		// 現在のステートを変更する
+	m_currentState->PreUpdate();	// 新しいステートの事前更新を行う
 }
 
 
-// 時間回帰処理
+// ---------------------------------------------------------
+/// <summary>
+/// 行動に対する時間を計算する関数
+/// </summary>
+/// <param name="nowTime">現在の時間</param>
+/// <param name="totalTime">ステートを変更する時間</param>
+/// <param name="newState">変更する時間</param>
+/// <param name="elapsedTime">経過時間</param>
+// ---------------------------------------------------------
 void Player::TimeComparison(float& nowTime, const float totalTime, IState* newState, const float elapsedTime)
 {
 	// 定められた時間になったら
@@ -154,6 +160,7 @@ void Player::TimeComparison(float& nowTime, const float totalTime, IState* newSt
 	nowTime += elapsedTime;
 }
 
+
 // ----------------------------------------------
 /// <summary>
 /// プレイヤーの更新処理
@@ -161,10 +168,7 @@ void Player::TimeComparison(float& nowTime, const float totalTime, IState* newSt
 /// <param name="enemyPos">敵の座標</param>
 /// <param name="elapsedTime">経過時間</param>
 // ---------------------------------------------
-void Player::Update(
-	const DirectX::SimpleMath::Vector3 enemyPos,
-	const float elapsedTime
-	)
+void Player::Update(const DirectX::SimpleMath::Vector3 enemyPos,const float elapsedTime)
 {
 	// ステートの更新
 	m_currentState->Update(elapsedTime, m_position);
@@ -209,32 +213,26 @@ void Player::MovePlayer()
 	// キー入力を受け付ける。
 	Keyboard::State keyboardState = Keyboard::Get().GetState();
 
-	Vector3 inputVelocity = Vector3::Zero;
-	Vector3 moveVelocity = Vector3::Zero;
+	Vector3 inputVelocity = Vector3::Zero;	// 基本速度
+	Vector3 moveVelocity  = Vector3::Zero;	// 加速用速度
 
-	if (keyboardState.Up)
-		inputVelocity += Vector3::Forward;	// 「↑」で前進
-	if (keyboardState.Down)
-		inputVelocity += Vector3::Backward;	// 「↓」で後退
-	if (keyboardState.Left)
- 		inputVelocity += Vector3::Left;		// 「←」で左移動
-	if (keyboardState.Right)
-		inputVelocity += Vector3::Right;	// 「→」で右移動
+	if (keyboardState.Up	)	inputVelocity += Vector3::Forward;	// 「↑」で前進
+	if (keyboardState.Down	)	inputVelocity += Vector3::Backward;	// 「↓」で後退
+	if (keyboardState.Left	)	inputVelocity += Vector3::Left;		// 「←」で左移動
+	if (keyboardState.Right	)	inputVelocity += Vector3::Right;	// 「→」で右移動
 	
 	inputVelocity.Normalize();
 
-	if (inputVelocity == Vector3::Zero)	// 入力があった
+	if (inputVelocity == Vector3::Zero)	// 入力がなかった
 	{
 		float accelerationLength = m_acceleration.Length();				// 速度の長さを取得する
-
-
 		// 0の近似値より大きい場合
 		if (accelerationLength >= FLT_EPSILON)
 		{
 			Vector3 accelerationNormal = m_acceleration / accelerationLength;// 保持する加速度の正規化ベクトルを取得する
-			// 摩擦
-			float friction = 0.05f;
-			accelerationLength -= friction;
+
+			float friction = 0.1f;			// 摩擦量
+			accelerationLength -= friction;	// 摩擦を計算
 
 			// 加速度が（ー）になるときにリセットする
 			if (accelerationLength < 0.0f)	accelerationLength = 0.0f;
@@ -242,36 +240,27 @@ void Player::MovePlayer()
 			m_acceleration = accelerationNormal * accelerationLength;
 			moveVelocity += m_acceleration;								// 基本速度に加速度を上書きする
 		}
-
 	}
-	else // 入力がなかった
+	else // 入力があった場合の処理
 	{
 		// 基本移動量を計算する
 		moveVelocity += inputVelocity * PLAYER_SPEED;
 
-		// 加速度
-		float acceleration = 0.05f;
-		// 加速度の計算を行う
-		m_acceleration += inputVelocity * acceleration;
+		float acceleration = 0.05f;							// 加速度
+		m_acceleration += inputVelocity * acceleration;		// 加速度の計算を行う
 
-		// 長さの二乗が取得できる(上限下限関係なく行うため)
+		// 2乗にすることで符号を外す
 		if (m_acceleration.LengthSquared() > 1)
 		{
-			// 加速度の上限を１に設定する
-			m_acceleration.Normalize();
-
-			m_acceleration *= 1.0f;
+			m_acceleration.Normalize(); // 上限を1に設定する
 		}
 
-		// 基本移動に加速度を上乗せする
-		moveVelocity += m_acceleration;
-
-		// 速度を保存する
-		m_velocity = moveVelocity;
-
+		moveVelocity += m_acceleration;		// 基本移動に加速度を上乗せする
+		m_velocity = moveVelocity;			// 速度を保存する
 	}
 
-	m_position += Vector3::Transform(moveVelocity, Matrix::CreateRotationY(-m_angle));	// 移動量を座標に反映
+	// 移動量を座標に反映
+	m_position += Vector3::Transform(moveVelocity, Matrix::CreateRotationY(-m_angle));
 }
 
 
@@ -285,10 +274,10 @@ void Player::CalculationMatrix()
 	// 行列の計算を行う
 	m_worldMatrix = Matrix::Identity;		// 更新ごとに初期化を行う
 	m_worldMatrix
-		*= Matrix::CreateTranslation(Vector3::Zero)										// 原点に移動
-		*= Matrix::CreateScale		(PLAYER_SCALE)										// プレイヤーのサイズ変更
+		*= Matrix::CreateTranslation(Vector3::Zero)							// 原点に移動
+		*= Matrix::CreateScale		(PLAYER_SCALE)							// プレイヤーのサイズ変更
 		*= Matrix::CreateRotationY	(-m_angle + XMConvertToRadians(180.f))	// 敵の方向を見るように設定する
-		*= Matrix::CreateTranslation(m_position);											// 座標を移動させる
+		*= Matrix::CreateTranslation(m_position);							// 座標を移動させる
 }
 
 
@@ -352,10 +341,6 @@ void Player::Render(
 	m_primitiveBatch->Begin();
 	m_primitiveBatch->DrawLine(VertexPositionColor(m_position, DirectX::Colors::Red), VertexPositionColor(XLine, DirectX::Colors::Red));
 	m_primitiveBatch->End();
-
-
-	// X軸に青い線
-	// Z軸に赤い線
 }
 
 

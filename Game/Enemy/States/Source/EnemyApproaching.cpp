@@ -56,18 +56,18 @@ void EnemyApproaching::PreUpdate()
 
 	// 経過時間を初期化
 	m_totalSeconds = 0.f; 
-	// 敵の座標を取得
-	m_position = m_enemy->GetPosition();
-	// 初期の回転角を設定
-	m_angle = m_enemy->GetAngle();
-	// ワールド行列の設定
-	m_worldMat = m_enemy->GetWorldMatrix();
+
+	m_position	= m_enemy->GetPosition();		// 座標の取得
+	m_angle		= m_enemy->GetAngle();			// 回転の取得
+	m_worldMat	= m_enemy->GetWorldMatrix();	// ワールド行列の取得
 }
 
 
 // 更新処理
 void EnemyApproaching::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3& parentPos)
 {
+
+	using namespace DirectX::SimpleMath;
 	UNREFERENCED_PARAMETER(parentPos);
 	
 	// 合計の時間を計算する
@@ -76,11 +76,11 @@ void EnemyApproaching::Update(const float& elapsedTime, DirectX::SimpleMath::Vec
 	// サイン波の計算(上下移動)
 	m_position.y = Math::CalculatingSinWave(m_totalSeconds, m_amplitude, m_frequency);
 
-	// 敵に近づく処理
-	using namespace DirectX::SimpleMath;
+	// 絶対値を取ることでジャンプしているような挙動をする　※
+	m_position.y = fabsf(m_position.y);
+
 	// プレイヤーの座標を取得
 	Vector3 playerPos = m_enemy->GetPlayScene()->GetPlayer()->GetPosition();
-
 
 	// 敵から見たプレイヤーの位置を計算する
 	m_angle = Math::CalculationAngle(m_position, playerPos);
@@ -142,14 +142,10 @@ void EnemyApproaching::Render(
 	UNREFERENCED_PARAMETER(m_model);
 
 
-
-	// リソースの取得
+#ifdef _DEBUG
 	CommonResources* resources = CommonResources::GetInstance();
-	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
-	
-	UNREFERENCED_PARAMETER(debugString);
-
+#endif // _DEBUG
 }
 
 

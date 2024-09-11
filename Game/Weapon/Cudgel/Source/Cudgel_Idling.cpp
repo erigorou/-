@@ -38,14 +38,8 @@ Cudgel_Idling::~Cudgel_Idling()
 // ‰Šú‰»ˆ—
 void Cudgel_Idling::Initialize()
 {
-	using namespace DirectX::SimpleMath;
-	// ƒ‚ƒfƒ‹‚ðŽæ“¾
-	m_model = m_cudgel->GetModel();
-
-	// ƒ[ƒ‹ƒhs—ñ‚ð‰Šú‰»
-	m_worldMatrix = Matrix::Identity;
-	// ƒ‚ƒfƒ‹‚Ì‘å‚«‚³‚É‡‚í‚¹‚ÄOBB‚ðÝ’è‚·‚é
-	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model);
+	m_model = m_cudgel->GetModel();											// ƒ‚ƒfƒ‹‚ðŽæ“¾‚µB
+	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model);	// ‚»‚Ì‘å‚«‚³‚É‡‚í‚¹‚ÄOBB‚ð¶¬‚·‚é
 }
 
 
@@ -61,13 +55,10 @@ void Cudgel_Idling::Update(float elapsedTime)
 	using namespace DirectX;
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	// “G‚ðŽæ“¾
-	auto enemy = m_cudgel->GetPlayScene()->GetEnemy();
 
-	// ‹S‚ÌÀ•W‚ðŽæ“¾
-	m_position = enemy->GetPosition();
-	// ‹S‚Ì‰ñ“]‚ðŽæ“¾
-	m_angle	= enemy->GetAngle();
+	auto enemy = m_cudgel->GetPlayScene()->GetEnemy();
+	m_position = enemy->GetPosition();	// “G‚ÌÀ•W‚ðŽæ“¾
+	m_angle	= enemy->GetAngle();		// “G‚Ì‰ñ“]‚ðŽæ“¾
 
 	// ƒ[ƒ‹ƒhs—ñ‚ðŒvŽZ‚·‚é
 	m_worldMatrix = Matrix::CreateScale(Cudgel::CUDGEL_SCALE)		// ‘å‚«‚³‚ÌÝ’è@•@ƒŠƒZƒbƒg
@@ -75,8 +66,7 @@ void Cudgel_Idling::Update(float elapsedTime)
 		*= Matrix::CreateRotationY(-m_angle)						// Œ•‘S‘Ì‚Ì‰ñ“]‚ðs‚¤
 		*= Matrix::CreateTranslation(m_position);					// ‹S‚ÌÀ•W‚ÉˆÚ“®‚·‚é
 
-	// “–‚½‚è”»’è‚ðˆÚ“®‚³‚¹‚éB
-	m_originalBox.Transform(m_boundingBox, m_worldMatrix);
+	m_originalBox.Transform(m_boundingBox, m_worldMatrix);		// “–‚½‚è”»’è‚ðˆÚ“®‚³‚¹‚éB
 }
 
 // Ž–Œãˆ—
@@ -90,13 +80,15 @@ void Cudgel_Idling::Render(ID3D11DeviceContext* context,
 	const DirectX::SimpleMath::Matrix& view,
 	const DirectX::SimpleMath::Matrix& projection)
 {
-	CommonResources* resources = CommonResources::GetInstance();
-
 	// ƒ‚ƒfƒ‹‚ð•`‰æ‚·‚é
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 
+#ifdef _DEBUG
+	CommonResources* resources = CommonResources::GetInstance();
 	auto debugString = resources->GetDebugString();
-	debugString->AddString("Cudgel, %f : %f : %f", m_position.x, m_position.y, m_position.z);
+	debugString->AddString
+	("Cudgel, %f : %f : %f",m_position.x, m_position.y, m_position.z);
+#endif // !_DEBUG
 }
 
 

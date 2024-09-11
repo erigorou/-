@@ -20,7 +20,7 @@
 
 // 固定値									0.7f
 const float Cudgel::CUDGEL_SCALE = Enemy::ENEMY_SCALE * 1.1f;
-const DirectX::SimpleMath::Vector3 Cudgel::DIRECTION_ENEMY = { 5.0f, 5.0f, 0.0f };
+const DirectX::SimpleMath::Vector3 Cudgel::DIRECTION_ENEMY = { 6.0f, 5.0f, 0.0f };
 
 // コンストラクタ
 Cudgel::Cudgel(PlayScene* playScene)

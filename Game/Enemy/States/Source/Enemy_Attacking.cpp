@@ -33,9 +33,7 @@ void Enemy_Attacking::Initialize(DirectX::Model* model)
 	// モデルの取得
 	m_model = model;
 
-	// 体の当たり判定の生成
-	m_boundingSphereBody = DirectX::BoundingSphere();
-	// 体の当たり判定のサイズや座標を設定
+	m_boundingSphereBody = DirectX::BoundingSphere();		// 境界球の生成と設定
 	m_boundingSphereBody.Radius = Enemy::ENEMY_SCALE * 12.f;
 }
 
@@ -64,7 +62,6 @@ void Enemy_Attacking::Update(const float& elapsedTime, DirectX::SimpleMath::Vect
 		// 2.5秒で待機状態に変更
 		m_enemy->ChangeState(m_enemy->GetEnemyIdling());
 	}
-
 
 	// 当たり判定の位置を調整する
 	m_boundingSphereBody.Center = parentPos;
@@ -101,11 +98,9 @@ void Enemy_Attacking::Render(
 	UNREFERENCED_PARAMETER(projection);
 	UNREFERENCED_PARAMETER(m_model);
 
+#ifdef _DEBUG
 	// リソースの取得
 	CommonResources* resources = CommonResources::GetInstance();
-
-#ifdef _DEBUG
-		// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
 	debugString->AddString("enemyAngle : %f", m_angle);
 #endif // _DEBUG

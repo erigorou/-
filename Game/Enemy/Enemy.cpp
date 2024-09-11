@@ -59,7 +59,7 @@ void Enemy::Initialize()
 	// モデルを読み込む準備
 	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
 	fx->SetDirectory(L"Resources/Models");
-	// モデルを読み込む(仮でサイコロを読み込む)
+	// モデルを読み込む
 	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/oni.cmo", *fx);
 
 	// HPを設定
@@ -140,13 +140,6 @@ void Enemy::Update(float elapsedTime)
 	// キー入力を受け付ける。
 	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
 
-	if (keyboardState.F1)
-	{m_velocity += Vector3::Forward * Enemy::ENEMY_SPEED;}
-
-	if (keyboardState.F2)
-	{m_velocity += Vector3::Backward * Enemy::ENEMY_SPEED;}
-
-
 	if (keyboardState.Enter)
 	{
 		// ビヘイビアツリーを実行。
@@ -178,18 +171,11 @@ void Enemy::Render(
 	// 深度値を参照して書き込む
 	context->OMSetDepthStencilState(states->DepthDefault(), 0);
 
-	// リソースを取得
-	CommonResources* resources = CommonResources::GetInstance();
-
-	// ステートを表示する
-	m_currentState->Render(context,states,view,projection);
-
-	// モデルを描画する
-	m_model->Draw(context, *states, m_worldMatrix, view, projection);
+	m_currentState->Render(context,states,view,projection);				// ステート側の描画
+	m_model->Draw(context, *states, m_worldMatrix, view, projection);	// モデルの描画
 
 #ifdef _DEBUG
-	// 境界球の描画
-	DrawBoundingSphere(device, context, states, view, projection, m_currentState->GetBoundingSphereBody());
+	DrawBoundingSphere(device, context, states, view, projection, m_currentState->GetBoundingSphereBody());	// 当たり判定の描画
 #endif // _DEBUG
 }
 
@@ -211,14 +197,15 @@ void Enemy::DrawBoundingSphere(
 
 	UNREFERENCED_PARAMETER(device);
 
+	// 描画における設定項目
 	context->OMSetBlendState(states->Opaque(), nullptr, 0xFFFFFFFF);
 	context->OMSetDepthStencilState(states->DepthRead(), 0);
 	context->RSSetState(states->CullNone());
 	context->IASetInputLayout(m_inputLayout.Get());
-	//** デバッグドローでは、ワールド変換いらない
 	m_basicEffect->SetView(view);
 	m_basicEffect->SetProjection(projection);
 	m_basicEffect->Apply(context);
+
 	// 描画
 	m_primitiveBatch->Begin();
 	DX::Draw(

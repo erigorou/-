@@ -19,6 +19,8 @@ public:
 	static const float ATTACK_TIME;	// 攻撃する時間
 	static const float END_TIME;	// 攻撃（全体）が終了する時間
 
+	static const DirectX::SimpleMath::Vector3 ARM_LENGTH;	// 架空の腕の長さ
+	static const DirectX::SimpleMath::Vector3 ZERO_DIREC;	// 原点から移動する地点
 
 
 	/// <summary>
@@ -73,4 +75,9 @@ private:
 private:
 	// 金棒の元
 	Cudgel* m_cudgel;
+
+
+	// 剣の軌跡のエフェクト
+	DirectX::SimpleMath::Vector3 m_tipPosition;
+	DirectX::SimpleMath::Vector3 m_rootPosition;
 };

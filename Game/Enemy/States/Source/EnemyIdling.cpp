@@ -33,13 +33,9 @@ EnemyIdling::~EnemyIdling()
 // 初期化処理
 void EnemyIdling::Initialize(DirectX::Model* model)
 {
-	// モデルの取得
 	m_model = model;
-
-	// 体の当たり判定の生成
-	m_boundingSphereBody = DirectX::BoundingSphere();
-	// 体の当たり判定のサイズや座標を設定
-	m_boundingSphereBody.Radius = Enemy::ENEMY_SCALE * 12.f;
+	m_boundingSphereBody = DirectX::BoundingSphere();			// モデルを取得し、
+	m_boundingSphereBody.Radius = Enemy::ENEMY_SCALE * 12.f;	// 
 }
 
 
@@ -58,8 +54,6 @@ void EnemyIdling::PreUpdate()
 void EnemyIdling::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3& parentPos)
 {
 	using namespace DirectX::SimpleMath;
-
-	// 総合時間を計測
 	m_totalSeconds += elapsedTime;
 
 	// プレイヤーの座標を取得
@@ -76,16 +70,8 @@ void EnemyIdling::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3&
 	if (m_totalSeconds >= 2.f)
 	{
 		// 2秒に一回、どっちかに動く
-		if (rand() % 2 == 0)
-		{
-			// 攻撃をする
-			m_enemy->ChangeState(m_enemy->GetEnemyAttacking());
-		}
-		else
-		{
-			// 追尾をする
-			m_enemy->ChangeState(m_enemy->GetEnemyApproaching());
-		}
+		if (rand() % 2 == 0) m_enemy->ChangeState(m_enemy->GetEnemyAttacking());	// 攻撃
+		else				 m_enemy->ChangeState(m_enemy->GetEnemyApproaching());	// 接近
 	}
 }
 

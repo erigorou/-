@@ -1,3 +1,4 @@
-﻿  Cudgel_Attacking.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Attacking.cpp(106,7): warning C4189: 'i': ローカル変数が初期化されましたが、参照されていません
+﻿  Player.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\Player.cpp(65,7): warning C4189: 'states': ローカル変数が初期化されましたが、参照されていません
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\Player.cpp(293,25): warning C4100: 'resources': 引数は関数の本体部で 1 度も参照されません。
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe
