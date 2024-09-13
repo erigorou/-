@@ -134,6 +134,8 @@ void Particle::CreateTrailDust(float elapsedTimer)
 }
 
 
+
+
 /// <summary>
 /// シェーダーを生成する
 /// </summary>
@@ -200,6 +202,8 @@ void Particle::Render(DirectX::CommonStates* states, DirectX::SimpleMath::Matrix
 	DirectX::SimpleMath::Vector3 cameraDir = m_cameraTarget - m_cameraPosition;
 	cameraDir.Normalize();
 
+
+	// 移動ダストの描画
 	m_vertices.clear();
 	for (DustTrialParticle& li : m_dustTrailParticle)
 	{
@@ -217,13 +221,12 @@ void Particle::Render(DirectX::CommonStates* states, DirectX::SimpleMath::Matrix
 
 		m_vertices.push_back(vPCT);
 	}
-
-
 	//	表示する点がない場合は描画を終わる
 	if (m_vertices.empty())
 	{
 		return;
 	}
+
 
 	std::sort(m_vertices.begin(), m_vertices.end(),
 		[&](VertexPositionColorTexture lhs, VertexPositionColorTexture rhs)

@@ -19,8 +19,8 @@ public:
 	static const float ATTACK_TIME;	// 攻撃する時間
 	static const float END_TIME;	// 攻撃（全体）が終了する時間
 
-	static const DirectX::SimpleMath::Vector3 ARM_LENGTH;	// 架空の腕の長さ
-	static const DirectX::SimpleMath::Vector3 ZERO_DIREC;	// 原点から移動する地点
+	static const DirectX::SimpleMath::Vector3 ARM_LENGTH;		// 架空の腕の長さ
+	static const DirectX::SimpleMath::Vector3 ZERO_DIREC;		// 原点から移動する地点
 
 
 	/// <summary>
@@ -49,35 +49,45 @@ public:
 		const DirectX::SimpleMath::Matrix& projection) override;
 	// 終了処理
 	void Finalize()override;
+	
+	// Cudgelの回転を計算する関数
+	void UpdateCudgelRotation();
+	// 初期値として使用するワールド行列を計算する関数
+	void CalculateModelMatrix();
+	// Cudgelの攻撃モーションの回転を計算する関数
+	DirectX::SimpleMath::Matrix CalculateAttackMatrix();
+	// 根本と頂点の座標を取得する ※ both ends = 両端
+	void GetCudgelBothEnds(float _totalTime);
+
 
 private:
-	// 座標
-	DirectX::SimpleMath::Vector3 m_position;
-	// 速度
-	DirectX::SimpleMath::Vector3 m_velocity;
-	// 角度
-	float m_angleRL;
-	// 上下の角度
-	float m_angleUD;
+	DirectX::SimpleMath::Vector3 m_position;	// 座標
+	DirectX::SimpleMath::Vector3 m_velocity;	// 速度
+	float m_angleRL;							// 左右角度
+	float m_angleUD;							// 上下角度
 
-	// ワールド行列
-	DirectX::SimpleMath::Matrix m_worldMatrix;
-	// モデル
-	DirectX::Model* m_model;
-	// 合計時間
-	float m_totalSeconds;
-	// 金棒の当たり判定1(実際の当たり判定)　
-	DirectX::BoundingOrientedBox m_boundingBox;
+	DirectX::SimpleMath::Matrix m_worldMatrix;	// ワールド行列
+	DirectX::Model* m_model;					// モデルのポインタ
+	float m_totalSeconds;						// ステートの経過時間
+	float m_recordPointTimer;					// 座標を記録するインターバルの計測用変数 
 
-	// オリジナルの当たり判定 (オリジナルは生成をするだけのもの)
-	DirectX::BoundingOrientedBox m_originalBox;
+	DirectX::BoundingOrientedBox m_boundingBox;	// 金棒の当たり判定
+	DirectX::BoundingOrientedBox m_originalBox;	// 金棒の大元となる当たり判定（初期値等が記録されている）
 
-private:
-	// 金棒の元
-	Cudgel* m_cudgel;
-
+	Cudgel* m_cudgel;							// ステートを所有する親
 
 	// 剣の軌跡のエフェクト
-	DirectX::SimpleMath::Vector3 m_tipPosition;
-	DirectX::SimpleMath::Vector3 m_rootPosition;
+	// 頂点を保存する用の双極配列
+	std::list<DirectX::SimpleMath::Vector3> m_rootPos;	// 根本
+	std::list<DirectX::SimpleMath::Vector3> m_tipPos;	// 先端
+
+
+
+
+	// 根本の位置と先端の位置がちゃんと保存できているのかが問題
+	// この問題を解決するためにBoundingSphereを生成して、二つの位置に置く。
+	DirectX::SimpleMath::Vector3 m_rootDeb;
+	DirectX::SimpleMath::Vector3 m_tipDeb;
+
+	std::vector<DirectX::GeometricPrimitive> m_sphere;
 };

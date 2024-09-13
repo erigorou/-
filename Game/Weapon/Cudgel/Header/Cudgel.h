@@ -12,8 +12,10 @@ class Cudgel
 {
 public:
 	// ŒÅ’è’l
-	static const float CUDGEL_SCALE;	// ‘å‚«‚³
+	static const float CUDGEL_SCALE;							// ‘å‚«‚³
 	static const DirectX::SimpleMath::Vector3 DIRECTION_ENEMY;	// “G‚Æ‚Ì—£‚ê‚Ä‚¢‚é‹——£
+	static const DirectX::SimpleMath::Vector3 CUDGEL_LENGTH;	// ‹à–_‚Ì’·‚³
+	static const DirectX::SimpleMath::Vector3 CUDGEL_HADLE_POS;	// ‹à–_‚Ìæ‚Áè‚ÌˆÊ’u
 
 
 	// ƒ‚ƒfƒ‹‚ğİ’è‚·‚é

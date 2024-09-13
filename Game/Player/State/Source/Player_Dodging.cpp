@@ -98,16 +98,13 @@ void PlayerDodging::Render(
 	UNREFERENCED_PARAMETER(projection);
 	UNREFERENCED_PARAMETER(m_model);
 
-
-
-
+#ifdef _DEBUG
 	// コモンリソースを取得する
 	CommonResources* resources = CommonResources::GetInstance();
-
 	// デバッグ文字の描画
 	auto debugString = resources->GetDebugString();
 	debugString->AddString("PlayerDodging");
-
+#endif // _DEBUG
 }
 
 

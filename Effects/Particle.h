@@ -51,6 +51,7 @@ private:
 	DirectX::SimpleMath::Matrix m_proj;
 	// ビルボード行列
 	DirectX::SimpleMath::Matrix m_billboard;
+
 	// 頂点カラーテクスチャー
 	std::vector<DirectX::VertexPositionColorTexture> m_vertices;
 
@@ -65,6 +66,9 @@ private:
 	// 軌跡ダストの時間
 	float m_timer_dustTrail;
 	// ******************************************************
+	//// 剣の軌跡パーティクル ※※※※※※※
+	//std::list<int> m_sword;
+
 
 	// プレイヤーの座標
 	DirectX::SimpleMath::Vector3 m_playerPosition;

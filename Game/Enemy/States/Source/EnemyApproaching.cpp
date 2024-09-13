@@ -91,7 +91,6 @@ void EnemyApproaching::Update(const float& elapsedTime, DirectX::SimpleMath::Vec
 	// 前方に移動
 	m_position += Vector3::Transform(m_velocity, angleMat);
 
-
 	// 体の境界球の位置を更新
 	m_boundingSphereBody.Center = m_position;
 	m_boundingSphereBody.Center.y = 0;

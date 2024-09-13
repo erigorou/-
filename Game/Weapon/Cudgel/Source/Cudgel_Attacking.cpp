@@ -36,6 +36,7 @@ Cudgel_Attacking::Cudgel_Attacking(Cudgel* cudgel)
 	, m_angleRL(0.0f)
 	, m_angleUD(0.0f)
 	, m_totalSeconds(0.0f)
+	, m_recordPointTimer(0.0f)
 	, m_worldMatrix(DirectX::SimpleMath::Matrix::Identity)
 	, m_model(nullptr)
 {
@@ -50,15 +51,10 @@ Cudgel_Attacking::~Cudgel_Attacking()
 // 初期化処理
 void Cudgel_Attacking::Initialize()
 {
-	using namespace DirectX::SimpleMath;
-	// モデルを取得
-	m_model = m_cudgel->GetModel();
-
-	// ワールド行列を初期化
 	m_worldMatrix = Matrix::Identity;
 
-	// モデルの大きさに合わせてOBBを設定する
-	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model);
+	m_model = m_cudgel->GetModel();
+	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model);	// モデルから大きさを取得
 }
 
 
@@ -68,6 +64,11 @@ void Cudgel_Attacking::PreUpdate()
 	// 経過時間の初期化
 	m_totalSeconds = 0.0f;
 	m_angleUD = 0.0f;
+	m_recordPointTimer = 0.0f;
+
+	// 頂点情報の初期化
+	m_rootPos.clear();
+	m_tipPos.clear();
 }
 
 
@@ -79,63 +80,146 @@ void Cudgel_Attacking::Update(float elapsedTime)
 	using namespace DirectX;
 
 	// 合計時間を計測
-	m_totalSeconds += elapsedTime;
+	m_totalSeconds		+= elapsedTime;
+	m_recordPointTimer	+= elapsedTime;
 
 	auto enemy = m_cudgel->GetPlayScene()->GetEnemy();
 	m_position = enemy->GetPosition();	// 敵の座標を取得
 	m_angleRL = enemy->GetAngle();		// 敵の回転を取得
 
+	UpdateCudgelRotation();				// 回転を計算する
+	CalculateModelMatrix();				// ワールド行列を計算
+	GetCudgelBothEnds(m_totalSeconds);	// 両端を取得する
 
+	m_originalBox.Transform(m_boundingBox, m_worldMatrix);	// 当たり判定を移動させる　※
+}
+
+
+/// <summary>
+/// Cudgelの縦軸の回転の更新関数
+/// </summary>
+void Cudgel_Attacking::UpdateCudgelRotation()
+{
 	// -----------------------------------------------------------------
 	// 敵の攻撃の流れ
 	// 振りかざす（1秒）→ 待機（0.4秒）→ 降り下ろす(0.3秒) → 後隙
-	// -----------------------------------------------------------------
 
 	if (m_totalSeconds < CHARGE_TIME)
-		m_angleUD = XMConvertToRadians(-20.0f * (m_totalSeconds / 0.5f)); // 上げる角度を20度に設定
-	
+		m_angleUD = DirectX::XMConvertToRadians(-20.0f * (m_totalSeconds / 0.5f));// 20度上げる
+
 	else if (m_totalSeconds > WINDUP_TIME && m_totalSeconds < ATTACK_TIME)
-		m_angleUD = XMConvertToRadians(-30.0f + 125.0f * ((m_totalSeconds - 1.4f) / 0.3f)); // 85度振り下ろす
-
-	else
-	{
-	}
-
-	// ワールド行列を更新する
-	m_worldMatrix = Matrix::CreateScale(Cudgel::CUDGEL_SCALE);		// サイズの設定 & 初期化
-	m_worldMatrix
-		*= Matrix::CreateTranslation(Cudgel_Attacking::ZERO_DIREC)	// 原点から移動する
-		*= Matrix::CreateRotationX(-m_angleUD)						// 縦回転を行う
-		*= Matrix::CreateRotationY(-m_angleRL)						// 横回転を行う
-		*= Matrix::CreateTranslation(Cudgel_Attacking::ARM_LENGTH)	// 腕があるものとして計算を行う
-		*= Matrix::CreateTranslation(m_position);					// プレイヤの位置に設定する
-
-	// 当たり判定を反映させる
-	m_originalBox.Transform(m_boundingBox, m_worldMatrix);
+		m_angleUD = DirectX::XMConvertToRadians(-20.0f + 115.0f * ((m_totalSeconds - 1.4f) / 0.3f));// 95度振り下ろす
 }
 
-// 事後処理
+
+/// <summary>
+/// 描画用ワールド行列を計算する関数
+/// </summary>
+void Cudgel_Attacking::CalculateModelMatrix()
+{
+	m_worldMatrix = Matrix::CreateScale(Cudgel::CUDGEL_SCALE);		// サイズの設定 & 初期化
+	m_worldMatrix
+		*= Matrix::CreateTranslation(Cudgel_Attacking::ZERO_DIREC)	// 初期位置への移動
+		*= CalculateAttackMatrix();									// 攻撃モーション中の計算
+}
+
+
+/// <summary>
+/// Cudgelのワールド行列を計算する関数
+/// </summary>
+/// <returns>攻撃モーション中のCudgelの回転ワールド行列</returns>
+DirectX::SimpleMath::Matrix Cudgel_Attacking::CalculateAttackMatrix()
+{
+	return 
+			Matrix::CreateRotationX(-m_angleUD)							// 縦回転を行う
+		*=  Matrix::CreateRotationY(-m_angleRL)							// 横回転を行う
+		*=  Matrix::CreateTranslation(Cudgel_Attacking::ARM_LENGTH)		// 腕の長さ分移動
+		*=  Matrix::CreateTranslation(m_position);						// 最後に敵の位置に設定
+}
+
+
+/// <summary>
+/// エフェクトなどに使用する金棒の根本と頂点の座標を取得する関数
+/// </summary>
+/// <param name="_elapsedTime">経過時間</param>
+void Cudgel_Attacking::GetCudgelBothEnds(float _totalTime)
+{
+	Matrix rootMat = Matrix::CreateTranslation(Cudgel_Attacking::ZERO_DIREC);
+	rootMat
+		*= Matrix::CreateTranslation(Cudgel::CUDGEL_HADLE_POS)
+		*= CalculateAttackMatrix();
+	m_rootDeb = Vector3::Transform(Vector3::Zero, rootMat);		// モデルの先端の位置を取得
+
+
+	Matrix tipMat = Matrix::CreateTranslation(Cudgel_Attacking::ZERO_DIREC);
+	tipMat
+		*= Matrix::CreateTranslation(Cudgel::CUDGEL_LENGTH)
+		*= CalculateAttackMatrix();
+	m_tipDeb = Vector3::Transform(Vector3::Zero, tipMat);		// モデルの先端の位置を取得
+
+	if (m_recordPointTimer >= 0.025f)
+	{
+		m_recordPointTimer = 0.0f;
+		m_rootPos.push_front(m_rootDeb);	// 根本座標リストの先端に記録
+		m_tipPos.push_front(m_tipDeb);		// 頂点座標リストの先端に記録
+
+	}
+}
+
+
+/// <summary>
+/// 事後処理
+/// </summary>
 void Cudgel_Attacking::PostUpdate()
 {
 }
 
 
-// 描画処理
+/// <summary>
+/// 描画処理
+/// </summary>
+/// <param name="context"></param>
+/// <param name="states"></param>
+/// <param name="view"></param>
+/// <param name="projection"></param>
 void Cudgel_Attacking::Render(ID3D11DeviceContext* context,
 	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
 	const DirectX::SimpleMath::Matrix& projection)
 {
-	CommonResources* resources = CommonResources::GetInstance();
-
 	// モデルを描画する
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 
+	// パーティクルの生成
+	if (m_rootPos.max_size() >= 2 && m_tipPos.max_size() >= 2)
+	{
+		// 頂点生成に必要な数がそろっている場合
+		// それぞれ1 2　番を用いてパーティクルを生成する
+	}
+
+
 #ifdef _DEBUG
+	CommonResources* resources = CommonResources::GetInstance();
 	auto debugString = resources->GetDebugString();
-	debugString->AddString("Cudgel, %f : %f : %f", m_position.x, m_position.y, m_position.z);
-	debugString->AddString("angleUD, %f", m_angleUD);
 #endif // _DEBUG
+
+
+	// Sphereの生成
+	auto sphere = DirectX::GeometricPrimitive::CreateSphere(context, 1.0f);
+
+	// m_rootPosの各頂点に球体を描画
+	for (const auto& rootPos : m_rootPos)
+	{
+		DirectX::SimpleMath::Matrix rootSphereMatrix = DirectX::SimpleMath::Matrix::CreateTranslation(rootPos);
+		sphere->Draw(rootSphereMatrix, view, projection, DirectX::Colors::Red, nullptr, true);
+	}
+
+	// m_tipPosの各頂点に球体を描画
+	for (const auto& tipPos : m_tipPos)
+	{
+		DirectX::SimpleMath::Matrix tipSphereMatrix = DirectX::SimpleMath::Matrix::CreateTranslation(tipPos);
+		sphere->Draw(tipSphereMatrix, view, projection, DirectX::Colors::Blue, nullptr, true);
+	}
 }
 
 

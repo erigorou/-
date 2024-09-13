@@ -69,9 +69,11 @@ void EnemyIdling::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3&
 
 	if (m_totalSeconds >= 2.f)
 	{
-		// 2•b‚Éˆê‰ñA‚Ç‚Á‚¿‚©‚É“®‚­
-		if (rand() % 2 == 0) m_enemy->ChangeState(m_enemy->GetEnemyAttacking());	// UŒ‚
-		else				 m_enemy->ChangeState(m_enemy->GetEnemyApproaching());	// Ú‹ß
+		m_enemy->ChangeState(m_enemy->GetEnemyAttacking());	// UŒ‚
+
+		//// 2•b‚Éˆê‰ñA‚Ç‚Á‚¿‚©‚É“®‚­
+		//if (rand() % 2 == 0) m_enemy->ChangeState(m_enemy->GetEnemyAttacking());	// UŒ‚
+		//else				 m_enemy->ChangeState(m_enemy->GetEnemyApproaching());	// Ú‹ß
 	}
 }
 

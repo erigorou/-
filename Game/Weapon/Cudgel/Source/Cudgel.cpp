@@ -18,9 +18,10 @@
 #include "Game/Weapon/Cudgel/Header/Cudgel.h"
 
 
-// 固定値									0.7f
-const float Cudgel::CUDGEL_SCALE = Enemy::ENEMY_SCALE * 1.1f;
-const DirectX::SimpleMath::Vector3 Cudgel::DIRECTION_ENEMY = { 6.0f, 5.0f, 0.0f };
+const float Cudgel::CUDGEL_SCALE = Enemy::ENEMY_SCALE * 1.1f;						// 金棒の拡大率
+const DirectX::SimpleMath::Vector3 Cudgel::DIRECTION_ENEMY = { 6.0f, 5.0f, 0.0f };	// 持ち手の距離（敵と比較）
+const DirectX::SimpleMath::Vector3 Cudgel::CUDGEL_LENGTH =	{ 0.0f, 22.0f, 0.0f };	// 金棒の長さ（一番下から）
+const DirectX::SimpleMath::Vector3 Cudgel::CUDGEL_HADLE_POS = { 0.0f, 7.0f, 0.0f };	// 金棒の取っ手の部分（一番上）
 
 // コンストラクタ
 Cudgel::Cudgel(PlayScene* playScene)

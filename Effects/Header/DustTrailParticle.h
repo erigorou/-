@@ -18,8 +18,8 @@ public:
 	const DirectX::SimpleMath::Vector3 GetNowScale	() { return m_nowScale; }		// 現在のサイズ
 	const DirectX::SimpleMath::Vector3 GetStartScale() { return m_startScale; }		// 開始時サイズ
 	const DirectX::SimpleMath::Vector3 GetEndScale	() { return m_endScale; }		// 終了時サイズ
-	const float GetLife		() { return m_life; }			// 表示時間
-	const float GetStartLife() { return m_startLife; }		// 開始時間
+	const float GetLife								() { return m_life; }			// 表示時間
+	const float GetStartLife						() { return m_startLife; }		// 開始時間
 	const DirectX::SimpleMath::Color GetNowColor	() { return m_nowColor; }		// 現在の色
 	const DirectX::SimpleMath::Color GetStartColor	() { return m_startColor; }		// 開始時色
 	const DirectX::SimpleMath::Color GetEndColor	() { return m_endColor; }		// 終了時色

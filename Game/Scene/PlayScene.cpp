@@ -15,23 +15,23 @@
 #include "Libraries/MyLib/InputManager.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 
-// システム面 ====================================
+// システム面 ================================================
 #include "Game/Sound/BGM_Player.h"	// BGM再生
 
-// オブジェクト関連　===============================
-#include "Game/Player/Player.h"									// プレイヤー
-#include "Game/Enemy/Enemy.h"								// 鬼
-#include "Game/Weapon/Sword/Sword.h"					// 刀
-#include "Game/Weapon/Cudgel/Header/Cudgel.h"		// 金棒
+// オブジェクト関連　=========================================
+#include "Game/Player/Player.h"					// プレイヤー
+#include "Game/Enemy/Enemy.h"					// 鬼
+#include "Game/Weapon/Sword/Sword.h"			// 刀
+#include "Game/Weapon/Cudgel/Header/Cudgel.h"	// 金棒
 
-// ステージ関連 ===================================
-#include "Game/Stage/Floor/Floor.h"							// 床
-#include "Game/Stage/Wall/Wall.h"							// 壁
+// ステージ関連 ==============================================
+#include "Game/Stage/Floor/Floor.h"				// 床
+#include "Game/Stage/Wall/Wall.h"				// 壁
 
 
-//---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 PlayScene::PlayScene()
 	:
 	m_commonResources{}
@@ -49,16 +49,16 @@ PlayScene::PlayScene()
 	m_commonResources = CommonResources::GetInstance();
 }
 
-//---------------------------------------------------------
-// デストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 PlayScene::~PlayScene()
 {
 }
 
-//---------------------------------------------------------
-// 初期化する
-//---------------------------------------------------------
+/// <summary>
+/// 初期化関数
+/// </summary>
 void PlayScene::Initialize()
 {
 	using namespace DirectX;
@@ -126,9 +126,10 @@ void PlayScene::Initialize()
 	m_wall->Initialize();
 }
 
-//---------------------------------------------------------
-// 更新する
-//---------------------------------------------------------
+/// <summary>
+/// 更新関数
+/// </summary>
+/// <param name="elapsedTime">フレーム毎秒</param>
 void PlayScene::Update(float elapsedTime)
 {
 	using namespace DirectX;
@@ -170,9 +171,9 @@ void PlayScene::Update(float elapsedTime)
 }
 
 
-//---------------------------------------------------------
-// 描画する
-//---------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void PlayScene::Render()
 {
 	using namespace DirectX;
@@ -210,17 +211,17 @@ void PlayScene::Render()
 	m_particles->Render(states, view, m_projection);
 }
 
-//---------------------------------------------------------
-// 後始末する
-//---------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
 void PlayScene::Finalize()
 {
 	m_bgm->FinalizeFMOD();
 }
-
-//---------------------------------------------------------
-// 次のシーンIDを取得する
-//---------------------------------------------------------
+/// <summary>
+/// 次のシーンIDの取得関数
+/// </summary>
+/// <returns>リザルト or 何も返さない</returns>
 IScene::SceneID PlayScene::GetNextSceneID() const
 {
 	// シーン変更がある場合

@@ -182,9 +182,10 @@ void Player::Update(const DirectX::SimpleMath::Vector3 enemyPos,const float elap
 }
 
 
-// ----------------------------------------
-//  “G‚ÌˆÊ’u‚©‚çƒvƒŒƒCƒ„[‚Ì‰ñ“]Šp‚ğ‹‚ß‚é
-// ----------------------------------------
+/// <summary>
+/// 
+/// </summary>
+/// <param name="enemyPos"></param>
 void Player::CalculationAngle(DirectX::SimpleMath::Vector3 const enemyPos)
 {
 	using namespace DirectX::SimpleMath;
