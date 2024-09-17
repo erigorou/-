@@ -9,6 +9,8 @@
 #include "pch.h"
 #include "Libraries/MyLib/BinaryFile.h"
 #include "Effects/Particle.h"
+#include "Effects/Header/DustTrailParticle.h"
+#include "Effects/Header/SwordTrialParticle.h"
 
 
 
@@ -24,7 +26,7 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> Particle::INPUT_LAYOUT =
 // コンストラクタ
 Particle::Particle()
 	:m_pDR(nullptr)
-	,m_timer_dustTrail(0.0f)
+	,m_timerDustTrail(0.0f)
 {
 }
 
@@ -88,10 +90,18 @@ void Particle::Update(float elapsedTimer, const DirectX::SimpleMath::Vector3 pla
 	CreateTrailDust(elapsedTimer);
 
 	// イテレータを取得して、削除対象の要素を削除
-	m_dustTrailParticle.remove_if([&elapsedTimer](DustTrialParticle& particle)
+	m_dustTrail.remove_if([&elapsedTimer](DustTrialParticle& particle)
 		{
-		// 子クラスからfalseで消す
-		return !particle.Update(elapsedTimer);
+			// 子クラスからfalseで消す
+			return !particle.Update(elapsedTimer);
+		}
+	);
+
+	// イテレータを取得して、削除対象の要素を削除
+	m_swordTrial.remove_if([&elapsedTimer](SwordTrialParticle& particle)
+		{
+			// 子クラスからfalseで消す
+			return !particle.Update(elapsedTimer);
 		}
 	);
 }
@@ -107,10 +117,10 @@ void Particle::CreateTrailDust(float elapsedTimer)
 	using namespace DirectX::SimpleMath;
 
 	// 秒数を計測する
-	m_timer_dustTrail += elapsedTimer;
+	m_timerDustTrail += elapsedTimer;
 
 	// 生成時間に満たしてないなら：早期リターン
-	if (m_timer_dustTrail < 0.05f)
+	if (m_timerDustTrail < 0.05f)
 		return;
 
 	// プレイヤーが移動してなければ：早期ターン
@@ -128,10 +138,33 @@ void Particle::CreateTrailDust(float elapsedTimer)
 	);
 
 	// 配列に追加
-	m_dustTrailParticle.push_back(dTP);
+	m_dustTrail.push_back(dTP);
 	// タイマーをリセット
-	m_timer_dustTrail = 0.0f;
+	m_timerDustTrail = 0.0f;
 }
+
+
+
+/// <summary>
+/// 剣を降ったときの残像を出す
+/// </summary>
+/// <param name="ver"></param>
+void Particle::CreateSwordTrial(DirectX::VertexPositionTexture ver[4])
+{
+	using namespace DirectX;
+	using namespace DirectX::SimpleMath;
+
+	// SwordTrialParticleを生成
+	SwordTrialParticle sTP(
+		ver,															//	頂点情報
+		0.4f,															//	生存時間(s)
+		Color(1.0f, 1.0f, 1.0f, 1.0f), Color(1.0f, 1.0f, 1.0f, 0.0f)	//	初期カラー、最終カラー
+	);
+
+	// 配列に追加
+	m_swordTrial.push_back(sTP);
+}
+
 
 
 
@@ -144,9 +177,9 @@ void Particle::CreateShader()
 	ID3D11Device1* device = m_pDR->GetD3DDevice();
 
 	//	コンパイルされたシェーダファイルを読み込み
-	BinaryFile VSData = BinaryFile::LoadFile(L"Resources/Shaders/ParticleVS.cso");
-	BinaryFile GSData = BinaryFile::LoadFile(L"Resources/Shaders/ParticleGS.cso");
-	BinaryFile PSData = BinaryFile::LoadFile(L"Resources/Shaders/ParticlePS.cso");
+	BinaryFile VSData = BinaryFile::LoadFile(L"Resources/Shaders/Dust/DustVS.cso");
+	BinaryFile GSData = BinaryFile::LoadFile(L"Resources/Shaders/Dust/DustGS.cso");
+	BinaryFile PSData = BinaryFile::LoadFile(L"Resources/Shaders/Dust/DustPS.cso");
 
 	//	インプットレイアウトの作成
 	device->CreateInputLayout(&INPUT_LAYOUT[0],
@@ -186,75 +219,20 @@ void Particle::CreateShader()
 
 
 /// <summary>
-/// 描画関数
+/// Render共通処理およびSwordTrialParticleとDustParticleの描画呼び出し
 /// </summary>
-/// <param name="view">ビュー行列</param>
-/// <param name="proj">射影行列</param>
+/// <param name="states"></param>
+/// <param name="view"></param>
+/// <param name="proj"></param>
 void Particle::Render(DirectX::CommonStates* states, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj)
 {
 	using namespace DirectX;
 
 	ID3D11DeviceContext1* context = m_pDR->GetD3DDeviceContext();
-	//	頂点情報(板ポリゴンの４頂点の座標情報）
+	SimpleMath::Vector3 cameraDir = m_cameraTarget - m_cameraPosition;
+	cameraDir.Normalize();												// カメラの方向を正規化
 
-
-
-	DirectX::SimpleMath::Vector3 cameraDir = m_cameraTarget - m_cameraPosition;
-	cameraDir.Normalize();
-
-
-	// 移動ダストの描画
-	m_vertices.clear();
-	for (DustTrialParticle& li : m_dustTrailParticle)
-	{
-		if (cameraDir.Dot(li.GetPosition() - m_cameraPosition) < 0.0f) {
-			//	内積がマイナスの場合はカメラの後ろなので表示する必要なし
-			continue;
-		}
-		VertexPositionColorTexture vPCT;
-		//	表示するパーティクルの中心座標のみを入れる。
-		vPCT.position = XMFLOAT3(li.GetPosition());
-		//	テクスチャの色
-		vPCT.color = XMFLOAT4(li.GetNowColor());
-		//	現在のテクスチャのスケールを「XMFLOAT2」のXに入れる。
-		vPCT.textureCoordinate = XMFLOAT2(li.GetNowScale().x, 0.0f);
-
-		m_vertices.push_back(vPCT);
-	}
-	//	表示する点がない場合は描画を終わる
-	if (m_vertices.empty())
-	{
-		return;
-	}
-
-
-	std::sort(m_vertices.begin(), m_vertices.end(),
-		[&](VertexPositionColorTexture lhs, VertexPositionColorTexture rhs)
-		{
-			//	カメラ正面の距離でソート
-			DirectX::SimpleMath::Vector3 lhNowPos = lhs.position;
-			DirectX::SimpleMath::Vector3 rhNowPos = rhs.position;
-			return cameraDir.Dot(lhNowPos - m_cameraPosition) > cameraDir.Dot(rhNowPos - m_cameraPosition);
-		});
-
-	//	シェーダーに渡す追加のバッファを作成する。(ConstBuffer）
-	ConstBuffer cbuff;
-	cbuff.matView = view.Transpose();
-	cbuff.matProj = proj.Transpose();
-	cbuff.matWorld = m_billboard.Transpose();
-	cbuff.Diffuse = SimpleMath::Vector4(1, 1, 1, 1);
-
-	//	受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）
-	context->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);
-
-	//	シェーダーにバッファを渡す
-	ID3D11Buffer* cb[1] = { m_CBuffer.Get() };
-	context->VSSetConstantBuffers(0, 1, cb);
-	context->GSSetConstantBuffers(0, 1, cb);
-	context->PSSetConstantBuffers(0, 1, cb);
-
-	//	画像用サンプラーの登録
-	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
+	ID3D11SamplerState* sampler[1] = { states->LinearWrap() };
 	context->PSSetSamplers(0, 1, sampler);
 
 	//	半透明描画指定		補間アルファ合成
@@ -263,16 +241,11 @@ void Particle::Render(DirectX::CommonStates* states, DirectX::SimpleMath::Matrix
 	//	透明判定処理
 	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
 
-	// 深度値を参照して書き込む
-	context->OMSetDepthStencilState(states->DepthDefault(), 0);
+	// 深度バッファの書き込みを無効にする
+	context->OMSetDepthStencilState(m_states->DepthNone(), 0);
+
 	//	カリングはなし
 	context->RSSetState(m_states->CullNone());
-
-
-	//	シェーダをセットする
-	context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
-	context->GSSetShader(m_geometryShader.Get(), nullptr, 0);
-	context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
 
 	//	ピクセルシェーダにテクスチャを登録する。
 	for (int i = 0; i < m_texture.size(); i++)
@@ -283,19 +256,151 @@ void Particle::Render(DirectX::CommonStates* states, DirectX::SimpleMath::Matrix
 	//	インプットレイアウトの登録
 	context->IASetInputLayout(m_inputLayout.Get());
 
-	//	指定した座標を中心に、シェーダ側で板ポリゴンを生成・描画させる
+	// SwordTrialParticleの描画呼び出し
+	DrawSwordParticle(view, proj, cameraDir);
+
+	// DustParticleの描画呼び出し
+	DrawDustParticle(view, proj, cameraDir);
+}
+
+
+
+/// <summary>
+/// 剣の残像パーティクルの描画
+/// ジオメトリシェーダーやビルボードを使用せずに4頂点を使用してQuadを描画します。
+/// </summary>
+/// <param name="view"></param>
+/// <param name="proj"></param>
+/// <param name="cameraDir"></param>
+void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj, DirectX::SimpleMath::Vector3 cameraDir)
+{
+	using namespace DirectX;
+
+	// 剣のパーティクルのためのコンスタントバッファの作成と更新
+	ConstBuffer cbuff;
+	cbuff.matView = view.Transpose();
+	cbuff.matProj = proj.Transpose();
+	cbuff.matWorld = SimpleMath::Matrix::Identity; // 剣のパーティクルではビルボードを適用しない
+	cbuff.Diffuse = SimpleMath::Vector4(1, 1, 1, 1);
+
+	ID3D11DeviceContext1* context = m_pDR->GetD3DDeviceContext();
+	context->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);
+	ID3D11Buffer* cb[1] = { m_CBuffer.Get() };
+	context->VSSetConstantBuffers(0, 1, cb);
+	context->PSSetConstantBuffers(0, 1, cb);
+
+	context->VSSetShader(m_vertexShader.Get(), nullptr, 0);	// 頂点シェーダーを設定
+	context->GSSetShader(nullptr, nullptr, 0);				// ジオメトリシェーダーは使用しない
+	context->PSSetShader(m_pixelShader.Get(), nullptr, 0);	// ピクセルシェーダーを設定
+
+	// 剣の残像パーティクルを描画
 	m_batch->Begin();
 
-	// 描画処理
-	m_batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &m_vertices[0], m_vertices.size());
+	float t = 0.0f;
+	
+	for (auto& sTP : m_swordTrial)
+	{
+		// 剣のパーティクルの4つの頂点を仮定
+		DirectX::VertexPositionColorTexture ver[4];
+		sTP.GetVertices(ver); // SwordTrialParticleに4頂点を取得するメソッドを仮定
 
+		/*
+		ver[0].color = DirectX::SimpleMath::Color(1 - t, 1, 1 - t, t);
+		ver[1].color = DirectX::SimpleMath::Color(1 - t, 1, 1 - t, t);
+		t += 1.0f / m_swordTrial.size();
+		ver[2].color = DirectX::SimpleMath::Color(1 - t, 1, 1 - t, t);
+		ver[3].color = DirectX::SimpleMath::Color(1 - t, 1, 1 - t, t);
+		*/
+		
+		float value1 = 1 - pow(1 - t, 2);	// イージング
+		t += 1.0f / m_swordTrial.size();
+		float value2 = 1 - pow(1 - t, 2);	// イージング	// t が 1に近づくほど色が薄くなる
+
+		ver[1].color = DirectX::SimpleMath::Color(1, 0, 0, value1);
+		ver[2].color = DirectX::SimpleMath::Color(1, 0, 0, value1);
+
+		ver[0].color = DirectX::SimpleMath::Color(1, 0, 0, value2);
+		ver[3].color = DirectX::SimpleMath::Color(1, 0, 0, value2);
+
+		// 4つの頂点を使ってQuadを描画
+		m_batch->DrawQuad(ver[0], ver[1], ver[2], ver[3]);
+	}
 	m_batch->End();
 
-	//	シェーダの登録を解除しておく
 	context->VSSetShader(nullptr, nullptr, 0);
 	context->GSSetShader(nullptr, nullptr, 0);
 	context->PSSetShader(nullptr, nullptr, 0);
 }
+
+
+
+/// <summary>
+/// 土埃パーティクルの描画
+/// ジオメトリシェーダーとビルボードを適用して描画します。
+/// </summary>
+/// <param name="view"></param>
+/// <param name="proj"></param>
+/// <param name="cameraDir"></param>
+void Particle::DrawDustParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj, DirectX::SimpleMath::Vector3 cameraDir)
+{
+	using namespace DirectX;
+
+	// 土埃パーティクルのためのコンスタントバッファの作成と更新
+	ConstBuffer cbuff;
+	cbuff.matView = view.Transpose();
+	cbuff.matProj = proj.Transpose();
+	cbuff.matWorld = m_billboard.Transpose(); // 土埃パーティクルではビルボードを適用する
+	cbuff.Diffuse = SimpleMath::Vector4(1, 1, 1, 1);
+
+	ID3D11DeviceContext1* context = m_pDR->GetD3DDeviceContext();
+	context->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);
+	ID3D11Buffer* cb[1] = { m_CBuffer.Get() };
+	context->VSSetConstantBuffers(0, 1, cb);
+	context->GSSetConstantBuffers(0, 1, cb);
+	context->PSSetConstantBuffers(0, 1, cb);
+
+	context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
+	context->GSSetShader(m_geometryShader.Get(), nullptr, 0);
+	context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
+
+	// 土埃パーティクルの頂点リストをクリア
+	m_dustVertices.clear();
+	for (DustTrialParticle& li : m_dustTrail)
+	{
+		// カメラの方向に向かないパーティクルはスキップ
+		if (cameraDir.Dot(li.GetPosition() - m_cameraPosition) < 0.0f)
+			continue;
+
+		// パーティクルの現在の情報を設定
+		VertexPositionColorTexture vPCT;
+		vPCT.position = XMFLOAT3(li.GetPosition());
+		vPCT.color = XMFLOAT4(li.GetNowColor());
+		vPCT.textureCoordinate = XMFLOAT2(li.GetNowScale().x, 0.0f);
+
+		m_dustVertices.push_back(vPCT);
+	}
+
+	// パーティクルが存在する場合、描画を行う
+	if (!m_dustVertices.empty())
+	{
+		// カメラとの距離に基づいてパーティクルをソート
+		std::sort(m_dustVertices.begin(), m_dustVertices.end(),
+			[&](VertexPositionColorTexture lhs, VertexPositionColorTexture rhs)
+			{
+				return cameraDir.Dot(lhs.position - m_cameraPosition) > cameraDir.Dot(rhs.position - m_cameraPosition);
+			});
+
+		// パーティクルの描画
+		m_batch->Begin();
+		m_batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &m_dustVertices[0], m_dustVertices.size());
+		m_batch->End();
+	}
+
+	context->VSSetShader(nullptr, nullptr, 0);
+	context->GSSetShader(nullptr, nullptr, 0);
+	context->PSSetShader(nullptr, nullptr, 0);
+}
+
 
 
 

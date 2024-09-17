@@ -7,13 +7,19 @@
   </ProjectOutputs>
   <ContentFiles>
     <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\ParticleGS.cso</FullPath>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Dust\DustGS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\ParticlePS.cso</FullPath>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Dust\DustPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\ParticleVS.cso</FullPath>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Dust\DustVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Sword\SwordTrialPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Sword\SwordTrialVS.cso</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />

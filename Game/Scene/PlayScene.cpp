@@ -218,6 +218,7 @@ void PlayScene::Finalize()
 {
 	m_bgm->FinalizeFMOD();
 }
+
 /// <summary>
 /// ŽŸ‚ÌƒV[ƒ“ID‚ÌŽæ“¾ŠÖ”
 /// </summary>

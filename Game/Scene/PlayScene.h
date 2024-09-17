@@ -28,11 +28,12 @@ class PlayScene final :
     public IScene
 {
 public:
-	// 受け渡し用関数 ==============================
-	Player* GetPlayer() { return m_player.get();}
-	Enemy*  GetEnemy()  { return m_enemy.get(); }
-	Sword* GetSword()	{ return m_sword.get(); }
-	Cudgel* GetCudgel() { return m_cudgel.get();}
+	// 受け渡し用関数 ===============================================
+	Player*		GetPlayer()		{ return m_player.get();}
+	Enemy*		GetEnemy()		{ return m_enemy.get(); }
+	Sword*		GetSword()		{ return m_sword.get(); }
+	Cudgel*		GetCudgel()		{ return m_cudgel.get();}
+	Particle*	GetParticle()	{ return m_particles.get(); }	
 
 private:
 	// 共通リソース
@@ -69,12 +70,12 @@ private:
 	std::unique_ptr<BGM_Player> m_bgm;	// BGM再生
 
 	// オブジェクト関連の変数 ====================
-	std::unique_ptr<Player> m_player;			// プレイヤー
-	std::unique_ptr<Sword> m_sword;			// 刀
-	std::unique_ptr<Enemy>  m_enemy;		// 鬼
-	std::unique_ptr<Cudgel> m_cudgel;		// 金棒
+	std::unique_ptr<Player>	m_player;	// プレイヤー
+	std::unique_ptr<Sword>	m_sword;	// 刀
+	std::unique_ptr<Enemy>  m_enemy;	// 鬼
+	std::unique_ptr<Cudgel> m_cudgel;	// 金棒
 
 	// ステージ関連の変数 =======================
-	std::unique_ptr<Floor> m_floor;			// 床
-	std::unique_ptr<Wall> m_wall;			// 壁（天球の枠）
+	std::unique_ptr<Floor> m_floor;		// 床
+	std::unique_ptr<Wall> m_wall;		// 壁（天球の枠）
 };

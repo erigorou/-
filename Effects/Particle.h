@@ -9,7 +9,11 @@
 #include <DeviceResources.h>
 #include <list>
 #include "Game/CommonResources.h"
-#include "Effects/Header/DustTrailParticle.h"
+
+
+class DustTrialParticle;
+class SwordTrialParticle;
+
 
 class Particle
 {
@@ -53,7 +57,7 @@ private:
 	DirectX::SimpleMath::Matrix m_billboard;
 
 	// 頂点カラーテクスチャー
-	std::vector<DirectX::VertexPositionColorTexture> m_vertices;
+	std::vector<DirectX::VertexPositionColorTexture> m_dustVertices;
 
 	// カメラの座標
 	DirectX::SimpleMath::Vector3 m_cameraPosition;
@@ -62,12 +66,14 @@ private:
 
 	// *******************************************************
 	// 軌跡ダスト
-	std::list<DustTrialParticle> m_dustTrailParticle;
+	std::list<DustTrialParticle> m_dustTrail;
 	// 軌跡ダストの時間
-	float m_timer_dustTrail;
+	float m_timerDustTrail;
 	// ******************************************************
-	//// 剣の軌跡パーティクル ※※※※※※※
-	//std::list<int> m_sword;
+	// 剣の軌跡パーティクル ※※※※※※※
+	std::list<SwordTrialParticle> m_swordTrial;
+	// 剣の軌跡の時間
+	float m_timerSwordTrial;
 
 
 	// プレイヤーの座標
@@ -87,18 +93,29 @@ public:
 	// パーティクルの生成を行う
 	void Create();
 	// パーティクルの更新処理
-	void Update(float elapsedTimer, const DirectX::SimpleMath::Vector3 playerPosition, const DirectX::SimpleMath::Vector3 playerVelocity);
+	void Update(float elapsedTimer,const DirectX::SimpleMath::Vector3 playerPosition, const DirectX::SimpleMath::Vector3 playerVelocity);
 	// パーティクルの描画処理
 	void Render(DirectX::CommonStates* states, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj);
+	
+
 	// ビルボード行列の作成
 	void CreateBillboard(
 		DirectX::SimpleMath::Vector3 target,
 		DirectX::SimpleMath::Vector3 eye,
 		DirectX::SimpleMath::Vector3 up);
 
-private:
-	// シェーダーの作成
-	void CreateShader();
 	// 軌跡の土埃を生成する処理
 	void CreateTrailDust(float elapsedTimer);
+	// 剣の軌跡を生成する処理
+	void CreateSwordTrial(DirectX::VertexPositionTexture ver[4]);
+
+private:
+	// 剣パーティクルの描画設定
+	void DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj, DirectX::SimpleMath::Vector3 cameraDir);
+	// 煙パーティクルの描画設定
+	void DrawDustParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj, DirectX::SimpleMath::Vector3 cameraDir);
+
+	// シェーダーの作成
+	void CreateShader();
+
 };

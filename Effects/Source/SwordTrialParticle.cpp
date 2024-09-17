@@ -14,7 +14,7 @@
 /// </summary>
 
 SwordTrialParticle::SwordTrialParticle(
-	DirectX::VertexPositionTexture vertex[4],
+	DirectX::VertexPositionTexture vertex[],
 	float life,
 	DirectX::SimpleMath::Color startColor, DirectX::SimpleMath::Color endColor
 	)
@@ -25,7 +25,7 @@ SwordTrialParticle::SwordTrialParticle(
 	,m_endColor(endColor)		// 終了の色
 {
 	// 配列の各要素を初期化
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		m_vertices[i] = vertex[i];
 	}

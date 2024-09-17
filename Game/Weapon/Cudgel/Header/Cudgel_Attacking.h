@@ -4,7 +4,7 @@
 
 class Cudgel;
 class Enemy;
-
+class Particle;
 
 
 /// <summary>
@@ -74,12 +74,13 @@ private:
 	DirectX::BoundingOrientedBox m_boundingBox;	// 金棒の当たり判定
 	DirectX::BoundingOrientedBox m_originalBox;	// 金棒の大元となる当たり判定（初期値等が記録されている）
 
-	Cudgel* m_cudgel;							// ステートを所有する親
+	Cudgel*		m_cudgel;						// ステートを所有する親
+	Particle*	m_particles;					// パーティクル
 
 	// 剣の軌跡のエフェクト
 	// 頂点を保存する用の双極配列
-	std::list<DirectX::SimpleMath::Vector3> m_rootPos;	// 根本
-	std::list<DirectX::SimpleMath::Vector3> m_tipPos;	// 先端
+	std::vector<DirectX::SimpleMath::Vector3> m_rootPos;	// 根本
+	std::vector<DirectX::SimpleMath::Vector3> m_tipPos;	// 先端
 
 
 

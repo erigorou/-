@@ -29,8 +29,7 @@ const Vector3 Cudgel_Attacking::ZERO_DIREC = Vector3(6.0f, 1.0f, 0.0f);
 
 // コンストラクタ
 Cudgel_Attacking::Cudgel_Attacking(Cudgel* cudgel)
-	:
-	m_cudgel(cudgel)
+	:m_cudgel(cudgel)
 	, m_position(0.0f, 0.0f, 0.0f)
 	, m_velocity(0.0f, 0.0f, 0.0f)
 	, m_angleRL(0.0f)
@@ -40,6 +39,8 @@ Cudgel_Attacking::Cudgel_Attacking(Cudgel* cudgel)
 	, m_worldMatrix(DirectX::SimpleMath::Matrix::Identity)
 	, m_model(nullptr)
 {
+	// パーティクルの取得
+	m_particles = cudgel->GetPlayScene()->GetParticle();
 }
 
 // デストラクタ
@@ -51,8 +52,7 @@ Cudgel_Attacking::~Cudgel_Attacking()
 // 初期化処理
 void Cudgel_Attacking::Initialize()
 {
-	m_worldMatrix = Matrix::Identity;
-
+	m_worldMatrix = Matrix::Identity;			// ワールド行列の初期化
 	m_model = m_cudgel->GetModel();
 	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model);	// モデルから大きさを取得
 }
@@ -160,9 +160,25 @@ void Cudgel_Attacking::GetCudgelBothEnds(float _totalTime)
 	if (m_recordPointTimer >= 0.025f)
 	{
 		m_recordPointTimer = 0.0f;
-		m_rootPos.push_front(m_rootDeb);	// 根本座標リストの先端に記録
-		m_tipPos.push_front(m_tipDeb);		// 頂点座標リストの先端に記録
+		m_rootPos.push_back(m_rootDeb);		// 根本座標リストの先端に記録
+		m_tipPos .push_back(m_tipDeb);		// 頂点座標リストの先端に記録
 
+		using namespace DirectX;
+
+		// 2個以上ない場合は処理を抜ける
+		float max = m_rootPos.size() - 1;
+		if (max >= 1)
+		{
+			VertexPositionTexture ver[4] =	// 頂点情報の生成（パーティクルの生成に必要）
+			{
+				VertexPositionTexture(m_tipPos [max]		,Vector2(0, 0)),	// 左上
+				VertexPositionTexture(m_tipPos [max - 1]	,Vector2(1, 0)),	// 右上
+				VertexPositionTexture(m_rootPos[max - 1]	,Vector2(1, 1)),	// 右下
+				VertexPositionTexture(m_rootPos[max]		,Vector2(0, 1)),	// 左下
+			};
+
+			m_particles->CreateSwordTrial(ver);	// パーティクルの生成
+		}
 	}
 }
 
