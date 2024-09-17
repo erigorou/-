@@ -80,15 +80,8 @@ private:
 	// 剣の軌跡のエフェクト
 	// 頂点を保存する用の双極配列
 	std::vector<DirectX::SimpleMath::Vector3> m_rootPos;	// 根本
-	std::vector<DirectX::SimpleMath::Vector3> m_tipPos;	// 先端
+	std::vector<DirectX::SimpleMath::Vector3> m_tipPos;		// 先端
 
-
-
-
-	// 根本の位置と先端の位置がちゃんと保存できているのかが問題
-	// この問題を解決するためにBoundingSphereを生成して、二つの位置に置く。
-	DirectX::SimpleMath::Vector3 m_rootDeb;
-	DirectX::SimpleMath::Vector3 m_tipDeb;
-
-	std::vector<DirectX::GeometricPrimitive> m_sphere;
+	// パーティクルを生成したかのフラグ
+	bool m_canGenerateSlamParticles;
 };

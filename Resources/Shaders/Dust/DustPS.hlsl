@@ -13,5 +13,5 @@ float4 main(PS_INPUT input) : SV_TARGET
 	float4 outputw = float4(1, 1, 1, 1);
 
 	//	C++から指定された色割合を考慮して、表示色を決定
-    return outputw * input.Color;
+    return output * input.Color;
 }

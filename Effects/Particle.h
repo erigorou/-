@@ -42,12 +42,16 @@ private:
 	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> m_texture;
 	//	テクスチャハンドル
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture2;
-	//	頂点シェーダ
-	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShader;
-	//	ピクセルシェーダ
-	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;
-	//	ジオメトリシェーダ
-	Microsoft::WRL::ComPtr<ID3D11GeometryShader> m_geometryShader;
+
+	// 剣の軌跡のシェーダー
+	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShaderSword;
+	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShaderSword;
+	Microsoft::WRL::ComPtr<ID3D11GeometryShader> m_geometryShaderSword;
+
+	// 煙のパーティクルのシェーダー
+	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShaderDust;
+	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShaderDust;
+	Microsoft::WRL::ComPtr<ID3D11GeometryShader> m_geometryShaderDust;
 
 
 	DirectX::SimpleMath::Matrix m_world;
@@ -108,12 +112,15 @@ public:
 	void CreateTrailDust(float elapsedTimer);
 	// 剣の軌跡を生成する処理
 	void CreateSwordTrial(DirectX::VertexPositionTexture ver[4]);
+	// たたきつけの煙パーティクルの生成
+	void CreateSlamDust(DirectX::SimpleMath::Vector3 center);
 
 private:
 	// 剣パーティクルの描画設定
 	void DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj, DirectX::SimpleMath::Vector3 cameraDir);
 	// 煙パーティクルの描画設定
 	void DrawDustParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj, DirectX::SimpleMath::Vector3 cameraDir);
+
 
 	// シェーダーの作成
 	void CreateShader();

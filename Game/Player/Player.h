@@ -139,6 +139,8 @@ private:
 	// 入力レイアウト
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
 
+	float m_particleTime;
+	float m_elapsedTime;
 
 private:
 	// プレイシーン(他のオブジェクトの情報の取得などに使う)

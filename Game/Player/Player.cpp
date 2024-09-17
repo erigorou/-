@@ -38,7 +38,8 @@ Player::Player(PlayScene* playScene)
 	m_worldMatrix{},
 	m_currentState{},
 	m_keyboardState{},
-	m_tracker{}
+	m_tracker{},
+	m_particleTime{}
 {
 }
 
@@ -170,6 +171,8 @@ void Player::TimeComparison(float& nowTime, const float totalTime, IState* newSt
 // ---------------------------------------------
 void Player::Update(const DirectX::SimpleMath::Vector3 enemyPos,const float elapsedTime)
 {
+	m_elapsedTime = elapsedTime;	// 経過時間を保存する
+
 	// ステートの更新
 	m_currentState->Update(elapsedTime, m_position);
 
@@ -262,6 +265,16 @@ void Player::MovePlayer()
 
 	// 移動量を座標に反映
 	m_position += Vector3::Transform(moveVelocity, Matrix::CreateRotationY(-m_angle));
+
+	if (moveVelocity != Vector3::Zero)
+	{
+		m_particleTime += m_elapsedTime;			// パーティクルの時間を計測する
+		if (m_particleTime >= 0.1f)
+		{
+			m_playScene->GetParticle()->CreateTrailDust(m_elapsedTime);
+			m_particleTime = 0.0f;
+		}
+	}
 }
 
 

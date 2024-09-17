@@ -1,3 +1,6 @@
-﻿  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Sword\SwordTrialPS.cso
-  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Sword\SwordTrialVS.cso
+﻿  Particle.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Effects\Particle.cpp(114,38): warning C4100: 'elapsedTimer': 引数は関数の本体部で 1 度も参照されません。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Effects\Particle.cpp(344,16): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Effects\Particle.cpp(346,16): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Effects\Particle.cpp(313,131): warning C4100: 'cameraDir': 引数は関数の本体部で 1 度も参照されません。
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe

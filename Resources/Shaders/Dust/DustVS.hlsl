@@ -7,9 +7,9 @@ PS_INPUT main(VS_INPUT input)
 	//	ピクセルシェーダに渡す座標は、入力そのまま
 	output.Pos = float4(input.Pos,1);
 	
-	output.Pos = mul(output.Pos, matWorld);
-	output.Pos = mul(output.Pos, matView);
-	output.Pos = mul(output.Pos, matProj);
+	output.Pos = mul(output.Pos, 1);
+	output.Pos = mul(output.Pos, 1);
+	output.Pos = mul(output.Pos, 1);
 
 	//	色も指定値を使う
 	output.Color = input.Color;

@@ -12,6 +12,8 @@
 #include "Effects/Header/DustTrailParticle.h"
 #include "Effects/Header/SwordTrialParticle.h"
 
+#include <random>
+
 
 
 // インプットレイアウト
@@ -86,8 +88,6 @@ void Particle::Update(float elapsedTimer, const DirectX::SimpleMath::Vector3 pla
 	// 位置と速度を記録する
 	m_playerPosition = playerPosition;
 	m_playerVelocity = playerVelocity;
-	// パーティクルを生成する
-	CreateTrailDust(elapsedTimer);
 
 	// イテレータを取得して、削除対象の要素を削除
 	m_dustTrail.remove_if([&elapsedTimer](DustTrialParticle& particle)
@@ -116,17 +116,6 @@ void Particle::CreateTrailDust(float elapsedTimer)
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
-	// 秒数を計測する
-	m_timerDustTrail += elapsedTimer;
-
-	// 生成時間に満たしてないなら：早期リターン
-	if (m_timerDustTrail < 0.05f)
-		return;
-
-	// プレイヤーが移動してなければ：早期ターン
-	if (m_playerVelocity == Vector3::Zero)
-		return;
-
 	// パーティクル(１つ)を生成
 	DustTrialParticle dTP(
 		0.5f,																		//	生存時間(s)
@@ -141,6 +130,63 @@ void Particle::CreateTrailDust(float elapsedTimer)
 	m_dustTrail.push_back(dTP);
 	// タイマーをリセット
 	m_timerDustTrail = 0.0f;
+}
+
+
+
+/// <summary>
+/// たたきつけの時に出る土埃を生成する
+/// </summary>
+/// <param name="center">たたきつけの位置</param>
+void Particle::CreateSlamDust(DirectX::SimpleMath::Vector3 center)
+{
+	using namespace DirectX;
+
+	for (int i = 0; i < 25; i++)
+	{
+		// 完全なランダムをハードウェア的に生成するためのクラスの変数
+		std::random_device seed;
+		// 上記の完全なランダムは動作が遅いため、seed値の決定のみに使用する
+		// ※「default_random_engine」はusingで「mt19937」となっている
+		std::default_random_engine engine(seed());
+		// とばして欲しいランダムの範囲をDistributionに任せる。今回は0～2PI
+		std::uniform_real_distribution<> dist(0, XM_2PI);
+		float range = 5.0f;
+		// ランダムな角度を生成する
+		float randAngle = static_cast<float>(dist(engine));
+
+		std::uniform_real_distribution<> dist2(0.5f, 2.0f);
+		float Yspeed = static_cast<float>(dist2(engine));
+		float XZspeed = static_cast<float>(dist2(engine));
+
+		// 中心からのベクトルを生成
+		SimpleMath::Vector3 vectorFromCenter = center + SimpleMath::Vector3(range * cosf(randAngle), 0.0f, range * sinf(randAngle)) - center;
+		// ベクトルの長さを取得（距離）
+		float distanceFromCenter = vectorFromCenter.Length();
+		// 中心からのベクトルを正規化して方向を保持
+		SimpleMath::Vector3 normalizedVectorFromCenter = vectorFromCenter / distanceFromCenter;
+		// ベクトルを外側に広げるためのスケールを適用
+		float scaleFactor = 1.0f + (distanceFromCenter / range); // rangeは円の半径
+		SimpleMath::Vector3 adjustedVelocity = normalizedVectorFromCenter * scaleFactor;
+		// 速度ベクトルを生成
+		SimpleMath::Vector3 velocity = -adjustedVelocity;
+
+		// 生成したダストの座標を取得する
+		SimpleMath::Vector3 dustPosition = center + SimpleMath::Vector3(range * cosf(randAngle), 0.0f, range * sinf(randAngle));    // 基準座標
+
+		// パーティクル生成
+		DustTrialParticle pB(
+			1.0f,																				// 生存時間(s)
+			dustPosition,																		// 基準座標
+			SimpleMath::Vector3{ -velocity.x * XZspeed, Yspeed, -velocity.z * XZspeed } * 2,	// 速度
+			SimpleMath::Vector3(0.1f, 0.1f, 0.1f),												// 加速度
+			SimpleMath::Vector3::One, SimpleMath::Vector3{ 10.0f, 25.0f, 10.0f },				// 初期スケール、最終スケール
+			SimpleMath::Color(1.f, 1.f, 1.f, 1.f),												// 初期カラー
+			SimpleMath::Color(1.f, 1.f, 1.f, 0.f)												m// 最終カラー
+		);
+
+		m_dustTrail.push_back(pB);
+	}
 }
 
 
@@ -177,35 +223,40 @@ void Particle::CreateShader()
 	ID3D11Device1* device = m_pDR->GetD3DDevice();
 
 	//	コンパイルされたシェーダファイルを読み込み
-	BinaryFile VSData = BinaryFile::LoadFile(L"Resources/Shaders/Dust/DustVS.cso");
-	BinaryFile GSData = BinaryFile::LoadFile(L"Resources/Shaders/Dust/DustGS.cso");
-	BinaryFile PSData = BinaryFile::LoadFile(L"Resources/Shaders/Dust/DustPS.cso");
+	BinaryFile VSDataDust = BinaryFile::LoadFile(L"Resources/Shaders/Dust/DustVS.cso");
+	BinaryFile GSDataDust = BinaryFile::LoadFile(L"Resources/Shaders/Dust/DustGS.cso");
+	BinaryFile PSDataDust = BinaryFile::LoadFile(L"Resources/Shaders/Dust/DustPS.cso");
+
+	BinaryFile VSDataSword = BinaryFile::LoadFile(L"Resources/Shaders/Sword/SwordTrialVS.cso");
+	BinaryFile PSDataSword = BinaryFile::LoadFile(L"Resources/Shaders/Sword/SwordTrialPS.cso");
 
 	//	インプットレイアウトの作成
 	device->CreateInputLayout(&INPUT_LAYOUT[0],
 		static_cast<UINT>(INPUT_LAYOUT.size()),
-		VSData.GetData(), VSData.GetSize(),
-		m_inputLayout.GetAddressOf());
+		VSDataDust.GetData(), VSDataDust.GetSize(),
+		m_inputLayout.ReleaseAndGetAddressOf());
 
-	//	頂点シェーダ作成
-	if (FAILED(device->CreateVertexShader(VSData.GetData(), VSData.GetSize(), NULL, m_vertexShader.ReleaseAndGetAddressOf())))
-	{//	エラー
-		MessageBox(0, L"CreateVertexShader Failed.", NULL, MB_OK);
-		return;
-	}
+	//device->CreateInputLayout(&INPUT_LAYOUT[1],
+	//	static_cast<UINT>(INPUT_LAYOUT.size()),
+	//	VSDataSword.GetData(), VSDataSword.GetSize(),
+	//	m_inputLayout.ReleaseAndGetAddressOf());
 
-	//	ジオメトリシェーダ作成
-	if (FAILED(device->CreateGeometryShader(GSData.GetData(), GSData.GetSize(), NULL, m_geometryShader.ReleaseAndGetAddressOf())))
-	{// エラー
-		MessageBox(0, L"CreateGeometryShader Failed.", NULL, MB_OK);
-		return;
-	}
-	//	ピクセルシェーダ作成
-	if (FAILED(device->CreatePixelShader(PSData.GetData(), PSData.GetSize(), NULL, m_pixelShader.ReleaseAndGetAddressOf())))
-	{// エラー
-		MessageBox(0, L"CreatePixelShader Failed.", NULL, MB_OK);
-		return;
-	}
+
+	// 頂点シェーダー、ジオメトリシェーダー、ピクセルシェーダーの生成
+	if (FAILED(device->CreateVertexShader(VSDataDust.GetData(), VSDataDust.GetSize(), NULL, m_vertexShaderDust.ReleaseAndGetAddressOf())))
+	{	MessageBox(0, L"CreateVS (Dust) Failed.", NULL, MB_OK);	return; }
+	if (FAILED(device->CreateGeometryShader(GSDataDust.GetData(), GSDataDust.GetSize(), NULL, m_geometryShaderDust.ReleaseAndGetAddressOf())))
+	{	MessageBox(0, L"CreateGS (Dust) Failed.", NULL, MB_OK);	return; }
+	if (FAILED(device->CreatePixelShader(PSDataDust.GetData(), PSDataDust.GetSize(), NULL, m_pixelShaderDust.ReleaseAndGetAddressOf())))
+	{	MessageBox(0, L"CreatePS (Dust) Failed.", NULL, MB_OK);	return; }
+
+	// Sword用のシェーダーの生成
+	if (FAILED(device->CreateVertexShader(VSDataSword.GetData(), VSDataSword.GetSize(), NULL, m_vertexShaderSword.ReleaseAndGetAddressOf())))
+	{	MessageBox(0, L"CreateVS (Sword) Failed.", NULL, MB_OK);return; }
+	if (FAILED(device->CreatePixelShader(PSDataSword.GetData(), PSDataSword.GetSize(), NULL, m_pixelShaderSword.ReleaseAndGetAddressOf())))
+	{	MessageBox(0, L"CreatePS (Sword) Failed.", NULL, MB_OK);return; }
+
+
 
 	//	シェーダーにデータを渡すためのコンスタントバッファ生成
 	D3D11_BUFFER_DESC bd;
@@ -232,35 +283,22 @@ void Particle::Render(DirectX::CommonStates* states, DirectX::SimpleMath::Matrix
 	SimpleMath::Vector3 cameraDir = m_cameraTarget - m_cameraPosition;
 	cameraDir.Normalize();												// カメラの方向を正規化
 
-	ID3D11SamplerState* sampler[1] = { states->LinearWrap() };
+	ID3D11SamplerState* sampler[1] = { states->LinearWrap() };			//	サンプラーステートの設定
 	context->PSSetSamplers(0, 1, sampler);
 
-	//	半透明描画指定		補間アルファ合成
-	ID3D11BlendState* blendstate = m_states->NonPremultiplied();
-
-	//	透明判定処理
-	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
-
-	// 深度バッファの書き込みを無効にする
-	context->OMSetDepthStencilState(m_states->DepthNone(), 0);
-
-	//	カリングはなし
-	context->RSSetState(m_states->CullNone());
+	ID3D11BlendState* blendstate = m_states->NonPremultiplied();	//  半透明描画指定
+	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);		//	透明判定処理
+	context->OMSetDepthStencilState(m_states->DepthNone(), 0);		//	深度バッファはなし
+	context->RSSetState(m_states->CullNone());						//	カリングなし
 
 	//	ピクセルシェーダにテクスチャを登録する。
-	for (int i = 0; i < m_texture.size(); i++)
-	{
-		context->PSSetShaderResources(i, 1, m_texture[i].GetAddressOf());
-	}
+	for (int i = 0; i < m_texture.size(); i++)	{ context->PSSetShaderResources(i, 1, m_texture[i].GetAddressOf()); }
 
 	//	インプットレイアウトの登録
 	context->IASetInputLayout(m_inputLayout.Get());
 
-	// SwordTrialParticleの描画呼び出し
-	DrawSwordParticle(view, proj, cameraDir);
-
-	// DustParticleの描画呼び出し
-	DrawDustParticle(view, proj, cameraDir);
+	DrawSwordParticle(view, proj, cameraDir);	// 剣の残像の描画
+	DrawDustParticle(view, proj, cameraDir);	// 土埃の描画
 }
 
 
@@ -289,28 +327,19 @@ void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::Simp
 	context->VSSetConstantBuffers(0, 1, cb);
 	context->PSSetConstantBuffers(0, 1, cb);
 
-	context->VSSetShader(m_vertexShader.Get(), nullptr, 0);	// 頂点シェーダーを設定
-	context->GSSetShader(nullptr, nullptr, 0);				// ジオメトリシェーダーは使用しない
-	context->PSSetShader(m_pixelShader.Get(), nullptr, 0);	// ピクセルシェーダーを設定
+	context->VSSetShader(m_vertexShaderSword.Get(), nullptr,0);	// 頂点シェーダーを設定
+	context->GSSetShader(nullptr, nullptr, 0);					// ジオメトリシェーダーは使用しない
+	context->PSSetShader(m_pixelShaderSword.Get(), nullptr, 0);	// ピクセルシェーダーを設定
 
 	// 剣の残像パーティクルを描画
 	m_batch->Begin();
 
 	float t = 0.0f;
-	
 	for (auto& sTP : m_swordTrial)
 	{
 		// 剣のパーティクルの4つの頂点を仮定
 		DirectX::VertexPositionColorTexture ver[4];
-		sTP.GetVertices(ver); // SwordTrialParticleに4頂点を取得するメソッドを仮定
-
-		/*
-		ver[0].color = DirectX::SimpleMath::Color(1 - t, 1, 1 - t, t);
-		ver[1].color = DirectX::SimpleMath::Color(1 - t, 1, 1 - t, t);
-		t += 1.0f / m_swordTrial.size();
-		ver[2].color = DirectX::SimpleMath::Color(1 - t, 1, 1 - t, t);
-		ver[3].color = DirectX::SimpleMath::Color(1 - t, 1, 1 - t, t);
-		*/
+		sTP.GetVertices(ver);
 		
 		float value1 = 1 - pow(1 - t, 2);	// イージング
 		t += 1.0f / m_swordTrial.size();
@@ -322,7 +351,6 @@ void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::Simp
 		ver[0].color = DirectX::SimpleMath::Color(1, 0, 0, value2);
 		ver[3].color = DirectX::SimpleMath::Color(1, 0, 0, value2);
 
-		// 4つの頂点を使ってQuadを描画
 		m_batch->DrawQuad(ver[0], ver[1], ver[2], ver[3]);
 	}
 	m_batch->End();
@@ -359,9 +387,9 @@ void Particle::DrawDustParticle(DirectX::SimpleMath::Matrix view, DirectX::Simpl
 	context->GSSetConstantBuffers(0, 1, cb);
 	context->PSSetConstantBuffers(0, 1, cb);
 
-	context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
-	context->GSSetShader(m_geometryShader.Get(), nullptr, 0);
-	context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
+	context->VSSetShader(m_vertexShaderDust  .Get(), nullptr, 0);
+	context->GSSetShader(m_geometryShaderDust.Get(), nullptr, 0);
+	context->PSSetShader(m_pixelShaderDust   .Get(), nullptr, 0);
 
 	// 土埃パーティクルの頂点リストをクリア
 	m_dustVertices.clear();

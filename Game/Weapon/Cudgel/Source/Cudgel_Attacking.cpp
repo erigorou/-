@@ -38,6 +38,7 @@ Cudgel_Attacking::Cudgel_Attacking(Cudgel* cudgel)
 	, m_recordPointTimer(0.0f)
 	, m_worldMatrix(DirectX::SimpleMath::Matrix::Identity)
 	, m_model(nullptr)
+	, m_canGenerateSlamParticles(true)
 {
 	// パーティクルの取得
 	m_particles = cudgel->GetPlayScene()->GetParticle();
@@ -69,6 +70,8 @@ void Cudgel_Attacking::PreUpdate()
 	// 頂点情報の初期化
 	m_rootPos.clear();
 	m_tipPos.clear();
+
+	m_canGenerateSlamParticles = true;
 }
 
 
@@ -109,6 +112,14 @@ void Cudgel_Attacking::UpdateCudgelRotation()
 
 	else if (m_totalSeconds > WINDUP_TIME && m_totalSeconds < ATTACK_TIME)
 		m_angleUD = DirectX::XMConvertToRadians(-20.0f + 115.0f * ((m_totalSeconds - 1.4f) / 0.3f));// 95度振り下ろす
+
+	// 敵の降り下ろし攻撃終了後にパーティクルを1度だけ生成する
+	else if (m_totalSeconds > ATTACK_TIME && m_canGenerateSlamParticles)
+	{
+		m_canGenerateSlamParticles = false;
+		m_cudgel->GetPlayScene()->GetParticle()->CreateSlamDust(m_tipPos[m_tipPos.size() - 1]);
+	}
+
 }
 
 
@@ -144,24 +155,27 @@ DirectX::SimpleMath::Matrix Cudgel_Attacking::CalculateAttackMatrix()
 /// <param name="_elapsedTime">経過時間</param>
 void Cudgel_Attacking::GetCudgelBothEnds(float _totalTime)
 {
+	DirectX::SimpleMath::Vector3 root;
+	DirectX::SimpleMath::Vector3 tip;
+
 	Matrix rootMat = Matrix::CreateTranslation(Cudgel_Attacking::ZERO_DIREC);
 	rootMat
 		*= Matrix::CreateTranslation(Cudgel::CUDGEL_HADLE_POS)
 		*= CalculateAttackMatrix();
-	m_rootDeb = Vector3::Transform(Vector3::Zero, rootMat);		// モデルの先端の位置を取得
+	root = Vector3::Transform(Vector3::Zero, rootMat);		// モデルの先端の位置を取得
 
-
+	
 	Matrix tipMat = Matrix::CreateTranslation(Cudgel_Attacking::ZERO_DIREC);
 	tipMat
 		*= Matrix::CreateTranslation(Cudgel::CUDGEL_LENGTH)
 		*= CalculateAttackMatrix();
-	m_tipDeb = Vector3::Transform(Vector3::Zero, tipMat);		// モデルの先端の位置を取得
+	tip = Vector3::Transform(Vector3::Zero, tipMat);		// モデルの先端の位置を取得
 
 	if (m_recordPointTimer >= 0.025f)
 	{
 		m_recordPointTimer = 0.0f;
-		m_rootPos.push_back(m_rootDeb);		// 根本座標リストの先端に記録
-		m_tipPos .push_back(m_tipDeb);		// 頂点座標リストの先端に記録
+		m_rootPos.push_back(root);		// 根本座標リストの先端に記録
+		m_tipPos .push_back(tip);		// 頂点座標リストの先端に記録
 
 		using namespace DirectX;
 
