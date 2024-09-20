@@ -201,6 +201,7 @@
     <ClInclude Include="Game\Enemy\States\Header\Enemy_Attacking.h" />
     <ClInclude Include="Game\Enemy\States\Header\EnemyIdling.h" />
     <ClInclude Include="Game\Enemy\States\Header\Enemy_HP.h" />
+    <ClInclude Include="Game\Enemy\States\Header\Enemy_Sweeping.h" />
     <ClInclude Include="Game\Player\Player.h" />
     <ClInclude Include="Game\Player\State\Header\Player_Attacking_1.h" />
     <ClInclude Include="Game\Player\State\Header\Player_Attacking_2.h" />
@@ -234,6 +235,7 @@
     <ClInclude Include="Libraries\MyLib\Collision.h" />
     <ClInclude Include="Libraries\MyLib\DebugCamera.h" />
     <ClInclude Include="Libraries\MyLib\DebugString.h" />
+    <ClInclude Include="Libraries\MyLib\EasingFunctions.h" />
     <ClInclude Include="Libraries\MyLib\GridFloor.h" />
     <ClInclude Include="Libraries\MyLib\InputManager.h" />
     <ClInclude Include="Libraries\MyLib\Math.h" />
@@ -259,6 +261,7 @@
     <ClCompile Include="Game\Enemy\States\Source\EnemyApproaching.cpp" />
     <ClCompile Include="Game\Enemy\States\Source\Enemy_Attacking.cpp" />
     <ClCompile Include="Game\Enemy\States\Source\EnemyIdling.cpp" />
+    <ClCompile Include="Game\Enemy\States\Source\Enemy_Sweeping.cpp" />
     <ClCompile Include="Game\Player\Player.cpp" />
     <ClCompile Include="Game\Player\State\Source\Player_Attacking_1.cpp" />
     <ClCompile Include="Game\Player\State\Source\Player_Attacking_2.cpp" />

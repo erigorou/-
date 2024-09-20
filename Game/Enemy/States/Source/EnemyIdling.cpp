@@ -69,17 +69,16 @@ void EnemyIdling::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3&
 
 	if (m_totalSeconds >= 2.f)
 	{
-		//m_enemy->ChangeState(m_enemy->GetEnemyAttacking());		// 攻撃
-		//m_enemy->ChangeState(m_enemy->GetEnemyApproaching());	// 追従
+		m_enemy->ChangeState(m_enemy->GetEnemySweeping());	// 追従
 
-		// 近い距離だと追従を行わない
-		// プレイヤーとの距離を計算
-		float distance = Vector3::Distance(parentPos, playerPos);
+		//// 近い距離だと追従を行わない
+		//// プレイヤーとの距離を計算
+		//float distance = Vector3::Distance(parentPos, playerPos);
 
-		if (distance > 25.0f)
-			m_enemy->ChangeState(m_enemy->GetEnemyApproaching());	// 追従
-		else
-			m_enemy->ChangeState(m_enemy->GetEnemyAttacking());		// 待機
+		//if (distance > 25.0f)
+		//	m_enemy->ChangeState(m_enemy->GetEnemyApproaching());	// 追従
+		//else
+		//	m_enemy->ChangeState(m_enemy->GetEnemyAttacking());		// 待機
 	}
 }
 
@@ -115,9 +114,12 @@ void EnemyIdling::Render(
 	// リソースの取得
 	CommonResources* resources = CommonResources::GetInstance();
 
+
+#ifdef _DEBUG
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
 	debugString->AddString("enemyAngle : %f", m_angle);
+#endif // _DEBUG
 }
 
 

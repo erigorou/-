@@ -5,9 +5,10 @@
 #include "Game/Enemy/States/Header/Enemy_HP.h"	// HP
 
 // ===== 敵の状態 =================================================================
-#include "Game/Enemy/States/Header/EnemyIdling.h"		// 待機状態
-#include "Game/Enemy/States/Header/Enemy_Attacking.h"	// 攻撃状態
-#include "Game/Enemy/States/Header/EnemyApproaching.h"	// 追尾状態
+#include "States/Header/EnemyIdling.h"		// 待機状態
+#include "States/Header/Enemy_Attacking.h"	// たたきつけ攻撃
+#include "States/Header/Enemy_Sweeping.h"	// 薙ぎ払い攻撃
+#include "States/Header/EnemyApproaching.h"	// 追尾状態
 
 
 #include "BehaviourTree/Header/BehaviorTree.h"			// ビヘイビアツリー
@@ -22,26 +23,22 @@ public:
 
 
 public:
-	// プレイシーンを取得する
-	PlayScene* GetPlayScene() const { return m_playScene; }
-	// 鬼のHP管理してるやつを取得する
-	Enemy_HP* GetEnemyHP() const { return m_hp.get(); }
-	// 鬼の座標を取得する
-	DirectX::SimpleMath::Vector3 GetPosition() const { return m_position; }
-	// 鬼の座標を設定する
-	void SetPosition(const DirectX::SimpleMath::Vector3 pos) { m_position = pos; }
-	// 鬼の回転角を取得する
-	float GetAngle() const { return m_angle; }
-	// 鬼の回転角を設定する
-	void SetAngle(const float angle){ m_angle = angle; }
-	// 敵のワールド座標を取得する
-	DirectX::SimpleMath::Matrix	GetWorldMatrix() const { return m_worldMatrix; }
-	// 敵のワールド座標を設定する
-	void SetWorldMatrix(DirectX::SimpleMath::Matrix mat) { m_worldMatrix = mat; }
+	PlayScene* GetPlayScene()					const { return m_playScene;}		// PlaySceneの取得 
+	Enemy_HP* GetEnemyHP()						const { return m_hp.get(); }		// HPの取得	
+	
+	DirectX::SimpleMath::Vector3 GetPosition()	const { return m_position; }		// 鬼の座標を取得する
+	void SetPosition(const DirectX::SimpleMath::Vector3 pos) { m_position = pos; }	// 鬼の座標を設定する
+	
+	float GetAngle() const { return m_angle; }										// 鬼の回転角を取得する	
+	void SetAngle(const float angle) { m_angle = angle; }							// 鬼の回転角を設定する	
+
+	DirectX::SimpleMath::Matrix	GetWorldMatrix() const { return m_worldMatrix; }	// 敵のワールド座標を取得する
+	void SetWorldMatrix(DirectX::SimpleMath::Matrix mat) { m_worldMatrix = mat; }	// 敵のワールド座標を設定する
 
 	// ===== 敵の状態 =================================================================
 	EnemyIdling* GetEnemyIdling() const { return m_idling.get(); }					// 待機状態
 	Enemy_Attacking* GetEnemyAttacking() const { return m_attacking.get(); }		// 攻撃状態
+	Enemy_Sweeping* GetEnemySweeping() const { return m_sweeping.get(); }			// 薙ぎ払い状態
 	EnemyApproaching* GetEnemyApproaching() const { return m_approaching.get(); }	// 追尾状態
 
 
@@ -101,6 +98,7 @@ private:
 	IState* m_currentState;			// 現在のステート（ステートパターン）
 	std::unique_ptr<EnemyIdling> m_idling;					// 待機状態
 	std::unique_ptr<Enemy_Attacking> m_attacking;			// 攻撃状態
+	std::unique_ptr<Enemy_Sweeping> m_sweeping;				// 薙ぎ払い状態
 	std::unique_ptr<EnemyApproaching> m_approaching;		// 追尾状態
 
 	// ビヘイビアツリー

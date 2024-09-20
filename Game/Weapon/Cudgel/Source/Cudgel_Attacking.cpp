@@ -220,36 +220,27 @@ void Cudgel_Attacking::Render(ID3D11DeviceContext* context,
 	// モデルを描画する
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 
-	// パーティクルの生成
-	if (m_rootPos.max_size() >= 2 && m_tipPos.max_size() >= 2)
-	{
-		// 頂点生成に必要な数がそろっている場合
-		// それぞれ1 2　番を用いてパーティクルを生成する
-	}
-
-
 #ifdef _DEBUG
 	CommonResources* resources = CommonResources::GetInstance();
 	auto debugString = resources->GetDebugString();
-#endif // _DEBUG
-
 
 	// Sphereの生成
-	auto sphere = DirectX::GeometricPrimitive::CreateSphere(context, 1.0f);
+	//auto sphere = DirectX::GeometricPrimitive::CreateSphere(context, 1.0f);
 
 	// m_rootPosの各頂点に球体を描画
-	for (const auto& rootPos : m_rootPos)
-	{
-		DirectX::SimpleMath::Matrix rootSphereMatrix = DirectX::SimpleMath::Matrix::CreateTranslation(rootPos);
-		sphere->Draw(rootSphereMatrix, view, projection, DirectX::Colors::Red, nullptr, true);
-	}
+	//for (const auto& rootPos : m_rootPos)
+	//{
+	//	DirectX::SimpleMath::Matrix rootSphereMatrix = DirectX::SimpleMath::Matrix::CreateTranslation(rootPos);
+	//	sphere->Draw(rootSphereMatrix, view, projection, DirectX::Colors::Red, nullptr, true);
+	//}
 
 	// m_tipPosの各頂点に球体を描画
-	for (const auto& tipPos : m_tipPos)
-	{
-		DirectX::SimpleMath::Matrix tipSphereMatrix = DirectX::SimpleMath::Matrix::CreateTranslation(tipPos);
-		sphere->Draw(tipSphereMatrix, view, projection, DirectX::Colors::Blue, nullptr, true);
-	}
+	//for (const auto& tipPos : m_tipPos)
+	//{
+	//	DirectX::SimpleMath::Matrix tipSphereMatrix = DirectX::SimpleMath::Matrix::CreateTranslation(tipPos);
+	//	sphere->Draw(tipSphereMatrix, view, projection, DirectX::Colors::Blue, nullptr, true);
+	//}
+#endif // _DEBUG
 }
 
 

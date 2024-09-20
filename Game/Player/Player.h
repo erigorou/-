@@ -46,6 +46,9 @@ public:
 	PlayerAttacking_3* GetPlayerAttackingState3() const { return m_playerAttacking_3.get(); }
 	PlayerAttacking_4* GetPlayerAttackingState4() const { return m_playerAttacking_4.get(); }
 
+	void SetSpeed		(DirectX::SimpleMath::Vector3 velocity)		{ m_velocity = velocity; }
+	void SetAcceleration(DirectX::SimpleMath::Vector3 acceleration)	{ m_acceleration = acceleration; }
+
 	// プレイシーンの情報を取得する
 	PlayScene* GetPlayScene()const { return m_playScene; }
 	// キーボードの情報を取得する(長押しのみ対応)

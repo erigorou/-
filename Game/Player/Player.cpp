@@ -20,7 +20,7 @@
 
 // ここで静的メンバー変数を定義する
 const DirectX::SimpleMath::Vector3 Player::HOME_POSITION(0.0f);
-const float Player::PLAYER_SPEED = 0.05f;
+const float Player::PLAYER_SPEED = 0.025f;
 const float Player::PLAYER_SCALE = 0.1f;
 const float Player::APPLIED_ATTACK_TIME = 1.0f;
 

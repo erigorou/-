@@ -46,6 +46,9 @@ void PlayerIdling::PreUpdate()
 	m_totalSeconds = 0.0f;
 	// 当たり判定をプレイヤーの位置に修正
 	m_boundingSphereBody.Center = m_player->GetPosition();
+
+	m_player->SetSpeed(DirectX::SimpleMath::Vector3::Zero);
+	m_player->SetAcceleration(DirectX::SimpleMath::Vector3::Zero);
 }
 
 

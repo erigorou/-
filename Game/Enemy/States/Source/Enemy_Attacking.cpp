@@ -30,9 +30,7 @@ Enemy_Attacking::~Enemy_Attacking()
 // 初期化処理
 void Enemy_Attacking::Initialize(DirectX::Model* model)
 {
-	// モデルの取得
-	m_model = model;
-
+	m_model = model;										// モデルの取得
 	m_boundingSphereBody = DirectX::BoundingSphere();		// 境界球の生成と設定
 	m_boundingSphereBody.Radius = Enemy::ENEMY_SCALE * 12.f;
 }
@@ -53,17 +51,11 @@ void Enemy_Attacking::PreUpdate()
 void Enemy_Attacking::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3& parentPos)
 {
 	using namespace DirectX::SimpleMath;
-
-	// 経過時間の計算
 	m_totalSeconds += elapsedTime;
 
 	if (m_totalSeconds >= 2.5f)
-	{
-		// 2.5秒で待機状態に変更
-		m_enemy->ChangeState(m_enemy->GetEnemyIdling());
-	}
+		m_enemy->ChangeState(m_enemy->GetEnemyIdling());	// 待機状態に遷移
 
-	// 当たり判定の位置を調整する
 	m_boundingSphereBody.Center = parentPos;
 }
 

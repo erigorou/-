@@ -334,6 +334,7 @@ void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::Simp
 	// 剣の残像パーティクルを描画
 	m_batch->Begin();
 
+	// 色を変化させるためのイージング変数
 	float t = 0.0f;
 	for (auto& sTP : m_swordTrial)
 	{
