@@ -49,6 +49,8 @@ void Enemy_Sweeping::PreUpdate()
 	m_totalSeconds = 0.0f;
 	// 当たり判定をプレイヤーの位置に修正
 	m_boundingSphereBody.Center = m_enemy->GetPosition();
+	m_angle = DirectX::XMConvertToDegrees(m_enemy->GetAngle());
+
 }
 
 
@@ -70,12 +72,13 @@ void Enemy_Sweeping::Update(const float& elapsedTime, DirectX::SimpleMath::Vecto
 	// 最初の0.2秒で30度左回転
 	if (m_totalSeconds <= fastTime) {
 		t = m_totalSeconds / fastTime;  // 0 ~ 1 に正規化
-		targetAngle = -30.f *  m_easying->easeOutCirc(t);  // 30度左回転
+		targetAngle = m_angle  - 30.f *  m_easying->easeOutCirc(t);  // 30度左回転
 	}
 
 	else if (m_totalSeconds >= secondTime && m_totalSeconds <= thirdTime){
-		t = (m_totalSeconds - secondTime) / (thirdTime - secondTime);  // 0 ~ 1 に正規化
-		targetAngle = -30.f + 210.f * m_easying->easeOutBack(t);  // 30度から60度右回転
+		t = (m_totalSeconds - secondTime) / (thirdTime - secondTime);		// 0 ~ 1 に正規化
+		targetAngle = m_angle  - 30.f + 210.f * m_easying->easeOutBack(t);  // 30度から60度右回転
+
 	}
 
 
@@ -85,10 +88,9 @@ void Enemy_Sweeping::Update(const float& elapsedTime, DirectX::SimpleMath::Vecto
 		m_enemy->ChangeState(m_enemy->GetEnemyIdling());
 	}
 
-	// 回転角度の更新
-	m_angle = targetAngle;
+	m_angle;
 
-	m_enemy->SetAngle(DirectX::XMConvertToRadians(m_angle));
+	m_enemy->SetAngle(DirectX::XMConvertToRadians(targetAngle + 180));
 
 	// 当たり判定の位置を調整する
 	m_boundingSphereBody.Center = parentPos;
