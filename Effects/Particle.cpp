@@ -182,7 +182,7 @@ void Particle::CreateSlamDust(DirectX::SimpleMath::Vector3 center)
 			SimpleMath::Vector3(0.1f, 0.1f, 0.1f),												// 加速度
 			SimpleMath::Vector3::One, SimpleMath::Vector3{ 10.0f, 25.0f, 10.0f },				// 初期スケール、最終スケール
 			SimpleMath::Color(1.f, 1.f, 1.f, 1.f),												// 初期カラー
-			SimpleMath::Color(1.f, 1.f, 1.f, 0.f)												m// 最終カラー
+			SimpleMath::Color(1.f, 1.f, 1.f, 0.f)												// 最終カラー
 		);
 
 		m_dustTrail.push_back(pB);

@@ -32,12 +32,14 @@ SwordTrialParticle::SwordTrialParticle(
 }
 
 
+
 /// <summary>
 /// デストラクタ
 /// </summary>
 SwordTrialParticle::~SwordTrialParticle()
 {
 }
+
 
 
 /// <summary>
