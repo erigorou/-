@@ -1,4 +1,9 @@
-﻿  Cudgel_Sweeping.cpp
+﻿  Particle.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Effects\Particle.cpp(114,38): warning C4100: 'elapsedTimer': 引数は関数の本体部で 1 度も参照されません。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Effects\Particle.cpp(346,16): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Effects\Particle.cpp(348,16): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Effects\Particle.cpp(313,131): warning C4100: 'cameraDir': 引数は関数の本体部で 1 度も参照されません。
+  Cudgel_Sweeping.cpp
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(20,10): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(28,12): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(36,31): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
@@ -23,10 +28,11 @@ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLi
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(263,33): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(266,34): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(269,35): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(181,12): warning C4244: '初期化中': 'unsigned __int64' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(186,36): warning C4244: '引数': 'float' から 'const unsigned __int64' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(187,40): warning C4244: '引数': 'float' から 'const unsigned __int64' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(182,12): warning C4244: '初期化中': 'unsigned __int64' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(187,36): warning C4244: '引数': 'float' から 'const unsigned __int64' への変換です。データが失われる可能性があります。
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(188,40): warning C4244: '引数': 'float' から 'const unsigned __int64' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(189,36): warning C4244: '引数': 'float' から 'const unsigned __int64' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(155,47): warning C4100: '_totalTime': 引数は関数の本体部で 1 度も参照されません。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(189,40): warning C4244: '引数': 'float' から 'const unsigned __int64' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(190,36): warning C4244: '引数': 'float' から 'const unsigned __int64' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(156,47): warning C4100: '_totalTime': 引数は関数の本体部で 1 度も参照されません。
+  コードを生成中...
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe

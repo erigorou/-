@@ -26,7 +26,7 @@ const float Cudgel_Sweeping::ATTACK_TIME = 1.8f;	// “ã‚¬•¥‚¢
 const float Cudgel_Sweeping::END_TIME	 = 2.5f;	// I—¹
 
 const float Cudgel_Sweeping::CHARGE_ROTATE_ANGLE = 30.0f;	// U‚è‚©‚´‚µŠp“x
-const float Cudgel_Sweeping::WINDUP_ROTATE_ANGLE = 210.0f;	// “ã‚¬•¥‚¢Šp“x
+const float Cudgel_Sweeping::WINDUP_ROTATE_ANGLE = 240.0f;	// “ã‚¬•¥‚¢Šp“x
 
 const Vector3 Cudgel_Sweeping::ARM_LENGTH = Vector3(0.0f, 5.0f, 0.0f);
 const Vector3 Cudgel_Sweeping::ZERO_DIREC = Vector3(6.0f, 1.0f, 0.0f);
@@ -115,6 +115,7 @@ void Cudgel_Sweeping::UpdateCudgelRotation()
 		t = m_totalSeconds / CHARGE_TIME;  // 0 ~ 1 ‚É³‹K‰»
 		m_angleRL = -CHARGE_ROTATE_ANGLE * m_easying->easeOutCirc(t);  // 30“x¶‰ñ“]
 	}
+
 	else if (m_totalSeconds >= WINDUP_TIME && m_totalSeconds <= ATTACK_TIME) {
 		t = (m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME);  // 0 ~ 1 ‚É³‹K‰»
 		m_angleRL = CHARGE_ROTATE_ANGLE + WINDUP_ROTATE_ANGLE * m_easying->easeOutBack(t);  // 30“x‚©‚ç60“x‰E‰ñ“]
