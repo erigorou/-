@@ -87,10 +87,12 @@ void Cudgel::CreateState()
 	// ó‘Ô‚Ì¶¬
 	m_idling = std::make_unique<Cudgel_Idling>(this);			// ‘Ò‹@
 	m_attacking = std::make_unique<Cudgel_Attacking>(this);		// UŒ‚
+	m_sweeping = std::make_unique<Cudgel_Sweeping>(this);		// “ã‚¬•¥‚¢
 
 	// ó‘Ô‚Ì‰Šú‰»
 	m_idling->Initialize();		// ‘Ò‹@
 	m_attacking->Initialize();	// UŒ‚
+	m_sweeping->Initialize();	// “ã‚¬•¥‚¢
 
 	// ‰Šúó‘Ô‚ğw’è
 	m_currentState = m_idling.get();

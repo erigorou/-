@@ -51,6 +51,8 @@ void Enemy_Sweeping::PreUpdate()
 	m_boundingSphereBody.Center = m_enemy->GetPosition();
 	m_angle = DirectX::XMConvertToDegrees(m_enemy->GetAngle());
 
+	auto cudgel = m_enemy->GetPlayScene()->GetCudgel();
+	cudgel->ChangeState(cudgel->GetSweeping());			// 金棒のステートを変更
 }
 
 
@@ -69,26 +71,25 @@ void Enemy_Sweeping::Update(const float& elapsedTime, DirectX::SimpleMath::Vecto
 	float secondTime = 1.3f;
 	float thirdTime = 1.8f;
 
-	// 最初の0.2秒で30度左回転
+	// 最初の0.2秒で -20度から 0度に回転
 	if (m_totalSeconds <= fastTime) {
 		t = m_totalSeconds / fastTime;  // 0 ~ 1 に正規化
-		targetAngle = m_angle  - 30.f *  m_easying->easeOutCirc(t);  // 30度左回転
+		targetAngle = m_angle - 20.f * m_easying->easeOutCirc(t);  // -20度から 0度に回転
+
+		targetAngle -= 180;
+	}
+	else if (m_totalSeconds >= secondTime && m_totalSeconds <= thirdTime) {
+		t = (m_totalSeconds - secondTime) / (thirdTime - secondTime);  // 0 ~ 1 に正規化
+		targetAngle = m_angle - 20.f + 20.f * m_easying->easeOutBack(t);  // -20度から 0度に回転
+
+		targetAngle -= 180;
 	}
 
-	else if (m_totalSeconds >= secondTime && m_totalSeconds <= thirdTime){
-		t = (m_totalSeconds - secondTime) / (thirdTime - secondTime);		// 0 ~ 1 に正規化
-		targetAngle = m_angle  - 30.f + 210.f * m_easying->easeOutBack(t);  // 30度から60度右回転
-
-	}
-
-
-	else if(m_totalSeconds > 2.5f)
+	if(m_totalSeconds > 2.5f)
 	{
 		// 回転が完了したら次のステートに移行
 		m_enemy->ChangeState(m_enemy->GetEnemyIdling());
 	}
-
-	m_angle;
 
 	m_enemy->SetAngle(DirectX::XMConvertToRadians(targetAngle + 180));
 

@@ -7,6 +7,7 @@
 // 金棒の状態 ========================================================
 #include "Cudgel_Idling.h"		// 待機
 #include "Cudgel_Attacking.h"	// 攻撃
+#include "Cudgel_Sweeping.h"	// 薙ぎ払い
 
 class Cudgel
 {
@@ -27,7 +28,7 @@ public:
 	// ===状態の取得================================================================
 	Cudgel_Idling* GetIdling()const { return m_idling.get(); }				// 待機
 	Cudgel_Attacking* GetAttacking()const { return m_attacking.get(); }		// 攻撃
-
+	Cudgel_Sweeping* GetSweeping()const { return m_sweeping.get(); }		// 薙ぎ払い	
 
 
 
@@ -84,11 +85,10 @@ private:
 private:
 	// 現在のステート
 	IWeapon* m_currentState;
-	// 待機状態
-	std::unique_ptr<Cudgel_Idling> m_idling;
-	// 攻撃状態
-	std::unique_ptr<Cudgel_Attacking> m_attacking;
 
+	std::unique_ptr<Cudgel_Idling>		m_idling;		// 待機
+	std::unique_ptr<Cudgel_Attacking>	m_attacking;	// たたきつけ
+	std::unique_ptr<Cudgel_Sweeping>	m_sweeping;		// 薙ぎ払い
 
 private:
 	// ベーシックエフェクト
