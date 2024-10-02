@@ -69,18 +69,17 @@ private:
 	DirectX::SimpleMath::Vector3 m_velocity;	// 速度
 	float m_angleRL;							// 左右角度
 	float m_angleUD;							// 上下角度
+	float m_parentAngleRL;						// 親の左右角度
 
 	DirectX::SimpleMath::Matrix m_worldMatrix;	// ワールド行列
 	DirectX::Model* m_model;					// モデルのポインタ
 	float m_totalSeconds;						// ステートの経過時間
-	float m_recordPointTimer;					// 座標を記録するインターバルの計測用変数 
 
 	DirectX::BoundingOrientedBox m_boundingBox;	// 金棒の当たり判定
 	DirectX::BoundingOrientedBox m_originalBox;	// 金棒の大元となる当たり判定（初期値等が記録されている）
 
 	Cudgel*		m_cudgel;						// ステートを所有する親
 	Particle*	m_particles;					// パーティクル
-
 
 	std::unique_ptr<EasyingFunctions> m_easying;	// イージング関数
 

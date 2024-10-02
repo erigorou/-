@@ -23,7 +23,10 @@ const DirectX::SimpleMath::Vector3 Cudgel::DIRECTION_ENEMY = { 6.0f, 5.0f, 0.0f 
 const DirectX::SimpleMath::Vector3 Cudgel::CUDGEL_LENGTH =	{ 0.0f, 22.0f, 0.0f };	// 金棒の長さ（一番下から）
 const DirectX::SimpleMath::Vector3 Cudgel::CUDGEL_HADLE_POS = { 0.0f, 7.0f, 0.0f };	// 金棒の取っ手の部分（一番上）
 
+
+// --------------------------------
 // コンストラクタ
+// --------------------------------
 Cudgel::Cudgel(PlayScene* playScene)
 	:
 	m_playScene(playScene)
@@ -32,12 +35,18 @@ Cudgel::Cudgel(PlayScene* playScene)
 {
 }
 
+
+// --------------------------------
 // デストラクタ
+// --------------------------------
 Cudgel::~Cudgel()
 {
 }
 
+
+// --------------------------------
 // 初期化処理
+// --------------------------------
 void Cudgel::Initialize()
 {
 	CommonResources* resources = CommonResources::GetInstance();
@@ -59,29 +68,26 @@ void Cudgel::Initialize()
 	// プリミティブバッチの作成
 	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
 
-	// モデルの生成
-	CreateModel(device);
-
-	// ステートを作成
-	CreateState();
+	CreateModel(device);	// モデルの生成
+	CreateState();			// ステートの作成
 }
 
 
 // モデルを生成する
 void Cudgel::CreateModel(ID3D11Device1* device)
 {
-	// モデルを生成
-	m_model = std::make_unique<DirectX::Model>();
 
-	// モデルを読み込む準備
-	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
-	fx->SetDirectory(L"Resources/Models");
-	// モデルを読み込む
-	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/cudgel.cmo", *fx);
+	m_model = std::make_unique<DirectX::Model>();													// モデルを作成
+
+	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);	// エフェクトファクトリーを作成
+	fx->SetDirectory(L"Resources/Models");															// モデルのディレクトリを設定	
+	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/cudgel.cmo", *fx);			// パスのモデルの読み込みを行う
 }
 
 
-// シーンを生成する
+// --------------------------------
+// 状態の生成
+// --------------------------------
 void Cudgel::CreateState()
 {
 	// 状態の生成
@@ -98,15 +104,18 @@ void Cudgel::CreateState()
 	m_currentState = m_idling.get();
 }
 
+// --------------------------------
 // 更新処理
+// --------------------------------
 void Cudgel::Update(float elapsedTime)
 {
 	// 現在のステートの更新処理
 	m_currentState->Update(elapsedTime);
 }
 
-
+// --------------------------------
 // 描画処理
+// --------------------------------
 void Cudgel::Render(
 	ID3D11Device* device,
 	ID3D11DeviceContext* context,
@@ -158,13 +167,17 @@ void Cudgel::DrawBoundingBox(
 
 
 
+// --------------------------------
 // 終了処理
+// --------------------------------
 void Cudgel::Finalize()
 {
 }
 
 
-// シーン変更処理
+// --------------------------------
+// ステートの変更
+// --------------------------------
 void Cudgel::ChangeState(IWeapon* state)
 {
 	// 同じステートに変更しようとしたら早期リターン

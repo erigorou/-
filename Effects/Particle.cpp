@@ -342,22 +342,19 @@ void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::Simp
 		DirectX::VertexPositionColorTexture ver[4];
 		sTP.GetVertices(ver);
 
-		// イージング計算
-		float value1 = 1 - pow(1 - t, 2);  // t が0に近いほど色が白くなる
+		float value1 = 1 - pow(1 - t, 2);	// イージング1
 		t += 1.0f / m_swordTrial.size();
-		float value2 = 1 - pow(1 - t, 2);  // t が1に近づくほど色が薄くなる
+		float value2 = 1 - pow(1 - t, 2);	// イージング2	// t が 1に近づくほど色が薄くなる
 
-		// 上部は白 (1, 1, 1) で、透明度が低い（不透明）
-		ver[1].color = DirectX::SimpleMath::Color(1, 1, 1, value1);  // 白でほぼ不透明
-		ver[2].color = DirectX::SimpleMath::Color(1, 1, 1, value1);  // 同じく白で不透明
+		ver[1].color = DirectX::SimpleMath::Color(1, 1, 1, value1);			// 右上
+		ver[2].color = DirectX::SimpleMath::Color(1, 0.8, 0.8, value1);		// 右下
 
-		// 下部は薄い桃色 (1, 0.8, 0.8) で、透明度が低い（不透明）
-		ver[0].color = DirectX::SimpleMath::Color(1, 0.8, 0.8, value2);  // 薄い桃色で不透明
-		ver[3].color = DirectX::SimpleMath::Color(1, 0.8, 0.8, value2);  // 同じく薄い桃色で不透明
+		ver[0].color = DirectX::SimpleMath::Color(1, 1, 1, value2);			// 左上
+		ver[3].color = DirectX::SimpleMath::Color(1, 0.8, 0.8, value2);		// 左下
 
-		// 四角形の描画
 		m_batch->DrawQuad(ver[0], ver[1], ver[2], ver[3]);
 	}
+
 	m_batch->End();
 
 	context->VSSetShader(nullptr, nullptr, 0);

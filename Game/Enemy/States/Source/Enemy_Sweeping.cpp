@@ -12,8 +12,16 @@
 #include "Game/Enemy/States/Header/Enemy_Sweeping.h"
 
 
+const float Enemy_Sweeping::CHARGE_TIME = 1.0f;	// 振りかざし時間
+const float Enemy_Sweeping::WINDUP_TIME = 1.3f;	// 待機
+const float Enemy_Sweeping::ATTACK_TIME = 1.8f;	// 薙ぎ払い
+const float Enemy_Sweeping::END_TIME	= 2.5f;	// 終了
+const float Enemy_Sweeping::ROTATE_ANGLE = 20.0f;	// 振りかざし角度
 
+
+// ----------------------------------
 // コンストラクタ
+// ----------------------------------
 Enemy_Sweeping::Enemy_Sweeping(Enemy* enemy)
 	:m_model()
 	, m_angle(0.f)
@@ -24,13 +32,17 @@ Enemy_Sweeping::Enemy_Sweeping(Enemy* enemy)
 }
 
 
+// ----------------------------------
 // デストラクタ
+// ----------------------------------
 Enemy_Sweeping::~Enemy_Sweeping()
 {
 }
 
 
+// ----------------------------------
 // 初期化処理
+// ----------------------------------
 void Enemy_Sweeping::Initialize(DirectX::Model* model)
 {
 	// モデルの取得
@@ -42,7 +54,9 @@ void Enemy_Sweeping::Initialize(DirectX::Model* model)
 
 
 
+// ----------------------------------
 // 事前更新処理
+// ----------------------------------
 void Enemy_Sweeping::PreUpdate()
 {
 	// 経過時間の初期化
@@ -56,7 +70,9 @@ void Enemy_Sweeping::PreUpdate()
 }
 
 
+// ----------------------------------
 // 更新処理
+// ----------------------------------
 void Enemy_Sweeping::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3& parentPos)
 {
 	using namespace DirectX::SimpleMath;
@@ -64,53 +80,54 @@ void Enemy_Sweeping::Update(const float& elapsedTime, DirectX::SimpleMath::Vecto
 	// 経過時間の計算
 	m_totalSeconds += elapsedTime;
 
-	float t = 0.0f;  // 正規化された経過時間
-	static float targetAngle = 0.0f;
+	float t = 0.0f;						// イージングに使用する変数
+	static float targetAngle = 0.0f;	// 目標の角度
 
-	float fastTime = 1.0f;
-	float secondTime = 1.3f;
-	float thirdTime = 1.8f;
-
-	// 最初の0.2秒で -20度から 0度に回転
-	if (m_totalSeconds <= fastTime) {
-		t = m_totalSeconds / fastTime;  // 0 ~ 1 に正規化
-		targetAngle = m_angle - 20.f * m_easying->easeOutCirc(t);  // -20度から 0度に回転
-
-		targetAngle -= 180;
-	}
-	else if (m_totalSeconds >= secondTime && m_totalSeconds <= thirdTime) {
-		t = (m_totalSeconds - secondTime) / (thirdTime - secondTime);  // 0 ~ 1 に正規化
-		targetAngle = m_angle - 20.f + 20.f * m_easying->easeOutBack(t);  // -20度から 0度に回転
-
-		targetAngle -= 180;
-	}
-
-	if(m_totalSeconds > 2.5f)
+	if (m_totalSeconds <= CHARGE_TIME)	// 開始からためモーション中なら
 	{
-		// 回転が完了したら次のステートに移行
-		m_enemy->ChangeState(m_enemy->GetEnemyIdling());
+		t = m_totalSeconds / CHARGE_TIME;
+		targetAngle = m_angle - ROTATE_ANGLE * m_easying->easeOutCirc(t);					// ためモーションを行う
 	}
 
-	m_enemy->SetAngle(DirectX::XMConvertToRadians(targetAngle + 180));
+	else if (
+		m_totalSeconds >= WINDUP_TIME &&	// 待機時間を過ぎた　かつ
+		m_totalSeconds <= ATTACK_TIME)		// 攻撃時間中なら
+	{
+		t = (m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME);
+		targetAngle = m_angle - ROTATE_ANGLE + ROTATE_ANGLE * m_easying->easeOutBack(t);	// 薙ぎ払いモーションを行う
+	}
+
+
+	if(m_totalSeconds > END_TIME)	m_enemy->ChangeState(m_enemy->GetEnemyIdling());		// 待機状態に遷移
+
+
+	m_enemy->SetAngle(DirectX::XMConvertToRadians(targetAngle));							// 角度を設定
 
 	// 当たり判定の位置を調整する
 	m_boundingSphereBody.Center = parentPos;
 }
 
 
+// ----------------------------------
 // 事後更新処理
+// ----------------------------------
 void Enemy_Sweeping::PostUpdate()
 {
 }
 
-// プレイヤーの体との当たり判定を行う
+
+// ----------------------------------
+// 描画処理
+// ----------------------------------
 void Enemy_Sweeping::CheckHitPlayerBody()
 {
 
 }
 
 
+// ----------------------------------
 // 描画処理
+// ----------------------------------
 void Enemy_Sweeping::Render(
 	ID3D11DeviceContext* context,
 	DirectX::CommonStates* states,
@@ -133,6 +150,9 @@ void Enemy_Sweeping::Render(
 }
 
 
+// ----------------------------------
+// 終了処理
+// ----------------------------------
 void Enemy_Sweeping::Finalize()
 {
 }

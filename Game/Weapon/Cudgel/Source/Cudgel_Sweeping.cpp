@@ -39,8 +39,8 @@ Cudgel_Sweeping::Cudgel_Sweeping(Cudgel* cudgel)
 	, m_velocity(0.0f, 0.0f, 0.0f)
 	, m_angleRL(0.0f)
 	, m_angleUD(0.0f)
+	, m_parentAngleRL(0.0f)
 	, m_totalSeconds(0.0f)
-	, m_recordPointTimer(0.0f)
 	, m_worldMatrix(DirectX::SimpleMath::Matrix::Identity)
 	, m_model(nullptr)
 	, m_canGenerateSlamParticles(true)
@@ -68,10 +68,10 @@ void Cudgel_Sweeping::Initialize()
 void Cudgel_Sweeping::PreUpdate()
 {
 	// 経過時間の初期化
-	m_totalSeconds = 0.0f;
-	m_angleUD = DirectX::XMConvertToRadians(90.0f);
-	m_angleRL = 0.0f;
-	m_recordPointTimer = 0.0f;
+	m_totalSeconds = 0.0f;												// 経過時間の初期化
+	m_angleUD = DirectX::XMConvertToRadians(90.0f);						// 金棒を横にする
+	m_angleRL = 0.0f;													// 横回転の初期化
+	m_parentAngleRL = m_cudgel->GetPlayScene()->GetEnemy()->GetAngle();	// 敵の角度を取得（親の角度）
 
 	// 頂点情報の初期化
 	m_rootPos.clear();
@@ -90,7 +90,6 @@ void Cudgel_Sweeping::Update(float elapsedTime)
 
 	// 合計時間を計測
 	m_totalSeconds		+= elapsedTime;
-	m_recordPointTimer	+= elapsedTime;
 
 	auto enemy = m_cudgel->GetPlayScene()->GetEnemy();
 	m_position = enemy->GetPosition();	// 敵の座標を取得
@@ -112,7 +111,7 @@ void Cudgel_Sweeping::UpdateCudgelRotation()
 
 	// ---- 横方向の回転（左右の回転）----
 	if (m_totalSeconds <= CHARGE_TIME) {
-		t = m_totalSeconds / CHARGE_TIME;  // 0 ~ 1 に正規化
+				t = m_totalSeconds / CHARGE_TIME;  // 0 ~ 1 に正規化
 		m_angleRL = -CHARGE_ROTATE_ANGLE * m_easying->easeOutCirc(t);  // 30度左回転
 	}
 
@@ -142,10 +141,10 @@ void Cudgel_Sweeping::CalculateModelMatrix()
 DirectX::SimpleMath::Matrix Cudgel_Sweeping::CalculateAttackMatrix()
 {
 	return 
-			Matrix::CreateRotationX(-m_angleUD)									// 縦回転を行う
-		*=  Matrix::CreateRotationY(DirectX::XMConvertToRadians(-m_angleRL))	// 横回転を行う
-		*=  Matrix::CreateTranslation(Cudgel_Sweeping::ARM_LENGTH)				// 腕の長さ分移動
-		*=  Matrix::CreateTranslation(m_position);								// 最後に敵の位置に設定
+			Matrix::CreateRotationX(-m_angleUD)																						// 縦回転を行う
+		*=  Matrix::CreateRotationY(DirectX::XMConvertToRadians(-m_angleRL) - m_parentAngleRL - DirectX::XMConvertToRadians(189))	// 横回転を行う
+		*=  Matrix::CreateTranslation(Cudgel_Sweeping::ARM_LENGTH)																	// 腕の長さ分移動
+		*=  Matrix::CreateTranslation(m_position);																					// 最後に敵の位置に設定
 }
 
 
@@ -171,8 +170,6 @@ void Cudgel_Sweeping::GetCudgelBothEnds(float _totalTime)
 		*= CalculateAttackMatrix();
 	tip = Vector3::Transform(Vector3::Zero, tipMat);		// モデルの先端の位置を取得
 
-
-		m_recordPointTimer = 0.0f;
 		m_rootPos.push_back(root);		// 根本座標リストの先端に記録
 		m_tipPos .push_back(tip);		// 頂点座標リストの先端に記録
 
