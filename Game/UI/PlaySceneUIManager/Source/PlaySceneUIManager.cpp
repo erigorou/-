@@ -6,8 +6,12 @@
 
 #include "pch.h"
 #include "Game/UI/PlaySceneUIManager/Header/PlaySceneUIManager.h"
+#include "Game/Scene/PlayScene.h"
+#include "Game/Player/Player.h"
 
 #include "Interface/IUserInterface.h"
+#include "Game/UI/Header/PlayerHPUI.h"
+
 
 
 
@@ -16,10 +20,11 @@
 /// コンストラクタ
 /// </summary>
 // ----------------------------
-PlaySceneUIManager::PlaySceneUIManager()
+PlaySceneUIManager::PlaySceneUIManager(PlayScene* playScene)
+	: m_playScene(playScene)
 {
-	// 配列内をリセット
-	m_uiList.clear();
+	m_commonResources = CommonResources::GetInstance();
+	m_pDR = m_commonResources->GetDeviceResources();
 }
 
 
@@ -42,6 +47,20 @@ PlaySceneUIManager::~PlaySceneUIManager()
 // ----------------------------
 void PlaySceneUIManager::Initialize()
 {
+	CreateUI();
+}
+
+
+// ----------------------------
+/// <summary>
+/// UIの生成関数
+/// </summary>
+// ----------------------------
+void PlaySceneUIManager::CreateUI()
+{
+	// プレイヤーのHP
+	m_playerHP = std::make_unique<PlayerHPUI>(m_playScene->GetPlayer()->GetPlayerHP());
+	m_playerHP->Initialize(m_pDR, DirectX::SimpleMath::Vector2(0, 0), DirectX::SimpleMath::Vector2(0.5, 0.5));
 }
 
 
@@ -52,11 +71,7 @@ void PlaySceneUIManager::Initialize()
 // ----------------------------
 void PlaySceneUIManager::Update()
 {
-	// その他のUIの全ての更新処理を行う
-	for (const auto& pair : m_uiList)
-	{
-		pair.second->Update();
-	}
+	m_playerHP->Update();
 }
 
 
@@ -68,11 +83,7 @@ void PlaySceneUIManager::Update()
 // ----------------------------
 void PlaySceneUIManager::Render()
 {
-	// その他のUIの全ての描画処理を行う
-	for (const auto& pair : m_uiList)
-	{
-		pair.second->Render();
-	}
+	m_playerHP->Render();
 }
 
 
@@ -84,37 +95,5 @@ void PlaySceneUIManager::Render()
 // ----------------------------
 void PlaySceneUIManager::Finalize()
 {
-	// その他のUIの全ての終了処理を行う
-	for (const auto& pair : m_uiList)
-	{
-		pair.second->Finalize();
-	}
-}
 
-
-
-// ----------------------------------------------------------
-/// <summary>
-/// 追加関数
-/// </summary>
-/// <param name="ui">追加したいUI　IUserInterface</param>
-// ----------------------------------------------------------
-void PlaySceneUIManager::Add(IUserInterface* ui, std::string key)
-{
-	// uiのリストに追加をする
-	m_uiList[key] = ui;
-}
-
-
-
-// ----------------------------
-/// <summary>
-/// 削除関数
-/// </summary>
-/// <param name="key">キー</param>
-// ----------------------------
-void PlaySceneUIManager::Remove(std::string key)
-{
-	m_uiList[key]->	Finalize();	// 終了処理
-	m_uiList.		erase(key);	// 削除
 }

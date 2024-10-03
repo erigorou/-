@@ -1,26 +1,6 @@
-﻿  Enemy_Sweeping.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(20,10): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(28,12): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(36,31): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(60,11): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(76,13): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(84,10): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(100,12): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(108,13): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(124,11): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(132,12): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(140,13): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(148,10): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(156,11): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(164,12): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(172,15): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(180,10): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(200,33): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(210,13): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(221,10): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(230,11): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(239,12): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(263,33): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(266,34): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(269,35): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+﻿  PlayScene.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Scene\PlayScene.cpp(198,7): warning C4189: 'context': ローカル変数が初期化されましたが、参照されていません
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Scene\PlayScene.cpp(201,28): warning C4189: 'view': ローカル変数が初期化されましたが、参照されていません
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Scene\PlayScene.cpp(197,7): warning C4189: 'device': ローカル変数が初期化されましたが、参照されていません
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Scene\PlayScene.cpp(199,7): warning C4189: 'states': ローカル変数が初期化されましたが、参照されていません
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe

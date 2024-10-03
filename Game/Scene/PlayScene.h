@@ -24,8 +24,11 @@ class Cudgel;
 class Floor;
 class Wall;
 
-class PlayScene final :
-    public IScene
+// UI関連 ========================
+class PlaySceneUIManager;
+
+
+class PlayScene final :	public IScene
 {
 public:
 	// 受け渡し用関数 ===============================================
@@ -36,22 +39,17 @@ public:
 	Particle*	GetParticle()	{ return m_particles.get(); }	
 
 private:
-	// 共通リソース
-	CommonResources* m_commonResources;
-	// デバッグカメラ
-	std::unique_ptr<mylib::DebugCamera> m_debugCamera;
-	// 格子床
-	std::unique_ptr<mylib::GridFloor>	m_gridFloor;
-	// 射影行列
-	DirectX::SimpleMath::Matrix			m_projection;
-	// シーンチェンジフラグ
-	bool m_isChangeScene;
-	// TPSカメラ
-	std::unique_ptr<Camera>				m_camera;
-	// 天球
-	std::unique_ptr<SkySphere>			m_skySphere;
-	// パーティクル
-	std::unique_ptr<Particle>			m_particles;
+
+	CommonResources* m_commonResources;					// 共通リソース
+	std::unique_ptr<mylib::DebugCamera> m_debugCamera;	// デバッグカメラ
+	std::unique_ptr<mylib::GridFloor>	m_gridFloor;	// グリッド床
+	DirectX::SimpleMath::Matrix			m_projection;	// プロジェクション行列
+
+	bool m_isChangeScene;								// シーン遷移フラグ
+
+	std::unique_ptr<Camera>				m_camera;		// カメラ
+	std::unique_ptr<SkySphere>			m_skySphere;	// 天球
+	std::unique_ptr<Particle>			m_particles;	// パーティクル
 
 public:
 	PlayScene();
@@ -63,7 +61,8 @@ public:
 	void Finalize() override;
 
 private:
-	void DrawObjects();
+	void CreateObjects();
+
 	SceneID GetNextSceneID() const;
 
 	// システム周り =========================
@@ -78,4 +77,7 @@ private:
 	// ステージ関連の変数 =======================
 	std::unique_ptr<Floor> m_floor;		// 床
 	std::unique_ptr<Wall> m_wall;		// 壁（天球の枠）
+
+	// UI関連の変数 =============================
+	std::unique_ptr<PlaySceneUIManager> m_uiManager;	// UIマネージャ
 };

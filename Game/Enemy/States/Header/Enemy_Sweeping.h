@@ -11,9 +11,17 @@ class EasyingFunctions;
 class Enemy_Sweeping : public IState
 {
 public:
+
+	static const float CHARGE_TIME;	// 攻撃の貯めモーションの時間
+	static const float WINDUP_TIME;	// 攻撃する前の時間
+	static const float ATTACK_TIME;	// 攻撃する時間
+	static const float END_TIME;	// 攻撃（全体）が終了する時間
+
+	static const float ROTATE_ANGLE;	// 攻撃の貯めモーションの角度
+
 	// 体の境界球を取得
 	DirectX::BoundingSphere GetBoundingSphereBody() { return m_boundingSphereBody; }
-public:
+
 	// コンストラクタ
 	Enemy_Sweeping(Enemy* enemy);
 	// デストラクタ

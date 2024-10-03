@@ -15,27 +15,17 @@ namespace mylib
 }
 
 
-class ResultScene final :
-    public IScene
+class ResultScene final : public IScene
 {
 private:
-	// 共通リソース
-	CommonResources* m_commonResources;
+	CommonResources* m_commonResources;								// 共通リソース	
+	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;			// スプライトバッチ
+	std::unique_ptr<DirectX::SpriteFont> m_spriteFont;				// スプライトフォント
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;		// テクスチャ
+	DirectX::SimpleMath::Vector2 m_texCenter;						// テクスチャの中心座標
 
-	// スプライトバッチ
-	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
 
-	// スプライトフォント
-	std::unique_ptr<DirectX::SpriteFont> m_spriteFont;
-
-	// テクスチャ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
-
-	// テクスチャの半分の大きさ
-	DirectX::SimpleMath::Vector2 m_texCenter;
-
-	// シーンチェンジフラグ
-	bool m_isChangeScene;
+	bool m_isChangeScene;	// シーン遷移フラグ
 
 
 public:

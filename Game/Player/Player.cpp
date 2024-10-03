@@ -77,6 +77,9 @@ void Player::Initialize()
 	// ステートの作成
 	CreateState();
 
+	// HPを管理するクラスの生成
+	m_hp = std::make_unique<PlayerHP>();
+
 	// ベーシックエフェクトを作成する
 	m_basicEffect = std::make_unique<BasicEffect>(device);
 	m_basicEffect->SetVertexColorEnabled(true);

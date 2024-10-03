@@ -21,6 +21,15 @@
     <ContentFile>
       <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Sword\SwordTrialVS.cso</FullPath>
     </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\UI\UIGS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\UI\UIPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\UI\UIVS.cso</FullPath>
+    </ContentFile>
   </ContentFiles>
   <SatelliteDlls />
   <NonRecipeFileRefs />

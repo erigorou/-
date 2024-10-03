@@ -28,6 +28,8 @@
 #include "Game/Stage/Floor/Floor.h"				// 床
 #include "Game/Stage/Wall/Wall.h"				// 壁
 
+// UI関連　====================================================
+#include "Game/UI/PlaySceneUIManager/Header/PlaySceneUIManager.h"	// UI描画関連
 
 /// <summary>
 /// コンストラクタ
@@ -83,8 +85,6 @@ void PlayScene::Initialize()
 		0.1f, 100000.0f
 	);
 
-	// TPSカメラを取得する
-	m_camera = std::make_unique<Camera>();
 
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
@@ -92,39 +92,52 @@ void PlayScene::Initialize()
 	// =================================================
 	m_bgm = std::make_unique<BGM_Player>();
 	m_bgm->InitializeFMOD("Resources/Sounds/BGM.ogg");
-
 	// =================================================
 
-	// 天球の生成とモデルの読み込み
-	m_skySphere = std::make_unique<SkySphere>();
-	m_skySphere->LoadSkySphereModel(device);
+	// オブジェクトの生成
+	CreateObjects();
 
-	// パーティクルの生成と初期化
-	m_particles = std::make_unique<Particle>();
-	m_particles->Create();
-
-	// プレイヤーの生成と初期化
-	m_player = std::make_unique<Player>(this);
-	m_player->Initialize();
-
-	// プレイヤーの武器の生成と初期化
-	m_sword = std::make_unique<Sword>(this);
-	m_sword->Initialize();
-
-	// 鬼の生成と初期化
-	m_enemy = std::make_unique<Enemy>(this);
-	m_enemy->Initialize();
-
-	// 鬼の武器を生成と初期化
-	m_cudgel = std::make_unique<Cudgel>(this);
-	m_cudgel->Initialize();
-
-	// 床の作成と初期化
-	m_floor = std::make_unique<Floor>(device);
-	// 壁の生成と初期化
-	m_wall = std::make_unique<Wall>();
-	m_wall->Initialize();
+	m_uiManager = std::make_unique<PlaySceneUIManager>(this);	// UIマネージャ
+	m_uiManager->Initialize();	// UIの初期化
 }
+
+
+/// <summary>
+/// オブジェクトを生成する関数
+/// </summary>
+void PlayScene::CreateObjects()
+{
+	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
+
+
+	//---
+	m_camera = std::make_unique<Camera>();			// TPSカメラ
+	m_skySphere = std::make_unique<SkySphere>();	// 天球
+	m_particles = std::make_unique<Particle>();		// パーティクル
+	// ---
+	m_floor = std::make_unique<Floor>(device);		// 床
+	m_wall = std::make_unique<Wall>();				// 壁
+	// ---
+	m_player = std::make_unique<Player>(this);		// プレイヤー
+	m_sword = std::make_unique<Sword>(this);		// プレイヤーの武器
+	m_enemy = std::make_unique<Enemy>(this);		// 鬼
+	m_cudgel = std::make_unique<Cudgel>(this);		// 鬼の武器
+	//---
+
+
+	//---
+	m_skySphere->LoadSkySphereModel(device);	// 天球のモデルを読み込む
+	m_particles->Create();						// パーティクルの作成
+	//---
+	m_wall->Initialize();		// 壁の初期化	
+	//---
+	m_player->Initialize();		// プレイヤーの初期化
+	m_sword->Initialize();		// プレイヤーの武器の初期化
+	m_enemy->Initialize();		// 鬼の初期化
+	m_cudgel->Initialize();		// 鬼の武器の初期化
+}
+
+
 
 /// <summary>
 /// 更新関数
@@ -137,6 +150,9 @@ void PlayScene::Update(float elapsedTime)
 
 	// BGMの再生
 	m_bgm->Update();
+
+	// UIの更新
+	m_uiManager->Update();
 
 	// プレイヤーの更新処理
 	m_player->Update(m_enemy->GetPosition(), elapsedTime);
@@ -184,31 +200,34 @@ void PlayScene::Render()
 	// ビュー行列を取得する
 	const SimpleMath::Matrix& view = m_camera->GetViewMatrix();
 
-	// ==== ステージの描画 =========================================================
-	// 天球の描画
-	m_skySphere->DrawSkySphere(context, states, view, m_projection);
-	// 格子床を描画する
-	m_gridFloor->Render(context, view, m_projection);
-	// 床を描画する
-	m_floor->Render(context, view, m_projection);
-	// 壁を描画する
-	m_wall->Render(context, states, view, m_projection);
+	//// ==== ステージの描画 =========================================================
+	//// 天球の描画
+	//m_skySphere->DrawSkySphere(context, states, view, m_projection);
+	//// 格子床を描画する
+	//m_gridFloor->Render(context, view, m_projection);
+	//// 床を描画する
+	//m_floor->Render(context, view, m_projection);
+	//// 壁を描画する
+	//m_wall->Render(context, states, view, m_projection);
 
-	// === オブジェクトの描画 =======================================================
-	// 敵の描画
-	m_enemy->Render(device, context, states, view, m_projection);
-	// 敵の武器の描画を行う
-	m_cudgel->Render(device, context, states, view, m_projection);
-	// プレイヤーの描画を行う
-	m_player->Render(device, context, states, view, m_projection, m_commonResources);
-	// プレイヤーの武器の描画を行う
-	m_sword->Render(device, context, states, view, m_projection, m_commonResources);
+	//// === オブジェクトの描画 =======================================================
+	//// 敵の描画
+	//m_enemy->Render(device, context, states, view, m_projection);
+	//// 敵の武器の描画を行う
+	//m_cudgel->Render(device, context, states, view, m_projection);
+	//// プレイヤーの描画を行う
+	//m_player->Render(device, context, states, view, m_projection, m_commonResources);
+	//// プレイヤーの武器の描画を行う
+	//m_sword->Render(device, context, states, view, m_projection, m_commonResources);
 
-	//==== エフェクト系の描画 ======================================================
-	// パーティクルのビルボード作成
-	m_particles->CreateBillboard(m_camera->GetTargetPosition(), m_camera->GetEyePosition(), DirectX::SimpleMath::Vector3::Up);
-	// パーティクルの描画
-	m_particles->Render(states, view, m_projection);
+	////==== エフェクト系の描画 ======================================================
+	//// パーティクルのビルボード作成
+	//m_particles->CreateBillboard(m_camera->GetTargetPosition(), m_camera->GetEyePosition(), DirectX::SimpleMath::Vector3::Up);
+	//// パーティクルの描画
+	//m_particles->Render(states, view, m_projection);
+
+	//==== UI系の描画 ======================================================-------
+	m_uiManager->Render();
 }
 
 /// <summary>

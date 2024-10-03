@@ -3,7 +3,8 @@
 #include "Game/Scene/PlayScene.h"
 
 // プレイヤーに付与されるもの ===========================================
-#include "Game/Weapon/Sword/Sword.h"	// 武器
+#include "Game/Weapon/Sword/Sword.h"		// 武器
+#include "Game/Player/PlayerHP.h"			// プレイヤーのHP
 
 // プレイヤーの状態 =====================================================
 #include "Game/Player/State/Header/Player_Idling.h"			// 待機状態
@@ -55,6 +56,9 @@ public:
 	DirectX::Keyboard::State GetKeyboardState() const { return m_keyboardState; }
 	// キーボードの情報を取得する（単押しのみ対応）
 	DirectX::Keyboard::KeyboardStateTracker GetKeyboardTracker() const { return m_tracker; }
+
+	// HPクラスを取得
+	PlayerHP* GetPlayerHP() const { return m_hp.get(); }
 
 public:
 	// コンストラクタ
@@ -133,7 +137,7 @@ private:
 
 	// プレイヤーに付与されるもの ============
 	std::unique_ptr<Sword> m_sword;
-
+	std::unique_ptr<PlayerHP> m_hp;
 
 	// シェーダーに使用するもの ==============
 	// ベーシックエフェクト
