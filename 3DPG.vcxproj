@@ -197,10 +197,10 @@
     <ClInclude Include="Game\Camera\Camera.h" />
     <ClInclude Include="Game\CommonResources.h" />
     <ClInclude Include="Game\Enemy\Enemy.h" />
+    <ClInclude Include="Game\Enemy\EnemyHP.h" />
     <ClInclude Include="Game\Enemy\States\Header\EnemyApproaching.h" />
     <ClInclude Include="Game\Enemy\States\Header\Enemy_Attacking.h" />
     <ClInclude Include="Game\Enemy\States\Header\EnemyIdling.h" />
-    <ClInclude Include="Game\Enemy\States\Header\Enemy_HP.h" />
     <ClInclude Include="Game\Enemy\States\Header\Enemy_Sweeping.h" />
     <ClInclude Include="Game\Player\Player.h" />
     <ClInclude Include="Game\Player\PlayerHP.h" />
@@ -219,6 +219,7 @@
     <ClInclude Include="Game\Sound\BGM_Player.h" />
     <ClInclude Include="Game\Stage\Floor\Floor.h" />
     <ClInclude Include="Game\Stage\Wall\Wall.h" />
+    <ClInclude Include="Game\UI\Header\EnemyHPUI.h" />
     <ClInclude Include="Game\UI\Header\Gauge.h" />
     <ClInclude Include="Game\UI\Header\IconUI.h" />
     <ClInclude Include="Game\UI\Header\PlayerHPUI.h" />
@@ -281,6 +282,7 @@
     <ClCompile Include="Game\Stage\Floor\Floor.cpp" />
     <ClCompile Include="Game\Stage\Wall\Wall.cpp" />
     <ClCompile Include="Game\UI\PlaySceneUIManager\Source\PlaySceneUIManager.cpp" />
+    <ClCompile Include="Game\UI\Source\EnemyHPUI.cpp" />
     <ClCompile Include="Game\UI\Source\Gauge.cpp" />
     <ClCompile Include="Game\UI\Source\IconUI.cpp" />
     <ClCompile Include="Game\UI\Source\PlayerHPUI.cpp" />

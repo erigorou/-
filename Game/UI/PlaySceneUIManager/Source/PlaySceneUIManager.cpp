@@ -6,12 +6,17 @@
 
 #include "pch.h"
 #include "Game/UI/PlaySceneUIManager/Header/PlaySceneUIManager.h"
+#include "Game/Screen.h"
 #include "Game/Scene/PlayScene.h"
 #include "Game/Player/Player.h"
-
-#include "Interface/IUserInterface.h"
+#include "Game/Enemy/Enemy.h"
 #include "Game/UI/Header/PlayerHPUI.h"
+#include "Game/UI/Header/EnemyHPUI.h"
 
+
+
+// ====================================================================================
+const DirectX::SimpleMath::Vector2 PlaySceneUIManager::PLAYER_HP_POSITION = DirectX::SimpleMath::Vector2(Screen::CENTER_X - 100, 650.0f);
 
 
 
@@ -58,9 +63,11 @@ void PlaySceneUIManager::Initialize()
 // ----------------------------
 void PlaySceneUIManager::CreateUI()
 {
-	// ÉvÉåÉCÉÑÅ[ÇÃHP
-	m_playerHP = std::make_unique<PlayerHPUI>(m_playScene->GetPlayer()->GetPlayerHP());
-	m_playerHP->Initialize(m_pDR, DirectX::SimpleMath::Vector2(0, 0), DirectX::SimpleMath::Vector2(0.5, 0.5));
+	m_playerHP = std::make_unique<PlayerHPUI>	(m_playScene->GetPlayer()->GetPlayerHP());
+	m_enemyHP  = std::make_unique<EnemyHPUI>	(m_playScene->GetEnemy ()->GetEnemyHP ());
+
+	m_playerHP-> Initialize(m_pDR, PLAYER_HP_POSITION, DirectX::SimpleMath::Vector2::One);
+	m_enemyHP -> Initialize(m_pDR);
 }
 
 
@@ -72,6 +79,7 @@ void PlaySceneUIManager::CreateUI()
 void PlaySceneUIManager::Update()
 {
 	m_playerHP->Update();
+	m_enemyHP ->Update();
 }
 
 
@@ -84,6 +92,7 @@ void PlaySceneUIManager::Update()
 void PlaySceneUIManager::Render()
 {
 	m_playerHP->Render();
+	m_enemyHP ->Render();
 }
 
 
@@ -95,5 +104,6 @@ void PlaySceneUIManager::Render()
 // ----------------------------
 void PlaySceneUIManager::Finalize()
 {
-
+	m_playerHP->Finalize();
+	m_enemyHP->Finalize();
 }

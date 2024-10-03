@@ -6,8 +6,6 @@
 
 #include "pch.h"
 #include "Game/UI/Header/PlayerHPUI.h"
-#include "Interface/IUserInterface.h"
-
 #include "Game/Player/PlayerHP.h"
 
 // ----------------------------
@@ -55,16 +53,13 @@ void PlayerHPUI::Initialize(DX::DeviceResources* pDR, DirectX::SimpleMath::Vecto
 	m_windowWidth = m_pDR->GetScreenViewport().Width;
 	m_windowHeight = m_pDR->GetScreenViewport().Height;
 
-	//// 開始時に５つアイコンを生成する
-	//for (int i = 0; i < m_playerHP; i++)
-	//{
-	//	float r = position.x + (scale.x * i);
-	//	Add(HPUI_FILEPATH, DirectX::SimpleMath::Vector2(r, position.y), scale, ANCHOR::BOTTOM_CENTER);
-	//}
+	// 開始時に５つアイコンを生成する
+	for (int i = 0; i < m_playerHP; i++)
+	{
+		Add(HPUI_FILEPATH, position, scale, ANCHOR::MIDDLE_CENTER);
 
-	scale = DirectX::SimpleMath::Vector2::One;
-
-	Add(HPUI_FILEPATH, DirectX::SimpleMath::Vector2(0.5f, 0.5f), scale, ANCHOR::MIDDLE_CENTER);
+		m_HPIcons[i]->SetPosition(DirectX::SimpleMath::Vector2(position.x + (50.0f * i), position.y));
+	}
 }
 
 // ----------------------------

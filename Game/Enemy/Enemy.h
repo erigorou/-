@@ -2,7 +2,7 @@
 #include "Interface/IState.h"
 #include "Game/Scene/PlayScene.h"
 
-#include "Game/Enemy/States/Header/Enemy_HP.h"	// HP
+#include "Game/Enemy/EnemyHP.h"	// HP
 
 // ===== 敵の状態 =================================================================
 #include "States/Header/EnemyIdling.h"		// 待機状態
@@ -24,7 +24,7 @@ public:
 
 public:
 	PlayScene* GetPlayScene()					const { return m_playScene;}		// PlaySceneの取得 
-	Enemy_HP* GetEnemyHP()						const { return m_hp.get(); }		// HPの取得	
+	EnemyHP* GetEnemyHP()						const { return m_hp.get(); }		// HPの取得	
 	
 	DirectX::SimpleMath::Vector3 GetPosition()	const { return m_position; }		// 鬼の座標を取得する
 	void SetPosition(const DirectX::SimpleMath::Vector3 pos) { m_position = pos; }	// 鬼の座標を設定する
@@ -92,7 +92,7 @@ private:
 
 
 	// HP
-	std::unique_ptr<Enemy_HP> m_hp;
+	std::unique_ptr<EnemyHP> m_hp;
 
 	// ==== ステートパターンに使用 =============================================　
 	IState* m_currentState;			// 現在のステート（ステートパターン）

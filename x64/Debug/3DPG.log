@@ -1,6 +1,2 @@
-﻿  PlayScene.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Scene\PlayScene.cpp(198,7): warning C4189: 'context': ローカル変数が初期化されましたが、参照されていません
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Scene\PlayScene.cpp(201,28): warning C4189: 'view': ローカル変数が初期化されましたが、参照されていません
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Scene\PlayScene.cpp(197,7): warning C4189: 'device': ローカル変数が初期化されましたが、参照されていません
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Scene\PlayScene.cpp(199,7): warning C4189: 'states': ローカル変数が初期化されましたが、参照されていません
+﻿  PlaySceneUIManager.cpp
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe

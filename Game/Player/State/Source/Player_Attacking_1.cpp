@@ -103,9 +103,6 @@ void PlayerAttacking_1::PostUpdate()
 	m_player->GetPlayScene()->GetSword()->ChangeState(
 		m_player->GetPlayScene()->GetSword()->GetIdlingState()
 	);
-
-	// デバッグ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
-	m_player->GetPlayScene()->GetEnemy()->GetEnemyHP()->ReduceHP(1);
 }
 
 

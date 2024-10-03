@@ -7,11 +7,9 @@
 
 class PlayerHP
 {
-public:
-
-
 private:
-	const int MAX_HP = 5; // 最大HP
+	static constexpr int MAX_HP = 5; // 最大HP
+
 
 public:
     PlayerHP() : m_hp(MAX_HP) {}    // コンストラクタ

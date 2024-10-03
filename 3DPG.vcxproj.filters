@@ -170,7 +170,6 @@
     <ClInclude Include="Interface\IWeapon.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Idling.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_1.h" />
-    <ClInclude Include="Game\Enemy\States\Header\Enemy_HP.h" />
     <ClInclude Include="Game\Sound\BGM_Player.h" />
     <ClInclude Include="Game\Scene\ResultScene.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel.h" />
@@ -191,6 +190,8 @@
     <ClInclude Include="Game\UI\Header\PlayerHPUI.h" />
     <ClInclude Include="Game\Player\PlayerHP.h" />
     <ClInclude Include="Game\UI\Header\IconUI.h" />
+    <ClInclude Include="Game\Enemy\EnemyHP.h" />
+    <ClInclude Include="Game\UI\Header\EnemyHPUI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -286,6 +287,7 @@
     <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp" />
     <ClCompile Include="Game\UI\Source\PlayerHPUI.cpp" />
     <ClCompile Include="Game\UI\Source\IconUI.cpp" />
+    <ClCompile Include="Game\UI\Source\EnemyHPUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
