@@ -192,6 +192,8 @@
     <ClInclude Include="Game\UI\Header\IconUI.h" />
     <ClInclude Include="Game\Enemy\EnemyHP.h" />
     <ClInclude Include="Game\UI\Header\EnemyHPUI.h" />
+    <ClInclude Include="Libraries\MyLib\Collision\CollisionManager.h" />
+    <ClInclude Include="Interface\IObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -288,6 +290,7 @@
     <ClCompile Include="Game\UI\Source\PlayerHPUI.cpp" />
     <ClCompile Include="Game\UI\Source\IconUI.cpp" />
     <ClCompile Include="Game\UI\Source\EnemyHPUI.cpp" />
+    <ClCompile Include="Libraries\MyLib\Collision\CollisionManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

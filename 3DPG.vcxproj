@@ -229,6 +229,7 @@
     <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Idling.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Sweeping.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_1.h" />
+    <ClInclude Include="Interface\IObject.h" />
     <ClInclude Include="Interface\IUserInterface.h" />
     <ClInclude Include="Interface\IParticle.h" />
     <ClInclude Include="Interface\IWeapon.h" />
@@ -238,6 +239,7 @@
     <ClInclude Include="Libraries\Microsoft\DebugDraw.h" />
     <ClInclude Include="Libraries\MyLib\BinaryFile.h" />
     <ClInclude Include="Libraries\MyLib\Collision.h" />
+    <ClInclude Include="Libraries\MyLib\Collision\CollisionManager.h" />
     <ClInclude Include="Libraries\MyLib\DebugCamera.h" />
     <ClInclude Include="Libraries\MyLib\DebugString.h" />
     <ClInclude Include="Libraries\MyLib\EasingFunctions.h" />
@@ -295,6 +297,7 @@
     <ClCompile Include="Game\Weapon\Sword\Sword.cpp" />
     <ClCompile Include="Libraries\Microsoft\DebugDraw.cpp" />
     <ClCompile Include="Libraries\MyLib\BinaryFile.cpp" />
+    <ClCompile Include="Libraries\MyLib\Collision\CollisionManager.cpp" />
     <ClCompile Include="Libraries\MyLib\DebugCamera.cpp" />
     <ClCompile Include="Libraries\MyLib\DebugString.cpp" />
     <ClCompile Include="Libraries\MyLib\GridFloor.cpp" />

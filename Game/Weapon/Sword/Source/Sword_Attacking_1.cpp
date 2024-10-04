@@ -52,6 +52,8 @@ void Sword_Attacking_1::Initialize()
 
 	// ƒ‚ƒfƒ‹‚Ì‘å‚«‚³‚É‡‚í‚¹‚ÄOBB‚ğİ’è‚·‚é
 	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model);
+
+
 }
 
 
