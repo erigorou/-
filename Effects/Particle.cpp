@@ -288,7 +288,7 @@ void Particle::Render(DirectX::CommonStates* states, DirectX::SimpleMath::Matrix
 
 	ID3D11BlendState* blendstate = m_states->NonPremultiplied();	//  半透明描画指定
 	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);		//	透明判定処理
-	context->OMSetDepthStencilState(m_states->DepthNone(), 0);		//	深度バッファはなし
+	context->OMSetDepthStencilState(m_states->DepthDefault(), 0);		//	深度バッファはなし
 	context->RSSetState(m_states->CullNone());						//	カリングなし
 
 	//	ピクセルシェーダにテクスチャを登録する。

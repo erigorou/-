@@ -2,6 +2,9 @@
 #include "Interface/IState.h"
 #include "Game/Scene/PlayScene.h"
 
+// オブジェクトの基底クラス　============================================
+#include "Interface/IObject.h"
+
 // プレイヤーに付与されるもの ===========================================
 #include "Game/Weapon/Sword/Sword.h"		// 武器
 #include "Game/Player/PlayerHP.h"			// プレイヤーのHP
@@ -105,6 +108,7 @@ public:
 	void CalculationMatrix();
 	// 移動の管理
 	void MovePlayer();
+
 
 private:
 	// 体力

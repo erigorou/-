@@ -5,7 +5,7 @@
 class IObject
 {
 	// “–‚½‚Á‚½‚Æ‚«‚Étrue‚ğİ’è‚·‚é
-	virtual bool HitAction() = 0;
+	virtual void HitAction() = 0;
 };
 
 #endif // !I_OBJECT

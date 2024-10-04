@@ -76,8 +76,8 @@ public:
 	void Update();
 
 	// “–‚½‚è”»’è‚ğ’Ç‰Á
-	void AddCollision	(DirectX::BoundingOrientedBox obb)	{ m_obbs	.push_back(obb);	}
-	void AddCollision	(DirectX::BoundingSphere sphere)	{ m_spheres	.push_back(sphere);	}
+	void AddCollision(CollisionTag tag, IObject* obj, DirectX::BoundingOrientedBox obb	) { m_obbs.		push_back(OBBCollision		(tag, obj, &obb		)); }
+	void AddCollision(CollisionTag tag, IObject* obj, DirectX::BoundingSphere	sphere	) { m_spheres.	push_back(SphereCollision	(tag, obj, &sphere	)); }
 
 	// “–‚½‚è”»’è‚ğíœ
 	void DeleteOBBCollision		(IObject* object);

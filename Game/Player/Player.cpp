@@ -188,20 +188,22 @@ void Player::Update(const DirectX::SimpleMath::Vector3 enemyPos,const float elap
 }
 
 
+// ----------------------------------------------
 /// <summary>
-/// 
+/// 回転角の計算関数
 /// </summary>
 /// <param name="enemyPos"></param>
+//　---------------------------------------------
 void Player::CalculationAngle(DirectX::SimpleMath::Vector3 const enemyPos)
 {
 	using namespace DirectX::SimpleMath;
 
 	Vector3 forward = m_position - enemyPos;		// 敵の方向をベクトルで取得
-	forward.Normalize();										// 正規化
+	forward.Normalize();							// 正規化
 
-	Vector3 worldForward = Vector3::Forward;			// ワールド座標の前方ベクトルを作成
+	Vector3 worldForward = Vector3::Forward;		// ワールド座標の前方ベクトルを作成
 	float dotProduct = forward.Dot(worldForward);	// 内積を取得
-	m_angle = acosf(dotProduct);								// 内積から角度を取得(弧度法)
+	m_angle = acosf(dotProduct);					// 内積から角度を取得(弧度法)
 
 	Vector3 crossProduct = forward.Cross(worldForward);	// カメラの前方向ベクトルが右方向に向いているかどうかで符号を決定
 	m_angle = (crossProduct.y < 0)? -m_angle: m_angle;	// -180 ~ 180に収める。
@@ -230,7 +232,8 @@ void Player::MovePlayer()
 	
 	inputVelocity.Normalize();
 
-	if (inputVelocity == Vector3::Zero)	// 入力がなかった
+	///////////////////// 移動キーの入力がない場合の処理 /////////////////
+	if (inputVelocity == Vector3::Zero)
 	{
 		float accelerationLength = m_acceleration.Length();				// 速度の長さを取得する
 		// 0の近似値より大きい場合
@@ -248,7 +251,9 @@ void Player::MovePlayer()
 			moveVelocity += m_acceleration;								// 基本速度に加速度を上書きする
 		}
 	}
-	else // 入力があった場合の処理
+
+	///////////////////// 移動キーの入力があった場合の処理 /////////////////
+	else
 	{
 		// 基本移動量を計算する
 		moveVelocity += inputVelocity * PLAYER_SPEED;
@@ -266,7 +271,7 @@ void Player::MovePlayer()
 		m_velocity = moveVelocity;			// 速度を保存する
 	}
 
-	// 移動量を座標に反映
+	/////////////////////////// 移動処理 //////////////////////////////////
 	m_position += Vector3::Transform(moveVelocity, Matrix::CreateRotationY(-m_angle));
 
 	if (moveVelocity != Vector3::Zero)
