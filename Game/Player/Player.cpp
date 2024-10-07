@@ -92,6 +92,7 @@ void Player::Initialize()
 	);
 	// プリミティブバッチの作成
 	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
+
 }
 
 
@@ -409,3 +410,12 @@ void Player::Finalize()
 {
 }
 
+
+// --------------------------------
+//  衝突処理
+// --------------------------------
+void Player::HitAction(InterSectData data)
+{
+	// 用があったらかいてね～
+	// もうこないからね～
+}

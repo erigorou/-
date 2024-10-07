@@ -2,7 +2,7 @@
 
 #include "pch.h"
 #include "CollisionManager.h"
-
+#include "Interface/IObject.h"
 
 // -------------------------------------------------------
 /// <summary>
@@ -38,18 +38,42 @@ CollisionManager::~CollisionManager()
 // -------------------------------------------------------
 void CollisionManager::Update()
 {
- //////////////////OBB‚Æ‹…‚Ì“–‚½‚è”»’è/////////////////////
+	 //////////////////OBB‚Æ‹…‚Ì“–‚½‚è”»’è/////////////////////
     for (size_t i = 0; i < m_obbs.size() - 1; i++)
     {
         for (size_t j = 0; j < m_spheres.size(); j++)
         {
+			/////////////////Õ“Ë‚µ‚½ê‡‚Ì“–‚½‚è”»’è‚ð”äŠr‚·‚é/////////////////////
             if (m_obbs[i].m_obb->Intersects(*m_spheres[j].m_sphere))
             {
-                // Õ“Ë‚µ‚½ê‡‚Ìˆ—‚ð‚±‚±‚É‘‚­
+				InterSectData obbData	= { m_obbs[i]	.m_type,	m_obbs[i].m_object		};
+				InterSectData sphereData= { m_spheres[j].m_type,	m_spheres[j].m_object	};
+
+				m_obbs[i]	.m_object->HitAction(sphereData);
+				m_spheres[j].m_object->HitAction(obbData);
             }
         }
     }
+
+	/////////////////‹…“¯Žm‚Ì“–‚½‚è”»’è////////////////////////
+	for (size_t i = 0; i < m_spheres.size() - 1; i++)
+	{
+		for (size_t j = i + 1; j < m_spheres.size(); j++)
+		{
+			/////////////////Õ“Ë‚µ‚½ê‡‚Ì“–‚½‚è”»’è‚ð”äŠr‚·‚é/////////////////////
+			if (m_spheres[i].m_sphere->Intersects(*m_spheres[j].m_sphere))
+			{
+				InterSectData sphereData1 = { m_spheres[i].m_type, m_spheres[i].m_object };
+				InterSectData sphereData2 = { m_spheres[j].m_type, m_spheres[j].m_object };
+
+				m_spheres[i].m_object->HitAction(sphereData2);
+				m_spheres[j].m_object->HitAction(sphereData1);
+			}
+		}
+	}
+
 }
+
 
 
 // -------------------------------------------------------
@@ -62,6 +86,7 @@ void CollisionManager::Clear()
 	m_obbs.clear();
 	m_spheres.clear();
 }
+
 
 
 // -------------------------------------------------------
@@ -77,6 +102,7 @@ void CollisionManager::DeleteOBBCollision(IObject* object)
 		[object](const OBBCollision& obbCollision) { return obbCollision.m_object == object; }),
 		m_obbs.end());
 }
+
 
 
 // -------------------------------------------------------

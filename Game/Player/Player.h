@@ -18,7 +18,7 @@
 #include "Game/Player/State/Header/Player_Attacking_4.h"	// UŒ‚ó‘Ô‚S
 
 
-class Player
+class Player : public IObject
 {
 public:
 	// ‰ŠúÀ•W
@@ -108,6 +108,9 @@ public:
 	void CalculationMatrix();
 	// ˆÚ“®‚ÌŠÇ—
 	void MovePlayer();
+
+	// “–‚½‚Á‚½‚Æ‚«‚Ìˆ—
+	void HitAction(InterSectData data) override;
 
 
 private:

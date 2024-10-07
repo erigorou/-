@@ -9,7 +9,7 @@ class IObject;
 /// <summary>
 /// 当たり判定の持ち主の種類
 /// </summary>
-enum class CollisionTag : UINT
+enum class ObjectType : UINT
 {
 	Player,
 	Enemy,
@@ -19,49 +19,58 @@ enum class CollisionTag : UINT
 
 
 /// <summary>
-///	OBBCollision構造体
+/////////////// OBBCollision構造体 /////////////////////////
 /// </summary>
 struct OBBCollision
 {
-	CollisionTag					m_tag;
+	ObjectType						m_type;
 	IObject*						m_object;
 	DirectX::BoundingOrientedBox*	m_obb;
 
 	// コンストラクタ
 	OBBCollision
 	(
-		CollisionTag					tag,
+		ObjectType						type,
 		IObject*						obj,
 		DirectX::BoundingOrientedBox*	obb
 	) 
-		: m_tag		(tag)
+		: m_type	(type)
 		, m_object	(obj)
 		, m_obb		(obb)
 	{}
 };
 
 
-
 /// <summary>
-///	OBBCollision構造体
+///	//////////// OBBCollision構造体 ////////////////////////
 /// </summary>
 struct SphereCollision
 {
-	CollisionTag				m_tag;
+	ObjectType					m_type;
 	IObject*					m_object;
 	DirectX::BoundingSphere*	m_sphere;
 
 	// コンストラクタ
 	SphereCollision
 	(
-		CollisionTag				tag,
+		ObjectType					type,
 		IObject*					obj,
 		DirectX::BoundingSphere*	sphere
 	)
-		: m_tag		(tag)
+		: m_type	(type)
 		, m_object	(obj)
 		, m_sphere	(sphere)
 	{}
+};
+
+
+/// <summary>
+/// //////////////// オブジェクトの情報 //////////////////
+/// </summary>
+struct InterSectData
+{
+	ObjectType type;
+	IObject* object;
 };
 
 
@@ -75,15 +84,15 @@ public:
 	// 更新処理
 	void Update();
 
-	// 当たり判定を追加
-	void AddCollision(CollisionTag tag, IObject* obj, DirectX::BoundingOrientedBox obb	) { m_obbs.		push_back(OBBCollision		(tag, obj, &obb		)); }
-	void AddCollision(CollisionTag tag, IObject* obj, DirectX::BoundingSphere	sphere	) { m_spheres.	push_back(SphereCollision	(tag, obj, &sphere	)); }
+	// 追加関数
+	void AddCollision(ObjectType type, IObject* obj, DirectX::BoundingOrientedBox	obb	) { m_obbs.		push_back(OBBCollision		(type, obj, &obb	)); }
+	void AddCollision(ObjectType type, IObject* obj, DirectX::BoundingSphere	 sphere	) { m_spheres.	push_back(SphereCollision	(type, obj, &sphere	)); }
 
-	// 当たり判定を削除
+	// 削除関数
 	void DeleteOBBCollision		(IObject* object);
 	void DeleteSphereCollision	(IObject* object);
 
-	// 当たり判定をクリア
+	// 初期化関数
 	void Clear();
 
 
