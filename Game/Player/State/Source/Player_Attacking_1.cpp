@@ -25,7 +25,6 @@ PlayerAttacking_1::PlayerAttacking_1(Player* player)
 	,m_totalSeconds()
 	,m_attackElapsedTime()
 	,m_model()
-	,m_boundingSphereBody()
 {
 }
 
@@ -40,9 +39,6 @@ void PlayerAttacking_1::Initialize(DirectX::Model* model)
 {
 	// モデルを取得する
 	m_model = model;
-	// 体の境界球を作成
-	m_boundingSphereBody = DirectX::BoundingSphere();
-	m_boundingSphereBody.Radius = Player::PLAYER_SCALE * 12.f;
 
 }
 
@@ -56,9 +52,6 @@ void PlayerAttacking_1::PreUpdate()
 	m_player->GetPlayScene()->GetSword()->ChangeState(
 		m_player->GetPlayScene()->GetSword()->GetAttacking_1State()
 	);
-
-	// 当たり判定の座標をプレイヤーの座標に変更
-	m_boundingSphereBody.Center = m_player->GetPosition();
 }
 
 // 更新処理
@@ -87,11 +80,6 @@ void PlayerAttacking_1::Update(const float& elapsedTime,  DirectX::SimpleMath::V
 
 	// 時間を計測し、一定時間経過でステートを遷移
 	m_player->TimeComparison(m_totalSeconds, Player::APPLIED_ATTACK_TIME, m_player->GetPlayerIdlingState(), elapsedTime);
-
-	// めり込み量を計算し、それを座標に反映させる（押し戻す）
-	parentPos += CalculatingPushBack();
-	// 体の境界球の位置を更新
-	m_boundingSphereBody.Center = parentPos;
 }
 
 
@@ -133,16 +121,4 @@ void PlayerAttacking_1::Render(
 // 終了処理
 void PlayerAttacking_1::Finalize()
 {
-}
-
-
-// 体に当たったときに押し戻しをする
-DirectX::SimpleMath::Vector3 PlayerAttacking_1::CalculatingPushBack()
-{
-	// プレイヤーを一度変換する
-	auto player = dynamic_cast<Player*>(m_player);
-	// ボディを取得						プレイヤー → シーン → エネミー → 現在のステート → 体の当たり判定
-	DirectX::BoundingSphere enemyBody = player->GetPlayScene()->GetEnemy()->GetCurrentState()->GetBoundingSphereBody();
-	// 押し戻し量の計測
-	return Math::pushBack_BoundingSphere(m_boundingSphereBody, enemyBody);
 }

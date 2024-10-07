@@ -74,6 +74,9 @@ void Player::Initialize()
 	// モデルを読み込む
 	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/momotaro.cmo", *fx);
 
+	// 当たり判定の作成
+	CreateCollision();
+
 	// ステートの作成
 	CreateState();
 
@@ -97,31 +100,35 @@ void Player::Initialize()
 
 
 // --------------------------------
-//  ステートを作成する
+// 当たり判定の作成関数
+// --------------------------------
+void Player::CreateCollision()
+{
+	// 体の当たり判定を作成
+	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, PLAYER_SCALE * 12);
+}
+
+
+// --------------------------------
+//  ステートを作成関数
 // --------------------------------
 void Player::CreateState()
 {
-	// アイドリングステートを取得
-	m_playerIdling = std::make_unique<PlayerIdling>(this);
-	// アイドリングステートの初期化
-	m_playerIdling->Initialize(m_model.get());
-	// ダッジングステートを取得
-	m_playerDodging = std::make_unique<PlayerDodging>(this);
-	// ダッジングステートを初期化
-	m_playerDodging->Initialize(m_model.get());
+	//////////////////////ステートの作成////////////////////////////
+	m_playerIdling		= std::make_unique<PlayerIdling>		(this);
+	m_playerDodging		= std::make_unique<PlayerDodging>		(this);
+	m_playerAttacking_1 = std::make_unique<PlayerAttacking_1>	(this);
+	m_playerAttacking_2 = std::make_unique<PlayerAttacking_2>	(this);
+	m_playerAttacking_3 = std::make_unique<PlayerAttacking_3>	(this);
+	m_playerAttacking_4 = std::make_unique<PlayerAttacking_4>	(this);
 
-	// アタッキングステート1を取得
-	m_playerAttacking_1 = std::make_unique<PlayerAttacking_1>(this);
-	m_playerAttacking_2 = std::make_unique<PlayerAttacking_2>(this);
-	m_playerAttacking_3 = std::make_unique<PlayerAttacking_3>(this);
-	m_playerAttacking_4 = std::make_unique<PlayerAttacking_4>(this);
-
-	// アタッキングステート1を初期化
-	m_playerAttacking_1->Initialize(m_model.get());
-	m_playerAttacking_2->Initialize(m_model.get());
-	m_playerAttacking_3->Initialize(m_model.get());
-	m_playerAttacking_4->Initialize(m_model.get());
-
+	//////////////////////ステートの初期化////////////////////////////
+	m_playerIdling		->Initialize(m_model.get());
+	m_playerDodging		->Initialize(m_model.get());
+	m_playerAttacking_1	->Initialize(m_model.get());
+	m_playerAttacking_2	->Initialize(m_model.get());
+	m_playerAttacking_3	->Initialize(m_model.get());
+	m_playerAttacking_4	->Initialize(m_model.get());
 
 	// 最初のステートを設定
 	m_currentState = m_playerIdling.get();
@@ -177,15 +184,15 @@ void Player::Update(const DirectX::SimpleMath::Vector3 enemyPos,const float elap
 {
 	m_elapsedTime = elapsedTime;	// 経過時間を保存する
 
-	// ステートの更新
+	////////////////////ステートの更新/////////////////////////////
 	m_currentState->Update(elapsedTime, m_position);
 
-	// いずれここは1行のみにする　＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
-
-	// 敵の位置を比較して回転角を計算する
+	///////////////////プレイヤーの移動////////////////////////////
 	m_angle = Math::CalculationAngle(m_position, enemyPos);
-	// ワールド座標の更新
 	CalculationMatrix();
+
+	///////////////////当たり判定の更新////////////////////////////
+	m_bodyCollision->Center = m_position;
 }
 
 
@@ -355,7 +362,7 @@ void Player::Render(
 		projection);
 
 	// 体の境界球の描画
-	DrawBoundingSphere(device, context, states, view, projection, m_currentState->GetBoundingSphereBody());
+	DrawBoundingSphere(device, context, states, view, projection, m_bodyCollision.get());
 
 	Vector3 XLine = m_position;
 	XLine.x += 5.0f;
@@ -371,12 +378,12 @@ void Player::Render(
 // 境界球を表示
 // --------------------------------
 void Player::DrawBoundingSphere(
-	ID3D11Device* device,
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection,
-	const DirectX::BoundingSphere boundingSphere)
+	ID3D11Device*						device,
+	ID3D11DeviceContext*				context,
+	DirectX::CommonStates*				states,
+	const DirectX::SimpleMath::Matrix&	view,
+	const DirectX::SimpleMath::Matrix&	projection,
+	const DirectX::BoundingSphere*		boundingSphere)
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
@@ -396,7 +403,7 @@ void Player::DrawBoundingSphere(
 	m_primitiveBatch->Begin();
 	DX::Draw(
 		m_primitiveBatch.get(),	// プリミティブバッチ
-		boundingSphere,			// 境界球
+		*boundingSphere,		// 境界球
 		Colors::White			// 色
 	);
 	m_primitiveBatch->End();
@@ -416,6 +423,5 @@ void Player::Finalize()
 // --------------------------------
 void Player::HitAction(InterSectData data)
 {
-	// 用があったらかいてね～
-	// もうこないからね～
+	// 当たったときの処理をかいてね～
 }

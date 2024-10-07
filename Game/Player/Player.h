@@ -31,37 +31,32 @@ public:
 	static const float APPLIED_ATTACK_TIME;
 
 public:
-	// プレイヤーの座標を取得する
-	DirectX::SimpleMath::Vector3 GetPosition() const { return m_position; }
-	// プレイヤーの速度を取得する
-	DirectX::SimpleMath::Vector3 GetVelocity() const { return m_velocity; }
-	// プレイヤーの回転角を取得する
-	float GetAngle() const { return m_angle; }
+	// /////////////////プレイヤーの基礎情報を渡す関数//////////////////////////////////////////////////
+	DirectX::SimpleMath::Vector3	GetPosition()	const	{ return m_position;	}
+	DirectX::SimpleMath::Vector3	GetVelocity()	const	{ return m_velocity;	}
+	float							GetAngle()		const	{ return m_angle;		}
+	PlayerHP*						GetPlayerHP()	const	{ return m_hp.get();	}
+	DirectX::BoundingSphere*		GetBodyCollision()		{ return m_bodyCollision.get(); }
 
+	////////////////////プレイヤーのステートを渡す関数//////////////////////////////////////////////////
+	PlayerIdling* GetPlayerIdlingState()			const { return m_playerIdling.		get(); }
+	PlayerDodging* GetPlayerDodgingState()			const { return m_playerDodging.		get(); }
+	PlayerAttacking_1* GetPlayerAttackingState1()	const { return m_playerAttacking_1.	get(); }
+	PlayerAttacking_2* GetPlayerAttackingState2()	const { return m_playerAttacking_2.	get(); }
+	PlayerAttacking_3* GetPlayerAttackingState3()	const { return m_playerAttacking_3.	get(); }
+	PlayerAttacking_4* GetPlayerAttackingState4()	const { return m_playerAttacking_4.	get(); }
 
-	// プレイヤーのアイドリングステートを取得
-	PlayerIdling* GetPlayerIdlingState() const { return m_playerIdling.get(); }
-	// プレイヤーのダッジングステートを取得
-	PlayerDodging* GetPlayerDodgingState() const { return m_playerDodging.get(); }
-
-	// プレイヤーのアタッキングステートを取得
-	PlayerAttacking_1* GetPlayerAttackingState1() const { return m_playerAttacking_1.get(); }
-	PlayerAttacking_2* GetPlayerAttackingState2() const { return m_playerAttacking_2.get(); }
-	PlayerAttacking_3* GetPlayerAttackingState3() const { return m_playerAttacking_3.get(); }
-	PlayerAttacking_4* GetPlayerAttackingState4() const { return m_playerAttacking_4.get(); }
-
+	// /////////プレイヤーの移動に関するステートを設定する関数///////////////////////////////////////////
 	void SetSpeed		(DirectX::SimpleMath::Vector3 velocity)		{ m_velocity = velocity; }
 	void SetAcceleration(DirectX::SimpleMath::Vector3 acceleration)	{ m_acceleration = acceleration; }
 
-	// プレイシーンの情報を取得する
+	////////////////////プレイシーンに干渉するのに使用すr関数/////////////////////////////////////////////
 	PlayScene* GetPlayScene()const { return m_playScene; }
-	// キーボードの情報を取得する(長押しのみ対応)
+
+	//////////////////////キーボードの入力を取得する関数//////////////////////////////////////////////////
 	DirectX::Keyboard::State GetKeyboardState() const { return m_keyboardState; }
-	// キーボードの情報を取得する（単押しのみ対応）
 	DirectX::Keyboard::KeyboardStateTracker GetKeyboardTracker() const { return m_tracker; }
 
-	// HPクラスを取得
-	PlayerHP* GetPlayerHP() const { return m_hp.get(); }
 
 public:
 	// コンストラクタ
@@ -71,6 +66,8 @@ public:
 
 	// 初期化処理
 	void Initialize();
+	// 当たり判定の生成関数
+	void CreateCollision();
 	// ステートの作成関数
 	void CreateState();
 	// 新しい状態に遷移する
@@ -79,26 +76,26 @@ public:
 	void TimeComparison(float& nowTime, const float totalTime, IState* newState, const float elapsedTime);
 	// 更新処理
 	void Update(
-		const DirectX::SimpleMath::Vector3 enemyPos,
-		const float elapsedTime
-	);
+		const DirectX::SimpleMath::Vector3	enemyPos,
+		const float							elapsedTime);
+
 	// 描画処理
 	void Render(
-		ID3D11Device* device,
-		ID3D11DeviceContext* context,
-		DirectX::CommonStates* states,
-		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection,
-		const CommonResources* resources
-	);
+		ID3D11Device*						device,
+		ID3D11DeviceContext*				context,
+		DirectX::CommonStates*				states,
+		const DirectX::SimpleMath::Matrix&	view,
+		const DirectX::SimpleMath::Matrix&	projection,
+		const CommonResources*				resources);
+
 	// 境界球の描画
 	void DrawBoundingSphere(
-		ID3D11Device* device,
-		ID3D11DeviceContext* context,
-		DirectX::CommonStates* states,
-		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection,
-		const DirectX::BoundingSphere boundingSphere);
+		ID3D11Device*						device,
+		ID3D11DeviceContext*				context,
+		DirectX::CommonStates*				states,
+		const DirectX::SimpleMath::Matrix&	view,
+		const DirectX::SimpleMath::Matrix&	projection,
+		const DirectX::BoundingSphere*		boundingSphere);
 
 	// 終了処理
 	void Finalize();
@@ -128,8 +125,6 @@ private:
 
 	// プレイヤー用のワールド行列
 	DirectX::SimpleMath::Matrix m_worldMatrix;
-	// モデル
-	std::unique_ptr<DirectX::Model> m_model;
 
 	// ステート関連 =================================================
 	IState* m_currentState;										// 現在のステート
@@ -162,4 +157,9 @@ private:
 	// キーボードの入力
 	DirectX::Keyboard::State m_keyboardState;
 	DirectX::Keyboard::KeyboardStateTracker m_tracker;
+
+	// モデル
+	std::unique_ptr<DirectX::Model> m_model;
+	// 体の当たり判定
+	std::unique_ptr<DirectX::BoundingSphere> m_bodyCollision;
 };

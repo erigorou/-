@@ -64,7 +64,7 @@ public:
 		diffLength = sumLength - diffLength;	// プレイヤーがめり込んだ距離を計算する
 		diffVec.Normalize();					// 差分ベクトルを正規化する
 
-		return diffVec * diffLength;		// 押し戻すベクトルを計算し、返す
+		return diffVec * diffLength;			// 押し戻すベクトルを計算し、返す
 	}
 
 
@@ -112,4 +112,14 @@ public:
 
 // 01clamp 0~1の間で値を返してくれるclamp
 
-// イージング
+
+//// 体に当たったときに押し戻しをする
+//DirectX::SimpleMath::Vector3 PlayerIdling::CalculatingPushBack()
+//{
+//	// プレイヤーを一度変換する
+//	auto player = dynamic_cast<Player*>(m_player);
+//	// ボディを取得						プレイヤー → シーン → エネミー → 現在のステート → 体の当たり判定
+//	DirectX::BoundingSphere enemyBody = player->GetPlayScene()->GetEnemy()->GetCurrentState()->GetBoundingSphereBody();
+//	// 押し戻し量の計測
+//	return Math::pushBack_BoundingSphere(m_boundingSphereBody, enemyBody);
+//}

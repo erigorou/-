@@ -19,9 +19,6 @@ public:
 
 	static const float ROTATE_ANGLE;	// 攻撃の貯めモーションの角度
 
-	// 体の境界球を取得
-	DirectX::BoundingSphere GetBoundingSphereBody() { return m_boundingSphereBody; }
-
 	// コンストラクタ
 	Enemy_Sweeping(Enemy* enemy);
 	// デストラクタ
@@ -47,11 +44,11 @@ public:
 	void CheckHitPlayerBody();
 
 private:
-	float m_angle;			// 角度	
-	float m_totalSeconds;	// 総時間
+	float m_angle;				// 角度	
+	float m_totalSeconds;		// 総時間
 	Enemy* m_enemy;				// 敵（ステートの元）	
 	DirectX::Model* m_model;	// モデル
-	DirectX::BoundingSphere m_boundingSphereBody;	// 体の境界球
+
 
 	std::unique_ptr<EasyingFunctions> m_easying;	// イージング関数
 };

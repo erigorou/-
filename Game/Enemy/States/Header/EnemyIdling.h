@@ -10,9 +10,6 @@ class Player;
 class EnemyIdling : public IState
 {
 public:
-	// 体の境界球を取得
-	DirectX::BoundingSphere GetBoundingSphereBody() { return m_boundingSphereBody; }
-public:
 	// コンストラクタ
 	EnemyIdling(Enemy* enemy);
 	// デストラクタ
@@ -49,8 +46,6 @@ private:
 	Enemy* m_enemy;
 	// モデル
 	DirectX::Model* m_model;
-	// 体の境界球
-	DirectX::BoundingSphere m_boundingSphereBody;
 };
 
 #endif		// ENEMY_IDLING_DEFINED

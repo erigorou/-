@@ -36,10 +36,6 @@ void PlayerDodging::Initialize(DirectX::Model* model)
 {
 	// モデルを取得する
 	m_model = model;
-	// 体の当たり判定の生成
-	m_boundingSphereBody = DirectX::BoundingSphere();
-	// 体の当たり判定のサイズや座標を設定
-	m_boundingSphereBody.Radius = Player::PLAYER_SCALE * 12.f;
 }
 
 // 事前更新処理
@@ -49,8 +45,6 @@ void PlayerDodging::PreUpdate()
 	m_totalSeconds = 0.f;
 	// 回避する方向を取得
 	m_velocity = m_player->GetVelocity() * 4.f;
-	// 当たり判定をプレイヤーの位置に修正
-	m_boundingSphereBody.Center = m_player->GetPosition();
 }
 
 // 更新処理
@@ -70,10 +64,6 @@ void PlayerDodging::Update(const float& elapsedTime, DirectX::SimpleMath::Vector
 	m_velocity = Math::truncate_vector(m_velocity, TRUNCATION_DIGIT);
 	// 移動量を座標に反映させながら座標を移動させる。
 	parentPos +=Vector3::Transform(m_velocity,angle);
-
-	// 埋め込み量の計算をした後にそれを反映させる
-	parentPos += CalculatingPushBack();
-	m_boundingSphereBody.Center = parentPos;
 }
 
 
@@ -111,16 +101,4 @@ void PlayerDodging::Render(
 // 終了処理
 void PlayerDodging::Finalize()
 {
-}
-
-
-// 体に当たったときに押し戻しをする
-DirectX::SimpleMath::Vector3 PlayerDodging::CalculatingPushBack()
-{
-	// プレイヤーを一度変換する
-	auto player = dynamic_cast<Player*>(m_player);
-	// ボディを取得						プレイヤー → シーン → エネミー → 現在のステート → 体の当たり判定
-	DirectX::BoundingSphere enemyBody = player->GetPlayScene()->GetEnemy()->GetCurrentState()->GetBoundingSphereBody();
-	// 押し戻し量の計測
-	return Math::pushBack_BoundingSphere(m_boundingSphereBody, enemyBody);
 }

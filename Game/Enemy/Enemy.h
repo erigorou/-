@@ -46,6 +46,9 @@ public:
 	IState* GetCurrentState() const { return m_currentState; }
 
 
+	// 当たり判定を返す
+
+
 public:
 	// コンストラクタ
 	Enemy(PlayScene* playScene);
@@ -73,7 +76,7 @@ public:
 		DirectX::CommonStates* states,
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& projection,
-		const DirectX::BoundingSphere boundingSphere);
+		const DirectX::BoundingSphere* boundingSphere);
 	// 終了処理
 	void Finalize();
 
@@ -112,4 +115,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
 	// プレイシーン(当たり判定の処理に使用)
 	PlayScene* m_playScene;
+
+	// 体の当たり判定
+	std::unique_ptr<DirectX::BoundingSphere> m_bodyCollision;
 };

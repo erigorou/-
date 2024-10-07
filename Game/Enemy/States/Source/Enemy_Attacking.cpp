@@ -31,8 +31,6 @@ Enemy_Attacking::~Enemy_Attacking()
 void Enemy_Attacking::Initialize(DirectX::Model* model)
 {
 	m_model = model;										// ƒ‚ƒfƒ‹‚Ìæ“¾
-	m_boundingSphereBody = DirectX::BoundingSphere();		// ‹«ŠE‹…‚Ì¶¬‚Æİ’è
-	m_boundingSphereBody.Radius = Enemy::ENEMY_SCALE * 12.f;
 }
 
 
@@ -55,8 +53,6 @@ void Enemy_Attacking::Update(const float& elapsedTime, DirectX::SimpleMath::Vect
 
 	if (m_totalSeconds >= 2.5f)
 		m_enemy->ChangeState(m_enemy->GetEnemyIdling());	// ‘Ò‹@ó‘Ô‚É‘JˆÚ
-
-	m_boundingSphereBody.Center = parentPos;
 }
 
 

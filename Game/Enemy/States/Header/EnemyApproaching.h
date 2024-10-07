@@ -9,9 +9,6 @@ class Enemy;
 class EnemyApproaching : public IState
 {
 public:
-	// 体の境界球を取得
-	DirectX::BoundingSphere GetBoundingSphereBody() { return m_boundingSphereBody; }
-public:
 	// コンストラクタ
 	EnemyApproaching(Enemy* enemy);
 	// デストラクタ
@@ -33,9 +30,6 @@ public:
 	// 終了処理
 	void Finalize() override;
 
-	// プレイヤーのボディとの当たり判定
-	void CheckHitPlayerBody();
-
 
 
 private:
@@ -56,8 +50,6 @@ private:
 	Enemy* m_enemy;
 	// モデル
 	DirectX::Model* m_model;
-	// 体の境界球
-	DirectX::BoundingSphere m_boundingSphereBody;
 
 
 	// サイン波の振幅

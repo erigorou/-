@@ -12,10 +12,10 @@
 #include "Game/Enemy/States/Header/Enemy_Sweeping.h"
 
 
-const float Enemy_Sweeping::CHARGE_TIME = 1.0f;	// 振りかざし時間
-const float Enemy_Sweeping::WINDUP_TIME = 1.3f;	// 待機
-const float Enemy_Sweeping::ATTACK_TIME = 1.8f;	// 薙ぎ払い
-const float Enemy_Sweeping::END_TIME	= 2.5f;	// 終了
+const float Enemy_Sweeping::CHARGE_TIME = 1.0f;		// 振りかざし時間
+const float Enemy_Sweeping::WINDUP_TIME = 1.3f;		// 待機
+const float Enemy_Sweeping::ATTACK_TIME = 1.8f;		// 薙ぎ払い
+const float Enemy_Sweeping::END_TIME	= 2.5f;		// 終了
 const float Enemy_Sweeping::ROTATE_ANGLE = 20.0f;	// 振りかざし角度
 
 
@@ -47,9 +47,6 @@ void Enemy_Sweeping::Initialize(DirectX::Model* model)
 {
 	// モデルの取得
 	m_model = model;
-
-	m_boundingSphereBody = DirectX::BoundingSphere();		// 境界球の生成と設定
-	m_boundingSphereBody.Radius = Enemy::ENEMY_SCALE * 12.f;
 }
 
 
@@ -61,8 +58,6 @@ void Enemy_Sweeping::PreUpdate()
 {
 	// 経過時間の初期化
 	m_totalSeconds = 0.0f;
-	// 当たり判定をプレイヤーの位置に修正
-	m_boundingSphereBody.Center = m_enemy->GetPosition();
 	m_angle = DirectX::XMConvertToDegrees(m_enemy->GetAngle());
 
 	auto cudgel = m_enemy->GetPlayScene()->GetCudgel();
@@ -102,9 +97,6 @@ void Enemy_Sweeping::Update(const float& elapsedTime, DirectX::SimpleMath::Vecto
 
 
 	m_enemy->SetAngle(DirectX::XMConvertToRadians(targetAngle));							// 角度を設定
-
-	// 当たり判定の位置を調整する
-	m_boundingSphereBody.Center = parentPos;
 }
 
 

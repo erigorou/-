@@ -25,14 +25,14 @@ const float Enemy::ENEMY_SCALE = 0.4f;
 //  コンストラクタ
 // --------------------------------
 Enemy::Enemy(PlayScene* playScene)
-	:m_playScene(playScene)
-	,m_currentState()
-	,m_idling()
-	,m_attacking()
-	,m_approaching()
-	,m_position{0.f, 0.f, 0.f}
-	,m_angle{0.f}
-	,m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
+	: m_playScene(playScene)
+	, m_currentState()
+	, m_idling()
+	, m_attacking()
+	, m_approaching()
+	, m_position{0.f, 0.f, 0.f}
+	, m_angle{0.f}
+	, m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
 {
 }
 
@@ -67,6 +67,9 @@ void Enemy::Initialize()
 
 	// ビヘイビアツリーを取得
 	m_pBT = std::make_unique<BehaviorTree>();
+
+	// 当たり判定
+	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, ENEMY_SCALE * 12.0f);
 
 	// ステートの作成
 	CreateState();
@@ -156,6 +159,9 @@ void Enemy::Update(float elapsedTime)
 	m_worldMatrix
 		*= DirectX::SimpleMath::Matrix::CreateScale(ENEMY_SCALE)			// サイズ計算
 		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);		// 位置の設定
+
+	// 当たり判定の更新
+	m_bodyCollision->Center = m_position;
 }
 
 
@@ -176,7 +182,7 @@ void Enemy::Render(
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);	// モデルの描画
 
 #ifdef _DEBUG
-	DrawBoundingSphere(device, context, states, view, projection, m_currentState->GetBoundingSphereBody());	// 当たり判定の描画
+	DrawBoundingSphere(device, context, states, view, projection, m_bodyCollision.get());	// 当たり判定の描画
 #endif // _DEBUG
 }
 
@@ -190,7 +196,7 @@ void Enemy::DrawBoundingSphere(
 	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
 	const DirectX::SimpleMath::Matrix& projection,
-	const DirectX::BoundingSphere boundingSphere
+	const DirectX::BoundingSphere* boundingSphere
 	)
 {
 	using namespace DirectX;
@@ -211,7 +217,7 @@ void Enemy::DrawBoundingSphere(
 	m_primitiveBatch->Begin();
 	DX::Draw(
 		m_primitiveBatch.get(),	// プリミティブバッチ
-		boundingSphere,			// 描画したい境界球
+		*boundingSphere,		// 描画したい境界球
 		Colors::DarkRed			// 色
 	);
 	m_primitiveBatch->End();

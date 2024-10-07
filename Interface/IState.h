@@ -32,8 +32,6 @@ public:
 		const DirectX::SimpleMath::Matrix& projection) = 0;
 	// 後処理を行う
 	virtual void Finalize() = 0;
-	// ボディの当たり判定の取得
-	virtual DirectX::BoundingSphere GetBoundingSphereBody() = 0;
 };
 
 #endif

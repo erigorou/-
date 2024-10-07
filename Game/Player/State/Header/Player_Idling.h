@@ -18,10 +18,6 @@ class Enemy;
 class PlayerIdling : public IState
 {
 public:
-	// 体の当たり判定を取得
-	DirectX::BoundingSphere GetBoundingSphereBody() { return m_boundingSphereBody; };
-
-public:
 	// デストラクタ
 	~PlayerIdling() override;
 	// 初期化する
@@ -44,8 +40,6 @@ public:
 
 	// コンストラクタ
 	PlayerIdling(Player* player);
-	// 体と当たったときの処理
-	DirectX::SimpleMath::Vector3 CalculatingPushBack();
 
 private:
 	// 総時間
@@ -54,8 +48,6 @@ private:
 	Player* m_player;
 	// モデル
 	DirectX::Model* m_model;
-	// 体の当たり判定
-	DirectX::BoundingSphere m_boundingSphereBody;
 };
 
 #endif  // PLAYER_IDLING_DEFINED

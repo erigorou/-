@@ -18,14 +18,11 @@ class Enemy;
 class PlayerDodging : public IState
 {
 private:
-	// 固定値
-
+	/////////////////////////固定値///////////////////////////////
 	static const float DODGING_TIME;		// 回避全体の時間
 	static const float DODGE_FUNCTION;		// 回避時の摩擦
 	static const int   TRUNCATION_DIGIT;	// 少数〇〇桁以下削除
-public:
-	// 体の当たり判定を取得
-	DirectX::BoundingSphere GetBoundingSphereBody() { return m_boundingSphereBody; };
+
 public:
 	// デストラクタ
 	~PlayerDodging() override;
@@ -48,8 +45,7 @@ public:
 
 	// コンストラクタ
 	PlayerDodging(Player* player);
-	// 体と当たったときの処理
-	DirectX::SimpleMath::Vector3 CalculatingPushBack();
+
 private:
 	// 総時間
 	float m_totalSeconds;
@@ -61,11 +57,10 @@ private:
 	Player* m_player;
 	// モデル
 	DirectX::Model* m_model;
+
 	// 回避方向を取得するための向き
 	DirectX::SimpleMath::Vector3 m_direction;
 
-	// 体の当たり判定
-	DirectX::BoundingSphere m_boundingSphereBody;
 };
 
 #endif  // PLAYER_DODGING_DEFINED

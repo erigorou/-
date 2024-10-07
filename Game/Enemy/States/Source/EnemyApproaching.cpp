@@ -42,10 +42,6 @@ void EnemyApproaching::Initialize(DirectX::Model* model)
 	m_model = model;
 	// 速度を設定（前にしか動かない）
 	m_velocity = SimpleMath::Vector3::Forward;
-	// 体の当たり判定の生成
-	m_boundingSphereBody = BoundingSphere();
-	// 体の当たり判定のサイズや座標を設定
-	m_boundingSphereBody.Radius = Enemy::ENEMY_SCALE * 12.f;
 }
 
 
@@ -91,10 +87,6 @@ void EnemyApproaching::Update(const float& elapsedTime, DirectX::SimpleMath::Vec
 	// 前方に移動
 	m_position += Vector3::Transform(m_velocity, angleMat);
 
-	// 体の境界球の位置を更新
-	m_boundingSphereBody.Center = m_position;
-	m_boundingSphereBody.Center.y = 0;
-
 	// 2秒経過で待機モーションに変更
 	if (m_totalSeconds >= 2.f)
 	{
@@ -109,10 +101,6 @@ void EnemyApproaching::Update(const float& elapsedTime, DirectX::SimpleMath::Vec
 }
 
 
-// プレイヤーの体との当たり判定を行う
-void EnemyApproaching::CheckHitPlayerBody()
-{
-}
 
 
 // 事後更新処理

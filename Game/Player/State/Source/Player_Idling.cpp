@@ -32,10 +32,6 @@ void PlayerIdling::Initialize(DirectX::Model* model)
 {
 	// モデルを取得する
 	m_model = model;
-	// 体の当たり判定の生成
-	m_boundingSphereBody = DirectX::BoundingSphere();
-	// 体の当たり判定のサイズや座標を設定
-	m_boundingSphereBody.Radius = Player::PLAYER_SCALE * 12.0f;
 }
 
 
@@ -44,8 +40,6 @@ void PlayerIdling::PreUpdate()
 {
 	// 経過時間の初期化
 	m_totalSeconds = 0.0f;
-	// 当たり判定をプレイヤーの位置に修正
-	m_boundingSphereBody.Center = m_player->GetPosition();
 
 	m_player->SetSpeed(DirectX::SimpleMath::Vector3::Zero);
 	m_player->SetAcceleration(DirectX::SimpleMath::Vector3::Zero);
@@ -74,11 +68,6 @@ void PlayerIdling::Update(const float& elapsedTime,  DirectX::SimpleMath::Vector
 	{
 		m_player->ChangeState(m_player->GetPlayerAttackingState1());
 	}
-
-
-	// 埋め込み量の計算をした後にそれを反映させる
-	parentPos += CalculatingPushBack();
-	m_boundingSphereBody.Center = parentPos;
 }
 
 
@@ -112,17 +101,4 @@ void PlayerIdling::Render(
 // 終了処理
 void PlayerIdling::Finalize()
 {
-}
-
-
-
-// 体に当たったときに押し戻しをする
-DirectX::SimpleMath::Vector3 PlayerIdling::CalculatingPushBack()
-{
-	// プレイヤーを一度変換する
-	auto player = dynamic_cast<Player*>(m_player);
-	// ボディを取得						プレイヤー → シーン → エネミー → 現在のステート → 体の当たり判定
-	DirectX::BoundingSphere enemyBody = player->GetPlayScene()->GetEnemy()->GetCurrentState()->GetBoundingSphereBody();
-	// 押し戻し量の計測
-	return Math::pushBack_BoundingSphere(m_boundingSphereBody, enemyBody);
 }

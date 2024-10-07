@@ -34,8 +34,6 @@ EnemyIdling::~EnemyIdling()
 void EnemyIdling::Initialize(DirectX::Model* model)
 {
 	m_model = model;
-	m_boundingSphereBody = DirectX::BoundingSphere();			// ƒ‚ƒfƒ‹‚ðŽæ“¾‚µA
-	m_boundingSphereBody.Radius = Enemy::ENEMY_SCALE * 12.f;	// 
 }
 
 
@@ -60,9 +58,6 @@ void EnemyIdling::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3&
 	Vector3 playerPos = m_enemy->GetPlayScene()->GetPlayer()->GetPosition();
 	// “G‚©‚çŒ©‚½ƒvƒŒƒCƒ„[‚ÌˆÊ’u‚ðŒvŽZ‚·‚é
 	m_angle = Math::CalculationAngle(parentPos, playerPos);
-
-	// ‘Ì‚Ì‹«ŠE‹…‚ÌˆÊ’u‚ðXV
-	m_boundingSphereBody.Center = parentPos;
 
 	// ‰ñ“]Šp‚ðÝ’è‚·‚é
 	m_enemy->SetAngle(m_angle);

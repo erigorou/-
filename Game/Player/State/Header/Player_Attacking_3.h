@@ -17,13 +17,6 @@ class Player;
 class PlayerAttacking_3 : public IState
 {
 public:
-
-
-public:
-	// 体の境界球を取得
-	DirectX::BoundingSphere GetBoundingSphereBody() { return m_boundingSphereBody; }
-
-public:
 	// コンストラクタ
 	PlayerAttacking_3(Player* player);
 	// デストラクタ
@@ -45,9 +38,6 @@ public:
 	// 終了処理
 	void Finalize() override;
 
-	// 体と当たったときの処理
-	DirectX::SimpleMath::Vector3 CalculatingPushBack();
-
 private:
 	// 座標
 	DirectX::SimpleMath::Vector3 m_position;
@@ -63,8 +53,6 @@ private:
 	Player* m_player;
 	// モデル
 	DirectX::Model* m_model;
-	// 体の境界球
-	DirectX::BoundingSphere m_boundingSphereBody;
 };
 
 #endif  // PLAYER_ATTACKING_1_DEFINED
