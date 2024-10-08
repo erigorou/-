@@ -316,6 +316,8 @@
     <None Include="Resources\Shaders\UI\UI.hlsli" />
     <None Include="ClassDiagram.cd" />
     <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
+    <None Include="ClassDiagram3.cd" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Sword\SwordTrialPS.hlsl" />

@@ -93,6 +93,13 @@ void EnemyApproaching::Update(const float& elapsedTime, DirectX::SimpleMath::Vec
 		m_enemy->ChangeState(m_enemy->GetEnemyIdling());
 	}
 
+	// プレイヤーとの距離が　20以下なら攻撃モーションに変更
+	if (Vector3::Distance(m_position, playerPos) <= 20.f)
+	{
+		m_enemy->ChangeState(m_enemy->GetEnemyAttacking());
+	}
+
+
 	// 回転角を設定する
 	m_enemy->SetAngle(m_angle);
 

@@ -11,6 +11,8 @@ public:
 
 	// “–‚½‚Á‚½‚Æ‚«‚Étrue‚ğİ’è‚·‚é
 	virtual void HitAction(InterSectData data) = 0;
+
+	virtual DirectX::SimpleMath::Vector3 GetPosition() = 0;
 };
 
 #endif // !I_OBJECT

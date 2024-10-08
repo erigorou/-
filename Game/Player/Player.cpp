@@ -17,10 +17,12 @@
 #include "Game/Player/Player.h"
 #include "Game/Weapon/Sword/Sword.h"
 
+#include "Game/Enemy/Enemy.h"
+
 
 // ここで静的メンバー変数を定義する
 const DirectX::SimpleMath::Vector3 Player::HOME_POSITION(0.0f);
-const float Player::PLAYER_SPEED = 0.025f;
+const float Player::PLAYER_SPEED = 0.01f;
 const float Player::PLAYER_SCALE = 0.1f;
 const float Player::APPLIED_ATTACK_TIME = 1.0f;
 
@@ -35,6 +37,7 @@ Player::Player(PlayScene* playScene)
 	m_position{ 0, 0, 40 },
 	m_angle{ 0.f },
 	m_acceleration{},
+	m_pushBackValue{},
 	m_worldMatrix{},
 	m_currentState{},
 	m_keyboardState{},
@@ -106,6 +109,14 @@ void Player::CreateCollision()
 {
 	// 体の当たり判定を作成
 	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, PLAYER_SCALE * 12);
+
+	
+	// 当たり判定を記録する
+	m_playScene->GetCollisionManager()->AddCollision(
+		ObjectType::Player,
+		this,
+		m_bodyCollision.get()
+	);
 }
 
 
@@ -190,7 +201,7 @@ void Player::Update(const DirectX::SimpleMath::Vector3 enemyPos,const float elap
 	///////////////////プレイヤーの移動////////////////////////////
 	m_angle = Math::CalculationAngle(m_position, enemyPos);
 	CalculationMatrix();
-
+	m_pushBackValue = Vector3::Zero;
 	///////////////////当たり判定の更新////////////////////////////
 	m_bodyCollision->Center = m_position;
 }
@@ -361,16 +372,15 @@ void Player::Render(
 		view,
 		projection);
 
+#ifdef _DEBUG
 	// 体の境界球の描画
 	DrawBoundingSphere(device, context, states, view, projection, m_bodyCollision.get());
 
-	Vector3 XLine = m_position;
-	XLine.x += 5.0f;
+	auto debugString = resources->GetDebugString();
+	debugString->AddString("push : %f, %f, %f", m_pushBackValue.x, m_pushBackValue.y, m_pushBackValue.z);
+	debugString->AddString("PlayerPos : %f, %f, %f", m_position.x, m_position.y, m_position.z);
+#endif // !_DEBUG
 
-	// DrawLine
-	m_primitiveBatch->Begin();
-	m_primitiveBatch->DrawLine(VertexPositionColor(m_position, DirectX::Colors::Red), VertexPositionColor(XLine, DirectX::Colors::Red));
-	m_primitiveBatch->End();
 }
 
 
@@ -423,5 +433,22 @@ void Player::Finalize()
 // --------------------------------
 void Player::HitAction(InterSectData data)
 {
-	// 当たったときの処理をかいてね～
+	//////////////////////敵のボディと当たったときの処理////////////////////////////
+	if (data.objType == ObjectType::Enemy && data.colType == CollisionType::Sphere)
+	{
+		////////////////////それぞれの境界球を取得する////////////////////////////
+		DirectX::BoundingSphere playerCollision = *m_bodyCollision.get();
+		auto enemy = dynamic_cast<Enemy*>(data.object);
+		DirectX::BoundingSphere enemyCollision = enemy->GetBodyCollision();
+
+		//////////////////////押し戻し量の計算を行う////////////////////////////
+		m_pushBackValue += Math::pushBack_BoundingSphere(playerCollision, enemyCollision);
+
+		m_pushBackValue.y = 0;
+
+		/////////////////////////// 移動処理 //////////////////////////////////
+		m_position += m_pushBackValue;
+
+		m_bodyCollision->Center = m_position;
+	}
 }

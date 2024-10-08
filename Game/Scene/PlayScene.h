@@ -84,7 +84,7 @@ private:
 
 	// ステージ関連の変数 ====================================================================
 	std::unique_ptr<Floor> m_floor;							// 床
-	std::unique_ptr<Wall> m_wall;							// 壁（天球の枠）
+	std::unique_ptr<Wall>  m_wall;							// 壁（天球の枠）
 	
 	// UI関連の変数 ==========================================================================
 	std::unique_ptr<PlaySceneUIManager> m_uiManager;		// UIマネージャ

@@ -68,11 +68,11 @@ void Enemy::Initialize()
 	// ビヘイビアツリーを取得
 	m_pBT = std::make_unique<BehaviorTree>();
 
-	// 当たり判定
-	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, ENEMY_SCALE * 12.0f);
-
 	// ステートの作成
 	CreateState();
+
+	// 当たり判定の作成
+	CreateCollision();
 
 	// ベーシックエフェクトを作成する
 	m_basicEffect = std::make_unique<DirectX::BasicEffect>(device);
@@ -111,6 +111,17 @@ void Enemy::CreateState()
 	m_currentState = m_idling.get();
 }
 
+
+void Enemy::CreateCollision()
+{
+	// 当たり判定の生成
+	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, ENEMY_SCALE * 12.0f);
+
+	m_playScene->GetCollisionManager()->AddCollision(
+		ObjectType::Enemy,
+		this,
+		m_bodyCollision.get());
+}
 
 
 // --------------------------------
@@ -183,6 +194,10 @@ void Enemy::Render(
 
 #ifdef _DEBUG
 	DrawBoundingSphere(device, context, states, view, projection, m_bodyCollision.get());	// 当たり判定の描画
+
+	CommonResources* resources = CommonResources::GetInstance();
+	auto debugString = resources->GetDebugString();
+	debugString->AddString("EnemyPos : %f, %f, %f", m_position.x, m_position.y, m_position.z);
 #endif // _DEBUG
 }
 
@@ -229,4 +244,12 @@ void Enemy::DrawBoundingSphere(
 // --------------------------------
 void Enemy::Finalize()
 {
+}
+
+// --------------------------------
+//  当たったときの処理
+// --------------------------------
+void Enemy::HitAction(InterSectData data)
+{
+
 }

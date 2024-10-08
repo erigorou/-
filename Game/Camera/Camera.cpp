@@ -7,8 +7,8 @@
 #include "Game/Screen.h"
 
 // 固定値
-const float Camera::CAMERA_POSITION_Y = 10.0f;		// カメラの高さ
-const float Camera::CAMERA_DIRECTION = 30.0f;		// カメラの距離
+const float Camera::CAMERA_POSITION_Y = 5.0f;		// カメラの高さ
+const float Camera::CAMERA_DIRECTION = 20.0f;		// カメラの距離
 
 //-------------------------------------------------------------------
 /// <summary>

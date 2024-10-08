@@ -32,7 +32,7 @@ public:
 
 public:
 	// /////////////////プレイヤーの基礎情報を渡す関数//////////////////////////////////////////////////
-	DirectX::SimpleMath::Vector3	GetPosition()	const	{ return m_position;	}
+	DirectX::SimpleMath::Vector3	GetPosition()override	{ return m_position;	}
 	DirectX::SimpleMath::Vector3	GetVelocity()	const	{ return m_velocity;	}
 	float							GetAngle()		const	{ return m_angle;		}
 	PlayerHP*						GetPlayerHP()	const	{ return m_hp.get();	}
@@ -121,6 +121,8 @@ private:
 	DirectX::SimpleMath::Vector3 m_acceleration;
 	// 角度
 	float m_angle;
+	// 押し戻し量
+	DirectX::SimpleMath::Vector3 m_pushBackValue;
 
 
 	// プレイヤー用のワールド行列

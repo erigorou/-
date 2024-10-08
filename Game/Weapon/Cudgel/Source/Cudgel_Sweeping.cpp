@@ -69,7 +69,7 @@ void Cudgel_Sweeping::PreUpdate()
 {
 	// Œo‰ßŠÔ‚Ì‰Šú‰»
 	m_totalSeconds = 0.0f;												// Œo‰ßŠÔ‚Ì‰Šú‰»
-	m_angleUD = DirectX::XMConvertToRadians(90.0f);						// ‹à–_‚ğ‰¡‚É‚·‚é
+	m_angleUD = DirectX::XMConvertToRadians(95.0f);					// ‹à–_‚ğ‰¡‚É‚·‚é
 	m_angleRL = 0.0f;													// ‰¡‰ñ“]‚Ì‰Šú‰»
 	m_parentAngleRL = m_cudgel->GetPlayScene()->GetEnemy()->GetAngle();	// “G‚ÌŠp“x‚ğæ“¾ie‚ÌŠp“xj
 
@@ -142,7 +142,7 @@ DirectX::SimpleMath::Matrix Cudgel_Sweeping::CalculateAttackMatrix()
 {
 	return 
 			Matrix::CreateRotationX(-m_angleUD)																						// c‰ñ“]‚ğs‚¤
-		*=  Matrix::CreateRotationY(DirectX::XMConvertToRadians(-m_angleRL) - m_parentAngleRL - DirectX::XMConvertToRadians(189))	// ‰¡‰ñ“]‚ğs‚¤
+		*=  Matrix::CreateRotationY(DirectX::XMConvertToRadians(-m_angleRL) - m_parentAngleRL - DirectX::XMConvertToRadians(180))	// ‰¡‰ñ“]‚ğs‚¤
 		*=  Matrix::CreateTranslation(Cudgel_Sweeping::ARM_LENGTH)																	// ˜r‚Ì’·‚³•ªˆÚ“®
 		*=  Matrix::CreateTranslation(m_position);																					// ÅŒã‚É“G‚ÌˆÊ’u‚Éİ’è
 }

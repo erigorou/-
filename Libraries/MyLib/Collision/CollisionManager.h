@@ -14,7 +14,18 @@ enum class ObjectType : UINT
 	Player,
 	Enemy,
 	Sword,
-	Cudgel
+	Cudgel,
+	Stage
+};
+
+
+/// <summary>
+/// 当たり判定の形状の種類
+/// </summary>
+enum class CollisionType : UINT
+{
+	OBB,
+	Sphere
 };
 
 
@@ -23,20 +34,22 @@ enum class ObjectType : UINT
 /// </summary>
 struct OBBCollision
 {
-	ObjectType						m_type;
-	IObject*						m_object;
-	DirectX::BoundingOrientedBox*	m_obb;
+	ObjectType							objType;
+	CollisionType						colType;
+	IObject*							object;
+	const DirectX::BoundingOrientedBox*	obb;
 
 	// コンストラクタ
 	OBBCollision
 	(
 		ObjectType						type,
 		IObject*						obj,
-		DirectX::BoundingOrientedBox*	obb
+		const DirectX::BoundingOrientedBox*	obb
 	) 
-		: m_type	(type)
-		, m_object	(obj)
-		, m_obb		(obb)
+		: objType	(type)
+		, colType	(CollisionType::OBB)
+		, object	(obj)
+		, obb		(obb)
 	{}
 };
 
@@ -46,20 +59,22 @@ struct OBBCollision
 /// </summary>
 struct SphereCollision
 {
-	ObjectType					m_type;
-	IObject*					m_object;
-	DirectX::BoundingSphere*	m_sphere;
+	ObjectType						objType;
+	CollisionType					colType;
+	IObject*						object;
+	const DirectX::BoundingSphere*	sphere;
 
 	// コンストラクタ
 	SphereCollision
 	(
 		ObjectType					type,
 		IObject*					obj,
-		DirectX::BoundingSphere*	sphere
+		const DirectX::BoundingSphere*	sphere
 	)
-		: m_type	(type)
-		, m_object	(obj)
-		, m_sphere	(sphere)
+		: objType	(type)
+		, colType	(CollisionType::Sphere)
+		, object	(obj)
+		, sphere	(sphere)
 	{}
 };
 
@@ -69,8 +84,9 @@ struct SphereCollision
 /// </summary>
 struct InterSectData
 {
-	ObjectType type;
-	IObject* object;
+	ObjectType		objType;
+	CollisionType	colType;
+	IObject*		object;
 };
 
 
@@ -85,8 +101,8 @@ public:
 	void Update();
 
 	// 追加関数
-	void AddCollision(ObjectType type, IObject* obj, DirectX::BoundingOrientedBox	obb	) { m_obbs.		push_back(OBBCollision		(type, obj, &obb	)); }
-	void AddCollision(ObjectType type, IObject* obj, DirectX::BoundingSphere	 sphere	) { m_spheres.	push_back(SphereCollision	(type, obj, &sphere	)); }
+	void AddCollision(ObjectType type, IObject* obj, const DirectX::BoundingOrientedBox* obb)	{ m_obbs	.emplace_back(OBBCollision		(type, obj, obb))	; }
+	void AddCollision(ObjectType type, IObject* obj, const DirectX::BoundingSphere* sphere)		{ m_spheres	.emplace_back(SphereCollision	(type, obj, sphere)); }
 
 	// 削除関数
 	void DeleteOBBCollision		(IObject* object);

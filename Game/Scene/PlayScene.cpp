@@ -31,6 +31,9 @@
 // UI関連　====================================================
 #include "Game/UI/PlaySceneUIManager/Header/PlaySceneUIManager.h"	// UI描画関連
 
+// 当たり判定関連 =============================================
+#include "Libraries/MyLib/Collision/CollisionManager.h"	// 当たり判定
+
 /// <summary>
 /// コンストラクタ
 /// </summary>
@@ -93,6 +96,9 @@ void PlayScene::Initialize()
 	m_bgm = std::make_unique<BGM_Player>();
 	m_bgm->InitializeFMOD("Resources/Sounds/BGM.ogg");
 	// =================================================
+
+	// 当たり判定マネージャの生成
+	m_collisionManager = std::make_unique<CollisionManager>();
 
 	// オブジェクトの生成
 	CreateObjects();
@@ -178,6 +184,8 @@ void PlayScene::Update(float elapsedTime)
 		m_player->GetVelocity()
 	);
 
+	// 衝突判定の更新処理
+	m_collisionManager->Update();
 
 	// HPが0以下になったらゲーム終了
 	if (m_enemy->GetEnemyHP()->GetHP() <= 0)

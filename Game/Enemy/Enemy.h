@@ -2,6 +2,7 @@
 #include "Interface/IState.h"
 #include "Game/Scene/PlayScene.h"
 
+#include "Interface/IObject.h"
 #include "Game/Enemy/EnemyHP.h"	// HP
 
 // ===== 敵の状態 =================================================================
@@ -14,7 +15,7 @@
 #include "BehaviourTree/Header/BehaviorTree.h"			// ビヘイビアツリー
 
 
-class Enemy
+class Enemy : public IObject
 {
 public:
 	// 固定値
@@ -23,19 +24,21 @@ public:
 
 
 public:
-	PlayScene* GetPlayScene()					const { return m_playScene;}		// PlaySceneの取得 
-	EnemyHP* GetEnemyHP()						const { return m_hp.get(); }		// HPの取得	
-	
-	DirectX::SimpleMath::Vector3 GetPosition()	const { return m_position; }		// 鬼の座標を取得する
-	void SetPosition(const DirectX::SimpleMath::Vector3 pos) { m_position = pos; }	// 鬼の座標を設定する
-	
-	float GetAngle() const { return m_angle; }										// 鬼の回転角を取得する	
-	void SetAngle(const float angle) { m_angle = angle; }							// 鬼の回転角を設定する	
+	// /////////////////敵の基礎情報を渡す関数/////////////////////////////////////////////////////////////////////
+	PlayScene*						GetPlayScene()	const	{ return m_playScene;}		// PlaySceneの取得 
+	EnemyHP*						GetEnemyHP()	const	{ return m_hp.get(); }		// HPの取得	
+	DirectX::SimpleMath::Vector3	GetPosition()	override{ return m_position; }		// 鬼の座標を取得する
+	float							GetAngle()		const	{ return m_angle; }			// 鬼の回転角を取得する	
+	DirectX::SimpleMath::Matrix		GetWorldMatrix()const	{ return m_worldMatrix; }	// 敵のワールド座標を取得する
 
-	DirectX::SimpleMath::Matrix	GetWorldMatrix() const { return m_worldMatrix; }	// 敵のワールド座標を取得する
-	void SetWorldMatrix(DirectX::SimpleMath::Matrix mat) { m_worldMatrix = mat; }	// 敵のワールド座標を設定する
+	void SetPosition	(const DirectX::SimpleMath::Vector3 pos)	{ m_position = pos; }		// 鬼の座標を設定する
+	void SetAngle		(const float angle)							{ m_angle = angle; }		// 鬼の回転角を設定する	
+	void SetWorldMatrix	(DirectX::SimpleMath::Matrix mat)			{ m_worldMatrix = mat; }	// 敵のワールド座標を設定する
 
-	// ===== 敵の状態 =================================================================
+	// /////////////////敵の当たり判定を渡す関数/////////////////////////////////////////////////////////////////////
+	DirectX::BoundingSphere GetBodyCollision() const { return *m_bodyCollision.get(); }	// 体の当たり判定を取得する
+
+	// /////////////////敵のステートを渡す関数/////////////////////////////////////////////////////////////////////
 	EnemyIdling* GetEnemyIdling() const { return m_idling.get(); }					// 待機状態
 	Enemy_Attacking* GetEnemyAttacking() const { return m_attacking.get(); }		// 攻撃状態
 	Enemy_Sweeping* GetEnemySweeping() const { return m_sweeping.get(); }			// 薙ぎ払い状態
@@ -45,10 +48,6 @@ public:
 	// 現在のステートを返す
 	IState* GetCurrentState() const { return m_currentState; }
 
-
-	// 当たり判定を返す
-
-
 public:
 	// コンストラクタ
 	Enemy(PlayScene* playScene);
@@ -56,8 +55,6 @@ public:
 	~Enemy();
 	// 初期化処理
 	void Initialize();
-	// ステートの作成処理
-	void CreateState();
 	// 新しい状態に遷移する（ステートパターン）
 	void ChangeState(IState* newState);
 	// 更新処理
@@ -82,6 +79,13 @@ public:
 
 
 private:
+	// ステートの作成処理
+	void CreateState();
+	// 当たり判定の生成処理
+	void CreateCollision();
+	// 当たったときの処理
+	void HitAction(InterSectData data)override;
+
 	// 位置
 	DirectX::SimpleMath::Vector3 m_position;
 	// 速度

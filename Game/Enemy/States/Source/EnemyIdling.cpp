@@ -62,22 +62,22 @@ void EnemyIdling::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3&
 	// ‰ñ“]Šp‚ðÝ’è‚·‚é
 	m_enemy->SetAngle(m_angle);
 
-	if (m_totalSeconds >= 2.f)
-	{
-		m_enemy->ChangeState(m_enemy->GetEnemySweeping());	// “ã‚¬•¥‚¢
+	//if (m_totalSeconds >= 2.f)
+	//{
+	//	m_enemy->ChangeState(m_enemy->GetEnemySweeping());	// “ã‚¬•¥‚¢
 
-		// ‹ß‚¢‹——£‚¾‚Æ’Ç]‚ðs‚í‚È‚¢
-		// ƒvƒŒƒCƒ„[‚Æ‚Ì‹——£‚ðŒvŽZ
-		float distance = Vector3::Distance(parentPos, playerPos);
+	//	// ‹ß‚¢‹——£‚¾‚Æ’Ç]‚ðs‚í‚È‚¢
+	//	// ƒvƒŒƒCƒ„[‚Æ‚Ì‹——£‚ðŒvŽZ
+	//	float distance = Vector3::Distance(parentPos, playerPos);
 
-		//if (distance > 25.0f)
-			m_enemy->ChangeState(m_enemy->GetEnemyApproaching());	// ’Ç]
-		
+	//	//if (distance > 25.0f)
+	//		m_enemy->ChangeState(m_enemy->GetEnemyApproaching());	// ’Ç]
+	//	
 
 
-		////	m_enemy->ChangeState(m_enemy->GetEnemyAttacking());	// ‘Ò‹@
-		//m_enemy->ChangeState(m_enemy->GetEnemySweeping());		// “ã‚¬•¥‚¢
-	}
+	//	////	m_enemy->ChangeState(m_enemy->GetEnemyAttacking());	// ‘Ò‹@
+	//	//m_enemy->ChangeState(m_enemy->GetEnemySweeping());		// “ã‚¬•¥‚¢
+	//}
 }
 
 

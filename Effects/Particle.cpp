@@ -203,7 +203,7 @@ void Particle::CreateSwordTrial(DirectX::VertexPositionTexture ver[4])
 	// SwordTrialParticleを生成
 	SwordTrialParticle sTP(
 		ver,															//	頂点情報
-		0.4f,															//	生存時間(s)
+		0.3f,															//	生存時間(s)
 		Color(1.0f, 1.0f, 1.0f, 1.0f), Color(1.0f, 1.0f, 1.0f, 0.0f)	//	初期カラー、最終カラー
 	);
 
