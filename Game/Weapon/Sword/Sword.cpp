@@ -98,9 +98,8 @@ void Sword::CreateState()
 /// </summary>
 void Sword::CreateCollision()
 {
-	m_collision =
-		std::make_unique<DirectX::BoundingOrientedBox>
-		(Collision::Get_BoundingOrientedBox_FromMODEL(m_model.get()));
+	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model.get());
+	m_collision = std::make_unique<DirectX::BoundingOrientedBox>(m_originalBox);
 }
 
 // --------------------------------------------
