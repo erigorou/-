@@ -15,7 +15,7 @@
 #include "Game/Player/Player.h"
 #include "Game/Enemy/Enemy.h"
 #include "Game/Weapon/Cudgel/Header/Cudgel_Idling.h"
-#include "Game/Weapon/Cudgel/Header/Cudgel.h"
+#include "Game/Weapon/Cudgel/Cudgel.h"
 
 // コンストラクタ
 Cudgel_Idling::Cudgel_Idling(Cudgel* cudgel)

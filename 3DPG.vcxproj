@@ -224,7 +224,7 @@
     <ClInclude Include="Game\UI\Header\IconUI.h" />
     <ClInclude Include="Game\UI\Header\PlayerHPUI.h" />
     <ClInclude Include="Game\UI\PlaySceneUIManager\Header\PlaySceneUIManager.h" />
-    <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel.h" />
+    <ClInclude Include="Game\Weapon\Cudgel\Cudgel.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Attacking.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Idling.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Sweeping.h" />
@@ -288,7 +288,7 @@
     <ClCompile Include="Game\UI\Source\Gauge.cpp" />
     <ClCompile Include="Game\UI\Source\IconUI.cpp" />
     <ClCompile Include="Game\UI\Source\PlayerHPUI.cpp" />
-    <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel.cpp" />
+    <ClCompile Include="Game\Weapon\Cudgel\Cudgel.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Attacking.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Idling.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp" />

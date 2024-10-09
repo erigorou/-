@@ -100,6 +100,13 @@ void Sword::CreateCollision()
 {
 	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model.get());
 	m_collision = std::make_unique<DirectX::BoundingOrientedBox>(m_originalBox);
+
+	// 当たり判定を記録する
+	m_playScene->GetCollisionManager()->AddCollision(
+		ObjectType::Sword,		// オブジェクトの種類
+		this,					// このクラスのポインタ
+		m_collision.get()		// 当たり判定
+	);
 }
 
 // --------------------------------------------

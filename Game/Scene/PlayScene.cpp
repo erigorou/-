@@ -19,14 +19,14 @@
 #include "Game/Sound/BGM_Player.h"	// BGM再生
 
 // オブジェクト関連　=========================================
-#include "Game/Player/Player.h"					// プレイヤー
-#include "Game/Enemy/Enemy.h"					// 鬼
-#include "Game/Weapon/Sword/Sword.h"			// 刀
-#include "Game/Weapon/Cudgel/Header/Cudgel.h"	// 金棒
+#include "Game/Player/Player.h"			// プレイヤー
+#include "Game/Enemy/Enemy.h"			// 鬼
+#include "Game/Weapon/Sword/Sword.h"	// 刀
+#include "Game/Weapon/Cudgel/Cudgel.h"	// 金棒
 
 // ステージ関連 ==============================================
-#include "Game/Stage/Floor/Floor.h"				// 床
-#include "Game/Stage/Wall/Wall.h"				// 壁
+#include "Game/Stage/Floor/Floor.h"		// 床
+#include "Game/Stage/Wall/Wall.h"		// 壁
 
 // UI関連　====================================================
 #include "Game/UI/PlaySceneUIManager/Header/PlaySceneUIManager.h"	// UI描画関連

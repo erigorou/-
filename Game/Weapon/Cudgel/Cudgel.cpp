@@ -16,7 +16,7 @@
 #include "Libraries/MyLib/Collision.h"
 
 #include "Game/Enemy/Enemy.h"
-#include "Game/Weapon/Cudgel/Header/Cudgel.h"
+#include "Game/Weapon/Cudgel/Cudgel.h"
 
 
 const float Cudgel::CUDGEL_SCALE = Enemy::ENEMY_SCALE * 1.1f;						// 金棒の拡大率
@@ -110,6 +110,13 @@ void Cudgel::CreateCollision()
 {
 	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model.get());
 	m_collision = std::make_unique<DirectX::BoundingOrientedBox>(m_originalBox);
+
+	// 当たり判定を記録する
+	m_playScene->GetCollisionManager()->AddCollision(
+		ObjectType::Cudgel,		// オブジェクトの種類
+		this,					// このクラスのポインタ
+		m_collision.get()		// 当たり判定
+	);
 }
 
 // --------------------------------

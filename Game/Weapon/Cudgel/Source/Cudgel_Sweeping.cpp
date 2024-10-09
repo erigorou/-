@@ -16,7 +16,7 @@
 #include "Game/Enemy/Enemy.h"
 #include "Libraries/MyLib/EasingFunctions.h"
 #include "Game/Weapon/Cudgel/Header/Cudgel_Sweeping.h"
-#include "Game/Weapon/Cudgel/Header/Cudgel.h"
+#include "Game/Weapon/Cudgel/Cudgel.h"
 
 
 // ŒÅ’è’l ==================================

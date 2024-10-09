@@ -12,7 +12,7 @@
 #include "States/Header/EnemyApproaching.h"	// 追尾状態
 
 
-#include "BehaviourTree/Header/BehaviorTree.h"			// ビヘイビアツリー
+#include "BehaviourTree/Header/BehaviorTree.h"	// ビヘイビアツリー
 
 
 class Enemy : public IObject
