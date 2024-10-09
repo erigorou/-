@@ -17,6 +17,7 @@ class Enemy;
 
 class PlayerDodging : public IState
 {
+
 private:
 	/////////////////////////ŒÅ’è’l///////////////////////////////
 	static const float DODGING_TIME;		// ‰ñ”ð‘S‘Ì‚ÌŽžŠÔ

@@ -20,6 +20,7 @@ enum class ObjectType : UINT
 
 
 /// <summary>
+
 /// “–‚½‚è”»’è‚ÌŒ`ó‚Ìí—Ş
 /// </summary>
 enum class CollisionType : UINT
@@ -27,7 +28,6 @@ enum class CollisionType : UINT
 	OBB,
 	Sphere
 };
-
 
 /// <summary>
 /////////////// OBBCollision\‘¢‘Ì /////////////////////////
@@ -52,6 +52,12 @@ struct OBBCollision
 		, obb		(obb)
 	{}
 };
+
+template<typename T>
+void Sum(T a, T b)
+{
+	return a + b;
+}
 
 
 /// <summary>

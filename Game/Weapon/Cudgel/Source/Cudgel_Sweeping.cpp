@@ -67,17 +67,16 @@ void Cudgel_Sweeping::Initialize()
 // 事前処理
 void Cudgel_Sweeping::PreUpdate()
 {
-	// 経過時間の初期化
+	////////////////////////////////////////////基本情報の初期化//////////////////////////////////////////////////
 	m_totalSeconds = 0.0f;												// 経過時間の初期化
-	m_angleUD = DirectX::XMConvertToRadians(95.0f);					// 金棒を横にする
+	m_angleUD = DirectX::XMConvertToRadians(90.0f);						// 金棒を横にする
 	m_angleRL = 0.0f;													// 横回転の初期化
 	m_parentAngleRL = m_cudgel->GetPlayScene()->GetEnemy()->GetAngle();	// 敵の角度を取得（親の角度）
 
-	// 頂点情報の初期化
+	//////////////////////////////////////エフェクト用頂点配列の初期化///////////////////////////////////////////
 	m_rootPos.clear();
 	m_tipPos.clear();
-
-	m_canGenerateSlamParticles = true;
+	m_canGenerateSlamParticles = true;									// エフェクト生成フラグをtrueにする
 }
 
 

@@ -61,12 +61,12 @@ private:
 
 public:
 	PlayScene();
-	~PlayScene() override;
+	~PlayScene()					override;
 
-	void Initialize() override;
-	void Update(float elapsedTime)override;
-	void Render() override;
-	void Finalize() override;
+	void Initialize()				override;
+	void Update(float elapsedTime)	override;
+	void Render()					override;
+	void Finalize()					override;
 
 private:
 	void CreateObjects();
