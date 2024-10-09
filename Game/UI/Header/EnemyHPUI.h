@@ -14,10 +14,10 @@ class EnemyHPUI
 private:
 	const wchar_t* ENEMY_HP_TEXTURE = L"Resources/Textures/UI/1px.png";	// 1pxのテクスチャのパス（画像として一応ね？）
 
-	static constexpr int MAX_WIDTH			= 300;
+	static constexpr int MAX_WIDTH			= 500;
 
 	static constexpr int TOP_POSITION		= 25;
-	static constexpr int BOTTOM_POSITION	= 75;
+	static constexpr int BOTTOM_POSITION	= 50;
 
 public:
 	EnemyHPUI(EnemyHP* enemyHp);	// コンストラクタ

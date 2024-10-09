@@ -9,7 +9,7 @@
 class EnemyHP
 {
 private:
-    static constexpr int MAX_HP = 5; // Н≈СеHP
+    static constexpr int MAX_HP = 20; // Н≈СеHP
 
 
 public:

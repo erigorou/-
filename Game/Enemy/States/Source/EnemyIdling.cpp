@@ -64,14 +64,20 @@ void EnemyIdling::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3&
 
 	if (m_totalSeconds >= 2.f)
 	{
-		m_enemy->ChangeState(m_enemy->GetEnemySweeping());	// “ã‚¬•¥‚¢
-
 		// ‹ß‚¢‹——£‚¾‚Æ’Ç]‚ğs‚í‚È‚¢
-		// ƒvƒŒƒCƒ„[‚Æ‚Ì‹——£‚ğŒvZ
 		float distance = Vector3::Distance(parentPos, playerPos);
 
-		//if (distance > 25.0f)
+		if (distance > 25.0f)
 			m_enemy->ChangeState(m_enemy->GetEnemyApproaching());	// ’Ç]
+		else
+		{
+			// ƒ‰ƒ“ƒ_ƒ€‚És“®‚ğ•ÏX
+			int random = rand() % 2;
+			if (random == 0)
+				m_enemy->ChangeState(m_enemy->GetEnemySweeping());	// ‘|“¢
+			else
+				m_enemy->ChangeState(m_enemy->GetEnemyAttacking());	// UŒ‚
+		}
 		
 	}
 }
