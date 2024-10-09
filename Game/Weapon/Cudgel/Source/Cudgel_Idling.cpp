@@ -38,8 +38,8 @@ Cudgel_Idling::~Cudgel_Idling()
 // 初期化処理
 void Cudgel_Idling::Initialize()
 {
-	m_model = m_cudgel->GetModel();											// モデルを取得し。
-	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model);	// その大きさに合わせてOBBを生成する
+	m_worldMatrix = DirectX::SimpleMath::Matrix::Identity;		// ワールド行列の初期化
+	m_model = m_cudgel->GetModel();								// モデルを取得
 }
 
 
@@ -66,7 +66,7 @@ void Cudgel_Idling::Update(float elapsedTime)
 		*= Matrix::CreateRotationY(-m_angle)						// 剣全体の回転を行う
 		*= Matrix::CreateTranslation(m_position);					// 鬼の座標に移動する
 
-	m_originalBox.Transform(m_boundingBox, m_worldMatrix);		// 当たり判定を移動させる。
+	m_cudgel->SetCollisionPosition(m_worldMatrix);		// 当たり判定の位置を設定する
 }
 
 // 事後処理
@@ -94,5 +94,10 @@ void Cudgel_Idling::Render(ID3D11DeviceContext* context,
 
 // 終了処理
 void Cudgel_Idling::Finalize()
+{
+}
+
+
+void Cudgel_Idling::HitAction(InterSectData data)
 {
 }

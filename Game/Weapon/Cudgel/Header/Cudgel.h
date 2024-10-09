@@ -3,13 +3,14 @@
 #pragma once
 #include "Interface/IWeapon.h"
 #include "Game/Scene/PlayScene.h"
+#include "Interface/IObject.h"
 
 // 金棒の状態 ========================================================
 #include "Cudgel_Idling.h"		// 待機
 #include "Cudgel_Attacking.h"	// 攻撃
 #include "Cudgel_Sweeping.h"	// 薙ぎ払い
 
-class Cudgel
+class Cudgel : public IObject
 {
 public:
 	// 固定値
@@ -19,18 +20,21 @@ public:
 	static const DirectX::SimpleMath::Vector3 CUDGEL_HADLE_POS;	// 金棒の取っ手の位置
 
 
-	// モデルを設定する
-	DirectX::Model* GetModel()const { return m_model.get(); }
-	// プレイシーンの取得
-	PlayScene* GetPlayScene()const { return m_playScene; }
+	// ===取得系====================================================================
+	DirectX::SimpleMath::Vector3 GetPosition() override { return m_position; }	// 位置の取得
+
+
+	DirectX::Model* GetModel()		const { return m_model.get();	}	// モデルの取得
+	PlayScene*		GetPlayScene()	const { return m_playScene;		}	// プレイシーンの取得
 
 
 	// ===状態の取得================================================================
-	Cudgel_Idling* GetIdling()const { return m_idling.get(); }				// 待機
-	Cudgel_Attacking* GetAttacking()const { return m_attacking.get(); }		// 攻撃
-	Cudgel_Sweeping* GetSweeping()const { return m_sweeping.get(); }		// 薙ぎ払い	
+	Cudgel_Idling*		GetIdling()		const { return m_idling.get();		}	// 待機
+	Cudgel_Attacking*	GetAttacking()	const { return m_attacking.get();	}	// 攻撃
+	Cudgel_Sweeping*	GetSweeping()	const { return m_sweeping.get();	}	// 薙ぎ払い	
 
-
+	// ===設定系====================================================================
+	void SetCollisionPosition(DirectX::SimpleMath::Matrix mat) { m_originalBox.Transform(*m_collision.get(), mat); }	// 当たり判定の位置の設定
 
 public:
 	// コンストラクタ
@@ -62,25 +66,32 @@ public:
 
 	// 終了処理
 	void Finalize();
+	// 当たったときの処理
+	void HitAction(InterSectData) override;
+	// ステートを更新する
+	void ChangeState(IWeapon* state);
+
+private:
 
 	// モデルの生成
 	void CreateModel(ID3D11Device1* device);
 	// ステートを生成
 	void CreateState();
-	// ステートを更新する
-	void ChangeState(IWeapon* state);
+	// 当たり判定の生成
+	void CreateCollision();
 
-private:
-	// 位置
-	DirectX::SimpleMath::Vector3 m_position;
-	// 速度
-	DirectX::SimpleMath::Vector3 m_velocity;
-	// 角度
-	DirectX::SimpleMath::Vector3 m_angle;
-	// ワールド行列
-	DirectX::SimpleMath::Matrix m_worldMatrix;
-	// モデル
-	std::unique_ptr<DirectX::Model> m_model;
+
+
+	DirectX::SimpleMath::Vector3 m_position;	// 位置
+	DirectX::SimpleMath::Vector3 m_velocity;	// 速度
+	DirectX::SimpleMath::Vector3 m_angle;		// 角度
+	DirectX::SimpleMath::Matrix m_worldMatrix;	// ワールド行列
+	std::unique_ptr<DirectX::Model> m_model;	// モデル
+
+	// 金棒の当たり判定1(実際の当たり判定)　
+	std::unique_ptr<DirectX::BoundingOrientedBox>	m_collision;
+	// オリジナルの当たり判定 (オリジナルは生成をするだけのもの)
+	DirectX::BoundingOrientedBox m_originalBox;
 
 private:
 	// 現在のステート
@@ -98,5 +109,4 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
 	// プレイシーン（当たり判定の処理に使用）
 	PlayScene* m_playScene;
-
 };

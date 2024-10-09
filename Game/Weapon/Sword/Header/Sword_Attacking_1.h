@@ -14,11 +14,6 @@ public:
 	static const float RADIAN_90;
 	static const float ATTACK_TIME;
 
-
-	// 境界ボックスの当たり判定を渡す
-	DirectX::BoundingOrientedBox GetBoundingBox(){ return m_boundingBox; }
-
-
 	// コンストラクタ
 	Sword_Attacking_1(Sword* sword);
 	// デストラクタ
@@ -40,6 +35,8 @@ public:
 	// 終了処理
 	void Finalize()override;
 
+	void HitAction(InterSectData data)override;
+
 private:
 	// 座標
 	DirectX::SimpleMath::Vector3 m_position;
@@ -57,10 +54,6 @@ private:
 	// このシーンになってからのステート
 	float m_totalSeconds;
 
-	// 剣の当たり判定1(実際の当たり判定)　
-	DirectX::BoundingOrientedBox m_boundingBox;
-	// オリジナルの当たり判定 (オリジナルは生成をするだけのもの)
-	DirectX::BoundingOrientedBox m_originalBox;
 
 private:
 	// ソードの元を取得

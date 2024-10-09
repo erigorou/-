@@ -60,7 +60,6 @@ void Cudgel_Sweeping::Initialize()
 {
 	m_worldMatrix = Matrix::Identity;			// ワールド行列の初期化
 	m_model = m_cudgel->GetModel();
-	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model);	// モデルから大きさを取得
 }
 
 
@@ -76,7 +75,7 @@ void Cudgel_Sweeping::PreUpdate()
 	//////////////////////////////////////エフェクト用頂点配列の初期化///////////////////////////////////////////
 	m_rootPos.clear();
 	m_tipPos.clear();
-	m_canGenerateSlamParticles = true;									// エフェクト生成フラグをtrueにする
+	m_canGenerateSlamParticles = true;		// エフェクト生成フラグをtrueにする
 }
 
 
@@ -97,7 +96,7 @@ void Cudgel_Sweeping::Update(float elapsedTime)
 	CalculateModelMatrix();				// ワールド行列を計算
 	GetCudgelBothEnds(m_totalSeconds);	// 両端を取得する
 
-	m_originalBox.Transform(m_boundingBox, m_worldMatrix);	// 当たり判定を移動させる　※
+	m_cudgel->SetCollisionPosition(m_worldMatrix);		// 当たり判定の位置を設定する
 }
 
 
@@ -108,14 +107,13 @@ void Cudgel_Sweeping::UpdateCudgelRotation()
 {
 	float t = 0.0f;  // 正規化された経過時間
 
-	// ---- 横方向の回転（左右の回転）----
 	if (m_totalSeconds <= CHARGE_TIME) {
-				t = m_totalSeconds / CHARGE_TIME;  // 0 ~ 1 に正規化
-		m_angleRL = -CHARGE_ROTATE_ANGLE * m_easying->easeOutCirc(t);  // 30度左回転
+				t = m_totalSeconds / CHARGE_TIME;						// 0 ~ 1 に正規化
+		m_angleRL = -CHARGE_ROTATE_ANGLE * m_easying->easeOutCirc(t);	// 30度左回転
 	}
 
 	else if (m_totalSeconds >= WINDUP_TIME && m_totalSeconds <= ATTACK_TIME) {
-		t = (m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME);  // 0 ~ 1 に正規化
+		t = (m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME);					// 0 ~ 1 に正規化
 		m_angleRL = CHARGE_ROTATE_ANGLE + WINDUP_ROTATE_ANGLE * m_easying->easeOutBack(t);  // 30度から60度右回転
 	}
 }
@@ -241,5 +239,9 @@ void Cudgel_Sweeping::Render(ID3D11DeviceContext* context,
 
 // 終了処理
 void Cudgel_Sweeping::Finalize()
+{
+}
+
+void Cudgel_Sweeping::HitAction(InterSectData data)
 {
 }

@@ -3,31 +3,34 @@
 #pragma once
 #include "Interface/IWeapon.h"
 #include "Game/Scene/PlayScene.h"
+#include "Interface/IObject.h"
 
 // 剣の状態 ========================================================
-#include "Game/Weapon/Sword/Header/Sword_Idling.h"					// 待機状態
+#include "Game/Weapon/Sword/Header/Sword_Idling.h"			// 待機状態
 #include "Game/Weapon/Sword/Header/Sword_Attacking_1.h"		// 攻撃状態１
 
 
 
-class Sword
+class Sword : public IObject
 {
 public:
 	// 固定値
 	static const float SWORD_SCALE;	// 刀の大きさ
 	static const DirectX::SimpleMath::Vector3 SWORD_DIR_FOR_PLAYER;	// 刀とプレイヤの離れてる距離
 
-public:
-	// モデルを設定する
-	DirectX::Model* GetModel()const { return m_model.get(); }
-	// プレイシーンの取得
-	PlayScene* GetPlayScene()const { return m_playScene; }
 
+	DirectX::Model* GetModel()		const { return m_model.get();	}	// モデルのゲッター
+	PlayScene*	GetPlayScene()		const { return m_playScene;		}	// プレイシーンのゲッター
 
 	// 状態のゲッター
-	IWeapon* GetIdlingState()const { return m_swordIdling.get(); }				// 待機状態
-	IWeapon* GetAttacking_1State()const { return m_swordAttacking_1.get(); }	// 攻撃状態１
+	IWeapon* GetIdlingState()		const { return m_swordIdling.get();		}	// 待機状態
+	IWeapon* GetAttacking_1State()	const { return m_swordAttacking_1.get();}	// 攻撃状態１
 
+	// 位置のゲッター
+	DirectX::SimpleMath::Vector3 GetPosition() override { return m_position; }
+
+	// 当たり判定の位置の設定
+	void SetCollisionPosition(DirectX::SimpleMath::Matrix mat) { m_originalBox.Transform(*m_collision.get(), mat); }
 public:
 	// コンストラクタ
 	Sword(PlayScene* playScene);
@@ -54,28 +57,35 @@ public:
 		ID3D11DeviceContext* context,
 		DirectX::CommonStates* states,
 		const DirectX::SimpleMath::Matrix& view,
+
 		const DirectX::SimpleMath::Matrix& projection
 	);
 
 	// 終了処理
 	void Finalize();
 
-	// ステートを生成
-	void CreateState();
 	// ステートを更新する
 	void ChangeState(IWeapon* state);
 
+	// 当たったときの処理
+	void HitAction(InterSectData data)  override;
+
 private:
-	// 位置
-	DirectX::SimpleMath::Vector3 m_position;
-	// 速度
-	DirectX::SimpleMath::Vector3 m_velocity;
-	// 角度
-	DirectX::SimpleMath::Vector3 m_angle;
-	// ワールド行列
-	DirectX::SimpleMath::Matrix m_worldMatrix;
-	// モデル
-	std::unique_ptr<DirectX::Model> m_model;
+	// ステートを生成
+	void CreateState();
+	void CreateCollision();
+
+
+	DirectX::SimpleMath::Vector3 m_position;	// 位置
+	DirectX::SimpleMath::Vector3 m_velocity;	// 速度
+	DirectX::SimpleMath::Vector3 m_angle;		// 角度
+	DirectX::SimpleMath::Matrix m_worldMatrix;	// ワールド行列
+	std::unique_ptr<DirectX::Model> m_model;	// モデル
+
+	// 剣の当たり判定１（実際の当たり判定）
+	std::unique_ptr<DirectX::BoundingOrientedBox> m_collision;
+	// オリジナルの当たり判定（オリジナルは生成をするだけのもの）
+	DirectX::BoundingOrientedBox m_originalBox;
 
 private:
 	// 現在のステート
@@ -84,7 +94,6 @@ private:
 	std::unique_ptr<Sword_Idling> m_swordIdling;
 	std::unique_ptr<Sword_Attacking_1> m_swordAttacking_1;
 
-private:
 	// ベーシックエフェクト
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;

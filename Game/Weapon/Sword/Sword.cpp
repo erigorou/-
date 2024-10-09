@@ -13,7 +13,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/Microsoft/DebugDraw.h"
 #include "DeviceResources.h"
-
+#include "Libraries/MyLib/Collision.h"
 #include "Sword.h"
 #include "Game/Player/Player.h"
 
@@ -70,6 +70,8 @@ void Sword::Initialize()
 	// ステートを作成
 	CreateState();
 
+	CreateCollision();
+
 	// ワールド座標の初期化
 	m_worldMatrix *= DirectX::SimpleMath::Matrix::CreateScale(SWORD_SCALE);
 
@@ -89,7 +91,16 @@ void Sword::CreateState()
 
 	// 現在のステートを設定
 	m_currentState = m_swordIdling.get();
-	//m_currentState = m_swordAttacking_1.get();
+}
+
+/// <summary>
+/// 当たり判定の生成
+/// </summary>
+void Sword::CreateCollision()
+{
+	m_collision =
+		std::make_unique<DirectX::BoundingOrientedBox>
+		(Collision::Get_BoundingOrientedBox_FromMODEL(m_model.get()));
 }
 
 // --------------------------------------------
@@ -146,13 +157,15 @@ void Sword::DrawBoundingBox(
 	m_basicEffect->SetProjection(projection);
 	m_basicEffect->Apply(context);
 
-	// 描画
+
 	m_primitiveBatch->Begin();
+
 	DX::Draw(
 		m_primitiveBatch.get(),				// プリミティブバッチ
-		m_currentState->GetBoundingBox(),	// 当たり判定
+		*m_collision,						// 描画する境界ボックス
 		Colors::Yellow						// 色
 	);
+
 	m_primitiveBatch->End();
 }
 
@@ -175,4 +188,9 @@ void Sword::ChangeState(IWeapon* state)
 	m_currentState = state;
 	// 新しいステートの事前処理を行う
 	m_currentState->PreUpdate();
+}
+
+void Sword::HitAction(InterSectData data)
+{
+	m_currentState->HitAction(data);
 }

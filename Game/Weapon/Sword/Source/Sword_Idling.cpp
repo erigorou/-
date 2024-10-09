@@ -42,9 +42,6 @@ void Sword_Idling::Initialize()
 	m_model = m_sword->GetModel();
 	// ワールド行列を初期化
 	m_worldMatrix = Matrix::Identity;
-
-	// モデルの大きさに合わせてOBBを設定する
-	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model);
 }
 
 // 事前処理
@@ -69,8 +66,7 @@ void Sword_Idling::Update(float elapsedTime)
 		*= SimpleMath::Matrix::CreateRotationY(-m_angle)									// 回転を行うx
 		*= SimpleMath::Matrix::CreateTranslation(m_position);								// プレイヤの位置に設定する
 
-	// ワールド行列を当たり判定にも付ける。
-	m_originalBox.Transform(m_boundingBox, m_worldMatrix);
+	m_sword->SetCollisionPosition(m_worldMatrix);
 }
 
 // 事後処理
@@ -99,5 +95,10 @@ void Sword_Idling::Render(ID3D11DeviceContext* context,
 
 // 終了処理
 void Sword_Idling::Finalize()
+{
+}
+
+
+void Sword_Idling::HitAction(InterSectData data)
 {
 }

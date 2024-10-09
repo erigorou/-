@@ -49,11 +49,6 @@ void Sword_Attacking_1::Initialize()
 	m_model = m_sword->GetModel();
 	// ワールド行列を初期化
 	m_worldMatrix = Matrix::Identity;
-
-	// モデルの大きさに合わせてOBBを設定する
-	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model);
-
-
 }
 
 
@@ -62,8 +57,6 @@ void Sword_Attacking_1::PreUpdate()
 {
 	// 経過時間のリセット
 	m_totalSeconds = 0.0f;
-	// 境界ボックスの場所をリセット
-	m_boundingBox.Center = DirectX::SimpleMath::Vector3::Zero;
 }
 
 // 更新処理
@@ -97,9 +90,8 @@ void Sword_Attacking_1::Update(float elapsedTime)
 		*= SimpleMath::Matrix::CreateRotationY(m_rot.y)									// 回転
 		*= SimpleMath::Matrix::CreateTranslation(m_position);							// プレイヤの位置に設定する
 
-
-	// 当たり判定にもワールド行列の計算を行う
-	m_originalBox.Transform(m_boundingBox, m_worldMatrix);
+	// 当たり判定の位置を設定
+	m_sword->SetCollisionPosition(m_worldMatrix);
 
 
 	// 1秒経過でステート変更
@@ -137,5 +129,10 @@ void Sword_Attacking_1::Render(ID3D11DeviceContext* context,
 
 // 終了処理
 void Sword_Attacking_1::Finalize()
+{
+}
+
+
+void Sword_Attacking_1::HitAction(InterSectData data)
 {
 }

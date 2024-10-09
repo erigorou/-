@@ -12,12 +12,6 @@ class Cudgel_Idling : public IWeapon
 {
 public:
 
-	/// <summary>
-	/// 金棒の当たり判定を取得する
-	/// </summary>
-	/// <returns>箱の当たり判定</returns>
-	DirectX::BoundingOrientedBox GetBoundingBox() { return m_boundingBox; }
-
 	// コンストラクタ
 	Cudgel_Idling(Cudgel* cudgel);
 
@@ -39,6 +33,8 @@ public:
 	// 終了処理
 	void Finalize()override;
 
+	void HitAction(InterSectData data)override;
+
 private:
 	// 座標
 	DirectX::SimpleMath::Vector3 m_position;
@@ -50,11 +46,6 @@ private:
 	DirectX::SimpleMath::Matrix m_worldMatrix;
 	// モデル
 	DirectX::Model* m_model;
-
-	// 金棒の当たり判定1(実際の当たり判定)　
-	DirectX::BoundingOrientedBox m_boundingBox;
-	// オリジナルの当たり判定 (オリジナルは生成をするだけのもの)
-	DirectX::BoundingOrientedBox m_originalBox;
 
 
 private:

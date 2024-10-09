@@ -96,11 +96,6 @@ void Game::Update(DX::StepTimer const& timer)
 {
     float elapsedTime = float(timer.GetElapsedSeconds());
 
-    // TODO: Add your game logic here.
-
-
-    // ★追記ココから↓↓↓★
-
     // 入力マネージャを更新する
     m_inputManager->Update();
 

@@ -15,10 +15,6 @@ public:
 	static const float ROTX;
 	static const float ROTY;
 
-
-	// 武器の当たり判定を取得する関数
-	DirectX::BoundingOrientedBox GetBoundingBox(){ return m_boundingBox; }
-
 	// コンストラクタ
 	Sword_Idling(Sword* sword);
 	// デストラクタ
@@ -40,6 +36,9 @@ public:
 	// 終了処理
 	void Finalize()override;
 
+	void HitAction(InterSectData data)override;
+
+
 private:
 	// 座標
 	DirectX::SimpleMath::Vector3 m_position;
@@ -52,10 +51,6 @@ private:
 	// モデル
 	DirectX::Model* m_model;
 
-	// 剣の当たり判定
-	DirectX::BoundingOrientedBox m_boundingBox;
-	// オリジナルの当たり判定 (オリジナルは生成をするだけのもの)
-	DirectX::BoundingOrientedBox m_originalBox;
 
 private:
 	// ソードの元を取得

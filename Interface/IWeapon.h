@@ -1,6 +1,6 @@
 #pragma once
 #include "pch.h"
-
+#include "Libraries/MyLib/Collision/CollisionManager.h"
 
 class IWeapon
 {
@@ -23,6 +23,7 @@ public:
 		const DirectX::SimpleMath::Matrix& projection) = 0;
 	// I—¹ˆ—
 	virtual void Finalize() = 0;
-	// •Ší‚Ì“–‚½‚è”»’è‚ğæ“¾‚·‚éŠÖ”
-	virtual DirectX::BoundingOrientedBox GetBoundingBox() = 0;
+
+
+	virtual void HitAction(InterSectData data) = 0;
 };

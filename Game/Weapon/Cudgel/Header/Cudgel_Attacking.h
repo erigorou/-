@@ -23,12 +23,6 @@ public:
 	static const DirectX::SimpleMath::Vector3 ZERO_DIREC;		// 原点から移動する地点
 
 
-	/// <summary>
-	/// 金棒の当たり判定を取得する
-	/// </summary>
-	/// <returns>箱の当たり判定</returns>
-	DirectX::BoundingOrientedBox GetBoundingBox()override { return m_boundingBox; }
-
 	// コンストラクタ
 	Cudgel_Attacking(Cudgel* cudgel);
 
@@ -50,6 +44,8 @@ public:
 	// 終了処理
 	void Finalize()override;
 	
+	void HitAction(InterSectData data)override;
+
 	// Cudgelの回転を計算する関数
 	void UpdateCudgelRotation();
 	// 初期値として使用するワールド行列を計算する関数
@@ -71,8 +67,6 @@ private:
 	float m_totalSeconds;						// ステートの経過時間
 	float m_recordPointTimer;					// 座標を記録するインターバルの計測用変数 
 
-	DirectX::BoundingOrientedBox m_boundingBox;	// 金棒の当たり判定
-	DirectX::BoundingOrientedBox m_originalBox;	// 金棒の大元となる当たり判定（初期値等が記録されている）
 
 	Cudgel*		m_cudgel;						// ステートを所有する親
 	Particle*	m_particles;					// パーティクル

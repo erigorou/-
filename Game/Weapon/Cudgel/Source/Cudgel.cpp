@@ -13,6 +13,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/Microsoft/DebugDraw.h"
 #include "DeviceResources.h"
+#include "Libraries/MyLib/Collision.h"
 
 #include "Game/Enemy/Enemy.h"
 #include "Game/Weapon/Cudgel/Header/Cudgel.h"
@@ -70,6 +71,7 @@ void Cudgel::Initialize()
 
 	CreateModel(device);	// モデルの生成
 	CreateState();			// ステートの作成
+	CreateCollision();		// 当たり判定の生成
 }
 
 
@@ -102,6 +104,13 @@ void Cudgel::CreateState()
 
 	// 初期状態を指定
 	m_currentState = m_idling.get();
+}
+
+void Cudgel::CreateCollision()
+{
+	m_collision = 
+		std::make_unique<DirectX::BoundingOrientedBox>
+		(Collision::Get_BoundingOrientedBox_FromMODEL(m_model.get()));
 }
 
 // --------------------------------
@@ -159,7 +168,7 @@ void Cudgel::DrawBoundingBox(
 	m_primitiveBatch->Begin();
 	DX::Draw(
 		m_primitiveBatch.get(),				// プリミティブバッチ
-		m_currentState->GetBoundingBox(),	// 当たり判定
+		*m_collision.get(),					// 描画する境界ボックス	
 		Colors::White						// 色
 	);
 	m_primitiveBatch->End();
@@ -188,4 +197,11 @@ void Cudgel::ChangeState(IWeapon* state)
 	m_currentState = state;
 	// 新しいステートの事前処理を行う
 	m_currentState->PreUpdate();
+}
+
+
+
+void Cudgel::HitAction(InterSectData data)
+{
+	m_currentState->HitAction(data);
 }

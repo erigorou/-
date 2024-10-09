@@ -54,8 +54,7 @@ Cudgel_Attacking::~Cudgel_Attacking()
 void Cudgel_Attacking::Initialize()
 {
 	m_worldMatrix = Matrix::Identity;			// ワールド行列の初期化
-	m_model = m_cudgel->GetModel();
-	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model);	// モデルから大きさを取得
+	m_model = m_cudgel->GetModel();				// モデルの取得
 }
 
 
@@ -94,7 +93,7 @@ void Cudgel_Attacking::Update(float elapsedTime)
 	CalculateModelMatrix();				// ワールド行列を計算
 	GetCudgelBothEnds(m_totalSeconds);	// 両端を取得する
 
-	m_originalBox.Transform(m_boundingBox, m_worldMatrix);	// 当たり判定を移動させる　※
+	m_cudgel->SetCollisionPosition(m_worldMatrix);		// 当たり判定の位置を設定する
 }
 
 
@@ -247,4 +246,10 @@ void Cudgel_Attacking::Render(ID3D11DeviceContext* context,
 // 終了処理
 void Cudgel_Attacking::Finalize()
 {
+}
+
+
+void Cudgel_Attacking::HitAction(InterSectData data)
+{
+	// 一旦何もしない
 }
