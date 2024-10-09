@@ -229,6 +229,7 @@
     <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Idling.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Sweeping.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_1.h" />
+    <ClInclude Include="Interface\IHitPoint.h" />
     <ClInclude Include="Interface\IObject.h" />
     <ClInclude Include="Interface\IUserInterface.h" />
     <ClInclude Include="Interface\IParticle.h" />

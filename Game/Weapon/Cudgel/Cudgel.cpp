@@ -93,14 +93,14 @@ void Cudgel::CreateModel(ID3D11Device1* device)
 void Cudgel::CreateState()
 {
 	// 状態の生成
-	m_idling = std::make_unique<Cudgel_Idling>(this);			// 待機
+	m_idling	= std::make_unique<Cudgel_Idling>	(this);		// 待機
 	m_attacking = std::make_unique<Cudgel_Attacking>(this);		// 攻撃
-	m_sweeping = std::make_unique<Cudgel_Sweeping>(this);		// 薙ぎ払い
+	m_sweeping	= std::make_unique<Cudgel_Sweeping>	(this);		// 薙ぎ払い
 
 	// 状態の初期化
-	m_idling->Initialize();		// 待機
-	m_attacking->Initialize();	// 攻撃
-	m_sweeping->Initialize();	// 薙ぎ払い
+	m_idling->		Initialize();	// 待機
+	m_attacking->	Initialize();	// 攻撃
+	m_sweeping->	Initialize();	// 薙ぎ払い
 
 	// 初期状態を指定
 	m_currentState = m_idling.get();

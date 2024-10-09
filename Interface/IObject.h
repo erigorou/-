@@ -8,7 +8,6 @@
 class IObject
 {
 public:
-
 	// “–‚½‚Á‚½‚Æ‚«‚Étrue‚ğİ’è‚·‚é
 	virtual void HitAction(InterSectData data) = 0;
 

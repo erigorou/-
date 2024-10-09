@@ -93,6 +93,7 @@ void Sword::CreateState()
 	m_currentState = m_swordIdling.get();
 }
 
+
 /// <summary>
 /// “–‚½‚è”»’è‚Ì¶¬
 /// </summary>
@@ -108,6 +109,7 @@ void Sword::CreateCollision()
 		m_collision.get()		// “–‚½‚è”»’è
 	);
 }
+
 
 // --------------------------------------------
 /// <summary>

@@ -13,6 +13,7 @@
 #include "Libraries/MyLib/Collision.h"
 
 #include "Game/Player/Player.h"
+#include "Game/Enemy/Enemy.h"
 #include "Game/Weapon/Sword/Header/Sword_Attacking_1.h"
 
 
@@ -57,6 +58,9 @@ void Sword_Attacking_1::PreUpdate()
 {
 	// 経過時間のリセット
 	m_totalSeconds = 0.0f;
+
+	// 当たれるようにする
+	m_sword->GetPlayScene()->GetEnemy()->CanHit(true);
 }
 
 // 更新処理
@@ -78,6 +82,11 @@ void Sword_Attacking_1::Update(float elapsedTime)
 	{
 		// y軸に更新
 		m_rot.y = XMConvertToRadians(m_totalSeconds * 1000);
+	}
+	else
+	{
+		// 当たれるようにする
+		m_sword->GetPlayScene()->GetEnemy()->CanHit(false);
 	}
 
 	// ワールド行列を更新する

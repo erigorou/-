@@ -61,7 +61,7 @@ void Sum(T a, T b)
 
 
 /// <summary>
-///	//////////// OBBCollisionç\ë¢ëÃ ////////////////////////
+///	//////////// SphereCollisionç\ë¢ëÃ ////////////////////////
 /// </summary>
 struct SphereCollision
 {

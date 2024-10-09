@@ -22,6 +22,8 @@ public:
 	static const float ENEMY_SPEED;
 	static const float ENEMY_SCALE;
 
+	static const float COOL_TIME;
+
 
 public:
 	// /////////////////“G‚ÌŠî‘bî•ñ‚ğ“n‚·ŠÖ”/////////////////////////////////////////////////////////////////////
@@ -44,6 +46,9 @@ public:
 	Enemy_Sweeping* GetEnemySweeping() const { return m_sweeping.get(); }			// “ã‚¬•¥‚¢ó‘Ô
 	EnemyApproaching* GetEnemyApproaching() const { return m_approaching.get(); }	// ’Ç”öó‘Ô
 
+
+	// Õ“Ë‚ğ‹–‰Â‚·‚é
+	void CanHit(bool flag) { m_canHit = flag; }
 
 	// Œ»İ‚ÌƒXƒe[ƒg‚ğ•Ô‚·
 	IState* GetCurrentState() const { return m_currentState; }
@@ -122,4 +127,8 @@ private:
 
 	// ‘Ì‚Ì“–‚½‚è”»’è
 	std::unique_ptr<DirectX::BoundingSphere> m_bodyCollision;
+	bool m_isHit;
+	float m_coolTime;
+
+	bool m_canHit;
 };

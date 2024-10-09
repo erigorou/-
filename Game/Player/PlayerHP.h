@@ -2,6 +2,7 @@
 
 #ifndef PLAYER_HP
 #define PLAYER_HP
+#include "Interface/IHitPoint.h"
 
 #include "pch.h"
 
@@ -16,22 +17,25 @@ public:
     ~PlayerHP() = default;          // デストラクタ
 
 
-	int  GetMaxHP   () const    { return MAX_HP; } // 最大HPの取得
-	int  GetHP      () const    { return m_hp; }    // 現在のHPの取得
-	void SetHP      (int hp)    { m_hp = hp; }      // 現在のHPの設定
+	int  GetMaxHP   () const { return MAX_HP; }  // 最大HPの取得
+	int  GetHP      () const { return m_hp; }    // 現在のHPの取得
+	void SetHP      (int hp) { m_hp = hp; }      // 現在のHPの設定
 
 
-    // HPの増減
-    void PlusPlayerHP(int hp)   { m_hp = std::min(m_hp + hp, MAX_HP); }
-    bool MinusPlayerHP(int hp)  { 
-        m_hp -= hp; 
-        return m_hp <= 0;       }
+    // 回復
+    void Heal(int hp) { m_hp = std::min(m_hp + hp, MAX_HP); }
+    
+    // ダメージ
+    bool Damage(int hp){
+		m_hp = std::max(m_hp - hp, 0);
+        return CheckPlayerDie();
+    }
 
-
+private:
     // プレイヤーが死んでいるかどうか
     bool CheckPlayerDie() const { return m_hp <= 0; }
 
-private:
+
     int m_hp;     // 現在のHP
 };
 

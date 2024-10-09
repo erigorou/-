@@ -18,8 +18,9 @@
 #include "Interface/IState.h"
 
 // 固定値
-const float Enemy::ENEMY_SPEED = 0.1f;
-const float Enemy::ENEMY_SCALE = 0.4f;
+const float Enemy::ENEMY_SPEED	= 0.1f;
+const float Enemy::ENEMY_SCALE	= 0.4f;
+const float Enemy::COOL_TIME	= 1.0f;
 
 // --------------------------------
 //  コンストラクタ
@@ -33,6 +34,9 @@ Enemy::Enemy(PlayScene* playScene)
 	, m_position{0.f, 0.f, 0.f}
 	, m_angle{0.f}
 	, m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
+	, m_isHit(false)
+	, m_coolTime()
+	, m_canHit(false)
 {
 }
 
@@ -166,13 +170,17 @@ void Enemy::Update(float elapsedTime)
 	m_velocity *= Enemy::ENEMY_SPEED;
 	m_position += DirectX::SimpleMath::Vector3::Transform(m_velocity, m_worldMatrix);
 
-	// ワールド行列の計算
+	// ワールド行列の計算@;;;;;;;;;;;;;;;;
 	m_worldMatrix
 		*= DirectX::SimpleMath::Matrix::CreateScale(ENEMY_SCALE)			// サイズ計算
 		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);		// 位置の設定
 
 	// 当たり判定の更新
 	m_bodyCollision->Center = m_position;
+
+	//////////////////////////////////クールタイムの計測を行う//////////////////////////////////
+	if (m_isHit && m_coolTime < COOL_TIME) {	m_coolTime += elapsedTime;				}
+	else if (m_coolTime >= COOL_TIME	 ) {	m_isHit = false;	m_coolTime = 0.0f;	}
 }
 
 
@@ -198,6 +206,17 @@ void Enemy::Render(
 	CommonResources* resources = CommonResources::GetInstance();
 	auto debugString = resources->GetDebugString();
 	debugString->AddString("EnemyPos : %f, %f, %f", m_position.x, m_position.y, m_position.z);
+
+	if (m_isHit)
+	{
+		debugString->AddString("Hit");
+	}
+
+	if (m_canHit)
+	{
+		debugString->AddString("CanHit");
+	}
+
 #endif // _DEBUG
 }
 
@@ -251,5 +270,14 @@ void Enemy::Finalize()
 // --------------------------------
 void Enemy::HitAction(InterSectData data)
 {
-
+	if ( 
+		! m_isHit && 
+		m_canHit &&
+		data.objType == ObjectType::Sword &&
+		data.colType == CollisionType::OBB)
+	{
+		m_hp->Damage(1);
+		m_isHit = true;
+		m_canHit = false;
+	}
 }

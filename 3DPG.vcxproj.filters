@@ -194,6 +194,7 @@
     <ClInclude Include="Game\UI\Header\EnemyHPUI.h" />
     <ClInclude Include="Libraries\MyLib\Collision\CollisionManager.h" />
     <ClInclude Include="Interface\IObject.h" />
+    <ClInclude Include="Interface\IHitPoint.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
