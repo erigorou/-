@@ -16,12 +16,14 @@
 #include "Game/Enemy/Enemy.h"
 #include "Game/Weapon/Cudgel/Header/Cudgel_Attacking.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
+#include "Libraries/MyLib/EasingFunctions.h"
 
 
 // 固定値 ==================================
-const float Cudgel_Attacking::CHARGE_TIME = 1.0f;	// 振りかざし時間
-const float Cudgel_Attacking::WINDUP_TIME = 1.4f;	// 待機
+const float Cudgel_Attacking::CHARGE_TIME = 0.8f;	// 振りかざし時間
+const float Cudgel_Attacking::WINDUP_TIME = 1.0f;	// 待機
 const float Cudgel_Attacking::ATTACK_TIME = 1.7f;	// 降り下ろし
+const float Cudgel_Attacking::END_TIME = 2.2f;		// 終了時間
 
 const Vector3 Cudgel_Attacking::ARM_LENGTH = Vector3(0.0f, 4.0f, 0.0f);
 const Vector3 Cudgel_Attacking::ZERO_DIREC = Vector3(6.0f, 1.0f, 0.0f);
@@ -106,24 +108,40 @@ void Cudgel_Attacking::UpdateCudgelRotation()
 
 	// -----------------------------------------------------------------
 	// 敵の攻撃の流れ
-	// 振りかざす（1秒）→ 待機（0.4秒）→ 降り下ろす(0.3秒) → 後隙
+	// 振りかざす（1秒）→ 待機（0.2秒）→ 降り下ろす(0.7秒) → 後隙
 
+	// 振りかざす
 	if (m_totalSeconds < CHARGE_TIME)
-		m_angleUD = DirectX::XMConvertToRadians(-20.0f * (m_totalSeconds / 0.5f));// 20度上げる
-
+	{
+		// 20度上げる（0.5秒間で）
+		float t = m_totalSeconds / CHARGE_TIME; // 0 ~ 1 に正規化
+		m_angleUD = DirectX::XMConvertToRadians(-40.0f * Easying::easeInOutBack(t));
+	}
+	// 待機状態
+	else if (m_totalSeconds > CHARGE_TIME && m_totalSeconds <= WINDUP_TIME)
+	{
+		// 振りかざしの角度を保持
+		m_angleUD = DirectX::XMConvertToRadians(-40.0f);
+	}
+	// 降り下ろす
 	else if (m_totalSeconds > WINDUP_TIME && m_totalSeconds < ATTACK_TIME)
 	{
-		m_angleUD = DirectX::XMConvertToRadians(-20.0f + 115.0f * ((m_totalSeconds - 1.4f) / 0.3f));// 95度振り下ろす
+		// 20度から115度振り下ろす（0.3秒間で）
+		float t = (m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME); // 0 ~ 1 に正規化
+		m_angleUD = DirectX::XMConvertToRadians(-40.0f + 135.0f * Easying::easeInQuint(t));
 		canHit = true;
 	}
-
-	// 敵の降り下ろし攻撃終了後にパーティクルを1度だけ生成する
-	else if (m_totalSeconds > ATTACK_TIME && m_canGenerateSlamParticles)
+	// 後隙のパーティクル生成
+	else if (m_totalSeconds > ATTACK_TIME)
 	{
-		m_canGenerateSlamParticles = false;
-		m_cudgel->GetPlayScene()->GetParticle()->CreateSlamDust(m_tipPos[m_tipPos.size() - 1]);
+		if (m_canGenerateSlamParticles)
+		{
+			m_canGenerateSlamParticles = false;
+			m_cudgel->GetPlayScene()->GetParticle()->CreateSlamDust(m_tipPos[m_tipPos.size() - 1]);
+		}
 	}
 
+	// プレイヤーに攻撃可能状態を通知
 	m_cudgel->GetPlayScene()->GetPlayer()->CanHit(canHit);
 }
 
@@ -176,28 +194,25 @@ void Cudgel_Attacking::GetCudgelBothEnds(float _totalTime)
 		*= CalculateAttackMatrix();
 	tip = Vector3::Transform(Vector3::Zero, tipMat);		// モデルの先端の位置を取得
 
-	if (m_recordPointTimer >= 0.025f)
+	m_recordPointTimer = 0.0f;
+	m_rootPos.push_back(root);		// 根本座標リストの先端に記録
+	m_tipPos .push_back(tip);		// 頂点座標リストの先端に記録
+
+	using namespace DirectX;
+
+	// 2個以上ない場合は処理を抜ける
+	float max = m_rootPos.size() - 1;
+	if (max >= 1)
 	{
-		m_recordPointTimer = 0.0f;
-		m_rootPos.push_back(root);		// 根本座標リストの先端に記録
-		m_tipPos .push_back(tip);		// 頂点座標リストの先端に記録
-
-		using namespace DirectX;
-
-		// 2個以上ない場合は処理を抜ける
-		float max = m_rootPos.size() - 1;
-		if (max >= 1)
+		VertexPositionTexture ver[4] =	// 頂点情報の生成（パーティクルの生成に必要）
 		{
-			VertexPositionTexture ver[4] =	// 頂点情報の生成（パーティクルの生成に必要）
-			{
-				VertexPositionTexture(m_tipPos [max]		,Vector2(0, 0)),	// 左上
-				VertexPositionTexture(m_tipPos [max - 1]	,Vector2(1, 0)),	// 右上
-				VertexPositionTexture(m_rootPos[max - 1]	,Vector2(1, 1)),	// 右下
-				VertexPositionTexture(m_rootPos[max]		,Vector2(0, 1)),	// 左下
-			};
+			VertexPositionTexture(m_tipPos [max]		,Vector2(0, 0)),	// 左上
+			VertexPositionTexture(m_tipPos [max - 1]	,Vector2(1, 0)),	// 右上
+			VertexPositionTexture(m_rootPos[max - 1]	,Vector2(1, 1)),	// 右下
+			VertexPositionTexture(m_rootPos[max]		,Vector2(0, 1)),	// 左下
+		};
 
-			m_particles->CreateSwordTrial(ver);	// パーティクルの生成
-		}
+		m_particles->CreateSwordTrial(ver);	// パーティクルの生成
 	}
 }
 

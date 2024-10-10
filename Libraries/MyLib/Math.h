@@ -107,23 +107,18 @@ public:
 	}
 
 
+	/// <summary>
+	/// min <= return <= max の範囲で乱数を生成する
+	/// </summary>
+	/// <param name="min">最低値</param>
+	/// <param name="max">最高値</param>
+	/// <returns></returns>
 	static int RandomInt(int min, int max)
 	{
-		std::random_device rnd;
-		std::mt19937 mt(rnd());
-		std::uniform_int_distribution<> rand(min, max);
-
-		return rand(mt);
-	}
-
-
-	static float randomFloat(float min, float max)
-	{
-		std::random_device rnd;
-		std::mt19937 mt(rnd());
-		std::uniform_real_distribution<float> rand(min, max);
-
-		return rand(mt);
+		std::random_device seed;							// ランダムなシード値を生成
+		std::default_random_engine engine(seed());			// シード値を元に乱数生成エンジンを定義
+		std::uniform_int_distribution<> random(min, max);	// minからmaxまでの一様乱数生成器を定義
+		return random(engine);								// 乱数を生成して返す
 	}
 };
 

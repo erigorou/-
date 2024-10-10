@@ -5,7 +5,7 @@
 class Cudgel;
 class Enemy;
 class Particle;
-
+class Easying;
 
 /// <summary>
 /// UŒ‚ó‘Ô

@@ -8,7 +8,7 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-class EasyingFunctions
+class Easying
 {
 
 public:
@@ -16,7 +16,7 @@ public:
 /// Ease-in Sine 関数
 /// </summary>
 /// <param name="x">0.0から1.0までの入力値</param>
- float easeInSine(float x) {
+ static float easeInSine(float x) {
 return 1 - cos((x * M_PI) / 2);
 }
 
@@ -24,7 +24,7 @@ return 1 - cos((x * M_PI) / 2);
  /// Ease-out Sine 関数
  /// </summary>
  /// <param name="x">0.0から1.0までの入力値</param>
-  float easeOutSine(float x) {
+ static float easeOutSine(float x) {
  return sin((x * M_PI) / 2);
  }
 
@@ -32,7 +32,7 @@ return 1 - cos((x * M_PI) / 2);
   /// Ease-in-out Sine 関数
   /// </summary>
   /// <param name="x">0.0から1.0までの入力値</param>
-   float easeInOutSine(float x) {
+  static float easeInOutSine(float x) {
   return -(cos(M_PI * x) - 1) / 2;
   }
 
@@ -40,7 +40,7 @@ return 1 - cos((x * M_PI) / 2);
    /// Ease-in Quad 関数
    /// </summary>
    /// <param name="x">0.0から1.0までの入力値</param>
-float easeInQuad(float x) {
+ static float easeInQuad(float x) {
    return x * x;
    }
 
@@ -48,7 +48,7 @@ float easeInQuad(float x) {
 /// Ease-out Quad 関数
 /// </summary>
 /// <param name="x">0.0から1.0までの入力値</param>
- float easeOutQuad(float x) {
+ static float easeOutQuad(float x) {
 return 1 - (1 - x) * (1 - x);
 }
 
@@ -56,7 +56,7 @@ return 1 - (1 - x) * (1 - x);
  /// Ease-in-out Quad 関数
  /// </summary>
  /// <param name="x">0.0から1.0までの入力値</param>
-  float easeInOutQuad(float x) {
+ static float easeInOutQuad(float x) {
  return x < 0.5 ? 2 * x * x : 1 - pow(-2 * x + 2, 2) / 2;
  }
 
@@ -64,7 +64,7 @@ return 1 - (1 - x) * (1 - x);
   /// Ease-in Cubic 関数
   /// </summary>
   /// <param name="x">0.0から1.0までの入力値</param>
-   float easeInCubic(float x) {
+ static  float easeInCubic(float x) {
   return x * x * x;
   }
 
@@ -72,7 +72,7 @@ return 1 - (1 - x) * (1 - x);
    /// Ease-out Cubic 関数
    /// </summary>
    /// <param name="x">0.0から1.0までの入力値</param>
-float easeOutCubic(float x) {
+static float easeOutCubic(float x) {
    return 1 - pow(1 - x, 3);
    }
 
@@ -80,7 +80,7 @@ float easeOutCubic(float x) {
 /// Ease-in-out Cubic 関数
 /// </summary>
 /// <param name="x">0.0から1.0までの入力値</param>
- float easeInOutCubic(float x) {
+ static float easeInOutCubic(float x) {
 return x < 0.5 ? 4 * x * x * x : 1 - pow(-2 * x + 2, 3) / 2;
 }
 
@@ -88,7 +88,7 @@ return x < 0.5 ? 4 * x * x * x : 1 - pow(-2 * x + 2, 3) / 2;
  /// Ease-in Quart 関数
  /// </summary>
  /// <param name="x">0.0から1.0までの入力値</param>
-  float easeInQuart(float x) {
+ static float easeInQuart(float x) {
  return x * x * x * x;
  }
 
@@ -96,7 +96,7 @@ return x < 0.5 ? 4 * x * x * x : 1 - pow(-2 * x + 2, 3) / 2;
   /// Ease-out Quart 関数
   /// </summary>
   /// <param name="x">0.0から1.0までの入力値</param>
-   float easeOutQuart(float x) {
+ static float easeOutQuart(float x) {
   return 1 - pow(1 - x, 4);
   }
 
@@ -104,7 +104,7 @@ return x < 0.5 ? 4 * x * x * x : 1 - pow(-2 * x + 2, 3) / 2;
    /// Ease-in-out Quart 関数
    /// </summary>
    /// <param name="x">0.0から1.0までの入力値</param>
-float easeInOutQuart(float x) {
+ static float easeInOutQuart(float x) {
    return x < 0.5 ? 8 * x * x * x * x : 1 - pow(-2 * x + 2, 4) / 2;
    }
 
@@ -112,7 +112,7 @@ float easeInOutQuart(float x) {
 /// Ease-in Quint 関数
 /// </summary>
 /// <param name="x">0.0から1.0までの入力値</param>
- float easeInQuint(float x) {
+ static float easeInQuint(float x) {
 return x * x * x * x * x;
 }
 
@@ -120,7 +120,7 @@ return x * x * x * x * x;
  /// Ease-out Quint 関数
  /// </summary>
  /// <param name="x">0.0から1.0までの入力値</param>
-  float easeOutQuint(float x) {
+ static float easeOutQuint(float x) {
  return 1 - pow(1 - x, 5);
  }
 
@@ -128,7 +128,7 @@ return x * x * x * x * x;
   /// Ease-in-out Quint 関数
   /// </summary>
   /// <param name="x">0.0から1.0までの入力値</param>
-   float easeInOutQuint(float x) {
+  static float easeInOutQuint(float x) {
   return x < 0.5 ? 16 * x * x * x * x * x : 1 - pow(-2 * x + 2, 5) / 2;
   }
 
@@ -136,7 +136,7 @@ return x * x * x * x * x;
    /// Ease-in Expo 関数
    /// </summary>
    /// <param name="x">0.0から1.0までの入力値</param>
-float easeInExpo(float x) {
+  static float easeInExpo(float x) {
    return x == 0 ? 0 : pow(2, 10 * x - 10);
    }
 
@@ -144,7 +144,7 @@ float easeInExpo(float x) {
 /// Ease-out Expo 関数
 /// </summary>
 /// <param name="x">0.0から1.0までの入力値</param>
- float easeOutExpo(float x) {
+ static float easeOutExpo(float x) {
 return x == 1 ? 1 : 1 - pow(2, -10 * x);
 }
 
@@ -152,7 +152,7 @@ return x == 1 ? 1 : 1 - pow(2, -10 * x);
  /// Ease-in-out Expo 関数
  /// </summary>
  /// <param name="x">0.0から1.0までの入力値</param>
-  float easeInOutExpo(float x) {
+ static float easeInOutExpo(float x) {
  return x == 0 ? 0 : x == 1 ? 1 : x < 0.5 ? pow(2, 20 * x - 10) / 2 : (2 - pow(2, -20 * x + 10)) / 2;
  }
 
@@ -160,7 +160,7 @@ return x == 1 ? 1 : 1 - pow(2, -10 * x);
   /// Ease-in Circ 関数
   /// </summary>
   /// <param name="x">0.0から1.0までの入力値</param>
-   float easeInCirc(float x) {
+  static float easeInCirc(float x) {
   return 1 - sqrt(1 - pow(x, 2));
   }
 
@@ -168,7 +168,7 @@ return x == 1 ? 1 : 1 - pow(2, -10 * x);
    /// Ease-out Circ 関数
    /// </summary>
    /// <param name="x">0.0から1.0までの入力値</param>
-float easeOutCirc(float x) {
+ static float easeOutCirc(float x) {
    return sqrt(1 - pow(x - 1, 2));
    }
 
@@ -176,7 +176,7 @@ float easeOutCirc(float x) {
 /// Ease-in-out Circ 関数
 /// </summary>
 /// <param name="x">0.0から1.0までの入力値</param>
- float easeInOutCirc(float x) {
+ static float easeInOutCirc(float x) {
 return x < 0.5 ? (1 - sqrt(1 - pow(2 * x, 2))) / 2 : (sqrt(1 - pow(-2 * x + 2, 2)) + 1) / 2;
 }
 
@@ -184,7 +184,7 @@ return x < 0.5 ? (1 - sqrt(1 - pow(2 * x, 2))) / 2 : (sqrt(1 - pow(-2 * x + 2, 2
  /// Ease-in Back 関数
  /// </summary>
  /// <param name="x">0.0から1.0までの入力値</param>
-  float easeInBack(float x) {
+  static float easeInBack(float x) {
  const float c1 = 1.70158;
  const float c3 = c1 + 1;
  return c3 * x * x * x - c1 * x * x;
@@ -194,7 +194,7 @@ return x < 0.5 ? (1 - sqrt(1 - pow(2 * x, 2))) / 2 : (sqrt(1 - pow(-2 * x + 2, 2
   /// Ease-out Back 関数
   /// </summary>
   /// <param name="x">0.0から1.0までの入力値</param>
-   float easeOutBack(float x) {
+  static float easeOutBack(float x) {
   const float c1 = 1.70158;
   const float c3 = c1 + 1;
   return 1 + c3 * pow(x - 1, 3) + c1 * pow(x - 1, 2);
@@ -204,7 +204,7 @@ return x < 0.5 ? (1 - sqrt(1 - pow(2 * x, 2))) / 2 : (sqrt(1 - pow(-2 * x + 2, 2
    /// Ease-in-out Back 関数
    /// </summary>
    /// <param name="x">0.0から1.0までの入力値</param>
-float easeInOutBack(float x) {
+ static float easeInOutBack(float x) {
    const float c1 = 1.70158;
    const float c2 = c1 * 1.525;
    return x < 0.5
@@ -216,7 +216,7 @@ float easeInOutBack(float x) {
 /// Ease-in Elastic 関数
 /// </summary>
 /// <param name="x">0.0から1.0までの入力値</param>
- float easeInElastic(float x) {
+ static float easeInElastic(float x) {
 const float c4 = (2 * M_PI) / 3;
 return x == 0 ? 0 : x == 1 ? 1 : -pow(2, 10 * x - 10) * sin((x * 10 - 10.75) * c4);
 }
@@ -225,7 +225,7 @@ return x == 0 ? 0 : x == 1 ? 1 : -pow(2, 10 * x - 10) * sin((x * 10 - 10.75) * c
  /// Ease-out Elastic 関数
  /// </summary>
  /// <param name="x">0.0から1.0までの入力値</param>
-  float easeOutElastic(float x) {
+ static float easeOutElastic(float x) {
  const float c4 = (2 * M_PI) / 3;
  return x == 0 ? 0 : x == 1 ? 1 : pow(2, -10 * x) * sin((x * 10 - 0.75) * c4) + 1;
  }
@@ -234,7 +234,7 @@ return x == 0 ? 0 : x == 1 ? 1 : -pow(2, 10 * x - 10) * sin((x * 10 - 10.75) * c
   /// Ease-in-out Elastic 関数
   /// </summary>
   /// <param name="x">0.0から1.0までの入力値</param>
-   float easeInOutElastic(float x) {
+  static float easeInOutElastic(float x) {
   const float c5 = (2 * M_PI) / 4.5;
   return x == 0 ? 0 : x == 1 ? 1 : x < 0.5
   ? -(pow(2, 20 * x - 10) * sin((20 * x - 11.125) * c5)) / 2
@@ -245,7 +245,7 @@ return x == 0 ? 0 : x == 1 ? 1 : -pow(2, 10 * x - 10) * sin((x * 10 - 10.75) * c
    /// Ease-in Bounce 関数
    /// </summary>
    /// <param name="x">0.0から1.0までの入力値</param>
-float easeInBounce(float x) {
+ static float easeInBounce(float x) {
    return 1 - easeOutBounce(1 - x);
    }
 
@@ -253,7 +253,7 @@ float easeInBounce(float x) {
 /// Ease-out Bounce 関数
 /// </summary>
 /// <param name="x">0.0から1.0までの入力値</param>
- float easeOutBounce(float x) {
+ static float easeOutBounce(float x) {
 const float n1 = 7.5625;
 const float d1 = 2.75;
 if (x < 1 / d1) {
@@ -274,7 +274,7 @@ return n1 * (x -= 2.625 / d1) * x + 0.984375;
  /// Ease-in-out Bounce 関数
  /// </summary>
  /// <param name="x">0.0から1.0までの入力値</param>
- float easeInOutBounce(float x) {
+ static float easeInOutBounce(float x) {
 	 return x < 0.5
 		 ? (1 - easeOutBounce(1 - 2 * x)) / 2
 		 : (1 + easeOutBounce(2 * x - 1)) / 2;

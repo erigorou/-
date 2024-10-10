@@ -5,7 +5,7 @@
 
 class Enemy;
 class Player;
-class EasyingFunctions;
+class Easying;
 
 // 敵の薙ぎ払いステートを定義
 class Enemy_Sweeping : public IState
@@ -49,8 +49,6 @@ private:
 	Enemy* m_enemy;				// 敵（ステートの元）	
 	DirectX::Model* m_model;	// モデル
 
-
-	std::unique_ptr<EasyingFunctions> m_easying;	// イージング関数
 };
 
 #endif		// ENEMY_SWEEPING_DEFINED

@@ -1,3 +1,34 @@
-﻿  EnemyApproaching.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\EnemyApproaching.cpp(149,7): warning C4189: 'debugString': ローカル変数が初期化されましたが、参照されていません
+﻿  Cudgel_Attacking.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(20,10): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(28,12): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(36,31): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(60,11): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(76,13): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(84,10): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(100,12): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(108,13): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(124,11): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(132,12): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(140,13): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(148,10): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(156,11): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(164,12): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(172,15): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(180,10): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(200,33): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(210,13): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(221,10): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(230,11): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(239,12): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(263,33): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(266,34): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Libraries\MyLib\EasingFunctions.h(269,35): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Attacking.cpp(204,12): warning C4244: '初期化中': 'unsigned __int64' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Attacking.cpp(209,36): warning C4244: '引数': 'float' から 'const unsigned __int64' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Attacking.cpp(210,40): warning C4244: '引数': 'float' から 'const unsigned __int64' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Attacking.cpp(211,40): warning C4244: '引数': 'float' から 'const unsigned __int64' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Attacking.cpp(212,36): warning C4244: '引数': 'float' から 'const unsigned __int64' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Attacking.cpp(179,48): warning C4100: '_totalTime': 引数は関数の本体部で 1 度も参照されません。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Attacking.cpp(245,7): warning C4189: 'debugString': ローカル変数が初期化されましたが、参照されていません
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Attacking.cpp(273,48): warning C4100: 'data': 引数は関数の本体部で 1 度も参照されません。
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe

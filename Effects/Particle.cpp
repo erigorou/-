@@ -122,8 +122,8 @@ void Particle::CreateTrailDust(float elapsedTimer)
 		Vector3(m_playerPosition.x, m_playerPosition.y, m_playerPosition.z),		//	基準座標
 		Vector3(-m_playerVelocity.x, 0.75f, -m_playerVelocity.z),					//	速度
 		Vector3(1.0f, 0.1f, 1.0f),													//	加速度
-		Vector3(2.0f, 2.0f, 2.0f), SimpleMath::Vector3(4.0f, 4.0f, 4.0f),			//	初期スケール、最終スケール
-		Color(0.7f, 0.7f, 0.7f, 1.0f), SimpleMath::Color(1.0f, 1.0f, 1.0f, 0.0f)	//	初期カラー、最終カラー
+		Vector3(4.0f, 4.0f, 4.0f), SimpleMath::Vector3(0.0f, 0.0f, 0.0f),			//	初期スケール、最終スケール
+		Color(1.0f, 1.0f, 1.0f, 1.0f), SimpleMath::Color(1.0f, 1.0f, 1.0f, 0.0f)	//	初期カラー、最終カラー
 	);
 
 	// 配列に追加
@@ -142,6 +142,7 @@ void Particle::CreateSlamDust(DirectX::SimpleMath::Vector3 center)
 {
 	using namespace DirectX;
 
+	// 25個生成
 	for (int i = 0; i < 25; i++)
 	{
 		// 完全なランダムをハードウェア的に生成するためのクラスの変数
@@ -176,9 +177,9 @@ void Particle::CreateSlamDust(DirectX::SimpleMath::Vector3 center)
 
 		// パーティクル生成
 		DustTrialParticle pB(
-			1.0f,																				// 生存時間(s)
+			1.4f,																				// 生存時間(s)
 			dustPosition,																		// 基準座標
-			SimpleMath::Vector3{ -velocity.x * XZspeed, Yspeed, -velocity.z * XZspeed } * 2,	// 速度
+			SimpleMath::Vector3{ -velocity.x * XZspeed, Yspeed / 10, -velocity.z * XZspeed } * 2,	// 速度
 			SimpleMath::Vector3(0.1f, 0.1f, 0.1f),												// 加速度
 			SimpleMath::Vector3::One, SimpleMath::Vector3{ 10.0f, 25.0f, 10.0f },				// 初期スケール、最終スケール
 			SimpleMath::Color(1.f, 1.f, 1.f, 1.f),												// 初期カラー
@@ -203,7 +204,7 @@ void Particle::CreateSwordTrial(DirectX::VertexPositionTexture ver[4])
 	// SwordTrialParticleを生成
 	SwordTrialParticle sTP(
 		ver,															//	頂点情報
-		0.3f,															//	生存時間(s)
+		0.6f,															//	生存時間(s)
 		Color(1.0f, 1.0f, 1.0f, 1.0f), Color(1.0f, 1.0f, 1.0f, 0.0f)	//	初期カラー、最終カラー
 	);
 

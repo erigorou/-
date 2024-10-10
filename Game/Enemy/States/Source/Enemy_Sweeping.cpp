@@ -12,7 +12,7 @@
 #include "Game/Enemy/States/Header/Enemy_Sweeping.h"
 
 
-const float Enemy_Sweeping::CHARGE_TIME = 1.0f;		// 振りかざし時間
+const float Enemy_Sweeping::CHARGE_TIME = 0.5f;		// 振りかざし時間
 const float Enemy_Sweeping::WINDUP_TIME = 1.3f;		// 待機
 const float Enemy_Sweeping::ATTACK_TIME = 1.8f;		// 薙ぎ払い
 const float Enemy_Sweeping::END_TIME	= 2.5f;		// 終了
@@ -28,7 +28,6 @@ Enemy_Sweeping::Enemy_Sweeping(Enemy* enemy)
 	, m_enemy(enemy)
 	, m_totalSeconds()
 {
-	m_easying = std::make_unique<EasyingFunctions>();
 }
 
 
@@ -81,7 +80,7 @@ void Enemy_Sweeping::Update(const float& elapsedTime, DirectX::SimpleMath::Vecto
 	if (m_totalSeconds <= CHARGE_TIME)	// 開始からためモーション中なら
 	{
 		t = m_totalSeconds / CHARGE_TIME;
-		targetAngle = m_angle - ROTATE_ANGLE * m_easying->easeOutCirc(t);					// ためモーションを行う
+		targetAngle = m_angle - ROTATE_ANGLE * Easying::easeOutCirc(t);					// ためモーションを行う
 	}
 
 	else if (
@@ -89,7 +88,7 @@ void Enemy_Sweeping::Update(const float& elapsedTime, DirectX::SimpleMath::Vecto
 		m_totalSeconds <= ATTACK_TIME)		// 攻撃時間中なら
 	{
 		t = (m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME);
-		targetAngle = m_angle - ROTATE_ANGLE + ROTATE_ANGLE * m_easying->easeOutBack(t);	// 薙ぎ払いモーションを行う
+		targetAngle = m_angle - ROTATE_ANGLE + ROTATE_ANGLE * Easying::easeOutBack(t);	// 薙ぎ払いモーションを行う
 	}
 
 

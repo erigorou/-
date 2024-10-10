@@ -304,7 +304,7 @@ void Player::MovePlayer()
 	if (moveVelocity != Vector3::Zero)
 	{
 		m_particleTime += m_elapsedTime;			// パーティクルの時間を計測する
-		if (m_particleTime >= 0.1f)
+		if (m_particleTime >= 0.15f)
 		{
 			m_playScene->GetParticle()->CreateTrailDust(m_elapsedTime);
 			m_particleTime = 0.0f;

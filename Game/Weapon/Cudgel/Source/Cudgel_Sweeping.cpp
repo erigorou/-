@@ -20,9 +20,9 @@
 
 
 // å≈íËíl ==================================
-const float Cudgel_Sweeping::CHARGE_TIME = 1.0f;	// êUÇËÇ©Ç¥Çµéûä‘
-const float Cudgel_Sweeping::WINDUP_TIME = 1.3f;	// ë“ã@
-const float Cudgel_Sweeping::ATTACK_TIME = 2.0f;	// ì„Ç¨ï•Ç¢
+const float Cudgel_Sweeping::CHARGE_TIME = 0.8f;	// êUÇËÇ©Ç¥Çµéûä‘
+const float Cudgel_Sweeping::WINDUP_TIME = 1.1f;	// ë“ã@
+const float Cudgel_Sweeping::ATTACK_TIME = 1.7f;	// ì„Ç¨ï•Ç¢
 const float Cudgel_Sweeping::END_TIME	 = 2.5f;	// èIóπ
 
 const float Cudgel_Sweeping::CHARGE_ROTATE_ANGLE = 30.0f;	// êUÇËÇ©Ç¥Çµäpìx
@@ -112,13 +112,17 @@ void Cudgel_Sweeping::UpdateCudgelRotation()
 
 	if (m_totalSeconds <= CHARGE_TIME) {
 		t =	m_totalSeconds / CHARGE_TIME;								// 0 ~ 1 Ç…ê≥ãKâª
-		m_angleRL = -CHARGE_ROTATE_ANGLE * m_easying->easeOutCirc(t);	// 30ìxç∂âÒì]
+		m_angleRL = -CHARGE_ROTATE_ANGLE * Easying::easeOutCirc(t);	// 30ìxç∂âÒì]
 	}
 
 	else if (m_totalSeconds >= WINDUP_TIME && m_totalSeconds <= ATTACK_TIME) {
 		t = (m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME);					// 0 ~ 1 Ç…ê≥ãKâª
-		m_angleRL = CHARGE_ROTATE_ANGLE + WINDUP_ROTATE_ANGLE * m_easying->easeOutBack(t);  // 30ìxÇ©ÇÁ60ìxâEâÒì]
+		m_angleRL = CHARGE_ROTATE_ANGLE + WINDUP_ROTATE_ANGLE * Easying::easeOutBack(t);  // 30ìxÇ©ÇÁ60ìxâEâÒì]
 		canHit = true;
+	}
+
+	else if (m_totalSeconds > END_TIME) {
+		m_cudgel->ChangeState(m_cudgel->GetIdling());
 	}
 
 	m_cudgel->GetPlayScene()->GetPlayer()->CanHit(canHit);

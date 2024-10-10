@@ -3,6 +3,7 @@
 #include "Game/Weapon/Sword/Sword.h"
 
 class Sword;
+class Easying;
 
 /// <summary>
 /// “‘¾˜Y‚ª‚Â“‚ÌUŒ‚

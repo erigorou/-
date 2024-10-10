@@ -11,6 +11,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/Collision.h"
+#include "Libraries/MyLib/EasingFunctions.h"
 
 #include "Game/Player/Player.h"
 #include "Game/Enemy/Enemy.h"
@@ -19,7 +20,7 @@
 
 // 固定値
 const float Sword_Attacking_1::RADIAN_90 = DirectX::XMConvertToRadians(90);
-const float Sword_Attacking_1::ATTACK_TIME  = 0.3f;
+const float Sword_Attacking_1::ATTACK_TIME  = 0.5f;
 
 
 // コンストラクタ
@@ -77,38 +78,42 @@ void Sword_Attacking_1::Update(float elapsedTime)
 	// プレイヤーの回転を取得
 	m_angle = m_sword->GetPlayScene()->GetPlayer()->GetAngle();
 
-	// 剣を振る時間内なら
-	if (m_totalSeconds < ATTACK_TIME)
+
+
+	float t = 0.0f;
+
+	if (m_totalSeconds <= ATTACK_TIME)
 	{
-		// y軸に更新
-		m_rot.y = XMConvertToRadians(m_totalSeconds * 1000);
+		t = m_totalSeconds / ATTACK_TIME;
+		m_rot.y = 250.0f * Easying::easeOutBack(t);
+		m_rot.y = XMConvertToRadians(m_rot.y);
 	}
 	else
 	{
-		// 当たれるようにする
+		// 攻撃時間を過ぎたら当たり判定を無効にする
 		m_sword->GetPlayScene()->GetEnemy()->CanHit(false);
 	}
 
 	// ワールド行列を更新する
-	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE);							// サイズの設定
+	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE);							// 剣のサイズの設定
 
 	m_worldMatrix
-		*= SimpleMath::Matrix::CreateRotationX(RADIAN_90)								// 90度横に向ける
-		*= SimpleMath::Matrix::CreateTranslation(Vector3(1.0f, 2.0f, 0.0f))				// 原点で、少しだけずらす
-		*= SimpleMath::Matrix::CreateRotationY(-m_angle)								// プレイヤーの横になるよう回転を行う
-		*= SimpleMath::Matrix::CreateRotationY(m_rot.y)									// 回転
-		*= SimpleMath::Matrix::CreateTranslation(m_position);							// プレイヤの位置に設定する
+		*= SimpleMath::Matrix::CreateRotationX(RADIAN_90)								// 剣を90度横に向ける
+		*= SimpleMath::Matrix::CreateTranslation(Vector3(1.0f, 2.0f, 0.0f))				// 少しだけずらす
+		*= SimpleMath::Matrix::CreateRotationY(-m_angle)								// プレイヤーの横に回転させる
+		*= SimpleMath::Matrix::CreateRotationY(m_rot.y)									// 薙ぎ払いの回転を反映
+		*= SimpleMath::Matrix::CreateTranslation(m_position);							// プレイヤーの位置に設定
 
 	// 当たり判定の位置を設定
 	m_sword->SetCollisionPosition(m_worldMatrix);
 
-
-	// 1秒経過でステート変更
+	// 攻撃が終わったらステートをIdlingStateに戻す
 	if (m_totalSeconds >= 1.0f)
 	{
 		m_sword->ChangeState(m_sword->GetIdlingState());
 	}
 }
+
 
 
 // 事後処理

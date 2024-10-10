@@ -5,7 +5,7 @@
 class Cudgel;
 class Enemy;
 class Particle;
-class EasyingFunctions;
+class Easying;
 
 
 /// <summary>
@@ -74,8 +74,6 @@ private:
 
 	Cudgel*		m_cudgel;						// ステートを所有する親
 	Particle*	m_particles;					// パーティクル
-
-	std::unique_ptr<EasyingFunctions> m_easying;	// イージング関数
 
 	// 剣の軌跡のエフェクト
 	// 頂点を保存する用の双極配列
