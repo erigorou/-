@@ -1,10 +1,14 @@
 // ステージの境界壁
 #pragma once
 
-class Wall
+#include "Interface/IObject.h"
+
+class Wall : public IObject
 {
-public: // 固定値や受け渡し用関数
-	static const float WALL_SCALE;		// 大きさ（固定値）
+public: 
+	// 固定値
+	static const float WALL_SCALE;					// 大きさ（固定値）
+	static constexpr float COLLISION_RADIUS = 1.0f;	// 当たり判定の半径
 
 	// コンストラクタ
 	Wall();
@@ -25,10 +29,25 @@ public: // 固定値や受け渡し用関数
 	// ワールド行列更新処理
 	void UpdateWorldMatrix();
 
-private:
-	// ワールド行列
-	DirectX::SimpleMath::Matrix m_worldMatrix;
-	// モデル
-	std::unique_ptr<DirectX::Model> m_model;
 
+	// インターフェースで使用するからしゃーなしでおいている。
+	void HitAction(InterSectData data)override;
+	DirectX::SimpleMath::Vector3 GetPosition()override;
+
+
+private:
+
+	void CreateCollision();	// 当たり判定の生成
+
+
+	DirectX::SimpleMath::Matrix m_worldMatrix;	// ワールド行列
+	std::unique_ptr<DirectX::Model> m_model;	// モデル
+
+	std::unique_ptr<DirectX::BoundingSphere> m_collision;	// 当たり判定
+
+
+
+	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;										// ベーシックエフェクト
+	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;	// プリミティブバッチ
+	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;									// 入力レイアウト
 };

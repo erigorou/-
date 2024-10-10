@@ -59,6 +59,9 @@ public:
 private:
 	DirectX::SimpleMath::Vector3 m_position;	// 座標
 	DirectX::SimpleMath::Vector3 m_velocity;	// 速度
+
+	float m_enemyAngle;							// 敵の角度
+
 	float m_angleRL;							// 左右角度
 	float m_angleUD;							// 上下角度
 

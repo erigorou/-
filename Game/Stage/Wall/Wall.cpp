@@ -31,6 +31,7 @@ Wall::~Wall()
 // 初期化処理
 void Wall::Initialize()
 {
+	using namespace DirectX;
 	CommonResources* resources = CommonResources::GetInstance();
 
 	auto device = resources->GetDeviceResources()->GetD3DDevice();
@@ -45,6 +46,28 @@ void Wall::Initialize()
 	fx->SetDirectory(L"Resources/Models");
 	// モデルを読み込む
 	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/wall.cmo", *fx);
+
+	CreateCollision();
+	
+	// ベーシックエフェクトを作成する
+	m_basicEffect = std::make_unique<BasicEffect>(device);
+	m_basicEffect->SetVertexColorEnabled(true);
+	// 入力レイアウトを作成する
+	DX::ThrowIfFailed(
+		CreateInputLayoutFromEffect<VertexPositionColor>(
+			device,
+			m_basicEffect.get(),
+			m_inputLayout.ReleaseAndGetAddressOf())
+	);
+	// プリミティブバッチの作成
+	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
+
+}
+
+// 当たり判定の生成
+void Wall::CreateCollision()
+{
+	m_collision = std::make_unique<DirectX::BoundingSphere>(DirectX::SimpleMath::Vector3::Zero, COLLISION_RADIUS);
 }
 
 
@@ -54,9 +77,10 @@ void Wall::UpdateWorldMatrix()
 	using namespace DirectX::SimpleMath;
 	using namespace DirectX;
 
-	m_worldMatrix = Matrix::Identity;									// 初期化
-	m_worldMatrix *= Matrix::CreateScale(WALL_SCALE);		// 拡大　縮小
+	m_worldMatrix = Matrix::Identity;					// 初期化
+	m_worldMatrix *= Matrix::CreateScale(WALL_SCALE);	// 拡大　縮小
 }
+
 
 
 // 描画
@@ -69,6 +93,27 @@ void Wall::Render(ID3D11DeviceContext* context,
 	UpdateWorldMatrix();
 	// モデルを描画する
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
+
+
+
+#ifdef _DEBUG
+	context->OMSetBlendState(states->Opaque(), nullptr, 0xFFFFFFFF);
+	context->OMSetDepthStencilState(states->DepthRead(), 0);
+	context->RSSetState(states->CullNone());
+	context->IASetInputLayout(m_inputLayout.Get());
+	//** デバッグドローでは、ワールド変換いらない
+	m_basicEffect->SetView(view);
+	m_basicEffect->SetProjection(projection);
+	m_basicEffect->Apply(context);
+	// 描画
+	m_primitiveBatch->Begin();
+	DX::Draw(
+		m_primitiveBatch.get(),		// プリミティブバッチ
+		*m_collision,				// 境界球
+		DirectX::Colors::White		// 色
+	);
+	m_primitiveBatch->End();
+#endif // !_DEBUG
 }
 
 
@@ -76,3 +121,8 @@ void Wall::Render(ID3D11DeviceContext* context,
 void Wall::Finalize()
 {
 }
+
+
+
+void Wall::HitAction(InterSectData data)			{}
+DirectX::SimpleMath::Vector3 Wall::GetPosition()	{ return DirectX::SimpleMath::Vector3(); }

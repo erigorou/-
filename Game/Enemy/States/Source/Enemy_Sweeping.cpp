@@ -69,7 +69,10 @@ void Enemy_Sweeping::PreUpdate()
 // ----------------------------------
 void Enemy_Sweeping::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3& parentPos)
 {
+	UNREFERENCED_PARAMETER(parentPos);
+
 	using namespace DirectX::SimpleMath;
+
 
 	// Œo‰ßŽžŠÔ‚ÌŒvŽZ
 	m_totalSeconds += elapsedTime;

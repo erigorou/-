@@ -178,6 +178,8 @@ DirectX::SimpleMath::Matrix Cudgel_Attacking::CalculateAttackMatrix()
 /// <param name="_elapsedTime">経過時間</param>
 void Cudgel_Attacking::GetCudgelBothEnds(float _totalTime)
 {
+	UNREFERENCED_PARAMETER(_totalTime);
+
 	DirectX::SimpleMath::Vector3 root;
 	DirectX::SimpleMath::Vector3 tip;
 
@@ -201,7 +203,7 @@ void Cudgel_Attacking::GetCudgelBothEnds(float _totalTime)
 	using namespace DirectX;
 
 	// 2個以上ない場合は処理を抜ける
-	float max = m_rootPos.size() - 1;
+	size_t max = m_rootPos.size() - 1;
 	if (max >= 1)
 	{
 		VertexPositionTexture ver[4] =	// 頂点情報の生成（パーティクルの生成に必要）
@@ -243,6 +245,7 @@ void Cudgel_Attacking::Render(ID3D11DeviceContext* context,
 #ifdef _DEBUG
 	CommonResources* resources = CommonResources::GetInstance();
 	auto debugString = resources->GetDebugString();
+	debugString->AddString("");
 
 	// Sphereの生成
 	//auto sphere = DirectX::GeometricPrimitive::CreateSphere(context, 1.0f);
@@ -272,5 +275,5 @@ void Cudgel_Attacking::Finalize()
 
 void Cudgel_Attacking::HitAction(InterSectData data)
 {
-	// 一旦何もしない
+	UNREFERENCED_PARAMETER(data);
 }
