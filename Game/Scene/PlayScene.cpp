@@ -122,7 +122,7 @@ void PlayScene::CreateObjects()
 	m_particles = std::make_unique<Particle>();		// パーティクル
 	// ---
 	m_floor = std::make_unique<Floor>	(device);		// 床
-	m_wall = std::make_unique<Wall>		();				// 壁
+	m_wall = std::make_unique<Wall>		(this);			// 壁
 	// ---
 	m_player = std::make_unique<Player>	(this);		// プレイヤー
 	m_sword = std::make_unique<Sword>	(this);		// プレイヤーの武器

@@ -117,6 +117,8 @@ private:
 	std::unique_ptr<BehaviorTree> m_pBT;
 
 private:
+	DirectX::SimpleMath::Vector3 m_pushBackValue;	// プッシュバック値
+
 	// ベーシックエフェクト
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;

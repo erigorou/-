@@ -136,7 +136,7 @@ void Sword_Attacking_1::Render(ID3D11DeviceContext* context,
 
 #ifdef _DEBUG
 	auto debugString = resources->GetDebugString();
-	debugString->AddString("sword, %f : %f : %f", m_position.x, m_position.y, m_position.z);
+	debugString->AddString("");
 #endif // _DEBUG
 }
 
@@ -149,4 +149,5 @@ void Sword_Attacking_1::Finalize()
 
 void Sword_Attacking_1::HitAction(InterSectData data)
 {
+	UNREFERENCED_PARAMETER(data);
 }

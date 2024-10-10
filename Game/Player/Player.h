@@ -17,6 +17,8 @@
 #include "Game/Player/State/Header/Player_Attacking_3.h"	// UŒ‚ó‘Ô‚R
 #include "Game/Player/State/Header/Player_Attacking_4.h"	// UŒ‚ó‘Ô‚S
 
+class Wall;
+
 
 class Player : public IObject
 {

@@ -12,14 +12,16 @@
 #include "DeviceResources.h"
 
 #include "Wall.h"
+#include "Game/Scene/PlayScene.h"
 
 // 固定値
 const float Wall::WALL_SCALE = 2.0f;
 
 // コンストラクタ
-Wall::Wall()
-	:m_worldMatrix()
-	,m_model()
+Wall::Wall(PlayScene* playScene)
+	: m_playScene(playScene)
+	, m_worldMatrix()
+	, m_model()
 {
 }
 
@@ -36,7 +38,6 @@ void Wall::Initialize()
 
 	auto device = resources->GetDeviceResources()->GetD3DDevice();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = resources->GetCommonStates();
 
 	// モデルを生成
 	m_model = std::make_unique<DirectX::Model>();
@@ -68,6 +69,13 @@ void Wall::Initialize()
 void Wall::CreateCollision()
 {
 	m_collision = std::make_unique<DirectX::BoundingSphere>(DirectX::SimpleMath::Vector3::Zero, COLLISION_RADIUS);
+
+	// 当たり判定を記録する
+	m_playScene->GetCollisionManager()->AddCollision(
+		ObjectType::Stage,
+		this,
+		m_collision.get()
+	);
 }
 
 
@@ -124,5 +132,9 @@ void Wall::Finalize()
 
 
 
-void Wall::HitAction(InterSectData data)			{}
+void Wall::HitAction(InterSectData data)			
+{
+	UNREFERENCED_PARAMETER(data);
+}
+
 DirectX::SimpleMath::Vector3 Wall::GetPosition()	{ return DirectX::SimpleMath::Vector3(); }

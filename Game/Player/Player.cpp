@@ -18,6 +18,7 @@
 #include "Game/Weapon/Sword/Sword.h"
 
 #include "Game/Enemy/Enemy.h"
+#include "Game/Stage/Wall/Wall.h"
 
 
 // ここで静的メンバー変数を定義する
@@ -475,6 +476,22 @@ void Player::HitAction(InterSectData data)
 		// ノックバックをする
 	}
 
+
+	////////////////////ステージと衝突したときの処理//////////////////////////
+	else if (data.objType == ObjectType::Stage && data.colType == CollisionType::Sphere)
+	{
+		// 衝突したオブジェクトの情報を取得
+		auto wall = dynamic_cast<Wall*>(data.object);
+		DirectX::BoundingSphere* stageCollision = wall->GetCollision();
+
+		// 押し戻し量を計算
+		m_pushBackValue += Math::pushFront_BoundingSphere(*m_bodyCollision.get(), *stageCollision);
+		// y座標には反映無しに設定
+		m_pushBackValue.y = 0;
+		// プレイヤーの位置を押し戻す
+		m_position += m_pushBackValue;
+		m_bodyCollision->Center = m_position;
+	}
 
 }
 

@@ -3,15 +3,19 @@
 
 #include "Interface/IObject.h"
 
+class PlayScene;
+
 class Wall : public IObject
 {
 public: 
 	// 固定値
-	static const float WALL_SCALE;					// 大きさ（固定値）
-	static constexpr float COLLISION_RADIUS = 1.0f;	// 当たり判定の半径
+	static const float WALL_SCALE;						// 大きさ（固定値）
+	static constexpr float COLLISION_RADIUS = 160.0f;	// 当たり判定の半径
+
+	DirectX::BoundingSphere* GetCollision() { return m_collision.get(); }	// 当たり判定の取得
 
 	// コンストラクタ
-	Wall();
+	Wall(PlayScene* playScene);
 	// デストラクタ
 	~Wall();
 	// 初期化
@@ -45,7 +49,7 @@ private:
 
 	std::unique_ptr<DirectX::BoundingSphere> m_collision;	// 当たり判定
 
-
+	PlayScene* m_playScene;	// プレイシーン
 
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;										// ベーシックエフェクト
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;	// プリミティブバッチ

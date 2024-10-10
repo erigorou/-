@@ -12,8 +12,10 @@
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/Microsoft/DebugDraw.h"
+#include "Libraries/MyLib/Math.h"
 
 #include "Game/Enemy/Enemy.h"
+#include "Game/Stage/Wall/Wall.h"
 
 #include "Interface/IState.h"
 
@@ -37,6 +39,7 @@ Enemy::Enemy(PlayScene* playScene)
 	, m_isHit(false)
 	, m_coolTime()
 	, m_canHit(false)
+	, m_pushBackValue{ 0.f, 0.f, 0.f }
 {
 }
 
@@ -267,6 +270,7 @@ void Enemy::Finalize()
 // --------------------------------
 void Enemy::HitAction(InterSectData data)
 {
+	///////////////////////////////刀との当たり判定////////////////////////////////////
 	if ( 
 		! m_isHit && 
 		m_canHit &&
@@ -276,5 +280,22 @@ void Enemy::HitAction(InterSectData data)
 		m_hp->Damage(1);
 		m_isHit = true;
 		m_canHit = false;
+	}
+
+
+	////////////////////////////ステージとの当たり判定////////////////////////////////
+	if (data.objType == ObjectType::Stage && data.colType == CollisionType::Sphere)
+	{
+		// 衝突したオブジェクトの情報を取得
+		auto wall = dynamic_cast<Wall*>(data.object);
+		DirectX::BoundingSphere* stageCollision = wall->GetCollision();
+
+		// 押し戻し量を計算
+		m_pushBackValue += Math::pushFront_BoundingSphere(*m_bodyCollision.get(), *stageCollision);
+		// y座標には反映無しに設定
+		m_pushBackValue.y = 0;
+		// 敵の位置を押し戻す
+		m_position += m_pushBackValue;
+		m_bodyCollision->Center = m_position;
 	}
 }

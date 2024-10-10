@@ -54,19 +54,49 @@ public:
 	/// <returns>押し戻しの値　[ Aの座標　+= return値 ]</returns>
 	static Vector3 pushBack_BoundingSphere(DirectX::BoundingSphere A, DirectX::BoundingSphere B)
 	{
-		// AとBが当たっていなければ早期リターン
-		if (!A.Intersects(B))	return Vector3::Zero;
+		Vector3 diffVec = A.Center - B.Center;	// Aの中心とBの中心との差分ベクトルを取得する
 
-		Vector3 diffVec = A.Center - B.Center;	// プレイヤーの中心と敵の中心との差分ベクトルを取得する
+		float diffLength = diffVec.Length();	// Aの中心とBの中心との距離を取得する
+		float sumLength = A.Radius + B.Radius;	// AとBの半径の合計を取得する
 
-		float diffLength = diffVec.Length();	// プレイヤーの中心と敵の中心との距離を取得する
-		float sumLength = A.Radius + B.Radius;	// プレイヤーと敵の半径の合計を取得する
-
-		diffLength = sumLength - diffLength;	// プレイヤーがめり込んだ距離を計算する
+		diffLength = sumLength - diffLength;	// Aがめり込んだ距離を計算する
 		diffVec.Normalize();					// 差分ベクトルを正規化する
 
 		return diffVec * diffLength;			// 押し戻すベクトルを計算し、返す
 	}
+
+
+
+	/// <summary>
+	/// ゲームのステージ等の内側にいるときに外に出れないように押し戻しの量を計算する
+	/// </summary>
+	/// <param name="A">押し戻されるほうのSphere</param>
+	/// <param name="B">動かないほうのSphere</param>
+	/// <returns>押し戻しの値 [ Aの座標 += return値 ]</returns>
+	static Vector3 pushFront_BoundingSphere(DirectX::BoundingSphere A, DirectX::BoundingSphere B)
+	{
+		Vector3 diffVec = A.Center - B.Center; // Aの中心とBの中心との差分ベクトルを取得する
+
+		float diffLength = diffVec.Length(); // Aの中心とBの中心との距離を取得する
+		float boundaryLength = B.Radius - A.Radius; // AがBの内側に収まるための距離を計算する
+
+		// AがBの外側にいる場合
+		if (diffLength > boundaryLength)
+		{
+			diffLength = boundaryLength - diffLength; // Aがめり込んだ距離を計算する
+			diffVec.Normalize(); // 差分ベクトルを正規化する
+
+			// 押し戻しベクトルを計算し返す
+			return diffVec * diffLength;
+		}
+
+		// 押し戻しが不要な場合はゼロベクトルを返す
+		return Vector3(0, 0, 0);
+	}
+
+
+
+
 
 
 	/// <summary>
