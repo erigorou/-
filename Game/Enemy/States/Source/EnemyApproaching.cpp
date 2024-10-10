@@ -96,7 +96,15 @@ void EnemyApproaching::Update(const float& elapsedTime, DirectX::SimpleMath::Vec
 	// プレイヤーとの距離が　20以下なら攻撃モーションに変更
 	if (Vector3::Distance(m_position, playerPos) <= 20.f)
 	{
-		m_enemy->ChangeState(m_enemy->GetEnemyAttacking());
+		// ランダムで3択から攻撃をする
+		int random = Math::RandomInt(0, 3);
+
+		if (random == 0)
+			m_enemy->ChangeState(m_enemy->GetEnemySweeping());		// 掃討
+		else if (random == 1)
+			m_enemy->ChangeState(m_enemy->GetEnemyAttacking());		// 攻撃
+		else if (random == 2)
+			m_enemy->ChangeState(m_enemy->GetEnemyIdling());		// 何もしない
 	}
 
 

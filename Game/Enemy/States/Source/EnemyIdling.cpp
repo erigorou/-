@@ -71,16 +71,15 @@ void EnemyIdling::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3&
 			m_enemy->ChangeState(m_enemy->GetEnemyApproaching());	// ’Ç]
 		else
 		{
-			// ƒ‰ƒ“ƒ_ƒ€‚És“®‚ð•ÏX
-			int random = rand() % 2;
-			if (random == 0)
-				m_enemy->ChangeState(m_enemy->GetEnemySweeping());	// ‘|“¢
-			else
-				m_enemy->ChangeState(m_enemy->GetEnemyAttacking());	// UŒ‚
-		}
+			int random = Math::RandomInt(0, 3);
 
-		//m_enemy->ChangeState(m_enemy->GetEnemySweeping());	// ‘|“¢
-		//m_enemy->ChangeState(m_enemy->GetEnemyAttacking());	// ‘|“¢
+			if (random == 0)
+				m_enemy->ChangeState(m_enemy->GetEnemySweeping());		// ‘|“¢
+			else if(random == 1)
+				m_enemy->ChangeState(m_enemy->GetEnemyAttacking());		// UŒ‚
+			else if(random == 2)
+				m_enemy->ChangeState(m_enemy->GetEnemyIdling());		// ‰½‚à‚µ‚È‚¢
+		}
 	}
 }
 

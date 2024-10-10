@@ -105,22 +105,25 @@ public:
 
 		return angle;		// 角度（ラジアン単位）を返す
 	}
+
+
+	static int RandomInt(int min, int max)
+	{
+		std::random_device rnd;
+		std::mt19937 mt(rnd());
+		std::uniform_int_distribution<> rand(min, max);
+
+		return rand(mt);
+	}
+
+
+	static float randomFloat(float min, float max)
+	{
+		std::random_device rnd;
+		std::mt19937 mt(rnd());
+		std::uniform_real_distribution<float> rand(min, max);
+
+		return rand(mt);
+	}
 };
 
-
-
-// clamp
-
-// 01clamp 0~1の間で値を返してくれるclamp
-
-
-//// 体に当たったときに押し戻しをする
-//DirectX::SimpleMath::Vector3 PlayerIdling::CalculatingPushBack()
-//{
-//	// プレイヤーを一度変換する
-//	auto player = dynamic_cast<Player*>(m_player);
-//	// ボディを取得						プレイヤー → シーン → エネミー → 現在のステート → 体の当たり判定
-//	DirectX::BoundingSphere enemyBody = player->GetPlayScene()->GetEnemy()->GetCurrentState()->GetBoundingSphereBody();
-//	// 押し戻し量の計測
-//	return Math::pushBack_BoundingSphere(m_boundingSphereBody, enemyBody);
-//}
