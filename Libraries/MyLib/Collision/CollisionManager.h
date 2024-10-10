@@ -13,6 +13,7 @@ enum class ObjectType : UINT
 {
 	Player,
 	Enemy,
+	Goblin,
 	Sword,
 	Cudgel,
 	Stage

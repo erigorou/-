@@ -129,7 +129,7 @@ void Enemy::CreateCollision()
 
 
 // --------------------------------
-//  更新処理
+//  状態の生成処理
 // --------------------------------
 void Enemy::ChangeState(IState* newState)
 {
@@ -194,6 +194,8 @@ void Enemy::Render(
 	const DirectX::SimpleMath::Matrix& view,
 	const DirectX::SimpleMath::Matrix& projection)
 {
+
+
 	// 深度値を参照して書き込む
 	context->OMSetDepthStencilState(states->DepthDefault(), 0);
 
