@@ -34,6 +34,7 @@ public:
 	// /////////////////プレイヤーの基礎情報を渡す関数//////////////////////////////////////////////////
 	DirectX::SimpleMath::Vector3	GetPosition()override	{ return m_position;	}
 	DirectX::SimpleMath::Vector3	GetVelocity()	const	{ return m_velocity;	}
+	DirectX::SimpleMath::Vector3	GetDirection()	const	{ return m_direction;	}
 	float							GetAngle()		const	{ return m_angle;		}
 	PlayerHP*						GetPlayerHP()	const	{ return m_hp.get();	}
 	DirectX::BoundingSphere*		GetBodyCollision()		{ return m_bodyCollision.get(); }
@@ -111,18 +112,12 @@ public:
 
 
 private:
-	// 体力
-	int m_HP;
-	// 位置
-	DirectX::SimpleMath::Vector3 m_position;
-	// 速度
-	DirectX::SimpleMath::Vector3 m_velocity;
-	// 加速度
-	DirectX::SimpleMath::Vector3 m_acceleration;
-	// 角度
-	float m_angle;
-	// 押し戻し量
-	DirectX::SimpleMath::Vector3 m_pushBackValue;
+	DirectX::SimpleMath::Vector3	m_position;			// 位置
+	DirectX::SimpleMath::Vector3	m_velocity;			// 速度
+	DirectX::SimpleMath::Vector3	m_direction;		// 向き
+	DirectX::SimpleMath::Vector3	m_acceleration;		// 加速度
+	float							m_angle;			// 回転	
+	DirectX::SimpleMath::Vector3	m_pushBackValue;	// プッシュバック値
 
 
 	// プレイヤー用のワールド行列

@@ -248,8 +248,10 @@ void Player::MovePlayer()
 	if (keyboardState.Down	)	inputVelocity += Vector3::Backward;	// 「↓」で後退
 	if (keyboardState.Left	)	inputVelocity += Vector3::Left;		// 「←」で左移動
 	if (keyboardState.Right	)	inputVelocity += Vector3::Right;	// 「→」で右移動
-	
+
 	inputVelocity.Normalize();
+	m_direction = inputVelocity;
+	
 
 	///////////////////// 移動キーの入力がない場合の処理 /////////////////
 	if (inputVelocity == Vector3::Zero)

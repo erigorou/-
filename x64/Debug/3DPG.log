@@ -1,2 +1,3 @@
-﻿  Player_Dodging.cpp
+﻿  Player.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\Player.cpp(69,7): warning C4189: 'states': ローカル変数が初期化されましたが、参照されていません
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe

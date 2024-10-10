@@ -43,10 +43,10 @@ void PlayerDodging::PreUpdate()
 {
 	// Œo‰ßŠÔ‚Ì‰Šú‰»
 	m_totalSeconds = 0.f;
-	// ‰ñ”ğ‚·‚é•ûŒü‚ğæ“¾
-	m_velocity = m_player->GetVelocity() * 4.f;
+	// ‰ñ”ğ‚·‚é•ûŒü‚ğæ“¾(³‹K‰») 
+	m_direction = m_player->GetDirection();
 
-	
+	m_velocity = m_direction * DODGING_SPEED;
 }
 
 // XVˆ—

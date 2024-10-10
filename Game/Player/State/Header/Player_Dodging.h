@@ -24,6 +24,8 @@ private:
 	static const float DODGE_FUNCTION;		// 回避時の摩擦
 	static const int   TRUNCATION_DIGIT;	// 少数〇〇桁以下削除
 
+	static constexpr float DODGING_SPEED = 3.0f;	// 回避時の速度
+
 public:
 	// デストラクタ
 	~PlayerDodging() override;
@@ -52,15 +54,15 @@ private:
 	float m_totalSeconds;
 	// 終了時間
 	float m_finishTime;
+
+	// 回避方向を取得するための向き
+	DirectX::SimpleMath::Vector3 m_direction;
 	// プレイヤーの移動速度
 	DirectX::SimpleMath::Vector3 m_velocity;
 	// プレイヤー
 	Player* m_player;
 	// モデル
 	DirectX::Model* m_model;
-
-	// 回避方向を取得するための向き
-	DirectX::SimpleMath::Vector3 m_direction;
 
 };
 
