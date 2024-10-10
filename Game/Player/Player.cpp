@@ -42,7 +42,10 @@ Player::Player(PlayScene* playScene)
 	m_currentState{},
 	m_keyboardState{},
 	m_tracker{},
-	m_particleTime{}
+	m_particleTime{},
+	m_isHit{},
+	m_coolTime{},
+	m_canHit{false}
 {
 }
 
@@ -204,6 +207,9 @@ void Player::Update(const DirectX::SimpleMath::Vector3 enemyPos,const float elap
 	m_pushBackValue = Vector3::Zero;
 	///////////////////当たり判定の更新////////////////////////////
 	m_bodyCollision->Center = m_position;
+
+	if (m_isHit && m_coolTime < COOL_TIME)	{ m_coolTime += elapsedTime;		 }
+	else if (m_coolTime >= COOL_TIME)		{ m_isHit = false;m_coolTime = 0.0f; }
 }
 
 
@@ -381,6 +387,10 @@ void Player::Render(
 	auto debugString = resources->GetDebugString();
 	debugString->AddString("push : %f, %f, %f", m_pushBackValue.x, m_pushBackValue.y, m_pushBackValue.z);
 	debugString->AddString("PlayerPos : %f, %f, %f", m_position.x, m_position.y, m_position.z);
+	
+	if (m_canHit)	debugString->AddString("Player_CAN");
+	if (!m_isHit)	debugString->AddString("Player_nonHit");
+
 #endif // !_DEBUG
 
 }
@@ -435,24 +445,37 @@ void Player::Finalize()
 // --------------------------------
 void Player::HitAction(InterSectData data)
 {
-	//////////////////////敵のボディと当たったときの処理////////////////////////////
+	//////////////////////敵の体と衝突した時の処理////////////////////////////
 	if (data.objType == ObjectType::Enemy && data.colType == CollisionType::Sphere)
 	{
-		////////////////////それぞれの境界球を取得する////////////////////////////
+		// 衝突したオブジェクトの情報を取得
 		DirectX::BoundingSphere playerCollision = *m_bodyCollision.get();
 		auto enemy = dynamic_cast<Enemy*>(data.object);
 		DirectX::BoundingSphere enemyCollision = enemy->GetBodyCollision();
 
-		//////////////////////押し戻し量の計算を行う////////////////////////////
+		// 押し戻し量を計算
 		m_pushBackValue += Math::pushBack_BoundingSphere(playerCollision, enemyCollision);
-
+		// y座標には反映無しに設定
 		m_pushBackValue.y = 0;
-
-		/////////////////////////// 移動処理 //////////////////////////////////
+		// プレイヤーの位置を押し戻す
 		m_position += m_pushBackValue;
-
 		m_bodyCollision->Center = m_position;
 	}
+
+	/////////////////////敵が持つ武器と衝突した時の処理////////////////////////
+	else if (	! m_isHit							&&
+				m_canHit							&&
+				data.objType == ObjectType::Cudgel	&&
+				data.colType == CollisionType::OBB	)
+	{
+		// HPを減らす
+		m_hp->Damage(1);
+		m_isHit = true;
+		m_canHit = false;
+		// ノックバックをする
+	}
+
+
 }
 
 

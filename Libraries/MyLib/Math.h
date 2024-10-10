@@ -7,6 +7,7 @@
 #pragma once
 #include "pch.h"
 #include "cmath"
+#include "random"
 
 using namespace DirectX::SimpleMath;
 

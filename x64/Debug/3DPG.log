@@ -1,3 +1,6 @@
-﻿  Player.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\Player.cpp(69,7): warning C4189: 'states': ローカル変数が初期化されましたが、参照されていません
+﻿  PlaySceneUIManager.cpp
+  PlayerHPUI.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\UI\Source\PlayerHPUI.cpp(53,44): warning C4244: '=': 'FLOAT' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\UI\Source\PlayerHPUI.cpp(54,45): warning C4244: '=': 'FLOAT' から 'int' への変換です。データが失われる可能性があります。
+  コードを生成中...
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe

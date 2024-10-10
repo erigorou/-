@@ -30,6 +30,8 @@ public:
 	// 攻撃が適用される時間
 	static const float APPLIED_ATTACK_TIME;
 
+	static constexpr float COOL_TIME = 1.0f;
+
 public:
 	// /////////////////プレイヤーの基礎情報を渡す関数//////////////////////////////////////////////////
 	DirectX::SimpleMath::Vector3	GetPosition()override	{ return m_position;	}
@@ -53,6 +55,9 @@ public:
 
 	////////////////////プレイシーンに干渉するのに使用すr関数/////////////////////////////////////////////
 	PlayScene* GetPlayScene()const { return m_playScene; }
+
+	//////////////////////////////////衝突判定に使用///////////////////////////////////////////////
+	void CanHit(bool flag) { m_canHit = flag; }
 
 	//////////////////////キーボードの入力を取得する関数//////////////////////////////////////////////////
 	DirectX::Keyboard::State GetKeyboardState() const { return m_keyboardState; }
@@ -159,4 +164,8 @@ private:
 	std::unique_ptr<DirectX::Model> m_model;
 	// 体の当たり判定
 	std::unique_ptr<DirectX::BoundingSphere> m_bodyCollision;
+	bool m_isHit;
+	float m_coolTime;
+
+	bool m_canHit;
 };

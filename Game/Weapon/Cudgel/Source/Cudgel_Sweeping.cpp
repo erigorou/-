@@ -107,6 +107,7 @@ void Cudgel_Sweeping::Update(float elapsedTime)
 /// </summary>
 void Cudgel_Sweeping::UpdateCudgelRotation()
 {
+	bool canHit = false;
 	float t = 0.0f;  // ê≥ãKâªÇ≥ÇÍÇΩåoâﬂéûä‘
 
 	if (m_totalSeconds <= CHARGE_TIME) {
@@ -117,7 +118,10 @@ void Cudgel_Sweeping::UpdateCudgelRotation()
 	else if (m_totalSeconds >= WINDUP_TIME && m_totalSeconds <= ATTACK_TIME) {
 		t = (m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME);					// 0 ~ 1 Ç…ê≥ãKâª
 		m_angleRL = CHARGE_ROTATE_ANGLE + WINDUP_ROTATE_ANGLE * m_easying->easeOutBack(t);  // 30ìxÇ©ÇÁ60ìxâEâÒì]
+		canHit = true;
 	}
+
+	m_cudgel->GetPlayScene()->GetPlayer()->CanHit(canHit);
 }
 
 

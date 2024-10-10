@@ -79,8 +79,13 @@ void PlayerHPUI::Update()
 // ----------------------------
 void PlayerHPUI::Render()
 {
+	m_playerHP = m_playerHPclass->GetHP();	// プレイヤーのHPを取得
+
 	// アイコンの描画
-	for (const auto& icon : m_HPIcons)	{ icon->Render(); }
+	for (int i = 0; i < m_playerHP; i++)
+	{
+		m_HPIcons[i]->Render();
+	}
 }
 
 

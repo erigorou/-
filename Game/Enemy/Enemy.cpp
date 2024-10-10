@@ -212,11 +212,6 @@ void Enemy::Render(
 		debugString->AddString("Hit");
 	}
 
-	if (m_canHit)
-	{
-		debugString->AddString("CanHit");
-	}
-
 #endif // _DEBUG
 }
 

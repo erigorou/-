@@ -102,6 +102,8 @@ void Cudgel_Attacking::Update(float elapsedTime)
 /// </summary>
 void Cudgel_Attacking::UpdateCudgelRotation()
 {
+	bool canHit = false;
+
 	// -----------------------------------------------------------------
 	// “G‚ÌUŒ‚‚Ì—¬‚ê
 	// U‚è‚©‚´‚·i1•bj¨ ‘Ò‹@i0.4•bj¨ ~‚è‰º‚ë‚·(0.3•b) ¨ ŒãŒ„
@@ -110,7 +112,10 @@ void Cudgel_Attacking::UpdateCudgelRotation()
 		m_angleUD = DirectX::XMConvertToRadians(-20.0f * (m_totalSeconds / 0.5f));// 20“xã‚°‚é
 
 	else if (m_totalSeconds > WINDUP_TIME && m_totalSeconds < ATTACK_TIME)
+	{
 		m_angleUD = DirectX::XMConvertToRadians(-20.0f + 115.0f * ((m_totalSeconds - 1.4f) / 0.3f));// 95“xU‚è‰º‚ë‚·
+		canHit = true;
+	}
 
 	// “G‚Ì~‚è‰º‚ë‚µUŒ‚I—¹Œã‚Éƒp[ƒeƒBƒNƒ‹‚ð1“x‚¾‚¯¶¬‚·‚é
 	else if (m_totalSeconds > ATTACK_TIME && m_canGenerateSlamParticles)
@@ -119,6 +124,7 @@ void Cudgel_Attacking::UpdateCudgelRotation()
 		m_cudgel->GetPlayScene()->GetParticle()->CreateSlamDust(m_tipPos[m_tipPos.size() - 1]);
 	}
 
+	m_cudgel->GetPlayScene()->GetPlayer()->CanHit(canHit);
 }
 
 

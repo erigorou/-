@@ -22,6 +22,7 @@ public:
 	void Finalize();	// 終了処理
 
 	void Add(const wchar_t* path, DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, ANCHOR anchor);	// アイコンを追加する関数
+	void Delete(std::vector<std::unique_ptr<IconUI>> ui);
 
 private:
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;		// スプライトバッチ
