@@ -281,14 +281,14 @@ void Particle::Render(DirectX::CommonStates* states, DirectX::SimpleMath::Matrix
 
 	ID3D11DeviceContext1* context = m_pDR->GetD3DDeviceContext();
 	SimpleMath::Vector3 cameraDir = m_cameraTarget - m_cameraPosition;
-	cameraDir.Normalize();												// カメラの方向を正規化
+	cameraDir.Normalize();											// カメラの方向を正規化
 
-	ID3D11SamplerState* sampler[1] = { states->LinearWrap() };			//	サンプラーステートの設定
+	ID3D11SamplerState* sampler[1] = { states->LinearWrap() };		//	サンプラーステートの設定
 	context->PSSetSamplers(0, 1, sampler);
 
 	ID3D11BlendState* blendstate = m_states->NonPremultiplied();	//  半透明描画指定
 	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);		//	透明判定処理
-	context->OMSetDepthStencilState(m_states->DepthDefault(), 0);		//	深度バッファはなし
+	context->OMSetDepthStencilState(m_states->DepthDefault(), 0);	//	深度バッファはなし
 	context->RSSetState(m_states->CullNone());						//	カリングなし
 
 	//	ピクセルシェーダにテクスチャを登録する。
@@ -318,7 +318,7 @@ void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::Simp
 	ConstBuffer cbuff;
 	cbuff.matView = view.Transpose();
 	cbuff.matProj = proj.Transpose();
-	cbuff.matWorld = SimpleMath::Matrix::Identity; // 剣のパーティクルではビルボードを適用しない
+	cbuff.matWorld = SimpleMath::Matrix::Identity;		// 剣のパーティクルではビルボードを適用しない
 	cbuff.Diffuse = SimpleMath::Vector4(1, 1, 1, 1);
 
 	ID3D11DeviceContext1* context = m_pDR->GetD3DDeviceContext();

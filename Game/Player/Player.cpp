@@ -452,3 +452,6 @@ void Player::HitAction(InterSectData data)
 		m_bodyCollision->Center = m_position;
 	}
 }
+
+
+

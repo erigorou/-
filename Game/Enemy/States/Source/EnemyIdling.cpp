@@ -79,6 +79,7 @@ void EnemyIdling::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3&
 				m_enemy->ChangeState(m_enemy->GetEnemyAttacking());	// UŒ‚
 		}
 		
+		m_enemy->ChangeState(m_enemy->GetEnemySweeping());	// ‘|“¢
 	}
 }
 

@@ -22,7 +22,7 @@
 // 固定値 ==================================
 const float Cudgel_Sweeping::CHARGE_TIME = 1.0f;	// 振りかざし時間
 const float Cudgel_Sweeping::WINDUP_TIME = 1.3f;	// 待機
-const float Cudgel_Sweeping::ATTACK_TIME = 1.8f;	// 薙ぎ払い
+const float Cudgel_Sweeping::ATTACK_TIME = 2.0f;	// 薙ぎ払い
 const float Cudgel_Sweeping::END_TIME	 = 2.5f;	// 終了
 
 const float Cudgel_Sweeping::CHARGE_ROTATE_ANGLE = 30.0f;	// 振りかざし角度
@@ -68,7 +68,7 @@ void Cudgel_Sweeping::PreUpdate()
 {
 	////////////////////////////////////////////基本情報の初期化//////////////////////////////////////////////////
 	m_totalSeconds = 0.0f;												// 経過時間の初期化
-	m_angleUD = DirectX::XMConvertToRadians(90.0f);						// 金棒を横にする
+	m_angleUD = DirectX::XMConvertToRadians(93.0f);						// 金棒を横にする
 	m_angleRL = 0.0f;													// 横回転の初期化
 	m_parentAngleRL = m_cudgel->GetPlayScene()->GetEnemy()->GetAngle();	// 敵の角度を取得（親の角度）
 
@@ -87,7 +87,7 @@ void Cudgel_Sweeping::Update(float elapsedTime)
 	using namespace DirectX;
 
 	// 合計時間を計測
-	m_totalSeconds		+= elapsedTime;
+	m_totalSeconds += elapsedTime;
 
 	auto enemy = m_cudgel->GetPlayScene()->GetEnemy();
 	m_position = enemy->GetPosition();	// 敵の座標を取得
@@ -96,7 +96,9 @@ void Cudgel_Sweeping::Update(float elapsedTime)
 	CalculateModelMatrix();				// ワールド行列を計算
 	GetCudgelBothEnds(m_totalSeconds);	// 両端を取得する
 
-	m_cudgel->SetCollisionPosition(m_worldMatrix);		// 当たり判定の位置を設定する
+	m_collMatrix = m_worldMatrix;						// 当たり判定用の行列を取得
+	m_collMatrix._42 = 0.0f;							// 当たり判定の高さを0にする
+	m_cudgel->SetCollisionPosition(m_collMatrix);		// 当たり判定の位置を設定する
 }
 
 
@@ -108,7 +110,7 @@ void Cudgel_Sweeping::UpdateCudgelRotation()
 	float t = 0.0f;  // 正規化された経過時間
 
 	if (m_totalSeconds <= CHARGE_TIME) {
-				t = m_totalSeconds / CHARGE_TIME;						// 0 ~ 1 に正規化
+		t =	m_totalSeconds / CHARGE_TIME;								// 0 ~ 1 に正規化
 		m_angleRL = -CHARGE_ROTATE_ANGLE * m_easying->easeOutCirc(t);	// 30度左回転
 	}
 
@@ -167,8 +169,8 @@ void Cudgel_Sweeping::GetCudgelBothEnds(float _totalTime)
 		*= CalculateAttackMatrix();
 	tip = Vector3::Transform(Vector3::Zero, tipMat);		// モデルの先端の位置を取得
 
-		m_rootPos.push_back(root);		// 根本座標リストの先端に記録
-		m_tipPos .push_back(tip);		// 頂点座標リストの先端に記録
+		m_rootPos.push_back(root);							// 根本座標リストの先端に記録
+		m_tipPos .push_back(tip);							// 頂点座標リストの先端に記録
 
 	using namespace DirectX;
 

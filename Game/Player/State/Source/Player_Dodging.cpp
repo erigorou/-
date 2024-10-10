@@ -45,6 +45,8 @@ void PlayerDodging::PreUpdate()
 	m_totalSeconds = 0.f;
 	// ‰ñ”ğ‚·‚é•ûŒü‚ğæ“¾
 	m_velocity = m_player->GetVelocity() * 4.f;
+
+	
 }
 
 // XVˆ—

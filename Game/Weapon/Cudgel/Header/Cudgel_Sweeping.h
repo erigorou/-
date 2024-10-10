@@ -68,6 +68,7 @@ private:
 	float m_parentAngleRL;						// 親の左右角度
 
 	DirectX::SimpleMath::Matrix m_worldMatrix;	// ワールド行列
+	DirectX::SimpleMath::Matrix m_collMatrix;	// 当たり判定用の行列
 	DirectX::Model* m_model;					// モデルのポインタ
 	float m_totalSeconds;						// ステートの経過時間
 
