@@ -3,48 +3,47 @@
 #ifndef PLAYER_HP_UI
 #define PLAYER_HP_UI
 
-// プリコンパイルヘッダー
 #include "pch.h"
-#include "Game/UI/Header/IconUI.h"
+#include "Libraries/Microsoft/DebugDraw.h"
+#include "DeviceResources.h"
 
 class PlayerHP;
 
-// プレイヤーのHPを描画するクラス
 class PlayerHPUI
 {
+private:
+	const wchar_t* ENEMY_HP_TEXTURE = L"Resources/Textures/UI/1px.png";	// 1pxのテクスチャのパス（画像として一応ね？）
+
+	static constexpr int MAX_WIDTH			= 200;
+
+	// 上から参照
+	static constexpr int TOP_POSITION		= 30;
+	static constexpr int BOTTOM_POSITION	= 40;
+
+	static constexpr int LEFT_POSITION		= 50;
+
 public:
 	PlayerHPUI(PlayerHP* playerHp);	// コンストラクタ
 	~PlayerHPUI();					// デストラクタ
-	
-	void Initialize(DX::DeviceResources* pDR, DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale);	// 初期化関数
+
+	void Initialize(DX::DeviceResources* pDR);	// 初期化関数
+	void LoadTexture(const wchar_t* path);		// テクスチャの読み込み
+
 	void Update();		// 更新処理
 	void Render();		// 描画処理
 	void Finalize();	// 終了処理
 
-	void Add(const wchar_t* path, DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, ANCHOR anchor);	// アイコンを追加する関数
-	void Delete(std::vector<std::unique_ptr<IconUI>> ui);
-
 private:
+
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;		// スプライトバッチ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;	// テクスチャ
-	DX::DeviceResources* m_pDR;
+	DX::DeviceResources* m_pDR;									// デバイスリソース
 
-	DirectX::SimpleMath::Vector2 m_position;	// 座標
-	DirectX::SimpleMath::Vector2 m_scale;		// アイコン一つの大きさ
-
-	int m_windowWidth, m_windowHeight;	// ウィンドウの大きさ
-
-	int m_playerHP;	// プレイヤーのHP
-	bool m_isDead;	// プレイヤーが死んでいるかどうか
 
 	PlayerHP* m_playerHPclass;	// プレイヤーのHPクラス
-
-	std::vector<std::unique_ptr<IconUI>> m_HPIcons;	// HPのアイコン（複数）
-
+	int m_playerHP;				// プレイヤーのHP
 
 
-
-	const wchar_t* HPUI_FILEPATH = L"Resources/Textures/UI/HPICON.png";	// HPのテクスチャのパス
 };
 
 #endif

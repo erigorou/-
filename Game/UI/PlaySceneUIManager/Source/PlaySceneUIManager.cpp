@@ -66,7 +66,7 @@ void PlaySceneUIManager::CreateUI()
 	m_playerHP = std::make_unique<PlayerHPUI>	(m_playScene->GetPlayer()->GetPlayerHP());
 	m_enemyHP  = std::make_unique<EnemyHPUI>	(m_playScene->GetEnemy ()->GetEnemyHP ());
 
-	m_playerHP-> Initialize(m_pDR, PLAYER_HP_POSITION, DirectX::SimpleMath::Vector2::One);
+	m_playerHP-> Initialize(m_pDR);
 	m_enemyHP -> Initialize(m_pDR);
 }
 
