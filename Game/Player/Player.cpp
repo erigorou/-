@@ -463,6 +463,7 @@ void Player::HitAction(InterSectData data)
 		m_bodyCollision->Center = m_position;
 	}
 
+
 	/////////////////////“G‚ª‚Â•Ší‚ÆÕ“Ë‚µ‚½‚Ìˆ—////////////////////////
 	else if (	! m_isHit							&&
 				m_canHit							&&

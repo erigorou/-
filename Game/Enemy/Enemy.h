@@ -91,6 +91,9 @@ private:
 	// “–‚½‚Á‚½‚Æ‚«‚Ìˆ—
 	void HitAction(InterSectData data)override;
 
+	void HitSword(InterSectData data);
+	void HitStage(InterSectData data);
+
 	// ˆÊ’u
 	DirectX::SimpleMath::Vector3 m_position;
 	// ‘¬“x

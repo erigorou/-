@@ -1,31 +1,5 @@
-﻿  EnemyApproaching.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\EnemyApproaching.cpp(148,7): warning C4189: 'debugString': ローカル変数が初期化されましたが、参照されていません
-  EnemyIdling.cpp
-  Enemy_Attacking.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\Enemy_Attacking.cpp(49,86): warning C4100: 'parentPos': 引数は関数の本体部で 1 度も参照されません。
-  Enemy_Sweeping.cpp
-  Player.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\Player.cpp(73,7): warning C4189: 'states': ローカル変数が初期化されましたが、参照されていません
-  Player_Attacking_1.cpp
-  Player_Attacking_2.cpp
-  Player_Attacking_3.cpp
-  Player_Attacking_4.cpp
-  Player_Dodging.cpp
-  Player_Idling.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\Player_Idling.cpp(50,84): warning C4100: 'parentPos': 引数は関数の本体部で 1 度も参照されません。
-  Cudgel_Attacking.cpp
-  Cudgel_Idling.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Idling.cpp(101,45): warning C4100: 'data': 引数は関数の本体部で 1 度も参照されません。
-  Cudgel_Sweeping.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(186,12): warning C4244: '初期化中': 'unsigned __int64' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(191,36): warning C4244: '引数': 'float' から 'const unsigned __int64' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(192,40): warning C4244: '引数': 'float' から 'const unsigned __int64' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(193,40): warning C4244: '引数': 'float' から 'const unsigned __int64' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(194,36): warning C4244: '引数': 'float' から 'const unsigned __int64' への変換です。データが失われる可能性があります。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(162,47): warning C4100: '_totalTime': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(255,47): warning C4100: 'data': 引数は関数の本体部で 1 度も参照されません。
-  Sword_Attacking_1.cpp
-  Sword_Idling.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Sword\Source\Sword_Idling.cpp(102,44): warning C4100: 'data': 引数は関数の本体部で 1 度も参照されません。
+﻿  EnemyIdling.cpp
+  EnemyHPUI.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\UI\Source\EnemyHPUI.cpp(84,17): warning C4244: '初期化中': 'int' から 'float' への変換です。データが失われる可能性があります。
   コードを生成中...
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe

@@ -73,28 +73,35 @@ void EnemyHPUI::Update()
 /// 描画関数
 /// </summary>
 // ----------------------------
+// ----------------------------
+/// <summary>
+/// 描画関数
+/// </summary>
+// ----------------------------
 void EnemyHPUI::Render()
 {
-	m_enemyHP = m_enemyHPclass->GetHP();		// 敵のHPを取得
-	float MAXHP = m_enemyHPclass->GetMaxHP();	// 最大HPを取得
+    m_enemyHP = m_enemyHPclass->GetHP();        // 敵のHPを取得
+    float MAXHP = m_enemyHPclass->GetMaxHP();   // 最大HPを取得
 
-	// 描画位置のオフセット値や緑ゲージの幅を計算する
-	LONG offset = static_cast<LONG>(Screen::CENTER_X - (MAX_WIDTH / 2));
-	LONG width  = static_cast<LONG>(offset + MAX_WIDTH * (m_enemyHP / MAXHP));
+    // 描画位置のオフセット値や緑ゲージの幅を計算する
+    LONG offset = static_cast<LONG>(Screen::CENTER_X - (MAX_WIDTH / 2));
+    LONG width = static_cast<LONG>(offset + MAX_WIDTH * (m_enemyHP / MAXHP));
 
-	// ゲージの矩形を決める
-	RECT back { offset, TOP_POSITION, offset + MAX_WIDTH, BOTTOM_POSITION };
-	RECT gauge{ offset, TOP_POSITION, width				, BOTTOM_POSITION };
+	// ゲージの範囲の設定
+    RECT outline{ offset - 2, TOP_POSITION - 2, offset + MAX_WIDTH + 2, BOTTOM_POSITION + 2 };
+    RECT back{ offset, TOP_POSITION, offset + MAX_WIDTH, BOTTOM_POSITION };
+    RECT gauge{ offset, TOP_POSITION, width, BOTTOM_POSITION };
 
-	// スプライトバッチを開始する
-	m_spriteBatch->Begin();
+    // スプライトバッチを開始する
+    m_spriteBatch->Begin();
 
-	// ゲージを描画する
-	m_spriteBatch->Draw(m_texture.Get(), back , DirectX::Colors::BlanchedAlmond	);	// 背面の描画
-	m_spriteBatch->Draw(m_texture.Get(), gauge, DirectX::Colors::LimeGreen		);	// ゲージ部分
+    // ゲージの描画
+    m_spriteBatch->Draw(m_texture.Get(), outline, DirectX::Colors::Black);
+    m_spriteBatch->Draw(m_texture.Get(), back, DirectX::Colors::BlanchedAlmond);  // 背面の描画
+    m_spriteBatch->Draw(m_texture.Get(), gauge, DirectX::Colors::Red);            // ゲージ部分
 
-	// スプライトバッチを終了する
-	m_spriteBatch->End();
+    // スプライトバッチを終了する
+    m_spriteBatch->End();
 }
 
 

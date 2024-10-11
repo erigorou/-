@@ -16,8 +16,9 @@ private:
 
 	static constexpr int MAX_WIDTH			= 500;
 
-	static constexpr int TOP_POSITION		= 25;
-	static constexpr int BOTTOM_POSITION	= 50;
+	// 上から参照
+	static constexpr int TOP_POSITION		= 650;
+	static constexpr int BOTTOM_POSITION	= 670;
 
 public:
 	EnemyHPUI(EnemyHP* enemyHp);	// コンストラクタ

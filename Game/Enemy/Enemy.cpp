@@ -265,14 +265,26 @@ void Enemy::Finalize()
 {
 }
 
+
 // --------------------------------
 //  当たったときの処理
 // --------------------------------
 void Enemy::HitAction(InterSectData data)
 {
-	///////////////////////////////刀との当たり判定////////////////////////////////////
-	if ( 
-		! m_isHit && 
+	HitSword(data);
+	HitStage(data);
+}
+
+
+
+/// <summary>
+/// 刀との衝突判定
+/// </summary>
+/// <param name="data">衝突した相手オブジェクトの情報を持つ構造体</param>
+void Enemy::HitSword(InterSectData data)
+{
+	if (
+		!m_isHit &&
 		m_canHit &&
 		data.objType == ObjectType::Sword &&
 		data.colType == CollisionType::OBB)
@@ -281,9 +293,14 @@ void Enemy::HitAction(InterSectData data)
 		m_isHit = true;
 		m_canHit = false;
 	}
+}
 
-
-	////////////////////////////ステージとの当たり判定////////////////////////////////
+/// <summary>
+/// ステージとの衝突判定
+/// </summary>
+/// <param name="data">衝突した相手オブジェクトの情報を持つ構造体</param>
+void Enemy::HitStage(InterSectData data)
+{
 	if (data.objType == ObjectType::Stage && data.colType == CollisionType::Sphere)
 	{
 		// 衝突したオブジェクトの情報を取得

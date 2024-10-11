@@ -80,8 +80,6 @@ void EnemyIdling::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3&
 			else if(random == 4)
 				m_enemy->ChangeState(m_enemy->GetEnemyIdling());		// ‰½‚à‚µ‚È‚¢
 		}
-
-		m_enemy->ChangeState(m_enemy->GetEnemyAttacking());		// UŒ‚
 	}
 }
 
