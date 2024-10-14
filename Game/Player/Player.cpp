@@ -211,6 +211,13 @@ void Player::Update(const DirectX::SimpleMath::Vector3 enemyPos,const float elap
 
 	if (m_isHit && m_coolTime < COOL_TIME)	{ m_coolTime += elapsedTime;		 }
 	else if (m_coolTime >= COOL_TIME)		{ m_isHit = false;m_coolTime = 0.0f; }
+
+
+
+	// ƒvƒŒƒCƒ„[‚ÌHP‚ª0‚É‚È‚Á‚½‚ç
+	if (m_hp->GetHP() <= 0)
+	{
+	}
 }
 
 

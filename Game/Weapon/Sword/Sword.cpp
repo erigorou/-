@@ -136,8 +136,11 @@ void Sword::Render(
 	// 現在のステートの描画処理
 	m_currentState->Render(context,states,view,projection);
 
+
+#ifdef _DEBUG
 	// 境界ボックスの描画
 	DrawBoundingBox(device, context, states, view, projection);
+#endif // _DEBUG
 }
 
 // --------------------------------

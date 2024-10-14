@@ -111,10 +111,11 @@ void PlayerAttacking_1::Render(
 	// コモンリソースを取得する
 	CommonResources* resources = CommonResources::GetInstance();
 
-
+#ifdef _DEBUG
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
 	debugString->AddString("Attack 1");
+#endif // _DEBUG
 }
 
 

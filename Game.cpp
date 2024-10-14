@@ -132,8 +132,8 @@ void Game::Render()
 
     UNREFERENCED_PARAMETER(context);
 
-    // デバッグ文字列を作成する：FPS
-    m_debugString->AddString("fps : %d", m_timer.GetFramesPerSecond());
+    //// デバッグ文字列を作成する：FPS
+    //m_debugString->AddString("fps : %d", m_timer.GetFramesPerSecond());
 
     // シーンマネージャを描画する
     m_sceneManager->Render();

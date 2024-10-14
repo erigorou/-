@@ -64,6 +64,14 @@ void TitleScene::Initialize()
 		)
 	);
 
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(
+			device,
+			L"Resources/Textures/SPACEでスタート.png",
+			nullptr,
+			m_texture2.ReleaseAndGetAddressOf()
+		)
+	);
 
 	/*
 		以下、テクスチャの大きさを求める→テクスチャの中心座標を計算する
@@ -90,6 +98,9 @@ void TitleScene::Initialize()
 
 	// テクスチャの中心位置を計算する
 	m_texCenter = texSize / 2.0f;
+
+
+
 
 
 	// シーン変更フラグを初期化する
@@ -126,6 +137,7 @@ void TitleScene::Render()
 
 	// TRIDENTロゴの描画位置を決める
 	RECT rect{ m_commonResources->GetDeviceResources()->GetOutputSize() };
+
 	// 画像の中心を計算する
 	Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
 
@@ -142,13 +154,32 @@ void TitleScene::Render()
 		0.0f				// レイヤ深度(画像のソートで必要)(layerDepth)
 	);
 
+	DirectX::SimpleMath::Vector2 pos2 = DirectX::SimpleMath::Vector2(pos.x, pos.y + 300);
 
+
+	// TRIDENTロゴを描画する
+	m_spriteBatch->Draw(
+		m_texture2.Get(),	// テクスチャ(SRV)
+		pos2,				// スクリーンの表示位置(originの描画位置)
+		nullptr,			// 矩形(RECT)
+		Colors::White,		// 背景色
+		0.0f,				// 回転角(ラジアン)
+		m_texCenter,		// テクスチャの基準になる表示位置(描画中心)(origin)
+		1.0f,				// スケール(scale)
+		SpriteEffects_None,	// エフェクト(effects)
+		0.0f				// レイヤ深度(画像のソートで必要)(layerDepth)
+	);
+
+
+
+#ifdef _DEBUG
 	// 純粋にスプライトフォントで文字列を描画する方法
 	m_spriteFont->DrawString(m_spriteBatch.get(), L"Title Scene", Vector2(10, 40));
 
 	wchar_t buf[32];
 	swprintf_s(buf, 32, L"right : %d, bottom : %d", rect.right, rect.bottom);
-	m_spriteFont->DrawString(m_spriteBatch.get(), buf, Vector2(10,70));
+	m_spriteFont->DrawString(m_spriteBatch.get(), buf, Vector2(10, 70));
+#endif // _DEBUG
 
 	// スプライトバッチの終わり
 	m_spriteBatch->End();

@@ -129,7 +129,7 @@ void ResultScene::Render()
 	// 画像の中心を計算する
 	Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
 
-	// TRIDENTロゴを描画する
+
 	m_spriteBatch->Draw(
 		m_texture.Get(),	// テクスチャ(SRV)
 		pos,				// スクリーンの表示位置(originの描画位置)
@@ -143,12 +143,15 @@ void ResultScene::Render()
 	);
 
 
+#ifdef _DEBUG
 	// 純粋にスプライトフォントで文字列を描画する方法
 	m_spriteFont->DrawString(m_spriteBatch.get(), L"RESULT", Vector2(10, 40));
 
 	wchar_t buf[32];
 	swprintf_s(buf, 32, L"right : %d, bottom : %d", rect.right, rect.bottom);
-	m_spriteFont->DrawString(m_spriteBatch.get(), buf, Vector2(10,70));
+	m_spriteFont->DrawString(m_spriteBatch.get(), buf, Vector2(10, 70));
+#endif // _DEBUG
+
 
 	// スプライトバッチの終わり
 	m_spriteBatch->End();

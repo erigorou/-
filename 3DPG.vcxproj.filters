@@ -195,6 +195,7 @@
     <ClInclude Include="Libraries\MyLib\Collision\CollisionManager.h" />
     <ClInclude Include="Interface\IObject.h" />
     <ClInclude Include="Interface\IHitPoint.h" />
+    <ClInclude Include="Game\UI\Fade\Fade.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -292,6 +293,7 @@
     <ClCompile Include="Game\UI\Source\IconUI.cpp" />
     <ClCompile Include="Game\UI\Source\EnemyHPUI.cpp" />
     <ClCompile Include="Libraries\MyLib\Collision\CollisionManager.cpp" />
+    <ClCompile Include="Game\UI\Fade\Fade.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -329,5 +331,8 @@
     <FxCompile Include="Resources\Shaders\UI\UIGS.hlsl" />
     <FxCompile Include="Resources\Shaders\UI\UIPS.hlsl" />
     <FxCompile Include="Resources\Shaders\UI\UIVS.hlsl" />
+    <FxCompile Include="Resources\Shaders\Fade\FadeGS.hlsl" />
+    <FxCompile Include="Resources\Shaders\Fade\FadePS.hlsl" />
+    <FxCompile Include="Resources\Shaders\Fade\FadeVS.hlsl" />
   </ItemGroup>
 </Project>

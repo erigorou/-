@@ -188,7 +188,7 @@ void PlayScene::Update(float elapsedTime)
 	m_collisionManager->Update();
 
 	// HP‚ª0ˆÈ‰º‚É‚È‚Á‚½‚çƒQ[ƒ€I—¹
-	if (m_enemy->GetEnemyHP()->GetHP() <= 0)
+	if (m_enemy->GetEnemyHP()->GetHP() <= 0 || m_player->GetPlayerHP()->GetHP() <= 0)
 	{
 		m_isChangeScene = true;
 	}
