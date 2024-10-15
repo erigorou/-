@@ -4,6 +4,7 @@
 */
 #include "pch.h"
 #include "SceneManager.h"
+#include "Game/UI/Fade/Fade.h"
 
 #include "TitleScene.h"
 #include "PlayScene.h"
@@ -21,9 +22,11 @@
 // コンストラクタ
 //---------------------------------------------------------
 SceneManager::SceneManager()
-	:
-	m_currentScene{},
-	m_commonResources{}
+	: m_currentScene{}
+	, m_commonResources{}
+	, m_nextSceneID(IScene::SceneID::NONE)
+	, m_canChangeScene(true)
+	, m_isFade(false)
 {
 	m_commonResources = CommonResources::GetInstance();
 }
@@ -41,7 +44,11 @@ SceneManager::~SceneManager()
 //---------------------------------------------------------
 void SceneManager::Initialize()
 {
-	ChangeScene(IScene::SceneID::TITLE);
+	ChangeScene(IScene::SceneID::PLAY);
+
+
+	m_fade = std::make_unique<Fade>(this);
+	m_fade->Initialize();
 }
 
 //---------------------------------------------------------
@@ -55,10 +62,24 @@ void SceneManager::Update(float elapsedTime)
 	const IScene::SceneID nextSceneID = m_currentScene->GetNextSceneID();
 
 	// シーンを変更しないとき
-	if (nextSceneID == IScene::SceneID::NONE) return;
+	if (nextSceneID == IScene::SceneID::NONE && ! m_isFade) return;
 
-	// シーンを変更するとき
-	ChangeScene(nextSceneID);
+	// 初回セットアップ
+	if (m_nextSceneID == IScene::SceneID::NONE)
+	{
+		m_nextSceneID = nextSceneID;
+		m_isFade = true;
+		m_fade->FadeStart(Fade::FadeType::FADE_OUT);
+	}
+
+	// シーン変更フラグをFadeクラスからもらったらtrueにする
+	if (m_canChangeScene)
+	{
+		m_isFade = false;						// フェードを終了
+		ChangeScene(m_nextSceneID);				// シーンを変更
+		m_nextSceneID = IScene::SceneID::NONE;	// シーンIDを初期化
+		m_canChangeScene = false;				// シーン変更を禁止
+	}
 }
 
 //---------------------------------------------------------
@@ -67,6 +88,8 @@ void SceneManager::Update(float elapsedTime)
 void SceneManager::Render()
 {
 	m_currentScene->Render();
+
+	m_fade->Render();
 }
 
 //---------------------------------------------------------

@@ -5,7 +5,9 @@ cbuffer ConstBuffer	: register(b0)
 	matrix matView;
 	matrix matProj;
 	float4 diffuse;
+    float4 easing;
 };
+
 
 struct VS_INPUT
 {

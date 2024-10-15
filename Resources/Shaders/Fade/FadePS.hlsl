@@ -51,9 +51,9 @@ float4 main(PS_INPUT input) : SV_TARGET
 	float4 outputb = float4(0, 0, 0, 1);
 	
     // Œo‰ßŽžŠÔ“I‚ÈŽg‚¢•û‚ð‚·‚é
-    float t = diffuse.a;
+    float t = easing.x;
 	
     outputb.a = CalcAlpha2(input.Tex, float2(0.5f, 0.5f), t * 10);
-
+    
     return outputb;
 }

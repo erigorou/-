@@ -7,14 +7,10 @@
 
 // 前方宣言
 class CommonResources;
+class Fade;
 
 class SceneManager
 {
-private:
-	std::unique_ptr<IScene> m_currentScene;
-	CommonResources* m_commonResources;
-
-
 public:
 	SceneManager();
 	~SceneManager();
@@ -24,9 +20,18 @@ public:
 	void Render();
 	void Finalize();
 
+	void SetCanChangeScene() { m_canChangeScene = true; }
 
 private:
 	void ChangeScene(IScene::SceneID sceneID);
 	void CreateScene(IScene::SceneID sceneID);
 	void DeleteScene();
+
+	std::unique_ptr<IScene> m_currentScene;
+	std::unique_ptr<Fade>	m_fade;
+	CommonResources*		m_commonResources;
+
+	IScene::SceneID m_nextSceneID;		// 次のシーンID
+	bool			m_canChangeScene;	// シーン変更可能かどうか
+	bool			m_isFade;			// フェード中かどうか
 };
