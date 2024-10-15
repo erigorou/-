@@ -13,8 +13,8 @@ public:
 	// フェードの状態
 	enum class FadeType : UINT
 	{
-		FADE_IN,	// 暗　→　明
-		FADE_OUT,	// 明　→　暗
+		FADE_IN,	// 明　→　暗
+		FADE_OUT,	// 暗　→　明
 		FADE_NONE,	// なし
 	};
 
@@ -37,9 +37,11 @@ public:
 	static const wchar_t* GS_PATH;
 	static const wchar_t* PS_PATH;
 
-	static constexpr float FADE_TIME = 1.0f;
+	static constexpr float FADE_TIME = 1.2f;
 
-	void FadeStart(FadeType type);		// フェード開始
+	void StartFadeIn();
+	void StartFadeOut();
+	void FadeStop();
 
 	Fade(SceneManager* scene);			// コンストラクタ
 	~Fade();							// デストラクタ
@@ -62,6 +64,8 @@ private:
 	float		m_totalTime;	// 経過時間
 	bool		m_isFade;		// フェード中かどうか
 	FadeType	m_fadeType;		// フェードの状態
+
+	float		m_easingValue;	// イージング値
 
 	DX::DeviceResources*						m_pDR;		// デバイスリソーシーズ
 	Microsoft::WRL::ComPtr<ID3D11Buffer>		m_CBuffer;

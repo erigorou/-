@@ -192,6 +192,20 @@ void PlayScene::Update(float elapsedTime)
 	{
 		m_isChangeScene = true;
 	}
+
+
+#ifdef _DEBUG
+
+	// キーボードの入力を取得する
+	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
+
+	if (keyboardState.Enter)
+	{
+		m_isChangeScene = true;
+	}
+
+#endif // _DEBUG
+
 }
 
 

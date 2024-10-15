@@ -111,7 +111,7 @@ void Cudgel_Sweeping::UpdateCudgelRotation()
 	float t = 0.0f;  // ³‹K‰»‚³‚ê‚½Œo‰ßŠÔ
 
 	if (m_totalSeconds <= CHARGE_TIME) {
-		t =	m_totalSeconds / CHARGE_TIME;								// 0 ~ 1 ‚É³‹K‰»
+		t =	m_totalSeconds / CHARGE_TIME;							// 0 ~ 1 ‚É³‹K‰»
 		m_angleRL = -CHARGE_ROTATE_ANGLE * Easying::easeOutCirc(t);	// 30“x¶‰ñ“]
 	}
 

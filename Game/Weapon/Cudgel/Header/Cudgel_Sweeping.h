@@ -50,6 +50,7 @@ public:
 
 	void HitAction(InterSectData data)override;
 	
+private:
 	// Cudgelの回転を計算する関数
 	void UpdateCudgelRotation();
 	// 初期値として使用するワールド行列を計算する関数
@@ -58,7 +59,6 @@ public:
 	DirectX::SimpleMath::Matrix CalculateAttackMatrix();
 	// 根本と頂点の座標を取得する ※ both ends = 両端
 	void GetCudgelBothEnds(float _totalTime);
-
 
 private:
 	DirectX::SimpleMath::Vector3 m_position;	// 座標
@@ -76,7 +76,7 @@ private:
 	Particle*	m_particles;					// パーティクル
 
 	// 剣の軌跡のエフェクト
-	// 頂点を保存する用の双極配列
+	// 頂点を保存する用の可変長配列
 	std::vector<DirectX::SimpleMath::Vector3> m_rootPos;	// 根本
 	std::vector<DirectX::SimpleMath::Vector3> m_tipPos;		// 先端
 

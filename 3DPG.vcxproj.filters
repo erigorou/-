@@ -183,7 +183,7 @@
     <ClInclude Include="Interface\IUserInterface.h" />
     <ClInclude Include="Game\UI\PlaySceneUIManager\Header\PlaySceneUIManager.h" />
     <ClInclude Include="Game\UI\Header\Gauge.h" />
-    <ClInclude Include="Effects\Header\SwordTrialParticle.h" />
+    <ClInclude Include="Effects\Source\SwordTrialParticle.h" />
     <ClInclude Include="Game\Enemy\States\Header\Enemy_Sweeping.h" />
     <ClInclude Include="Libraries\MyLib\EasingFunctions.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Sweeping.h" />

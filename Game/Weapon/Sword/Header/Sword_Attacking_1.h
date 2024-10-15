@@ -39,24 +39,22 @@ public:
 	void HitAction(InterSectData data)override;
 
 private:
-	// 座標
-	DirectX::SimpleMath::Vector3 m_position;
-	// 速度
-	DirectX::SimpleMath::Vector3 m_velocity;
-	// 角度
-	float m_angle;
-	// 剣の回転(x軸, y軸, z軸)
-	DirectX::SimpleMath::Vector3 m_rot;
-	// ワールド行列
-	DirectX::SimpleMath::Matrix m_worldMatrix;
-	// モデル
-	DirectX::Model* m_model;
+	// 根本と頂点の座標を取得する ※ both ends = 両端
+	void GetCudgelBothEnds(float _totalTime);
 
-	// このシーンになってからのステート
-	float m_totalSeconds;
-
-
-private:
 	// ソードの元を取得
 	Sword* m_sword;
+
+	DirectX::SimpleMath::Vector3	m_position;		// 座標
+	DirectX::SimpleMath::Vector3	m_velocity;		// 速度
+	float							m_angle;		// 剣の回転
+	DirectX::SimpleMath::Vector3	m_rot;			// 3方向の剣の回転
+	DirectX::SimpleMath::Matrix		m_worldMatrix;	// ワールド行列
+	DirectX::Model*					m_model;		// モデルのポインタ
+
+	float m_totalSeconds;
+
+	std::vector<DirectX::SimpleMath::Vector3>	m_rootPos;	// 根本の座標
+	std::vector<DirectX::SimpleMath::Vector3>	m_tipPos;	// 先端の座標
+
 };

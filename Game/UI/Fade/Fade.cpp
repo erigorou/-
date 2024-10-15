@@ -140,14 +140,30 @@ void Fade::CreateShader()
 }
 
 /// <summary>
-/// フェードを開始するステート
+/// フェードインの開始処理
 /// </summary>
-/// <param name="state">どの種類のフェードを使うか</param>
-void Fade::FadeStart(FadeType type)
+/// <param name="type"></param>
+void Fade::StartFadeIn()
 {
-	m_fadeType = type;
 	m_isFade = true;
+	m_totalTime = 0.0f;
+	m_fadeType = FadeType::FADE_IN;
 }
+
+
+void Fade::StartFadeOut()
+{
+	m_isFade = true;
+	m_totalTime = FADE_TIME;
+	m_fadeType = FadeType::FADE_OUT;
+}
+
+void Fade::FadeStop()
+{
+	m_isFade = false;
+	m_fadeType = FadeType::FADE_NONE;
+}
+
 
 
 void Fade::Update(float elapsedTime)
@@ -166,23 +182,13 @@ void Fade::CountTimer()
 {
 	switch (m_fadeType)
 	{
-	case FadeType::FADE_IN:
-		FadeIn();
-		break;
-
-	case FadeType::FADE_OUT:
-		FadeOut();
-		break;
-		
-	case FadeType::FADE_NONE:
-
-
-		break;
-
-	default:
-		break;
+	case FadeType::FADE_IN:		FadeIn();	break;
+	case FadeType::FADE_OUT:	FadeOut();	break;
+	
+	default:								break;
 	}
 }
+
 
 
 /// <summary>
@@ -190,7 +196,8 @@ void Fade::CountTimer()
 /// </summary>
 void Fade::FadeIn()
 {
-	m_totalTime += m_elapsedTime;
+	// 時間を計算する( 0 → 1 )
+	m_totalTime = std::min(m_totalTime + m_elapsedTime, FADE_TIME);
 
 	if (m_totalTime >= FADE_TIME)
 	{
@@ -207,7 +214,8 @@ void Fade::FadeIn()
 /// </summary>
 void Fade::FadeOut()
 {
-	m_totalTime -= m_elapsedTime;
+	// 時間を計算する( 1 → 0 )
+	m_totalTime = std::max(m_totalTime - m_elapsedTime, 0.0f);
 
 	if (m_totalTime <= 0.0f)
 	{
@@ -219,19 +227,16 @@ void Fade::FadeOut()
 }
 
 
+
 void Fade::Render()
 {
 	using namespace DirectX;
 
-	// デバッグ
-	m_totalTime -= 0.01667f;
-
-	// イージングで使用する為の変数
+	// イージングで使用する為の変数	// 1に近いと明るい
 	float t = 0.0f;
 
 	t = std::max(0.0f, 1.0f - (m_totalTime / FADE_TIME));
 	t = std::max(0.0001f, Easying::easeInCubic(t));
-
 
 	ID3D11DeviceContext1* context = m_pDR->GetD3DDeviceContext();
 

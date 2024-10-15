@@ -25,7 +25,7 @@ SceneManager::SceneManager()
 	: m_currentScene{}
 	, m_commonResources{}
 	, m_nextSceneID(IScene::SceneID::NONE)
-	, m_canChangeScene(true)
+	, m_canChangeScene(false)
 	, m_isFade(false)
 {
 	m_commonResources = CommonResources::GetInstance();
@@ -44,11 +44,10 @@ SceneManager::~SceneManager()
 //---------------------------------------------------------
 void SceneManager::Initialize()
 {
-	ChangeScene(IScene::SceneID::PLAY);
-
-
 	m_fade = std::make_unique<Fade>(this);
 	m_fade->Initialize();
+
+	ChangeScene(IScene::SceneID::PLAY);
 }
 
 //---------------------------------------------------------
@@ -57,6 +56,8 @@ void SceneManager::Initialize()
 void SceneManager::Update(float elapsedTime)
 {
 	m_currentScene->Update(elapsedTime);
+
+	m_fade->Update(elapsedTime);
 
 	// 説明用変数：次のシーン
 	const IScene::SceneID nextSceneID = m_currentScene->GetNextSceneID();
@@ -69,7 +70,8 @@ void SceneManager::Update(float elapsedTime)
 	{
 		m_nextSceneID = nextSceneID;
 		m_isFade = true;
-		m_fade->FadeStart(Fade::FadeType::FADE_OUT);
+		m_fade->StartFadeIn();
+		m_canChangeScene = false;
 	}
 
 	// シーン変更フラグをFadeクラスからもらったらtrueにする
@@ -107,6 +109,8 @@ void SceneManager::ChangeScene(IScene::SceneID sceneID)
 {
 	DeleteScene();
 	CreateScene(sceneID);
+
+	m_fade->StartFadeOut();
 }
 
 //---------------------------------------------------------
