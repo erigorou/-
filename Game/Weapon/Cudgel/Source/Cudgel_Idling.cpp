@@ -17,6 +17,7 @@
 #include "Game/Weapon/Cudgel/Header/Cudgel_Idling.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
 
+
 // コンストラクタ
 Cudgel_Idling::Cudgel_Idling(Cudgel* cudgel)
 	:
@@ -28,6 +29,7 @@ Cudgel_Idling::Cudgel_Idling(Cudgel* cudgel)
 	m_model(nullptr)
 {
 }
+
 
 // デストラクタ
 Cudgel_Idling::~Cudgel_Idling()
@@ -47,6 +49,7 @@ void Cudgel_Idling::Initialize()
 void Cudgel_Idling::PreUpdate()
 {
 }
+
 
 // 更新処理
 void Cudgel_Idling::Update(float elapsedTime)
@@ -69,10 +72,12 @@ void Cudgel_Idling::Update(float elapsedTime)
 	m_cudgel->SetCollisionPosition(m_worldMatrix);		// 当たり判定の位置を設定する
 }
 
+
 // 事後処理
 void Cudgel_Idling::PostUpdate()
 {
 }
+
 
 // 描画処理
 void Cudgel_Idling::Render(ID3D11DeviceContext* context,
@@ -96,6 +101,7 @@ void Cudgel_Idling::Render(ID3D11DeviceContext* context,
 void Cudgel_Idling::Finalize()
 {
 }
+
 
 
 void Cudgel_Idling::HitAction(InterSectData data)

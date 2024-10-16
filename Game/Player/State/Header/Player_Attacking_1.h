@@ -10,11 +10,12 @@
 
 #pragma once
 #include "pch.h"
-#include "Interface/IState.h"
+#include "Interface/IPlayer.h"
+
 
 class Player;
 
-class PlayerAttacking_1 : public IState
+class PlayerAttacking_1 : public IPlayer
 {
 
 public:
@@ -38,6 +39,9 @@ public:
 		const DirectX::SimpleMath::Matrix& projection) override;
 	// 終了処理
 	void Finalize() override;
+
+	// キー入力を通知
+	void OnKeyPressed(const DirectX::Keyboard::Keys& key) override;
 
 private:
 	// 座標

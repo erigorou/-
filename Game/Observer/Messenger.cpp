@@ -16,6 +16,7 @@ void Messenger::Attach(const DirectX::Keyboard::Keys& key, IObserver* observer)
     s_observerList.emplace_back(key, observer);
 }
 
+
 // 観察者をデタッチする
 void Messenger::Detach(const DirectX::Keyboard::Keys& key, IObserver* observer)
 {
@@ -31,14 +32,13 @@ void Messenger::Detach(const DirectX::Keyboard::Keys& key, IObserver* observer)
 
 
 
-// 観察者に通知する
-void Messenger::Notify(const DirectX::Keyboard::State& keyboardState)
+void Messenger::Notify(const DirectX::Keyboard::KeyboardStateTracker& keyboardTracker)
 {
     // 観察者リストから観察者を取り出す
     for (const auto& keyRange : s_keysRangeList)
     {
         // 観察者が処理すべきキーかどうかを調べる
-        if (keyboardState.IsKeyDown(keyRange.first))
+        if (keyboardTracker.IsKeyPressed(keyRange.first))
         {
             // キーの開始インデックスから終了インデックスまでのインデックスを取り出す
             for (const auto& range : keyRange.second)
@@ -52,6 +52,30 @@ void Messenger::Notify(const DirectX::Keyboard::State& keyboardState)
         }
     }
 }
+
+
+
+void Messenger::Notify(const DirectX::Keyboard::State& keyboardState)
+{
+	// 観察者リストから観察者を取り出す
+	for (const auto& keyRange : s_keysRangeList)
+	{
+		// 観察者が処理すべきキーかどうかを調べる
+		if (keyboardState.IsKeyDown(keyRange.first))
+		{
+			// キーの開始インデックスから終了インデックスまでのインデックスを取り出す
+			for (const auto& range : keyRange.second)
+			{
+				for (int i = range.first; i <= range.second; ++i)
+				{
+					// 観察者の通知関数に押し下げられたキーを通知する
+					s_observerList[i].second->OnKeyPressed(s_observerList[i].first);
+				}
+			}
+		}
+	}
+}
+
 
 // 観察者リストをソートする
 void Messenger::SortObserverList()

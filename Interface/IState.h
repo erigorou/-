@@ -15,6 +15,7 @@
 class IState
 {
 public:
+	// デストラクタ
 	virtual ~IState() = default;
 	// 初期化する
 	virtual void Initialize(DirectX::Model* model) = 0;

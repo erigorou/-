@@ -25,7 +25,6 @@
 const DirectX::SimpleMath::Vector3 Player::HOME_POSITION(0.0f);
 const float Player::PLAYER_SPEED = 0.01f;
 const float Player::PLAYER_SCALE = 0.1f;
-const float Player::APPLIED_ATTACK_TIME = 1.0f;
 
 
 // --------------------------------
@@ -154,7 +153,7 @@ void Player::CreateState()
 /// ステートを変更する
 /// </summary>
 /// <param name="newState">変更したいステート</param>
-void Player::ChangeState(IState* newState)
+void Player::ChangeState(IPlayer* newState)
 {
 	// 同じステートで更新しようとすると早期リターン
 	if (m_currentState == newState) return;
@@ -174,7 +173,7 @@ void Player::ChangeState(IState* newState)
 /// <param name="newState">変更する時間</param>
 /// <param name="elapsedTime">経過時間</param>
 // ---------------------------------------------------------
-void Player::TimeComparison(float& nowTime, const float totalTime, IState* newState, const float elapsedTime)
+void Player::TimeComparison(float& nowTime, const float totalTime, IPlayer* newState, const float elapsedTime)
 {
 	// 定められた時間になったら
 	if (nowTime >= totalTime)
@@ -209,15 +208,10 @@ void Player::Update(const DirectX::SimpleMath::Vector3 enemyPos,const float elap
 	///////////////////当たり判定の更新////////////////////////////
 	m_bodyCollision->Center = m_position;
 
+	// クールタイムを計測中
 	if (m_isHit && m_coolTime < COOL_TIME)	{ m_coolTime += elapsedTime;		 }
+	// クールタイム終わり
 	else if (m_coolTime >= COOL_TIME)		{ m_isHit = false;m_coolTime = 0.0f; }
-
-
-
-	// プレイヤーのHPが0になったら
-	if (m_hp->GetHP() <= 0)
-	{
-	}
 }
 
 
@@ -229,6 +223,16 @@ void Player::Update(const DirectX::SimpleMath::Vector3 enemyPos,const float elap
 // ----------------------------------------------
 void Player::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 {
+	if (m_currentState == this->GetPlayerIdlingState())
+	{
+		// 移動
+		if (key == DirectX::Keyboard::Up)		m_inputVelocity += Vector3::Forward;	// 「↑」で前進
+		if (key == DirectX::Keyboard::Down)		m_inputVelocity += Vector3::Backward;	// 「↓」で後退
+		if (key == DirectX::Keyboard::Left)		m_inputVelocity += Vector3::Left;		// 「←」で左移動
+		if (key == DirectX::Keyboard::Right)	m_inputVelocity += Vector3::Right;		// 「→」で右移動
+	}
+
+	m_currentState->OnKeyPressed(key);
 }
 
 
@@ -267,20 +271,15 @@ void Player::MovePlayer()
 	// キー入力を受け付ける。
 	Keyboard::State keyboardState = Keyboard::Get().GetState();
 
-	Vector3 inputVelocity = Vector3::Zero;	// 基本速度
 	Vector3 moveVelocity  = Vector3::Zero;	// 加速用速度
 
-	if (keyboardState.Up	)	inputVelocity += Vector3::Forward;	// 「↑」で前進
-	if (keyboardState.Down	)	inputVelocity += Vector3::Backward;	// 「↓」で後退
-	if (keyboardState.Left	)	inputVelocity += Vector3::Left;		// 「←」で左移動
-	if (keyboardState.Right	)	inputVelocity += Vector3::Right;	// 「→」で右移動
 
-	inputVelocity.Normalize();
-	m_direction = inputVelocity;
+	m_inputVelocity.Normalize();
+	m_direction = m_inputVelocity;
 	
 
 	///////////////////// 移動キーの入力がない場合の処理 /////////////////
-	if (inputVelocity == Vector3::Zero)
+	if (m_inputVelocity == Vector3::Zero)
 	{
 		float accelerationLength = m_acceleration.Length();				// 速度の長さを取得する
 		// 0の近似値より大きい場合
@@ -303,10 +302,10 @@ void Player::MovePlayer()
 	else
 	{
 		// 基本移動量を計算する
-		moveVelocity += inputVelocity * PLAYER_SPEED;
+		moveVelocity += m_inputVelocity * PLAYER_SPEED;
 
 		float acceleration = 0.05f;							// 加速度
-		m_acceleration += inputVelocity * acceleration;		// 加速度の計算を行う
+		m_acceleration += m_inputVelocity * acceleration;		// 加速度の計算を行う
 
 		// 2乗にすることで符号を外す
 		if (m_acceleration.LengthSquared() > 1)
@@ -321,15 +320,18 @@ void Player::MovePlayer()
 	/////////////////////////// 移動処理 //////////////////////////////////
 	m_position += Vector3::Transform(moveVelocity, Matrix::CreateRotationY(-m_angle));
 
+	/////////////////////////// パーティクルの生成 //////////////////////////
 	if (moveVelocity != Vector3::Zero)
 	{
-		m_particleTime += m_elapsedTime;			// パーティクルの時間を計測する
+		m_particleTime += m_elapsedTime;
 		if (m_particleTime >= 0.15f)
 		{
 			m_playScene->GetParticle()->CreateTrailDust(m_elapsedTime);
 			m_particleTime = 0.0f;
 		}
 	}
+
+	m_inputVelocity = Vector3::Zero;	// 基本速度
 }
 
 

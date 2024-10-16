@@ -10,12 +10,12 @@
 
 #pragma once
 #include "pch.h"
-#include "Interface/IState.h"
+#include "Interface/IPlayer.h"
 
 class Player;
 class Enemy;
 
-class PlayerIdling : public IState
+class PlayerIdling : public IPlayer
 {
 public:
 	// デストラクタ
@@ -26,6 +26,8 @@ public:
 	void PreUpdate() override;
 	// 更新処理する
 	void Update(const float& elapsedTime, DirectX::SimpleMath::Vector3& parentPos) override;
+	// キー入力
+	void OnKeyPressed(const DirectX::Keyboard::Keys& key) override;
 	// 事後更新する
 	void PostUpdate() override;
 	// 描画する

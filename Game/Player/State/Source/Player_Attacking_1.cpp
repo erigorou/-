@@ -57,29 +57,18 @@ void PlayerAttacking_1::PreUpdate()
 // 更新処理
 void PlayerAttacking_1::Update(const float& elapsedTime,  DirectX::SimpleMath::Vector3& parentPos)
 {
-	// parentPos使わないけどエラー出さないでねって文
-	UNREFERENCED_PARAMETER(parentPos);
-
-	// 押したときだけ反応するキーボード
-	DirectX::Keyboard::State keyboard = DirectX::Keyboard::Get().GetState();
-	DirectX::Keyboard::KeyboardStateTracker tracker;
-	tracker.Update(keyboard);
-
-	// １回目の攻撃中に攻撃ボタンを押す
-	if (tracker.IsKeyPressed(DirectX::Keyboard::D1))
-	{
-		// ２回目の攻撃にステートを変更する
-		m_player->ChangeState(m_player->GetPlayerAttackingState2());
-	}
-
-	// 左シフトで回避
-	if (tracker.IsKeyPressed(DirectX::Keyboard::LeftShift))
-	{
-		m_player->ChangeState(m_player->GetPlayerDodgingState());
-	}
+	m_totalSeconds += elapsedTime;
 
 	// 時間を計測し、一定時間経過でステートを遷移
 	m_player->TimeComparison(m_totalSeconds, Player::APPLIED_ATTACK_TIME, m_player->GetPlayerIdlingState(), elapsedTime);
+}
+
+
+// キー入力
+void PlayerAttacking_1::OnKeyPressed(const DirectX::Keyboard::Keys& key)
+{
+	if (key == DirectX::Keyboard::X			&& m_totalSeconds >= Player::X_COOL_TIME)	m_player->ChangeState(m_player->GetPlayerAttackingState2());
+	if (key == DirectX::Keyboard::LeftShift	&& m_totalSeconds >= Player::X_COOL_TIME)	m_player->ChangeState(m_player->GetPlayerDodgingState());
 }
 
 

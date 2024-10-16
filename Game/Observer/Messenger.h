@@ -7,6 +7,13 @@
 
 class Messenger
 {
+	// 配列
+	enum class ObserverData : UINT
+	{
+
+	};
+
+
 public:
 	// 観察者をアタッチする
 	static void Attach(const DirectX::Keyboard::Keys& key, IObserver* observer);
@@ -16,7 +23,9 @@ public:
 
 	// 通知する
 	static void Notify(const DirectX::Keyboard::State& keyboardState);
-	
+	static void Notify(const DirectX::Keyboard::KeyboardStateTracker& keyboardTracker);
+
+
 	// 観察者リストをソートする
 	static void SortObserverList();
 

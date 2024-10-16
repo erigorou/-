@@ -234,6 +234,7 @@
     <ClInclude Include="Interface\IHitPoint.h" />
     <ClInclude Include="Interface\IObject.h" />
     <ClInclude Include="Interface\IObserver.h" />
+    <ClInclude Include="Interface\IPlayer.h" />
     <ClInclude Include="Interface\IUserInterface.h" />
     <ClInclude Include="Interface\IParticle.h" />
     <ClInclude Include="Interface\IWeapon.h" />

@@ -31,9 +31,12 @@ public:
 	// 大きさ
 	static const float PLAYER_SCALE;
 	// 攻撃が適用される時間
-	static const float APPLIED_ATTACK_TIME;
+	static constexpr float APPLIED_ATTACK_TIME = 1.2f;
+	static constexpr float APPLIED_DODGE_TIME = 0.f;
 
 	static constexpr float COOL_TIME = 1.0f;
+
+	static constexpr float X_COOL_TIME = 1.0f;
 
 public:
 	// /////////////////プレイヤーの基礎情報を渡す関数//////////////////////////////////////////////////
@@ -80,9 +83,9 @@ public:
 	// ステートの作成関数
 	void CreateState();
 	// 新しい状態に遷移する
-	void ChangeState(IState* newState);
+	void ChangeState(IPlayer* newState);
 	// 時間計測を行う
-	void TimeComparison(float& nowTime, const float totalTime, IState* newState, const float elapsedTime);
+	void TimeComparison(float& nowTime, const float totalTime, IPlayer* newState, const float elapsedTime);
 	// 更新処理
 	void Update(
 		const DirectX::SimpleMath::Vector3	enemyPos,
@@ -124,6 +127,7 @@ public:
 private:
 	DirectX::SimpleMath::Vector3	m_position;			// 位置
 	DirectX::SimpleMath::Vector3	m_velocity;			// 速度
+	DirectX::SimpleMath::Vector3	m_inputVelocity;	// 入力保持用変数
 	DirectX::SimpleMath::Vector3	m_direction;		// 向き
 	DirectX::SimpleMath::Vector3	m_acceleration;		// 加速度
 	float							m_angle;			// 回転	
@@ -134,7 +138,7 @@ private:
 	DirectX::SimpleMath::Matrix m_worldMatrix;
 
 	// ステート関連 =================================================
-	IState* m_currentState;										// 現在のステート
+	IPlayer* m_currentState;									// 現在のステート
 	std::unique_ptr<PlayerIdling> m_playerIdling;				// 待機状態
 	std::unique_ptr<PlayerDodging> m_playerDodging;				// 回避状態
 

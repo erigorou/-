@@ -199,6 +199,7 @@
     <ClInclude Include="Game\Factory\Factory.h" />
     <ClInclude Include="Game\Observer\Messenger.h" />
     <ClInclude Include="Interface\IObserver.h" />
+    <ClInclude Include="Interface\IPlayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />

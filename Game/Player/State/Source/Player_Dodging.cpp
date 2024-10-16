@@ -68,6 +68,12 @@ void PlayerDodging::Update(const float& elapsedTime, DirectX::SimpleMath::Vector
 	parentPos +=Vector3::Transform(m_velocity,angle);
 }
 
+// キー入力
+void PlayerDodging::OnKeyPressed(const DirectX::Keyboard::Keys& key)
+{
+	UNREFERENCED_PARAMETER(key);
+}
+
 
 // 事後更新処理
 void PlayerDodging::PostUpdate()

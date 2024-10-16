@@ -31,7 +31,6 @@ PlayerAttacking_4::~PlayerAttacking_4()
 {
 }
 
-
 // 初期化処理
 void PlayerAttacking_4::Initialize(DirectX::Model* model)
 {
@@ -54,6 +53,13 @@ void PlayerAttacking_4::Update(const float& elapsedTime,  DirectX::SimpleMath::V
 
 	// 時間を計測し、一定時間経過でステートを遷移
 	m_player->TimeComparison(m_totalSeconds, Player::APPLIED_ATTACK_TIME, m_player->GetPlayerIdlingState(), elapsedTime);
+}
+
+
+// キー入力
+void PlayerAttacking_4::OnKeyPressed(const DirectX::Keyboard::Keys& key)
+{
+	UNREFERENCED_PARAMETER(key);
 }
 
 

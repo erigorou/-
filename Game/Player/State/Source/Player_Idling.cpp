@@ -52,24 +52,17 @@ void PlayerIdling::Update(const float& elapsedTime,  DirectX::SimpleMath::Vector
 	// elapsedTime使わないけどエラー出さないでねって文
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	// キーボードの入力を取得する
-	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
-
 	// プレイヤーの移動
 	m_player->MovePlayer();
-
-	// 左シフトの入力　&& 移動中なら
-	if (keyboardState.LeftShift && m_player->GetVelocity() != DirectX::SimpleMath::Vector3::Zero)
-	{
-		m_player->ChangeState(m_player->GetPlayerDodgingState());
-	}
-	// Xの入力
-	if (keyboardState.X) 
-	{
-		m_player->ChangeState(m_player->GetPlayerAttackingState1());
-	}
 }
 
+
+// キー入力
+void PlayerIdling::OnKeyPressed(const DirectX::Keyboard::Keys& key)
+{
+	if (key == DirectX::Keyboard::X			)	m_player->ChangeState(m_player->GetPlayerAttackingState1());
+	if (key == DirectX::Keyboard::LeftShift	)	m_player->ChangeState(m_player->GetPlayerDodgingState());
+}
 
 
 // 事後更新処理

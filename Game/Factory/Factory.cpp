@@ -115,11 +115,12 @@ std::unique_ptr<Player> Factory::CreatePlayer(PlayScene* playScene)
 	// ‰Šú‰»ˆ—
 	player->Initialize();
 
-	Messenger::Attach(DirectX::Keyboard::X, player.get());
-	Messenger::Attach(DirectX::Keyboard::Left, player.get());
-	Messenger::Attach(DirectX::Keyboard::Right, player.get());
-	Messenger::Attach(DirectX::Keyboard::Up, player.get());
-	Messenger::Attach(DirectX::Keyboard::Down, player.get());
+	Messenger::Attach(DirectX::Keyboard::X			, player.get());
+	Messenger::Attach(DirectX::Keyboard::Left		, player.get());
+	Messenger::Attach(DirectX::Keyboard::Right		, player.get());
+	Messenger::Attach(DirectX::Keyboard::Up			, player.get());
+	Messenger::Attach(DirectX::Keyboard::Down		, player.get());
+	Messenger::Attach(DirectX::Keyboard::LeftShift	, player.get());
 
 	// ƒvƒŒƒCƒ„[‚Ìİ’è
 	return player;

@@ -119,14 +119,11 @@ void PlayScene::CreateObjects()
 	m_particles			= Factory::CreateParticle();			// パーティクル
 	m_floor				= Factory::CreateFloor(device);			// フロア
 	m_wall				= Factory::CreateWall(this);			// 壁
-	m_player	= Factory::CreatePlayer(this);			// プレイヤ
-
-
-	m_sword		= Factory::CreateSword(this);			// 刀
-	m_enemy		= Factory::CreateEnemy(this); 			// 鬼
-	m_cudgel	= Factory::CreateCudgel(this);			// 金棒
-	m_uiManager	= Factory::CreateUIManager(this);		// UIマネージャ
-
+	m_player			= Factory::CreatePlayer(this);			// プレイヤ
+	m_sword				= Factory::CreateSword(this);			// 刀
+	m_enemy				= Factory::CreateEnemy(this); 			// 鬼
+	m_cudgel			= Factory::CreateCudgel(this);			// 金棒
+	m_uiManager			= Factory::CreateUIManager(this);		// UIマネージャ
 
 	// 観察者リストをソートする
 	Messenger::SortObserverList();
@@ -137,7 +134,22 @@ void PlayScene::CreateObjects()
 
 
 // キーボードが押下げられたどうかを判定する
-inline bool IsKeyPress(DirectX::Keyboard::State& state)
+inline bool IsKeyPress(DirectX::Keyboard::KeyboardStateTracker& stateTracker)
+{
+	// キーボードステートへのポインタを取得する
+	auto ptr = reinterpret_cast<uint32_t*>(&stateTracker);
+	for (int key = 0; key < 0xff; key++)
+	{
+		const unsigned int buffer = 1u << (key & 0x1f);
+		// キーが押下げられたかどうかを調べる
+		if (ptr[(key >> 5)] && buffer)	 return true;
+	}
+	// キーは押下げられていない
+	return false;
+}
+
+
+inline bool IsKeyDown(DirectX::Keyboard::State& state)
 {
 	// キーボードステートへのポインタを取得する
 	auto ptr = reinterpret_cast<uint32_t*>(&state);
@@ -168,7 +180,7 @@ void PlayScene::Update(float elapsedTime)
 	m_keyboardStateTracker.Update(m_keyboardState);
 
 	// キーボードが押下げられたかどうかを判定する
-	if (IsKeyPress(m_keyboardState)) { Messenger::Notify(m_keyboardState); }
+	if (IsKeyDown(m_keyboardState)) { Messenger::Notify(m_keyboardState); }
 
 	// BGMの再生
 	m_bgm->Update();
@@ -187,9 +199,7 @@ void PlayScene::Update(float elapsedTime)
 	m_cudgel->Update(elapsedTime);
 
 	// カメラの回転行列の作成	引数にはプレイヤーの回転角を入れる
-	SimpleMath::Matrix matrix
-		= SimpleMath::Matrix::CreateRotationY(
-			XMConvertToRadians(m_player->GetAngle()));
+	SimpleMath::Matrix matrix = SimpleMath::Matrix::CreateRotationY( XMConvertToRadians ( m_player->GetAngle() ) );
 	// カメラの更新
 	m_camera->Update(m_player->GetPosition(), m_enemy->GetPosition(), matrix);
 
@@ -204,24 +214,12 @@ void PlayScene::Update(float elapsedTime)
 	m_collisionManager->Update();
 
 	// HPが0以下になったらゲーム終了
-	if (m_enemy->GetEnemyHP()->GetHP() <= 0 || m_player->GetPlayerHP()->GetHP() <= 0)
-	{
-		m_isChangeScene = true;
-	}
+	if (m_enemy->GetEnemyHP()->GetHP() <= 0 || m_player->GetPlayerHP()->GetHP() <= 0)	m_isChangeScene = true;
 
 
 #ifdef _DEBUG
 
-	// キーボードの入力を取得する
-	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
-
-	if (keyboardState.Enter)
-	{
-		m_isChangeScene = true;
-	}
-
 #endif // _DEBUG
-
 }
 
 
