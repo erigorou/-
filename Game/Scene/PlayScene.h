@@ -89,4 +89,9 @@ private:
 
 	// 当たり判定関連の変数 ==================================================================
 	std::unique_ptr<CollisionManager> m_collisionManager;	// 当たり判定マネージャ
+
+
+	// キーボード用の変数 ====================================================================
+	DirectX::Keyboard::State				m_keyboardState;
+	DirectX::Keyboard::KeyboardStateTracker m_keyboardStateTracker;
 };

@@ -223,6 +223,18 @@ void Player::Update(const DirectX::SimpleMath::Vector3 enemyPos,const float elap
 
 // ----------------------------------------------
 /// <summary>
+/// ƒL[“ü—Í‚ğæ“¾‚·‚é
+/// </summary>
+/// <param name="key"></param>
+// ----------------------------------------------
+void Player::OnKeyPressed(const DirectX::Keyboard::Keys& key)
+{
+}
+
+
+
+// ----------------------------------------------
+/// <summary>
 /// ‰ñ“]Šp‚ÌŒvZŠÖ”
 /// </summary>
 /// <param name="enemyPos"></param>

@@ -37,6 +37,10 @@
 // 当たり判定関連 =============================================
 #include "Libraries/MyLib/Collision/CollisionManager.h"	// 当たり判定
 
+
+#include"Interface/IObserver.h"
+#include "Game/Observer/Messenger.h"
+
 /// <summary>
 /// コンストラクタ
 /// </summary>
@@ -116,10 +120,35 @@ void PlayScene::CreateObjects()
 	m_floor				= Factory::CreateFloor(device);			// フロア
 	m_wall				= Factory::CreateWall(this);			// 壁
 	m_player	= Factory::CreatePlayer(this);			// プレイヤ
+
+
 	m_sword		= Factory::CreateSword(this);			// 刀
 	m_enemy		= Factory::CreateEnemy(this); 			// 鬼
 	m_cudgel	= Factory::CreateCudgel(this);			// 金棒
 	m_uiManager	= Factory::CreateUIManager(this);		// UIマネージャ
+
+
+	// 観察者リストをソートする
+	Messenger::SortObserverList();
+	// キー範囲リストを生成する
+	Messenger::CreateKeyRangeList();
+}
+
+
+
+// キーボードが押下げられたどうかを判定する
+inline bool IsKeyPress(DirectX::Keyboard::State& state)
+{
+	// キーボードステートへのポインタを取得する
+	auto ptr = reinterpret_cast<uint32_t*>(&state);
+	for (int key = 0; key < 0xff; key++)
+	{
+		const unsigned int buffer = 1u << (key & 0x1f);
+		// キーが押下げられたかどうかを調べる
+		if (ptr[(key >> 5)] && buffer)	 return true;
+	}
+	// キーは押下げられていない
+	return false;
 }
 
 
@@ -132,6 +161,14 @@ void PlayScene::Update(float elapsedTime)
 {
 	using namespace DirectX;
 	UNREFERENCED_PARAMETER(elapsedTime);
+
+	// キーボードの状態を取得する
+	m_keyboardState = DirectX::Keyboard::Get().GetState();
+	// キーボードステートトラッカーを更新する
+	m_keyboardStateTracker.Update(m_keyboardState);
+
+	// キーボードが押下げられたかどうかを判定する
+	if (IsKeyPress(m_keyboardState)) { Messenger::Notify(m_keyboardState); }
 
 	// BGMの再生
 	m_bgm->Update();

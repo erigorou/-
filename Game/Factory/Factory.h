@@ -5,6 +5,7 @@
 #include "pch.h"
 
 class PlayScene;
+class IObserver;
 
 class CollisionManager;
 class BGM_Player;

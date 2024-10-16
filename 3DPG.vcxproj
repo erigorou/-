@@ -233,6 +233,7 @@
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_1.h" />
     <ClInclude Include="Interface\IHitPoint.h" />
     <ClInclude Include="Interface\IObject.h" />
+    <ClInclude Include="Interface\IObserver.h" />
     <ClInclude Include="Interface\IUserInterface.h" />
     <ClInclude Include="Interface\IParticle.h" />
     <ClInclude Include="Interface\IWeapon.h" />
@@ -251,6 +252,7 @@
     <ClInclude Include="Libraries\MyLib\Math.h" />
     <ClInclude Include="Libraries\MyLib\MemoryLeakDetector.h" />
     <ClInclude Include="Libraries\MyLib\SkySphere.h" />
+    <ClInclude Include="Game\Observer\Messenger.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="StepTimer.h" />
   </ItemGroup>
@@ -309,6 +311,7 @@
     <ClCompile Include="Libraries\MyLib\InputManager.cpp" />
     <ClCompile Include="Libraries\MyLib\SkySphere.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Game\Observer\Messenger.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

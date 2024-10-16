@@ -7,6 +7,7 @@
 
 class Messenger
 {
+public:
 	// 観察者をアタッチする
 	static void Attach(const DirectX::Keyboard::Keys& key, IObserver* observer);
 

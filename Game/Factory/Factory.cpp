@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "Factory.h"
+#include "../Observer/Messenger.h"
 
 #include "../Scene/PlayScene.h"									// プレイシーン
+#include "Interface/IObserver.h"								// オブザーバー
 #include "Libraries/MyLib/Collision/CollisionManager.h"			// 当たり判定統括
 #include "../Sound/BGM_Player.h"								// BGM再生統括
 #include "../Camera/Camera.h"									// カメラ
@@ -14,6 +16,8 @@
 #include "../Weapon/Sword/Sword.h"								// プレイヤーの武器
 #include "../Weapon/Cudgel/Cudgel.h"							// 鬼（敵）の武器
 #include "../UI/PlaySceneUIManager/Header/PlaySceneUIManager.h"	// プレイシーンのUI
+
+using namespace DirectX;
 
 
 // 当たり判定統括の生成関数
@@ -83,8 +87,6 @@ std::unique_ptr<Floor> Factory::CreateFloor(ID3D11Device1* device)
 	// 床を宣言する
 	std::unique_ptr<Floor> floor;
 	floor = std::make_unique<Floor>(device);
-	// 初期化処理
-	// 
 	// 床の設定
 	return floor;
 }
@@ -112,6 +114,13 @@ std::unique_ptr<Player> Factory::CreatePlayer(PlayScene* playScene)
 	player = std::make_unique<Player>(playScene);
 	// 初期化処理
 	player->Initialize();
+
+	Messenger::Attach(DirectX::Keyboard::X, player.get());
+	Messenger::Attach(DirectX::Keyboard::Left, player.get());
+	Messenger::Attach(DirectX::Keyboard::Right, player.get());
+	Messenger::Attach(DirectX::Keyboard::Up, player.get());
+	Messenger::Attach(DirectX::Keyboard::Down, player.get());
+
 	// プレイヤーの設定
 	return player;
 }

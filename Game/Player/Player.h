@@ -4,6 +4,7 @@
 
 // オブジェクトの基底クラス　============================================
 #include "Interface/IObject.h"
+#include "Interface/IObserver.h"
 
 // プレイヤーに付与されるもの ===========================================
 #include "Game/Weapon/Sword/Sword.h"		// 武器
@@ -20,7 +21,7 @@
 class Wall;
 
 
-class Player : public IObject
+class Player :  public IObserver
 {
 public:
 	// 初期座標
@@ -117,6 +118,8 @@ public:
 	// 当たったときの処理
 	void HitAction(InterSectData data) override;
 
+	// キーボードの入力を取得する
+	void OnKeyPressed(const DirectX::Keyboard::Keys& key) override;
 
 private:
 	DirectX::SimpleMath::Vector3	m_position;			// 位置

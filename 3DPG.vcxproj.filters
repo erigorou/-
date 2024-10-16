@@ -197,6 +197,8 @@
     <ClInclude Include="Interface\IHitPoint.h" />
     <ClInclude Include="Game\UI\Fade\Fade.h" />
     <ClInclude Include="Game\Factory\Factory.h" />
+    <ClInclude Include="Game\Observer\Messenger.h" />
+    <ClInclude Include="Interface\IObserver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -296,6 +298,7 @@
     <ClCompile Include="Libraries\MyLib\Collision\CollisionManager.cpp" />
     <ClCompile Include="Game\UI\Fade\Fade.cpp" />
     <ClCompile Include="Game\Factory\Factory.cpp" />
+    <ClCompile Include="Game\Observer\Messenger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
