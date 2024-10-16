@@ -13,20 +13,16 @@
 // === データ処理系 ==============
 class CommonResources;
 class BGM_Player;
-
 // === プレイヤー関連 ============
 class Player;
 class Sword;
 class Enemy;
 class Cudgel;
-
 // === ステージ関連 =============
 class Floor;
 class Wall;
-
 // UI関連 ========================
 class PlaySceneUIManager;
-
 // 当たり判定関連 ===============
 class CollisionManager;
 

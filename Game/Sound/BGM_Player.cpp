@@ -49,8 +49,8 @@ void BGM_Player::InitializeFMOD(const char* filePath)
     // BGMをロードする
     result = m_system->createSound(filePath, FMOD_LOOP_NORMAL, nullptr, &m_soundBGM);
     assert(result == FMOD_OK);
-
 }
+
 
 /// <summary>
 /// BGMの再生を開始し、FMODのシステムを更新する。
@@ -74,6 +74,7 @@ void BGM_Player::Update()
     assert(result == FMOD_OK);
 }
 
+
 /// <summary>
 /// FMODのシステムとサウンドオブジェクトを解放する。
 /// </summary>
@@ -83,6 +84,7 @@ void BGM_Player::FinalizeFMOD()
     m_soundBGM->release();
     m_system->release();
 }
+
 
 /// <summary>
 /// 再生中のBGMの音量を設定する。

@@ -15,6 +15,9 @@
 #include "Libraries/MyLib/InputManager.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 
+// ファクトリーメゾット ======================================
+#include "Game/Factory/Factory.h"
+
 // システム面 ================================================
 #include "Game/Sound/BGM_Player.h"	// BGM再生
 
@@ -92,55 +95,31 @@ void PlayScene::Initialize()
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
 
-	// =================================================
-	m_bgm = std::make_unique<BGM_Player>();
-	m_bgm->InitializeFMOD("Resources/Sounds/BGM.ogg");
-	// =================================================
-
-	// 当たり判定マネージャの生成
-	m_collisionManager = std::make_unique<CollisionManager>();
 
 	// オブジェクトの生成
 	CreateObjects();
-
-	m_uiManager = std::make_unique<PlaySceneUIManager>(this);	// UIマネージャ
-	m_uiManager->Initialize();	// UIの初期化
 }
 
 
 /// <summary>
-/// オブジェクトを生成する関数
+/// factoryメゾットを用いて生成する関数
 /// </summary>
 void PlayScene::CreateObjects()
 {
 	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
 
-
-	//---
-	m_camera	= std::make_unique<Camera>		();		// TPSカメラ
-	m_skySphere = std::make_unique<SkySphere>	();		// 天球
-	m_particles = std::make_unique<Particle>	();		// パーティクル
-	// ---
-	m_floor = std::make_unique<Floor>		(device);	// 床
-	m_wall	= std::make_unique<Wall>		(this);		// 壁
-	// ---
-	m_player	= std::make_unique<Player>	(this);		// プレイヤー
-	m_sword		= std::make_unique<Sword>	(this);		// プレイヤーの武器
-	m_enemy		= std::make_unique<Enemy>	(this);		// 鬼
-	m_cudgel	= std::make_unique<Cudgel>	(this);		// 鬼の武器
-	//---
-
-
-	//---
-	m_skySphere->LoadSkySphereModel(device);	// 天球のモデルを読み込む
-	m_particles->Create();						// パーティクルの作成
-	//---
-	m_wall->Initialize();		// 壁の初期化	
-	//---
-	m_player->Initialize();		// プレイヤーの初期化
-	m_sword->Initialize();		// プレイヤーの武器の初期化
-	m_enemy->Initialize();		// 鬼の初期化
-	m_cudgel->Initialize();		// 鬼の武器の初期化
+	m_collisionManager	= Factory::CreateCollisionManager();	// パーティクル
+	m_bgm				= Factory::CreateBGM_Player();			// BGM
+	m_camera			= Factory::CreateCamera();				// カメラ
+	m_skySphere			= Factory::CreateSkySphere(device);		// 天球	
+	m_particles			= Factory::CreateParticle();			// パーティクル
+	m_floor				= Factory::CreateFloor(device);			// フロア
+	m_wall				= Factory::CreateWall(this);			// 壁
+	m_player	= Factory::CreatePlayer(this);			// プレイヤ
+	m_sword		= Factory::CreateSword(this);			// 刀
+	m_enemy		= Factory::CreateEnemy(this); 			// 鬼
+	m_cudgel	= Factory::CreateCudgel(this);			// 金棒
+	m_uiManager	= Factory::CreateUIManager(this);		// UIマネージャ
 }
 
 
