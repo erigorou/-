@@ -32,6 +32,8 @@ class CollisionManager;
 
 
 class PlayScene final :	public IScene
+
+	 
 {
 public:
 	// ó‚¯“n‚µ—pŠÖ” ===============================================

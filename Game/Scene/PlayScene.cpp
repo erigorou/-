@@ -117,17 +117,17 @@ void PlayScene::CreateObjects()
 
 
 	//---
-	m_camera = std::make_unique<Camera>();			// TPSカメラ
-	m_skySphere = std::make_unique<SkySphere>();	// 天球
-	m_particles = std::make_unique<Particle>();		// パーティクル
+	m_camera	= std::make_unique<Camera>		();		// TPSカメラ
+	m_skySphere = std::make_unique<SkySphere>	();		// 天球
+	m_particles = std::make_unique<Particle>	();		// パーティクル
 	// ---
-	m_floor = std::make_unique<Floor>	(device);		// 床
-	m_wall = std::make_unique<Wall>		(this);			// 壁
+	m_floor = std::make_unique<Floor>		(device);	// 床
+	m_wall	= std::make_unique<Wall>		(this);		// 壁
 	// ---
-	m_player = std::make_unique<Player>	(this);		// プレイヤー
-	m_sword = std::make_unique<Sword>	(this);		// プレイヤーの武器
-	m_enemy = std::make_unique<Enemy>	(this);		// 鬼
-	m_cudgel = std::make_unique<Cudgel>	(this);		// 鬼の武器
+	m_player	= std::make_unique<Player>	(this);		// プレイヤー
+	m_sword		= std::make_unique<Sword>	(this);		// プレイヤーの武器
+	m_enemy		= std::make_unique<Enemy>	(this);		// 鬼
+	m_cudgel	= std::make_unique<Cudgel>	(this);		// 鬼の武器
 	//---
 
 

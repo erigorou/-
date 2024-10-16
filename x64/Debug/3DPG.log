@@ -1,5 +1,96 @@
-﻿  SceneManager.cpp
+﻿  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Dust\DustGS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Dust\DustPS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Dust\DustVS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Fade\FadeGS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Fade\FadePS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Fade\FadeVS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Sword\SwordTrialPS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Sword\SwordTrialVS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\UI\UIGS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\UI\UIPS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\UI\UIVS.cso
+  pch.cpp
+  Action.cpp
+  BehaviorTree.cpp
+  IfDecorator.cpp
+  Selector.cpp
+  Sequence.cpp
+  DeviceResources.cpp
+  Particle.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Effects\Particle.cpp(114,38): warning C4100: 'elapsedTimer': 引数は関数の本体部で 1 度も参照されません。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Effects\Particle.cpp(346,16): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Effects\Particle.cpp(348,16): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Effects\Particle.cpp(314,131): warning C4100: 'cameraDir': 引数は関数の本体部で 1 度も参照されません。
+  DustTrailParticle.cpp
+  SwordTrialParticle.cpp
+  Factory.cpp
+  Game.cpp
+  Camera.cpp
+  CommonResources.cpp
+  Enemy.cpp
+  EnemyApproaching.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\EnemyApproaching.cpp(148,7): warning C4189: 'debugString': ローカル変数が初期化されましたが、参照されていません
+  Enemy_Attacking.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\States\Source\Enemy_Attacking.cpp(49,86): warning C4100: 'parentPos': 引数は関数の本体部で 1 度も参照されません。
+  EnemyIdling.cpp
+  Enemy_Sweeping.cpp
+  Player.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\Player.cpp(73,7): warning C4189: 'states': ローカル変数が初期化されましたが、参照されていません
+  Player_Attacking_1.cpp
+  コードを生成中...
+  コンパイル中...
+  Player_Attacking_2.cpp
+  Player_Attacking_3.cpp
+  Player_Attacking_4.cpp
+  Player_Idling.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Player\State\Source\Player_Idling.cpp(50,84): warning C4100: 'parentPos': 引数は関数の本体部で 1 度も参照されません。
+  Player_Dodging.cpp
+  PlayScene.cpp
+  ResultScene.cpp
+  SceneManager.cpp
+  TitleScene.cpp
+  BGM_Player.cpp
+  Floor.cpp
+  Wall.cpp
   Fade.cpp
+  PlaySceneUIManager.cpp
+  EnemyHPUI.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\UI\Source\EnemyHPUI.cpp(84,17): warning C4244: '初期化中': 'int' から 'float' への変換です。データが失われる可能性があります。
+  Gauge.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\UI\Header\Gauge.h(35,30): warning C4244: 'return': 'float' から 'int' への変換です。データが失われる可能性があります。
+  IconUI.cpp
+  PlayerHPUI.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\UI\Source\PlayerHPUI.cpp(84,17): warning C4244: '初期化中': 'int' から 'float' への変換です。データが失われる可能性があります。
+  Cudgel.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Cudgel.cpp(57,7): warning C4189: 'states': ローカル変数が初期化されましたが、参照されていません
+  Cudgel_Attacking.cpp
+  コードを生成中...
+  コンパイル中...
+  Cudgel_Idling.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Idling.cpp(101,45): warning C4100: 'data': 引数は関数の本体部で 1 度も参照されません。
+  Cudgel_Sweeping.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(186,12): warning C4244: '初期化中': 'unsigned __int64' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(191,36): warning C4244: '引数': 'float' から 'const unsigned __int64' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(192,40): warning C4244: '引数': 'float' から 'const unsigned __int64' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(193,40): warning C4244: '引数': 'float' から 'const unsigned __int64' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(194,36): warning C4244: '引数': 'float' から 'const unsigned __int64' への変換です。データが失われる可能性があります。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(162,47): warning C4100: '_totalTime': 引数は関数の本体部で 1 度も参照されません。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp(255,47): warning C4100: 'data': 引数は関数の本体部で 1 度も参照されません。
+  Sword_Attacking_1.cpp
+  Sword_Idling.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Sword\Source\Sword_Idling.cpp(102,44): warning C4100: 'data': 引数は関数の本体部で 1 度も参照されません。
+  Sword.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Sword\Sword.cpp(44,7): warning C4189: 'states': ローカル変数が初期化されましたが、参照されていません
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Weapon\Sword\Sword.cpp(134,25): warning C4100: 'resources': 引数は関数の本体部で 1 度も参照されません。
+  DebugDraw.cpp
+  BinaryFile.cpp
+  CollisionManager.cpp
+  DebugCamera.cpp
+  DebugString.cpp
+  GridFloor.cpp
+  InputManager.cpp
+  SkySphere.cpp
+  Main.cpp
   コードを生成中...
      ライブラリ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.lib とオブジェクト C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exp を作成中
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe

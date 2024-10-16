@@ -10,7 +10,13 @@ namespace FMOD
 
 class BGM_Player
 {
+	static constexpr const char* BGM_FILE_PATH = "Resources/Sounds/BGM.ogg";
+
 public:
+
+	BGM_Player();
+	~BGM_Player();
+
 	// FMODのシステムの初期化と音声データのロード
 	void InitializeFMOD(const char* filePath);
 

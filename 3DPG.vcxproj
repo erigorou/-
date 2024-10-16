@@ -193,6 +193,7 @@
     <ClInclude Include="Effects\Header\DustTrailParticle.h" />
     <ClInclude Include="Effects\Source\SwordTrialParticle.h" />
     <ClInclude Include="Effects\Particle.h" />
+    <ClInclude Include="Game\Factory\Factory.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Game\Camera\Camera.h" />
     <ClInclude Include="Game\CommonResources.h" />
@@ -263,6 +264,7 @@
     <ClCompile Include="Effects\Particle.cpp" />
     <ClCompile Include="Effects\Source\DustTrailParticle.cpp" />
     <ClCompile Include="Effects\Source\SwordTrialParticle.cpp" />
+    <ClCompile Include="Game\Factory\Factory.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Game\Camera\Camera.cpp" />
     <ClCompile Include="Game\CommonResources.cpp" />

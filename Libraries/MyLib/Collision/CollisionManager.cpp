@@ -31,6 +31,8 @@ CollisionManager::~CollisionManager()
 // -------------------------------------------------------
 void CollisionManager::Update()
 {
+	// 4•ªŠ„‚Å“–‚½‚é‚©‚Ç‚¤‚©
+
 	 //////////////////OBB‚Æ‹…‚Ì“–‚½‚è”»’è/////////////////////
     for (size_t i = 0; i < m_obbs.size(); i++)
     {

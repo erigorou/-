@@ -10,6 +10,28 @@
 #include "Libraries/FMOD/inc/fmod.hpp"
 #include "Libraries/FMOD/inc/fmod_errors.h"
 
+
+/// <summary>
+/// コンストラクタ
+/// </summary>
+BGM_Player::BGM_Player()
+	: m_system(nullptr)
+	, m_soundBGM(nullptr)
+	, m_channelBGM(nullptr)
+{
+	InitializeFMOD(BGM_FILE_PATH);
+}
+
+
+/// <summary>
+/// デストラクタ
+/// </summary>
+BGM_Player::~BGM_Player()
+{
+	FinalizeFMOD();
+}
+
+
 /// <summary>
 /// FMODのシステムを初期化し、指定されたファイルパスのBGMをロードする。
 /// </summary>
