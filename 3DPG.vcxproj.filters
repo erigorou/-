@@ -200,6 +200,7 @@
     <ClInclude Include="Game\Observer\Messenger.h" />
     <ClInclude Include="Interface\IObserver.h" />
     <ClInclude Include="Interface\IPlayer.h" />
+    <ClInclude Include="Effects\Header\SwordTrialParticle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />

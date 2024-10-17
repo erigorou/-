@@ -133,18 +133,19 @@ void PlayScene::CreateObjects()
 
 
 
-// キーボードが押下げられたどうかを判定する
+// すべてのキーの押下状態を検出する
 inline bool IsKeyPress(DirectX::Keyboard::KeyboardStateTracker& stateTracker)
 {
-	// キーボードステートへのポインタを取得する
-	auto ptr = reinterpret_cast<uint32_t*>(&stateTracker);
-	for (int key = 0; key < 0xff; key++)
+	// すべてのキーが押されたかどうかをチェック
+	for (int key = 0; key < 256; key++)
 	{
-		const unsigned int buffer = 1u << (key & 0x1f);
-		// キーが押下げられたかどうかを調べる
-		if (ptr[(key >> 5)] && buffer)	 return true;
+		// 特定のキーが押されているかを確認
+		if (stateTracker.IsKeyPressed(static_cast<DirectX::Keyboard::Keys>(key)))
+		{
+			return true; // 押されたキーがあれば true を返す
+		}
 	}
-	// キーは押下げられていない
+	// どのキーも押されていない場合
 	return false;
 }
 
@@ -180,7 +181,16 @@ void PlayScene::Update(float elapsedTime)
 	m_keyboardStateTracker.Update(m_keyboardState);
 
 	// キーボードが押下げられたかどうかを判定する
-	if (IsKeyDown(m_keyboardState)) { Messenger::Notify(m_keyboardState); }
+	if (IsKeyDown	(m_keyboardState))			
+	{
+		Messenger::Notify(m_keyboardState); 
+	}
+
+
+	if (IsKeyPress(m_keyboardStateTracker))	
+	{ 
+		Messenger::Notify(m_keyboardStateTracker); 
+	}
 
 	// BGMの再生
 	m_bgm->Update();

@@ -40,6 +40,8 @@ void Messenger::Detach(const DirectX::Keyboard::Keys& key, IObserver* observer, 
 
 void Messenger::Notify(const DirectX::Keyboard::KeyboardStateTracker& keyboardTracker)
 {
+	auto keyboardState = keyboardTracker.GetLastState();
+
     // 観察者リストから観察者を取り出す
     for (const auto& keyRange : s_keysRangeList)
     {
@@ -54,6 +56,8 @@ void Messenger::Notify(const DirectX::Keyboard::KeyboardStateTracker& keyboardTr
 					// オブザーバーの通知関数に押し下げられたキーを通知する
                     auto& observer = std::get<static_cast<int>(ArrayContentType::P_OBSERVER)>(s_observerList[i]);
                     auto& keyboard = std::get<static_cast<int>(ArrayContentType::KEYBOARD)>(s_observerList[i]);
+					auto& type = std::get<static_cast<int>(ArrayContentType::TYPE)>(s_observerList[i]);
+
                     observer->OnKeyPressed(keyboard);
                 }
             }
@@ -79,7 +83,8 @@ void Messenger::Notify(const DirectX::Keyboard::State& keyboardState)
                     // オブザーバーの通知関数に押し下げられたキーを通知する
                     auto& observer = std::get<static_cast<int>(ArrayContentType::P_OBSERVER)>(s_observerList[i]);
                     auto& keyboard = std::get<static_cast<int>(ArrayContentType::KEYBOARD)>(s_observerList[i]);
-                    observer->OnKeyPressed(keyboard);
+
+                    observer->OnKeyDown(keyboard);
 				}
 			}
 		}
