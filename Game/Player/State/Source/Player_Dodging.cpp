@@ -74,6 +74,11 @@ void PlayerDodging::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 	UNREFERENCED_PARAMETER(key);
 }
 
+void PlayerDodging::OnKeyDown(const DirectX::Keyboard::Keys& key)
+{
+	UNREFERENCED_PARAMETER(key);
+}
+
 
 // éñå„çXêVèàóù
 void PlayerDodging::PostUpdate()

@@ -62,6 +62,11 @@ void PlayerAttacking_4::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 	UNREFERENCED_PARAMETER(key);
 }
 
+void PlayerAttacking_4::OnKeyDown(const DirectX::Keyboard::Keys& key)
+{
+	UNREFERENCED_PARAMETER(key);
+}
+
 
 // éñå„çXêVèàóù
 void PlayerAttacking_4::PostUpdate()

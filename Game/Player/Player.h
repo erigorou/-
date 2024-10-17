@@ -124,6 +124,9 @@ public:
 	// キーボードの入力を取得する
 	void OnKeyPressed(const DirectX::Keyboard::Keys& key) override;
 
+	// キーボードの入力を取得する
+	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
+
 private:
 	DirectX::SimpleMath::Vector3	m_position;			// 位置
 	DirectX::SimpleMath::Vector3	m_velocity;			// 速度

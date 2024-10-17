@@ -1,13 +1,10 @@
-﻿  Factory.cpp
-  Messenger.cpp
+﻿  Messenger.cpp
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\utility(270,61): warning C4267: '初期化中': 'size_t' から '_Ty2' に変換しました。データが失われているかもしれません。
           with
           [
               _Ty2=int
           ]
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Observer\Messenger.cpp(116,57): message : コンパイル対象の関数 テンプレート インスタンス化 'std::pair<int,int>::pair<int,unsigned __int64,0>(std::pair<int,unsigned __int64> &&) noexcept' のリファレンスを確認してください
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Observer\Messenger.cpp(116,42): message : 'Messenger::CreateKeyRangeList' の 'std::pair<int,int>::pair' への最初の参照を参照してください
-  Player_Attacking_4.cpp
-  PlayScene.cpp
-  コードを生成中...
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Observer\Messenger.cpp(134,57): message : コンパイル対象の関数 テンプレート インスタンス化 'std::pair<int,int>::pair<int,unsigned __int64,0>(std::pair<int,unsigned __int64> &&) noexcept' のリファレンスを確認してください
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Observer\Messenger.cpp(134,42): message : 'Messenger::CreateKeyRangeList' の 'std::pair<int,int>::pair' への最初の参照を参照してください
+     ライブラリ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.lib とオブジェクト C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exp を作成中
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe

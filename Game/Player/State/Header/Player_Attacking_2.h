@@ -40,6 +40,8 @@ public:
 
 	// キー入力
 	void OnKeyPressed(const DirectX::Keyboard::Keys& key) override;
+	// キー入力
+	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
 
 private:
 	// 座標

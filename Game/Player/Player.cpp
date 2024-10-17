@@ -219,9 +219,15 @@ void Player::Update(const DirectX::SimpleMath::Vector3 enemyPos,const float elap
 /// <summary>
 /// キー入力を取得する
 /// </summary>
-/// <param name="key"></param>
+/// <param name="key">入力された1キー</param>
 // ----------------------------------------------
 void Player::OnKeyPressed(const DirectX::Keyboard::Keys& key)
+{
+	m_currentState->OnKeyPressed(key);
+}
+
+
+void Player::OnKeyDown(const DirectX::Keyboard::Keys& key)
 {
 	if (m_currentState == this->GetPlayerIdlingState())
 	{
@@ -232,7 +238,7 @@ void Player::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 		if (key == DirectX::Keyboard::Right)	m_inputVelocity += Vector3::Right;		// 「→」で右移動
 	}
 
-	m_currentState->OnKeyPressed(key);
+	m_currentState->OnKeyDown(key);
 }
 
 

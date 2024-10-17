@@ -43,6 +43,8 @@ public:
 	// キー入力を通知
 	void OnKeyPressed(const DirectX::Keyboard::Keys& key) override;
 
+	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
+
 private:
 	// 座標
 	DirectX::SimpleMath::Vector3 m_position;

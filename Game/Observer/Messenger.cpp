@@ -4,28 +4,34 @@
 #include "Messenger.h"
 
 // キーボード観察者リストを初期化する
-std::vector<std::pair<DirectX::Keyboard::Keys, IObserver*>> Messenger::s_observerList;
+std::vector<std::tuple<DirectX::Keyboard::Keys, IObserver*, Messenger::KeyPressType>> Messenger::s_observerList;
 // キー範囲リスト(キー、開始インデックスと終了インデックス)
 std::unordered_map<DirectX::Keyboard::Keys, std::vector<std::pair<int, int>>> Messenger::s_keysRangeList;
 
 
 // 観察者をアタッチする
-void Messenger::Attach(const DirectX::Keyboard::Keys& key, IObserver* observer)
+void Messenger::Attach(const DirectX::Keyboard::Keys& key, IObserver* observer, const KeyPressType type)
 {
     // 観察者リストに観察者を追加する
-    s_observerList.emplace_back(key, observer);
+    s_observerList.emplace_back(key, observer, type);
 }
 
 
 // 観察者をデタッチする
-void Messenger::Detach(const DirectX::Keyboard::Keys& key, IObserver* observer)
+void Messenger::Detach(const DirectX::Keyboard::Keys& key, IObserver* observer, const KeyPressType type)
 {
     // 観察者リストから観察者を検索する
     s_observerList.erase(
         std::remove_if(s_observerList.begin(), s_observerList.end(),
-            [key, observer](const std::pair<DirectX::Keyboard::Keys, IObserver*>& entry)
+            [key, observer, type](const std::tuple<DirectX::Keyboard::Keys, IObserver*, KeyPressType>& entry)
             {
-                return entry.first == key && entry.second == observer;
+                // タプルから要素を取り出す
+                auto entryKey       = std::get<static_cast<int>(ArrayContentType::KEYBOARD  )>(entry);
+                auto entryObserver  = std::get<static_cast<int>(ArrayContentType::P_OBSERVER)>(entry);
+                auto entryType      = std::get<static_cast<int>(ArrayContentType::TYPE      )>(entry);
+
+                // キーと観察者が一致するかどうか確認
+                return entryKey == key && entryObserver == observer && entryType == type;
             }),
         s_observerList.end());
 }
@@ -45,8 +51,10 @@ void Messenger::Notify(const DirectX::Keyboard::KeyboardStateTracker& keyboardTr
             {
                 for (int i = range.first; i <= range.second; ++i)
                 {
-                    // 観察者の通知関数に押し下げられたキーを通知する
-                    s_observerList[i].second->OnKeyPressed(s_observerList[i].first);
+					// オブザーバーの通知関数に押し下げられたキーを通知する
+                    auto& observer = std::get<static_cast<int>(ArrayContentType::P_OBSERVER)>(s_observerList[i]);
+                    auto& keyboard = std::get<static_cast<int>(ArrayContentType::KEYBOARD)>(s_observerList[i]);
+                    observer->OnKeyPressed(keyboard);
                 }
             }
         }
@@ -68,8 +76,10 @@ void Messenger::Notify(const DirectX::Keyboard::State& keyboardState)
 			{
 				for (int i = range.first; i <= range.second; ++i)
 				{
-					// 観察者の通知関数に押し下げられたキーを通知する
-					s_observerList[i].second->OnKeyPressed(s_observerList[i].first);
+                    // オブザーバーの通知関数に押し下げられたキーを通知する
+                    auto& observer = std::get<static_cast<int>(ArrayContentType::P_OBSERVER)>(s_observerList[i]);
+                    auto& keyboard = std::get<static_cast<int>(ArrayContentType::KEYBOARD)>(s_observerList[i]);
+                    observer->OnKeyPressed(keyboard);
 				}
 			}
 		}
@@ -80,13 +90,18 @@ void Messenger::Notify(const DirectX::Keyboard::State& keyboardState)
 // 観察者リストをソートする
 void Messenger::SortObserverList()
 {
-    // 観察者リストをソートする
+    // 観察者リストをキー（DirectX::Keyboard::Keys）でソートする
     std::sort(
         s_observerList.begin(),
         s_observerList.end(),
-        [](const std::pair<DirectX::Keyboard::Keys, IObserver*>& a, const std::pair<DirectX::Keyboard::Keys, IObserver*>& b)
+        [](const auto& a, const auto& b)
         {
-            return a.first < b.first;
+            // タプルからキーを取り出す
+            const auto& keyA = std::get<static_cast<int>(ArrayContentType::KEYBOARD)>(a);
+            const auto& keyB = std::get<static_cast<int>(ArrayContentType::KEYBOARD)>(b);
+
+            // キーでソートする
+            return keyA < keyB;
         });
 }
 
@@ -99,18 +114,20 @@ void Messenger::CreateKeyRangeList()
     // 開始インデックスを設定する
 	int startIndex = 0;
     // 観察者リストの開始キーを現在のキーにする
-    DirectX::Keyboard::Keys currentKey = s_observerList[startIndex].first;
+    DirectX::Keyboard::Keys currentKey = std::get<static_cast<int>(ArrayContentType::KEYBOARD)>(s_observerList[startIndex]);
+
     for (int index = 1; index < s_observerList.size(); index++)
     {
         // 観察者リストの現在キーと現在のキーが等しくない場合
-        if (s_observerList[index].first != currentKey)
+		auto key = std::get<static_cast<int>(ArrayContentType::KEYBOARD)>(s_observerList[index]);
+        if (key != currentKey)
         {
             // キー、開始インデックスと終了インデックスをキー範囲リストに追加する
             s_keysRangeList[currentKey].push_back(std::make_pair(startIndex, index - 1));
             // 現在のインデックスを開始インデックスに設定する
             startIndex = index;
             // 現在の観察者のキーを現在のキーに設定する
-            currentKey = s_observerList[index].first;
+			currentKey = key;
         }
     }
     // キー、開始インデックスと最後のインデックスをキー範囲リストに追加する

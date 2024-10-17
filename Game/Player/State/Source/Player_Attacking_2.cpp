@@ -65,6 +65,11 @@ void PlayerAttacking_2::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 	if (key == DirectX::Keyboard::LeftShift											)	m_player->GetPlayerDodgingState();
 }
 
+void PlayerAttacking_2::OnKeyDown(const DirectX::Keyboard::Keys& key)
+{
+	UNREFERENCED_PARAMETER(key);
+}
+
 
 // –ŒãXVˆ—
 void PlayerAttacking_2::PostUpdate()

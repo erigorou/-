@@ -64,6 +64,11 @@ void PlayerIdling::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 	if (key == DirectX::Keyboard::LeftShift	)	m_player->ChangeState(m_player->GetPlayerDodgingState());
 }
 
+void PlayerIdling::OnKeyDown(const DirectX::Keyboard::Keys& key)
+{
+	UNREFERENCED_PARAMETER(key);
+}
+
 
 // –ŒãXVˆ—
 void PlayerIdling::PostUpdate()
