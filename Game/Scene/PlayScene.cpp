@@ -95,10 +95,8 @@ void PlayScene::Initialize()
 		0.1f, 100000.0f
 	);
 
-
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
-
 
 	// オブジェクトの生成
 	CreateObjects();

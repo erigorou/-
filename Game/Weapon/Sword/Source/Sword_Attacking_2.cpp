@@ -78,8 +78,7 @@ void Sword_Attacking_2::Update(float elapsedTime)
 	// プレイヤーの回転を取得
 	m_angle = m_sword->GetPlayScene()->GetPlayer()->GetAngle();
 
-
-
+	// イージング関数を使って回転を計算
 	float t = 0.0f;
 
 	if (m_totalSeconds <= ATTACK_TIME)
@@ -98,6 +97,7 @@ void Sword_Attacking_2::Update(float elapsedTime)
 	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE);							// 剣のサイズの設定
 
 	m_worldMatrix
+		*= SimpleMath::Matrix::CreateRotationY(DirectX::XMConvertToRadians(180))		// 反転
 		*= SimpleMath::Matrix::CreateRotationX(RADIAN_90)								// 剣を90度横に向ける
 		*= SimpleMath::Matrix::CreateTranslation(Vector3(1.0f, 2.0f, 0.0f))				// 少しだけずらす
 		*= SimpleMath::Matrix::CreateRotationY(-m_angle)								// プレイヤーの横に回転させる

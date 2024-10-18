@@ -43,6 +43,11 @@ void PlayerAttacking_3::PreUpdate()
 {
 	// 経過時間の初期化
 	m_totalSeconds = 0.f;
+
+	// 剣の攻撃状態に変更
+	m_player->GetPlayScene()->GetSword()->ChangeState(
+		m_player->GetPlayScene()->GetSword()->GetAttacking_3State()
+	);
 }
 
 // 更新処理

@@ -54,11 +54,6 @@ struct OBBCollision
 	{}
 };
 
-template<typename T>
-void Sum(T a, T b)
-{
-	return a + b;
-}
 
 
 /// <summary>

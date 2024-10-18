@@ -202,6 +202,7 @@
     <ClInclude Include="Interface\IPlayer.h" />
     <ClInclude Include="Effects\Header\SwordTrialParticle.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_2.h" />
+    <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_3.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -303,6 +304,7 @@
     <ClCompile Include="Game\Factory\Factory.cpp" />
     <ClCompile Include="Game\Observer\Messenger.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Attacking_2.cpp" />
+    <ClCompile Include="Game\Weapon\Sword\Source\Sword_Attacking_3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

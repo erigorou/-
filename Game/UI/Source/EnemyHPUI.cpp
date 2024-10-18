@@ -85,7 +85,7 @@ void EnemyHPUI::Render()
 
     // 描画位置のオフセット値や緑ゲージの幅を計算する
     LONG offset = static_cast<LONG>(Screen::CENTER_X - (MAX_WIDTH / 2));
-    LONG width = static_cast<LONG>(offset + MAX_WIDTH * (m_enemyHP / MAXHP));
+    LONG width	= static_cast<LONG>(offset + MAX_WIDTH * (m_enemyHP / MAXHP));
 
 	// ゲージの範囲の設定
     RECT outline{ offset - 2, TOP_POSITION - 2, offset + MAX_WIDTH + 2, BOTTOM_POSITION + 2 };

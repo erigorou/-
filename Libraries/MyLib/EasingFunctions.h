@@ -161,5 +161,4 @@ public:
 
 };
 
-
 #endif // EASING_FUNCTIONS_H
