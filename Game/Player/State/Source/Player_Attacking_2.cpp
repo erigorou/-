@@ -45,6 +45,11 @@ void PlayerAttacking_2::PreUpdate()
 {
 	// 経過時間の初期化
 	m_totalSeconds = 0.f;
+
+	// 剣の攻撃状態に変更
+	m_player->GetPlayScene()->GetSword()->ChangeState(
+		m_player->GetPlayScene()->GetSword()->GetAttacking_2State()
+	);
 }
 
 
@@ -61,8 +66,8 @@ void PlayerAttacking_2::Update(const float& elapsedTime,  DirectX::SimpleMath::V
 // キー入力
 void PlayerAttacking_2::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 {
-	if (key == DirectX::Keyboard::X			&& m_totalSeconds >= Player::X_COOL_TIME)	m_player->GetPlayerAttackingState3();
-	if (key == DirectX::Keyboard::LeftShift											)	m_player->GetPlayerDodgingState();
+	if (key == DirectX::Keyboard::X			&& m_totalSeconds >= Player::X_COOL_TIME)	m_player->ChangeState(m_player->GetPlayerAttackingState3());
+	if (key == DirectX::Keyboard::LeftShift											)	m_player->ChangeState(m_player->GetPlayerDodgingState());
 }
 
 void PlayerAttacking_2::OnKeyDown(const DirectX::Keyboard::Keys& key)

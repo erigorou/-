@@ -8,6 +8,7 @@
 // 剣の状態 ========================================================
 #include "Game/Weapon/Sword/Header/Sword_Idling.h"			// 待機状態
 #include "Game/Weapon/Sword/Header/Sword_Attacking_1.h"		// 攻撃状態１
+#include "Game/Weapon/Sword/Header/Sword_Attacking_2.h"		// 攻撃状態２
 
 
 
@@ -25,6 +26,7 @@ public:
 	// 状態のゲッター
 	IWeapon* GetIdlingState()		const { return m_swordIdling.get();		}	// 待機状態
 	IWeapon* GetAttacking_1State()	const { return m_swordAttacking_1.get();}	// 攻撃状態１
+	IWeapon* GetAttacking_2State()	const { return m_swordAttacking_2.get(); }	// 攻撃状態２
 
 	// 位置のゲッター
 	DirectX::SimpleMath::Vector3 GetPosition() override { return m_position; }
@@ -93,6 +95,7 @@ private:
 	// 待機モーション
 	std::unique_ptr<Sword_Idling> m_swordIdling;
 	std::unique_ptr<Sword_Attacking_1> m_swordAttacking_1;
+	std::unique_ptr<Sword_Attacking_2> m_swordAttacking_2;
 
 	// ベーシックエフェクト
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;

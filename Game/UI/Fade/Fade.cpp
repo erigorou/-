@@ -236,7 +236,7 @@ void Fade::Render()
 	float t = 0.0f;
 
 	t = std::max(0.0f, 1.0f - (m_totalTime / FADE_TIME));
-	t = std::max(0.0001f, Easying::easeInCubic(t));
+	t = std::max(0.0001f, Easying::easeInOutSine(t));
 
 	ID3D11DeviceContext1* context = m_pDR->GetD3DDeviceContext();
 

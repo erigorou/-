@@ -31,12 +31,13 @@ public:
 	// 大きさ
 	static const float PLAYER_SCALE;
 	// 攻撃が適用される時間
-	static constexpr float APPLIED_ATTACK_TIME = 1.2f;
+	static constexpr float APPLIED_ATTACK_TIME = 1.4f;
 	static constexpr float APPLIED_DODGE_TIME = 0.f;
 
 	static constexpr float COOL_TIME = 1.0f;
 
-	static constexpr float X_COOL_TIME = 1.0f;
+	// xで攻撃ができる
+	static constexpr float X_COOL_TIME = 0.7f;
 
 public:
 	// /////////////////プレイヤーの基礎情報を渡す関数//////////////////////////////////////////////////
