@@ -23,7 +23,7 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> Fade::INPUT_LAYOUT =
 	{ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3) + sizeof(DirectX::SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
 
-const wchar_t* Fade::TEXTURE_PATH	= L"Resources/Textures/yoshiko.jpg";
+const wchar_t* Fade::TEXTURE_PATH	= L"Resources/Textures/Load.png";
 const wchar_t* Fade::VS_PATH		= L"Resources/Shaders/Fade/FadeVS.cso";
 const wchar_t* Fade::GS_PATH		= L"Resources/Shaders/Fade/FadeGS.cso";
 const wchar_t* Fade::PS_PATH		= L"Resources/Shaders/Fade/FadePS.cso";
@@ -236,7 +236,7 @@ void Fade::Render()
 	float t = 0.0f;
 
 	t = std::max(0.0f, 1.0f - (m_totalTime / FADE_TIME));
-	t = std::max(0.0001f, Easying::easeInOutSine(t));
+	t = std::max(0.0001f, Easying::easeInCubic(t));
 
 	ID3D11DeviceContext1* context = m_pDR->GetD3DDeviceContext();
 

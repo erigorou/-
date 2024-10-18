@@ -41,6 +41,9 @@ public:
 	// キー範囲リストを生成する
 	static void CreateKeyRangeList();
 
+	// 観察者リストとキー範囲リストをクリアする
+	static void Clear();
+
 private:
 	// キーボード観察者リスト
 	static std::vector<std::tuple<DirectX::Keyboard::Keys, IObserver*, KeyPressType>> s_observerList;

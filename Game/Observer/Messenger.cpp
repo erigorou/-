@@ -138,3 +138,11 @@ void Messenger::CreateKeyRangeList()
     // キー、開始インデックスと最後のインデックスをキー範囲リストに追加する
     s_keysRangeList[currentKey].push_back(std::make_pair(startIndex, s_observerList.size() - 1));
 }
+
+void Messenger::Clear()
+{
+	// 観察者リストをクリアする
+	s_observerList.clear();
+	// キー範囲リストをクリアする
+	s_keysRangeList.clear();
+}

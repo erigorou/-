@@ -53,7 +53,7 @@ float4 main(PS_INPUT input) : SV_TARGET
     // Œo‰ßŽžŠÔ“I‚ÈŽg‚¢•û‚ð‚·‚é
     float t = easing.x;
 	
-    outputb.a = CalcAlpha2(input.Tex, float2(0.5f, 0.5f), t * 50);
+    output.a = CalcAlpha2(input.Tex, float2(0.5f, 0.5f), t * 50);
     
-    return outputb;
+    return output;
 }

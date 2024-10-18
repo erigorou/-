@@ -38,6 +38,8 @@ private:
 	// シーンチェンジフラグ
 	bool m_isChangeScene;
 
+	DirectX::SimpleMath::Vector2 m_texCenter1;
+	DirectX::SimpleMath::Vector2 m_texCenter2;
 
 public:
     TitleScene();

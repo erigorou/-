@@ -39,9 +39,11 @@ TitleScene::~TitleScene()
 //---------------------------------------------------------
 // 初期化する
 //---------------------------------------------------------
+//---------------------------------------------------------
+// 初期化する
+//---------------------------------------------------------
 void TitleScene::Initialize()
 {
-
 	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
 	auto context = m_commonResources->GetDeviceResources()->GetD3DDeviceContext();
 
@@ -74,7 +76,7 @@ void TitleScene::Initialize()
 	);
 
 	/*
-		以下、テクスチャの大きさを求める→テクスチャの中心座標を計算する
+		以下、各テクスチャの大きさを求める→テクスチャの中心座標を計算する
 	*/
 	// 一時的な変数の宣言
 	Microsoft::WRL::ComPtr<ID3D11Resource> resource{};
@@ -82,30 +84,30 @@ void TitleScene::Initialize()
 	D3D11_TEXTURE2D_DESC desc{};
 	Vector2 texSize{};
 
-	// テクスチャの情報を取得する================================
-	// テクスチャをID3D11Resourceとして見る
+	// LOGO.png の中心位置を計算
 	m_texture->GetResource(resource.GetAddressOf());
-
-	// ID3D11ResourceをID3D11Texture2Dとして見る
 	resource.As(&tex2D);
-
-	// テクスチャ情報を取得する
 	tex2D->GetDesc(&desc);
-
-	// テクスチャサイズを取得し、float型に変換する
 	texSize.x = static_cast<float>(desc.Width);
 	texSize.y = static_cast<float>(desc.Height);
+	m_texCenter1 = texSize / 2.0f;
 
-	// テクスチャの中心位置を計算する
-	m_texCenter = texSize / 2.0f;
+	// SPACEでスタート.png の中心位置を計算
+	resource = nullptr;
+	tex2D = nullptr;
+	desc = {};
 
-
-
-
+	m_texture2->GetResource(resource.GetAddressOf());
+	resource.As(&tex2D);
+	tex2D->GetDesc(&desc);
+	texSize.x = static_cast<float>(desc.Width);
+	texSize.y = static_cast<float>(desc.Height);
+	m_texCenter2 = texSize / 2.0f;
 
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
 }
+
 
 //---------------------------------------------------------
 // 更新する
@@ -141,36 +143,34 @@ void TitleScene::Render()
 	// 画像の中心を計算する
 	Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
 
-	// TRIDENTロゴを描画する
+	// LOGO.png を中央に描画する
 	m_spriteBatch->Draw(
-		m_texture.Get(),	// テクスチャ(SRV)
-		pos,				// スクリーンの表示位置(originの描画位置)
-		nullptr,			// 矩形(RECT)
-		Colors::White,		// 背景色
-		0.0f,				// 回転角(ラジアン)
-		m_texCenter,		// テクスチャの基準になる表示位置(描画中心)(origin)
-		1.0f,				// スケール(scale)
-		SpriteEffects_None,	// エフェクト(effects)
-		0.0f				// レイヤ深度(画像のソートで必要)(layerDepth)
+		m_texture.Get(),   // テクスチャ(SRV)
+		pos,               // スクリーンの表示位置(originの描画位置)
+		nullptr,           // 矩形(RECT)
+		Colors::White,     // 背景色
+		0.0f,              // 回転角(ラジアン)
+		m_texCenter1,      // テクスチャの基準になる表示位置(描画中心)(origin)
+		1.0f,              // スケール(scale)
+		SpriteEffects_None,// エフェクト(effects)
+		0.0f               // レイヤ深度(画像のソートで必要)(layerDepth)
 	);
 
-	DirectX::SimpleMath::Vector2 pos2 = DirectX::SimpleMath::Vector2(pos.x, pos.y + 300);
+	// SPACEでスタート.png の描画位置を調整
+	DirectX::SimpleMath::Vector2 pos2 = DirectX::SimpleMath::Vector2(pos.x, pos.y + 200.0f);
 
-
-	// TRIDENTロゴを描画する
+	// SPACEでスタート.png を中央に描画する
 	m_spriteBatch->Draw(
-		m_texture2.Get(),	// テクスチャ(SRV)
-		pos2,				// スクリーンの表示位置(originの描画位置)
-		nullptr,			// 矩形(RECT)
-		Colors::White,		// 背景色
-		0.0f,				// 回転角(ラジアン)
-		m_texCenter,		// テクスチャの基準になる表示位置(描画中心)(origin)
-		1.0f,				// スケール(scale)
-		SpriteEffects_None,	// エフェクト(effects)
-		0.0f				// レイヤ深度(画像のソートで必要)(layerDepth)
+		m_texture2.Get(),   // テクスチャ(SRV)
+		pos2,               // スクリーンの表示位置(originの描画位置)
+		nullptr,            // 矩形(RECT)
+		Colors::White,      // 背景色
+		0.0f,               // 回転角(ラジアン)
+		m_texCenter2,       // テクスチャの基準になる表示位置(描画中心)(origin)
+		1.0f,               // スケール(scale)
+		SpriteEffects_None, // エフェクト(effects)
+		0.0f                // レイヤ深度(画像のソートで必要)(layerDepth)
 	);
-
-
 
 #ifdef _DEBUG
 	// 純粋にスプライトフォントで文字列を描画する方法

@@ -112,6 +112,8 @@ void PlayScene::CreateObjects()
 {
 	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
 
+	Messenger::Clear();	// メッセンジャーのクリア
+
 	m_collisionManager	= Factory::CreateCollisionManager();	// パーティクル
 	m_bgm				= Factory::CreateBGM_Player();			// BGM
 	m_camera			= Factory::CreateCamera();				// カメラ
