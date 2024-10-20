@@ -73,11 +73,6 @@ void EnemyHPUI::Update()
 /// •`‰æŠÖ”
 /// </summary>
 // ----------------------------
-// ----------------------------
-/// <summary>
-/// •`‰æŠÖ”
-/// </summary>
-// ----------------------------
 void EnemyHPUI::Render()
 {
     m_enemyHP = m_enemyHPclass->GetHP();        // “G‚ÌHP‚ğæ“¾

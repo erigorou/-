@@ -22,7 +22,7 @@
 // 固定値
 const float Enemy::ENEMY_SPEED	= 0.1f;
 const float Enemy::ENEMY_SCALE	= 0.4f;
-const float Enemy::COOL_TIME	= 0.5f;
+const float Enemy::COOL_TIME	= 0.4f;
 
 // --------------------------------
 //  コンストラクタ

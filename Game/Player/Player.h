@@ -37,7 +37,7 @@ public:
 	static constexpr float COOL_TIME = 1.0f;
 
 	// x‚ÅUŒ‚‚ª‚Å‚«‚é
-	static constexpr float X_COOL_TIME = 0.7f;
+	static constexpr float X_COOL_TIME = 0.8f;
 
 public:
 	// /////////////////ƒvƒŒƒCƒ„[‚ÌŠî‘bî•ñ‚ğ“n‚·ŠÖ”//////////////////////////////////////////////////

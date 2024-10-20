@@ -105,7 +105,7 @@ void Floor::Render(ID3D11DeviceContext1* context, DirectX::SimpleMath::Matrix vi
 
 	// ”¼“§–¾•”•ª‚ğ•`‰æ
 	m_Batch->Begin();
-	m_Batch->DrawQuad(vertex[0], vertex[1], vertex[2], vertex[3]);
+	//m_Batch->DrawQuad(vertex[0], vertex[1], vertex[2], vertex[3]);
 	m_Batch->End();
 }
 

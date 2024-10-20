@@ -20,7 +20,7 @@
 
 // 固定値
 const float Sword_Attacking_3::RADIAN_90 = DirectX::XMConvertToRadians(90);
-const float Sword_Attacking_3::ATTACK_TIME  = 0.5f;
+const float Sword_Attacking_3::ATTACK_TIME  = 0.7f;
 
 
 // コンストラクタ
@@ -64,6 +64,7 @@ void Sword_Attacking_3::PreUpdate()
 	m_sword->GetPlayScene()->GetEnemy()->CanHit(true);
 }
 
+
 // 更新処理
 void Sword_Attacking_3::Update(float elapsedTime)
 {
@@ -78,15 +79,16 @@ void Sword_Attacking_3::Update(float elapsedTime)
 	// プレイヤーの回転を取得
 	m_angle = m_sword->GetPlayScene()->GetPlayer()->GetAngle();
 
-
-
 	float t = 0.0f;
 
 	if (m_totalSeconds <= ATTACK_TIME)
 	{
-		t = m_totalSeconds / ATTACK_TIME;
-		m_rot.y = -250.0f * Easying::easeOutBack(t);
-		m_rot.y = XMConvertToRadians(m_rot.y);
+		t = m_totalSeconds / ATTACK_TIME;  // 進行度を0から1へ
+
+		// 上方向に切り上げるように、X軸回転を調整
+		m_rot.x = 80.0f - 100.0f * Easying::easeOutBack(t);  // 切り上げ角度を大きめに設定
+
+		m_rot.x = XMConvertToRadians(m_rot.x);  // ラジアンに変換
 	}
 	else
 	{
@@ -97,18 +99,24 @@ void Sword_Attacking_3::Update(float elapsedTime)
 	// ワールド行列を更新する
 	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE);							// 剣のサイズの設定
 
-	m_worldMatrix
-		*= SimpleMath::Matrix::CreateTranslation(Vector3(1.0f, 2.0f, 0.0f))				// 少しだけずらす
-		*= SimpleMath::Matrix::CreateRotationY(-m_angle)								// プレイヤーの横に回転させる
-		*= SimpleMath::Matrix::CreateRotationY(m_rot.y)									// 薙ぎ払いの回転を反映
-		*= SimpleMath::Matrix::CreateTranslation(m_position);							// プレイヤーの位置に設定
 
+	// 1. 剣自体のアニメーション（回転や移動）
+	m_worldMatrix
+		*= SimpleMath::Matrix::CreateRotationZ(m_rot.x) // X軸回転を適用
+		*= SimpleMath::Matrix::CreateRotationY(XMConvertToRadians(-90.0f))
+		*= SimpleMath::Matrix::CreateTranslation(Vector3(2.0f, 0.0f, 0.0f));
+
+	// 2. プレイヤーの位置と回転を適用
+	m_worldMatrix
+		*= SimpleMath::Matrix::CreateRotationY(-m_angle) // プレイヤーの方向に回転
+		*= SimpleMath::Matrix::CreateTranslation(m_position); // プレイヤーの位置に設定
 	// 当たり判定の位置を設定
 	m_sword->SetCollisionPosition(m_worldMatrix);
 
 	// 攻撃が終わったらステートをIdlingStateに戻す
 	if (m_totalSeconds >= 1.0f)	m_sword->ChangeState(m_sword->GetIdlingState());
 }
+
 
 
 
@@ -132,7 +140,7 @@ void Sword_Attacking_3::Render(ID3D11DeviceContext* context,
 
 #ifdef _DEBUG
 	auto debugString = resources->GetDebugString();
-	debugString->AddString("");
+	debugString->AddString("rot.x : %f", DirectX::XMConvertToDegrees(m_rot.x));
 #endif // _DEBUG
 }
 
