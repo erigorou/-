@@ -86,6 +86,7 @@ void Sword::CreateState()
 	m_swordAttacking_1	= std::make_unique<Sword_Attacking_1>	(this);
 	m_swordAttacking_2	= std::make_unique<Sword_Attacking_2>	(this);
 	m_swordAttacking_3	= std::make_unique<Sword_Attacking_3>	(this);
+	m_swordAttacking_4	= std::make_unique<Sword_Attacking_4>	(this);
 
 
 	// ステートを初期化する
@@ -93,6 +94,8 @@ void Sword::CreateState()
 	m_swordAttacking_1->Initialize();
 	m_swordAttacking_2->Initialize();
 	m_swordAttacking_3->Initialize();
+	m_swordAttacking_4->Initialize();
+
 
 	// 現在のステートを設定
 	m_currentState = m_swordIdling.get();

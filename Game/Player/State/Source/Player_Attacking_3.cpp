@@ -53,8 +53,7 @@ void PlayerAttacking_3::PreUpdate()
 // 更新処理
 void PlayerAttacking_3::Update(const float& elapsedTime,  DirectX::SimpleMath::Vector3& parentPos)
 {
-	// parentPos使わないけどエラー出さないでねって文
-	UNREFERENCED_PARAMETER(parentPos);
+	m_totalSeconds += elapsedTime;
 
 	// 時間を計測し、一定時間経過でステートを遷移
 	m_player->TimeComparison(m_totalSeconds, Player::APPLIED_ATTACK_TIME, m_player->GetPlayerIdlingState(), elapsedTime);
@@ -71,9 +70,11 @@ void PlayerAttacking_3::Update(const float& elapsedTime,  DirectX::SimpleMath::V
 // キー入力
 void PlayerAttacking_3::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 {
-	if (key == DirectX::Keyboard::X			)	m_player->ChangeState(m_player->GetPlayerAttackingState4());
-	if (key == DirectX::Keyboard::LeftShift	)	m_player->ChangeState(m_player->GetPlayerDodgingState());
+	if (key == DirectX::Keyboard::X			&& m_totalSeconds >= ATTACKING_TIME	)	m_player->ChangeState(m_player->GetPlayerAttackingState4());
+	if (key == DirectX::Keyboard::LeftShift										)	m_player->ChangeState(m_player->GetPlayerDodgingState());
 }
+
+
 
 void PlayerAttacking_3::OnKeyDown(const DirectX::Keyboard::Keys& key)
 {

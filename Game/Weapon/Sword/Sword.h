@@ -10,7 +10,7 @@
 #include "Game/Weapon/Sword/Header/Sword_Attacking_1.h"		// UŒ‚ó‘Ô‚P
 #include "Game/Weapon/Sword/Header/Sword_Attacking_2.h"		// UŒ‚ó‘Ô‚Q
 #include "Game/Weapon/Sword/Header/Sword_Attacking_3.h"		// UŒ‚ó‘Ô‚R
-
+#include "Game/Weapon/Sword/Header/Sword_Attacking_4.h"		// UŒ‚ó‘Ô‚S
 
 
 class Sword : public IObject
@@ -29,6 +29,7 @@ public:
 	IWeapon* GetAttacking_1State()	const { return m_swordAttacking_1.get();}	// UŒ‚ó‘Ô‚P
 	IWeapon* GetAttacking_2State()	const { return m_swordAttacking_2.get(); }	// UŒ‚ó‘Ô‚Q
 	IWeapon* GetAttacking_3State()	const { return m_swordAttacking_3.get(); }	// UŒ‚ó‘Ô‚R
+	IWeapon* GetAttacking_4State()	const { return m_swordAttacking_4.get(); }	// UŒ‚ó‘Ô‚S
 
 	// ˆÊ’u‚ÌƒQƒbƒ^[
 	DirectX::SimpleMath::Vector3 GetPosition() override { return m_position; }
@@ -99,6 +100,8 @@ private:
 	std::unique_ptr<Sword_Attacking_1> m_swordAttacking_1;
 	std::unique_ptr<Sword_Attacking_2> m_swordAttacking_2;
 	std::unique_ptr<Sword_Attacking_3> m_swordAttacking_3;
+	std::unique_ptr<Sword_Attacking_4> m_swordAttacking_4;
+
 
 	// ƒx[ƒVƒbƒNƒGƒtƒFƒNƒg
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;

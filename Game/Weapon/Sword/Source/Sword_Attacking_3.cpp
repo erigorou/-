@@ -104,7 +104,7 @@ void Sword_Attacking_3::Update(float elapsedTime)
 	m_worldMatrix
 		*= SimpleMath::Matrix::CreateRotationZ(m_rot.x) // X軸回転を適用
 		*= SimpleMath::Matrix::CreateRotationY(XMConvertToRadians(-90.0f))
-		*= SimpleMath::Matrix::CreateTranslation(Vector3(2.0f, 0.0f, 0.0f));
+		*= SimpleMath::Matrix::CreateTranslation(Vector3(2.0f, 2.0f, -2.0f));
 
 	// 2. プレイヤーの位置と回転を適用
 	m_worldMatrix
