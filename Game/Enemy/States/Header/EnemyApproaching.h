@@ -9,6 +9,7 @@ class Enemy;
 class EnemyApproaching : public IState
 {
 public:
+
 	// コンストラクタ
 	EnemyApproaching(Enemy* enemy);
 	// デストラクタ
@@ -33,6 +34,8 @@ public:
 
 
 private:
+	static constexpr float MINIMAL = 0.01f;
+
 	// 座標
 	DirectX::SimpleMath::Vector3 m_position;
 	// 移動速度

@@ -75,6 +75,11 @@ void EnemyApproaching::Update(const float& elapsedTime, DirectX::SimpleMath::Vec
 	// 絶対値を取ることでジャンプしているような挙動をする　※
 	m_position.y = fabsf(m_position.y);
 
+	// 移動でカメラを揺らす
+	if (m_position.y <= MINIMAL)
+		m_enemy->GetPlayScene()->SetShakeCamera();
+
+
 	// プレイヤーの座標を取得
 	Vector3 playerPos = m_enemy->GetPlayScene()->GetPlayer()->GetPosition();
 

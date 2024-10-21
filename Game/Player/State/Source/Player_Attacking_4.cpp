@@ -49,6 +49,9 @@ void PlayerAttacking_4::PreUpdate()
 	m_player->GetPlayScene()->GetSword()->ChangeState(
 		m_player->GetPlayScene()->GetSword()->GetAttacking_4State()
 	);
+
+	// ƒJƒƒ‰‚ğ—h‚ç‚·
+	m_player->GetPlayScene()->SetShakeCamera();
 }
 
 // XVˆ—

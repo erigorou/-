@@ -145,10 +145,42 @@ public:
 	/// <returns></returns>
 	static int RandomInt(int min, int max)
 	{
+		if (min > max) std::swap(min, max);
+
 		std::random_device seed;							// ランダムなシード値を生成
 		std::default_random_engine engine(seed());			// シード値を元に乱数生成エンジンを定義
 		std::uniform_int_distribution<> random(min, max);	// minからmaxまでの一様乱数生成器を定義
 		return random(engine);								// 乱数を生成して返す
+	}
+
+
+	/// <summary>
+	/// min <= return <= max の範囲で浮動小数点数型の乱数を生成する
+	/// </summary>
+	/// <param name="min">最低値</param>
+	/// <param name="max">最高値</param>
+	/// <returns>生成された乱数</returns>
+	static float RandomFloat(float min, float max)
+	{
+		if (min > max) std::swap(min, max);
+
+		std::random_device seed;								// ランダムなシード値を生成
+		std::default_random_engine engine(seed());				// シード値を元に乱数生成エンジンを定義
+		std::uniform_real_distribution<float> random(min, max); // minからmaxまでの一様乱数生成器を定義
+		return random(engine);									// 乱数を生成して返す
+	}
+
+
+
+	static DirectX::SimpleMath::Vector3 RandomVector3(DirectX::SimpleMath::Vector3 min, DirectX::SimpleMath::Vector3 max)
+	{
+		std::random_device seed;								// ランダムなシード値を生成
+		std::default_random_engine engine(seed());				// シード値を元に乱数生成エンジンを定義
+		std::uniform_real_distribution<float> randomX(min.x, max.x); // minからmaxまでの一様乱数生成器を定義
+		std::uniform_real_distribution<float> randomY(min.y, max.y); // minからmaxまでの一様乱数生成器を定義
+		std::uniform_real_distribution<float> randomZ(min.z, max.z); // minからmaxまでの一様乱数生成器を定義
+
+		return Vector3(randomX(engine), randomY(engine), randomZ(engine)); // 乱数を生成して返す
 	}
 };
 

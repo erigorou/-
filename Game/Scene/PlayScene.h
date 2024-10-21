@@ -42,7 +42,22 @@ public:
 	// 当たり判定処理用関数 ==========================================
 	CollisionManager* GetCollisionManager() { return m_collisionManager.get(); }
 
+
+public:
+	PlayScene();
+	~PlayScene()					override;
+
+	void Initialize()				override;
+	void Update(float elapsedTime)	override;
+	void Render()					override;
+	void Finalize()					override;
+
+	void SetShakeCamera();			// カメラを揺らす
+
 private:
+	void CreateObjects();			// オブジェクトの生成
+	SceneID GetNextSceneID() const;	// 次のシーンIDを取得
+
 
 	// データに必要な物 ============================================
 	CommonResources* m_commonResources;					// 共通リソース
@@ -57,19 +72,7 @@ private:
 	std::unique_ptr<SkySphere>			m_skySphere;	// 天球
 	std::unique_ptr<Particle>			m_particles;	// パーティクル
 
-public:
-	PlayScene();
-	~PlayScene()					override;
 
-	void Initialize()				override;
-	void Update(float elapsedTime)	override;
-	void Render()					override;
-	void Finalize()					override;
-
-private:
-	void CreateObjects();
-
-	SceneID GetNextSceneID() const;
 
 	// システム周り ==========================================================================
 	std::unique_ptr<BGM_Player> m_bgm;						// BGM再生

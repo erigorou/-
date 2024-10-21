@@ -110,40 +110,77 @@ void Cudgel_Attacking::UpdateCudgelRotation()
 	// 敵の攻撃の流れ
 	// 振りかざす（1秒）→ 待機（0.2秒）→ 降り下ろす(0.7秒) → 後隙
 
-	// 振りかざす
-	if (m_totalSeconds < CHARGE_TIME)
-	{
-		// 20度上げる（0.5秒間で）
-		float t = m_totalSeconds / CHARGE_TIME; // 0 ~ 1 に正規化
-		m_angleUD = DirectX::XMConvertToRadians(-40.0f * Easying::easeInOutBack(t));
-	}
-	// 待機状態
-	else if (m_totalSeconds > CHARGE_TIME && m_totalSeconds <= WINDUP_TIME)
-	{
-		// 振りかざしの角度を保持
-		m_angleUD = DirectX::XMConvertToRadians(-40.0f);
-	}
-	// 降り下ろす
-	else if (m_totalSeconds > WINDUP_TIME && m_totalSeconds < ATTACK_TIME)
-	{
-		// 20度から115度振り下ろす（0.3秒間で）
-		float t = (m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME); // 0 ~ 1 に正規化
-		m_angleUD = DirectX::XMConvertToRadians(-40.0f + 135.0f * Easying::easeInQuint(t));
-		canHit = true;
-	}
-	// 後隙のパーティクル生成
-	else if (m_totalSeconds > ATTACK_TIME)
-	{
-		if (m_canGenerateSlamParticles)
-		{
-			m_canGenerateSlamParticles = false;
-			m_cudgel->GetPlayScene()->GetParticle()->CreateSlamDust(m_tipPos[m_tipPos.size() - 1]);
-		}
-	}
+	UpdateAttackState();	// 攻撃状態の更新
 
 	// プレイヤーに攻撃可能状態を通知
 	m_cudgel->GetPlayScene()->GetPlayer()->CanHit(canHit);
 }
+
+
+/// <summary>
+/// 振りかざしの処理。武器を20度持ち上げる。
+/// </summary>
+/// <param name="t">0から1に正規化された時間。</param>
+void Cudgel_Attacking::HandleChargePhase(float t)
+{
+	// 20度上げる（0.5秒間で、イージング使用）
+	m_angleUD = DirectX::XMConvertToRadians(-40.0f * Easying::easeInOutBack(t));
+}
+
+
+/// <summary>
+/// 待機状態の処理。武器を20度の角度で保持する。
+/// </summary>
+/// <param name="t">未使用。</param>
+void Cudgel_Attacking::HandleWindoupPhase(float t)
+{
+	// 振りかざしの角度を保持（-40度の状態を維持）
+	m_angleUD = DirectX::XMConvertToRadians(-40.0f);
+}
+
+
+/// <summary>
+/// 攻撃フェーズの処理。武器を20度から115度まで振り下ろす。
+/// </summary>
+/// <param name="t">0から1に正規化された時間。</param>
+void Cudgel_Attacking::HandleAttackPhase(float t)
+{
+	// 20度から115度振り下ろす（0.3秒間で、イージング使用）
+	m_angleUD = DirectX::XMConvertToRadians(-40.0f + 135.0f * Easying::easeInQuint(t));
+}
+
+
+/// <summary>
+/// 後隙のパーティクル生成処理。武器の先端に塵を発生させ、カメラを振動させる。
+/// </summary>
+void Cudgel_Attacking::HandleSlamParticles()
+{
+	if (m_canGenerateSlamParticles)
+	{
+		m_canGenerateSlamParticles = false;
+		m_cudgel->GetPlayScene()->GetParticle()->CreateSlamDust(m_tipPos[m_tipPos.size() - 1]);
+
+		// カメラの振動を設定
+		m_cudgel->GetPlayScene()->SetShakeCamera();
+	}
+}
+
+/// <summary>
+/// 更新する処理
+/// </summary>
+void Cudgel_Attacking::UpdateAttackState()
+{
+																			// 振りかざす
+	if (m_totalSeconds < CHARGE_TIME)										HandleChargePhase(m_totalSeconds / CHARGE_TIME);
+																			// 待機状態
+	else if (m_totalSeconds > CHARGE_TIME && m_totalSeconds <= WINDUP_TIME)	HandleWindoupPhase((m_totalSeconds - CHARGE_TIME) / (WINDUP_TIME - CHARGE_TIME));
+																			// 降り下ろす
+	else if (m_totalSeconds > WINDUP_TIME && m_totalSeconds < ATTACK_TIME)	HandleAttackPhase((m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME));
+																			// 後隙のパーティクル生成
+	else if (m_totalSeconds > ATTACK_TIME)									HandleSlamParticles();
+}
+
+
 
 
 /// <summary>

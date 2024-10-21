@@ -5,6 +5,8 @@
 #include "pch.h"
 #include "Game/Camera/Camera.h"
 #include "Game/Screen.h"
+#include "Interface/ICameraState.h"
+#include "Libraries/MyLib/Math.h"
 
 // 固定値
 const float Camera::CAMERA_POSITION_Y = 8.0f;		// カメラの高さ
@@ -25,7 +27,10 @@ Camera::Camera(const DirectX::SimpleMath::Vector3& target)
 	,m_position{}
 	,m_angle{}
 	,m_targetHeight{5.0f}
+	, m_isShake{ false }
+	, m_shakeTime{ SHAKE_TIME }
 {
+	SetShake();
 }
 
 //-------------------------------------------------------------------
@@ -35,11 +40,13 @@ Camera::Camera(const DirectX::SimpleMath::Vector3& target)
 /// <param name="playerPos">プレイヤーの座標</param>
 /// <param name="enemyPos">注視する座標</param>
 /// <param name="rotate">プレイヤーの回転量/param>
+/// <param name="elapsedTime">経過時間</param>
 //-------------------------------------------------------------------
 void Camera::Update(
 	const DirectX::SimpleMath::Vector3& playerPos,
 	const DirectX::SimpleMath::Vector3& enemyPos,
-	const DirectX::SimpleMath::Matrix& rotate
+	const DirectX::SimpleMath::Matrix&	rotate,
+	const float							elapsedTime
 )
 {	using namespace DirectX;
 
@@ -55,6 +62,11 @@ void Camera::Update(
 	m_position.y = CAMERA_POSITION_Y; // Y座標を固定
 	// 注視点を計算
 	m_target = enemyPos + unitVecPlayerToTarget;
+
+	// カメラの振動
+	Shake(elapsedTime);
+
+
 	// 注視点の高さを設定
 	m_target.y = m_targetHeight;
 	// ビュー行列を更新する
@@ -101,4 +113,43 @@ void Camera::CalculateCameraAngle()
 	{
 		m_angle = -m_angle;
 	}
+}
+
+
+// -----------------------------
+// カメラの振動
+// -----------------------------
+void Camera::Shake(float elapsedTime)
+{
+	using namespace DirectX;
+
+	if ( ! m_isShake ) return;
+
+	m_shakeTime -= elapsedTime;
+
+	// 振動時間が0以下になったら振動を終了
+	if (m_shakeTime <= 0.0f)
+	{
+		m_isShake = false;  
+		return;
+	}
+
+	float power = m_shakeTime * 1.0f;
+
+	SimpleMath::Vector3 max = SimpleMath::Vector3(power, power, power);
+	SimpleMath::Vector3 min = SimpleMath::Vector3(-power, -power, -power);
+
+	// カメラの位置を揺らす
+	m_position	+=	Math::RandomVector3(min, max);
+	m_target	+=	Math::RandomVector3(min, max);
+}
+
+
+//-------------------------------------------------------------------
+// カメラの振動を開始
+//-------------------------------------------------------------------
+void Camera::SetShake()
+{
+	m_isShake = true;
+	m_shakeTime = SHAKE_TIME;
 }

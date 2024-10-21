@@ -194,6 +194,7 @@
     <ClInclude Include="Effects\Header\SwordTrialParticle.h" />
     <ClInclude Include="Effects\Source\SwordTrialParticle.h" />
     <ClInclude Include="Effects\Particle.h" />
+    <ClInclude Include="Game\Camera\State\Header\CameraIdling.h" />
     <ClInclude Include="Game\Factory\Factory.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Game\Camera\Camera.h" />
@@ -235,6 +236,7 @@
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_2.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_3.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_4.h" />
+    <ClInclude Include="Interface\ICameraState.h" />
     <ClInclude Include="Interface\IHitPoint.h" />
     <ClInclude Include="Interface\IObject.h" />
     <ClInclude Include="Interface\IObserver.h" />
@@ -271,6 +273,7 @@
     <ClCompile Include="Effects\Particle.cpp" />
     <ClCompile Include="Effects\Source\DustTrailParticle.cpp" />
     <ClCompile Include="Effects\Source\SwordTrialParticle.cpp" />
+    <ClCompile Include="Game\Camera\State\Source\CameraIdling.cpp" />
     <ClCompile Include="Game\Factory\Factory.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Game\Camera\Camera.cpp" />

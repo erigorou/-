@@ -57,6 +57,14 @@ public:
 
 
 private:
+	void HandleChargePhase(float t);
+	void HandleWindoupPhase(float t);
+	void HandleAttackPhase(float t);
+	void HandleSlamParticles();
+	
+	void UpdateAttackState();
+
+
 	DirectX::SimpleMath::Vector3 m_position;	// ç¿ïW
 	DirectX::SimpleMath::Vector3 m_velocity;	// ë¨ìx
 

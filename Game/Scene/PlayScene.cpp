@@ -181,16 +181,9 @@ void PlayScene::Update(float elapsedTime)
 	m_keyboardStateTracker.Update(m_keyboardState);
 
 	// キーボードが押下げられたかどうかを判定する
-	if (IsKeyDown	(m_keyboardState))			
-	{
-		Messenger::Notify(m_keyboardState); 
-	}
+	if (IsKeyDown	(m_keyboardState)		)	Messenger::Notify(m_keyboardState		); 
+	if (IsKeyPress	(m_keyboardStateTracker))	Messenger::Notify(m_keyboardStateTracker); 
 
-
-	if (IsKeyPress(m_keyboardStateTracker))	
-	{ 
-		Messenger::Notify(m_keyboardStateTracker); 
-	}
 
 	// BGMの再生
 	m_bgm->Update();
@@ -211,7 +204,7 @@ void PlayScene::Update(float elapsedTime)
 	// カメラの回転行列の作成	引数にはプレイヤーの回転角を入れる
 	SimpleMath::Matrix matrix = SimpleMath::Matrix::CreateRotationY( XMConvertToRadians ( m_player->GetAngle() ) );
 	// カメラの更新
-	m_camera->Update(m_player->GetPosition(), m_enemy->GetPosition(), matrix);
+	m_camera->Update(m_player->GetPosition(), m_enemy->GetPosition(), matrix, elapsedTime);
 
 	// パーティクルの更新
 	m_particles->Update(
@@ -283,6 +276,15 @@ void PlayScene::Finalize()
 {
 	m_bgm->FinalizeFMOD();
 }
+
+/// <summary>
+/// カメラを揺らす
+/// </summary>
+void PlayScene::SetShakeCamera()
+{
+	m_camera->SetShake();
+}
+
 
 /// <summary>
 /// 次のシーンIDの取得関数

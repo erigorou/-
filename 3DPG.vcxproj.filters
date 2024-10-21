@@ -204,6 +204,8 @@
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_2.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_3.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_4.h" />
+    <ClInclude Include="Interface\ICameraState.h" />
+    <ClInclude Include="Game\Camera\State\Header\CameraIdling.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -307,6 +309,7 @@
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Attacking_2.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Attacking_3.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Attacking_4.cpp" />
+    <ClCompile Include="Game\Camera\State\Source\CameraIdling.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
