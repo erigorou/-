@@ -22,6 +22,7 @@
 const float Sword::SWORD_SCALE = Player::PLAYER_SCALE * 1.5f;
 const DirectX::SimpleMath::Vector3 Sword::SWORD_DIR_FOR_PLAYER = DirectX::SimpleMath::Vector3(1.5f, 1.0f, 0.0f);
 
+
 // コンストラクタ
 Sword::Sword(PlayScene* playScene)
 	:
@@ -29,10 +30,12 @@ Sword::Sword(PlayScene* playScene)
 {
 }
 
+
 // デストラクタ
 Sword::~Sword()
 {
 }
+
 
 // 初期化処理
 void Sword::Initialize()

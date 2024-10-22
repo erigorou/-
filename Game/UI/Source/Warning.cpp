@@ -16,7 +16,8 @@ const wchar_t* Warning::GS_PATH = L"Resources/Shaders/Warning/WarningGS.cso";
 
 // コンストラクタ
 Warning::Warning(PlayerHP* hp)
-	: m_pDR(nullptr)
+	: m_hp(hp)
+	, m_pDR(nullptr)
 	, m_customShader(nullptr)
 	, m_CBuffer(nullptr)
 	, m_states(nullptr)
@@ -81,6 +82,9 @@ void Warning::Initialize()
 // 更新処理
 void Warning::Update(float elapsedTime)
 {
+	if (m_hp->GetHP() > LOW_HP) 
+		return;
+
 	// 経過時間の加算
 	m_totalTime += elapsedTime;
 

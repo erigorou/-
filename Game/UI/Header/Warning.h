@@ -18,6 +18,9 @@ private:
 	static const wchar_t* PS_PATH;
 	static const wchar_t* GS_PATH;
 
+	static constexpr int LOW_HP = 2;
+
+
 	std::vector<D3D11_INPUT_ELEMENT_DESC> InputElements =
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -59,7 +62,7 @@ private:
 // プライベート変数
 private:
 	
-
+	PlayerHP* m_hp;
 
 	std::unique_ptr<CustomShader>			m_customShader;		// シェーダー
 	DX::DeviceResources*					m_pDR;				// デバイスリソース
