@@ -6,6 +6,7 @@ cbuffer ConstBuffer	: register(b0)
 	matrix matProj;
 	float4 diffuse;
     float4 easing;
+    float4 time;
 };
 
 

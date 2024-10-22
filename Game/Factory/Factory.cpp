@@ -2,20 +2,21 @@
 #include "Factory.h"
 #include "../Observer/Messenger.h"
 
-#include "../Scene/PlayScene.h"									// プレイシーン
-#include "Interface/IObserver.h"								// オブザーバー
-#include "Libraries/MyLib/Collision/CollisionManager.h"			// 当たり判定統括
-#include "../Sound/BGM_Player.h"								// BGM再生統括
-#include "../Camera/Camera.h"									// カメラ
-#include "Libraries/MyLib/SkySphere.h"							// 天球
-#include "Effects/Particle.h"									// パーティクル
-#include "../Stage/Floor/Floor.h"								// 床
-#include "../Stage/Wall/Wall.h"									// 壁
-#include "../Player/Player.h"									// プレイヤー
-#include "../Enemy/Enemy.h"										// 鬼（敵）
-#include "../Weapon/Sword/Sword.h"								// プレイヤーの武器
-#include "../Weapon/Cudgel/Cudgel.h"							// 鬼（敵）の武器
-#include "../UI/PlaySceneUIManager/Header/PlaySceneUIManager.h"	// プレイシーンのUI
+#include "../Scene/PlayScene.h"										// プレイシーン
+#include "Interface/IObserver.h"									// オブザーバー
+#include "Libraries/MyLib/Collision/CollisionManager.h"				// 当たり判定統括
+#include "../Sound/BGM_Player.h"									// BGM再生統括
+#include "../Camera/Camera.h"										// カメラ
+#include "Libraries/MyLib/SkySphere.h"								// 天球
+#include "Effects/Particle.h"										// パーティクル
+#include "../Stage/Floor/Floor.h"									// 床
+#include "../Stage/Wall/Wall.h"										// 壁
+#include "../Player/Player.h"										// プレイヤー
+#include "../Enemy/Enemy.h"											// 鬼（敵）
+#include "../Weapon/Sword/Sword.h"									// プレイヤーの武器
+#include "../Weapon/Cudgel/Cudgel.h"								// 鬼（敵）の武器
+#include "../UI/!PlaySceneUIManager/PlaySceneUIManager.h"			// プレイシーンのUI
+#include "Game/UI/Header/Warning.h"									// HP減ったときの警告UI
 
 using namespace DirectX;
 

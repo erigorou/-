@@ -110,6 +110,7 @@ void Cudgel_Attacking::UpdateCudgelRotation()
 	// 敵の攻撃の流れ
 	// 振りかざす（1秒）→ 待機（0.2秒）→ 降り下ろす(0.7秒) → 後隙
 
+
 	UpdateAttackState();	// 攻撃状態の更新
 
 	// プレイヤーに攻撃可能状態を通知

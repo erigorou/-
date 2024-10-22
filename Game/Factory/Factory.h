@@ -19,6 +19,7 @@ class Enemy;
 class Sword;
 class Cudgel;
 class PlaySceneUIManager;
+class Warning;
 
 class Factory
 {

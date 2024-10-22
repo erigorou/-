@@ -181,7 +181,7 @@
     <ClInclude Include="Libraries\MyLib\Collision.h" />
     <ClInclude Include="Interface\IParticle.h" />
     <ClInclude Include="Interface\IUserInterface.h" />
-    <ClInclude Include="Game\UI\PlaySceneUIManager\Header\PlaySceneUIManager.h" />
+    <ClInclude Include="Game\UI\!PlaySceneUIManager\PlaySceneUIManager.h" />
     <ClInclude Include="Game\UI\Header\Gauge.h" />
     <ClInclude Include="Effects\Source\SwordTrialParticle.h" />
     <ClInclude Include="Game\Enemy\States\Header\Enemy_Sweeping.h" />
@@ -206,6 +206,8 @@
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_4.h" />
     <ClInclude Include="Interface\ICameraState.h" />
     <ClInclude Include="Game\Camera\State\Header\CameraIdling.h" />
+    <ClInclude Include="Game\UI\Header\Warning.h" />
+    <ClInclude Include="Libraries\MyLib\CustomShader\CustomShader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -294,7 +296,7 @@
     <ClCompile Include="Game\Enemy\States\Source\Enemy_Attacking.cpp" />
     <ClCompile Include="Game\Stage\Floor\Floor.cpp" />
     <ClCompile Include="Game\Stage\Wall\Wall.cpp" />
-    <ClCompile Include="Game\UI\PlaySceneUIManager\Source\PlaySceneUIManager.cpp" />
+    <ClCompile Include="Game\UI\!PlaySceneUIManager\PlaySceneUIManager.cpp" />
     <ClCompile Include="Game\UI\Source\Gauge.cpp" />
     <ClCompile Include="Effects\Source\SwordTrialParticle.cpp" />
     <ClCompile Include="Game\Enemy\States\Source\Enemy_Sweeping.cpp" />
@@ -310,6 +312,8 @@
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Attacking_3.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Attacking_4.cpp" />
     <ClCompile Include="Game\Camera\State\Source\CameraIdling.cpp" />
+    <ClCompile Include="Game\UI\Source\Warning.cpp" />
+    <ClCompile Include="Libraries\MyLib\CustomShader\CustomShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -350,5 +354,8 @@
     <FxCompile Include="Resources\Shaders\Fade\FadeGS.hlsl" />
     <FxCompile Include="Resources\Shaders\Fade\FadePS.hlsl" />
     <FxCompile Include="Resources\Shaders\Fade\FadeVS.hlsl" />
+    <FxCompile Include="Resources\Shaders\Warning\WarningGS.hlsl" />
+    <FxCompile Include="Resources\Shaders\Warning\WarningPS.hlsl" />
+    <FxCompile Include="Resources\Shaders\Warning\WarningVS.hlsl" />
   </ItemGroup>
 </Project>

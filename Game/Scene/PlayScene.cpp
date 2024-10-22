@@ -32,7 +32,7 @@
 #include "Game/Stage/Wall/Wall.h"		// 壁
 
 // UI関連　====================================================
-#include "Game/UI/PlaySceneUIManager/Header/PlaySceneUIManager.h"	// UI描画関連
+#include "Game/UI/!PlaySceneUIManager/PlaySceneUIManager.h"	// UI描画関連
 
 // 当たり判定関連 =============================================
 #include "Libraries/MyLib/Collision/CollisionManager.h"	// 当たり判定
@@ -189,7 +189,7 @@ void PlayScene::Update(float elapsedTime)
 	m_bgm->Update();
 
 	// UIの更新
-	m_uiManager->Update();
+	m_uiManager->Update(elapsedTime);
 
 	// プレイヤーの更新処理
 	m_player->Update(m_enemy->GetPosition(), elapsedTime);
