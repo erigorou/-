@@ -30,7 +30,6 @@ Camera::Camera(const DirectX::SimpleMath::Vector3& target)
 	, m_isShake{ false }
 	, m_shakeTime{ SHAKE_TIME }
 {
-	SetShake();
 }
 
 //-------------------------------------------------------------------

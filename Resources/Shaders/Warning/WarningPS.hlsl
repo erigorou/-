@@ -16,4 +16,4 @@ float4 main(PS_INPUT input) : SV_TARGET
     output.r = 0.7f;
     
     return output;
-}6
+}

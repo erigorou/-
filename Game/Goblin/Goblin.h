@@ -10,6 +10,7 @@
 
 #include "pch.h"
 #include "Interface/IObject.h"
+#include "Interface/IState.h"
 
 class Player;
 class PlayScene;
@@ -17,15 +18,22 @@ class PlayScene;
 class Goblin : public IObject
 {
 public:
-	static const float GOBLIN_SPEED;
-	static const float GOBLIN_SCALE;
+	class GoblinIdling;
+	class GoblinAttacking;
 
+	// 固定値
+	static constexpr float GOBLIN_SPEED = 1.0f;
+	static constexpr float GOBLIN_SCALE = 1.0f;
+
+	// 譲渡関数
 	DirectX::SimpleMath::Vector3	GetPosition()	override{ return m_position;	}	// 鬼の座標を取得する
 	DirectX::SimpleMath::Vector3	GetVelocity()	const	{ return m_velocity;	}	// 速度の取得
 	DirectX::SimpleMath::Vector3	GetAngle()		const	{ return m_angle;		}	// 回転角の取得
 	DirectX::SimpleMath::Matrix		GetWorldMatrix()const	{ return m_worldMatrix; }	// ワールド座標の取得
 
 	// ステートパターン
+	GoblinIdling*		GetIdling()		const { return m_idling.get		(); }	// 待機ステートの取得
+	GoblinAttacking*	GetAttacking()	const { return m_attacking.get	();	}	// 攻撃ステートの取得
 
 
 	PlayScene* GetPlayScen() const { return m_playScene; }	// PlaySceneの取得
@@ -34,8 +42,9 @@ public:
 	~Goblin();
 
 	void Initialize();									// 初期化関数
+	void CreateCollision();								// 当たり判定の生成
+
 	void Update(const float elapsedTime);				// 更新処理
-	
 	void Render(
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& projection);	// 描画関数
@@ -43,6 +52,7 @@ public:
 	void Finalize();									// 終了関数
 	void HitAction(InterSectData data) override;		// 当たったときの処理
 
+	void ChangeState(IState* state);	// ステートの変更
 private:
 
 	void CreateState();		// ステートの作成
@@ -56,9 +66,11 @@ private:
 	std::unique_ptr<DirectX::Model> m_model;	// モデル
 
 
-	// ステートパターン
-
-
+	// 現在のステート
+	IState* m_currentState;										// 現在のステート
+	std::unique_ptr<Goblin::GoblinIdling	> m_idling		;	// 待機
+	std::unique_ptr<Goblin::GoblinAttacking	> m_attacking	;	// 攻撃
+ 
 
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;	// エフェクト
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;

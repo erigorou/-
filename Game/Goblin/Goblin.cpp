@@ -2,19 +2,17 @@
 // 小鬼の親クラス
 // -------------------------------------------------------
 
+#include "pch.h"
 #include "Goblin.h"
 #include "Game/Player/Player.h"
 #include "Game/Scene/PlayScene.h"
-
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/Microsoft/DebugDraw.h"
 #include "Interface/IState.h"
 
-// 固定値
-const float Goblin::GOBLIN_SPEED = 0.1f;
-const float Goblin::GOBLIN_SCALE = 0.4f;
-
+#include "State/Header/GoblinIdling.h"
+#include "State/Header/GoblinAttacking.h"
 
 // コンストラクタ
 Goblin::Goblin(PlayScene* playScene)
@@ -27,10 +25,12 @@ Goblin::Goblin(PlayScene* playScene)
 {
 }
 
+
 // デストラクタ
 Goblin::~Goblin()
 {
 }
+
 
 // 初期化関数
 void Goblin::Initialize()
@@ -50,9 +50,18 @@ void Goblin::Initialize()
 }
 
 
+
 void Goblin::CreateState()
 {
+	m_idling		=	std::make_unique<GoblinIdling>		(this);	// 待機
+	m_attacking		=	std::make_unique<GoblinAttacking>	(this);	// 攻撃
+
+	m_idling	->	Initialize(m_model.get());
+	m_attacking	->	Initialize(m_model.get());
+
+	m_currentState = m_idling.get();
 }
+
 
 
 void Goblin::CreateCollision()
@@ -90,4 +99,22 @@ void Goblin::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::Simp
 
 	//m_currentState->Render();				// ステート側の描画
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);	// モデルの描画
+}
+
+
+
+void Goblin::Finalize()
+{
+}
+
+
+
+void Goblin::HitAction(InterSectData data)
+{
+}
+
+
+
+void Goblin::ChangeState(IState* state)
+{
 }
