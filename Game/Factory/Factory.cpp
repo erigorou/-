@@ -39,7 +39,7 @@ std::unique_ptr<BGM_Player> Factory::CreateBGM_Player()
 	std::unique_ptr<BGM_Player> bgm_Player;
 	bgm_Player = std::make_unique<BGM_Player>();
 	// 初期化処理
-	bgm_Player->InitializeFMOD(BGM_Player::BGM_FILE_PATH);
+	bgm_Player->InitializeFMOD("Resources/Sounds/BGM.ogg");
 	// BGM再生統括の設定
 	return bgm_Player;
 }
@@ -116,7 +116,6 @@ std::unique_ptr<Player> Factory::CreatePlayer(PlayScene* playScene)
 	// 初期化処理
 	player->Initialize();
 
-	// オブザーバーにキー入力を登録する
 	Messenger::Attach(DirectX::Keyboard::X			, player.get(), Messenger::KeyPressType::PRESSED);
 	Messenger::Attach(DirectX::Keyboard::LeftShift	, player.get(), Messenger::KeyPressType::PRESSED);
 	Messenger::Attach(DirectX::Keyboard::Left		, player.get(), Messenger::KeyPressType::DOWN);

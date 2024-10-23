@@ -1,5 +1,95 @@
-﻿  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Sword\SwordTrailPS.cso
-  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Sword\SwordTrailVS.cso
-  failed to open file: C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Sword\SwordTrialPS.hlsl
-  compilation failed; no code produced
-C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(1830,5): error MSB6006: "fxc.exe" はコード 1 を伴って終了しました。
+﻿  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Dust\DustGS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Dust\DustPS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Dust\DustVS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Fade\FadeGS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Fade\FadePS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Fade\FadeVS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Sword\SwordTrialPS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Sword\SwordTrialVS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\UI\UIGS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\UI\UIPS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\UI\UIVS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Warning\WarningGS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Warning\WarningPS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Warning\WarningVS.cso
+  pch.cpp
+  Action.cpp
+  BehaviorTree.cpp
+  IfDecorator.cpp
+  Selector.cpp
+  Sequence.cpp
+  DeviceResources.cpp
+  Particle.cpp
+  DustTrailParticle.cpp
+  SwordTrialParticle.cpp
+  CameraIdling.cpp
+  Factory.cpp
+  Game.cpp
+  Camera.cpp
+  CommonResources.cpp
+  Enemy.cpp
+  EnemyApproaching.cpp
+  Enemy_Attacking.cpp
+  EnemyIdling.cpp
+  Enemy_Sweeping.cpp
+  Goblin.cpp
+  コードを生成中...
+  コンパイル中...
+  GoblinAttacking.cpp
+  GoblinIdling.cpp
+  Player.cpp
+  Player_Attacking_1.cpp
+  Player_Attacking_2.cpp
+  Player_Attacking_3.cpp
+  Player_Attacking_4.cpp
+  Player_Idling.cpp
+  Player_Dodging.cpp
+  PlayScene.cpp
+  ResultScene.cpp
+  SceneManager.cpp
+  TitleScene.cpp
+  BGM_Player.cpp
+  Floor.cpp
+  Wall.cpp
+  Fade.cpp
+  PlaySceneUIManager.cpp
+  EnemyHPUI.cpp
+  Gauge.cpp
+  コードを生成中...
+  コンパイル中...
+  IconUI.cpp
+  PlayerHPUI.cpp
+  Warning.cpp
+  Cudgel.cpp
+  Cudgel_Attacking.cpp
+  Cudgel_Idling.cpp
+  Cudgel_Sweeping.cpp
+  Sword_Attacking_1.cpp
+  Sword_Attacking_2.cpp
+  Sword_Attacking_3.cpp
+  Sword_Attacking_4.cpp
+  Sword_Idling.cpp
+  Sword.cpp
+  DebugDraw.cpp
+  BinaryFile.cpp
+  CollisionManager.cpp
+  CustomShader.cpp
+  DebugCamera.cpp
+  DebugString.cpp
+  GridFloor.cpp
+  コードを生成中...
+  コンパイル中...
+  InputManager.cpp
+  SkySphere.cpp
+  Main.cpp
+  Messenger.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\utility(270,61): warning C4267: '初期化中': 'size_t' から '_Ty2' に変換しました。データが失われているかもしれません。
+          with
+          [
+              _Ty2=int
+          ]
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Observer\Messenger.cpp(138,57): message : コンパイル対象の関数 テンプレート インスタンス化 'std::pair<int,int>::pair<int,unsigned __int64,0>(std::pair<int,unsigned __int64> &&) noexcept' のリファレンスを確認してください
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Observer\Messenger.cpp(138,42): message : 'Messenger::CreateKeyRangeList' の 'std::pair<int,int>::pair' への最初の参照を参照してください
+  コードを生成中...
+     ライブラリ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.lib とオブジェクト C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exp を作成中
+  3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe

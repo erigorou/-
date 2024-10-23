@@ -10,8 +10,7 @@ namespace FMOD
 
 class BGM_Player
 {
-public:
-	static constexpr const char* BGM_FILE_PATH = "Resources/Sounds/BGM/BGM.ogg";
+	static constexpr const char* BGM_FILE_PATH = "Resources/Sounds/BGM.ogg";
 
 public:
 
