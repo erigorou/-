@@ -233,7 +233,6 @@ void PlayScene::Render()
 {
 	using namespace DirectX;
 
-	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
 	auto context = m_commonResources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = m_commonResources->GetCommonStates();
 	// ビュー行列を取得する
@@ -251,13 +250,13 @@ void PlayScene::Render()
 
 	// === オブジェクトの描画 =======================================================
 	// 敵の描画
-	m_enemy->Render(device, context, states, view, m_projection);
+	m_enemy->Render(view, m_projection);
 	// 敵の武器の描画を行う
-	m_cudgel->Render(device, context, states, view, m_projection);
+	m_cudgel->Render(view, m_projection);
 	// プレイヤーの描画を行う
-	m_player->Render(device, context, states, view, m_projection, m_commonResources);
+	m_player->Render(view, m_projection);
 	// プレイヤーの武器の描画を行う
-	m_sword->Render(device, context, states, view, m_projection, m_commonResources);
+	m_sword->Render(view, m_projection);
 
 	//==== エフェクト系の描画 ======================================================
 	// パーティクルのビルボード作成

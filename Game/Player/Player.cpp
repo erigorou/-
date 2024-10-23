@@ -361,15 +361,16 @@ void Player::CalculationMatrix()
 //  •\Ž¦ˆ—
 // --------------------------------
 void Player::Render(
-	ID3D11Device* device,
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection,
-	const CommonResources* resources
+	const DirectX::SimpleMath::Matrix& projection
 	)
 {
 	using namespace DirectX;
+
+	auto resources = CommonResources::GetInstance();
+	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
+	auto states = resources->GetCommonStates();
+
 
 	context->OMSetDepthStencilState(states->DepthDefault(), 0);	// [“x’l‚ðŽQÆ‚µ‚Ä‘‚«ž‚Þ
 
@@ -408,6 +409,8 @@ void Player::Render(
 		projection);
 
 #ifdef _DEBUG
+	auto device = resources->GetDeviceResources()->GetD3DDevice();
+
 	// ‘Ì‚Ì‹«ŠE‹…‚Ì•`‰æ
 	DrawBoundingSphere(device, context, states, view, projection, m_bodyCollision.get());
 

@@ -131,18 +131,20 @@ void Cudgel::Update(float elapsedTime)
 // •`‰æˆ—
 // --------------------------------
 void Cudgel::Render(
-	ID3D11Device* device,
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
 	const DirectX::SimpleMath::Matrix& projection)
 {
+	auto common = CommonResources::GetInstance();
+	auto context = common->GetDeviceResources()->GetD3DDeviceContext();
+	auto states = common->GetCommonStates();
+
 	// Œ»Ý‚ÌƒXƒe[ƒg‚Ì•`‰æˆ—
 	m_currentState->Render(context, states, view, projection);
 
 
 #ifdef _DEBUG
 	// ‹«ŠEƒ{ƒbƒNƒX‚Ì•`‰æ
+	auto device = common->GetDeviceResources()->GetD3DDevice();
 	DrawBoundingBox(device, context, states, view, projection);
 #endif // _DEBUG
 }

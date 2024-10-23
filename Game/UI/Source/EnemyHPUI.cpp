@@ -75,8 +75,8 @@ void EnemyHPUI::Update()
 // ----------------------------
 void EnemyHPUI::Render()
 {
-    m_enemyHP = m_enemyHPclass->GetHP();        // 敵のHPを取得
-    float MAXHP = m_enemyHPclass->GetMaxHP();   // 最大HPを取得
+    m_enemyHP	= m_enemyHPclass->GetHP();		// 敵のHPを取得
+    int MAXHP	= m_enemyHPclass->GetMaxHP();	// 最大HPを取得
 
     // 描画位置のオフセット値や緑ゲージの幅を計算する
     LONG offset = static_cast<LONG>(Screen::CENTER_X - (MAX_WIDTH / 2));

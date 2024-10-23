@@ -50,7 +50,10 @@ private:
 
 
 
-	Goblin* m_goblin;	// 親
+	Goblin*			m_goblin;	// 親
+	DirectX::Model* m_model;	// モデル
+
+	float m_totalTime;	// 経過時間
 };
 
 

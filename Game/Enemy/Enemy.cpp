@@ -191,13 +191,13 @@ void Enemy::Update(float elapsedTime)
 //  •\Ž¦ˆ—
 // --------------------------------
 void Enemy::Render(
-	ID3D11Device* device,
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection)
+	const DirectX::SimpleMath::Matrix& projection
+)
 {
-
+	auto deviceResources = CommonResources::GetInstance()->GetDeviceResources();
+	auto context = deviceResources->GetD3DDeviceContext();
+	auto states = CommonResources::GetInstance()->GetCommonStates();
 
 	// [“x’l‚ðŽQÆ‚µ‚Ä‘‚«ž‚Þ
 	context->OMSetDepthStencilState(states->DepthDefault(), 0);
@@ -206,6 +206,8 @@ void Enemy::Render(
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);	// ƒ‚ƒfƒ‹‚Ì•`‰æ
 
 #ifdef _DEBUG
+
+	auto device = deviceResources->GetD3DDevice();
 	DrawBoundingSphere(device, context, states, view, projection, m_bodyCollision.get());	// “–‚½‚è”»’è‚Ì•`‰æ
 
 	CommonResources* resources = CommonResources::GetInstance();

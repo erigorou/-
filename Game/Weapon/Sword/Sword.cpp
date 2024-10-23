@@ -135,18 +135,21 @@ void Sword::Update(float elapsedTime)
 
 // 描画処理
 void Sword::Render(
-	ID3D11Device* device,
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection,
-	const CommonResources* resources)
+	const DirectX::SimpleMath::Matrix& projection
+	)
 {
+	auto resources = CommonResources::GetInstance();
+	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
+	auto states = resources->GetCommonStates();
+
 	// 現在のステートの描画処理
 	m_currentState->Render(context,states,view,projection);
 
 
 #ifdef _DEBUG
+	auto device = resources->GetDeviceResources()->GetD3DDevice();
+
 	// 境界ボックスの描画
 	DrawBoundingBox(device, context, states, view, projection);
 
