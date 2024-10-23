@@ -8,6 +8,7 @@
 #include "Libraries/MyLib/Math.h"
 
 #include "Interface/ICameraState.h"
+#include "State/TitleCameraState.h"
 #include "State/PlayCameraState.h"
 
 // ŒÅ’è’l
@@ -152,10 +153,11 @@ void Camera::ChangeState(ICameraState* state)
 //-------------------------------------------------------------------
 void Camera::CreateState()
 {
-	m_playState = std::make_unique<PlayCameraState>(this);
+	m_titleState	= std::make_unique<TitleCameraState>(this);
+	m_playState		= std::make_unique<PlayCameraState>(this);
 
 
-	m_currentState = m_playState.get();
+	m_currentState = m_titleState.get();
 }
 
 

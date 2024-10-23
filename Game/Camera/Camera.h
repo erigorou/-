@@ -1,7 +1,10 @@
 #pragma once
+
+#include "State/TitleCameraState.h"
 #include "State/PlayCameraState.h"
 
 class ICameraState;
+class TitleCameraState;
 class PlayCameraState;
 
 class Camera
@@ -65,7 +68,8 @@ private:
 	// ステート用 ///////////
 	ICameraState* m_currentState;	// 現在のステート
 
-	std::unique_ptr<PlayCameraState> m_playState;
+	std::unique_ptr<TitleCameraState>	m_titleState;
+	std::unique_ptr<PlayCameraState>	m_playState;
 
 
 
