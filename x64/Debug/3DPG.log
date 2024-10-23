@@ -1,3 +1,5 @@
-﻿  failed to open file: C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Sword\SwordTrilVS.hlsl
+﻿  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Sword\SwordTrailPS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Sword\SwordTrailVS.cso
+  failed to open file: C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Sword\SwordTrialPS.hlsl
   compilation failed; no code produced
 C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(1830,5): error MSB6006: "fxc.exe" はコード 1 を伴って終了しました。
