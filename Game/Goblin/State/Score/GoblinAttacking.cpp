@@ -26,7 +26,7 @@ void Goblin::GoblinAttacking::PreUpdate()
 
 
 // çXêV
-void Goblin::GoblinAttacking::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3& parentPos)
+void Goblin::GoblinAttacking::Update(const float& elapsedTime)
 {
 }
 

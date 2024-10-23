@@ -37,20 +37,16 @@ void Goblin::Initialize()
 {
 	CommonResources* resources = CommonResources::GetInstance();
 	auto device = resources->GetDeviceResources()->GetD3DDevice();
-	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = resources->GetCommonStates();
 
 	// モデルを読み込む準備
 	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
 	fx->SetDirectory(L"Resources/Models");
 	// モデルを読み込む
 	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/oni.cmo", *fx);
-
-
 }
 
 
-
+// ステートの作成
 void Goblin::CreateState()
 {
 	m_idling		=	std::make_unique<GoblinIdling>		(this);	// 待機
@@ -63,7 +59,7 @@ void Goblin::CreateState()
 }
 
 
-
+// 当たり判定の生成
 void Goblin::CreateCollision()
 {
 	// 当たり判定の生成
@@ -77,7 +73,7 @@ void Goblin::CreateCollision()
 }
 
 
-
+// 更新処理
 void Goblin::Update(const float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
@@ -85,36 +81,47 @@ void Goblin::Update(const float elapsedTime)
 	// ワールド行列の初期化
 	m_worldMatrix = Matrix::Identity;
 
-	//// ステートの更新処理
-	//m_currentState->Update(elapsedTime);
+	// ステートの更新処理
+	m_currentState->Update(elapsedTime);
 }
 
 
+// 描画関数
 void Goblin::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection)
 {
 	CommonResources* resources = CommonResources::GetInstance();
-	auto device = resources->GetDeviceResources()->GetD3DDevice();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
 
-	//m_currentState->Render();				// ステート側の描画
+	m_currentState->Render(context, states, view, projection);			// ステート側の描画
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);	// モデルの描画
 }
 
 
-
+// 終了関数
 void Goblin::Finalize()
 {
+	m_idling	->	Finalize();
+	m_attacking	->	Finalize();
 }
 
 
-
+// 当たったときの処理
 void Goblin::HitAction(InterSectData data)
 {
+	UNREFERENCED_PARAMETER(data);
 }
 
 
-
+// ステートの変更
 void Goblin::ChangeState(IState* state)
 {
+	// すでに同じステートの場合は変更しない
+	if (m_currentState == state) return;
+	// 変更前ステートの最終処理
+	m_currentState->PostUpdate();
+	// ステートの変更
+	m_currentState = state;
+	// 変更後ステートの初期処理
+	m_currentState->PreUpdate();
 }

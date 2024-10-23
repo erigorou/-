@@ -10,7 +10,7 @@
 #include "Libraries/MyLib/BinaryFile.h"
 #include "Effects/Particle.h"
 #include "Effects/Header/DustTrailParticle.h"
-#include "Effects/Header/SwordTrialParticle.h"
+#include "Effects/Header/SwordTrailParticle.h"
 
 #include <random>
 
@@ -90,7 +90,7 @@ void Particle::Update(float elapsedTimer, const DirectX::SimpleMath::Vector3 pla
 	m_playerVelocity = playerVelocity;
 
 	// イテレータを取得して、削除対象の要素を削除
-	m_dustTrail.remove_if([&elapsedTimer](DustTrialParticle& particle)
+	m_dustTrail.remove_if([&elapsedTimer](DustTrailParticle& particle)
 		{
 			// 子クラスからfalseで消す
 			return !particle.Update(elapsedTimer);
@@ -98,7 +98,7 @@ void Particle::Update(float elapsedTimer, const DirectX::SimpleMath::Vector3 pla
 	);
 
 	// イテレータを取得して、削除対象の要素を削除
-	m_swordTrial.remove_if([&elapsedTimer](SwordTrialParticle& particle)
+	m_swordTrail.remove_if([&elapsedTimer](SwordTrailParticle& particle)
 		{
 			// 子クラスからfalseで消す
 			return !particle.Update(elapsedTimer);
@@ -110,14 +110,13 @@ void Particle::Update(float elapsedTimer, const DirectX::SimpleMath::Vector3 pla
 /// <summary>
 /// 軌跡をたどる土埃の生成を行う
 /// </summary>
-/// <param name="elapsedTimer">フレーム間の秒数</param>
-void Particle::CreateTrailDust(float elapsedTimer)
+void Particle::CreateTrailDust()
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
 	// パーティクル(１つ)を生成
-	DustTrialParticle dTP(
+	DustTrailParticle dTP(
 		0.5f,																		//	生存時間(s)
 		Vector3(m_playerPosition.x, m_playerPosition.y, m_playerPosition.z),		//	基準座標
 		Vector3(-m_playerVelocity.x, 0.75f, -m_playerVelocity.z),					//	速度
@@ -176,7 +175,7 @@ void Particle::CreateSlamDust(DirectX::SimpleMath::Vector3 center)
 		SimpleMath::Vector3 dustPosition = center + SimpleMath::Vector3(range * cosf(randAngle), 0.0f, range * sinf(randAngle));    // 基準座標
 
 		// パーティクル生成
-		DustTrialParticle pB(
+		DustTrailParticle pB(
 			1.4f,																				// 生存時間(s)
 			dustPosition,																		// 基準座標
 			SimpleMath::Vector3{ -velocity.x * XZspeed, Yspeed / 10, -velocity.z * XZspeed } * 2,	// 速度
@@ -196,20 +195,20 @@ void Particle::CreateSlamDust(DirectX::SimpleMath::Vector3 center)
 /// 剣を降ったときの残像を出す
 /// </summary>
 /// <param name="ver"></param>
-void Particle::CreateSwordTrial(DirectX::VertexPositionTexture ver[4])
+void Particle::CreateSwordTrail(DirectX::VertexPositionTexture ver[4])
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
-	// SwordTrialParticleを生成
-	SwordTrialParticle sTP(
+	// SwordTrailParticleを生成
+	SwordTrailParticle sTP(
 		ver,															//	頂点情報
 		0.6f,															//	生存時間(s)
 		Color(1.0f, 1.0f, 1.0f, 1.0f), Color(1.0f, 1.0f, 1.0f, 0.0f)	//	初期カラー、最終カラー
 	);
 
 	// 配列に追加
-	m_swordTrial.push_back(sTP);
+	m_swordTrail.push_back(sTP);
 }
 
 
@@ -228,8 +227,8 @@ void Particle::CreateShader()
 	BinaryFile GSDataDust = BinaryFile::LoadFile(L"Resources/Shaders/Dust/DustGS.cso");
 	BinaryFile PSDataDust = BinaryFile::LoadFile(L"Resources/Shaders/Dust/DustPS.cso");
 
-	BinaryFile VSDataSword = BinaryFile::LoadFile(L"Resources/Shaders/Sword/SwordTrialVS.cso");
-	BinaryFile PSDataSword = BinaryFile::LoadFile(L"Resources/Shaders/Sword/SwordTrialPS.cso");
+	BinaryFile VSDataSword = BinaryFile::LoadFile(L"Resources/Shaders/Sword/SwordTrailVS.cso");
+	BinaryFile PSDataSword = BinaryFile::LoadFile(L"Resources/Shaders/Sword/SwordTrailPS.cso");
 
 	//	インプットレイアウトの作成
 	device->CreateInputLayout(&INPUT_LAYOUT[0],
@@ -271,7 +270,7 @@ void Particle::CreateShader()
 
 
 /// <summary>
-/// Render共通処理およびSwordTrialParticleとDustParticleの描画呼び出し
+/// Render共通処理およびSwordTrailParticleとDustParticleの描画呼び出し
 /// </summary>
 /// <param name="states"></param>
 /// <param name="view"></param>
@@ -298,7 +297,7 @@ void Particle::Render(DirectX::CommonStates* states, DirectX::SimpleMath::Matrix
 	//	インプットレイアウトの登録
 	context->IASetInputLayout(m_inputLayout.Get());
 
-	DrawSwordParticle(view, proj, cameraDir);	// 剣の残像の描画
+	DrawSwordParticle(view, proj);	// 剣の残像の描画
 	DrawDustParticle(view, proj, cameraDir);	// 土埃の描画
 }
 
@@ -310,8 +309,7 @@ void Particle::Render(DirectX::CommonStates* states, DirectX::SimpleMath::Matrix
 /// </summary>
 /// <param name="view"></param>
 /// <param name="proj"></param>
-/// <param name="cameraDir"></param>
-void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj, DirectX::SimpleMath::Vector3 cameraDir)
+void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj)
 {
 	using namespace DirectX;
 
@@ -337,15 +335,15 @@ void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::Simp
 
 	// 色を変化させるためのイージング変数
 	float t = 0.0f;
-	for (auto& sTP : m_swordTrial)
+	for (auto& sTP : m_swordTrail)
 	{
 		// 剣のパーティクルの4つの頂点を仮定
 		DirectX::VertexPositionColorTexture ver[4];
 		sTP.GetVertices(ver);
 
-		float value1 = 1 - pow(1 - t, 2);	// イージング1
-		t += 1.0f / m_swordTrial.size();
-		float value2 = 1 - pow(1 - t, 2);	// イージング2	// t が 1に近づくほど色が薄くなる
+		float value1 = 1 - static_cast<float>(pow(1 - t, 2));	// イージング1
+		t += 1.0f / m_swordTrail.size();
+		float value2 = 1 - static_cast<float>(pow(1 - t, 2));	// イージング2	// t が 1に近づくほど色が薄くなる
 
 		ver[1].color = DirectX::SimpleMath::Color(1, 1, 1, value1);			// 右上
 		ver[2].color = DirectX::SimpleMath::Color(1, 0.8, 0.8, value1);		// 右下
@@ -396,7 +394,7 @@ void Particle::DrawDustParticle(DirectX::SimpleMath::Matrix view, DirectX::Simpl
 
 	// 土埃パーティクルの頂点リストをクリア
 	m_dustVertices.clear();
-	for (DustTrialParticle& li : m_dustTrail)
+	for (DustTrailParticle& li : m_dustTrail)
 	{
 		// カメラの方向に向かないパーティクルはスキップ
 		if (cameraDir.Dot(li.GetPosition() - m_cameraPosition) < 0.0f)

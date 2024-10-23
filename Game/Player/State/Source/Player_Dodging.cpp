@@ -50,10 +50,13 @@ void PlayerDodging::PreUpdate()
 }
 
 // 更新処理
-void PlayerDodging::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3& parentPos)
+void PlayerDodging::Update(const float& elapsedTime)
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
+
+	// プレイヤーの座標を取得
+	Vector3 parentPos = m_player->GetPosition();
 
 	// ステート開始から時間を計測、一定時間で別のStateへ遷移させる
 	m_player->TimeComparison(m_totalSeconds, DODGING_TIME, m_player->GetPlayerIdlingState(), elapsedTime);
@@ -66,6 +69,9 @@ void PlayerDodging::Update(const float& elapsedTime, DirectX::SimpleMath::Vector
 	m_velocity = Math::truncate_vector(m_velocity, TRUNCATION_DIGIT);
 	// 移動量を座標に反映させながら座標を移動させる。
 	parentPos +=Vector3::Transform(m_velocity,angle);
+
+	// プレイヤーの座標を更新
+	m_player->SetPosition(parentPos);
 }
 
 // キー入力

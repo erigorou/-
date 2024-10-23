@@ -54,7 +54,7 @@ void PlayerAttacking_2::PreUpdate()
 
 
 // XVˆ—
-void PlayerAttacking_2::Update(const float& elapsedTime,  DirectX::SimpleMath::Vector3& parentPos)
+void PlayerAttacking_2::Update(const float& elapsedTime)
 {
 	m_totalSeconds += elapsedTime;
 

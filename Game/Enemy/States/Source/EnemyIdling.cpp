@@ -49,13 +49,16 @@ void EnemyIdling::PreUpdate()
 
 
 // 更新処理
-void EnemyIdling::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3& parentPos)
+void EnemyIdling::Update(const float& elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 	m_totalSeconds += elapsedTime;
 
 	// プレイヤーの座標を取得
 	Vector3 playerPos = m_enemy->GetPlayScene()->GetPlayer()->GetPosition();
+	// 敵の座標を取得
+	Vector3 parentPos = m_enemy->GetPosition();
+
 	// 敵から見たプレイヤーの位置を計算する
 	m_angle = Math::CalculationAngle(parentPos, playerPos);
 

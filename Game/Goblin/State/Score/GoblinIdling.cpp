@@ -22,11 +22,12 @@ void Goblin::GoblinIdling::Initialize(DirectX::Model* model)
 
 void Goblin::GoblinIdling::PreUpdate()
 {
+	int i = 0;
 }
 
 
 
-void Goblin::GoblinIdling::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3& parentPos)
+void Goblin::GoblinIdling::Update(const float& elapsedTime)
 {
 }
 

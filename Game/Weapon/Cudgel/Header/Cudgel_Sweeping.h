@@ -58,7 +58,7 @@ private:
 	// Cudgelの攻撃モーションの回転を計算する関数
 	DirectX::SimpleMath::Matrix CalculateAttackMatrix();
 	// 根本と頂点の座標を取得する ※ both ends = 両端
-	void GetCudgelBothEnds(float _totalTime);
+	void GetCudgelBothEnds();
 
 private:
 	DirectX::SimpleMath::Vector3 m_position;	// 座標

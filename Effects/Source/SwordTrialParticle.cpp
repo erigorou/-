@@ -5,7 +5,7 @@
 // -------------------------------------
 #include "pch.h"
 #include "Interface/IParticle.h"
-#include "Effects/Header/SwordTrialParticle.h"
+#include "Effects/Header/SwordTrailParticle.h"
 
 
 /// <summary>
@@ -13,7 +13,7 @@
 /// 引数は初期設定用の数値
 /// </summary>
 
-SwordTrialParticle::SwordTrialParticle(
+SwordTrailParticle::SwordTrailParticle(
 	DirectX::VertexPositionTexture vertex[],
 	float life,
 	DirectX::SimpleMath::Color startColor, DirectX::SimpleMath::Color endColor
@@ -36,7 +36,7 @@ SwordTrialParticle::SwordTrialParticle(
 /// <summary>
 /// デストラクタ
 /// </summary>
-SwordTrialParticle::~SwordTrialParticle()
+SwordTrailParticle::~SwordTrailParticle()
 {
 }
 
@@ -47,7 +47,7 @@ SwordTrialParticle::~SwordTrialParticle()
 /// </summary>
 /// <param name="elapsedTimer">Game等から受け取る</param>
 /// <returns>生存時間(life)がある間はtrue</returns>
-bool SwordTrialParticle::Update(float elapsedTime)
+bool SwordTrailParticle::Update(float elapsedTime)
 {
 	using namespace DirectX;
 

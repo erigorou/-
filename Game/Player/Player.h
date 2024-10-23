@@ -48,6 +48,11 @@ public:
 	PlayerHP*						GetPlayerHP()	const	{ return m_hp.get();	}
 	DirectX::BoundingSphere*		GetBodyCollision()		{ return m_bodyCollision.get(); }
 
+
+	////////////////////プレイヤー基本情報を設定する関数/////////////////////////////////////////////////
+	void SetPosition(DirectX::SimpleMath::Vector3 position)			{ m_position = position; }
+
+
 	////////////////////プレイヤーのステートを渡す関数//////////////////////////////////////////////////
 	PlayerIdling* GetPlayerIdlingState()			const { return m_playerIdling.		get(); }
 	PlayerDodging* GetPlayerDodgingState()			const { return m_playerDodging.		get(); }

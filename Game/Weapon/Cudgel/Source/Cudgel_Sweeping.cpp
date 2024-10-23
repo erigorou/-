@@ -92,9 +92,9 @@ void Cudgel_Sweeping::Update(float elapsedTime)
 	auto enemy = m_cudgel->GetPlayScene()->GetEnemy();
 	m_position = enemy->GetPosition();	// 敵の座標を取得
 
-	UpdateCudgelRotation();				// 回転を計算する
-	CalculateModelMatrix();				// ワールド行列を計算
-	GetCudgelBothEnds(m_totalSeconds);	// 両端を取得する
+	UpdateCudgelRotation();		// 回転を計算する
+	CalculateModelMatrix();		// ワールド行列を計算
+	GetCudgelBothEnds();		// 両端を取得する
 
 	m_collMatrix = m_worldMatrix;						// 当たり判定用の行列を取得
 	m_collMatrix._42 = 0.0f;							// 当たり判定の高さを0にする
@@ -158,8 +158,7 @@ DirectX::SimpleMath::Matrix Cudgel_Sweeping::CalculateAttackMatrix()
 /// <summary>
 /// エフェクトなどに使用する金棒の根本と頂点の座標を取得する関数
 /// </summary>
-/// <param name="_elapsedTime">経過時間</param>
-void Cudgel_Sweeping::GetCudgelBothEnds(float _totalTime)
+void Cudgel_Sweeping::GetCudgelBothEnds()
 {
 	DirectX::SimpleMath::Vector3 root;
 	DirectX::SimpleMath::Vector3 tip;
@@ -182,8 +181,10 @@ void Cudgel_Sweeping::GetCudgelBothEnds(float _totalTime)
 
 	using namespace DirectX;
 
+
+
 	// 2個以上ない場合は処理を抜ける
-	float max = m_rootPos.size() - 1;
+	int max = static_cast<int>(m_rootPos.size() - 1);
 	if (max >= 1)
 	{
 		VertexPositionTexture ver[4] =	// 頂点情報の生成（パーティクルの生成に必要）
@@ -194,7 +195,7 @@ void Cudgel_Sweeping::GetCudgelBothEnds(float _totalTime)
 			VertexPositionTexture(m_rootPos[max]		,Vector2(0, 1)),	// 左下
 		};
 
-		m_particles->CreateSwordTrial(ver);	// パーティクルの生成
+		m_particles->CreateSwordTrail(ver);	// パーティクルの生成
 	}
 }
 
@@ -254,4 +255,5 @@ void Cudgel_Sweeping::Finalize()
 
 void Cudgel_Sweeping::HitAction(InterSectData data)
 {
+	UNREFERENCED_PARAMETER(data);
 }

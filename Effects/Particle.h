@@ -11,8 +11,8 @@
 #include "Game/CommonResources.h"
 
 
-class DustTrialParticle;
-class SwordTrialParticle;
+class DustTrailParticle;
+class SwordTrailParticle;
 
 
 class Particle
@@ -70,14 +70,14 @@ private:
 
 	// *******************************************************
 	// 軌跡ダスト
-	std::list<DustTrialParticle> m_dustTrail;
+	std::list<DustTrailParticle> m_dustTrail;
 	// 軌跡ダストの時間
 	float m_timerDustTrail;
 	// ******************************************************
 	// 剣の軌跡パーティクル ※※※※※※※
-	std::list<SwordTrialParticle> m_swordTrial;
+	std::list<SwordTrailParticle> m_swordTrail;
 	// 剣の軌跡の時間
-	float m_timerSwordTrial;
+	float m_timerSwordTrail;
 
 
 	// プレイヤーの座標
@@ -109,15 +109,15 @@ public:
 		DirectX::SimpleMath::Vector3 up);
 
 	// 軌跡の土埃を生成する処理
-	void CreateTrailDust(float elapsedTimer);
+	void CreateTrailDust();
 	// 剣の軌跡を生成する処理
-	void CreateSwordTrial(DirectX::VertexPositionTexture ver[4]);
+	void CreateSwordTrail(DirectX::VertexPositionTexture ver[4]);
 	// たたきつけの煙パーティクルの生成
 	void CreateSlamDust(DirectX::SimpleMath::Vector3 center);
 
 private:
 	// 剣パーティクルの描画設定
-	void DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj, DirectX::SimpleMath::Vector3 cameraDir);
+	void DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj);
 	// 煙パーティクルの描画設定
 	void DrawDustParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj, DirectX::SimpleMath::Vector3 cameraDir);
 

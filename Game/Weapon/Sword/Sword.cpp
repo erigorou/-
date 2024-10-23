@@ -44,8 +44,6 @@ void Sword::Initialize()
 
 	auto device = resources->GetDeviceResources()->GetD3DDevice();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = resources->GetCommonStates();
-
 
 	// モデルを生成
 	m_model = std::make_unique<DirectX::Model>();
@@ -151,6 +149,9 @@ void Sword::Render(
 #ifdef _DEBUG
 	// 境界ボックスの描画
 	DrawBoundingBox(device, context, states, view, projection);
+
+	auto debugString = resources->GetDebugString();
+	debugString->AddString("");
 #endif // _DEBUG
 }
 

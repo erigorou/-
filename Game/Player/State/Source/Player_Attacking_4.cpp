@@ -52,11 +52,8 @@ void PlayerAttacking_4::PreUpdate()
 }
 
 // 更新処理
-void PlayerAttacking_4::Update(const float& elapsedTime,  DirectX::SimpleMath::Vector3& parentPos)
+void PlayerAttacking_4::Update(const float& elapsedTime)
 {
-	// parentPos使わないけどエラー出さないでねって文
-	UNREFERENCED_PARAMETER(parentPos);
-
 	// 時間を計測し、一定時間経過でステートを遷移
 	m_player->TimeComparison(m_totalSeconds, Player::APPLIED_ATTACK_TIME, m_player->GetPlayerIdlingState(), elapsedTime);
 }

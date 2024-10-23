@@ -56,7 +56,6 @@ public:
 private:
 
 	void CreateState();		// ステートの作成
-	void CreateCollision();	// 当たり判定の生成
 	
 	DirectX::SimpleMath::Vector3 m_position;	// 座標
 	DirectX::SimpleMath::Vector3 m_velocity;	// 速度
@@ -72,11 +71,11 @@ private:
 	std::unique_ptr<Goblin::GoblinAttacking	> m_attacking	;	// 攻撃
  
 
-	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;	// エフェクト
-	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
-	// 入力レイアウト
+	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;										// エフェクト
+	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;	// プリミティブバッチ
 
-	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
+	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;	// 入力レイアウト
+	
 	// プレイシーン(当たり判定の処理に使用)
 	PlayScene* m_playScene;
 

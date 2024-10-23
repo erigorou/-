@@ -46,7 +46,7 @@ void Enemy_Attacking::PreUpdate()
 
 
 // XVˆ—
-void Enemy_Attacking::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3& parentPos)
+void Enemy_Attacking::Update(const float& elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 	m_totalSeconds += elapsedTime;

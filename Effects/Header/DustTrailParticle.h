@@ -8,7 +8,7 @@
 #include "pch.h"
 #include "Interface/IParticle.h"
 
-class DustTrialParticle : public IParticle
+class DustTrailParticle : public IParticle
 {
 public:
 	// ゲッター************************************
@@ -50,7 +50,7 @@ public:
 
 	// 関数宣言
 	// コンストラクタ
-	DustTrialParticle(
+	DustTrailParticle(
 		float life,
 		DirectX::SimpleMath::Vector3 pos,													// 初期座標
 		DirectX::SimpleMath::Vector3 velocity,												// 初期速度
@@ -59,7 +59,7 @@ public:
 		DirectX::SimpleMath::Color startColor, DirectX::SimpleMath::Color endColor			// 初期カラーと最終カラー
 	);
 	// デストラクタ
-	~DustTrialParticle();
+	~DustTrailParticle();
 	// 更新処理
 	bool Update(float elapsedTime);
 };

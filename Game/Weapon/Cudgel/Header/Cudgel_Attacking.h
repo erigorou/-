@@ -57,8 +57,8 @@ public:
 
 
 private:
-	void HandleChargePhase(float t);
-	void HandleWindoupPhase(float t);
+	void HandleChargePhase(float t);	// ‚½‚ßƒ‚[ƒVƒ‡ƒ“
+	void HandleWindoupPhase();			// 
 	void HandleAttackPhase(float t);
 	void HandleSlamParticles();
 	

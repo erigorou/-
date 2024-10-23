@@ -60,11 +60,10 @@ void EnemyApproaching::PreUpdate()
 
 
 // 更新処理
-void EnemyApproaching::Update(const float& elapsedTime, DirectX::SimpleMath::Vector3& parentPos)
+void EnemyApproaching::Update(const float& elapsedTime)
 {
 
 	using namespace DirectX::SimpleMath;
-	UNREFERENCED_PARAMETER(parentPos);
 	
 	// 合計の時間を計算する
 	m_totalSeconds += elapsedTime;
@@ -151,6 +150,8 @@ void EnemyApproaching::Render(
 #ifdef _DEBUG
 	CommonResources* resources = CommonResources::GetInstance();
 	auto debugString = resources->GetDebugString();
+
+	UNREFERENCED_PARAMETER(debugString);
 #endif // _DEBUG
 }
 

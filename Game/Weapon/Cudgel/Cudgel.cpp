@@ -54,7 +54,6 @@ void Cudgel::Initialize()
 
 	auto device = resources->GetDeviceResources()->GetD3DDevice();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = resources->GetCommonStates();
 
 	// ベーシックエフェクトを作成する
 	m_basicEffect = std::make_unique<DirectX::BasicEffect>(device);

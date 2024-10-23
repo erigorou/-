@@ -101,4 +101,5 @@ void Sword_Idling::Finalize()
 
 void Sword_Idling::HitAction(InterSectData data)
 {
+	UNREFERENCED_PARAMETER(data);
 }

@@ -15,7 +15,7 @@ public:
 	// 事前更新する
 	virtual void PreUpdate() = 0;
 	// 更新する
-	virtual void Update(const float& elapsedTime, DirectX::SimpleMath::Vector3& parentPos) = 0;
+	virtual void Update(const float& elapsedTime) = 0;
 
 	// キー入力があった瞬間に呼び出される
 	virtual void OnKeyPressed(const DirectX::Keyboard::Keys& key) = 0;

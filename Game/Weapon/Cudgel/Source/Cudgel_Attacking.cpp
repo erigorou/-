@@ -132,8 +132,7 @@ void Cudgel_Attacking::HandleChargePhase(float t)
 /// <summary>
 /// 待機状態の処理。武器を20度の角度で保持する。
 /// </summary>
-/// <param name="t">未使用。</param>
-void Cudgel_Attacking::HandleWindoupPhase(float t)
+void Cudgel_Attacking::HandleWindoupPhase()
 {
 	// 振りかざしの角度を保持（-40度の状態を維持）
 	m_angleUD = DirectX::XMConvertToRadians(-40.0f);
@@ -174,7 +173,7 @@ void Cudgel_Attacking::UpdateAttackState()
 																			// 振りかざす
 	if (m_totalSeconds < CHARGE_TIME)										HandleChargePhase(m_totalSeconds / CHARGE_TIME);
 																			// 待機状態
-	else if (m_totalSeconds > CHARGE_TIME && m_totalSeconds <= WINDUP_TIME)	HandleWindoupPhase((m_totalSeconds - CHARGE_TIME) / (WINDUP_TIME - CHARGE_TIME));
+	else if (m_totalSeconds > CHARGE_TIME && m_totalSeconds <= WINDUP_TIME)	HandleWindoupPhase();
 																			// 降り下ろす
 	else if (m_totalSeconds > WINDUP_TIME && m_totalSeconds < ATTACK_TIME)	HandleAttackPhase((m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME));
 																			// 後隙のパーティクル生成
@@ -252,7 +251,7 @@ void Cudgel_Attacking::GetCudgelBothEnds(float _totalTime)
 			VertexPositionTexture(m_rootPos[max]		,Vector2(0, 1)),	// 左下
 		};
 
-		m_particles->CreateSwordTrial(ver);	// パーティクルの生成
+		m_particles->CreateSwordTrail(ver);	// パーティクルの生成
 	}
 }
 

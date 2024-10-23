@@ -22,7 +22,7 @@ const static float ENDLESS = -100.0f;
 /// <param name="endScale">最終サイズ</param>
 /// <param name="startColor">初期色</param>
 /// <param name="endColor">最終色</param>
-DustTrialParticle::DustTrialParticle(
+DustTrailParticle::DustTrailParticle(
 	float life,
 	DirectX::SimpleMath::Vector3 pos,
 	DirectX::SimpleMath::Vector3 velocity,
@@ -48,7 +48,7 @@ DustTrialParticle::DustTrialParticle(
 /// <summary>
 /// デストラクタ
 /// </summary>
-DustTrialParticle::~DustTrialParticle()
+DustTrailParticle::~DustTrailParticle()
 {
 }
 
@@ -58,7 +58,7 @@ DustTrialParticle::~DustTrialParticle()
 /// </summary>
 /// <param name="elapsedTimer">Game等から受け取る</param>
 /// <returns>生存時間(life)がある間はtrue</returns>
-bool DustTrialParticle::Update(float elapsedTime)
+bool DustTrailParticle::Update(float elapsedTime)
 {
 	using namespace DirectX;
 

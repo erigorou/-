@@ -106,4 +106,5 @@ void Cudgel_Idling::Finalize()
 
 void Cudgel_Idling::HitAction(InterSectData data)
 {
+	UNREFERENCED_PARAMETER(data);
 }

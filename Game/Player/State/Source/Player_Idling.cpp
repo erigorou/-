@@ -47,7 +47,7 @@ void PlayerIdling::PreUpdate()
 
 
 // 更新処理
-void PlayerIdling::Update(const float& elapsedTime,  DirectX::SimpleMath::Vector3& parentPos)
+void PlayerIdling::Update(const float& elapsedTime)
 {
 	// elapsedTime使わないけどエラー出さないでねって文
 	UNREFERENCED_PARAMETER(elapsedTime);

@@ -15,7 +15,7 @@
 //SimpleMath::Vector2(0.0f, 1.0f)), // 左下
 
 
-class SwordTrialParticle : public IParticle
+class SwordTrailParticle : public IParticle
 {
 public:
 	// ゲッター************************************
@@ -55,13 +55,13 @@ public:
 
 	// 関数宣言
 	// コンストラクタ
-	SwordTrialParticle(
+	SwordTrailParticle(
 		DirectX::VertexPositionTexture vertex[],											// 頂点情報
 		float life,																			// 生存時間
 		DirectX::SimpleMath::Color startColor, DirectX::SimpleMath::Color endColor			// 初期カラーと最終カラー
 	);
 	// デストラクタ
-	~SwordTrialParticle();
+	~SwordTrailParticle();
 	// 更新処理
 	bool Update(float elapsedTime);
 

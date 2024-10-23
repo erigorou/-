@@ -20,7 +20,7 @@ public:
 	void PreUpdate() override;
 
 	// 更新する
-	void Update(const float& elapsedTime, DirectX::SimpleMath::Vector3& parentPos) override;
+	void Update(const float& elapsedTime) override;
 
 	// 事後更新する
 	void PostUpdate() override;

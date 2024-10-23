@@ -69,7 +69,6 @@ void Player::Initialize()
 
 	auto device = resources->GetDeviceResources()->GetD3DDevice();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = resources->GetCommonStates();
 
 	// キー入力を生成（全体で使う）
 	m_keyboardState = DirectX::Keyboard::Get().GetState();
@@ -199,7 +198,7 @@ void Player::Update(const DirectX::SimpleMath::Vector3 enemyPos,const float elap
 	m_elapsedTime = elapsedTime;	// 経過時間を保存する
 
 	////////////////////ステートの更新/////////////////////////////
-	m_currentState->Update(elapsedTime, m_position);
+	m_currentState->Update(elapsedTime);
 
 	///////////////////プレイヤーの移動////////////////////////////
 	m_angle = Math::CalculationAngle(m_position, enemyPos);
@@ -332,7 +331,7 @@ void Player::MovePlayer()
 		m_particleTime += m_elapsedTime;
 		if (m_particleTime >= 0.15f)
 		{
-			m_playScene->GetParticle()->CreateTrailDust(m_elapsedTime);
+			m_playScene->GetParticle()->CreateTrailDust();
 			m_particleTime = 0.0f;
 		}
 	}
