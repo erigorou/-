@@ -10,6 +10,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/Microsoft/DebugDraw.h"
 #include "Interface/IState.h"
+#include "GoblinHP.h"
 
 #include "State/Header/GoblinIdling.h"
 #include "State/Header/GoblinAttacking.h"
@@ -43,6 +44,12 @@ void Goblin::Initialize()
 	fx->SetDirectory(L"Resources/Models");
 	// モデルを読み込む
 	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/oni.cmo", *fx);
+
+	// ステートの作成
+	CreateState();
+
+	// HPの生成
+	m_hp = std::make_unique<GoblinHP>();
 }
 
 

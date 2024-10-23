@@ -1,11 +1,11 @@
 #pragma once
+#include "State/PlayCameraState.h"
 
 class ICameraState;
+class PlayCameraState;
 
 class Camera
 {
-	class CameraIdling;
-
 
 public:
 	// 固定値
@@ -37,12 +37,12 @@ public:
 
 	void SetShake();	// カメラを揺らす
 
-private:
-
 	void CalculateViewMatrix();			// ビュー行列を計算する
 	void CalculateCameraAngle();		// カメラのアングルを計算する
 
 	void Shake(float elapsedTime);						// カメラを揺らす
+
+	void ChangeState(ICameraState* state);	// ステートの変更
 
 	DirectX::SimpleMath::Vector3	m_position;		// カメラ位置
 	DirectX::SimpleMath::Matrix		m_view;			// ビュー行列
@@ -58,9 +58,15 @@ private:
 	bool m_isShake;					// カメラを揺らすかどうか
 	float m_shakeTime;				// 揺れる時間
 
+private:
+
+	void CreateState();	// ステートの生成
+
 	// ステート用 ///////////
 	ICameraState* m_currentState;	// 現在のステート
 
-	
+	std::unique_ptr<PlayCameraState> m_playState;
+
+
 
 };

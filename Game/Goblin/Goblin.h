@@ -14,6 +14,7 @@
 
 class Player;
 class PlayScene;
+class GoblinHP;
 
 class Goblin : public IObject
 {
@@ -70,6 +71,8 @@ private:
 	std::unique_ptr<Goblin::GoblinIdling	> m_idling		;	// 待機
 	std::unique_ptr<Goblin::GoblinAttacking	> m_attacking	;	// 攻撃
  
+	// HP
+	std::unique_ptr<GoblinHP> m_hp;	// HP
 
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;										// エフェクト
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;	// プリミティブバッチ

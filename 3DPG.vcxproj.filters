@@ -205,13 +205,14 @@
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_3.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_4.h" />
     <ClInclude Include="Interface\ICameraState.h" />
-    <ClInclude Include="Game\Camera\State\Header\CameraIdling.h" />
     <ClInclude Include="Game\UI\Header\Warning.h" />
     <ClInclude Include="Libraries\MyLib\CustomShader\CustomShader.h" />
     <ClInclude Include="Game\Goblin\Goblin.h" />
     <ClInclude Include="Game\Goblin\State\Header\GoblinIdling.h" />
     <ClInclude Include="Game\Goblin\State\Header\GoblinAttacking.h" />
     <ClInclude Include="Game\Goblin\GoblinHP.h" />
+    <ClInclude Include="Game\Camera\State\TitleCameraState.h" />
+    <ClInclude Include="Game\Camera\State\PlayCameraState.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -315,12 +316,13 @@
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Attacking_2.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Attacking_3.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Attacking_4.cpp" />
-    <ClCompile Include="Game\Camera\State\Source\CameraIdling.cpp" />
     <ClCompile Include="Game\UI\Source\Warning.cpp" />
     <ClCompile Include="Libraries\MyLib\CustomShader\CustomShader.cpp" />
     <ClCompile Include="Game\Goblin\Goblin.cpp" />
     <ClCompile Include="Game\Goblin\State\Score\GoblinAttacking.cpp" />
     <ClCompile Include="Game\Goblin\State\Score\GoblinIdling.cpp" />
+    <ClCompile Include="Game\Camera\State\TitleCameraState.cpp" />
+    <ClCompile Include="Game\Camera\State\PlayCameraState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

@@ -77,10 +77,10 @@ void Floor::Render(ID3D11DeviceContext1* context, DirectX::SimpleMath::Matrix vi
 	VertexPositionTexture vertex[4] =
 	{
 		// 座標					画像のUV座標：普通は0で設定.超えた場合は繰り返す
-		VertexPositionTexture(Vector3( SIZE, 0.0f,  SIZE),	Vector2(-1.0f, -1.0f)),
-		VertexPositionTexture(Vector3(-SIZE, 0.0f,  SIZE),	Vector2(1.0f, -1.0f)),
+		VertexPositionTexture(Vector3( SIZE, 0.0f,  SIZE),	Vector2(0.0f, 0.0f)),
+		VertexPositionTexture(Vector3(-SIZE, 0.0f,  SIZE),	Vector2(1.0f, 0.0f)),
 		VertexPositionTexture(Vector3(-SIZE, 0.0f, -SIZE),	Vector2(1.0f,  1.0f)),
-		VertexPositionTexture(Vector3( SIZE, 0.0f, -SIZE),	Vector2(-1.0f, 1.0f)),
+		VertexPositionTexture(Vector3( SIZE, 0.0f, -SIZE),	Vector2(0.0f, 1.0f)),
 	};
 
 	// テクスチャサンプラーの設定（クランプテクスチャアドレッシングモード）
