@@ -37,6 +37,9 @@ public:
 
 private:
 	Goblin* m_goblin;	// êe
+
+	DirectX::Model* m_model;
+	float m_totalTime;
 };
 
 

@@ -91,7 +91,6 @@ void Warning::Update(float elapsedTime)
 
 	if (m_elapsedTime >= 1.0f)
 	{
-		int i = 0;
 	}
 }
 

@@ -41,16 +41,10 @@ public:
 
 // ƒƒ“ƒo
 private:
-
-
-
-
-
-	// ŒÅ’è’l
-
-
-
 	Goblin* m_goblin;	// e
+
+	DirectX::Model* m_model;
+	float m_TotalTime;
 };
 
 

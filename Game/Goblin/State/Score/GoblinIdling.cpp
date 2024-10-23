@@ -17,18 +17,20 @@ Goblin::GoblinIdling::~GoblinIdling()
 
 void Goblin::GoblinIdling::Initialize(DirectX::Model* model)
 {
+	m_model = model;
 }
 
 
 void Goblin::GoblinIdling::PreUpdate()
 {
-	int i = 0;
 }
 
 
 
 void Goblin::GoblinIdling::Update(const float& elapsedTime)
 {
+	// ŽžŠÔ‚ð‰ÁŽZ‚·‚é
+	m_TotalTime += elapsedTime;
 }
 
 
@@ -44,6 +46,9 @@ void Goblin::GoblinIdling::Render(
 	const DirectX::SimpleMath::Matrix& view,
 	const DirectX::SimpleMath::Matrix& projection)
 {
+	DirectX::SimpleMath::Matrix world = DirectX::SimpleMath::Matrix::Identity;
+
+	m_model->Draw(context, *states, world, view, projection);
 }
 
 
