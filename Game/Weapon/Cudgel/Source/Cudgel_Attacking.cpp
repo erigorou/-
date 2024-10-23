@@ -240,22 +240,19 @@ void Cudgel_Attacking::GetCudgelBothEnds(float _totalTime)
 	using namespace DirectX;
 
 	// 2個以上ない場合は処理を抜ける
-	if (m_rootPos.size() < 2)  // 要素数が2未満の場合は処理を抜ける
+	size_t max = m_rootPos.size() - 1;
+	if (max >= 1)
 	{
-		return;
+		VertexPositionTexture ver[4] =	// 頂点情報の生成（パーティクルの生成に必要）
+		{
+			VertexPositionTexture(m_tipPos [max]		,Vector2(0, 0)),	// 左上
+			VertexPositionTexture(m_tipPos [max - 1]	,Vector2(1, 0)),	// 右上
+			VertexPositionTexture(m_rootPos[max - 1]	,Vector2(1, 1)),	// 右下
+			VertexPositionTexture(m_rootPos[max]		,Vector2(0, 1)),	// 左下
+		};
+
+		m_particles->CreateSwordTrail(ver);	// パーティクルの生成
 	}
-
-	size_t max = m_rootPos.size() - static_cast<size_t>(1);
-
-	VertexPositionTexture ver[4] =	// 頂点情報の生成（パーティクルの生成に必要）
-	{
-		VertexPositionTexture(m_tipPos	[max]							,Vector2(0, 0)),	// 左上
-		VertexPositionTexture(m_tipPos	[max - static_cast<size_t>(1)]	,Vector2(1, 0)),	// 右上
-		VertexPositionTexture(m_rootPos	[max - static_cast<size_t>(1)]	,Vector2(1, 1)),	// 右下
-		VertexPositionTexture(m_rootPos	[max]							,Vector2(0, 1)),	// 左下
-	};
-
-	m_particles->CreateSwordTrail(ver);	// パーティクルの生成
 }
 
 

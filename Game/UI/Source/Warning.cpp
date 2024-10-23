@@ -87,6 +87,12 @@ void Warning::Update(float elapsedTime)
 
 	// Œo‰ßŠÔ‚Ì‰ÁZ
 	m_totalTime += elapsedTime;
+
+
+	if (m_elapsedTime >= 1.0f)
+	{
+		int i = 0;
+	}
 }
 
 

@@ -32,7 +32,7 @@ public:
 	// ゲージ量を設定
 	void SetMaxValue(float max)		{ m_value = max; }
 	// ゲージ量の取得
-	float GetValue()				{ return m_value; }
+	int GetValue()					{ return m_value; }
 
 private:
 	// スプライトバッチ

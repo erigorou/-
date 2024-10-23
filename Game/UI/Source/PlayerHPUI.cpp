@@ -80,8 +80,8 @@ void PlayerHPUI::Update()
 // ----------------------------
 void PlayerHPUI::Render()
 {
-    m_playerHP	= m_playerHPclass->GetHP();		// 敵のHPを取得
-    int MAXHP	= m_playerHPclass->GetMaxHP();	// 最大HPを取得
+    m_playerHP = m_playerHPclass->GetHP();        // 敵のHPを取得
+    float MAXHP = m_playerHPclass->GetMaxHP();   // 最大HPを取得
 
     // 描画位置のオフセット値や緑ゲージの幅を計算する
     LONG offset = static_cast<LONG>(LEFT_POSITION);

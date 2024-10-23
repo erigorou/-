@@ -27,19 +27,16 @@ public:
 
 	// 描画する
 	void Render(
-		ID3D11DeviceContext*				context,
-		DirectX::CommonStates*				states,
-		const DirectX::SimpleMath::Matrix&	view,
-		const DirectX::SimpleMath::Matrix&	projection) override;
+		ID3D11DeviceContext* context,
+		DirectX::CommonStates* states,
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& projection) override;
 
 	// 後処理を行う
 	void Finalize() override;
 
 private:
-	Goblin*			m_goblin;		// 親
-	DirectX::Model* m_model;		// モデル
-
-	float			m_totalTime;	// 経過時間
+	Goblin* m_goblin;	// 親
 };
 
 

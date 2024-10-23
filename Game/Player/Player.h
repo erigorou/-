@@ -99,8 +99,12 @@ public:
 
 	// •`‰æˆ—
 	void Render(
+		ID3D11Device*						device,
+		ID3D11DeviceContext*				context,
+		DirectX::CommonStates*				states,
 		const DirectX::SimpleMath::Matrix&	view,
-		const DirectX::SimpleMath::Matrix&	projection);
+		const DirectX::SimpleMath::Matrix&	projection,
+		const CommonResources*				resources);
 
 	// ‹«ŠE‹…‚Ì•`‰æ
 	void DrawBoundingSphere(

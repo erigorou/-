@@ -66,10 +66,11 @@ public:
 	void Update(float elapsedTime);
 	// •`‰æˆ—
 	void Render(
+		ID3D11Device* device,
+		ID3D11DeviceContext* context,
+		DirectX::CommonStates* states,
 		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection
-	);
-
+		const DirectX::SimpleMath::Matrix& projection);
 	// ‹«ŠE‹…‚Ì•`‰æˆ—
 	void DrawBoundingSphere(
 		ID3D11Device* device,

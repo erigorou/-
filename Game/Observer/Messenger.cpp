@@ -56,6 +56,7 @@ void Messenger::Notify(const DirectX::Keyboard::KeyboardStateTracker& keyboardTr
 					// オブザーバーの通知関数に押し下げられたキーを通知する
                     auto& observer = std::get<static_cast<int>(ArrayContentType::P_OBSERVER)>(s_observerList[i]);
                     auto& keyboard = std::get<static_cast<int>(ArrayContentType::KEYBOARD)>(s_observerList[i]);
+					auto& type = std::get<static_cast<int>(ArrayContentType::TYPE)>(s_observerList[i]);
 
                     observer->OnKeyPressed(keyboard);
                 }
