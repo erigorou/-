@@ -9,6 +9,10 @@
 #include "DeviceResources.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 #include "Libraries/MyLib/InputManager.h"
+#include "Libraries/MyLib/DebugString.h"
+#include "../Factory/Factory.h"
+#include "../Camera/Camera.h"
+#include "../Stage/Floor/Floor.h"
 #include <cassert>
 
 using namespace DirectX;
@@ -39,9 +43,6 @@ TitleScene::~TitleScene()
 //---------------------------------------------------------
 // 初期化する
 //---------------------------------------------------------
-//---------------------------------------------------------
-// 初期化する
-//---------------------------------------------------------
 void TitleScene::Initialize()
 {
 	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
@@ -55,6 +56,27 @@ void TitleScene::Initialize()
 		device,
 		L"Resources/Fonts/SegoeUI_18.spritefont"
 	);
+
+	// テクスチャをロードする
+	LoadTextures();
+
+	// テクスチャの中心座標を計算する
+	CalculateTextureCenter();
+
+	// オブジェクトを生成する
+	CreateObjects();
+
+	// シーン変更フラグを初期化する
+	m_isChangeScene = false;
+}
+
+
+//---------------------------------------------------------
+// ロードする
+//---------------------------------------------------------
+void TitleScene::LoadTextures()
+{
+	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
 
 	// 画像をロードする
 	DX::ThrowIfFailed(
@@ -74,10 +96,14 @@ void TitleScene::Initialize()
 			m_texture2.ReleaseAndGetAddressOf()
 		)
 	);
+}
 
-	/*
-		以下、各テクスチャの大きさを求める→テクスチャの中心座標を計算する
-	*/
+
+//---------------------------------------------------------
+// テクスチャの中心を取得する
+//---------------------------------------------------------
+void TitleScene::CalculateTextureCenter()
+{
 	// 一時的な変数の宣言
 	Microsoft::WRL::ComPtr<ID3D11Resource> resource{};
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> tex2D{};
@@ -104,8 +130,30 @@ void TitleScene::Initialize()
 	texSize.y = static_cast<float>(desc.Height);
 	m_texCenter2 = texSize / 2.0f;
 
-	// シーン変更フラグを初期化する
-	m_isChangeScene = false;
+	RECT rect{ m_commonResources->GetDeviceResources()->GetOutputSize() };
+	// 射影行列を作成する
+	m_projection = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
+		XMConvertToRadians(45.0f),
+		static_cast<float>(rect.right) / static_cast<float>(rect.bottom),
+		0.1f, 100000.0f
+	);
+}
+
+
+//---------------------------------------------------------
+// オブジェクトの生成
+//---------------------------------------------------------
+void TitleScene::CreateObjects()
+{
+	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
+
+	m_camera	= Factory::CreateCamera	();
+	m_floor		= Factory::CreateFloor	(device);
+
+
+
+	// タイトルシーンのカメラステートを設定
+	m_camera->ChangeState(m_camera->GetTitleState());
 }
 
 
@@ -120,6 +168,11 @@ void TitleScene::Update(float elapsedTime)
 	// キーボードステートトラッカーを取得する
 	const auto& kbTracker = m_commonResources->GetInputManager()->GetKeyboardTracker();
 
+	DirectX::SimpleMath::Vector3 zeroV = DirectX::SimpleMath::Vector3::Zero;
+	DirectX::SimpleMath::Matrix zeroM = DirectX::SimpleMath::Matrix::Identity;
+
+	m_camera->Update(zeroV, zeroV, zeroM, elapsedTime);
+
 	// スペースキーが押されたら
 	if (kbTracker->pressed.Space)
 	{
@@ -132,16 +185,39 @@ void TitleScene::Update(float elapsedTime)
 //---------------------------------------------------------
 void TitleScene::Render()
 {
-	auto states = m_commonResources->GetCommonStates();
+	auto context	= m_commonResources->GetDeviceResources()->GetD3DDeviceContext();
+	auto states		= m_commonResources	->	GetCommonStates		();
+	auto view		= m_camera			->	GetViewMatrix		();
+
+
+	// 床の描画
+	m_floor->Render(context, view, m_projection);
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
 
+	DrawTexture();
+
+	// スプライトバッチの終わり
+	m_spriteBatch->End();
+
+#ifdef _DEBUG
+#endif // _DEBUG
+}
+
+
+//---------------------------------------------------------
+// テクスチャの描画
+//---------------------------------------------------------
+void TitleScene::DrawTexture()
+{
 	// TRIDENTロゴの描画位置を決める
 	RECT rect{ m_commonResources->GetDeviceResources()->GetOutputSize() };
 
 	// 画像の中心を計算する
 	Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
+
+
 
 	// LOGO.png を中央に描画する
 	m_spriteBatch->Draw(
@@ -171,19 +247,9 @@ void TitleScene::Render()
 		SpriteEffects_None, // エフェクト(effects)
 		0.0f                // レイヤ深度(画像のソートで必要)(layerDepth)
 	);
-
-#ifdef _DEBUG
-	// 純粋にスプライトフォントで文字列を描画する方法
-	m_spriteFont->DrawString(m_spriteBatch.get(), L"Title Scene", Vector2(10, 40));
-
-	wchar_t buf[32];
-	swprintf_s(buf, 32, L"right : %d, bottom : %d", rect.right, rect.bottom);
-	m_spriteFont->DrawString(m_spriteBatch.get(), buf, Vector2(10, 70));
-#endif // _DEBUG
-
-	// スプライトバッチの終わり
-	m_spriteBatch->End();
 }
+
+
 
 //---------------------------------------------------------
 // 後始末する
@@ -207,3 +273,4 @@ IScene::SceneID TitleScene::GetNextSceneID() const
 	// シーン変更がない場合
 	return IScene::SceneID::NONE;
 }
+

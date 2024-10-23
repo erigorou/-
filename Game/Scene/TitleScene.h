@@ -5,8 +5,11 @@
 #pragma once
 #include "IScene.h"
 
+
 // 前方宣言
 class CommonResources;
+class Camera;
+class Floor;
 
 namespace mylib
 {
@@ -15,40 +18,60 @@ namespace mylib
 }
 
 
-class TitleScene final :
-    public IScene
+class TitleScene final : public IScene
 {
+
+public:
+	// コンストラクタ
+	TitleScene();
+	// デストラクタ
+	~TitleScene() override;
+
+	// 初期化処理
+	void Initialize() override;
+	// 更新処理
+	void Update(float elapsedTime)override;
+	// 描画処理
+	void Render() override;
+	// 終了処理
+	void Finalize() override;
+
+	// ステート変更処理
+	SceneID GetNextSceneID() const;
+
 private:
+	// 画像のロード処理
+	void LoadTextures();
+	// 画像の中心：大きさを取得
+	void CalculateTextureCenter();
+	// オブジェクトを生成
+	void CreateObjects();
+	// 画像の描画処理
+	void DrawTexture();
+
 	// 共通リソース
 	CommonResources* m_commonResources;
 
-	// スプライトバッチ
-	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
 
-	// スプライトフォント
-	std::unique_ptr<DirectX::SpriteFont> m_spriteFont;
+	std::unique_ptr<DirectX::SpriteBatch>	m_spriteBatch;	// スプライトバッチ
+	DirectX::SimpleMath::Matrix				m_projection;	// プロジェクション行列
 
-	// テクスチャ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture2;
 
-	// テクスチャの半分の大きさ
-	DirectX::SimpleMath::Vector2 m_texCenter;
+	std::unique_ptr<DirectX::SpriteFont>				m_spriteFont;	// スプライトフォント
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	m_texture;		// テクスチャ１
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	m_texture2;		// テクスチャ２
+
+
+	DirectX::SimpleMath::Vector2 m_texCenter;	// テクスチャの中心座標
+	DirectX::SimpleMath::Vector2 m_texCenter1;
+	DirectX::SimpleMath::Vector2 m_texCenter2;
 
 	// シーンチェンジフラグ
 	bool m_isChangeScene;
 
-	DirectX::SimpleMath::Vector2 m_texCenter1;
-	DirectX::SimpleMath::Vector2 m_texCenter2;
 
-public:
-    TitleScene();
-    ~TitleScene() override;
-
-    void Initialize() override;
-    void Update(float elapsedTime)override;
-    void Render() override;
-    void Finalize() override;
-
-    SceneID GetNextSceneID() const;
+	// オブジェクト達
+	std::unique_ptr<Camera>		m_camera;	//　カメラ
+	std::unique_ptr<Floor>		m_floor;	// 床
 };
+

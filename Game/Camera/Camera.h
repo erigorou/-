@@ -17,7 +17,13 @@ public:
 	static constexpr float SHAKE_TIME = 0.5f;		// カメラを揺らす時間
 	static constexpr float MINIMAL = 0.01f;	// 最小値
 
-	const DirectX::SimpleMath::Matrix&		GetViewMatrix		() const { return m_view;		}	// ビュー行列
+
+	// ステート
+	TitleCameraState*	GetTitleState()	{ return m_titleState.get();	}
+	PlayCameraState*	GetPlayState()	{ return m_playState.get();		}
+
+
+	const DirectX::SimpleMath::Matrix&	GetViewMatrix			() const { return m_view;		}	// ビュー行列
 	const DirectX::SimpleMath::Matrix&	GetProjectionMatrix		() const { return m_projection; }	// プロジェクション行列
 	const DirectX::SimpleMath::Vector3& GetEyePosition			() const { return m_position;	}	// カメラ座標
 	const DirectX::SimpleMath::Vector3& GetTargetPosition		() const { return m_target;		}	// 注視点

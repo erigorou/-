@@ -15,7 +15,7 @@ public:
 	// コンストラクタ
 	Floor(ID3D11Device1* device);
 	// デストラクタ
-	~Floor();;
+	~Floor();
 	// 描画処理
 	void Render(ID3D11DeviceContext1* context, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj);
 	// 終了処理

@@ -129,6 +129,9 @@ void PlayScene::CreateObjects()
 	Messenger::SortObserverList();
 	// キー範囲リストを生成する
 	Messenger::CreateKeyRangeList();
+
+	// カメラをプレイシーンで設定
+	m_camera->ChangeState(m_camera->GetPlayState());
 }
 
 
