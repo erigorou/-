@@ -14,7 +14,7 @@ class TitleCameraState : public ICameraState
 {
 private:
 	static constexpr DirectX::SimpleMath::Vector3	CAMERA_Y_PLUS		= { 0.0f,	40.0f,	0.0f	};
-	static constexpr DirectX::SimpleMath::Vector3	TITLE_DIRECTION		= { 200.0f, 10.0f,	200.0f	};
+	static constexpr DirectX::SimpleMath::Vector3	TITLE_DIRECTION		= { 150.0f, 5.0f,	150.0f	};
 	static constexpr float							ROTATE_SPEED		=	-0.1f;
 
 
