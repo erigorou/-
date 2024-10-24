@@ -14,6 +14,7 @@
 #include "../Camera/Camera.h"
 #include "../Stage/Floor/Floor.h"
 #include "../TitleObject/TitleEnemy.h"
+#include "Libraries/MyLib/SkySphere.h"
 #include <cassert>
 
 using namespace DirectX;
@@ -150,9 +151,11 @@ void TitleScene::CreateObjects()
 
 	m_camera	= Factory::CreateCamera	();
 	m_floor		= Factory::CreateFloor	(device);
+	m_skySphere = Factory::CreateSkySphere(device);
 
 	m_enemy = std::make_unique<TitleEnemy>(this);
 	m_enemy->Initialize();
+	m_skySphere->LoadSkySphereModel(device);
 
 	// タイトルシーンのカメラステートを設定
 	m_camera->ChangeState(m_camera->GetTitleState());
@@ -198,9 +201,10 @@ void TitleScene::Render()
 
 	// 床の描画
 	m_floor->Render(context, view, m_projection);
-
 	// 敵の描画
 	m_enemy->Render(device, context, states, view, m_projection);
+	// 天球の描画
+	m_skySphere->DrawSkySphere(context, states, view, m_projection);
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
@@ -242,7 +246,7 @@ void TitleScene::DrawTexture()
 	);
 
 	// SPACEでスタート.png の描画位置を調整
-	DirectX::SimpleMath::Vector2 pos2 = DirectX::SimpleMath::Vector2(pos.x, pos.y + 200.0f);
+	DirectX::SimpleMath::Vector2 pos2 = DirectX::SimpleMath::Vector2(pos.x, pos.y + 300.0f);
 
 	// SPACEでスタート.png を中央に描画する
 	m_spriteBatch->Draw(

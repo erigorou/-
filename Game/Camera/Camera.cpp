@@ -128,7 +128,7 @@ void Camera::Shake(float elapsedTime)
 
 	// ƒJƒƒ‰‚ÌˆÊ’u‚ğ—h‚ç‚·
 	m_shakePos	=	Math::RandomVector3(min, max);
-	m_target	=	Math::RandomVector3(min, max);
+	m_target	+=	Math::RandomVector3(min, max);
 }
 
 

@@ -11,6 +11,7 @@ class CommonResources;
 class Camera;
 class Floor;
 class TitleEnemy;
+class SkySphere;
 
 namespace mylib
 {
@@ -22,7 +23,7 @@ namespace mylib
 class TitleScene final : public IScene
 {
 private:
-	DirectX::SimpleMath::Vector2 TITLE_DIRECTION_CENTER = { 0.0f, -75.0f };
+	DirectX::SimpleMath::Vector2 TITLE_DIRECTION_CENTER = { 0.0f, -100.0f };
 
 public:
 	// コンストラクタ
@@ -73,8 +74,9 @@ private:
 
 
 	// オブジェクト達
-	std::unique_ptr<Camera>		m_camera;	//　カメラ
-	std::unique_ptr<Floor>		m_floor;	// 床
-	std::unique_ptr<TitleEnemy> m_enemy;	// 敵
+	std::unique_ptr<Camera>		m_camera;		//　カメラ
+	std::unique_ptr<Floor>		m_floor;		// 床
+	std::unique_ptr<TitleEnemy> m_enemy;		// 敵
+	std::unique_ptr<SkySphere>	m_skySphere;	// スカイスフィア
 };
 
