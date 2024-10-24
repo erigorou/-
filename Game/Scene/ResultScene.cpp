@@ -11,6 +11,9 @@
 #include "Libraries/MyLib/InputManager.h"
 #include <cassert>
 
+#include "../Data/GameData.h"
+#include "Libraries/MyLib/Texture.h"
+
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
@@ -20,7 +23,6 @@ using namespace DirectX::SimpleMath;
 ResultScene::ResultScene()
 	:
 	m_spriteBatch{},
-	m_spriteFont{},
 	m_texture{},
 	m_texCenter{},
 	m_isChangeScene{}
@@ -48,53 +50,35 @@ void ResultScene::Initialize()
 	// スプライトバッチを作成する
 	m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
 
-	// スプライトフォントを作成する
-	m_spriteFont = std::make_unique<DirectX::SpriteFont>(
+
+	// テクスチャを読み込む
+	mylib::Texture::LoadTexture(
 		device,
-		L"Resources/Fonts/SegoeUI_18.spritefont"
+		m_texture,
+		L"Resources/Textures/SPACEでタイトル.png"
 	);
 
-	// 画像をロードする
-	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(
-			device,
-			L"Resources/Textures/SPACEでタイトル.png",
-			nullptr,
-			m_texture.ReleaseAndGetAddressOf()
-		)
+	DirectX::SimpleMath::Vector2 texSize{};
+
+
+	// テクスチャのサイズと中心点を計算する
+	mylib::Texture::CalculateTextureCenter
+	(
+		m_texture,
+		texSize,
+		m_texCenter
 	);
 
 
-	/*
-		以下、テクスチャの大きさを求める→テクスチャの中心座標を計算する
-	*/
-	// 一時的な変数の宣言
-	Microsoft::WRL::ComPtr<ID3D11Resource> resource{};
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> tex2D{};
-	D3D11_TEXTURE2D_DESC desc{};
-	Vector2 texSize{};
-
-	// テクスチャの情報を取得する================================
-	// テクスチャをID3D11Resourceとして見る
-	m_texture->GetResource(resource.GetAddressOf());
-
-	// ID3D11ResourceをID3D11Texture2Dとして見る
-	resource.As(&tex2D);
-
-	// テクスチャ情報を取得する
-	tex2D->GetDesc(&desc);
-
-	// テクスチャサイズを取得し、float型に変換する
-	texSize.x = static_cast<float>(desc.Width);
-	texSize.y = static_cast<float>(desc.Height);
-
-	// テクスチャの中心位置を計算する
-	m_texCenter = texSize / 2.0f;
-
+	// ゲームの結果等を取得する
+	m_gameData = GameData::GetInstance();
 
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
 }
+
+
+
 
 //---------------------------------------------------------
 // 更新する
@@ -144,12 +128,6 @@ void ResultScene::Render()
 
 
 #ifdef _DEBUG
-	// 純粋にスプライトフォントで文字列を描画する方法
-	m_spriteFont->DrawString(m_spriteBatch.get(), L"RESULT", Vector2(10, 40));
-
-	wchar_t buf[32];
-	swprintf_s(buf, 32, L"right : %d, bottom : %d", rect.right, rect.bottom);
-	m_spriteFont->DrawString(m_spriteBatch.get(), buf, Vector2(10, 70));
 #endif // _DEBUG
 
 

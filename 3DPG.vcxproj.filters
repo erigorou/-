@@ -216,6 +216,10 @@
     <ClInclude Include="Game\TitleObject\EnemyTitleMoving.h" />
     <ClInclude Include="Game\TitleObject\TitleEnemy.h" />
     <ClInclude Include="Game\TitleObject\EnemyTitleIdling.h" />
+    <ClInclude Include="Interface\IResultScene.h" />
+    <ClInclude Include="Game\Scene\State\WinResult.h" />
+    <ClInclude Include="Game\Data\GameData.h" />
+    <ClInclude Include="Libraries\MyLib\Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -329,6 +333,10 @@
     <ClCompile Include="Game\TitleObject\EnemyTitleMoving.cpp" />
     <ClCompile Include="Game\TitleObject\TitleEnemy.cpp" />
     <ClCompile Include="Game\TitleObject\EnemyTitleIdling.cpp" />
+    <ClCompile Include="Game\Scene\State\WinResult.cpp" />
+    <ClCompile Include="Game\Data\GameData.cpp" />
+    <ClCompile Include="Libraries\MyLib\Textue.cpp" />
+    <ClCompile Include="Libraries\MyLib\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

@@ -34,6 +34,7 @@ private:
 
 	// ƒŠƒ\[ƒX
 	static std::unique_ptr<CommonResources> m_resources;
+
 private:
 	CommonResources();
 
