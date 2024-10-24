@@ -13,6 +13,7 @@
 #include "../Factory/Factory.h"
 #include "../Camera/Camera.h"
 #include "../Stage/Floor/Floor.h"
+#include "../TitleObject/TitleEnemy.h"
 #include <cassert>
 
 using namespace DirectX;
@@ -150,7 +151,8 @@ void TitleScene::CreateObjects()
 	m_camera	= Factory::CreateCamera	();
 	m_floor		= Factory::CreateFloor	(device);
 
-
+	m_enemy = std::make_unique<TitleEnemy>(this);
+	m_enemy->Initialize();
 
 	// タイトルシーンのカメラステートを設定
 	m_camera->ChangeState(m_camera->GetTitleState());
@@ -171,7 +173,10 @@ void TitleScene::Update(float elapsedTime)
 	DirectX::SimpleMath::Vector3 zeroV = DirectX::SimpleMath::Vector3::Zero;
 	DirectX::SimpleMath::Matrix zeroM = DirectX::SimpleMath::Matrix::Identity;
 
+	m_camera->Shake(elapsedTime);
 	m_camera->Update(zeroV, zeroV, zeroM, elapsedTime);
+
+	m_enemy->Update(elapsedTime);
 
 	// スペースキーが押されたら
 	if (kbTracker->pressed.Space)
@@ -185,6 +190,7 @@ void TitleScene::Update(float elapsedTime)
 //---------------------------------------------------------
 void TitleScene::Render()
 {
+	auto device		= m_commonResources->GetDeviceResources()->GetD3DDevice();
 	auto context	= m_commonResources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states		= m_commonResources	->	GetCommonStates		();
 	auto view		= m_camera			->	GetViewMatrix		();
@@ -192,6 +198,9 @@ void TitleScene::Render()
 
 	// 床の描画
 	m_floor->Render(context, view, m_projection);
+
+	// 敵の描画
+	m_enemy->Render(device, context, states, view, m_projection);
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
@@ -272,5 +281,14 @@ IScene::SceneID TitleScene::GetNextSceneID() const
 
 	// シーン変更がない場合
 	return IScene::SceneID::NONE;
+}
+
+
+//---------------------------------------------------------
+// カメラを揺らす
+//---------------------------------------------------------
+void TitleScene::SetShakeCamera()
+{
+ 	m_camera->SetShake();
 }
 

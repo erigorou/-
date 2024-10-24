@@ -196,6 +196,8 @@
     <ClInclude Include="Effects\Particle.h" />
     <ClInclude Include="Game\Camera\State\PlayCameraState.h" />
     <ClInclude Include="Game\Camera\State\TitleCameraState.h" />
+    <ClInclude Include="Game\TitleObject\EnemyTitleIdling.h" />
+    <ClInclude Include="Game\TitleObject\EnemyTitleMoving.h" />
     <ClInclude Include="Game\Factory\Factory.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Game\Camera\Camera.h" />
@@ -227,6 +229,7 @@
     <ClInclude Include="Game\Sound\BGM_Player.h" />
     <ClInclude Include="Game\Stage\Floor\Floor.h" />
     <ClInclude Include="Game\Stage\Wall\Wall.h" />
+    <ClInclude Include="Game\TitleObject\TitleEnemy.h" />
     <ClInclude Include="Game\UI\Fade\Fade.h" />
     <ClInclude Include="Game\UI\Header\EnemyHPUI.h" />
     <ClInclude Include="Game\UI\Header\Gauge.h" />
@@ -282,6 +285,8 @@
     <ClCompile Include="Effects\Source\SwordTrialParticle.cpp" />
     <ClCompile Include="Game\Camera\State\PlayCameraState.cpp" />
     <ClCompile Include="Game\Camera\State\TitleCameraState.cpp" />
+    <ClCompile Include="Game\TitleObject\EnemyTitleIdling.cpp" />
+    <ClCompile Include="Game\TitleObject\EnemyTitleMoving.cpp" />
     <ClCompile Include="Game\Factory\Factory.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Game\Camera\Camera.cpp" />
@@ -308,6 +313,7 @@
     <ClCompile Include="Game\Sound\BGM_Player.cpp" />
     <ClCompile Include="Game\Stage\Floor\Floor.cpp" />
     <ClCompile Include="Game\Stage\Wall\Wall.cpp" />
+    <ClCompile Include="Game\TitleObject\TitleEnemy.cpp" />
     <ClCompile Include="Game\UI\Fade\Fade.cpp" />
     <ClCompile Include="Game\UI\!PlaySceneUIManager\PlaySceneUIManager.cpp" />
     <ClCompile Include="Game\UI\Source\EnemyHPUI.cpp" />

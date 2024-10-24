@@ -213,6 +213,9 @@
     <ClInclude Include="Game\Goblin\GoblinHP.h" />
     <ClInclude Include="Game\Camera\State\TitleCameraState.h" />
     <ClInclude Include="Game\Camera\State\PlayCameraState.h" />
+    <ClInclude Include="Game\TitleObject\EnemyTitleMoving.h" />
+    <ClInclude Include="Game\TitleObject\TitleEnemy.h" />
+    <ClInclude Include="Game\TitleObject\EnemyTitleIdling.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -323,6 +326,9 @@
     <ClCompile Include="Game\Goblin\State\Score\GoblinIdling.cpp" />
     <ClCompile Include="Game\Camera\State\TitleCameraState.cpp" />
     <ClCompile Include="Game\Camera\State\PlayCameraState.cpp" />
+    <ClCompile Include="Game\TitleObject\EnemyTitleMoving.cpp" />
+    <ClCompile Include="Game\TitleObject\TitleEnemy.cpp" />
+    <ClCompile Include="Game\TitleObject\EnemyTitleIdling.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

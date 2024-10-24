@@ -32,6 +32,7 @@ Camera::Camera(const DirectX::SimpleMath::Vector3& target)
 	,m_targetHeight{5.0f}
 	, m_isShake{ false }
 	, m_shakeTime{ SHAKE_TIME }
+	, m_shakePos{(0.0f, 0.0f, 0.0f)}
 {
 	CreateState();
 }
@@ -59,7 +60,6 @@ void Camera::Update(
 		rotate,
 		elapsedTime
 	);
-
 }
 
 //-------------------------------------------------------------------
@@ -127,8 +127,8 @@ void Camera::Shake(float elapsedTime)
 	SimpleMath::Vector3 min = SimpleMath::Vector3(-power, -power, -power);
 
 	// ƒJƒƒ‰‚ÌˆÊ’u‚ğ—h‚ç‚·
-	m_position	+=	Math::RandomVector3(min, max);
-	m_target	+=	Math::RandomVector3(min, max);
+	m_shakePos	=	Math::RandomVector3(min, max);
+	m_target	=	Math::RandomVector3(min, max);
 }
 
 

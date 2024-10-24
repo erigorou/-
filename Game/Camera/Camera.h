@@ -67,6 +67,8 @@ public:
 	bool m_isShake;					// カメラを揺らすかどうか
 	float m_shakeTime;				// 揺れる時間
 
+	DirectX::SimpleMath::Vector3 m_shakePos;
+
 private:
 
 	void CreateState();	// ステートの生成

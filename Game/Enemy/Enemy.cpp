@@ -263,6 +263,7 @@ void Enemy::DrawBoundingSphere(
 // --------------------------------
 void Enemy::Finalize()
 {
+	GetPlayScene()->GetCollisionManager()->DeleteSphereCollision(this);
 }
 
 

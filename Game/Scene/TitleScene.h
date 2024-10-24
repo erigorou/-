@@ -10,6 +10,7 @@
 class CommonResources;
 class Camera;
 class Floor;
+class TitleEnemy;
 
 namespace mylib
 {
@@ -41,6 +42,8 @@ public:
 	// ステート変更処理
 	SceneID GetNextSceneID() const;
 
+	void SetShakeCamera();			// カメラを揺らす
+
 private:
 	// 画像のロード処理
 	void LoadTextures();
@@ -54,15 +57,12 @@ private:
 	// 共通リソース
 	CommonResources* m_commonResources;
 
-
 	std::unique_ptr<DirectX::SpriteBatch>	m_spriteBatch;	// スプライトバッチ
 	DirectX::SimpleMath::Matrix				m_projection;	// プロジェクション行列
-
 
 	std::unique_ptr<DirectX::SpriteFont>				m_spriteFont;	// スプライトフォント
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	m_texture;		// テクスチャ１
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	m_texture2;		// テクスチャ２
-
 
 	DirectX::SimpleMath::Vector2 m_texCenter;	// テクスチャの中心座標
 	DirectX::SimpleMath::Vector2 m_texCenter1;
@@ -75,5 +75,6 @@ private:
 	// オブジェクト達
 	std::unique_ptr<Camera>		m_camera;	//　カメラ
 	std::unique_ptr<Floor>		m_floor;	// 床
+	std::unique_ptr<TitleEnemy> m_enemy;	// 敵
 };
 

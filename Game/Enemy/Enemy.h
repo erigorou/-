@@ -41,10 +41,10 @@ public:
 	DirectX::BoundingSphere GetBodyCollision() const { return *m_bodyCollision.get(); }	// ‘Ì‚Ì“–‚½‚è”»’è‚ğæ“¾‚·‚é
 
 	// /////////////////“G‚ÌƒXƒe[ƒg‚ğ“n‚·ŠÖ”/////////////////////////////////////////////////////////////////////
-	EnemyIdling* GetEnemyIdling() const { return m_idling.get(); }					// ‘Ò‹@ó‘Ô
-	Enemy_Attacking* GetEnemyAttacking() const { return m_attacking.get(); }		// UŒ‚ó‘Ô
-	Enemy_Sweeping* GetEnemySweeping() const { return m_sweeping.get(); }			// “ã‚¬•¥‚¢ó‘Ô
-	EnemyApproaching* GetEnemyApproaching() const { return m_approaching.get(); }	// ’Ç”öó‘Ô
+	EnemyIdling*		GetEnemyIdling() const { return m_idling.get(); }			// ‘Ò‹@ó‘Ô
+	Enemy_Attacking*	GetEnemyAttacking() const { return m_attacking.get(); }		// UŒ‚ó‘Ô
+	Enemy_Sweeping*		GetEnemySweeping() const { return m_sweeping.get(); }		// “ã‚¬•¥‚¢ó‘Ô
+	EnemyApproaching*	GetEnemyApproaching() const { return m_approaching.get(); }	// ’Ç”öó‘Ô
 
 
 	// Õ“Ë‚ğ‹–‰Â‚·‚é
