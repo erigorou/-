@@ -52,7 +52,7 @@ void PlayerHPUI::LoadTexture(const wchar_t* path)
 	HRESULT hr = DirectX::CreateWICTextureFromFile(m_pDR->GetD3DDevice(), path, nullptr, m_texture.ReleaseAndGetAddressOf());
 	if (FAILED(hr))
 	{
-		MessageBox(0, L"Failed to load texture.", NULL, MB_OK);
+		MessageBox(0, L"テクスチャのロード処理に失敗しました。.", NULL, MB_OK);
 	}
 }
 
@@ -73,32 +73,27 @@ void PlayerHPUI::Update()
 /// 描画関数
 /// </summary>
 // ----------------------------
-// ----------------------------
-/// <summary>
-/// 描画関数
-/// </summary>
-// ----------------------------
 void PlayerHPUI::Render()
 {
-    m_playerHP = m_playerHPclass->GetHP();		// 敵のHPを取得
-    int MAXHP = m_playerHPclass->GetMaxHP();	// 最大HPを取得
+    m_playerHP	= m_playerHPclass->GetHP();							// 敵のHPを取得
+    float MAXHP = static_cast<float>(m_playerHPclass->GetMaxHP());	// 最大HPを取得
 
     // 描画位置のオフセット値や緑ゲージの幅を計算する
     LONG offset = static_cast<LONG>(LEFT_POSITION);
     LONG width = static_cast<LONG>(offset + MAX_WIDTH * (m_playerHP / MAXHP));
 
 	// ゲージの範囲の設定
-    RECT outline{ offset - 2, TOP_POSITION - 2, offset + MAX_WIDTH + 2, BOTTOM_POSITION + 2 };
-    RECT back{ offset, TOP_POSITION, offset + MAX_WIDTH, BOTTOM_POSITION };
-    RECT gauge{ offset, TOP_POSITION, width, BOTTOM_POSITION };
+    RECT outline{ offset - 2,	TOP_POSITION - 2,	offset + MAX_WIDTH + 2, BOTTOM_POSITION + 2 };
+    RECT back	{ offset,		TOP_POSITION,		offset + MAX_WIDTH,		BOTTOM_POSITION		};
+    RECT gauge	{ offset,		TOP_POSITION,		width,					BOTTOM_POSITION		};
 
     // スプライトバッチを開始する
     m_spriteBatch->Begin();
 
     // ゲージの描画
-    m_spriteBatch->Draw(m_texture.Get(), outline, DirectX::Colors::Black);
-    m_spriteBatch->Draw(m_texture.Get(), back, DirectX::Colors::BlanchedAlmond);  // 背面の描画
-    m_spriteBatch->Draw(m_texture.Get(), gauge, DirectX::Colors::LimeGreen);            // ゲージ部分
+	m_spriteBatch->Draw(m_texture.Get(), outline,	DirectX::Colors::Black			);		// ゲージの枠
+    m_spriteBatch->Draw(m_texture.Get(), back,		DirectX::Colors::BlanchedAlmond	);		// 背面の描画
+    m_spriteBatch->Draw(m_texture.Get(), gauge,		DirectX::Colors::LimeGreen		);		// ゲージ部分
 
     // スプライトバッチを終了する
     m_spriteBatch->End();

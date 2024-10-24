@@ -1,11 +1,10 @@
 // -----------------------------------
-// ＊プリミティブによる地面の描画
+// ＊プリミティブによる円形の地面の描画
 // -----------------------------------
 
 #include "pch.h"
 #include "Floor.h"
 
-const float Floor::SIZE = 200.0f;
 
 // -------------------------------------------------------------------^
 /// <summary>
@@ -17,12 +16,12 @@ Floor::Floor(ID3D11Device1* device)
 {
 	using namespace DirectX;
 
-	//	エフェクトの作成
+	// エフェクトの作成
 	m_BatchEffect = std::make_unique<AlphaTestEffect>(device);
 	m_BatchEffect->SetAlphaFunction(D3D11_COMPARISON_EQUAL);
 	m_BatchEffect->SetReferenceAlpha(255);
 
-	//	入力レイアウト生成
+	// 入力レイアウト生成
 	void const* shaderByteCode;
 	size_t byteCodeLength;
 	m_BatchEffect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
@@ -32,10 +31,10 @@ Floor::Floor(ID3D11Device1* device)
 		shaderByteCode, byteCodeLength, m_inputLayout.GetAddressOf()
 	);
 
-	//	共通ステートの作成
+	// 共通ステートの作成
 	m_states = std::make_unique<CommonStates>(device);
 
-	//	テクスチャのロード
+	// テクスチャのロード
 	CreateWICTextureFromFile(
 		device,
 		L"Resources/Textures/floor.png",
@@ -43,7 +42,6 @@ Floor::Floor(ID3D11Device1* device)
 		m_texture.GetAddressOf()
 	);
 }
-
 
 // ----------------------^
 /// <summary>
@@ -54,9 +52,25 @@ Floor::~Floor()
 {
 }
 
-
-
 // -------------------------------------------
+/// <summary>
+/// 円の頂点を生成する
+/// </summary>
+/// <param name="vertices">頂点配列</param>
+/// <param name="radius">円の半径</param>
+/// <param name="segments">円の分割数</param>
+/// -------------------------------------------
+void Floor::GenerateCircleVertices(DirectX::VertexPositionTexture* vertices, float radius, int segments)
+{
+	for (int i = 0; i < segments; ++i)
+	{
+		float angle = (2.0f * DirectX::XM_PI / segments) * i;
+		vertices[i].position = DirectX::SimpleMath::Vector3(radius * cosf(angle), 0.0f, radius * sinf(angle));
+		vertices[i].textureCoordinate = DirectX::SimpleMath::Vector2(cosf(angle) * 0.5f + 0.5f, sinf(angle) * 0.5f + 0.5f);
+	}
+}
+
+// ---------------------------------------------
 /// <summary>
 /// 床の描画を行う
 /// </summary>
@@ -70,18 +84,11 @@ void Floor::Render(ID3D11DeviceContext1* context, DirectX::SimpleMath::Matrix vi
 	using namespace DirectX::SimpleMath;
 
 	// プリミティブバッチの作成
-	m_Batch =
-		std::make_unique<PrimitiveBatch<VertexPositionTexture>>(context);
+	m_Batch = std::make_unique<PrimitiveBatch<VertexPositionTexture>>(context);
 
-	// 頂点情報（板ポリゴンの頂点）
-	VertexPositionTexture vertex[4] =
-	{
-		// 座標					画像のUV座標：普通は0で設定.超えた場合は繰り返す
-		VertexPositionTexture(Vector3( SIZE, 0.0f,  SIZE),	Vector2(0.0f, 0.0f)),
-		VertexPositionTexture(Vector3(-SIZE, 0.0f,  SIZE),	Vector2(1.0f, 0.0f)),
-		VertexPositionTexture(Vector3(-SIZE, 0.0f, -SIZE),	Vector2(1.0f,  1.0f)),
-		VertexPositionTexture(Vector3( SIZE, 0.0f, -SIZE),	Vector2(0.0f, 1.0f)),
-	};
+	// 頂点情報（円の頂点）
+	std::vector<VertexPositionTexture> vertices(SEGMENTS);
+	GenerateCircleVertices(vertices.data(), RADIUS, SEGMENTS);
 
 	// テクスチャサンプラーの設定（クランプテクスチャアドレッシングモード）
 	ID3D11SamplerState* samplers[1] = { m_states->PointWrap() };
@@ -105,10 +112,15 @@ void Floor::Render(ID3D11DeviceContext1* context, DirectX::SimpleMath::Matrix vi
 
 	// 半透明部分を描画
 	m_Batch->Begin();
-	m_Batch->DrawQuad(vertex[0], vertex[1], vertex[2], vertex[3]);
+
+	// 円を描画
+	for (int i = 0; i < SEGMENTS; ++i)
+	{
+		m_Batch->DrawTriangle(vertices[i], vertices[(i + 1) % SEGMENTS], vertices[0]);
+	}
+
 	m_Batch->End();
 }
-
 
 // -----------------------------
 /// <summary>

@@ -9,13 +9,15 @@ class Floor
 {
 public:
 	// 固定値
-	static const float SIZE;
+	static constexpr float	RADIUS = 175.0f;
+	static constexpr int	SEGMENTS = 16;
 
 
 	// コンストラクタ
 	Floor(ID3D11Device1* device);
 	// デストラクタ
 	~Floor();
+	void GenerateCircleVertices(DirectX::VertexPositionTexture* vertices, float radius, int segments);
 	// 描画処理
 	void Render(ID3D11DeviceContext1* context, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj);
 	// 終了処理

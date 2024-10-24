@@ -20,6 +20,8 @@ namespace mylib
 
 class TitleScene final : public IScene
 {
+private:
+	DirectX::SimpleMath::Vector2 TITLE_DIRECTION_CENTER = { 0.0f, -75.0f };
 
 public:
 	// コンストラクタ

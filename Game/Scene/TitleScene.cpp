@@ -216,20 +216,20 @@ void TitleScene::DrawTexture()
 
 	// 画像の中心を計算する
 	Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
-
-
+	Vector2 titlePos = pos + TITLE_DIRECTION_CENTER;
+	
 
 	// LOGO.png を中央に描画する
 	m_spriteBatch->Draw(
-		m_texture.Get(),   // テクスチャ(SRV)
-		pos,               // スクリーンの表示位置(originの描画位置)
-		nullptr,           // 矩形(RECT)
-		Colors::White,     // 背景色
-		0.0f,              // 回転角(ラジアン)
-		m_texCenter1,      // テクスチャの基準になる表示位置(描画中心)(origin)
-		1.0f,              // スケール(scale)
-		SpriteEffects_None,// エフェクト(effects)
-		0.0f               // レイヤ深度(画像のソートで必要)(layerDepth)
+		m_texture.Get(),	// テクスチャ(SRV)
+		titlePos,			// スクリーンの表示位置(originの描画位置)
+		nullptr,			// 矩形(RECT)
+		Colors::White,		// 背景色
+		0.0f,				// 回転角(ラジアン)
+		m_texCenter1,		// テクスチャの基準になる表示位置(描画中心)(origin)
+		1.0f,				// スケール(scale)
+		SpriteEffects_None,	// エフェクト(effects)
+		0.0f				// レイヤ深度(画像のソートで必要)(layerDepth)
 	);
 
 	// SPACEでスタート.png の描画位置を調整

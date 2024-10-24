@@ -32,7 +32,8 @@ void PlayCameraState::Update(
 )
 {
 	UNREFERENCED_PARAMETER(rotate);
-
+	UNREFERENCED_PARAMETER(elapsedTime);
+ 
     // カメラの通常の更新処理を実行
     using namespace DirectX::SimpleMath;
 
