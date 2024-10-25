@@ -197,6 +197,7 @@
     <ClInclude Include="Game\Camera\State\PlayCameraState.h" />
     <ClInclude Include="Game\Camera\State\TitleCameraState.h" />
     <ClInclude Include="Game\Data\GameData.h" />
+    <ClInclude Include="Game\Scene\State\LoseResult.h" />
     <ClInclude Include="Game\Scene\State\WinResult.h" />
     <ClInclude Include="Game\TitleObject\EnemyTitleIdling.h" />
     <ClInclude Include="Game\TitleObject\EnemyTitleMoving.h" />
@@ -290,6 +291,7 @@
     <ClCompile Include="Game\Camera\State\PlayCameraState.cpp" />
     <ClCompile Include="Game\Camera\State\TitleCameraState.cpp" />
     <ClCompile Include="Game\Data\GameData.cpp" />
+    <ClCompile Include="Game\Scene\State\LoseResult.cpp" />
     <ClCompile Include="Game\Scene\State\WinResult.cpp" />
     <ClCompile Include="Game\TitleObject\EnemyTitleIdling.cpp" />
     <ClCompile Include="Game\TitleObject\EnemyTitleMoving.cpp" />
@@ -346,7 +348,6 @@
     <ClCompile Include="Libraries\MyLib\GridFloor.cpp" />
     <ClCompile Include="Libraries\MyLib\InputManager.cpp" />
     <ClCompile Include="Libraries\MyLib\SkySphere.cpp" />
-    <ClCompile Include="Libraries\MyLib\Textue.cpp" />
     <ClCompile Include="Libraries\MyLib\Texture.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Game\Observer\Messenger.cpp" />

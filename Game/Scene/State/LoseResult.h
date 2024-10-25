@@ -1,5 +1,5 @@
 /*
-	@file	WinResultScene.h
+	@file	LoseResultScene.h
 	@brief	リザルトシーンクラス
 */
 #pragma once
@@ -9,7 +9,7 @@
 class CommonResources;
 
 
-class WinResult final : public IScene
+class LoseResult final : public IScene
 {
 public:
 	static const wchar_t* TEXTURE_PATH;	// テクスチャのパス
@@ -25,8 +25,8 @@ private:
 
 
 public:
-    WinResult();
-    ~WinResult() override;
+    LoseResult();
+    ~LoseResult() override;
 
     void Initialize() override;
     void Update(float elapsedTime)override;

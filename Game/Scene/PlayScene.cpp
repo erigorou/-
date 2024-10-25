@@ -37,6 +37,8 @@
 // 当たり判定関連 =============================================
 #include "Libraries/MyLib/Collision/CollisionManager.h"	// 当たり判定
 
+// ゲームデータ ===============================================
+#include "Game/Data/GameData.h"
 
 #include"Interface/IObserver.h"
 #include "Game/Observer/Messenger.h"
@@ -59,6 +61,7 @@ PlayScene::PlayScene()
 	,m_particles{}
 {
 	m_commonResources = CommonResources::GetInstance();
+	GameData::GetInstance()->SetBattleResult(GameData::BATTLE_RESULT::NONE);
 }
 
 /// <summary>
@@ -219,11 +222,17 @@ void PlayScene::Update(float elapsedTime)
 	// 衝突判定の更新処理
 	m_collisionManager->Update();
 
-	// HPが0以下になったらゲーム終了
-	if (m_enemy->GetEnemyHP()->GetHP() <= 0 || m_player->GetPlayerHP()->GetHP() <= 0)	m_isChangeScene = true;
-
+	CheckResult();
 
 #ifdef _DEBUG
+
+	// キーボードステートトラッカーを取得する
+	const auto& kbTracker = m_commonResources->GetInputManager()->GetKeyboardTracker();
+
+	if (kbTracker->pressed.F7)
+	{
+		m_isChangeScene = true;
+	}
 
 #endif // _DEBUG
 }
@@ -303,4 +312,24 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 
 	// シーン変更がない場合
 	return IScene::SceneID::NONE;
+}
+
+
+void PlayScene::CheckResult()
+{
+	auto data = GameData::GetInstance();
+
+	// 敵が死亡
+	if (m_enemy->GetEnemyHP()->GetHP() <= 0)
+	{
+		m_isChangeScene = true;
+		data->SetBattleResult(GameData::BATTLE_RESULT::WIN);
+	}
+	// プレイヤーが死亡
+	else if (m_player->GetPlayerHP()->GetHP() <= 0)
+	{
+		m_isChangeScene = true;
+		data->SetBattleResult(GameData::BATTLE_RESULT::LOSE);
+	}
+
 }

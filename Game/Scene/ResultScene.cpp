@@ -10,25 +10,31 @@
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 #include "Libraries/MyLib/InputManager.h"
 #include <cassert>
-
 #include "../Data/GameData.h"
 #include "Libraries/MyLib/Texture.h"
+#include "State/WinResult.h"
+#include "State/LoseResult.h"
+
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
+
 
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
 ResultScene::ResultScene()
-	:
-	m_spriteBatch{},
-	m_texture{},
-	m_texCenter{},
-	m_isChangeScene{}
+	: m_spriteBatch{}
+	, m_texture{}
+	, m_texCenter{}
+	, m_isChangeScene{}
+	, m_commonResources{}
+	, m_winResult{}
+
 {
 	m_commonResources = CommonResources::GetInstance();
 }
+
 
 //---------------------------------------------------------
 // デストラクタ
@@ -38,18 +44,34 @@ ResultScene::~ResultScene()
 	// do nothing.
 }
 
+
 //---------------------------------------------------------
 // 初期化する
 //---------------------------------------------------------
 void ResultScene::Initialize()
 {
-
 	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
 	auto context = m_commonResources->GetDeviceResources()->GetD3DDeviceContext();
 
 	// スプライトバッチを作成する
 	m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
+	// テクスチャの作成およびデータの取得
+	CreateTextures();
+	// オブジェクトの生成
+	CreateObjects();
+	// シーン変更フラグを初期化する
+	m_isChangeScene = false;
+}
 
+
+
+//---------------------------------------------------------
+// テクスチャ関連
+//---------------------------------------------------------
+void ResultScene::CreateTextures()
+{
+	// デバイスの取得
+	auto device = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
 
 	// テクスチャを読み込む
 	mylib::Texture::LoadTexture(
@@ -68,16 +90,41 @@ void ResultScene::Initialize()
 		texSize,
 		m_texCenter
 	);
-
-
-	// ゲームの結果等を取得する
-	m_gameData = GameData::GetInstance();
-
-	// シーン変更フラグを初期化する
-	m_isChangeScene = false;
 }
 
 
+//---------------------------------------------------------
+// オブジェクトの生成
+//---------------------------------------------------------
+void ResultScene::CreateObjects()
+{
+	// 勝利リザルトの生成
+	m_winResult		= std::make_unique<WinResult>	();
+	m_loseResult	= std::make_unique<LoseResult>	();
+
+	// 初期化
+	m_winResult	->	Initialize();
+	m_loseResult->	Initialize();
+
+	//// ゲームデータの取得
+	//m_gameData = GameData::GetInstance();
+
+	// ゲームデータを取得し、それに応じた結果を出す
+	switch (GameData::GetInstance()->GetBattleResult())
+	{
+	case GameData::BATTLE_RESULT::WIN:
+		m_currentState = m_winResult.get();
+		
+		break;
+	case GameData::BATTLE_RESULT::LOSE:
+		m_currentState = m_loseResult.get();
+		break;
+
+	default:
+		assert(false && "GameDataのVATTLE_RESULTに正しい結果が入ってません。PlaySceneのUpdateのところの判定のとこちゃんと見てん。");
+		break;
+	}
+}
 
 
 //---------------------------------------------------------
@@ -85,8 +132,8 @@ void ResultScene::Initialize()
 //---------------------------------------------------------
 void ResultScene::Update(float elapsedTime)
 {
-	// 宣言をしたが、実際は使用していない変数
-	UNREFERENCED_PARAMETER(elapsedTime);
+	// 現在のステートを更新する
+	m_currentState->Update(elapsedTime);
 
 	// キーボードステートトラッカーを取得する
 	const auto& kbTracker = m_commonResources->GetInputManager()->GetKeyboardTracker();
@@ -97,6 +144,7 @@ void ResultScene::Update(float elapsedTime)
 		m_isChangeScene = true;
 	}
 }
+
 
 //---------------------------------------------------------
 // 描画する
@@ -126,14 +174,18 @@ void ResultScene::Render()
 		0.0f				// レイヤ深度(画像のソートで必要)(layerDepth)
 	);
 
+	// スプライトバッチの終わり
+	m_spriteBatch->End();
+
+
+	// 勝ち負けの描画
+	m_currentState->Render();
 
 #ifdef _DEBUG
 #endif // _DEBUG
 
-
-	// スプライトバッチの終わり
-	m_spriteBatch->End();
 }
+
 
 //---------------------------------------------------------
 // 後始末する
@@ -142,6 +194,7 @@ void ResultScene::Finalize()
 {
 	// do nothing.
 }
+
 
 //---------------------------------------------------------
 // 次のシーンIDを取得する

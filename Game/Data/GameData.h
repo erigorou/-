@@ -1,15 +1,18 @@
 #pragma once
 
-enum class BATTLE_RESULT : unsigned int
-{
-	WIN,
-	LOSE,
-	NONE
-};
-
 
 class GameData
 {
+	// 列挙型 -------------------
+public:
+	enum class BATTLE_RESULT : unsigned int
+	{
+		WIN,
+		LOSE,
+		NONE
+	};
+
+
 // アクセサ関数 ------------
 public:
 

@@ -58,6 +58,8 @@ private:
 	void CreateObjects();			// オブジェクトの生成
 	SceneID GetNextSceneID() const;	// 次のシーンIDを取得
 
+	void CheckResult();				// 勝敗判定
+
 
 	// データに必要な物 ============================================
 	CommonResources* m_commonResources;					// 共通リソース

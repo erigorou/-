@@ -1,9 +1,9 @@
 /*
-	@file	WinResultScene.cpp
+	@file	LoseResultScene.cpp
 	@brief	リザルトシーンクラス
 */
 #include "pch.h"
-#include "WinResult.h"
+#include "LoseResult.h"
 #include "Game/Screen.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
@@ -16,13 +16,13 @@ using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
 
-const wchar_t* WinResult::TEXTURE_PATH = L"Resources/Textures/UI/Win.png";
+const wchar_t* LoseResult::TEXTURE_PATH = L"Resources/Textures/UI/Lose.png";
 
 
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
-WinResult::WinResult()
+LoseResult::LoseResult()
 	:
 	m_spriteBatch{},
 	m_texture{},
@@ -35,7 +35,7 @@ WinResult::WinResult()
 //---------------------------------------------------------
 // デストラクタ
 //---------------------------------------------------------
-WinResult::~WinResult()
+LoseResult::~LoseResult()
 {
 	// do nothing.
 }
@@ -43,7 +43,7 @@ WinResult::~WinResult()
 //---------------------------------------------------------
 // 初期化する
 //---------------------------------------------------------
-void WinResult::Initialize()
+void LoseResult::Initialize()
 {
 
 	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
@@ -71,7 +71,6 @@ void WinResult::Initialize()
 		m_texCenter
 	);
 
-
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
 }
@@ -79,7 +78,7 @@ void WinResult::Initialize()
 //---------------------------------------------------------
 // 更新する
 //---------------------------------------------------------
-void WinResult::Update(float elapsedTime)
+void LoseResult::Update(float elapsedTime)
 {
 	// 宣言をしたが、実際は使用していない変数
 	UNREFERENCED_PARAMETER(elapsedTime);
@@ -88,7 +87,7 @@ void WinResult::Update(float elapsedTime)
 //---------------------------------------------------------
 // 描画する
 //---------------------------------------------------------
-void WinResult::Render()
+void LoseResult::Render()
 {
 	auto states = m_commonResources->GetCommonStates();
 
@@ -121,7 +120,7 @@ void WinResult::Render()
 //---------------------------------------------------------
 // 後始末する
 //---------------------------------------------------------
-void WinResult::Finalize()
+void LoseResult::Finalize()
 {
 	// do nothing.
 }
@@ -129,7 +128,7 @@ void WinResult::Finalize()
 //---------------------------------------------------------
 // 次のシーンIDを取得する
 //---------------------------------------------------------
-IScene::SceneID WinResult::GetNextSceneID() const
+IScene::SceneID LoseResult::GetNextSceneID() const
 {
 	// シーン変更がある場合
 	if (m_isChangeScene)

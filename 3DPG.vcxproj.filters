@@ -220,6 +220,7 @@
     <ClInclude Include="Game\Scene\State\WinResult.h" />
     <ClInclude Include="Game\Data\GameData.h" />
     <ClInclude Include="Libraries\MyLib\Texture.h" />
+    <ClInclude Include="Game\Scene\State\LoseResult.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -335,8 +336,8 @@
     <ClCompile Include="Game\TitleObject\EnemyTitleIdling.cpp" />
     <ClCompile Include="Game\Scene\State\WinResult.cpp" />
     <ClCompile Include="Game\Data\GameData.cpp" />
-    <ClCompile Include="Libraries\MyLib\Textue.cpp" />
     <ClCompile Include="Libraries\MyLib\Texture.cpp" />
+    <ClCompile Include="Game\Scene\State\LoseResult.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
