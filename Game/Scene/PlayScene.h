@@ -12,7 +12,7 @@
 
 // === データ処理系 ==============
 class CommonResources;
-class BGM_Player;
+class Sound;
 // === プレイヤー関連 ============
 class Player;
 class Sword;
@@ -77,7 +77,7 @@ private:
 
 
 	// システム周り ==========================================================================
-	std::unique_ptr<BGM_Player> m_bgm;						// BGM再生
+	Sound* m_sound;											// 音
 
 	// オブジェクト関連の変数 ================================================================
 	std::unique_ptr<Player>	m_player;						// プレイヤー

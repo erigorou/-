@@ -170,7 +170,7 @@
     <ClInclude Include="Interface\IWeapon.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Idling.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_1.h" />
-    <ClInclude Include="Game\Sound\BGM_Player.h" />
+    <ClInclude Include="Game\Sound\Sound.h" />
     <ClInclude Include="Game\Scene\ResultScene.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Cudgel.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Idling.h" />
@@ -301,7 +301,7 @@
     <ClCompile Include="Game\Weapon\Sword\Sword.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Idling.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Attacking_1.cpp" />
-    <ClCompile Include="Game\Sound\BGM_Player.cpp" />
+    <ClCompile Include="Game\Sound\Sound.cpp" />
     <ClCompile Include="Game\Scene\ResultScene.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Idling.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Cudgel.cpp" />

@@ -229,7 +229,7 @@
     <ClInclude Include="Game\Scene\SceneManager.h" />
     <ClInclude Include="Game\Scene\TitleScene.h" />
     <ClInclude Include="Game\Screen.h" />
-    <ClInclude Include="Game\Sound\BGM_Player.h" />
+    <ClInclude Include="Game\Sound\Sound.h" />
     <ClInclude Include="Game\Stage\Floor\Floor.h" />
     <ClInclude Include="Game\Stage\Wall\Wall.h" />
     <ClInclude Include="Game\TitleObject\TitleEnemy.h" />
@@ -318,7 +318,7 @@
     <ClCompile Include="Game\Scene\ResultScene.cpp" />
     <ClCompile Include="Game\Scene\SceneManager.cpp" />
     <ClCompile Include="Game\Scene\TitleScene.cpp" />
-    <ClCompile Include="Game\Sound\BGM_Player.cpp" />
+    <ClCompile Include="Game\Sound\Sound.cpp" />
     <ClCompile Include="Game\Stage\Floor\Floor.cpp" />
     <ClCompile Include="Game\Stage\Wall\Wall.cpp" />
     <ClCompile Include="Game\TitleObject\TitleEnemy.cpp" />

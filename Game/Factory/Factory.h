@@ -8,7 +8,7 @@ class PlayScene;
 class IObserver;
 
 class CollisionManager;
-class BGM_Player;
+class Sound;
 class Camera;
 class SkySphere;
 class Particle;
@@ -25,7 +25,6 @@ class Factory
 {
 public:
 	static std::unique_ptr<CollisionManager>	CreateCollisionManager	();
-	static std::unique_ptr<BGM_Player>			CreateBGM_Player		();
 	static std::unique_ptr<Camera>				CreateCamera			();
 	static std::unique_ptr<SkySphere>			CreateSkySphere			(ID3D11Device1* device);
 	static std::unique_ptr<Particle>			CreateParticle			();

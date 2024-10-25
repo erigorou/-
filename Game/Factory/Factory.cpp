@@ -5,7 +5,6 @@
 #include "../Scene/PlayScene.h"										// プレイシーン
 #include "Interface/IObserver.h"									// オブザーバー
 #include "Libraries/MyLib/Collision/CollisionManager.h"				// 当たり判定統括
-#include "../Sound/BGM_Player.h"									// BGM再生統括
 #include "../Camera/Camera.h"										// カメラ
 #include "Libraries/MyLib/SkySphere.h"								// 天球
 #include "Effects/Particle.h"										// パーティクル
@@ -29,19 +28,6 @@ std::unique_ptr<CollisionManager> Factory::CreateCollisionManager()
 	collisionManager = std::make_unique<CollisionManager>();
 	// 当たり判定統括の設定
 	return collisionManager;
-}
-
-
-// BGM再生統括の生成関数
-std::unique_ptr<BGM_Player> Factory::CreateBGM_Player()
-{
-	// BGM再生統括を宣言する
-	std::unique_ptr<BGM_Player> bgm_Player;
-	bgm_Player = std::make_unique<BGM_Player>();
-	// 初期化処理
-	bgm_Player->InitializeFMOD("Resources/Sounds/BGM.ogg");
-	// BGM再生統括の設定
-	return bgm_Player;
 }
 
 

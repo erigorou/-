@@ -15,6 +15,7 @@
 #include "DeviceResources.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 #include "Libraries/MyLib/InputManager.h"
+#include "../Sound/Sound.h"
 #include <cassert>
 
 
@@ -28,7 +29,8 @@ SceneManager::SceneManager()
 	, m_canChangeScene(false)
 	, m_isFade(false)
 {
-	m_commonResources = CommonResources::GetInstance();
+	m_commonResources	= CommonResources::	GetInstance();
+	m_sound				= Sound::			GetInstance();
 }
 
 //---------------------------------------------------------
@@ -55,8 +57,11 @@ void SceneManager::Initialize()
 //---------------------------------------------------------
 void SceneManager::Update(float elapsedTime)
 {
+	// 効果音の再生
+	Sound::Update();
+	// 各シーンの更新
 	m_currentScene->Update(elapsedTime);
-
+	// フェードの更新
 	m_fade->Update(elapsedTime);
 
 	// 説明用変数：次のシーン

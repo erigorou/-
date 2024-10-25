@@ -19,7 +19,7 @@
 #include "Game/Factory/Factory.h"
 
 // システム面 ================================================
-#include "Game/Sound/BGM_Player.h"	// BGM再生
+#include "Game/Sound/Sound.h"	// 音
 
 // オブジェクト関連　=========================================
 #include "Game/Player/Player.h"			// プレイヤー
@@ -116,7 +116,6 @@ void PlayScene::CreateObjects()
 	Messenger::Clear();	// メッセンジャーのクリア
 
 	m_collisionManager	= Factory::CreateCollisionManager();	// パーティクル
-	m_bgm				= Factory::CreateBGM_Player();			// BGM
 	m_camera			= Factory::CreateCamera();				// カメラ
 	m_skySphere			= Factory::CreateSkySphere(device);		// 天球	
 	m_particles			= Factory::CreateParticle();			// パーティクル
@@ -190,9 +189,6 @@ void PlayScene::Update(float elapsedTime)
 	if (IsKeyDown	(m_keyboardState)		)	Messenger::Notify(m_keyboardState		); 
 	if (IsKeyPress	(m_keyboardStateTracker))	Messenger::Notify(m_keyboardStateTracker); 
 
-
-	// BGMの再生
-	m_bgm->Update();
 
 	// UIの更新
 	m_uiManager->Update(elapsedTime);
@@ -286,7 +282,6 @@ void PlayScene::Render()
 /// </summary>
 void PlayScene::Finalize()
 {
-	m_bgm->FinalizeFMOD();
 }
 
 /// <summary>
