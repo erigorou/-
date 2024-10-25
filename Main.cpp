@@ -43,13 +43,19 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
     static bool s_fullscreen = false;
 
     // 画面モード選択
-    if (MessageBox(NULL, L"フルスクリーンにしますか？", L"画面モード設定", MB_YESNO) == IDYES)
+    int result = MessageBox(NULL, L"フルスクリーンにしますか？", L"画面モード設定", MB_YESNOCANCEL);
+
+    if (result == IDYES)
     {
         s_fullscreen = true;
     }
-    else
+    else if (result == IDNO)
     {
         s_fullscreen = false;
+    }
+    else
+    {
+        ExitGame();
     }
 
     // ★追記★
