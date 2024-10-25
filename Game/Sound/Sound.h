@@ -27,10 +27,10 @@ public:
 
 
 	// 固定値
-	static constexpr const char* TITLE_BGM_PATH	= "Resources/Sounds/BGM.ogg";
-	static constexpr const char* PLAY_BGM_PATH	= "Resources/Sounds/BGM.ogg";
-	static constexpr const char* WIN_BGM_PATH	= "Resources/Sounds/BGM.ogg";
-	static constexpr const char* LOSE_BGM_PATH	= "Resources/Sounds/BGM.ogg";
+	static constexpr const char* TITLE_BGM_PATH	= "Resources/Sounds/BGM/BGM.ogg";
+	static constexpr const char* PLAY_BGM_PATH	= "Resources/Sounds/BGM/Debug.mp3";
+	static constexpr const char* WIN_BGM_PATH	= "Resources/Sounds/BGM/BGM.ogg";
+	static constexpr const char* LOSE_BGM_PATH	= "Resources/Sounds/BGM/BGM.ogg";
 
 // アクセサ関数
 public:
@@ -41,6 +41,8 @@ public:
 	// 音量を調整する関数
 	void SetBGMVolume	(float volume);
 	void SetSEVolume	(float volume);
+
+	void ChangeBGM(Sound::BGM_TYPE type);
 
 	// デストラクタ
 	~Sound();
@@ -66,7 +68,7 @@ private:
 	void LoadSE		(SE_TYPE	type, const char* filePath);
 
 private:
-	static std::unique_ptr<Sound> s_bgmPlayer;	// インスタンス
+	static std::unique_ptr<Sound> s_sound;	// インスタンス
 
 	FMOD::System*	m_system;		// FMODのシステム
 	FMOD::Sound*	m_soundBGM;		// BGM用の音声データ
@@ -74,7 +76,7 @@ private:
 	FMOD::Channel*	m_channelSE;	// SEを再生するチャンネル
 
 	std::vector<FMOD::Sound*> m_bgmList;	// BGM用の音声データリスト
-	std::vector<FMOD::Sound*> m_seList;	// SE用の音声データリスト
+	std::vector<FMOD::Sound*> m_seList;		// SE用の音声データリスト
 
 	
 };

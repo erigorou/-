@@ -10,7 +10,7 @@
 #include "Libraries/FMOD/inc/fmod.hpp"
 #include "Libraries/FMOD/inc/fmod_errors.h"
 
-std::unique_ptr<Sound> Sound::s_bgmPlayer = nullptr;
+std::unique_ptr<Sound> Sound::s_sound = nullptr;
 
 
 // ------------------------------------------------
@@ -19,13 +19,13 @@ std::unique_ptr<Sound> Sound::s_bgmPlayer = nullptr;
 Sound* const Sound::GetInstance()
 {
 	// インスタンスが生成されていない場合
-	if (s_bgmPlayer == nullptr)
+	if (s_sound == nullptr)
 	{
 		// 生成する
-		s_bgmPlayer.reset(new Sound());
+		s_sound.reset(new Sound());
 	}
 	// インスタンスを返す
-	return s_bgmPlayer.get();
+	return s_sound.get();
 }
 
 
@@ -131,17 +131,17 @@ void Sound::Update()
     FMOD_RESULT result;
 
     // 二重再生しない
-    if (s_bgmPlayer->m_channelBGM == nullptr)
+    if (s_sound->m_channelBGM == nullptr)
     {
-        result = s_bgmPlayer->m_system->playSound(s_bgmPlayer->m_soundBGM, nullptr, false, &s_bgmPlayer->m_channelBGM);
+        result = s_sound->m_system->playSound(s_sound->m_soundBGM, nullptr, false, &s_sound->m_channelBGM);
         assert(result == FMOD_OK && "BGM 再生失敗！");
 
         // 音量調整を行う
-        s_bgmPlayer->SetBGMVolume(0.2f);
+        s_sound->SetBGMVolume(0.2f);
     }
 
     // FMODのシステムを更新する
-    result = s_bgmPlayer->m_system->update();
+    result = s_sound->m_system->update();
     assert(result == FMOD_OK);
 }
 
@@ -182,4 +182,28 @@ void Sound::SetSEVolume(float volume)
     {
         m_channelSE->setVolume(volume);
     }
+}
+
+
+
+// ------------------------------------------------
+// BGMの変更
+// ------------------------------------------------
+// どのBGMを流すか
+// -----------------------------------------------
+void Sound::ChangeBGM(Sound::BGM_TYPE type)
+{
+    // すでに再生中のBGMを停止する
+    if (m_channelBGM != nullptr)
+        m_channelBGM->stop();
+
+    // BGMを変更する
+    m_soundBGM = m_bgmList[(size_t)type];
+
+    // 新しいBGMを再生する
+    FMOD_RESULT result = m_system->playSound(m_soundBGM, nullptr, false, &m_channelBGM);
+    assert(result == FMOD_OK && "BGM 再生失敗！");
+
+    // 音量調整を行う
+    s_sound->SetBGMVolume(0.2f);
 }

@@ -40,6 +40,8 @@
 // ゲームデータ ===============================================
 #include "Game/Data/GameData.h"
 
+// Sound　======================================================
+#include "Game/Sound/Sound.h"
 #include"Interface/IObserver.h"
 #include "Game/Observer/Messenger.h"
 
@@ -134,6 +136,9 @@ void PlayScene::CreateObjects()
 
 	// カメラをプレイシーンで設定
 	m_camera->ChangeState(m_camera->GetPlayState());
+
+	// BGM変更
+	Sound::GetInstance()->ChangeBGM(Sound::BGM_TYPE::PLAY);
 }
 
 
