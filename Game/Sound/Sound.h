@@ -27,10 +27,10 @@ public:
 
 
 	// 固定値
-	static constexpr const char* TITLE_BGM_PATH	= "Resources/Sounds/BGM/BGM.ogg";
+	static constexpr const char* TITLE_BGM_PATH	= "Resources/Sounds/BGM/Play.mp3";
 	static constexpr const char* PLAY_BGM_PATH	= "Resources/Sounds/BGM/Debug.mp3";
-	static constexpr const char* WIN_BGM_PATH	= "Resources/Sounds/BGM/BGM.ogg";
-	static constexpr const char* LOSE_BGM_PATH	= "Resources/Sounds/BGM/BGM.ogg";
+	static constexpr const char* WIN_BGM_PATH	= "Resources/Sounds/BGM/Play.mp3";
+	static constexpr const char* LOSE_BGM_PATH	= "Resources/Sounds/BGM/Play.mp3";
 
 // アクセサ関数
 public:

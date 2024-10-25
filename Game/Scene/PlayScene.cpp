@@ -223,6 +223,7 @@ void PlayScene::Update(float elapsedTime)
 	// 衝突判定の更新処理
 	m_collisionManager->Update();
 
+	// 勝敗を決める
 	CheckResult();
 
 #ifdef _DEBUG
@@ -230,10 +231,6 @@ void PlayScene::Update(float elapsedTime)
 	// キーボードステートトラッカーを取得する
 	const auto& kbTracker = m_commonResources->GetInputManager()->GetKeyboardTracker();
 
-	if (kbTracker->pressed.F7)
-	{
-		m_isChangeScene = true;
-	}
 
 #endif // _DEBUG
 }
@@ -331,5 +328,14 @@ void PlayScene::CheckResult()
 		m_isChangeScene = true;
 		data->SetBattleResult(GameData::BATTLE_RESULT::LOSE);
 	}
+
+
+#ifdef _DEBUG
+	if (m_keyboardStateTracker.IsKeyPressed(DirectX::Keyboard::Keys::F7))
+	{
+		m_isChangeScene = true;
+		data->SetBattleResult(GameData::BATTLE_RESULT::WIN);
+	}
+#endif // !_DEBUG
 
 }

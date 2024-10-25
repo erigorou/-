@@ -137,7 +137,7 @@ void Sound::Update()
         assert(result == FMOD_OK && "BGM 再生失敗！");
 
         // 音量調整を行う
-        s_sound->SetBGMVolume(0.2f);
+        s_sound->SetBGMVolume(1.0f);
     }
 
     // FMODのシステムを更新する
@@ -205,5 +205,5 @@ void Sound::ChangeBGM(Sound::BGM_TYPE type)
     assert(result == FMOD_OK && "BGM 再生失敗！");
 
     // 音量調整を行う
-    s_sound->SetBGMVolume(0.2f);
+    s_sound->SetBGMVolume(1.0f);
 }
