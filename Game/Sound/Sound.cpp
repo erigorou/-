@@ -9,6 +9,7 @@
 #include "Game/Sound/Sound.h"
 #include "Libraries/FMOD/inc/fmod.hpp"
 #include "Libraries/FMOD/inc/fmod_errors.h"
+#include "Game/Data/GameData.h"
 
 std::unique_ptr<Sound> Sound::s_sound = nullptr;
 
@@ -33,12 +34,15 @@ Sound* const Sound::GetInstance()
 // コンストラクタ
 // ------------------------------------------------
 Sound::Sound()
-    : m_system(nullptr)
-    , m_soundBGM(nullptr)
-    , m_channelBGM(nullptr)
-    , m_channelSE(nullptr)
-    , m_bgmList()
-    , m_seList()
+    : m_system      (nullptr)
+    , m_soundBGM    (nullptr)
+    , m_channelBGM  (nullptr)
+    , m_channelSE   (nullptr)
+    , m_bgmList     ()
+    , m_seList      ()
+	, m_bgmVolume   (1.0f)
+	, m_seVolume    (1.0f)
+    , m_fadeValue   (1.0f)
 {
 	InitializeFMOD();
 }
@@ -149,15 +153,17 @@ void Sound::Update()
 {
     FMOD_RESULT result;
 
+	// フェードの値を取得
+    s_sound->m_fadeValue = GameData::GetInstance()->GetFadeValue();
+
     // 二重再生しない
     if (s_sound->m_channelBGM == nullptr)
     {
         result = s_sound->m_system->playSound(s_sound->m_soundBGM, nullptr, false, &s_sound->m_channelBGM);
         assert(result == FMOD_OK && "BGM 再生失敗！");
-
-        // 音量調整を行う
-        s_sound->SetBGMVolume(1.0f);
     }
+
+    s_sound->SetBGMVolume(s_sound->m_fadeValue);
 
     // FMODのシステムを更新する
     result = s_sound->m_system->update();

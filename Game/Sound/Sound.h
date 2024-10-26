@@ -83,5 +83,8 @@ private:
 	std::vector<FMOD::Sound*> m_bgmList;	// BGM用の音声データリスト
 	std::vector<FMOD::Sound*> m_seList;		// SE用の音声データリスト
 
-	
+	float m_bgmVolume;	// BGMの音量
+	float m_seVolume;	// SEの音量
+
+	float m_fadeValue;	// 画面のフェード量(フェードに応じてBGMも行う。)
 };

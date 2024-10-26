@@ -16,13 +16,21 @@ public:
 // アクセサ関数 ------------
 public:
 
+	// 静的関数===========================================
 	// GameDataクラスのインスタンスを取得する
 	static GameData* const GetInstance();
+
+
+
+
 
 	// 戦闘結果
 	void			SetBattleResult(BATTLE_RESULT result)	{ m_battleResult = result;	}
 	BATTLE_RESULT	GetBattleResult() const					{ return m_battleResult;	}
 
+	// 画面のフェード量
+	void	SetFadeValue(float value) { m_fadeValue = value; }
+	float	GetFadeValue()		const { return m_fadeValue; }
 
 
 
@@ -45,7 +53,8 @@ private:
 
 	static std::unique_ptr<GameData> s_data;	// インスタンス
 
-
 	BATTLE_RESULT m_battleResult; // 戦闘結果
+
+	float m_fadeValue;	// 画面のフェード量
 
 };

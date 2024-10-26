@@ -12,7 +12,7 @@
 #include "Libraries/MyLib/EasingFunctions.h"
 #include "Libraries/Microsoft/DebugDraw.h"
 #include "Libraries/MyLib/DebugString.h"
-
+#include "Game/Data/GameData.h"
 ///	<summary>
 ///	インプットレイアウト
 ///	</summary>
@@ -237,6 +237,8 @@ void Fade::Render()
 
 	t = std::max(0.0f, 1.0f - (m_totalTime / FADE_TIME));
 	t = std::max(0.0001f, Easying::easeInCubic(t));
+
+	GameData::GetInstance()->SetFadeValue(t);
 
 	ID3D11DeviceContext1* context = m_pDR->GetD3DDeviceContext();
 
