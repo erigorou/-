@@ -93,7 +93,8 @@ void Sound::CreateBGMList()
 // ------------------------------------------------
 void Sound::CreateSEList()
 {
-
+	LoadSE(SE_TYPE::ATTACK, ATTACK_SE_PATH  );
+	LoadSE(SE_TYPE::SWEEP,  SWEEP_SE_PATH   );
 }
 
 
@@ -117,14 +118,32 @@ void Sound::LoadBGM(BGM_TYPE type, const char* filePath)
 	m_bgmList.push_back(sound);
 }
 
+
 // ------------------------------------------------
-// BGMファイルの読み込み
+// SEファイルの読みこみ
 // ------------------------------------------------
+void Sound::LoadSE(SE_TYPE type, const char* filePath)
+{
+	// 仮のサウンドを形成する
+	FMOD::Sound* sound;
+
+	// 仮サウンドに登録をする
+	FMOD_RESULT result;
+	result = m_system->createSound(filePath, FMOD_DEFAULT, nullptr, &sound);
+	assert(result == FMOD_OK);
+
+	if (m_seList.size() != (size_t)type)
+		assert(!"SEを入れる場所とenumが合いません！！！！！");
+
+	// リストに登録する
+	m_seList.push_back(sound);
+}
 
 
 
+
 // ------------------------------------------------
-// BGM再生Update
+// Sound再生Update
 // ------------------------------------------------
 void Sound::Update()
 {
@@ -194,16 +213,37 @@ void Sound::SetSEVolume(float volume)
 void Sound::ChangeBGM(Sound::BGM_TYPE type)
 {
     // すでに再生中のBGMを停止する
-    if (m_channelBGM != nullptr)
-        m_channelBGM->stop();
+    if (s_sound->m_channelBGM != nullptr)
+        s_sound->m_channelBGM->stop();
 
     // BGMを変更する
-    m_soundBGM = m_bgmList[(size_t)type];
+    s_sound->m_soundBGM = s_sound->m_bgmList[(size_t)type];
 
     // 新しいBGMを再生する
-    FMOD_RESULT result = m_system->playSound(m_soundBGM, nullptr, false, &m_channelBGM);
+    FMOD_RESULT result = s_sound->m_system->playSound(s_sound->m_soundBGM, nullptr, false, &s_sound->m_channelBGM);
     assert(result == FMOD_OK && "BGM 再生失敗！");
 
     // 音量調整を行う
     s_sound->SetBGMVolume(1.0f);
 }
+
+
+
+// ------------------------------------------------
+// SEの再生
+// ------------------------------------------------
+// 引数: type - 再生するSEの種類
+// -----------------------------------------------
+void Sound::PlaySE(Sound::SE_TYPE type)
+{
+    // 再生するSEを取得
+    FMOD::Sound* seSound = s_sound->m_seList[(size_t)type];
+
+    // SEを再生
+    FMOD_RESULT result = s_sound->m_system->playSound(seSound, nullptr, false, &s_sound->m_channelSE);
+    assert(result == FMOD_OK && "SE 再生失敗！");
+
+    // 音量調整を行う（任意）
+    s_sound->SetSEVolume(1.0f);  // ここで任意の音量を設定できます
+}
+

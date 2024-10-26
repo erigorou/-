@@ -22,16 +22,19 @@ public:
 
 	enum class SE_TYPE : unsigned int
 	{
-		
+		ATTACK,
+		SWEEP
 	};
 
 
 	// 固定値
-	static constexpr const char* TITLE_BGM_PATH	= "Resources/Sounds/BGM/Play.mp3";
-	static constexpr const char* PLAY_BGM_PATH	= "Resources/Sounds/BGM/Debug.mp3";
-	static constexpr const char* WIN_BGM_PATH	= "Resources/Sounds/BGM/Play.mp3";
-	static constexpr const char* LOSE_BGM_PATH	= "Resources/Sounds/BGM/Play.mp3";
+	static constexpr const char* TITLE_BGM_PATH	= "Resources/Sounds/BGM/Play.mp3"	;
+	static constexpr const char* PLAY_BGM_PATH	= "Resources/Sounds/BGM/Debug.mp3"	;
+	static constexpr const char* WIN_BGM_PATH	= "Resources/Sounds/BGM/Play.mp3"	;
+	static constexpr const char* LOSE_BGM_PATH	= "Resources/Sounds/BGM/Play.mp3"	;
 
+	static constexpr const char* ATTACK_SE_PATH = "Resources/Sounds/SE/Attack.mp3"	;
+	static constexpr const char* SWEEP_SE_PATH	= "Resources/Sounds/SE/Sweep.mp3"	;
 // アクセサ関数
 public:
 
@@ -42,7 +45,9 @@ public:
 	void SetBGMVolume	(float volume);
 	void SetSEVolume	(float volume);
 
-	void ChangeBGM(Sound::BGM_TYPE type);
+
+	static void ChangeBGM(Sound::BGM_TYPE type);
+	static void PlaySE(Sound::SE_TYPE type);
 
 	// デストラクタ
 	~Sound();
