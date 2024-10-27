@@ -82,4 +82,7 @@ private:
 
 	// パーティクルを生成したかのフラグ
 	bool m_canGenerateSlamParticles;
+
+	// 効果音を再生したかのフラグ
+	bool m_playSound;
 };

@@ -17,6 +17,7 @@
 #include "Game/Weapon/Cudgel/Header/Cudgel_Attacking.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
 #include "Libraries/MyLib/EasingFunctions.h"
+#include "Game/Sound/Sound.h"
 
 
 // 固定値 ==================================
@@ -73,6 +74,7 @@ void Cudgel_Attacking::PreUpdate()
 	m_tipPos.clear();
 
 	m_canGenerateSlamParticles = true;
+	m_playSound = false;
 }
 
 
@@ -147,6 +149,12 @@ void Cudgel_Attacking::HandleAttackPhase(float t)
 {
 	// 20度から115度振り下ろす（0.3秒間で、イージング使用）
 	m_angleUD = DirectX::XMConvertToRadians(-40.0f + 135.0f * Easying::easeInQuint(t));
+
+	if (t > 0.9f && m_playSound == false)
+	{
+		Sound::PlaySE(Sound::SE_TYPE::ENEMY_ATTACK);
+		m_playSound = true;
+	}
 }
 
 

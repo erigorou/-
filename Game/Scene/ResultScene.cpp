@@ -12,6 +12,8 @@
 #include <cassert>
 #include "../Data/GameData.h"
 #include "Libraries/MyLib/Texture.h"
+#include "../Sound/Sound.h"
+
 #include "State/WinResult.h"
 #include "State/LoseResult.h"
 
@@ -114,10 +116,12 @@ void ResultScene::CreateObjects()
 	{
 	case GameData::BATTLE_RESULT::WIN:
 		m_currentState = m_winResult.get();
+		Sound::ChangeBGM(Sound::BGM_TYPE::WIN);
 		
 		break;
 	case GameData::BATTLE_RESULT::LOSE:
 		m_currentState = m_loseResult.get();
+		Sound::ChangeBGM(Sound::BGM_TYPE::LOSE);
 		break;
 
 	default:

@@ -97,8 +97,10 @@ void Sound::CreateBGMList()
 // ------------------------------------------------
 void Sound::CreateSEList()
 {
-	LoadSE(SE_TYPE::ATTACK, ATTACK_SE_PATH  );
-	LoadSE(SE_TYPE::SWEEP,  SWEEP_SE_PATH   );
+	LoadSE(SE_TYPE::SYSTEM_OK,      SYSTEM_OK_PATH);
+	LoadSE(SE_TYPE::ENEMY_MOVE,     ENEMY_MOVE_SE_PATH);
+	LoadSE(SE_TYPE::ENEMY_ATTACK,   ENEMY_ATTACK_SE_PATH);
+	LoadSE(SE_TYPE::ENEMY_SWEEP,    ENEMY_SWEEP_SE_PATH);
 }
 
 

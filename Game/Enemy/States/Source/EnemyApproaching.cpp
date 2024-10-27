@@ -4,6 +4,7 @@
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
+#include "Game/Sound/Sound.h"
 
 #include "Game/Player/Player.h"
 #include "Game/Enemy/Enemy.h"
@@ -76,7 +77,10 @@ void EnemyApproaching::Update(const float& elapsedTime)
 
 	// 移動でカメラを揺らす
 	if (m_position.y <= MINIMAL)
+	{
 		m_enemy->GetPlayScene()->SetShakeCamera();
+		Sound::PlaySE(Sound::SE_TYPE::ENEMY_MOVE);
+	}
 
 
 	// プレイヤーの座標を取得

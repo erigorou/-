@@ -494,7 +494,8 @@ void Player::HitAction(InterSectData data)
 	else if (	! m_isHit							&&
 				m_canHit							&&
 				data.objType == ObjectType::Cudgel	&&
-				data.colType == CollisionType::OBB	)
+				data.colType == CollisionType::OBB	&&
+				m_currentState != m_playerDodging.get())
 	{
 		// HP‚ðŒ¸‚ç‚·
 		m_hp->Damage(1);

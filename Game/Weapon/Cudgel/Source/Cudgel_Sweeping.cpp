@@ -11,6 +11,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/Collision.h"
+#include "Game/Sound/Sound.h"
 
 #include "Game/Player/Player.h"
 #include "Game/Enemy/Enemy.h"
@@ -76,6 +77,9 @@ void Cudgel_Sweeping::PreUpdate()
 	m_rootPos.clear();
 	m_tipPos.clear();
 	m_canGenerateSlamParticles = true;		// エフェクト生成フラグをtrueにする
+
+	//////////////////////////////////////////////サウンドの再生///////////////////////////////////////////////////
+	m_playSound = false;	// サウンドの再生フラグをfalseにする
 }
 
 
@@ -110,15 +114,24 @@ void Cudgel_Sweeping::UpdateCudgelRotation()
 	bool canHit = false;
 	float t = 0.0f;  // 正規化された経過時間
 
+	// ためモーション
 	if (m_totalSeconds <= CHARGE_TIME) {
 		t =	m_totalSeconds / CHARGE_TIME;							// 0 ~ 1 に正規化
 		m_angleRL = -CHARGE_ROTATE_ANGLE * Easying::easeOutCirc(t);	// 30度左回転
 	}
 
+	// 攻撃モーション
 	else if (m_totalSeconds >= WINDUP_TIME && m_totalSeconds <= ATTACK_TIME) {
 		t = (m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME);					// 0 ~ 1 に正規化
 		m_angleRL = CHARGE_ROTATE_ANGLE + WINDUP_ROTATE_ANGLE * Easying::easeOutBack(t);  // 30度から60度右回転
 		canHit = true;
+
+		// SEの再生
+		if (m_playSound == false)
+		{
+			Sound::PlaySE(Sound::SE_TYPE::ENEMY_SWEEP);
+			m_playSound = true;
+		}
 	}
 
 	else if (m_totalSeconds > END_TIME) {

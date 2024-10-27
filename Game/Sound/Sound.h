@@ -22,19 +22,23 @@ public:
 
 	enum class SE_TYPE : unsigned int
 	{
-		ATTACK,
-		SWEEP
+		SYSTEM_OK,
+		ENEMY_MOVE,
+		ENEMY_ATTACK,
+		ENEMY_SWEEP
 	};
 
 
 	// 固定値
-	static constexpr const char* TITLE_BGM_PATH	= "Resources/Sounds/BGM/Play.mp3"	;
-	static constexpr const char* PLAY_BGM_PATH	= "Resources/Sounds/BGM/Debug.mp3"	;
-	static constexpr const char* WIN_BGM_PATH	= "Resources/Sounds/BGM/Play.mp3"	;
-	static constexpr const char* LOSE_BGM_PATH	= "Resources/Sounds/BGM/Play.mp3"	;
+	static constexpr const char* TITLE_BGM_PATH	= "Resources/Sounds/BGM/Title.mp3"	;
+	static constexpr const char* PLAY_BGM_PATH	= "Resources/Sounds/BGM/Play.mp3"	;
+	static constexpr const char* WIN_BGM_PATH	= "Resources/Sounds/BGM/Win.mp3"	;
+	static constexpr const char* LOSE_BGM_PATH	= "Resources/Sounds/BGM/Lose.mp3"	;
 
-	static constexpr const char* ATTACK_SE_PATH = "Resources/Sounds/SE/Attack.mp3"	;
-	static constexpr const char* SWEEP_SE_PATH	= "Resources/Sounds/SE/Sweep.mp3"	;
+	static constexpr const char* SYSTEM_OK_PATH			= "Resources/Sounds/SE/System/OK.mp3";
+	static constexpr const char* ENEMY_MOVE_SE_PATH		= "Resources/Sounds/SE/Enemy/Move.mp3";
+	static constexpr const char* ENEMY_ATTACK_SE_PATH	= "Resources/Sounds/SE/Enemy/Attack.mp3";
+	static constexpr const char* ENEMY_SWEEP_SE_PATH	= "Resources/Sounds/SE/Enemy/Sweep.mp3";
 // アクセサ関数
 public:
 

@@ -194,7 +194,6 @@ void PlayScene::Update(float elapsedTime)
 	if (IsKeyDown	(m_keyboardState)		)	Messenger::Notify(m_keyboardState		); 
 	if (IsKeyPress	(m_keyboardStateTracker))	Messenger::Notify(m_keyboardStateTracker); 
 
-
 	// UIの更新
 	m_uiManager->Update(elapsedTime);
 
@@ -226,12 +225,8 @@ void PlayScene::Update(float elapsedTime)
 	// 勝敗を決める
 	CheckResult();
 
+
 #ifdef _DEBUG
-
-	// キーボードステートトラッカーを取得する
-	const auto& kbTracker = m_commonResources->GetInputManager()->GetKeyboardTracker();
-
-
 #endif // _DEBUG
 }
 

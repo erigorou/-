@@ -11,6 +11,8 @@
 #include "Libraries/MyLib/InputManager.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "../Factory/Factory.h"
+#include "../Sound/Sound.h"
+
 #include "../Camera/Camera.h"
 #include "../Stage/Floor/Floor.h"
 #include "../TitleObject/TitleEnemy.h"
@@ -70,6 +72,9 @@ void TitleScene::Initialize()
 
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
+
+	// 音楽の変更
+	Sound::ChangeBGM(Sound::BGM_TYPE::TITLE);
 }
 
 
@@ -184,7 +189,11 @@ void TitleScene::Update(float elapsedTime)
 	// スペースキーが押されたら
 	if (kbTracker->pressed.Space)
 	{
-		m_isChangeScene = true;
+		if (!m_isChangeScene)
+		{
+			m_isChangeScene = true;
+			Sound::PlaySE(Sound::SE_TYPE::SYSTEM_OK);
+		}
 	}
 }
 
