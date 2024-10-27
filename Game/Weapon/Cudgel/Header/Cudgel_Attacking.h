@@ -60,6 +60,7 @@ private:
 	void HandleChargePhase(float t);	// ‚½‚ßƒ‚[ƒVƒ‡ƒ“
 	void HandleWindoupPhase();			// 
 	void HandleAttackPhase(float t);
+	void KeepStampPhase();
 	void HandleSlamParticles();
 	
 	void UpdateAttackState();

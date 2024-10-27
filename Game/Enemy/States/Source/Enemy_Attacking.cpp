@@ -51,6 +51,13 @@ void Enemy_Attacking::Update(const float& elapsedTime)
 	using namespace DirectX::SimpleMath;
 	m_totalSeconds += elapsedTime;
 
+	// プレイヤーの座標を取得
+	Vector3 playerPos = m_enemy->GetPlayScene()->GetPlayer()->GetPosition();
+	// 敵の座標を取得
+	Vector3 parentPos = m_enemy->GetPosition();
+	// 敵から見たプレイヤーの位置を計算する
+	m_angle = Math::CalculationAngle(parentPos, playerPos);
+
 	if (m_totalSeconds >= 2.5f)
 		m_enemy->ChangeState(m_enemy->GetEnemyIdling());	// 待機状態に遷移
 }

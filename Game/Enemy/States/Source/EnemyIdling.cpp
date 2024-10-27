@@ -74,13 +74,13 @@ void EnemyIdling::Update(const float& elapsedTime)
 			m_enemy->ChangeState(m_enemy->GetEnemyApproaching());	// í«è]
 		else
 		{
-			int random = Math::RandomInt(0, 4);
+			int random = Math::RandomInt(0, 10);
 
-			if (random <= 2)
+			if (random <= 5)
 				m_enemy->ChangeState(m_enemy->GetEnemySweeping());		// ë|ì¢
-			else if(random == 3)
+			else if(random == 8)
 				m_enemy->ChangeState(m_enemy->GetEnemyAttacking());		// çUåÇ
-			else if(random == 4)
+			else if(random == 10)
 				m_enemy->ChangeState(m_enemy->GetEnemyIdling());		// âΩÇ‡ÇµÇ»Ç¢
 		}
 	}

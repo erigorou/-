@@ -104,6 +104,9 @@ void EnemyApproaching::Update(const float& elapsedTime)
 	// プレイヤーとの距離が　20以下なら攻撃モーションに変更
 	if (Vector3::Distance(m_position, playerPos) <= 10.f)
 	{
+		m_enemy->GetPlayScene()->SetShakeCamera();
+		Sound::PlaySE(Sound::SE_TYPE::ENEMY_MOVE);
+
 		int random = Math::RandomInt(0, 4);
 
 		if (random <= 1)

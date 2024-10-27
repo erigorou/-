@@ -142,7 +142,6 @@ public:
 	/// </summary>
 	/// <param name="min">ç≈í·íl</param>
 	/// <param name="max">ç≈çÇíl</param>
-	/// <returns></returns>
 	static int RandomInt(int min, int max)
 	{
 		if (min > max) std::swap(min, max);

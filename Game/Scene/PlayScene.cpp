@@ -117,17 +117,17 @@ void PlayScene::CreateObjects()
 
 	Messenger::Clear();	// メッセンジャーのクリア
 
-	m_collisionManager	= Factory::CreateCollisionManager();	// パーティクル
-	m_camera			= Factory::CreateCamera();				// カメラ
-	m_skySphere			= Factory::CreateSkySphere(device);		// 天球	
-	m_particles			= Factory::CreateParticle();			// パーティクル
-	m_floor				= Factory::CreateFloor(device);			// フロア
-	m_wall				= Factory::CreateWall(this);			// 壁
-	m_player			= Factory::CreatePlayer(this);			// プレイヤ
-	m_sword				= Factory::CreateSword(this);			// 刀
-	m_enemy				= Factory::CreateEnemy(this); 			// 鬼
-	m_cudgel			= Factory::CreateCudgel(this);			// 金棒
-	m_uiManager			= Factory::CreateUIManager(this);		// UIマネージャ
+	m_collisionManager	= Factory::CreateCollisionManager	();			// パーティクル
+	m_camera			= Factory::CreateCamera				();			// カメラ
+	m_skySphere			= Factory::CreateSkySphere			(device);	// 天球	
+	m_particles			= Factory::CreateParticle			();			// パーティクル
+	m_floor				= Factory::CreateFloor				(device);	// フロア
+	m_wall				= Factory::CreateWall				(this);		// 壁
+	m_player			= Factory::CreatePlayer				(this);		// プレイヤ
+	m_sword				= Factory::CreateSword				(this);		// 刀
+	m_enemy				= Factory::CreateEnemy				(this); 	// 鬼
+	m_cudgel			= Factory::CreateCudgel				(this);		// 金棒
+	m_uiManager			= Factory::CreateUIManager			(this);		// UIマネージャ
 
 	// 観察者リストをソートする
 	Messenger::SortObserverList();

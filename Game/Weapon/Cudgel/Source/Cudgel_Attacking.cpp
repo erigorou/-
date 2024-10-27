@@ -91,7 +91,10 @@ void Cudgel_Attacking::Update(float elapsedTime)
 
 	auto enemy = m_cudgel->GetPlayScene()->GetEnemy();
 	m_position = enemy->GetPosition();	// 敵の座標を取得
-	m_angleRL = enemy->GetAngle();		// 敵の回転を取得
+	m_enemyAngle = enemy->GetAngle();	// 敵の回転を取得
+	m_angleRL = m_enemyAngle;			// 敵の回転を設定
+
+
 
 	UpdateCudgelRotation();				// 回転を計算する
 	CalculateModelMatrix();				// ワールド行列を計算
@@ -149,6 +152,7 @@ void Cudgel_Attacking::HandleAttackPhase(float t)
 {
 	// 20度から115度振り下ろす（0.3秒間で、イージング使用）
 	m_angleUD = DirectX::XMConvertToRadians(-40.0f + 135.0f * Easying::easeInQuint(t));
+	m_angleRL = DirectX::XMConvertToRadians(-20 * Easying::easeInQuint(t))	+m_angleRL;
 
 	if (t > 0.9f && m_playSound == false)
 	{
@@ -156,7 +160,6 @@ void Cudgel_Attacking::HandleAttackPhase(float t)
 		m_playSound = true;
 	}
 }
-
 
 /// <summary>
 /// 後隙のパーティクル生成処理。武器の先端に塵を発生させ、カメラを振動させる。
@@ -173,6 +176,16 @@ void Cudgel_Attacking::HandleSlamParticles()
 	}
 }
 
+
+void Cudgel_Attacking::KeepStampPhase()
+{
+	HandleSlamParticles();
+
+	m_angleUD = DirectX::XMConvertToRadians(95.0f);
+	m_angleRL = DirectX::XMConvertToRadians(-20.0f) + m_angleRL;
+}
+
+
 /// <summary>
 /// 更新する処理
 /// </summary>
@@ -184,8 +197,8 @@ void Cudgel_Attacking::UpdateAttackState()
 	else if (m_totalSeconds > CHARGE_TIME && m_totalSeconds <= WINDUP_TIME)	HandleWindoupPhase();
 																			// 降り下ろす
 	else if (m_totalSeconds > WINDUP_TIME && m_totalSeconds < ATTACK_TIME)	HandleAttackPhase((m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME));
-																			// 後隙のパーティクル生成
-	else if (m_totalSeconds > ATTACK_TIME)									HandleSlamParticles();
+
+	else																	KeepStampPhase();
 }
 
 

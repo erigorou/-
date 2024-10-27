@@ -110,14 +110,17 @@ void Player::Initialize()
 void Player::CreateCollision()
 {
 	// 体の当たり判定を作成
-	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, PLAYER_SCALE * 12);
+	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>
+		(
+			m_position, PLAYER_SCALE * 12
+		);
 
 	
 	// 当たり判定を記録する
 	m_playScene->GetCollisionManager()->AddCollision(
-		ObjectType::Player,
-		this,
-		m_bodyCollision.get()
+		ObjectType::Player,		// オブジェクトの種類
+		this,					// オブジェクトのアドレス
+		m_bodyCollision.get()	// 当たり判定のアドレス
 	);
 }
 
