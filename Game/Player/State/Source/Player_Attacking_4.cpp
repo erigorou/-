@@ -10,6 +10,7 @@
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
+#include "Game/Sound/Sound.h"
 
 #include "Game/Player/Player.h"
 #include "Game/Enemy/Enemy.h"
@@ -49,6 +50,8 @@ void PlayerAttacking_4::PreUpdate()
 	m_player->GetPlayScene()->GetSword()->ChangeState(
 		m_player->GetPlayScene()->GetSword()->GetAttacking_4State()
 	);
+
+	Sound::PlaySE(Sound::SE_TYPE::PLAYER_ATTACK2);
 }
 
 // 更新処理
@@ -98,7 +101,7 @@ void PlayerAttacking_4::Render(
 
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
-	debugString->AddString("Attack 4");
+	debugString->AddString("");
 }
 
 
