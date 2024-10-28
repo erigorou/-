@@ -221,6 +221,7 @@
     <ClInclude Include="Game\Data\GameData.h" />
     <ClInclude Include="Libraries\MyLib\Texture.h" />
     <ClInclude Include="Game\Scene\State\LoseResult.h" />
+    <ClInclude Include="Game\UI\Header\Operation.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -338,6 +339,7 @@
     <ClCompile Include="Game\Data\GameData.cpp" />
     <ClCompile Include="Libraries\MyLib\Texture.cpp" />
     <ClCompile Include="Game\Scene\State\LoseResult.cpp" />
+    <ClCompile Include="Game\UI\Source\Operation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -381,5 +383,8 @@
     <FxCompile Include="Resources\Shaders\Warning\WarningGS.hlsl" />
     <FxCompile Include="Resources\Shaders\Warning\WarningPS.hlsl" />
     <FxCompile Include="Resources\Shaders\Warning\WarningVS.hlsl" />
+    <FxCompile Include="Resources\Shaders\Operation\OperationGS.hlsl" />
+    <FxCompile Include="Resources\Shaders\Operation\OperationVS.hlsl" />
+    <FxCompile Include="Resources\Shaders\Operation\OperationPS.hlsl" />
   </ItemGroup>
 </Project>

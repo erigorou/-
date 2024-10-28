@@ -25,6 +25,15 @@
       <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Fade\FadeVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Operation\OperationGS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Operation\OperationPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Operation\OperationVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Sword\SwordTrailPS.cso</FullPath>
     </ContentFile>
     <ContentFile>

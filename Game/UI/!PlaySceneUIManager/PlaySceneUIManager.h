@@ -13,6 +13,8 @@ class Player;
 class PlayerHPUI;
 class EnemyHPUI;
 class Warning;
+class Operation;
+
 class CommonResources; // CommonResources の前方宣言
 
 namespace DX {
@@ -39,13 +41,14 @@ public:
 	void Finalize	();						// 終了関数
 
 private:
-    PlayScene* m_playScene;         // プレイシーン
-    DX::DeviceResources* m_pDR;     // デバイスリソース
-    CommonResources* m_commonResources; // 共通リソース
+    PlayScene* m_playScene;				// プレイシーン
+    DX::DeviceResources* m_pDR;			// デバイスリソース
+    CommonResources* m_commonResources;	// 共通リソース
 
-    std::unique_ptr<PlayerHPUI> m_playerHP; // プレイヤーのHP
-	std::unique_ptr<EnemyHPUI>  m_enemyHP;  // エネミーのHP
-	std::unique_ptr<Warning>    m_warning;  // 警告UI
+    std::unique_ptr<PlayerHPUI>	m_playerHP;		// プレイヤーのHP
+	std::unique_ptr<EnemyHPUI>	m_enemyHP;		// エネミーのHP
+	std::unique_ptr<Warning>	m_warning;		// 警告UI
+	std::unique_ptr<Operation>	m_operation;	// 操作説明UI
 };
 
 #endif

@@ -98,17 +98,17 @@ std::unique_ptr<Player> Factory::CreatePlayer(PlayScene* playScene)
 {
 	// プレイヤーを宣言する
 	std::unique_ptr<Player> player;
+	// プレイヤーを生成する
 	player = std::make_unique<Player>(playScene);
 	// 初期化処理
 	player->Initialize();
-
+	// キーを登録
 	Messenger::Attach(DirectX::Keyboard::X			, player.get(), Messenger::KeyPressType::PRESSED);
 	Messenger::Attach(DirectX::Keyboard::LeftShift	, player.get(), Messenger::KeyPressType::PRESSED);
 	Messenger::Attach(DirectX::Keyboard::Left		, player.get(), Messenger::KeyPressType::DOWN);
 	Messenger::Attach(DirectX::Keyboard::Right		, player.get(), Messenger::KeyPressType::DOWN);
 	Messenger::Attach(DirectX::Keyboard::Up			, player.get(), Messenger::KeyPressType::DOWN);
 	Messenger::Attach(DirectX::Keyboard::Down		, player.get(), Messenger::KeyPressType::DOWN);
-
 	// プレイヤーの設定
 	return player;
 }
