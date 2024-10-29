@@ -6,13 +6,22 @@
 #include "DeviceResources.h"
 #include "Libraries/Microsoft/DebugDraw.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
-
+#include "OperateUI.h"
+#include "../UI.h"
 
 class Operation
 {
 // 固定値
 private:
-	static const wchar_t* TEXTURE_PATH; 
+	static const wchar_t* TEXT_PATH; 
+
+	static const wchar_t* X_PATH;
+	static const wchar_t* SHIFT_PATH;
+	static const wchar_t* UP_PATH;
+	static const wchar_t* DOWN_PATH;
+	static const wchar_t* LEFT_PATH;
+	static const wchar_t* RIGHT_PATH;
+
 	static const wchar_t* VS_PATH;
 	static const wchar_t* PS_PATH;
 	static const wchar_t* GS_PATH;
@@ -72,6 +81,9 @@ private:
 
 	float m_elapsedTime;	// フレーム時間
 	float m_totalTime;		// 経過時間
+
+	std::vector<std::unique_ptr<OperateUI>> m_operateUIs;	// 操作UI
+	std::unique_ptr<UI> m_textUI;							// UI
 };
 
 

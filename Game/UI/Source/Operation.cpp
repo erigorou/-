@@ -5,10 +5,19 @@
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "Game/Player/PlayerHP.h"
 #include "CommonStates.h"
-
+#include "Game/Observer/Messenger.h"
 
 // 固定値
-const wchar_t* Operation::TEXTURE_PATH = L"Resources/Textures/UI/Operation.png";
+const wchar_t* Operation::TEXT_PATH = L"Resources/Textures/UI/Operation/TEXT.png";
+
+const wchar_t* Operation::X_PATH		= L"Resources/Textures/UI/Operation/X.png"		;
+const wchar_t* Operation::SHIFT_PATH	= L"Resources/Textures/UI/Operation/Shift.png"	;
+const wchar_t* Operation::UP_PATH		= L"Resources/Textures/UI/Operation/Up.png"		;
+const wchar_t* Operation::DOWN_PATH		= L"Resources/Textures/UI/Operation/Down.png"	;
+const wchar_t* Operation::LEFT_PATH		= L"Resources/Textures/UI/Operation/Left.png"	;
+const wchar_t* Operation::RIGHT_PATH	= L"Resources/Textures/UI/Operation/Right.png"	;
+
+
 const wchar_t* Operation::VS_PATH = L"Resources/Shaders/Operation/OperationVS.cso";
 const wchar_t* Operation::PS_PATH = L"Resources/Shaders/Operation/OperationPS.cso";
 const wchar_t* Operation::GS_PATH = L"Resources/Shaders/Operation/OperationGS.cso";
@@ -39,42 +48,54 @@ Operation::~Operation()
 // 初期化処理
 void Operation::Initialize()
 {
-	ID3D11Device* device = m_pDR->GetD3DDevice();
+	std::unique_ptr<OperateUI> operateUI;
 
-	// シェーダーの生成
-	m_customShader = std::make_unique<CustomShader>
-		(
-			device,
-			VS_PATH,
-			PS_PATH,
-			GS_PATH,
-			InputElements
-		);
+	// Xキーの生成
+	operateUI = std::make_unique<OperateUI>(X_PATH);
+	operateUI->Initialize();
 
-	// プリミティブバッチの生成
-	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>
-		(
-			m_pDR->GetD3DDeviceContext()
-		);
+	m_operateUIs.push_back(std::move(operateUI));
+	Messenger::Attach(DirectX::Keyboard::Keys::X, m_operateUIs[0].get(), Messenger::KeyPressType::DOWN);
 
-	// コモンステートの生成
-	m_states = std::make_unique<DirectX::CommonStates>(device);
+	// Shiftキーの生成
+	operateUI = std::make_unique<OperateUI>(SHIFT_PATH);
+	operateUI->Initialize();
 
-	// テクスチャの読み込み
-	CustomShader::LoadTexture(device, TEXTURE_PATH, m_texture);
+	m_operateUIs.push_back(std::move(operateUI));
+	Messenger::Attach(DirectX::Keyboard::Keys::LeftShift, m_operateUIs[1].get(), Messenger::KeyPressType::DOWN);
 
-	//	シェーダーにデータを渡すためのコンスタントバッファ生成
-	D3D11_BUFFER_DESC bd;
-	ZeroMemory(&bd, sizeof(bd));
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(ConstBuffer);
-	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	bd.CPUAccessFlags = 0;
+	// 上キーの生成
+	operateUI = std::make_unique<OperateUI>(UP_PATH);
+	operateUI->Initialize();
 
-	HRESULT hr = device->CreateBuffer(&bd, nullptr, &m_CBuffer);
-	if (FAILED(hr)) {
-		MessageBox(0, L"コンスタントバッファの生成に失敗しました.", NULL, MB_OK);
-	}
+	m_operateUIs.push_back(std::move(operateUI));
+	Messenger::Attach(DirectX::Keyboard::Keys::Up, m_operateUIs[2].get(), Messenger::KeyPressType::DOWN);
+
+	// 下キーの生成
+	operateUI = std::make_unique<OperateUI>(DOWN_PATH);
+	operateUI->Initialize();
+
+	m_operateUIs.push_back(std::move(operateUI));
+	Messenger::Attach(DirectX::Keyboard::Keys::Down, m_operateUIs[3].get(), Messenger::KeyPressType::DOWN);
+
+	// 左キーの生成
+	operateUI = std::make_unique<OperateUI>(LEFT_PATH);
+	operateUI->Initialize();
+
+	m_operateUIs.push_back(std::move(operateUI));
+	Messenger::Attach(DirectX::Keyboard::Keys::Left, m_operateUIs[4].get(), Messenger::KeyPressType::DOWN);
+
+	// 右キーの生成	
+	operateUI = std::make_unique<OperateUI>(RIGHT_PATH);
+	operateUI->Initialize();
+
+	m_operateUIs.push_back(std::move(operateUI));
+	Messenger::Attach(DirectX::Keyboard::Keys::Right, m_operateUIs[5].get(), Messenger::KeyPressType::DOWN);
+
+
+	m_textUI = std::make_unique<UI>(TEXT_PATH);
+	m_textUI->Initialize();
+
 }
 
 
@@ -89,61 +110,12 @@ void Operation::Update(float elapsedTime)
 // 描画処理
 void Operation::Render()
 {
-	using namespace DirectX;
-	ID3D11DeviceContext* context = m_pDR->GetD3DDeviceContext();
-
-	// 頂点情報
-	VertexPositionColorTexture vertex[4] =
-	{
-		VertexPositionColorTexture(
-		SimpleMath::Vector3::Zero,
-		SimpleMath::Vector4::One,
-		XMFLOAT2(0.0f, 0.0f)
-		)
-	};
-
-	// バッファの作成
-	ConstBuffer cbuff;
-	cbuff.matWorld	= SimpleMath::Matrix::Identity;
-	cbuff.matView	= SimpleMath::Matrix::Identity;
-	cbuff.matProj	= SimpleMath::Matrix::Identity;
-	cbuff.diffuse	= SimpleMath::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-	cbuff.easing	= SimpleMath::Vector4(0.0f, 0.0f, 0.0f, 0.0f);
-	cbuff.time		= SimpleMath::Vector4(m_totalTime, 0.0f, 0.0f, 0.0f);
-	
-	// コンスタントバッファの設定
-	context->UpdateSubresource(m_CBuffer.Get(), 0, nullptr, &cbuff, 0, 0);
-
-	// シェーダーにバッファを渡す
-	ID3D11Buffer* cb[1] = { m_CBuffer.Get() };
-	context->VSSetConstantBuffers(0, 1, cb);
-	context->GSSetConstantBuffers(0, 1, cb);
-	context->PSSetConstantBuffers(0, 1, cb);
-	
-	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
-	context->PSSetSamplers(0, 1, sampler);
-
-	ID3D11BlendState* blendstate = m_states->NonPremultiplied();
-	context->OMSetDepthStencilState(m_states->DepthDefault(), 0);
-	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
-	context->RSSetState(m_states->CullNone());
-
-	m_customShader->BeginSharder(context);
-
-	// テクスチャの設定
-	for (int i = 0; i < m_texture.size(); i++)
-	{
-		context->PSSetShaderResources(i, 1, m_texture[i].GetAddressOf());
+	for(size_t i = 0; i < m_operateUIs.size(); i++)
+	{ 
+		m_operateUIs[i]->Render();
 	}
 
-	context->IASetInputLayout(m_customShader->GetInputLayout());
-
-	// 描画
-	m_batch->Begin();
-	m_batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], 4);
-	m_batch->End();
-
-	m_customShader->EndSharder(context);
+	m_textUI->Render();
 }
 
 

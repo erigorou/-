@@ -222,6 +222,8 @@
     <ClInclude Include="Libraries\MyLib\Texture.h" />
     <ClInclude Include="Game\Scene\State\LoseResult.h" />
     <ClInclude Include="Game\UI\Header\Operation.h" />
+    <ClInclude Include="Game\UI\Header\OperateUI.h" />
+    <ClInclude Include="Game\UI\UI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -340,6 +342,8 @@
     <ClCompile Include="Libraries\MyLib\Texture.cpp" />
     <ClCompile Include="Game\Scene\State\LoseResult.cpp" />
     <ClCompile Include="Game\UI\Source\Operation.cpp" />
+    <ClCompile Include="Game\UI\Source\OperateUI.cpp" />
+    <ClCompile Include="Game\UI\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
