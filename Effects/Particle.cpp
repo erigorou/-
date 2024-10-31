@@ -9,6 +9,8 @@
 #include "pch.h"
 #include "Libraries/MyLib/BinaryFile.h"
 #include "Effects/Particle.h"
+#include "Libraries/MyLib/CustomShader/CustomShader.h"
+
 #include "Effects/Header/DustTrailParticle.h"
 #include "Effects/Header/SwordTrailParticle.h"
 
@@ -68,8 +70,7 @@ void Particle::Create()
 	CreateShader();
 
 	//	画像の読み込み（２枚ともデフォルトは読み込み失敗でnullptr)
-	LoadTexture(L"Resources/Textures/dust.png");
-	LoadTexture(L"Resources/Textures/dust.png");
+	LoadTexture(TEXTURE_PATH);
 
 	//	プリミティブバッチの作成
 	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(resources->GetDeviceResources()->GetD3DDeviceContext());
@@ -222,41 +223,23 @@ void Particle::CreateShader()
 {
 	ID3D11Device1* device = m_pDR->GetD3DDevice();
 
-	//	コンパイルされたシェーダファイルを読み込み
-	BinaryFile VSDataDust = BinaryFile::LoadFile(L"Resources/Shaders/Dust/DustVS.cso");
-	BinaryFile GSDataDust = BinaryFile::LoadFile(L"Resources/Shaders/Dust/DustGS.cso");
-	BinaryFile PSDataDust = BinaryFile::LoadFile(L"Resources/Shaders/Dust/DustPS.cso");
+	m_swordShader = std::make_unique<CustomShader>
+		(
+			device, 
+			SWORD_VS,
+			SWORD_PS,
+			nullptr,
+			InputElements
+		);
 
-	BinaryFile VSDataSword = BinaryFile::LoadFile(L"Resources/Shaders/Sword/SwordTrailVS.cso");
-	BinaryFile PSDataSword = BinaryFile::LoadFile(L"Resources/Shaders/Sword/SwordTrailPS.cso");
-
-	//	インプットレイアウトの作成
-	device->CreateInputLayout(&INPUT_LAYOUT[0],
-		static_cast<UINT>(INPUT_LAYOUT.size()),
-		VSDataDust.GetData(), VSDataDust.GetSize(),
-		m_inputLayout.ReleaseAndGetAddressOf());
-
-	//device->CreateInputLayout(&INPUT_LAYOUT[1],
-	//	static_cast<UINT>(INPUT_LAYOUT.size()),
-	//	VSDataSword.GetData(), VSDataSword.GetSize(),
-	//	m_inputLayout.ReleaseAndGetAddressOf());
-
-
-	// 頂点シェーダー、ジオメトリシェーダー、ピクセルシェーダーの生成
-	if (FAILED(device->CreateVertexShader(VSDataDust.GetData(), VSDataDust.GetSize(), NULL, m_vertexShaderDust.ReleaseAndGetAddressOf())))
-	{	MessageBox(0, L"CreateVS (Dust) Failed.", NULL, MB_OK);	return; }
-	if (FAILED(device->CreateGeometryShader(GSDataDust.GetData(), GSDataDust.GetSize(), NULL, m_geometryShaderDust.ReleaseAndGetAddressOf())))
-	{	MessageBox(0, L"CreateGS (Dust) Failed.", NULL, MB_OK);	return; }
-	if (FAILED(device->CreatePixelShader(PSDataDust.GetData(), PSDataDust.GetSize(), NULL, m_pixelShaderDust.ReleaseAndGetAddressOf())))
-	{	MessageBox(0, L"CreatePS (Dust) Failed.", NULL, MB_OK);	return; }
-
-	// Sword用のシェーダーの生成
-	if (FAILED(device->CreateVertexShader(VSDataSword.GetData(), VSDataSword.GetSize(), NULL, m_vertexShaderSword.ReleaseAndGetAddressOf())))
-	{	MessageBox(0, L"CreateVS (Sword) Failed.", NULL, MB_OK);return; }
-	if (FAILED(device->CreatePixelShader(PSDataSword.GetData(), PSDataSword.GetSize(), NULL, m_pixelShaderSword.ReleaseAndGetAddressOf())))
-	{	MessageBox(0, L"CreatePS (Sword) Failed.", NULL, MB_OK);return; }
-
-
+	m_dustShader = std::make_unique<CustomShader>
+		(
+			device,
+			DUST_VS,
+			DUST_PS,
+			DUST_GS,
+			InputElements
+		);
 
 	//	シェーダーにデータを渡すためのコンスタントバッファ生成
 	D3D11_BUFFER_DESC bd;
@@ -301,7 +284,7 @@ void Particle::Render(
 	//	インプットレイアウトの登録
 	context->IASetInputLayout(m_inputLayout.Get());
 
-	DrawSwordParticle(view, proj);	// 剣の残像の描画
+	DrawSwordParticle(view, proj);				// 剣の残像の描画
 	DrawDustParticle(view, proj, cameraDir);	// 土埃の描画
 }
 
@@ -330,9 +313,7 @@ void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::Simp
 	context->VSSetConstantBuffers(0, 1, cb);
 	context->PSSetConstantBuffers(0, 1, cb);
 
-	context->VSSetShader(m_vertexShaderSword.Get(), nullptr,0);	// 頂点シェーダーを設定
-	context->GSSetShader(nullptr, nullptr, 0);					// ジオメトリシェーダーは使用しない
-	context->PSSetShader(m_pixelShaderSword.Get(), nullptr, 0);	// ピクセルシェーダーを設定
+	m_swordShader->BeginSharder(context);
 
 	// 剣の残像パーティクルを描画
 	m_batch->Begin();
@@ -360,9 +341,7 @@ void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::Simp
 
 	m_batch->End();
 
-	context->VSSetShader(nullptr, nullptr, 0);
-	context->GSSetShader(nullptr, nullptr, 0);
-	context->PSSetShader(nullptr, nullptr, 0);
+	m_swordShader->EndSharder(context);
 }
 
 
@@ -392,9 +371,8 @@ void Particle::DrawDustParticle(DirectX::SimpleMath::Matrix view, DirectX::Simpl
 	context->GSSetConstantBuffers(0, 1, cb);
 	context->PSSetConstantBuffers(0, 1, cb);
 
-	context->VSSetShader(m_vertexShaderDust  .Get(), nullptr, 0);
-	context->GSSetShader(m_geometryShaderDust.Get(), nullptr, 0);
-	context->PSSetShader(m_pixelShaderDust   .Get(), nullptr, 0);
+
+	m_dustShader->BeginSharder(context);
 
 	// 土埃パーティクルの頂点リストをクリア
 	m_dustVertices.clear();
@@ -429,9 +407,7 @@ void Particle::DrawDustParticle(DirectX::SimpleMath::Matrix view, DirectX::Simpl
 		m_batch->End();
 	}
 
-	context->VSSetShader(nullptr, nullptr, 0);
-	context->GSSetShader(nullptr, nullptr, 0);
-	context->PSSetShader(nullptr, nullptr, 0);
+	m_dustShader->EndSharder(context);
 }
 
 
