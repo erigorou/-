@@ -64,7 +64,6 @@ private:
 	// データに必要な物 ============================================
 	CommonResources* m_commonResources;					// 共通リソース
 	std::unique_ptr<mylib::DebugCamera> m_debugCamera;	// デバッグカメラ
-	std::unique_ptr<mylib::GridFloor>	m_gridFloor;	// グリッド床
 	DirectX::SimpleMath::Matrix			m_projection;	// プロジェクション行列
 
 

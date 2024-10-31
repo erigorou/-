@@ -16,7 +16,6 @@ class LoseResult;
 namespace mylib
 {
 	class DebugCamera;
-	class GridFloor;
 }
 
 

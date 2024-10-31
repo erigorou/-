@@ -10,7 +10,6 @@ class CommonResources;
 namespace mylib
 {
 	class DebugCamera;
-	class GridFloor;
 }
 
 

@@ -11,7 +11,6 @@
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugCamera.h"
 #include "Libraries/MyLib/DebugString.h"
-#include "Libraries/MyLib/GridFloor.h"
 #include "Libraries/MyLib/InputManager.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 
@@ -52,7 +51,6 @@ PlayScene::PlayScene()
 	:
 	m_commonResources{}
 	,m_debugCamera{}
-	,m_gridFloor{}
 	,m_projection{}
 	,m_isChangeScene{}
 	,m_player{}
@@ -79,13 +77,6 @@ PlayScene::~PlayScene()
 void PlayScene::Initialize()
 {
 	using namespace DirectX;
-
-	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
-	auto context = m_commonResources->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = m_commonResources->GetCommonStates();
-
-	// グリッド床を作成する
-	m_gridFloor = std::make_unique<mylib::GridFloor>(device, context, states);
 
 	// デバッグカメラを作成する
 	RECT rect{ m_commonResources->GetDeviceResources()->GetOutputSize() };
