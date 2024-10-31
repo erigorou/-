@@ -364,17 +364,19 @@ void Player::CalculationMatrix()
 //  表示処理
 // --------------------------------
 void Player::Render(
-	ID3D11Device* device,
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection,
-	const CommonResources* resources
+	const DirectX::SimpleMath::Matrix& projection
 	)
 {
 	using namespace DirectX;
+	
+	CommonResources* resources = CommonResources::GetInstance();
+	auto device = resources->GetDeviceResources()->GetD3DDevice();
+	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
+	auto states = resources->GetCommonStates();
 
-	context->OMSetDepthStencilState(states->DepthDefault(), 0);	// 深度値を参照して書き込む
+
+	//context->OMSetDepthStencilState(states->DepthDefault(), 0);	// 深度値を参照して書き込む
 
 	// モデルのエフェクト情報を更新する
 	m_model->UpdateEffects([](DirectX::IEffect* effect)
@@ -417,9 +419,6 @@ void Player::Render(
 	auto debugString = resources->GetDebugString();
 	debugString->AddString("push : %f, %f, %f", m_pushBackValue.x, m_pushBackValue.y, m_pushBackValue.z);
 	debugString->AddString("PlayerPos : %f, %f, %f", m_position.x, m_position.y, m_position.z);
-	
-	if (m_canHit)	debugString->AddString("Player_CAN");
-	if (!m_isHit)	debugString->AddString("Player_nonHit");
 
 #endif // !_DEBUG
 

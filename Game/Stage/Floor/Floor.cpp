@@ -4,6 +4,8 @@
 
 #include "pch.h"
 #include "Floor.h"
+#include "Game/CommonResources.h"
+#include "DeviceResources.h"
 
 
 // -------------------------------------------------------------------^
@@ -78,11 +80,16 @@ void Floor::GenerateCircleVertices(DirectX::VertexPositionTexture* vertices, flo
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">プロジェクション行列</param>
 // ---------------------------------------------
-void Floor::Render(ID3D11DeviceContext1* context, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj)
+void Floor::Render(
+	DirectX::SimpleMath::Matrix view,
+	DirectX::SimpleMath::Matrix proj)
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
+	CommonResources* resources = CommonResources::GetInstance();
+	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
+	
 	// プリミティブバッチの作成
 	m_Batch = std::make_unique<PrimitiveBatch<VertexPositionTexture>>(context);
 
@@ -90,15 +97,11 @@ void Floor::Render(ID3D11DeviceContext1* context, DirectX::SimpleMath::Matrix vi
 	std::vector<VertexPositionTexture> vertices(SEGMENTS);
 	GenerateCircleVertices(vertices.data(), RADIUS, SEGMENTS);
 
-	// テクスチャサンプラーの設定（クランプテクスチャアドレッシングモード）
-	ID3D11SamplerState* samplers[1] = { m_states->PointWrap() };
-	context->PSSetSamplers(0, 1, samplers);
-
 	// 深度バッファに書き込み参照する
 	context->OMSetDepthStencilState(m_states->DepthDefault(), 0);
 
 	// カリングは左周り（反時計回り）
-	context->RSSetState(m_states->CullNone());
+	context->RSSetState(m_states->CullCounterClockwise());
 
 	// 不透明のみ描画する設定
 	m_BatchEffect->SetAlphaFunction(D3D11_COMPARISON_NOT_EQUAL);

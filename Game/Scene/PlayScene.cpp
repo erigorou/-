@@ -238,37 +238,32 @@ void PlayScene::Render()
 {
 	using namespace DirectX;
 
-	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
-	auto context = m_commonResources->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = m_commonResources->GetCommonStates();
 	// ƒrƒ…[s—ñ‚ğæ“¾‚·‚é
 	const SimpleMath::Matrix& view = m_camera->GetViewMatrix();
 
 	// ==== ƒXƒe[ƒW‚Ì•`‰æ =========================================================
 	// “V‹…‚Ì•`‰æ
-	m_skySphere->DrawSkySphere(context, states, view, m_projection);
-	// Šiq°‚ğ•`‰æ‚·‚é
-	m_gridFloor->Render(context, view, m_projection);
+	m_skySphere->DrawSkySphere(view, m_projection);
 	// °‚ğ•`‰æ‚·‚é
-	m_floor->Render(context, view, m_projection);
+	m_floor->Render(view, m_projection);
 	// •Ç‚ğ•`‰æ‚·‚é
-	m_wall->Render(context, states, view, m_projection);
+	m_wall->Render(view, m_projection);
 
 	// === ƒIƒuƒWƒFƒNƒg‚Ì•`‰æ =======================================================
 	// “G‚Ì•`‰æ
-	m_enemy->Render(device, context, states, view, m_projection);
+	m_enemy->Render(view, m_projection);
 	// “G‚Ì•Ší‚Ì•`‰æ‚ğs‚¤
-	m_cudgel->Render(device, context, states, view, m_projection);
+	m_cudgel->Render(view, m_projection);
 	// ƒvƒŒƒCƒ„[‚Ì•`‰æ‚ğs‚¤
-	m_player->Render(device, context, states, view, m_projection, m_commonResources);
+	m_player->Render(view, m_projection);
 	// ƒvƒŒƒCƒ„[‚Ì•Ší‚Ì•`‰æ‚ğs‚¤
-	m_sword->Render(device, context, states, view, m_projection, m_commonResources);
+	m_sword->Render(view, m_projection);
 
 	//==== ƒGƒtƒFƒNƒgŒn‚Ì•`‰æ ======================================================
 	// ƒp[ƒeƒBƒNƒ‹‚Ìƒrƒ‹ƒ{[ƒhì¬
 	m_particles->CreateBillboard(m_camera->GetTargetPosition(), m_camera->GetEyePosition(), DirectX::SimpleMath::Vector3::Up);
 	// ƒp[ƒeƒBƒNƒ‹‚Ì•`‰æ
-	m_particles->Render(states, view, m_projection);
+	m_particles->Render(view, m_projection);
 
 	//==== UIŒn‚Ì•`‰æ ======================================================-------
 	m_uiManager->Render();

@@ -14,7 +14,7 @@ public:
 	// 固定値
 	static const float CAMERA_POSITION_Y;			// カメラのY座標
 	static const float CAMERA_DIRECTION;			// カメラの距離
-	static constexpr float SHAKE_TIME = 0.5f;		// カメラを揺らす時間
+	static constexpr float SHAKE_TIME = 0.75f;		// カメラを揺らす時間
 	static constexpr float MINIMAL = 0.01f;	// 最小値
 
 

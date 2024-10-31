@@ -54,27 +54,16 @@ mylib::GridFloor::GridFloor(
 // グリッド床を描画する
 //---------------------------------------------------------
 void mylib::GridFloor::Render(
-	ID3D11DeviceContext* context,
 	const DirectX::SimpleMath::Matrix& view,
 	const DirectX::SimpleMath::Matrix& projection
 )
 {
-	assert(context);
-
-	// ブレンドステート、デプスステンシルステート、カリングを指定する
-	context->OMSetBlendState(m_commonStates->Opaque(), nullptr, 0xFFFFFFFF);
-	context->OMSetDepthStencilState(m_commonStates->DepthDefault(), 0);
-	context->RSSetState(m_commonStates->CullNone());
 
 	// 変換行列を設定する
 	Matrix world{ Matrix::Identity };
 	m_basicEffect->SetWorld(world);
 	m_basicEffect->SetView(view);
 	m_basicEffect->SetProjection(projection);
-	m_basicEffect->Apply(context);
-
-	// 入力レイアウトを指定する
-	context->IASetInputLayout(m_inputLayout.Get());
 
 	// グリッド床を描画する
 	m_primitiveBatch->Begin();

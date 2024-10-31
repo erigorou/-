@@ -209,15 +209,14 @@ void TitleScene::Render()
 
 
 	// 床の描画
-	m_floor->Render(context, view, m_projection);
+	m_floor->Render(view, m_projection);
 	// 敵の描画
 	m_enemy->Render(device, context, states, view, m_projection);
 	// 天球の描画
-	m_skySphere->DrawSkySphere(context, states, view, m_projection);
+	m_skySphere->DrawSkySphere(view, m_projection);
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
-
 	DrawTexture();
 
 	// スプライトバッチの終わり

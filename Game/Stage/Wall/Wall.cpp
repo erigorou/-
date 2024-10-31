@@ -92,11 +92,14 @@ void Wall::UpdateWorldMatrix()
 
 
 // 描画
-void Wall::Render(ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
+void Wall::Render(
 	const DirectX::SimpleMath::Matrix& view,
 	const DirectX::SimpleMath::Matrix& projection)
 {
+	CommonResources* resources = CommonResources::GetInstance();
+	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
+	auto states = resources->GetCommonStates();
+
 	// ワールド行列の更新処理
 	UpdateWorldMatrix();
 	// モデルを描画する

@@ -168,6 +168,17 @@ void Enemy::Update(float elapsedTime)
 		m_pBT->run();
 	}
 
+	if (keyboardState.F1)
+	{
+		ChangeState(m_attacking.get());
+	}
+
+	if (keyboardState.F2)
+	{
+		ChangeState(m_sweeping.get());
+	}
+
+
 	m_worldMatrix = DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle + DirectX::XMConvertToRadians(180));	// ‰ñ“]Šp‚ÌÝ’è
 
 	m_velocity *= Enemy::ENEMY_SPEED;
@@ -191,12 +202,13 @@ void Enemy::Update(float elapsedTime)
 //  •\Ž¦ˆ—
 // --------------------------------
 void Enemy::Render(
-	ID3D11Device* device,
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
 	const DirectX::SimpleMath::Matrix& projection)
 {
+	CommonResources* resources = CommonResources::GetInstance();
+	auto device = resources->GetDeviceResources()->GetD3DDevice();
+	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
+	auto states = resources->GetCommonStates();
 
 
 	// [“x’l‚ðŽQÆ‚µ‚Ä‘‚«ž‚Þ
@@ -208,7 +220,6 @@ void Enemy::Render(
 #ifdef _DEBUG
 	DrawBoundingSphere(device, context, states, view, projection, m_bodyCollision.get());	// “–‚½‚è”»’è‚Ì•`‰æ
 
-	CommonResources* resources = CommonResources::GetInstance();
 	auto debugString = resources->GetDebugString();
 	debugString->AddString("EnemyPos : %f, %f, %f", m_position.x, m_position.y, m_position.z);
 

@@ -19,7 +19,9 @@ public:
 	~Floor();
 	void GenerateCircleVertices(DirectX::VertexPositionTexture* vertices, float radius, int segments);
 	// •`‰æˆ—
-	void Render(ID3D11DeviceContext1* context, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj);
+	void Render(
+		DirectX::SimpleMath::Matrix view,
+		DirectX::SimpleMath::Matrix proj);
 	// I—¹ˆ—
 	void Finalize();
 

@@ -48,12 +48,9 @@ public:
 	void Update(float elapsedTime);
 
 	// •`‰æˆ—
-	void Render(ID3D11Device* device,
-		ID3D11DeviceContext* context,
-		DirectX::CommonStates* states,
+	void Render(
 		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection,
-		const CommonResources* resources
+		const DirectX::SimpleMath::Matrix& projection
 	);
 
 	// ‹«ŠEƒ{ƒbƒNƒX‚Ì•`‰æ

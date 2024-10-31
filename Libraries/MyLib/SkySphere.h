@@ -22,10 +22,8 @@ public:
 
 	// ƒ‚ƒfƒ‹‚Ì•`‰æ
 	void DrawSkySphere(
-		ID3D11DeviceContext1* context
-		, DirectX::DX11::CommonStates* states
-		, DirectX::SimpleMath::Matrix view
-		, DirectX::SimpleMath::Matrix projection
+		DirectX::SimpleMath::Matrix view,
+		DirectX::SimpleMath::Matrix projection
 	);
 
 

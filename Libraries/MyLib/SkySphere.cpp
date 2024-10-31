@@ -8,6 +8,7 @@
 
 #include "Libraries/MyLib/SkySphere.h"
 #include "Game/CommonResources.h"
+#include "DeviceResources.h"
 
 
 const float SkySphere::SKYSPHERE_SCALE = 100.f;
@@ -52,15 +53,17 @@ void SkySphere::LoadSkySphereModel(ID3D11Device* device)
 //  描画処理
 // -------------------------------
 void SkySphere::DrawSkySphere(
-	 ID3D11DeviceContext1* context
-	, DirectX::DX11::CommonStates* states
-	, DirectX::SimpleMath::Matrix view
-	, DirectX::SimpleMath::Matrix projection
+	DirectX::SimpleMath::Matrix view,
+	DirectX::SimpleMath::Matrix projection
 	)
 {
 	using namespace DirectX;
 
-	context->OMSetDepthStencilState(states->DepthDefault(), 0);	// 深度値を参照して書き込む
+	CommonResources* resources = CommonResources::GetInstance();
+	auto device = resources->GetDeviceResources()->GetD3DDevice();
+	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
+	auto states = resources->GetCommonStates();
+
 
 	// モデルのエフェクト情報を更新する処理
 	m_skySphereModel->UpdateEffects([](DirectX::IEffect* effect)

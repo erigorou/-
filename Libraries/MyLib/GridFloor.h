@@ -35,7 +35,6 @@ namespace mylib
 
 		// °‚ğ•`‰æ‚·‚é
 		void Render(
-			ID3D11DeviceContext* context,
 			const DirectX::SimpleMath::Matrix& view,
 			const DirectX::SimpleMath::Matrix& projection
 		);

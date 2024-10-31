@@ -135,13 +135,14 @@ void Sword::Update(float elapsedTime)
 
 // •`‰æˆ—
 void Sword::Render(
-	ID3D11Device* device,
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection,
-	const CommonResources* resources)
+	const DirectX::SimpleMath::Matrix& projection)
 {
+	CommonResources* resources = CommonResources::GetInstance();
+	auto device = resources->GetDeviceResources()->GetD3DDevice();
+	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
+	auto states = resources->GetCommonStates();
+
 	// Œ»Ý‚ÌƒXƒe[ƒg‚Ì•`‰æˆ—
 	m_currentState->Render(context,states,view,projection);
 

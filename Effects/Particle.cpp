@@ -275,9 +275,13 @@ void Particle::CreateShader()
 /// <param name="states"></param>
 /// <param name="view"></param>
 /// <param name="proj"></param>
-void Particle::Render(DirectX::CommonStates* states, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj)
+void Particle::Render(
+	DirectX::SimpleMath::Matrix view,
+	DirectX::SimpleMath::Matrix proj)
 {
 	using namespace DirectX;
+	CommonResources* resources = CommonResources::GetInstance();
+	auto states = resources->GetCommonStates();
 
 	ID3D11DeviceContext1* context = m_pDR->GetD3DDeviceContext();
 	SimpleMath::Vector3 cameraDir = m_cameraTarget - m_cameraPosition;

@@ -99,7 +99,9 @@ public:
 	// パーティクルの更新処理
 	void Update(float elapsedTimer,const DirectX::SimpleMath::Vector3 playerPosition, const DirectX::SimpleMath::Vector3 playerVelocity);
 	// パーティクルの描画処理
-	void Render(DirectX::CommonStates* states, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj);
+	void Render(
+		DirectX::SimpleMath::Matrix view,
+		DirectX::SimpleMath::Matrix proj);
 	
 
 	// ビルボード行列の作成
