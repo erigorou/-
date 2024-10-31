@@ -3,6 +3,9 @@
 #include "pch.h"
 #include "CollisionManager.h"
 #include "Interface/IObject.h"
+#include "Game/CommonResources.h"
+#include "DeviceResources.h"
+#include "Libraries/Microsoft/DebugDraw.h"
 
 // -------------------------------------------------------
 /// <summary>
@@ -10,7 +13,9 @@
 /// </summary>
 // -------------------------------------------------------
 CollisionManager::CollisionManager()
-{}
+{
+	Initialize();
+}
 
 
 
@@ -22,6 +27,31 @@ CollisionManager::CollisionManager()
 CollisionManager::~CollisionManager()
 {
 }
+
+
+
+void CollisionManager::Initialize()
+{
+	CommonResources* resources = CommonResources::GetInstance();
+
+	auto device = resources->GetDeviceResources()->GetD3DDevice();
+	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
+
+	// ベーシックエフェクトを作成する
+	m_basicEffect = std::make_unique<DirectX::BasicEffect>(device);
+	m_basicEffect->SetVertexColorEnabled(true);
+
+	DX::ThrowIfFailed(
+		DirectX::CreateInputLayoutFromEffect<DirectX::VertexPositionColor>(
+			device,
+			m_basicEffect.get(),
+			m_inputLayout.ReleaseAndGetAddressOf())
+	);
+
+	// プリミティブバッチを生成
+	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
+}
+
 
 
 // -------------------------------------------------------
@@ -71,6 +101,51 @@ void CollisionManager::Update()
 
 
 
+
+void CollisionManager::Render
+	(
+	const DirectX::SimpleMath::Matrix& view,
+	const DirectX::SimpleMath::Matrix& projection
+	)
+{
+	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
+	auto states = CommonResources::GetInstance()->GetCommonStates();
+
+	context->OMSetBlendState(states->Opaque(), nullptr, 0xFFFFFFFF);
+	context->OMSetDepthStencilState(states->DepthDefault(), 0);
+	context->RSSetState(states->CullNone());
+	context->IASetInputLayout(m_inputLayout.Get());
+	//** デバッグドローでは、ワールド変換いらない
+	m_basicEffect->SetView(view);
+	m_basicEffect->SetProjection(projection);
+	m_basicEffect->Apply(context);
+
+	m_primitiveBatch->Begin();
+
+	for(auto obb : m_obbs)
+	{
+		DX::Draw
+		(
+			m_primitiveBatch.get(),
+			*obb.obb,
+			DirectX::Colors::Red
+		);
+	}
+
+	for (auto sphere : m_spheres)
+	{
+		DX::Draw
+		(
+			m_primitiveBatch.get(),
+			*sphere.sphere,
+			DirectX::Colors::Blue
+		);
+	}
+	m_primitiveBatch->End();
+}
+
+
+
 // -------------------------------------------------------
 /// <summary>
 /// 当たり判定をクリア
@@ -81,7 +156,6 @@ void CollisionManager::Clear()
 	m_obbs.clear();
 	m_spheres.clear();
 }
-
 
 
 // -------------------------------------------------------
@@ -112,4 +186,11 @@ void CollisionManager::DeleteSphereCollision(IObject* object)
 	m_spheres.erase(std::remove_if(m_spheres.begin(), m_spheres.end(),
 		[object](const SphereCollision& sphereCollision) { return sphereCollision.object == object; }),
 		m_spheres.end());
+}
+
+
+
+
+inline void CollisionManager::DrawOBBCollision()
+{
 }

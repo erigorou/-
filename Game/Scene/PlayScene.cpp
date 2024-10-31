@@ -232,6 +232,8 @@ void PlayScene::Render()
 	// ビュー行列を取得する
 	const SimpleMath::Matrix& view = m_camera->GetViewMatrix();
 
+	m_collisionManager->Render(view, m_projection);
+
 	// ==== ステージの描画 =========================================================
 	// 天球の描画
 	m_skySphere->DrawSkySphere(view, m_projection);

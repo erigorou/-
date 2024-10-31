@@ -87,7 +87,7 @@ private:
 
 
 	// シェーダーの作成
-	void CreateShader();
+	inline void CreateShader();
 
 
 private:
@@ -106,23 +106,10 @@ private:
 	//	テクスチャハンドル
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture2;
 
-	//// 剣の軌跡のシェーダー
-	//Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShaderSword;
-	//Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShaderSword;
-	//Microsoft::WRL::ComPtr<ID3D11GeometryShader> m_geometryShaderSword;
-
-	//// 煙のパーティクルのシェーダー
-	//Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShaderDust;
-	//Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShaderDust;
-	//Microsoft::WRL::ComPtr<ID3D11GeometryShader> m_geometryShaderDust;
-
 	// シェーダー
 	std::unique_ptr<CustomShader> m_swordShader;
 	std::unique_ptr<CustomShader> m_dustShader;
 
-	DirectX::SimpleMath::Matrix m_world;
-	DirectX::SimpleMath::Matrix m_view;
-	DirectX::SimpleMath::Matrix m_proj;
 	// ビルボード行列
 	DirectX::SimpleMath::Matrix m_billboard;
 
@@ -134,13 +121,13 @@ private:
 	// 焦点
 	DirectX::SimpleMath::Vector3 m_cameraTarget;
 
-	// *******************************************************
+
 	// 軌跡ダスト
 	std::list<DustTrailParticle> m_dustTrail;
 	// 軌跡ダストの時間
 	float m_timerDustTrail;
-	// ******************************************************
-	// 剣の軌跡パーティクル ※※※※※※※
+
+	// 剣の軌跡パーティクル
 	std::list<SwordTrailParticle> m_swordTrail;
 	// 剣の軌跡の時間
 	float m_timerSwordTrail;

@@ -96,11 +96,17 @@ struct InterSectData
 class CollisionManager
 {
 public:
+
 	CollisionManager();		// コンストラクタ
 	~CollisionManager();	// デストラクタ
 
-	// 更新処理
-	void Update();
+	void Initialize();		// 初期化関数
+	void Update();			// 更新関数
+	void Render				// 描画関数
+	(
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& projection
+	);
 
 	// 追加関数
 	void AddCollision(ObjectType type, IObject* obj, const DirectX::BoundingOrientedBox* obb)	{ m_obbs	.emplace_back(OBBCollision		(type, obj, obb))	; }
@@ -113,10 +119,25 @@ public:
 	// 初期化関数
 	void Clear();
 
+// メンバ関数
+private:
+	inline void DrawOBBCollision();
 
+	
+
+// メンバ変数
 private:
 	std::vector<OBBCollision>		m_obbs;		// 四角の当たり判定を格納
 	std::vector<SphereCollision>	m_spheres;	// 球体の当たり判定を格納
+
+
+	// デバッグ用に描画するための変数 *********************************
+	
+	// ベーシックエフェクト
+	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
+	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
+	// 入力レイアウト
+	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
 };
 
 #endif // !COLLISION_MANAGER
