@@ -206,7 +206,6 @@ void Enemy::Render(
 	const DirectX::SimpleMath::Matrix& projection)
 {
 	CommonResources* resources = CommonResources::GetInstance();
-	auto device = resources->GetDeviceResources()->GetD3DDevice();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
 
@@ -218,54 +217,7 @@ void Enemy::Render(
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);	// ƒ‚ƒfƒ‹‚Ì•`‰æ
 
 #ifdef _DEBUG
-	DrawBoundingSphere(device, context, states, view, projection, m_bodyCollision.get());	// “–‚½‚è”»’è‚Ì•`‰æ
-
-	auto debugString = resources->GetDebugString();
-	debugString->AddString("EnemyPos : %f, %f, %f", m_position.x, m_position.y, m_position.z);
-
-	if (m_isHit)
-	{
-		debugString->AddString("Hit");
-	}
-
 #endif // _DEBUG
-}
-
-
-// --------------------------------
-// ‹«ŠE‹…‚ğ•\¦
-// --------------------------------
-void Enemy::DrawBoundingSphere(
-	ID3D11Device* device,
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection,
-	const DirectX::BoundingSphere* boundingSphere
-	)
-{
-	using namespace DirectX;
-	using namespace DirectX::SimpleMath;
-
-	UNREFERENCED_PARAMETER(device);
-
-	// •`‰æ‚É‚¨‚¯‚éİ’è€–Ú
-	context->OMSetBlendState(states->Opaque(), nullptr, 0xFFFFFFFF);
-	context->OMSetDepthStencilState(states->DepthRead(), 0);
-	context->RSSetState(states->CullNone());
-	context->IASetInputLayout(m_inputLayout.Get());
-	m_basicEffect->SetView(view);
-	m_basicEffect->SetProjection(projection);
-	m_basicEffect->Apply(context);
-
-	// •`‰æ
-	m_primitiveBatch->Begin();
-	DX::Draw(
-		m_primitiveBatch.get(),	// ƒvƒŠƒ~ƒeƒBƒuƒoƒbƒ`
-		*boundingSphere,		// •`‰æ‚µ‚½‚¢‹«ŠE‹…
-		Colors::DarkRed			// F
-	);
-	m_primitiveBatch->End();
 }
 
 

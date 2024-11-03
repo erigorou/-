@@ -53,15 +53,6 @@ public:
 		const DirectX::SimpleMath::Matrix& projection
 	);
 
-	// 境界ボックスの描画
-	void DrawBoundingBox(
-		ID3D11Device* device,
-		ID3D11DeviceContext* context,
-		DirectX::CommonStates* states,
-		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection
-	);
-
 	// 終了処理
 	void Finalize();
 	// 当たったときの処理

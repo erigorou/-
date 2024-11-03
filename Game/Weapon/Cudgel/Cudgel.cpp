@@ -135,7 +135,6 @@ void Cudgel::Render(
 	const DirectX::SimpleMath::Matrix& projection)
 {
 	CommonResources* resources = CommonResources::GetInstance();
-	auto device = resources->GetDeviceResources()->GetD3DDevice();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
 
@@ -144,46 +143,8 @@ void Cudgel::Render(
 
 
 #ifdef _DEBUG
-	// 境界ボックスの描画
-	DrawBoundingBox(device, context, states, view, projection);
 #endif // _DEBUG
 }
-
-// --------------------------------
-// 境界ボックスを表示
-// --------------------------------
-void Cudgel::DrawBoundingBox(
-	ID3D11Device* device,
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection
-	)
-{
-	using namespace DirectX;
-	using namespace DirectX::SimpleMath;
-
-	UNREFERENCED_PARAMETER(device);
-
-
-	context->OMSetBlendState(states->Opaque(), nullptr, 0xFFFFFFFF);
-	context->OMSetDepthStencilState(states->DepthRead(), 0);
-	context->RSSetState(states->CullNone());
-	context->IASetInputLayout(m_inputLayout.Get());
-	//** デバッグドローでは、ワールド変換いらない
-	m_basicEffect->SetView(view);
-	m_basicEffect->SetProjection(projection);
-	m_basicEffect->Apply(context);
-	// 描画
-	m_primitiveBatch->Begin();
-	DX::Draw(
-		m_primitiveBatch.get(),				// プリミティブバッチ
-		*m_collision.get(),					// 描画する境界ボックス	
-		Colors::White						// 色
-	);
-	m_primitiveBatch->End();
-}
-
 
 
 // --------------------------------

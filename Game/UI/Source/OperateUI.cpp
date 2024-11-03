@@ -164,6 +164,8 @@ void OperateUI::OnKeyDown(const DirectX::Keyboard::Keys& key)
 {
 	m_downKey = true;
 	m_totalTime = 1.0f;
+
+	UNREFERENCED_PARAMETER(key);
 }
 
 

@@ -108,6 +108,8 @@ void Sword_Attacking_1::Update(float elapsedTime)
 	// 当たり判定の位置を設定
 	m_sword->SetCollisionPosition(m_worldMatrix);
 
+	// エフェクト描画用の根本と頂点を描画
+
 	// 攻撃が終わったらステートをIdlingStateに戻す
 	if (m_totalSeconds >= 1.0f)
 	{
@@ -115,6 +117,18 @@ void Sword_Attacking_1::Update(float elapsedTime)
 	}
 }
 
+
+void Sword_Attacking_1::GetCudgelBothEnds(float _totalTime)
+{
+	if (_totalTime < 0.025f) return;
+
+	float MODEL_HEIGHT = 10.0f;
+
+	// 根本と頂点のワールド座標をそれぞれ取得
+	m_rootPos.push_back(Vector3::Transform(Vector3(0.0f, 0.0f, 0.0f), m_worldMatrix));
+
+	m_tipPos.push_back(Vector3::Transform(Vector3(0.0f, MODEL_HEIGHT, 0.0f), m_worldMatrix));
+}
 
 
 // 事後処理

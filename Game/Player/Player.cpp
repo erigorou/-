@@ -306,6 +306,7 @@ void Player::MovePlayer()
 		}
 	}
 
+
 	///////////////////// 移動キーの入力があった場合の処理 /////////////////
 	else
 	{
@@ -325,8 +326,10 @@ void Player::MovePlayer()
 		m_velocity = moveVelocity;			// 速度を保存する
 	}
 
+
 	/////////////////////////// 移動処理 //////////////////////////////////
 	m_position += Vector3::Transform(moveVelocity, Matrix::CreateRotationY(-m_angle));
+
 
 	/////////////////////////// パーティクルの生成 //////////////////////////
 	if (moveVelocity != Vector3::Zero)
@@ -371,12 +374,8 @@ void Player::Render(
 	using namespace DirectX;
 	
 	CommonResources* resources = CommonResources::GetInstance();
-	auto device = resources->GetDeviceResources()->GetD3DDevice();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
-
-
-	//context->OMSetDepthStencilState(states->DepthDefault(), 0);	// 深度値を参照して書き込む
 
 	// モデルのエフェクト情報を更新する
 	m_model->UpdateEffects([](DirectX::IEffect* effect)
@@ -413,51 +412,8 @@ void Player::Render(
 		projection);
 
 #ifdef _DEBUG
-	// 体の境界球の描画
-	DrawBoundingSphere(device, context, states, view, projection, m_bodyCollision.get());
-
-	auto debugString = resources->GetDebugString();
-	debugString->AddString("push : %f, %f, %f", m_pushBackValue.x, m_pushBackValue.y, m_pushBackValue.z);
-	debugString->AddString("PlayerPos : %f, %f, %f", m_position.x, m_position.y, m_position.z);
-
 #endif // !_DEBUG
 
-}
-
-
-// --------------------------------
-// 境界球を表示
-// --------------------------------
-void Player::DrawBoundingSphere(
-	ID3D11Device*						device,
-	ID3D11DeviceContext*				context,
-	DirectX::CommonStates*				states,
-	const DirectX::SimpleMath::Matrix&	view,
-	const DirectX::SimpleMath::Matrix&	projection,
-	const DirectX::BoundingSphere*		boundingSphere)
-{
-	using namespace DirectX;
-	using namespace DirectX::SimpleMath;
-
-	UNREFERENCED_PARAMETER(device);
-
-
-	context->OMSetBlendState(states->Opaque(), nullptr, 0xFFFFFFFF);
-	context->OMSetDepthStencilState(states->DepthRead(), 0);
-	context->RSSetState(states->CullNone());
-	context->IASetInputLayout(m_inputLayout.Get());
-	//** デバッグドローでは、ワールド変換いらない
-	m_basicEffect->SetView(view);
-	m_basicEffect->SetProjection(projection);
-	m_basicEffect->Apply(context);
-	// 描画
-	m_primitiveBatch->Begin();
-	DX::Draw(
-		m_primitiveBatch.get(),	// プリミティブバッチ
-		*boundingSphere,		// 境界球
-		Colors::White			// 色
-	);
-	m_primitiveBatch->End();
 }
 
 

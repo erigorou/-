@@ -108,22 +108,6 @@ void Wall::Render(
 
 
 #ifdef _DEBUG
-	context->OMSetBlendState(states->Opaque(), nullptr, 0xFFFFFFFF);
-	context->OMSetDepthStencilState(states->DepthRead(), 0);
-	context->RSSetState(states->CullNone());
-	context->IASetInputLayout(m_inputLayout.Get());
-	//** デバッグドローでは、ワールド変換いらない
-	m_basicEffect->SetView(view);
-	m_basicEffect->SetProjection(projection);
-	m_basicEffect->Apply(context);
-	// 描画
-	m_primitiveBatch->Begin();
-	DX::Draw(
-		m_primitiveBatch.get(),		// プリミティブバッチ
-		*m_collision,				// 境界球
-		DirectX::Colors::White		// 色
-	);
-	m_primitiveBatch->End();
 #endif // !_DEBUG
 }
 
