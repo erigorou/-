@@ -44,7 +44,7 @@ Player::Player(PlayScene* playScene)
 	m_isHit{},
 	m_coolTime{},
 	m_canHit{false},
-	m_animationAngle{}
+	m_animationRotate{}
 {
 }
 
@@ -359,8 +359,14 @@ void Player::CalculationMatrix()
 	m_worldMatrix
 		*= Matrix::CreateTranslation(Vector3::Zero)							// 原点に移動
 		*= Matrix::CreateScale		(PLAYER_SCALE)							// プレイヤーのサイズ変更
+
+		*= Matrix::CreateRotationZ(m_animationRotate.z)
+		*= Matrix::CreateRotationX(m_animationRotate.x)
+		*= Matrix::CreateRotationY(m_animationRotate.y)
+
 		*= Matrix::CreateRotationY	(-m_angle + XMConvertToRadians(180.f))	// 敵の方向を見るように設定する
 		*= Matrix::CreateTranslation(m_position);							// 座標を移動させる
+
 }
 
 

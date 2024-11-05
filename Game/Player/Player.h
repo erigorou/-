@@ -72,6 +72,8 @@ public:
 	//////////////////////////////////衝突判定に使用///////////////////////////////////////////////
 	void CanHit(bool flag) { m_canHit = flag; }
 
+	//////////////////////////////////アニメーションに使用///////////////////////////////////////////////
+	void SetAnimationRotate(DirectX::SimpleMath::Vector3 rotate) { m_animationRotate = rotate; }
 
 
 
@@ -170,6 +172,6 @@ private:
 	float m_coolTime;	// クールタイム
 	bool m_canHit;		// 衝突可能か
 
-	// アニメーション用の変数
-	float m_animationAngle;
+	// アニメーション用変数
+	DirectX::SimpleMath::Vector3 m_animationRotate;
 };

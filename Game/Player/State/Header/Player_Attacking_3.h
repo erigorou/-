@@ -46,6 +46,9 @@ public:
 	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
 
 private:
+	// アニメーションの更新
+	void UpdateAnimation();
+
 	// 座標
 	DirectX::SimpleMath::Vector3 m_position;
 	// 速度

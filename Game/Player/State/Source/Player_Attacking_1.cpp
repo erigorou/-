@@ -75,14 +75,21 @@ void PlayerAttacking_1::UpdateAnimation()
 {
 	if (m_totalSeconds > Player::NORMAL_ATTACK_TIME) return;
 
+	DirectX::SimpleMath::Vector3 currentAnimPos = DirectX::SimpleMath::Vector3::Zero;
+
 	// イージングで使用するための変数 0-1
 	float t = m_totalSeconds / Player::NORMAL_ATTACK_TIME;
 
-	// プレイヤーに回転を与える
+	// 回転量の計算を行う
 	float currentAngle = m_player->GetAngle();
-	currentAngle += -30 + 60 * Easying::easeOutExpo(t);
+	currentAnimPos.y = -40 + 80 * Easying::easeOutBack(t) + currentAngle;
 
-	//m_player->SetAnimationAngle(currentAngle);
+	// radianに変換
+	currentAnimPos.y = DirectX::XMConvertToRadians(currentAnimPos.y);
+	
+	// 付与
+	m_player->SetAnimationRotate(currentAnimPos);
+
 }
 
 
@@ -92,6 +99,7 @@ void PlayerAttacking_1::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 	if (key == DirectX::Keyboard::X			&& m_totalSeconds >= Player::X_COOL_TIME)	m_player->ChangeState(m_player->GetPlayerAttackingState2());
 	if (key == DirectX::Keyboard::LeftShift	&& m_totalSeconds >= Player::X_COOL_TIME)	m_player->ChangeState(m_player->GetPlayerDodgingState());
 }
+
 
 void PlayerAttacking_1::OnKeyDown(const DirectX::Keyboard::Keys& key)
 {
@@ -103,11 +111,13 @@ void PlayerAttacking_1::OnKeyDown(const DirectX::Keyboard::Keys& key)
 // 事後更新処理
 void PlayerAttacking_1::PostUpdate()
 {
-
 	// 武器を攻撃状態に変更
 	m_player->GetPlayScene()->GetSword()->ChangeState(
 		m_player->GetPlayScene()->GetSword()->GetIdlingState()
 	);
+
+	// アニメーションを初期化
+	m_player->SetAnimationRotate(DirectX::SimpleMath::Vector3::Zero);
 }
 
 

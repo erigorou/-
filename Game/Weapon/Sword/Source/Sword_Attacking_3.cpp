@@ -87,7 +87,7 @@ void Sword_Attacking_3::Update(float elapsedTime)
 		t = m_totalSeconds / ATTACK_TIME;  // 進行度を0から1へ
 
 		// 上方向に切り上げるように、X軸回転を調整
-		m_rot.x = 100.0f - 120.0f * Easying::easeOutBack(t);  // 切り上げ角度を大きめに設定
+		m_rot.x = 120.0f - 100.0f * Easying::easeOutBack(t);  // 切り上げ角度を大きめに設定
 
 		m_rot.x = XMConvertToRadians(m_rot.x);  // ラジアンに変換
 	}
@@ -113,9 +113,6 @@ void Sword_Attacking_3::Update(float elapsedTime)
 		*= SimpleMath::Matrix::CreateTranslation(m_position); // プレイヤーの位置に設定
 	// 当たり判定の位置を設定
 	m_sword->SetCollisionPosition(m_worldMatrix);
-
-	// 攻撃が終わったらステートをIdlingStateに戻す
-	if (m_totalSeconds >= 1.0f)	m_sword->ChangeState(m_sword->GetIdlingState());
 
 	// エフェクト描画用の根本と頂点を描画
 	GetCudgelBothEnds();

@@ -11,6 +11,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 #include "Game/Sound/Sound.h"
+#include "Libraries/MyLib/EasingFunctions.h"
 
 #include "Game/Player/Player.h"
 #include "Game/Enemy/Enemy.h"
@@ -51,6 +52,8 @@ void PlayerAttacking_3::PreUpdate()
 	);
 
 	Sound::PlaySE(Sound::SE_TYPE::PLAYER_ATTACK);
+
+	m_position = m_player->GetPosition();
 }
 
 // 更新処理
@@ -58,15 +61,51 @@ void PlayerAttacking_3::Update(const float& elapsedTime)
 {
 	m_totalSeconds += elapsedTime;
 
+	// アニメーションの更新
+	UpdateAnimation();
+
+
 	// 時間を計測し、一定時間経過でステートを遷移
 	m_player->TimeComparison(m_totalSeconds, Player::APPLIED_ATTACK_TIME, m_player->GetPlayerIdlingState(), elapsedTime);
 }
 
 
+// アニメーションの更新
+void PlayerAttacking_3::UpdateAnimation()
+{
+	float t = 0;
+
+	// 切り上げモーション中
+	if (m_totalSeconds < Player::NORMAL_ATTACK_TIME)
+	{
+		DirectX::SimpleMath::Vector3 currentAnimPos = DirectX::SimpleMath::Vector3::Zero;
+
+		// イージングで使用するための変数 0-1
+		t = m_totalSeconds / Player::NORMAL_ATTACK_TIME;
+
+		// 回転量の計算を行う
+		float currentAngle = m_player->GetAngle();
+		currentAnimPos.x = -20 * Easying::easeOutCirc(t) + currentAngle;
+
+		// radianに変換
+		currentAnimPos.x = DirectX::XMConvertToRadians(currentAnimPos.x);
+
+		// プレイヤーに設定する
+		m_player->SetAnimationRotate(currentAnimPos);
+	}
 
 
+	// イージングで使用するための変数 0 - 1
+	t = m_totalSeconds / Player::APPLIED_ATTACK_TIME;
 
+	float JUMP_VALUE = 4.0f;
 
+	// ジャンプ量の計算を行う
+	float jump = Math::CalculatingSinWave(t / 2, JUMP_VALUE, 1.0f);
+
+	// プレイヤーに設定する
+	m_player->SetPosition(m_position + DirectX::SimpleMath::Vector3(0, jump, 0));
+}
 
 
 
@@ -88,7 +127,13 @@ void PlayerAttacking_3::OnKeyDown(const DirectX::Keyboard::Keys& key)
 // 事後更新処理
 void PlayerAttacking_3::PostUpdate()
 {
-	// 修正点があればここに記載
+	// 武器を攻撃状態に変更
+	m_player->GetPlayScene()->GetSword()->ChangeState(
+		m_player->GetPlayScene()->GetSword()->GetIdlingState()
+	);
+
+	// アニメーションを初期化
+	m_player->SetAnimationRotate(DirectX::SimpleMath::Vector3::Zero);
 }
 
 

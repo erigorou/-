@@ -77,7 +77,10 @@ void PlayerAttacking_4::OnKeyDown(const DirectX::Keyboard::Keys& key)
 // 事後更新処理
 void PlayerAttacking_4::PostUpdate()
 {
-	// 修正点があればここに記載
+	// 武器を攻撃状態に変更
+	m_player->GetPlayScene()->GetSword()->ChangeState(
+		m_player->GetPlayScene()->GetSword()->GetIdlingState()
+	);
 }
 
 

@@ -11,6 +11,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 #include "Game/Sound/Sound.h"
+#include "Libraries/MyLib/EasingFunctions.h"
 
 #include "Game/Player/Player.h"
 #include "Game/Enemy/Enemy.h"
@@ -61,8 +62,34 @@ void PlayerAttacking_2::Update(const float& elapsedTime)
 {
 	m_totalSeconds += elapsedTime;
 
+	// アニメーションの更新
+	UpdateAnimation();
+
 	// 時間を計測し、一定時間経過でステートを遷移
 	m_player->TimeComparison(m_totalSeconds, Player::APPLIED_ATTACK_TIME, m_player->GetPlayerIdlingState(), elapsedTime);
+}
+
+
+
+// アニメーション更新
+void PlayerAttacking_2::UpdateAnimation()
+{
+	if (m_totalSeconds > Player::NORMAL_ATTACK_TIME) return;
+
+	DirectX::SimpleMath::Vector3 currentAnimPos = DirectX::SimpleMath::Vector3::Zero;
+
+	// イージングで使用するための変数 0-1
+	float t = m_totalSeconds / Player::NORMAL_ATTACK_TIME;
+
+	// 回転量の計算を行う
+	float currentAngle = m_player->GetAngle();
+	currentAnimPos.y = 40 - 80 * Easying::easeOutExpo(t) + currentAngle;
+
+	// radianに変換
+	currentAnimPos.y = DirectX::XMConvertToRadians(currentAnimPos.y);
+
+	// プレイヤーに設定する
+	m_player->SetAnimationRotate(currentAnimPos);
 }
 
 
@@ -82,7 +109,12 @@ void PlayerAttacking_2::OnKeyDown(const DirectX::Keyboard::Keys& key)
 // 事後更新処理
 void PlayerAttacking_2::PostUpdate()
 {
-	// 修正点があればここに記載
+	m_player->SetAnimationRotate(DirectX::SimpleMath::Vector3::Zero);
+
+	// 武器を攻撃状態に変更
+	m_player->GetPlayScene()->GetSword()->ChangeState(
+		m_player->GetPlayScene()->GetSword()->GetIdlingState()
+	);
 }
 
 

@@ -117,9 +117,6 @@ void Sword_Attacking_4::Update(float elapsedTime)
 	// 当たり判定の位置を設定
 	m_sword->SetCollisionPosition(m_worldMatrix);
 
-	// 攻撃が終わったらステートをIdlingStateに戻す
-	if (m_totalSeconds >= 1.0f)	m_sword->ChangeState(m_sword->GetIdlingState());
-
 	// エフェクト描画用の根本と頂点を描画
 	GetCudgelBothEnds();
 }
