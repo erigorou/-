@@ -122,7 +122,7 @@ void Enemy::CreateState()
 void Enemy::CreateCollision()
 {
 	// ìñÇΩÇËîªíËÇÃê∂ê¨
-	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, ENEMY_SCALE * 12.0f);
+	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, ENEMY_SCALE * 15.0f);
 
 	m_playScene->GetCollisionManager()->AddCollision(
 		ObjectType::Enemy,

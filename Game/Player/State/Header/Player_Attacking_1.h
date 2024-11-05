@@ -46,6 +46,7 @@ public:
 	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
 
 private:
+	// アニメーションの更新
 	void UpdateAnimation();
 
 	// 座標

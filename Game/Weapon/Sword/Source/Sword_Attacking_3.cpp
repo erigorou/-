@@ -87,7 +87,7 @@ void Sword_Attacking_3::Update(float elapsedTime)
 		t = m_totalSeconds / ATTACK_TIME;  // 進行度を0から1へ
 
 		// 上方向に切り上げるように、X軸回転を調整
-		m_rot.x = 80.0f - 100.0f * Easying::easeOutBack(t);  // 切り上げ角度を大きめに設定
+		m_rot.x = 100.0f - 120.0f * Easying::easeOutBack(t);  // 切り上げ角度を大きめに設定
 
 		m_rot.x = XMConvertToRadians(m_rot.x);  // ラジアンに変換
 	}

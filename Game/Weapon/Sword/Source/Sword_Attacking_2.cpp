@@ -87,6 +87,9 @@ void Sword_Attacking_2::Update(float elapsedTime)
 	{
 		t = m_totalSeconds / ATTACK_TIME;
 		m_rot.y = -250.0f * Easying::easeOutBack(t);
+		m_rot.x = 10 - 40 * Easying::easeOutBack(t);
+
+		m_rot.x = XMConvertToRadians(m_rot.x);
 		m_rot.y = XMConvertToRadians(m_rot.y);
 	}
 	else
@@ -102,6 +105,7 @@ void Sword_Attacking_2::Update(float elapsedTime)
 		*= SimpleMath::Matrix::CreateRotationY(XMConvertToRadians(180))					// 反転
 		*= SimpleMath::Matrix::CreateRotationX(RADIAN_90)								// 剣を90度横に向ける
 		*= SimpleMath::Matrix::CreateTranslation(Vector3(1.0f, 2.0f, 0.0f))				// 少しだけずらす
+		*= SimpleMath::Matrix::CreateRotationX(m_rot.x)									// 薙ぎ払いの回転を反映
 		*= SimpleMath::Matrix::CreateRotationY(-m_angle)								// プレイヤーの横に回転させる
 		*= SimpleMath::Matrix::CreateRotationY(m_rot.y)									// 薙ぎ払いの回転を反映
 		*= SimpleMath::Matrix::CreateTranslation(m_position);							// プレイヤーの位置に設定

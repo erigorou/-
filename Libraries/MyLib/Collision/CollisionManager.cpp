@@ -115,7 +115,7 @@ void CollisionManager::Update()
 
 
 	// F7キーが押されたら、描画フラグを切り替える
-	if (m_keyboardStateTracker.IsKeyPressed(DirectX::Keyboard::F7))
+	if (m_keyboardStateTracker.IsKeyPressed(DirectX::Keyboard::F5))
 	{
 		m_drawFlag = !m_drawFlag;
 	}

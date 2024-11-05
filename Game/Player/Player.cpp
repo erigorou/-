@@ -96,7 +96,6 @@ void Player::Initialize()
 	);
 	// プリミティブバッチの作成
 	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
-
 }
 
 
@@ -110,7 +109,6 @@ void Player::CreateCollision()
 		(
 			m_position, PLAYER_SCALE * 12
 		);
-
 	
 	// 当たり判定を記録する
 	m_playScene->GetCollisionManager()->AddCollision(
@@ -226,6 +224,12 @@ void Player::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 }
 
 
+// ----------------------------------------------
+/// <summary>
+/// キー入力を取得する
+/// </summary>
+/// <param name="key">入力された1キー</param>
+// ----------------------------------------------
 void Player::OnKeyDown(const DirectX::Keyboard::Keys& key)
 {
 	if (m_currentState == this->GetPlayerIdlingState())

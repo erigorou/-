@@ -82,7 +82,7 @@ void PlayerAttacking_1::UpdateAnimation()
 	float currentAngle = m_player->GetAngle();
 	currentAngle += -30 + 60 * Easying::easeOutExpo(t);
 
-	m_player->SetAnimationAngle(currentAngle);
+	//m_player->SetAnimationAngle(currentAngle);
 }
 
 
