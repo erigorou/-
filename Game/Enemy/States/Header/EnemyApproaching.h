@@ -4,6 +4,7 @@
 #include "Interface/IState.h"
 
 class Enemy;
+class Particle;
 
 // 敵の待機ステートを定義
 class EnemyApproaching : public IState
@@ -53,7 +54,8 @@ private:
 	Enemy* m_enemy;
 	// モデル
 	DirectX::Model* m_model;
-
+	// パーティクル
+	Particle* m_particles;
 
 	// サイン波の振幅
 	float m_amplitude;

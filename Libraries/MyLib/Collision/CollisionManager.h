@@ -2,7 +2,6 @@
 #ifndef COLLISION_MANAGER
 #define COLLISION_MANAGER
 
-#include "pch.h"
 
 class IObject;
 
@@ -121,7 +120,7 @@ public:
 
 // メンバ関数
 private:
-	inline void DrawOBBCollision();
+	inline void DrawCollision(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection);
 
 	
 
@@ -138,6 +137,14 @@ private:
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
 	// 入力レイアウト
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
+
+	bool m_drawFlag;	// 描画フラグ
+
+
+	// キーボード用の変数
+	DirectX::Keyboard::State				m_keyboardState;
+	DirectX::Keyboard::KeyboardStateTracker m_keyboardStateTracker;
+
 };
 
 #endif // !COLLISION_MANAGER

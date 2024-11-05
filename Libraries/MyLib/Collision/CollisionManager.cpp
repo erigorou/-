@@ -13,6 +13,13 @@
 /// </summary>
 // -------------------------------------------------------
 CollisionManager::CollisionManager()
+	: m_basicEffect(nullptr)
+	, m_inputLayout(nullptr)
+	, m_primitiveBatch(nullptr)
+	, m_obbs()
+	, m_spheres()
+	, m_drawFlag(false)
+
 {
 	Initialize();
 }
@@ -50,6 +57,9 @@ void CollisionManager::Initialize()
 
 	// プリミティブバッチを生成
 	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
+
+	// キーボードを作成する
+	m_keyboardState = DirectX::Keyboard::Get().GetState();
 }
 
 
@@ -97,9 +107,19 @@ void CollisionManager::Update()
 			}
 		}
 	}
+
+	// キーボードの状態を取得する
+	m_keyboardState = DirectX::Keyboard::Get().GetState();
+	// キーボードステートトラッカーを更新する
+	m_keyboardStateTracker.Update(m_keyboardState);
+
+
+	// F7キーが押されたら、描画フラグを切り替える
+	if (m_keyboardStateTracker.IsKeyPressed(DirectX::Keyboard::F7))
+	{
+		m_drawFlag = !m_drawFlag;
+	}
 }
-
-
 
 
 void CollisionManager::Render
@@ -108,41 +128,12 @@ void CollisionManager::Render
 	const DirectX::SimpleMath::Matrix& projection
 	)
 {
-	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = CommonResources::GetInstance()->GetCommonStates();
+	if ( ! m_drawFlag) return;
 
-	context->OMSetBlendState(states->Opaque(), nullptr, 0xFFFFFFFF);
-	context->OMSetDepthStencilState(states->DepthDefault(), 0);
-	context->RSSetState(states->CullNone());
-	context->IASetInputLayout(m_inputLayout.Get());
-	//** デバッグドローでは、ワールド変換いらない
-	m_basicEffect->SetView(view);
-	m_basicEffect->SetProjection(projection);
-	m_basicEffect->Apply(context);
-
-	m_primitiveBatch->Begin();
-
-	for(auto obb : m_obbs)
-	{
-		DX::Draw
-		(
-			m_primitiveBatch.get(),
-			*obb.obb,
-			DirectX::Colors::Red
-		);
-	}
-
-	for (auto sphere : m_spheres)
-	{
-		DX::Draw
-		(
-			m_primitiveBatch.get(),
-			*sphere.sphere,
-			DirectX::Colors::Blue
-		);
-	}
-	m_primitiveBatch->End();
+	// 衝突判定の描画
+	DrawCollision(view, projection);
 }
+
 
 
 
@@ -156,6 +147,7 @@ void CollisionManager::Clear()
 	m_obbs.clear();
 	m_spheres.clear();
 }
+
 
 
 // -------------------------------------------------------
@@ -191,6 +183,45 @@ void CollisionManager::DeleteSphereCollision(IObject* object)
 
 
 
-inline void CollisionManager::DrawOBBCollision()
+inline void CollisionManager::DrawCollision(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection)
 {
+	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
+	auto states = CommonResources::GetInstance()->GetCommonStates();
+
+	context->OMSetBlendState(states->Opaque(), nullptr, 0xFFFFFFFF);
+	context->OMSetDepthStencilState(states->DepthDefault(), 0);
+	context->RSSetState(states->CullNone());
+	context->IASetInputLayout(m_inputLayout.Get());
+	//** デバッグドローでは、ワールド変換いらない
+	m_basicEffect->SetView(view);
+	m_basicEffect->SetProjection(projection);
+	m_basicEffect->Apply(context);
+
+	m_primitiveBatch->Begin();
+
+	for (auto obb : m_obbs)
+	{
+		DX::Draw
+		(
+			m_primitiveBatch.get(),
+			*obb.obb,
+			DirectX::Colors::Red
+		);
+	}
+
+	for (auto sphere : m_spheres)
+	{
+		DX::Draw
+		(
+			m_primitiveBatch.get(),
+			*sphere.sphere,
+			DirectX::Colors::Blue
+		);
+	}
+	m_primitiveBatch->End();
 }
+
+
+
+
+

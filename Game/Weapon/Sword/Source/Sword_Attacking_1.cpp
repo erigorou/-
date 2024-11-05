@@ -12,6 +12,7 @@
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/Collision.h"
 #include "Libraries/MyLib/EasingFunctions.h"
+#include "GeometricPrimitive.h"
 
 #include "Game/Player/Player.h"
 #include "Game/Enemy/Enemy.h"
@@ -35,6 +36,7 @@ Sword_Attacking_1::Sword_Attacking_1(Sword* sword)
 	m_worldMatrix(DirectX::SimpleMath::Matrix::Identity),
 	m_model(nullptr)
 {
+	m_particles = m_sword->GetPlayScene()->GetParticle();
 }
 
 // デストラクタ
@@ -57,11 +59,12 @@ void Sword_Attacking_1::Initialize()
 // 事前処理
 void Sword_Attacking_1::PreUpdate()
 {
-	// 経過時間のリセット
-	m_totalSeconds = 0.0f;
+	m_totalSeconds = 0.0f;									// 経過時間の初期化
+	m_sword->GetPlayScene()->GetEnemy()->CanHit(true);		// 衝突可能にする
 
-	// 当たれるようにする
-	m_sword->GetPlayScene()->GetEnemy()->CanHit(true);
+	// パーティクルの初期化
+	m_rootPos.clear();
+	m_tipPos.clear();
 }
 
 // 更新処理
@@ -108,37 +111,44 @@ void Sword_Attacking_1::Update(float elapsedTime)
 	// 当たり判定の位置を設定
 	m_sword->SetCollisionPosition(m_worldMatrix);
 
-	// エフェクト描画用の根本と頂点を描画
 
 	// 攻撃が終わったらステートをIdlingStateに戻す
 	if (m_totalSeconds >= 1.0f)
 	{
 		m_sword->ChangeState(m_sword->GetIdlingState());
 	}
+
+	// エフェクト描画用の根本と頂点を描画
+	GetCudgelBothEnds();
 }
 
 
-void Sword_Attacking_1::GetCudgelBothEnds(float _totalTime)
+void Sword_Attacking_1::GetCudgelBothEnds()
 {
-	if (_totalTime < 0.025f) return;
-
-	float MODEL_HEIGHT = 10.0f;
-
 	// 根本と頂点のワールド座標をそれぞれ取得
-	m_rootPos.push_back(Vector3::Transform(Vector3(0.0f, 0.0f, 0.0f), m_worldMatrix));
+	m_rootPos.	push_back(Vector3::Transform(Vector3(0.0f, Sword::MODEL_ROOT_HEIGHT	, 0.0f), m_worldMatrix));
+	m_tipPos.	push_back(Vector3::Transform(Vector3(0.0f, Sword::MODEL_TOP_HEIGHT	, 0.0f), m_worldMatrix));
 
-	m_tipPos.push_back(Vector3::Transform(Vector3(0.0f, MODEL_HEIGHT, 0.0f), m_worldMatrix));
-
-
-
+	// パーティクルを生成
+	CreateSwordParticle();
 }
 
 
-
+// ソードのパーティクルを生成
 void Sword_Attacking_1::CreateSwordParticle()
 {
-
-
+	int max = static_cast<int>(m_rootPos.size()) - 1;
+	if (max > 1)
+	{
+		DirectX::VertexPositionTexture ver[4] =
+		{
+			DirectX::VertexPositionTexture(m_tipPos[max]		,Vector2(0, 0)),	// 左上
+			DirectX::VertexPositionTexture(m_tipPos[max - 1]	,Vector2(1, 0)),	// 右上
+			DirectX::VertexPositionTexture(m_rootPos[max - 1]	,Vector2(1, 1)),	// 右下
+			DirectX::VertexPositionTexture(m_rootPos[max]		,Vector2(0, 1)),	// 左下
+		};
+		m_particles->CreateSwordTrail(ver);
+	}
 }
 
 
@@ -175,6 +185,21 @@ void Sword_Attacking_1::Render(ID3D11DeviceContext* context,
 
 
 #ifdef _DEBUG
+	//// GeometricPrimitiveでtipとrootの頂点位置に球体を表示
+	//auto debugPrimitive = DirectX::GeometricPrimitive::CreateSphere(context, 0.1f);
+
+	//for (const auto& rootPos : m_rootPos)
+	//{
+	//	Matrix rootWorldMatrix = Matrix::CreateTranslation(rootPos);
+	//	debugPrimitive->Draw(rootWorldMatrix, view, projection, DirectX::Colors::Red);
+	//}
+
+	//for (const auto& tipPos : m_tipPos)
+	//{
+	//	Matrix tipWorldMatrix = Matrix::CreateTranslation(tipPos);
+	//	debugPrimitive->Draw(tipWorldMatrix, view, projection, DirectX::Colors::Blue);
+	//}
+
 	auto debugString = resources->GetDebugString();
 	debugString->AddString("");
 #endif // _DEBUG

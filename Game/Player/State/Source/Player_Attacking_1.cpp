@@ -105,10 +105,9 @@ void PlayerAttacking_1::Render(
 	UNREFERENCED_PARAMETER(projection);
 	UNREFERENCED_PARAMETER(m_model);
 
+#ifdef _DEBUG
 	// コモンリソースを取得する
 	CommonResources* resources = CommonResources::GetInstance();
-
-#ifdef _DEBUG
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
 	debugString->AddString("");

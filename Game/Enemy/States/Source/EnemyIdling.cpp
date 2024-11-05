@@ -115,11 +115,11 @@ void EnemyIdling::Render(
 	UNREFERENCED_PARAMETER(projection);
 	UNREFERENCED_PARAMETER(m_model);
 
-	// リソースの取得
-	CommonResources* resources = CommonResources::GetInstance();
 
 
 #ifdef _DEBUG
+	// リソースの取得
+	CommonResources* resources = CommonResources::GetInstance();
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
 	debugString->AddString("enemyAngle : %f", m_angle);

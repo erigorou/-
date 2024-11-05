@@ -17,9 +17,12 @@ class Sword : public IObject
 {
 public:
 	// 固定値
-	static const float SWORD_SCALE;	// 刀の大きさ
-	static const DirectX::SimpleMath::Vector3 SWORD_DIR_FOR_PLAYER;	// 刀とプレイヤの離れてる距離
+	static const float SWORD_SCALE;
 
+	static constexpr DirectX::SimpleMath::Vector3 SWORD_DIR_FOR_PLAYER = { 1.5f, 1.0f, 0.0f };	// プレイヤーの刀の位置
+
+	static constexpr float MODEL_TOP_HEIGHT  = 50.0f;
+	static constexpr float MODEL_ROOT_HEIGHT = 47.5f;
 
 	DirectX::Model* GetModel()		const { return m_model.get();	}	// モデルのゲッター
 	PlayScene*	GetPlayScene()		const { return m_playScene;		}	// プレイシーンのゲッター

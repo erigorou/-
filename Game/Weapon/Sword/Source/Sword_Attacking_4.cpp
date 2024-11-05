@@ -35,6 +35,7 @@ Sword_Attacking_4::Sword_Attacking_4(Sword* sword)
 	m_worldMatrix(DirectX::SimpleMath::Matrix::Identity),
 	m_model(nullptr)
 {
+	m_particles = m_sword->GetPlayScene()->GetParticle();
 }
 
 // デストラクタ
@@ -62,6 +63,9 @@ void Sword_Attacking_4::PreUpdate()
 
 	// 当たれるようにする
 	m_sword->GetPlayScene()->GetEnemy()->CanHit(true);
+
+	m_rootPos.clear();
+	m_tipPos.clear();
 }
 
 
@@ -115,8 +119,37 @@ void Sword_Attacking_4::Update(float elapsedTime)
 
 	// 攻撃が終わったらステートをIdlingStateに戻す
 	if (m_totalSeconds >= 1.0f)	m_sword->ChangeState(m_sword->GetIdlingState());
+
+	// エフェクト描画用の根本と頂点を描画
+	GetCudgelBothEnds();
 }
 
+void Sword_Attacking_4::GetCudgelBothEnds()
+{
+	// 根本と頂点のワールド座標をそれぞれ取得
+	m_rootPos	.push_back(Vector3::Transform(Vector3(0.0f, Sword::MODEL_ROOT_HEIGHT, 0.0f), m_worldMatrix));
+	m_tipPos	.push_back(Vector3::Transform(Vector3(0.0f,	Sword::MODEL_TOP_HEIGHT	, 0.0f), m_worldMatrix));
+
+	// パーティクルを生成
+	CreateSwordParticle();
+}
+
+// ソードのパーティクルを生成
+void Sword_Attacking_4::CreateSwordParticle()
+{
+	int max = static_cast<int>(m_rootPos.size()) - 1;
+	if (max > 1)
+	{
+		DirectX::VertexPositionTexture ver[4] =
+		{
+			DirectX::VertexPositionTexture(m_tipPos[max]		,Vector2(0, 0)),	// 左上
+			DirectX::VertexPositionTexture(m_tipPos[max - 1]	,Vector2(1, 0)),	// 右上
+			DirectX::VertexPositionTexture(m_rootPos[max - 1]	,Vector2(1, 1)),	// 右下
+			DirectX::VertexPositionTexture(m_rootPos[max]		,Vector2(0, 1)),	// 左下
+		};
+		m_particles->CreateSwordTrail(ver);
+	}
+}
 
 
 
@@ -140,7 +173,7 @@ void Sword_Attacking_4::Render(ID3D11DeviceContext* context,
 
 #ifdef _DEBUG
 	auto debugString = resources->GetDebugString();
-	debugString->AddString("rot.x : %f", DirectX::XMConvertToDegrees(m_rot.x));
+	debugString->AddString("");
 #endif // _DEBUG
 }
 

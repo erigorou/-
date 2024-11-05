@@ -30,14 +30,11 @@ public:
 	static const float PLAYER_SPEED;
 	// 大きさ
 	static const float PLAYER_SCALE;
-	// 攻撃が適用される時間
-	static constexpr float APPLIED_ATTACK_TIME = 1.4f;
-	static constexpr float APPLIED_DODGE_TIME = 0.f;
 
-	static constexpr float COOL_TIME = 1.0f;
-
-	// xで攻撃ができる
-	static constexpr float X_COOL_TIME = 0.8f;
+	static constexpr float APPLIED_ATTACK_TIME	= 1.4f;	// ２段目以降の攻撃が許されるようになる時間
+	static constexpr float APPLIED_DODGE_TIME	= 0.7f;	// 回避ができるようになる時間
+	static constexpr float COOL_TIME			= 1.0f; // 攻撃のクールタイム
+	static constexpr float X_COOL_TIME			= 0.8f; // 次の攻撃ができるようになる時間
 
 public:
 	// /////////////////プレイヤーの基礎情報を渡す関数//////////////////////////////////////////////////
@@ -71,9 +68,7 @@ public:
 	//////////////////////////////////衝突判定に使用///////////////////////////////////////////////
 	void CanHit(bool flag) { m_canHit = flag; }
 
-	//////////////////////キーボードの入力を取得する関数//////////////////////////////////////////////////
-	DirectX::Keyboard::State GetKeyboardState() const { return m_keyboardState; }
-	DirectX::Keyboard::KeyboardStateTracker GetKeyboardTracker() const { return m_tracker; }
+
 
 
 public:
@@ -161,9 +156,6 @@ private:
 private:
 	// プレイシーン(他のオブジェクトの情報の取得などに使う)
 	PlayScene* m_playScene;
-	// キーボードの入力
-	DirectX::Keyboard::State m_keyboardState;
-	DirectX::Keyboard::KeyboardStateTracker m_tracker;
 
 	// モデル
 	std::unique_ptr<DirectX::Model> m_model;

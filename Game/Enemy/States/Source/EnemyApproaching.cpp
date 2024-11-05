@@ -26,6 +26,7 @@ EnemyApproaching::EnemyApproaching(Enemy* enemy)
 	m_finishTime(1.0f),
 	m_frequency(1.0f)
 {
+	m_particles = m_enemy->GetPlayScene()->GetParticle();
 }
 
 
@@ -136,6 +137,8 @@ void EnemyApproaching::PostUpdate()
 	// 敵の位置を0で固定する
 	m_position.y = 0.f;
 	m_enemy->SetPosition(m_position);
+	// パーティクルを生成する
+	m_particles->CreateSlamDust(m_position);
 }
 
 

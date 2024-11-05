@@ -313,6 +313,12 @@ void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::Simp
 	context->VSSetConstantBuffers(0, 1, cb);
 	context->PSSetConstantBuffers(0, 1, cb);
 
+	ID3D11BlendState* blendstate = m_states->NonPremultiplied();	//  半透明描画指定
+	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);		//	透明判定処理
+	context->OMSetDepthStencilState(m_states->DepthRead(), 0);	//	深度バッファはなし
+	context->RSSetState(m_states->CullNone());						//	カリングなし
+
+
 	m_swordShader->BeginSharder(context);
 
 	// 剣の残像パーティクルを描画

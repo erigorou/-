@@ -40,8 +40,6 @@ Player::Player(PlayScene* playScene)
 	m_pushBackValue{},
 	m_worldMatrix{},
 	m_currentState{},
-	m_keyboardState{},
-	m_tracker{},
 	m_particleTime{},
 	m_isHit{},
 	m_coolTime{},
@@ -69,9 +67,6 @@ void Player::Initialize()
 
 	auto device = resources->GetDeviceResources()->GetD3DDevice();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
-
-	// キー入力を生成（全体で使う）
-	m_keyboardState = DirectX::Keyboard::Get().GetState();
 
 	// モデルを読み込む準備
 	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
