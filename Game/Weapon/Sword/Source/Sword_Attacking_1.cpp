@@ -128,7 +128,32 @@ void Sword_Attacking_1::GetCudgelBothEnds(float _totalTime)
 	m_rootPos.push_back(Vector3::Transform(Vector3(0.0f, 0.0f, 0.0f), m_worldMatrix));
 
 	m_tipPos.push_back(Vector3::Transform(Vector3(0.0f, MODEL_HEIGHT, 0.0f), m_worldMatrix));
+
+
+
 }
+
+
+
+void Sword_Attacking_1::CreateSwordParticle()
+{
+
+
+}
+
+
+//void Sword_Attacking_1::UpdateCudgelRotation()
+//{
+//	// プレイヤーの角度を取得
+//	m_angleRL = m_sword->GetPlayScene()->GetPlayer()->GetAngle();
+//	m_angleUD = m_sword->GetPlayScene()->GetPlayer()->GetAngleUD();
+//
+//	// ワールド行列を更新する
+//	m_worldMatrix = Matrix::CreateScale(Cudgel::CUDGEL_SCALE);		// サイズの設定 & 初期化
+//	m_worldMatrix
+//		*= Matrix::CreateTranslation(Cudgel_Attacking::ZERO_DIREC)	// 初期位置への移動
+//		*= CalculateAttackMatrix();									// 攻撃モーション中の計算
+//}
 
 
 // 事後処理

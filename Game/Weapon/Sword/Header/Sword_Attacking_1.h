@@ -42,6 +42,9 @@ private:
 	// 根本と頂点の座標を取得する ※ both ends = 両端
 	void GetCudgelBothEnds(float _totalTime);
 
+	void CreateSwordParticle();
+
+
 	// ソードの元を取得
 	Sword* m_sword;
 

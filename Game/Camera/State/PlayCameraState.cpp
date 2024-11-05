@@ -39,15 +39,22 @@ void PlayCameraState::Update(
     // カメラの向きや位置を計算する処理
     Vector3 playerToEnemy = enemyPos - playerPos;
     playerToEnemy.Normalize();
-	// カメラの位置をプレイヤーの後ろに設定
-    m_camera->m_position = playerPos - playerToEnemy * Camera::CAMERA_DIRECTION;
-    m_camera->m_position.y = Camera::CAMERA_POSITION_Y;
+
+	Vector3 cameraPos = playerPos - playerToEnemy * Camera::CAMERA_DIRECTION;
+	cameraPos.y = Camera::CAMERA_POSITION_Y;
+
+	m_camera->m_position = cameraPos;
+
 	// カメラの注視点を敵の位置に設定
     m_camera->m_target = enemyPos + playerToEnemy;
+    // カメラの注視点の高さを設定する
+    m_camera->m_target.y = m_camera->m_targetHeight;
+
+
+
     // カメラの振動処理
-    m_camera->Shake(0.016f); // 仮の経過時間
-	// カメラの高さを設定
-	m_camera->m_target.y = m_camera->m_targetHeight;
+    m_camera->Shake(0.01667f); // 仮の経過時間
+
     // ビュー行列を更新
     m_camera->CalculateViewMatrix();
     m_camera->CalculateCameraAngle();

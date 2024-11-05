@@ -11,10 +11,6 @@
 #include "State/TitleCameraState.h"
 #include "State/PlayCameraState.h"
 
-// 固定値
-const float Camera::CAMERA_POSITION_Y = 8.0f;		// カメラの高さ
-const float Camera::CAMERA_DIRECTION = 20.0f;		// カメラの距離
-
 //-------------------------------------------------------------------
 /// <summary>
 /// コンストラクタ
@@ -29,7 +25,7 @@ Camera::Camera(const DirectX::SimpleMath::Vector3& target)
 	,m_up{ DirectX::SimpleMath::Vector3::UnitY }
 	,m_position{}
 	,m_angle{}
-	,m_targetHeight{5.0f}
+	,m_targetHeight{TARGET_HEIGHT}
 	, m_isShake{ false }
 	, m_shakeTime{ SHAKE_TIME }
 	, m_shakePos{(0.0f, 0.0f, 0.0f)}
@@ -121,14 +117,15 @@ void Camera::Shake(float elapsedTime)
 		return;
 	}
 
-	float power = m_shakeTime * 1.0f;
+	// shakeTimeに応じて振動の強さを決定
+	float power = (m_shakeTime / SHAKE_TIME) * SHAKE_POWER;
 
-	SimpleMath::Vector3 max = SimpleMath::Vector3(power, power, power);
+	SimpleMath::Vector3 max = SimpleMath::Vector3(power	, power	, power	);
 	SimpleMath::Vector3 min = SimpleMath::Vector3(-power, -power, -power);
 
 	// カメラの位置を揺らす
 	m_shakePos	=	Math::RandomVector3(min, max);
-	m_target	+=	Math::RandomVector3(min, max);
+	m_target   +=	Math::RandomVector3(min, max);
 }
 
 
