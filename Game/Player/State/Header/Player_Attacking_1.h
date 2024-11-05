@@ -46,6 +46,8 @@ public:
 	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
 
 private:
+	void UpdateAnimation();
+
 	// ç¿ïW
 	DirectX::SimpleMath::Vector3 m_position;
 	// ë¨ìx

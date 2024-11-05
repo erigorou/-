@@ -102,7 +102,7 @@ void Sword_Attacking_1::Update(float elapsedTime)
 	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE);							// 剣のサイズの設定
 
 	m_worldMatrix
-		*= SimpleMath::Matrix::CreateRotationX(RADIAN_90)								// 剣を90度横に向ける
+		*= SimpleMath::Matrix::CreateRotationX(RADIAN_90 / 2)							// 剣を90度横に向ける
 		*= SimpleMath::Matrix::CreateTranslation(Vector3(1.0f, 2.0f, 0.0f))				// 少しだけずらす
 		*= SimpleMath::Matrix::CreateRotationY(-m_angle)								// プレイヤーの横に回転させる
 		*= SimpleMath::Matrix::CreateRotationY(m_rot.y)									// 薙ぎ払いの回転を反映

@@ -36,6 +36,9 @@ public:
 	static constexpr float COOL_TIME			= 1.0f; // 攻撃のクールタイム
 	static constexpr float X_COOL_TIME			= 0.8f; // 次の攻撃ができるようになる時間
 
+	static constexpr float NORMAL_ATTACK_TIME	= 0.5f; // 通常攻撃のアニメーション時間
+
+
 public:
 	// /////////////////プレイヤーの基礎情報を渡す関数//////////////////////////////////////////////////
 	DirectX::SimpleMath::Vector3	GetPosition()override	{ return m_position;	}
@@ -61,6 +64,7 @@ public:
 	// /////////プレイヤーの移動に関するステートを設定する関数///////////////////////////////////////////
 	void SetSpeed		(DirectX::SimpleMath::Vector3 velocity)		{ m_velocity = velocity; }
 	void SetAcceleration(DirectX::SimpleMath::Vector3 acceleration)	{ m_acceleration = acceleration; }
+	void SetAngle		(const float angle)							{ m_angle = angle; }
 
 	////////////////////プレイシーンに干渉するのに使用すr関数/////////////////////////////////////////////
 	PlayScene* GetPlayScene()const { return m_playScene; }
@@ -159,10 +163,13 @@ private:
 
 	// モデル
 	std::unique_ptr<DirectX::Model> m_model;
-	// 体の当たり判定
-	std::unique_ptr<DirectX::BoundingSphere> m_bodyCollision;
-	bool m_isHit;
-	float m_coolTime;
 
-	bool m_canHit;
+	// 体の当たり判定 ////////
+	std::unique_ptr<DirectX::BoundingSphere> m_bodyCollision;	// 衝突判定
+	bool m_isHit;		// 衝突したか
+	float m_coolTime;	// クールタイム
+	bool m_canHit;		// 衝突可能か
+
+	// アニメーション用の変数
+	float m_animationAngle;
 };

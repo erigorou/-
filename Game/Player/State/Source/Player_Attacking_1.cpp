@@ -11,6 +11,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 #include "Game/Sound/Sound.h"
+#include "Libraries/MyLib/EasingFunctions.h"
 
 #include "Game/Player/Player.h"
 #include "Game/Weapon/Sword/Sword.h"
@@ -62,8 +63,26 @@ void PlayerAttacking_1::Update(const float& elapsedTime)
 {
 	m_totalSeconds += elapsedTime;
 
+	UpdateAnimation();
+
 	// 時間を計測し、一定時間経過でステートを遷移
 	m_player->TimeComparison(m_totalSeconds, Player::APPLIED_ATTACK_TIME, m_player->GetPlayerIdlingState(), elapsedTime);
+}
+
+
+// アニメーションの更新
+void PlayerAttacking_1::UpdateAnimation()
+{
+	if (m_totalSeconds > Player::NORMAL_ATTACK_TIME) return;
+
+	// イージングで使用するための変数 0-1
+	float t = m_totalSeconds / Player::NORMAL_ATTACK_TIME;
+
+	// プレイヤーに回転を与える
+	float currentAngle = m_player->GetAngle();
+	currentAngle += -30 + 60 * Easying::easeOutExpo(t);
+
+	m_player->SetAnimationAngle(currentAngle);
 }
 
 
@@ -78,6 +97,7 @@ void PlayerAttacking_1::OnKeyDown(const DirectX::Keyboard::Keys& key)
 {
 	UNREFERENCED_PARAMETER(key);
 }
+
 
 
 // 事後更新処理

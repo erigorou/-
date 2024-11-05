@@ -43,7 +43,8 @@ Player::Player(PlayScene* playScene)
 	m_particleTime{},
 	m_isHit{},
 	m_coolTime{},
-	m_canHit{false}
+	m_canHit{false},
+	m_animationAngle{}
 {
 }
 
@@ -202,6 +203,7 @@ void Player::Update(const DirectX::SimpleMath::Vector3 enemyPos,const float elap
 	m_angle = Math::CalculationAngle(m_position, enemyPos);
 	CalculationMatrix();
 	m_pushBackValue = Vector3::Zero;
+
 	///////////////////“–‚½‚è”»’è‚ÌXV////////////////////////////
 	m_bodyCollision->Center = m_position;
 
