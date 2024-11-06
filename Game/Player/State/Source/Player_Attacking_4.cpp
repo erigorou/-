@@ -68,7 +68,8 @@ void PlayerAttacking_4::PreUpdate()
 	Sound::PlaySE(Sound::SE_TYPE::PLAYER_ATTACK2);
 
 	// 前のステートでのY軸上昇量を取得する
-	m_upValue = m_player->GetPosition().y;
+	m_position = m_player->GetPosition();
+	m_upValue = m_position.y;
 }
 
 // --------------------------------
@@ -91,12 +92,15 @@ void PlayerAttacking_4::UpdateAnimation()
 	// イージングに用いるための変数
 	float t = 0;
 
-	if (m_totalSeconds < DOWN_TIME)
+	if (m_totalSeconds <= DOWN_TIME)
 	{
 		// イージング値を計算
 		t = m_totalSeconds / DOWN_TIME;
-		m_downValue = m_upValue - m_upValue * Easing::easeOutCubic(t);
+		m_downValue = m_upValue - m_upValue * Easing::easeOutElastic(t);
 	}
+
+	// 下限量を更新したものを設定する
+	m_player->SetPosition(DirectX::SimpleMath::Vector3(m_position.x, m_downValue, m_position.z));
 }
 
 

@@ -85,7 +85,7 @@ void PlayerAttacking_3::UpdateAnimation()
 
 		// 回転量の計算を行う
 		float currentAngle = m_player->GetAngle();
-		currentAnimPos.x = -20 * Easing::easeOutCirc(t) + currentAngle;
+		currentAnimPos.x = -20 * Easing::easeOutElastic(t) + currentAngle;
 
 		// radianに変換
 		currentAnimPos.x = DirectX::XMConvertToRadians(currentAnimPos.x);
@@ -100,8 +100,11 @@ void PlayerAttacking_3::UpdateAnimation()
 
 	float JUMP_VALUE = 4.0f;
 
-	// ジャンプ量の計算を行う
-	float jump = Math::CalculatingSinWave(t / 2, JUMP_VALUE, 1.0f);
+	// イージングの経過時間をサイン波として扱う
+	t = Math::CalculatingSinWave(t / 2, 1.0f, 1.0f);
+
+	// 0以下にならないようにイージングを作る
+	float jump = std::max(JUMP_VALUE * Easing::easeOutCubic(t), 0.0f);
 
 	// プレイヤーに設定する
 	m_player->SetPosition(m_position + DirectX::SimpleMath::Vector3(0, jump, 0));
