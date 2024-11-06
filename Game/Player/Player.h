@@ -23,6 +23,8 @@ class Wall;
 
 class Player :  public IObserver
 {
+
+// 固定値
 public:
 	// 初期座標
 	static const DirectX::SimpleMath::Vector3 HOME_POSITION;
@@ -38,15 +40,15 @@ public:
 
 	static constexpr float NORMAL_ATTACK_TIME	= 0.5f; // 通常攻撃のアニメーション時間
 
-
+// アクセサ
 public:
 	// /////////////////プレイヤーの基礎情報を渡す関数//////////////////////////////////////////////////
-	DirectX::SimpleMath::Vector3	GetPosition()override	{ return m_position;	}
-	DirectX::SimpleMath::Vector3	GetVelocity()	const	{ return m_velocity;	}
-	DirectX::SimpleMath::Vector3	GetDirection()	const	{ return m_direction;	}
-	float							GetAngle()		const	{ return m_angle;		}
-	PlayerHP*						GetPlayerHP()	const	{ return m_hp.get();	}
-	DirectX::BoundingSphere*		GetBodyCollision()		{ return m_bodyCollision.get(); }
+	DirectX::SimpleMath::Vector3	GetPosition		()override	{ return m_position;			}
+	DirectX::SimpleMath::Vector3	GetVelocity		()	const	{ return m_velocity;			}
+	DirectX::SimpleMath::Vector3	GetDirection	()	const	{ return m_direction;			}
+	float							GetAngle		()	const	{ return m_angle;				}
+	PlayerHP*						GetPlayerHP		()	const	{ return m_hp.get();			}
+	DirectX::BoundingSphere*		GetBodyCollision()			{ return m_bodyCollision.get(); }
 
 
 	////////////////////プレイヤー基本情報を設定する関数/////////////////////////////////////////////////
@@ -54,29 +56,29 @@ public:
 
 
 	////////////////////プレイヤーのステートを渡す関数//////////////////////////////////////////////////
-	PlayerIdling* GetPlayerIdlingState()			const { return m_playerIdling.		get(); }
-	PlayerDodging* GetPlayerDodgingState()			const { return m_playerDodging.		get(); }
-	PlayerAttacking_1* GetPlayerAttackingState1()	const { return m_playerAttacking_1.	get(); }
-	PlayerAttacking_2* GetPlayerAttackingState2()	const { return m_playerAttacking_2.	get(); }
-	PlayerAttacking_3* GetPlayerAttackingState3()	const { return m_playerAttacking_3.	get(); }
-	PlayerAttacking_4* GetPlayerAttackingState4()	const { return m_playerAttacking_4.	get(); }
+	PlayerIdling*		GetPlayerIdlingState	()	const { return m_playerIdling.		get(); }
+	PlayerDodging*		GetPlayerDodgingState	()	const { return m_playerDodging.		get(); }
+	PlayerAttacking_1*	GetPlayerAttackingState1()	const { return m_playerAttacking_1.	get(); }
+	PlayerAttacking_2*	GetPlayerAttackingState2()	const { return m_playerAttacking_2.	get(); }
+	PlayerAttacking_3*	GetPlayerAttackingState3()	const { return m_playerAttacking_3.	get(); }
+	PlayerAttacking_4*	GetPlayerAttackingState4()	const { return m_playerAttacking_4.	get(); }
 
-	// /////////プレイヤーの移動に関するステートを設定する関数///////////////////////////////////////////
-	void SetSpeed		(DirectX::SimpleMath::Vector3 velocity)		{ m_velocity = velocity; }
-	void SetAcceleration(DirectX::SimpleMath::Vector3 acceleration)	{ m_acceleration = acceleration; }
-	void SetAngle		(const float angle)							{ m_angle = angle; }
+	////////////プレイヤーの移動に関するステートを設定する関数///////////////////////////////////////////
+	void SetSpeed		(DirectX::SimpleMath::Vector3 velocity)		{ m_velocity = velocity;			}
+	void SetAcceleration(DirectX::SimpleMath::Vector3 acceleration)	{ m_acceleration = acceleration;	}
+	void SetAngle		(const float angle)							{ m_angle = angle;					}
 
 	////////////////////プレイシーンに干渉するのに使用すr関数/////////////////////////////////////////////
 	PlayScene* GetPlayScene()const { return m_playScene; }
 
-	//////////////////////////////////衝突判定に使用///////////////////////////////////////////////
+	//////////////////////////////////衝突判定に使用//////////////////////////////////////////////////////
 	void CanHit(bool flag) { m_canHit = flag; }
 
-	//////////////////////////////////アニメーションに使用///////////////////////////////////////////////
+	//////////////////////////////////アニメーションに使用////////////////////////////////////////////////
 	void SetAnimationRotate(DirectX::SimpleMath::Vector3 rotate) { m_animationRotate = rotate; }
 
 
-
+// 公開関数
 public:
 	// コンストラクタ
 	Player(PlayScene* playScene);
@@ -121,6 +123,8 @@ public:
 	// キーボードの入力を取得する
 	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
 
+
+// 内部変数
 private:
 	DirectX::SimpleMath::Vector3	m_position;			// 位置
 	DirectX::SimpleMath::Vector3	m_velocity;			// 速度
@@ -159,6 +163,7 @@ private:
 	float m_particleTime;
 	float m_elapsedTime;
 
+// 内部関数
 private:
 	// プレイシーン(他のオブジェクトの情報の取得などに使う)
 	PlayScene* m_playScene;
