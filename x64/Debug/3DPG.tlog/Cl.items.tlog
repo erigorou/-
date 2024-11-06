@@ -10,6 +10,7 @@ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Effects\Source
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Camera\State\PlayCameraState.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\PlayCameraState.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Camera\State\TitleCameraState.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\TitleCameraState.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Data\GameData.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\GameData.obj
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Enemy\Face\EnemyFaceIdling.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\EnemyFaceIdling.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Scene\State\LoseResult.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\LoseResult.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\Scene\State\WinResult.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\WinResult.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Game\TitleObject\EnemyTitleIdling.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\EnemyTitleIdling.obj

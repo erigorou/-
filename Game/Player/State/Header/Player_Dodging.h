@@ -60,14 +60,20 @@ private:
 	// 終了時間
 	float m_finishTime;
 
+	// ポジション
+	DirectX::SimpleMath::Vector3 m_position;
 	// 回避方向を取得するための向き
-	DirectX::SimpleMath::Vector3 m_direction;
+	DirectX::SimpleMath::Vector3 m_inputVelocity;
 	// プレイヤーの移動速度
 	DirectX::SimpleMath::Vector3 m_velocity;
 	// プレイヤー
 	Player* m_player;
 	// モデル
 	DirectX::Model* m_model;
+
+
+	float m_upValue;	// 上昇量
+	float m_downValue;	// 下降量
 
 };
 

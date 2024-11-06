@@ -197,6 +197,7 @@
     <ClInclude Include="Game\Camera\State\PlayCameraState.h" />
     <ClInclude Include="Game\Camera\State\TitleCameraState.h" />
     <ClInclude Include="Game\Data\GameData.h" />
+    <ClInclude Include="Game\Enemy\Face\EnemyFaceIdling.h" />
     <ClInclude Include="Game\Scene\State\LoseResult.h" />
     <ClInclude Include="Game\Scene\State\WinResult.h" />
     <ClInclude Include="Game\TitleObject\EnemyTitleIdling.h" />
@@ -252,6 +253,7 @@
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_3.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_4.h" />
     <ClInclude Include="Interface\ICameraState.h" />
+    <ClInclude Include="Interface\IFace.h" />
     <ClInclude Include="Interface\IHitPoint.h" />
     <ClInclude Include="Interface\IObject.h" />
     <ClInclude Include="Interface\IObserver.h" />
@@ -293,6 +295,7 @@
     <ClCompile Include="Game\Camera\State\PlayCameraState.cpp" />
     <ClCompile Include="Game\Camera\State\TitleCameraState.cpp" />
     <ClCompile Include="Game\Data\GameData.cpp" />
+    <ClCompile Include="Game\Enemy\Face\EnemyFaceIdling.cpp" />
     <ClCompile Include="Game\Scene\State\LoseResult.cpp" />
     <ClCompile Include="Game\Scene\State\WinResult.cpp" />
     <ClCompile Include="Game\TitleObject\EnemyTitleIdling.cpp" />

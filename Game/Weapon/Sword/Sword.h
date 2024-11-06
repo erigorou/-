@@ -5,12 +5,13 @@
 #include "Game/Scene/PlayScene.h"
 #include "Interface/IObject.h"
 
-// Œ•‚Ìó‘Ô ========================================================
+// Œ•‚Ìó‘Ô ===============================================================
 #include "Game/Weapon/Sword/Header/Sword_Idling.h"			// ‘Ò‹@ó‘Ô
 #include "Game/Weapon/Sword/Header/Sword_Attacking_1.h"		// UŒ‚ó‘Ô‚P
 #include "Game/Weapon/Sword/Header/Sword_Attacking_2.h"		// UŒ‚ó‘Ô‚Q
 #include "Game/Weapon/Sword/Header/Sword_Attacking_3.h"		// UŒ‚ó‘Ô‚R
 #include "Game/Weapon/Sword/Header/Sword_Attacking_4.h"		// UŒ‚ó‘Ô‚S
+
 
 
 class Sword : public IObject
@@ -22,17 +23,17 @@ public:
 	static constexpr DirectX::SimpleMath::Vector3 SWORD_DIR_FOR_PLAYER = { 1.5f, 1.0f, 0.0f };	// ƒvƒŒƒCƒ„[‚Ì“‚ÌˆÊ’u
 
 	static constexpr float MODEL_TOP_HEIGHT  = 55.0f;
-	static constexpr float MODEL_ROOT_HEIGHT = 52.5f;
+	static constexpr float MODEL_ROOT_HEIGHT = 50.0f;
 
 	DirectX::Model* GetModel()		const { return m_model.get();	}	// ƒ‚ƒfƒ‹‚ÌƒQƒbƒ^[
 	PlayScene*	GetPlayScene()		const { return m_playScene;		}	// ƒvƒŒƒCƒV[ƒ“‚ÌƒQƒbƒ^[
 
 	// ó‘Ô‚ÌƒQƒbƒ^[
-	IWeapon* GetIdlingState()		const { return m_swordIdling.get();		}	// ‘Ò‹@ó‘Ô
-	IWeapon* GetAttacking_1State()	const { return m_swordAttacking_1.get();}	// UŒ‚ó‘Ô‚P
-	IWeapon* GetAttacking_2State()	const { return m_swordAttacking_2.get(); }	// UŒ‚ó‘Ô‚Q
-	IWeapon* GetAttacking_3State()	const { return m_swordAttacking_3.get(); }	// UŒ‚ó‘Ô‚R
-	IWeapon* GetAttacking_4State()	const { return m_swordAttacking_4.get(); }	// UŒ‚ó‘Ô‚S
+	IWeapon* GetIdlingState()		const { return m_swordIdling.get();			}	// ‘Ò‹@ó‘Ô
+	IWeapon* GetAttacking_1State()	const { return m_swordAttacking_1.get();	}	// UŒ‚ó‘Ô‚P
+	IWeapon* GetAttacking_2State()	const { return m_swordAttacking_2.get();	}	// UŒ‚ó‘Ô‚Q
+	IWeapon* GetAttacking_3State()	const { return m_swordAttacking_3.get();	}	// UŒ‚ó‘Ô‚R
+	IWeapon* GetAttacking_4State()	const { return m_swordAttacking_4.get();	}	// UŒ‚ó‘Ô‚S
 
 	// ˆÊ’u‚ÌƒQƒbƒ^[
 	DirectX::SimpleMath::Vector3 GetPosition() override { return m_position; }

@@ -20,7 +20,7 @@ PlayerDodging::PlayerDodging(Player* player)
 	 m_player(player)
 	,m_model(nullptr)
 	,m_totalSeconds(0.0f)
-	,m_direction(0.0f, 0.0f, 0.0f)
+	,m_inputVelocity(0.0f, 0.0f, 0.0f)
 	,m_finishTime(0.0f)
 {
 }
@@ -44,9 +44,12 @@ void PlayerDodging::PreUpdate()
 	// Œo‰ßŠÔ‚Ì‰Šú‰»
 	m_totalSeconds = 0.f;
 	// ‰ñ”ğ‚·‚é•ûŒü‚ğæ“¾(³‹K‰») 
-	m_direction = m_player->GetDirection();
+	m_inputVelocity = m_player->GetinputVelocity();
+	m_inputVelocity.Normalize();
 
-	m_velocity = m_direction * DODGING_SPEED;
+	m_velocity = m_inputVelocity * DODGING_SPEED;
+
+	m_position = m_player->GetPosition();
 }
 
 // XVˆ—

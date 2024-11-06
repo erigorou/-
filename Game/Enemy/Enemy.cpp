@@ -13,11 +13,19 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/Microsoft/DebugDraw.h"
 #include "Libraries/MyLib/Math.h"
+#include "Game/Scene/PlayScene.h"
 
 #include "Game/Enemy/Enemy.h"
 #include "Game/Stage/Wall/Wall.h"
 
 #include "Interface/IState.h"
+#include "BehaviourTree/Header/BehaviorTree.h"	// ビヘイビアツリー
+
+#include "States/Header/EnemyIdling.h"			// 待機状態
+#include "States/Header/Enemy_Attacking.h"		// たたきつけ攻撃
+#include "States/Header/Enemy_Sweeping.h"		// 薙ぎ払い攻撃
+#include "States/Header/EnemyApproaching.h"		// 追尾状態
+
 
 // 固定値
 const float Enemy::ENEMY_SPEED	= 0.1f;

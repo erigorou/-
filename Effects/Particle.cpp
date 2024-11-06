@@ -336,11 +336,11 @@ void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::Simp
 		t += 1.0f / m_swordTrail.size();
 		float value2 = 1 - static_cast<float>(pow(1 - t, 2));	// イージング2	// t が 1に近づくほど色が薄くなる
 
-		ver[1].color = DirectX::SimpleMath::Color(1, 1, 1, value1);			// 右上
-		ver[2].color = DirectX::SimpleMath::Color(1, 0.8, 0.8, value1);		// 右下
+		ver[1].color = DirectX::SimpleMath::Color(1, 1, 1, value1);		// 右上
+		ver[2].color = DirectX::SimpleMath::Color(1, 0.8, 0.8, 0);		// 右下
 
-		ver[0].color = DirectX::SimpleMath::Color(1, 1, 1, value2);			// 左上
-		ver[3].color = DirectX::SimpleMath::Color(1, 0.8, 0.8, value2);		// 左下
+		ver[0].color = DirectX::SimpleMath::Color(1, 1, 1, value2);		// 左上
+		ver[3].color = DirectX::SimpleMath::Color(1, 0.8, 0.8, 0);		// 左下
 
 		m_batch->DrawQuad(ver[0], ver[1], ver[2], ver[3]);
 	}

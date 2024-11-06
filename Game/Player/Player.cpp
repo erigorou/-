@@ -232,14 +232,13 @@ void Player::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 // ----------------------------------------------
 void Player::OnKeyDown(const DirectX::Keyboard::Keys& key)
 {
-	if (m_currentState == this->GetPlayerIdlingState())
-	{
-		// 移動
-		if (key == DirectX::Keyboard::Up)		m_inputVelocity += Vector3::Forward;	// 「↑」で前進
-		if (key == DirectX::Keyboard::Down)		m_inputVelocity += Vector3::Backward;	// 「↓」で後退
-		if (key == DirectX::Keyboard::Left)		m_inputVelocity += Vector3::Left;		// 「←」で左移動
-		if (key == DirectX::Keyboard::Right)	m_inputVelocity += Vector3::Right;		// 「→」で右移動
-	}
+	m_velocity = DirectX::SimpleMath::Vector3::Zero;
+
+	// 移動
+	if (key == DirectX::Keyboard::Up)		m_inputVelocity += Vector3::Forward;	// 「↑」で前進
+	if (key == DirectX::Keyboard::Down)		m_inputVelocity += Vector3::Backward;	// 「↓」で後退
+	if (key == DirectX::Keyboard::Left)		m_inputVelocity += Vector3::Left;		// 「←」で左移動
+	if (key == DirectX::Keyboard::Right)	m_inputVelocity += Vector3::Right;		// 「→」で右移動
 
 	m_currentState->OnKeyDown(key);
 }

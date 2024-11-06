@@ -1,22 +1,32 @@
 #pragma once	// ‘½d“Ç‚İ‚İ–h~
 #include "Interface/IState.h"
-#include "Game/Scene/PlayScene.h"
-
 #include "Interface/IObject.h"
-#include "Game/Enemy/EnemyHP.h"	// HP
+#include "Interface/IFace.h"
+
+
+
+class PlayScene;
+class BehaviorTree;
 
 // ===== “G‚Ìó‘Ô =================================================================
-#include "States/Header/EnemyIdling.h"		// ‘Ò‹@ó‘Ô
-#include "States/Header/Enemy_Attacking.h"	// ‚½‚½‚«‚Â‚¯UŒ‚
-#include "States/Header/Enemy_Sweeping.h"	// “ã‚¬•¥‚¢UŒ‚
-#include "States/Header/EnemyApproaching.h"	// ’Ç”öó‘Ô
+
+#include "States/Header/EnemyIdling.h"			// ‘Ò‹@ó‘Ô
+#include "States/Header/Enemy_Attacking.h"		// ‚½‚½‚«‚Â‚¯UŒ‚
+#include "States/Header/Enemy_Sweeping.h"		// “ã‚¬•¥‚¢UŒ‚
+#include "States/Header/EnemyApproaching.h"		// ’Ç”öó‘Ô
 
 
-#include "BehaviourTree/Header/BehaviorTree.h"	// ƒrƒwƒCƒrƒAƒcƒŠ[
+#include "Game/Enemy/EnemyHP.h"					// HP
 
 
 class Enemy : public IObject
 {
+// ŠçƒNƒ‰ƒX
+public:
+	class EnemyFaceIdling;
+	class EnemyFaceAttacking;
+	class EnemyFaceDamaging;
+
 public:
 	// ŒÅ’è’l
 	static const float ENEMY_SPEED;
@@ -37,14 +47,17 @@ public:
 	void SetAngle		(const float angle)							{ m_angle = angle; }		// ‹S‚Ì‰ñ“]Šp‚ğİ’è‚·‚é	
 	void SetWorldMatrix	(DirectX::SimpleMath::Matrix mat)			{ m_worldMatrix = mat; }	// “G‚Ìƒ[ƒ‹ƒhÀ•W‚ğİ’è‚·‚é
 
-	// /////////////////“G‚Ì“–‚½‚è”»’è‚ğ“n‚·ŠÖ”/////////////////////////////////////////////////////////////////////
+	////////////////////“G‚Ì“–‚½‚è”»’è‚ğ“n‚·ŠÖ”/////////////////////////////////////////////////////////////////////
 	DirectX::BoundingSphere GetBodyCollision() const { return *m_bodyCollision.get(); }	// ‘Ì‚Ì“–‚½‚è”»’è‚ğæ“¾‚·‚é
 
-	// /////////////////“G‚ÌƒXƒe[ƒg‚ğ“n‚·ŠÖ”/////////////////////////////////////////////////////////////////////
+	////////////////////“G‚ÌƒXƒe[ƒg‚ğ“n‚·ŠÖ”/////////////////////////////////////////////////////////////////////
 	EnemyIdling*		GetEnemyIdling() const { return m_idling.get(); }			// ‘Ò‹@ó‘Ô
 	Enemy_Attacking*	GetEnemyAttacking() const { return m_attacking.get(); }		// UŒ‚ó‘Ô
 	Enemy_Sweeping*		GetEnemySweeping() const { return m_sweeping.get(); }		// “ã‚¬•¥‚¢ó‘Ô
 	EnemyApproaching*	GetEnemyApproaching() const { return m_approaching.get(); }	// ’Ç”öó‘Ô
+
+	////////////////////@Šç@/////////////////////////////////////////////////////////////////////////////////////
+
 
 
 	// Õ“Ë‚ğ‹–‰Â‚·‚é
