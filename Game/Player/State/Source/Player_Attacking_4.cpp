@@ -17,7 +17,9 @@
 #include "Game/Player/State/Header/Player_Attacking_4.h"
  
 
-// コンストラクタ
+// --------------------------------
+//  コンストラクタ
+// --------------------------------
 PlayerAttacking_4::PlayerAttacking_4(Player* player)
 	:
 	 m_player(player)
@@ -27,19 +29,25 @@ PlayerAttacking_4::PlayerAttacking_4(Player* player)
 {
 }
 
-// デストラクタ
+// --------------------------------
+//  デストラクタ
+// --------------------------------
 PlayerAttacking_4::~PlayerAttacking_4()
 {
 }
 
-// 初期化処理
+// --------------------------------
+//  初期化処理
+// --------------------------------
 void PlayerAttacking_4::Initialize(DirectX::Model* model)
 {
 	// モデルを取得する
 	m_model = model;
 }
 
-// 事前更新処理
+// --------------------------------
+//  状態開始処理
+// --------------------------------
 void PlayerAttacking_4::PreUpdate()
 {
 	// 経過時間の初期化
@@ -54,7 +62,9 @@ void PlayerAttacking_4::PreUpdate()
 	Sound::PlaySE(Sound::SE_TYPE::PLAYER_ATTACK2);
 }
 
-// 更新処理
+// --------------------------------
+//  更新処理
+// --------------------------------
 void PlayerAttacking_4::Update(const float& elapsedTime)
 {
 	// 時間を計測し、一定時間経過でステートを遷移
@@ -62,19 +72,26 @@ void PlayerAttacking_4::Update(const float& elapsedTime)
 }
 
 
-// キー入力
+// --------------------------------
+//  キー入力処理（瞬間）
+// --------------------------------
 void PlayerAttacking_4::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 {
 	UNREFERENCED_PARAMETER(key);
 }
 
+// --------------------------------
+//  キー入力処理（継続）
+// --------------------------------
 void PlayerAttacking_4::OnKeyDown(const DirectX::Keyboard::Keys& key)
 {
 	UNREFERENCED_PARAMETER(key);
 }
 
 
-// 事後更新処理
+// --------------------------------
+//  状態終了処理
+// --------------------------------
 void PlayerAttacking_4::PostUpdate()
 {
 	// 武器を攻撃状態に変更
@@ -84,7 +101,9 @@ void PlayerAttacking_4::PostUpdate()
 }
 
 
-// 描画処理
+// --------------------------------
+//  描画処理
+// --------------------------------
 void PlayerAttacking_4::Render(
 	ID3D11DeviceContext* context,
 	DirectX::CommonStates* states,
@@ -108,7 +127,9 @@ void PlayerAttacking_4::Render(
 }
 
 
-// 終了処理
+// --------------------------------
+//  終了処理
+// --------------------------------
 void PlayerAttacking_4::Finalize()
 {
 }

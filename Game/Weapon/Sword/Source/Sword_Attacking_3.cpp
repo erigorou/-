@@ -18,12 +18,16 @@
 #include "Game/Weapon/Sword/Header/Sword_Attacking_3.h"
 
 
-// 固定値
+// --------------------------------
+//  固定値
+// --------------------------------
 const float Sword_Attacking_3::RADIAN_90 = DirectX::XMConvertToRadians(90);
 const float Sword_Attacking_3::ATTACK_TIME  = 0.7f;
 
 
-// コンストラクタ
+// --------------------------------
+//  コンストラクタ
+// --------------------------------
 Sword_Attacking_3::Sword_Attacking_3(Sword* sword)
 	:
 	m_sword(sword),
@@ -38,13 +42,17 @@ Sword_Attacking_3::Sword_Attacking_3(Sword* sword)
 	m_particles = m_sword->GetPlayScene()->GetParticle();
 }
 
-// デストラクタ
+// --------------------------------
+//	デストラクタ
+// --------------------------------
 Sword_Attacking_3::~Sword_Attacking_3()
 {
 }
 
 
-// 初期化処理
+// --------------------------------
+//  初期化処理
+// --------------------------------
 void Sword_Attacking_3::Initialize()
 {
 	using namespace DirectX::SimpleMath;
@@ -55,7 +63,9 @@ void Sword_Attacking_3::Initialize()
 }
 
 
-// 事前処理
+// --------------------------------
+//  状態開始処理
+// --------------------------------
 void Sword_Attacking_3::PreUpdate()
 {
 	m_totalSeconds = 0.0f;								// 経過時間のリセット
@@ -66,7 +76,9 @@ void Sword_Attacking_3::PreUpdate()
 }
 
 
-// 更新処理
+// --------------------------------
+//  更新処理
+// --------------------------------
 void Sword_Attacking_3::Update(float elapsedTime)
 {
 	using namespace DirectX;
@@ -119,6 +131,9 @@ void Sword_Attacking_3::Update(float elapsedTime)
 }
 
 
+// --------------------------------
+//  量頂点の座標取得処理
+// --------------------------------
 void Sword_Attacking_3::GetCudgelBothEnds()
 {
 	// 根本と頂点のワールド座標をそれぞれ取得
@@ -130,7 +145,9 @@ void Sword_Attacking_3::GetCudgelBothEnds()
 }
 
 
-// ソードのパーティクルを生成
+// --------------------------------
+//  斬撃エフェクトの生成処理
+// --------------------------------
 void Sword_Attacking_3::CreateSwordParticle()
 {
 	int max = static_cast<int>(m_rootPos.size()) - 1;
@@ -148,37 +165,44 @@ void Sword_Attacking_3::CreateSwordParticle()
 }
 
 
-// 事後処理
+// --------------------------------
+//  状態終了処理
+// --------------------------------
 void Sword_Attacking_3::PostUpdate()
 {
 }
 
 
-// 描画処理
+// --------------------------------
+//  描画処理
+// --------------------------------
 void Sword_Attacking_3::Render(ID3D11DeviceContext* context,
 	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
 	const DirectX::SimpleMath::Matrix& projection)
 {
-	CommonResources* resources = CommonResources::GetInstance();
-
 	// モデルを描画する
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 
-
 #ifdef _DEBUG
+	CommonResources* resources = CommonResources::GetInstance();
 	auto debugString = resources->GetDebugString();
 	debugString->AddString("rot.x : %f", DirectX::XMConvertToDegrees(m_rot.x));
 #endif // _DEBUG
 }
 
 
-// 終了処理
+// --------------------------------
+//  終了処理
+// --------------------------------
 void Sword_Attacking_3::Finalize()
 {
 }
 
 
+// --------------------------------
+//  衝突処理イベント
+// --------------------------------
 void Sword_Attacking_3::HitAction(InterSectData data)
 {
 	UNREFERENCED_PARAMETER(data);

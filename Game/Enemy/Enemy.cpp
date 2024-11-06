@@ -98,7 +98,7 @@ void Enemy::Initialize()
 
 
 // --------------------------------
-//  更新処理
+//  状態の生成処理
 // --------------------------------
 void Enemy::CreateState()
 {
@@ -119,11 +119,15 @@ void Enemy::CreateState()
 }
 
 
+// --------------------------------
+//  衝突判定の生成処理
+// --------------------------------
 void Enemy::CreateCollision()
 {
 	// 当たり判定の生成
 	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, ENEMY_SCALE * 15.0f);
 
+	// 衝突判定をMessengerに登録
 	m_playScene->GetCollisionManager()->AddCollision(
 		ObjectType::Enemy,
 		this,
@@ -231,7 +235,7 @@ void Enemy::Finalize()
 
 
 // --------------------------------
-//  当たったときの処理
+//  全体の衝突判定イベント
 // --------------------------------
 void Enemy::HitAction(InterSectData data)
 {
@@ -241,10 +245,9 @@ void Enemy::HitAction(InterSectData data)
 
 
 
-/// <summary>
-/// 刀との衝突判定
-/// </summary>
-/// <param name="data">衝突した相手オブジェクトの情報を持つ構造体</param>
+// --------------------------------
+//  刀との衝突判定
+// --------------------------------
 void Enemy::HitSword(InterSectData data)
 {
 	if (
@@ -259,10 +262,9 @@ void Enemy::HitSword(InterSectData data)
 	}
 }
 
-/// <summary>
-/// ステージとの衝突判定
-/// </summary>
-/// <param name="data">衝突した相手オブジェクトの情報を持つ構造体</param>
+// --------------------------------
+//  ステージとの衝突判定
+// --------------------------------
 void Enemy::HitStage(InterSectData data)
 {
 	if (data.objType == ObjectType::Stage && data.colType == CollisionType::Sphere)

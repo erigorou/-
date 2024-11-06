@@ -19,12 +19,16 @@
 #include "Game/Weapon/Sword/Header/Sword_Attacking_1.h"
 
 
-// 固定値
+// --------------------------------
+//  固定値
+// --------------------------------
 const float Sword_Attacking_1::RADIAN_90 = DirectX::XMConvertToRadians(90);
 const float Sword_Attacking_1::ATTACK_TIME  = 0.5f;
 
 
-// コンストラクタ
+// --------------------------------
+//  コンストラクタ
+// --------------------------------
 Sword_Attacking_1::Sword_Attacking_1(Sword* sword)
 	:
 	m_sword(sword),
@@ -39,13 +43,17 @@ Sword_Attacking_1::Sword_Attacking_1(Sword* sword)
 	m_particles = m_sword->GetPlayScene()->GetParticle();
 }
 
-// デストラクタ
+// --------------------------------
+//  デストラクタ
+// --------------------------------
 Sword_Attacking_1::~Sword_Attacking_1()
 {
 }
 
 
-// 初期化処理
+// --------------------------------
+//  初期化処理
+// --------------------------------
 void Sword_Attacking_1::Initialize()
 {
 	using namespace DirectX::SimpleMath;
@@ -56,7 +64,9 @@ void Sword_Attacking_1::Initialize()
 }
 
 
-// 事前処理
+// --------------------------------
+//  状態開始処理
+// --------------------------------
 void Sword_Attacking_1::PreUpdate()
 {
 	m_totalSeconds = 0.0f;									// 経過時間の初期化
@@ -67,7 +77,10 @@ void Sword_Attacking_1::PreUpdate()
 	m_tipPos.clear();
 }
 
-// 更新処理
+
+// --------------------------------
+//  更新処理
+// --------------------------------
 void Sword_Attacking_1::Update(float elapsedTime)
 {
 	using namespace DirectX;
@@ -129,6 +142,9 @@ void Sword_Attacking_1::Update(float elapsedTime)
 }
 
 
+// --------------------------------
+//  両端座標の取得処理
+// --------------------------------
 void Sword_Attacking_1::GetCudgelBothEnds()
 {
 	// 根本と頂点のワールド座標をそれぞれ取得
@@ -140,7 +156,9 @@ void Sword_Attacking_1::GetCudgelBothEnds()
 }
 
 
-// ソードのパーティクルを生成
+// --------------------------------
+//  斬撃エフェクト生成処理
+// --------------------------------
 void Sword_Attacking_1::CreateSwordParticle()
 {
 	int max = static_cast<int>(m_rootPos.size()) - 1;
@@ -158,27 +176,17 @@ void Sword_Attacking_1::CreateSwordParticle()
 }
 
 
-//void Sword_Attacking_1::UpdateCudgelRotation()
-//{
-//	// プレイヤーの角度を取得
-//	m_angleRL = m_sword->GetPlayScene()->GetPlayer()->GetAngle();
-//	m_angleUD = m_sword->GetPlayScene()->GetPlayer()->GetAngleUD();
-//
-//	// ワールド行列を更新する
-//	m_worldMatrix = Matrix::CreateScale(Cudgel::CUDGEL_SCALE);		// サイズの設定 & 初期化
-//	m_worldMatrix
-//		*= Matrix::CreateTranslation(Cudgel_Attacking::ZERO_DIREC)	// 初期位置への移動
-//		*= CalculateAttackMatrix();									// 攻撃モーション中の計算
-//}
-
-
-// 事後処理
+// --------------------------------
+//  状態終了処理
+// --------------------------------
 void Sword_Attacking_1::PostUpdate()
 {
 }
 
 
-// 描画処理
+// --------------------------------
+//  描画処理
+// --------------------------------
 void Sword_Attacking_1::Render(ID3D11DeviceContext* context,
 	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
@@ -191,33 +199,23 @@ void Sword_Attacking_1::Render(ID3D11DeviceContext* context,
 
 
 #ifdef _DEBUG
-	//// GeometricPrimitiveでtipとrootの頂点位置に球体を表示
-	//auto debugPrimitive = DirectX::GeometricPrimitive::CreateSphere(context, 0.1f);
-
-	//for (const auto& rootPos : m_rootPos)
-	//{
-	//	Matrix rootWorldMatrix = Matrix::CreateTranslation(rootPos);
-	//	debugPrimitive->Draw(rootWorldMatrix, view, projection, DirectX::Colors::Red);
-	//}
-
-	//for (const auto& tipPos : m_tipPos)
-	//{
-	//	Matrix tipWorldMatrix = Matrix::CreateTranslation(tipPos);
-	//	debugPrimitive->Draw(tipWorldMatrix, view, projection, DirectX::Colors::Blue);
-	//}
-
 	auto debugString = resources->GetDebugString();
 	debugString->AddString("");
 #endif // _DEBUG
 }
 
 
-// 終了処理
+// --------------------------------
+//  終了処理
+// --------------------------------
 void Sword_Attacking_1::Finalize()
 {
 }
 
 
+// --------------------------------
+//  衝突時イベント
+// --------------------------------
 void Sword_Attacking_1::HitAction(InterSectData data)
 {
 	UNREFERENCED_PARAMETER(data);

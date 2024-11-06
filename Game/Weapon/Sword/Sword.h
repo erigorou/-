@@ -21,8 +21,8 @@ public:
 
 	static constexpr DirectX::SimpleMath::Vector3 SWORD_DIR_FOR_PLAYER = { 1.5f, 1.0f, 0.0f };	// プレイヤーの刀の位置
 
-	static constexpr float MODEL_TOP_HEIGHT  = 50.0f;
-	static constexpr float MODEL_ROOT_HEIGHT = 47.5f;
+	static constexpr float MODEL_TOP_HEIGHT  = 55.0f;
+	static constexpr float MODEL_ROOT_HEIGHT = 52.5f;
 
 	DirectX::Model* GetModel()		const { return m_model.get();	}	// モデルのゲッター
 	PlayScene*	GetPlayScene()		const { return m_playScene;		}	// プレイシーンのゲッター

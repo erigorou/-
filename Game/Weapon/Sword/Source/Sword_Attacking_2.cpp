@@ -18,12 +18,16 @@
 #include "Game/Weapon/Sword/Header/Sword_Attacking_2.h"
 
 
-// 固定値
+// --------------------------------
+//  固定値
+// --------------------------------
 const float Sword_Attacking_2::RADIAN_90 = DirectX::XMConvertToRadians(90);
 const float Sword_Attacking_2::ATTACK_TIME  = 0.5f;
 
 
-// コンストラクタ
+// --------------------------------
+//  コンストラクタ
+// --------------------------------
 Sword_Attacking_2::Sword_Attacking_2(Sword* sword)
 	:
 	m_sword(sword),
@@ -38,13 +42,18 @@ Sword_Attacking_2::Sword_Attacking_2(Sword* sword)
 	m_particles = m_sword->GetPlayScene()->GetParticle();
 }
 
-// デストラクタ
+
+// --------------------------------
+//  デストラクタ
+// --------------------------------
 Sword_Attacking_2::~Sword_Attacking_2()
 {
 }
 
 
-// 初期化処理
+// --------------------------------
+//  初期化処理
+// --------------------------------
 void Sword_Attacking_2::Initialize()
 {
 	using namespace DirectX::SimpleMath;
@@ -55,7 +64,9 @@ void Sword_Attacking_2::Initialize()
 }
 
 
-// 事前処理
+// --------------------------------
+//  状態開始処理
+// --------------------------------
 void Sword_Attacking_2::PreUpdate()
 {
 	m_totalSeconds = 0.0f;								// 時間経過のリセット
@@ -66,7 +77,10 @@ void Sword_Attacking_2::PreUpdate()
 	m_tipPos.clear();
 }
 
-// 更新処理
+
+// --------------------------------
+//  更新処理
+// --------------------------------
 void Sword_Attacking_2::Update(float elapsedTime)
 {
 	using namespace DirectX;
@@ -118,10 +132,9 @@ void Sword_Attacking_2::Update(float elapsedTime)
 }
 
 
-/// <summary>
-/// 頂点と根本の座標を取得する
-/// </summary>
-/// <param name="_totalTime">経過時間</param>
+// --------------------------------
+//  量頂点の取得
+// --------------------------------
 void Sword_Attacking_2::GetCudgelBothEnds()
 {
 	// 根本と頂点のワールド座標をそれぞれ取得
@@ -133,7 +146,9 @@ void Sword_Attacking_2::GetCudgelBothEnds()
 }
 
 
-// ソードのパーティクルを生成
+// --------------------------------
+//  斬撃エフェクトの生成処理
+// --------------------------------
 void Sword_Attacking_2::CreateSwordParticle()
 {
 	int max = static_cast<int>(m_rootPos.size()) - 1;
@@ -150,13 +165,18 @@ void Sword_Attacking_2::CreateSwordParticle()
 	}
 }
 
-// 事後処理
+
+// --------------------------------
+//  状態終了処理
+// --------------------------------
 void Sword_Attacking_2::PostUpdate()
 {
 }
 
 
-// 描画処理
+// --------------------------------
+//  描画処理
+// --------------------------------
 void Sword_Attacking_2::Render(ID3D11DeviceContext* context,
 	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
@@ -175,12 +195,17 @@ void Sword_Attacking_2::Render(ID3D11DeviceContext* context,
 }
 
 
-// 終了処理
+// --------------------------------
+//  終了処理
+// --------------------------------
 void Sword_Attacking_2::Finalize()
 {
 }
 
 
+// --------------------------------
+//  衝突処理イベント
+// --------------------------------
 void Sword_Attacking_2::HitAction(InterSectData data)
 {
 	UNREFERENCED_PARAMETER(data);
