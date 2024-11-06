@@ -82,7 +82,7 @@ void Cudgel::CreateModel(ID3D11Device1* device)
 
 	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);	// エフェクトファクトリーを作成
 	fx->SetDirectory(L"Resources/Models");															// モデルのディレクトリを設定	
-	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/cudgel.cmo", *fx);			// パスのモデルの読み込みを行う
+	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Weapon/Cudgel/cudgel.cmo", *fx);			// パスのモデルの読み込みを行う
 }
 
 

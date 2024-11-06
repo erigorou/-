@@ -46,7 +46,7 @@ void Wall::Initialize()
 	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
 	fx->SetDirectory(L"Resources/Models");
 	// ÉÇÉfÉãÇì«Ç›çûÇﬁ
-	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/wall.cmo", *fx);
+	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Stage/wall.cmo", *fx);
 
 	CreateCollision();
 	

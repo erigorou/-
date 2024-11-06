@@ -73,7 +73,7 @@ void Player::Initialize()
 	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
 	fx->SetDirectory(L"Resources/Models");
 	// ƒ‚ƒfƒ‹‚ğ“Ç‚İ‚Ş
-	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/momotaro.cmo", *fx);
+	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Player/Body/player.cmo", *fx);
 
 	// “–‚½‚è”»’è‚Ìì¬
 	CreateCollision();

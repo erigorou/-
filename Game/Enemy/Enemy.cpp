@@ -67,7 +67,7 @@ void Enemy::Initialize()
 	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
 	fx->SetDirectory(L"Resources/Models");
 	// ƒ‚ƒfƒ‹‚ğ“Ç‚İ‚Ş
-	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/oni.cmo", *fx);
+	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Oni/Body/oni.cmo", *fx);
 
 	// HP‚ğİ’è
 	m_hp = std::make_unique<EnemyHP>();

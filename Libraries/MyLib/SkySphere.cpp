@@ -45,7 +45,7 @@ void SkySphere::LoadSkySphereModel(ID3D11Device* device)
 	fx->SetDirectory(L"Resources/Models");
 
 	// ƒ‚ƒfƒ‹‚ğ“Ç‚İ‚Ş
-	m_skySphereModel = DirectX::Model::CreateFromCMO(device, L"Resources/Models/SkySphere.cmo", *fx);
+	m_skySphereModel = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Stage/SkySphere/skySphere.cmo", *fx);
 }
 
 
