@@ -30,17 +30,15 @@ const float Sword_Attacking_1::ATTACK_TIME  = 0.5f;
 //  コンストラクタ
 // --------------------------------
 Sword_Attacking_1::Sword_Attacking_1(Sword* sword)
-	:
-	m_sword(sword),
-	m_position(5.0f, 0.0f, 5.0f),
-	m_velocity(0.0f, 0.0f, 0.0f),
-	m_angle(0.0f),
-	m_rot(0.0f, 0.0f, 0.0f),
-	m_totalSeconds(0.0f),
-	m_worldMatrix(DirectX::SimpleMath::Matrix::Identity),
-	m_model(nullptr)
+	: m_sword		(sword)
+	, m_position	(5.0f, 0.0f, 5.0f)
+	, m_velocity	(0.0f, 0.0f, 0.0f)
+	, m_angle		(0.0f)
+	, m_rot			(0.0f, 0.0f, 0.0f)
+	, m_totalSeconds(0.0f)
+	, m_worldMatrix	(DirectX::SimpleMath::Matrix::Identity)
+	, m_model		(nullptr)
 {
-	m_particles = m_sword->GetPlayScene()->GetParticle();
 }
 
 // --------------------------------
@@ -56,11 +54,8 @@ Sword_Attacking_1::~Sword_Attacking_1()
 // --------------------------------
 void Sword_Attacking_1::Initialize()
 {
-	using namespace DirectX::SimpleMath;
-	// モデルを取得
-	m_model = m_sword->GetModel();
-	// ワールド行列を初期化
-	m_worldMatrix = Matrix::Identity;
+	m_model		= m_sword->GetModel();						// モデルの取得
+	m_particles = m_sword->GetPlayScene()->GetParticle();	// パーティクルの取得
 }
 
 
@@ -72,9 +67,8 @@ void Sword_Attacking_1::PreUpdate()
 	m_totalSeconds = 0.0f;									// 経過時間の初期化
 	m_sword->GetPlayScene()->GetEnemy()->CanHit(true);		// 衝突可能にする
 
-	// パーティクルの初期化
-	m_rootPos.clear();
-	m_tipPos.clear();
+	m_rootPos	.clear();	// 根本の座標をクリア
+	m_tipPos	.clear();	// 先端の座標をクリア
 }
 
 
@@ -84,20 +78,18 @@ void Sword_Attacking_1::PreUpdate()
 void Sword_Attacking_1::Update(float elapsedTime)
 {
 	using namespace DirectX;
-	UNREFERENCED_PARAMETER(elapsedTime);
 
 	// 経過時間を計測
 	m_totalSeconds += elapsedTime;
 
-	// プレイヤーの座標を取得
-	m_position = m_sword->GetPlayScene()->GetPlayer()->GetPosition();
-	// プレイヤーの回転を取得
-	m_angle = m_sword->GetPlayScene()->GetPlayer()->GetAngle();
 
+	m_position	= m_sword->GetPlayScene()->GetPlayer()->GetPosition();	// プレイヤーの座標を取得
+	m_angle		= m_sword->GetPlayScene()->GetPlayer()->GetAngle();		// プレイヤーの回転を取得
 
-
+	// イージングで使用するための変数
 	float t = 0.0f;
 
+	// 攻撃中の回転処理 ////
 	if (m_totalSeconds <= ATTACK_TIME)
 	{
 		// 0-1の間の値を取得
@@ -115,7 +107,7 @@ void Sword_Attacking_1::Update(float elapsedTime)
 		m_sword->GetPlayScene()->GetEnemy()->CanHit(false);
 	}
 
-	// ワールド行列を更新する
+	// ワールド行列を更新する ////
 	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE);							// 剣のサイズの設定
 
 	m_worldMatrix
@@ -129,13 +121,6 @@ void Sword_Attacking_1::Update(float elapsedTime)
 
 	// 当たり判定の位置を設定
 	m_sword->SetCollisionPosition(m_worldMatrix);
-
-
-	// 攻撃が終わったらステートをIdlingStateに戻す
-	if (m_totalSeconds >= 1.0f)
-	{
-		m_sword->ChangeState(m_sword->GetIdlingState());
-	}
 
 	// エフェクト描画用の根本と頂点を描画
 	GetCudgelBothEnds();

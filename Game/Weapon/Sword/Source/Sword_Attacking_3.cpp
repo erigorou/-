@@ -29,17 +29,15 @@ const float Sword_Attacking_3::ATTACK_TIME  = 0.7f;
 //  コンストラクタ
 // --------------------------------
 Sword_Attacking_3::Sword_Attacking_3(Sword* sword)
-	:
-	m_sword(sword),
-	m_position(5.0f, 0.0f, 5.0f),
-	m_velocity(0.0f, 0.0f, 0.0f),
-	m_angle(0.0f),
-	m_rot(0.0f, 0.0f, 0.0f),
-	m_totalSeconds(0.0f),
-	m_worldMatrix(DirectX::SimpleMath::Matrix::Identity),
-	m_model(nullptr)
+	: m_sword		(sword)
+	, m_position	(5.0f, 0.0f, 5.0f)
+	, m_velocity	(0.0f, 0.0f, 0.0f)
+	, m_angle		(0.0f)
+	, m_rot			(0.0f, 0.0f, 0.0f)
+	, m_totalSeconds(0.0f)
+	, m_worldMatrix	(DirectX::SimpleMath::Matrix::Identity)
+	, m_model		(nullptr)
 {
-	m_particles = m_sword->GetPlayScene()->GetParticle();
 }
 
 // --------------------------------
@@ -55,11 +53,8 @@ Sword_Attacking_3::~Sword_Attacking_3()
 // --------------------------------
 void Sword_Attacking_3::Initialize()
 {
-	using namespace DirectX::SimpleMath;
-	// モデルを取得
-	m_model = m_sword->GetModel();
-	// ワールド行列を初期化
-	m_worldMatrix = Matrix::Identity;
+	m_model		= m_sword->GetModel();						// モデルの取得
+	m_particles = m_sword->GetPlayScene()->GetParticle();	// パーティクルpの取得
 }
 
 
@@ -71,8 +66,8 @@ void Sword_Attacking_3::PreUpdate()
 	m_totalSeconds = 0.0f;								// 経過時間のリセット
 	m_sword->GetPlayScene()->GetEnemy()->CanHit(true);	// 衝突可能フラグを有効に
 
-	m_rootPos.clear();
-	m_tipPos.clear();
+	m_rootPos.clear();	// 根本の座標をクリア
+	m_tipPos.clear();	// 先端の座標をクリア
 }
 
 
@@ -82,7 +77,6 @@ void Sword_Attacking_3::PreUpdate()
 void Sword_Attacking_3::Update(float elapsedTime)
 {
 	using namespace DirectX;
-	UNREFERENCED_PARAMETER(elapsedTime);
 
 	// 経過時間を計測
 	m_totalSeconds += elapsedTime;
