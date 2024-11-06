@@ -11,6 +11,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 #include "Game/Sound/Sound.h"
+#include "Libraries/MyLib/EasingFunctions.h"
 
 #include "Game/Player/Player.h"
 #include "Game/Enemy/Enemy.h"
@@ -26,6 +27,10 @@ PlayerAttacking_4::PlayerAttacking_4(Player* player)
 	,m_totalSeconds()
 	,m_attackElapsedTime(0.0f)
 	,m_model()
+	, m_position()
+	, m_velocity()
+	, m_upValue()
+	, m_downValue()
 {
 }
 
@@ -59,7 +64,11 @@ void PlayerAttacking_4::PreUpdate()
 		m_player->GetPlayScene()->GetSword()->GetAttacking_4State()
 	);
 
+	// 効果音の再生
 	Sound::PlaySE(Sound::SE_TYPE::PLAYER_ATTACK2);
+
+	// 前のステートでのY軸上昇量を取得する
+	m_upValue = m_player->GetPosition().y;
 }
 
 // --------------------------------
@@ -67,8 +76,27 @@ void PlayerAttacking_4::PreUpdate()
 // --------------------------------
 void PlayerAttacking_4::Update(const float& elapsedTime)
 {
+	UpdateAnimation();
+
 	// 時間を計測し、一定時間経過でステートを遷移
 	m_player->TimeComparison(m_totalSeconds, Player::APPLIED_ATTACK_TIME, m_player->GetPlayerIdlingState(), elapsedTime);
+}
+
+
+// --------------------------------
+//  アニメーション更新処理
+// --------------------------------
+void PlayerAttacking_4::UpdateAnimation()
+{
+	// イージングに用いるための変数
+	float t = 0;
+
+	if (m_totalSeconds < DOWN_TIME)
+	{
+		// イージング値を計算
+		t = m_totalSeconds / DOWN_TIME;
+		m_downValue = m_upValue - m_upValue * Easing::easeOutCubic(t);
+	}
 }
 
 
@@ -87,6 +115,7 @@ void PlayerAttacking_4::OnKeyDown(const DirectX::Keyboard::Keys& key)
 {
 	UNREFERENCED_PARAMETER(key);
 }
+
 
 
 // --------------------------------

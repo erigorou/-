@@ -82,7 +82,7 @@ void Enemy_Sweeping::Update(const float& elapsedTime)
 	if (m_totalSeconds <= CHARGE_TIME)	// 開始からためモーション中なら
 	{
 		t = m_totalSeconds / CHARGE_TIME;
-		targetAngle = m_angle - ROTATE_ANGLE * Easying::easeOutCirc(t);					// ためモーションを行う
+		targetAngle = m_angle - ROTATE_ANGLE * Easing::easeOutCirc(t);					// ためモーションを行う
 	}
 
 	else if (
@@ -90,7 +90,7 @@ void Enemy_Sweeping::Update(const float& elapsedTime)
 		m_totalSeconds <= ATTACK_TIME)		// 攻撃時間中なら
 	{
 		t = (m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME);
-		targetAngle = m_angle - ROTATE_ANGLE + ROTATE_ANGLE * Easying::easeOutBack(t);	// 薙ぎ払いモーションを行う
+		targetAngle = m_angle - ROTATE_ANGLE + ROTATE_ANGLE * Easing::easeOutBack(t);	// 薙ぎ払いモーションを行う
 	}
 
 

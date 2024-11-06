@@ -130,7 +130,7 @@ void Cudgel_Attacking::UpdateCudgelRotation()
 void Cudgel_Attacking::HandleChargePhase(float t)
 {
 	// 20度上げる（0.5秒間で、イージング使用）
-	m_angleUD = DirectX::XMConvertToRadians(-40.0f * Easying::easeInOutBack(t));
+	m_angleUD = DirectX::XMConvertToRadians(-40.0f * Easing::easeInOutBack(t));
 }
 
 
@@ -151,8 +151,8 @@ void Cudgel_Attacking::HandleWindoupPhase()
 void Cudgel_Attacking::HandleAttackPhase(float t)
 {
 	// 20度から115度振り下ろす（0.3秒間で、イージング使用）
-	m_angleUD = DirectX::XMConvertToRadians(-40.0f + 135.0f * Easying::easeInQuint(t));
-	m_angleRL = DirectX::XMConvertToRadians(-20 * Easying::easeInQuint(t))	+m_angleRL;
+	m_angleUD = DirectX::XMConvertToRadians(-40.0f + 135.0f * Easing::easeInQuint(t));
+	m_angleRL = DirectX::XMConvertToRadians(-20 * Easing::easeInQuint(t))	+m_angleRL;
 
 	if (t > 0.9f && m_playSound == false)
 	{

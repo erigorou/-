@@ -29,17 +29,15 @@ const float Sword_Attacking_4::ATTACK_TIME  = 0.7f;
 //  コンストラクタ
 // --------------------------------
 Sword_Attacking_4::Sword_Attacking_4(Sword* sword)
-	:
-	m_sword(sword),
-	m_position(5.0f, 0.0f, 5.0f),
-	m_velocity(0.0f, 0.0f, 0.0f),
-	m_angle(0.0f),
-	m_rot(0.0f, 0.0f, 0.0f),
-	m_totalSeconds(0.0f),
-	m_worldMatrix(DirectX::SimpleMath::Matrix::Identity),
-	m_model(nullptr)
+	: m_sword		(sword)
+	, m_position	(5.0f, 0.0f, 5.0f)
+	, m_velocity	(0.0f, 0.0f, 0.0f)
+	, m_angle		(0.0f)
+	, m_rot			(0.0f, 0.0f, 0.0f)
+	, m_totalSeconds(0.0f)
+	, m_worldMatrix	(DirectX::SimpleMath::Matrix::Identity)
+	, m_model		(nullptr)
 {
-	m_particles = m_sword->GetPlayScene()->GetParticle();
 }
 
 
@@ -56,11 +54,8 @@ Sword_Attacking_4::~Sword_Attacking_4()
 // --------------------------------
 void Sword_Attacking_4::Initialize()
 {
-	using namespace DirectX::SimpleMath;
-	// モデルを取得
-	m_model = m_sword->GetModel();
-	// ワールド行列を初期化
-	m_worldMatrix = Matrix::Identity;
+	m_model		= m_sword->GetModel();						// モデルの取得
+	m_particles = m_sword->GetPlayScene()->GetParticle();	// パーティクルの取得
 }
 
 
@@ -86,7 +81,6 @@ void Sword_Attacking_4::PreUpdate()
 void Sword_Attacking_4::Update(float elapsedTime)
 {
 	using namespace DirectX;
-	UNREFERENCED_PARAMETER(elapsedTime);
 
 	// 経過時間を計測
 	m_totalSeconds += elapsedTime;
@@ -103,7 +97,7 @@ void Sword_Attacking_4::Update(float elapsedTime)
 		t = m_totalSeconds / ATTACK_TIME;  // 進行度を0から1へ
 
 		// 上方向に切り上げるように、X軸回転を調整
-		m_rot.x = -20.0f + 150.0f * Easying::easeOutBack(t);  // 切り上げ角度を大きめに設定
+		m_rot.x = -20.0f + 150.0f * Easing::easeOutBack(t);  // 切り上げ角度を大きめに設定
 
 		m_rot.x = XMConvertToRadians(m_rot.x);  // ラジアンに変換
 	}
@@ -114,23 +108,24 @@ void Sword_Attacking_4::Update(float elapsedTime)
 	}
 
 	// ワールド行列を更新する
-	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE);							// 剣のサイズの設定
+	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE);		// 剣のサイズの設定
 
 
 	// 1. 剣自体のアニメーション（回転や移動）
 	m_worldMatrix
-		*= SimpleMath::Matrix::CreateRotationZ(m_rot.x) // X軸回転を適用
-		*= SimpleMath::Matrix::CreateRotationY(XMConvertToRadians(-90.0f))
-		*= SimpleMath::Matrix::CreateTranslation(Vector3(2.0f, 2.0f, -2.0f));
+		*= SimpleMath::Matrix::CreateRotationZ(m_rot.x)							// Z軸回転を適用
+		*= SimpleMath::Matrix::CreateRotationY(XMConvertToRadians(-90.0f))		// Y軸回転を適用
+		*= SimpleMath::Matrix::CreateTranslation(Vector3(2.0f, 2.0f, -2.0f));	// 原点から移動
 
 	// 2. プレイヤーの位置と回転を適用
 	m_worldMatrix
-		*= SimpleMath::Matrix::CreateRotationY(-m_angle) // プレイヤーの方向に回転
-		*= SimpleMath::Matrix::CreateTranslation(m_position); // プレイヤーの位置に設定
-	// 当たり判定の位置を設定
+		*= SimpleMath::Matrix::CreateRotationY(-m_angle)		// プレイヤーの回転を付与
+		*= SimpleMath::Matrix::CreateTranslation(m_position);	// プレイヤーの位置を付与
+
+	// 衝突判定の位置を設定
 	m_sword->SetCollisionPosition(m_worldMatrix);
 
-	// エフェクト描画用の根本と頂点を描画
+	// 両端の座標取得
 	GetCudgelBothEnds();
 }
 

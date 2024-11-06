@@ -82,7 +82,7 @@ void PlayerAttacking_1::UpdateAnimation()
 
 	// ‰ñ“]—Ê‚ÌŒvŽZ‚ðs‚¤
 	float currentAngle = m_player->GetAngle();
-	currentAnimPos.y = -40 + 80 * Easying::easeOutBack(t) + currentAngle;
+	currentAnimPos.y = -40 + 80 * Easing::easeOutBack(t) + currentAngle;
 
 	// radian‚É•ÏŠ·
 	currentAnimPos.y = DirectX::XMConvertToRadians(currentAnimPos.y);

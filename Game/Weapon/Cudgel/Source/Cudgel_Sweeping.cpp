@@ -117,13 +117,13 @@ void Cudgel_Sweeping::UpdateCudgelRotation()
 	// ためモーション
 	if (m_totalSeconds <= CHARGE_TIME) {
 		t =	m_totalSeconds / CHARGE_TIME;							// 0 ~ 1 に正規化
-		m_angleRL = -CHARGE_ROTATE_ANGLE * Easying::easeOutCirc(t);	// 30度左回転
+		m_angleRL = -CHARGE_ROTATE_ANGLE * Easing::easeOutCirc(t);	// 30度左回転
 	}
 
 	// 攻撃モーション
 	else if (m_totalSeconds >= WINDUP_TIME && m_totalSeconds <= ATTACK_TIME) {
 		t = (m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME);					// 0 ~ 1 に正規化
-		m_angleRL = CHARGE_ROTATE_ANGLE + WINDUP_ROTATE_ANGLE * Easying::easeOutBack(t);  // 30度から60度右回転
+		m_angleRL = CHARGE_ROTATE_ANGLE + WINDUP_ROTATE_ANGLE * Easing::easeOutBack(t);  // 30度から60度右回転
 		canHit = true;
 
 		// SEの再生

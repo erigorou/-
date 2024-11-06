@@ -93,8 +93,8 @@ void Sword_Attacking_2::Update(float elapsedTime)
 	if (m_totalSeconds <= ATTACK_TIME)
 	{
 		t = m_totalSeconds / ATTACK_TIME;
-		m_rot.y = -250.0f * Easying::easeOutBack(t);
-		m_rot.x = 10 - 40 * Easying::easeOutBack(t);
+		m_rot.y = -250.0f * Easing::easeOutBack(t);
+		m_rot.x = 10 - 40 * Easing::easeOutBack(t);
 
 		m_rot.x = XMConvertToRadians(m_rot.x);
 		m_rot.y = XMConvertToRadians(m_rot.y);

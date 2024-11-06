@@ -16,6 +16,11 @@ class Player;
 
 class PlayerAttacking_4 : public IPlayer
 {
+// 固定値
+public:
+	static constexpr float DOWN_TIME = 0.4f;
+
+// 公開関数
 public:
 	// コンストラクタ
 	PlayerAttacking_4(Player* player);
@@ -43,6 +48,13 @@ public:
 	// キー入力
 	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
 
+
+// 内部関数
+private:
+	void UpdateAnimation();
+
+
+// 内部変数
 private:
 	// 座標
 	DirectX::SimpleMath::Vector3 m_position;
@@ -58,6 +70,10 @@ private:
 	Player* m_player;
 	// モデル
 	DirectX::Model* m_model;
+
+	// アニメーション用 ///
+	float m_upValue;	// 上昇値
+	float m_downValue;	// 下降値
 };
 
 #endif  // PLAYER_ATTACKING_1_DEFINED
