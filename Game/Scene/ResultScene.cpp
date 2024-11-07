@@ -52,7 +52,6 @@ ResultScene::~ResultScene()
 //---------------------------------------------------------
 void ResultScene::Initialize()
 {
-	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
 	auto context = m_commonResources->GetDeviceResources()->GetD3DDeviceContext();
 
 	// スプライトバッチを作成する

@@ -62,6 +62,9 @@ void Enemy_Sweeping::PreUpdate()
 
 	auto cudgel = m_enemy->GetPlayScene()->GetCudgel();
 	cudgel->ChangeState(cudgel->GetSweeping());			// 金棒のステートを変更
+
+	// 顔
+	m_enemy->SetFace(m_enemy->GetFaceAttacking());
 }
 
 
@@ -106,6 +109,8 @@ void Enemy_Sweeping::Update(const float& elapsedTime)
 // ----------------------------------
 void Enemy_Sweeping::PostUpdate()
 {
+	// 顔のステートを変更
+	m_enemy->SetFace(m_enemy->GetFaceIdling());
 }
 
 

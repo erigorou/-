@@ -42,6 +42,9 @@ void Enemy_Attacking::PreUpdate()
 	// 武器のステートを変更
 	auto cudgel = m_enemy->GetPlayScene()->GetCudgel();
 	cudgel->ChangeState(cudgel->GetAttacking());
+
+	// 顔のステートを変更
+	m_enemy->SetFace(m_enemy->GetFaceAttacking());
 }
 
 
@@ -76,6 +79,9 @@ void Enemy_Attacking::PostUpdate()
 	// 武器のステートを変更する
 	auto cudgel = m_enemy->GetPlayScene()->GetCudgel();
 	cudgel->ChangeState(cudgel->GetIdling());
+
+	// 顔のステートを変更
+	m_enemy->SetFace(m_enemy->GetFaceIdling());
 }
 
 

@@ -21,10 +21,16 @@
 #include "Interface/IState.h"
 #include "BehaviourTree/Header/BehaviorTree.h"	// ビヘイビアツリー
 
+// ステートパターン用
 #include "States/Header/EnemyIdling.h"			// 待機状態
 #include "States/Header/Enemy_Attacking.h"		// たたきつけ攻撃
 #include "States/Header/Enemy_Sweeping.h"		// 薙ぎ払い攻撃
 #include "States/Header/EnemyApproaching.h"		// 追尾状態
+
+// 顔のパーツ用
+#include "Face/Header/EnemyFaceIdling.h"
+#include "Face/Header/EnemyFaceAttacking.h"
+
 
 
 // 固定値
@@ -86,6 +92,10 @@ void Enemy::Initialize()
 	// ステートの作成
 	CreateState();
 
+	// 顔パーツの生成
+	CreateFace();
+
+
 	// 当たり判定の作成
 	CreateCollision();
 
@@ -111,19 +121,34 @@ void Enemy::Initialize()
 void Enemy::CreateState()
 {
 	// === 状態の生成 ====
-	m_idling = std::make_unique<EnemyIdling>(this);				// 待機
-	m_attacking = std::make_unique<Enemy_Attacking>(this);		// 攻撃
-	m_sweeping = std::make_unique<Enemy_Sweeping>(this);		// 薙ぎ払い
-	m_approaching = std::make_unique<EnemyApproaching>(this);	// 追尾
+	m_idling		= std::make_unique<EnemyIdling>		(this);	// 待機
+	m_attacking		= std::make_unique<Enemy_Attacking>	(this);	// 攻撃
+	m_sweeping		= std::make_unique<Enemy_Sweeping>	(this);	// 薙ぎ払い
+	m_approaching	= std::make_unique<EnemyApproaching>(this);	// 追尾
 
 	// === 状態の初期化 ===
-	m_idling->Initialize(m_model.get());		// 待機
-	m_attacking->Initialize(m_model.get());		// 攻撃
-	m_sweeping->Initialize(m_model.get());		// 薙ぎ払い
-	m_approaching->Initialize(m_model.get());	// 追尾
+	m_idling		-> Initialize(m_model.get());	// 待機
+	m_attacking		-> Initialize(m_model.get());	// 攻撃
+	m_sweeping		-> Initialize(m_model.get());	// 薙ぎ払い
+	m_approaching	-> Initialize(m_model.get());	// 追尾
 
 	// 初期のステートを待機状態に割り当てる
 	m_currentState = m_idling.get();
+}
+
+
+// --------------------------------
+//  顔パーツの生成処理
+// --------------------------------
+void Enemy::CreateFace()
+{
+	// 顔パーツの生成
+	m_faceIdling	= std::make_unique<EnemyFaceIdling>		(this);
+	m_faceAttacking = std::make_unique<EnemyFaceAttacking>	(this);
+
+
+	// 初期の顔を待機顔に割り当てる
+	m_currentFace = m_faceIdling.get();
 }
 
 
@@ -226,6 +251,7 @@ void Enemy::Render(
 	context->OMSetDepthStencilState(states->DepthDefault(), 0);
 
 	m_currentState->Render(context,states,view,projection);				// ステート側の描画
+	m_currentFace->DrawFace(m_worldMatrix, view, projection);			// 顔の描画
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);	// モデルの描画
 
 #ifdef _DEBUG

@@ -197,7 +197,8 @@
     <ClInclude Include="Game\Camera\State\PlayCameraState.h" />
     <ClInclude Include="Game\Camera\State\TitleCameraState.h" />
     <ClInclude Include="Game\Data\GameData.h" />
-    <ClInclude Include="Game\Enemy\Face\EnemyFaceIdling.h" />
+    <ClInclude Include="Game\Enemy\Face\Header\EnemyFaceAttacking.h" />
+    <ClInclude Include="Game\Enemy\Face\Header\EnemyFaceIdling.h" />
     <ClInclude Include="Game\Scene\State\LoseResult.h" />
     <ClInclude Include="Game\Scene\State\WinResult.h" />
     <ClInclude Include="Game\TitleObject\EnemyTitleIdling.h" />
@@ -295,7 +296,8 @@
     <ClCompile Include="Game\Camera\State\PlayCameraState.cpp" />
     <ClCompile Include="Game\Camera\State\TitleCameraState.cpp" />
     <ClCompile Include="Game\Data\GameData.cpp" />
-    <ClCompile Include="Game\Enemy\Face\EnemyFaceIdling.cpp" />
+    <ClCompile Include="Game\Enemy\Face\Source\EnemyFaceAttacking.cpp" />
+    <ClCompile Include="Game\Enemy\Face\Source\EnemyFaceIdling.cpp" />
     <ClCompile Include="Game\Scene\State\LoseResult.cpp" />
     <ClCompile Include="Game\Scene\State\WinResult.cpp" />
     <ClCompile Include="Game\TitleObject\EnemyTitleIdling.cpp" />

@@ -2,60 +2,60 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe</FullPath>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles>
     <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Dust\DustGS.cso</FullPath>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Dust\DustGS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Dust\DustPS.cso</FullPath>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Dust\DustPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Dust\DustVS.cso</FullPath>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Dust\DustVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Fade\FadeGS.cso</FullPath>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Fade\FadeGS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Fade\FadePS.cso</FullPath>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Fade\FadePS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Fade\FadeVS.cso</FullPath>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Fade\FadeVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Operation\OperationGS.cso</FullPath>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Operation\OperationGS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Operation\OperationPS.cso</FullPath>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Operation\OperationPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Operation\OperationVS.cso</FullPath>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Operation\OperationVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Sword\SwordTrailPS.cso</FullPath>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Sword\SwordTrailPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Sword\SwordTrailVS.cso</FullPath>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Sword\SwordTrailVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\UI\UIGS.cso</FullPath>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\UI\UIGS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\UI\UIPS.cso</FullPath>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\UI\UIPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\UI\UIVS.cso</FullPath>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\UI\UIVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Warning\WarningGS.cso</FullPath>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Warning\WarningGS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Warning\WarningPS.cso</FullPath>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Warning\WarningPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\Resources\Shaders\Warning\WarningVS.cso</FullPath>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Warning\WarningVS.cso</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />

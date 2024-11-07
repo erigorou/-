@@ -45,6 +45,9 @@ void EnemyIdling::PreUpdate()
 	// 武器のステートを変更
 	auto cudgel = m_enemy->GetPlayScene()->GetCudgel();
 	cudgel->ChangeState(cudgel->GetIdling());
+
+	// 顔のステートを変更
+	m_enemy->SetFace(m_enemy->GetFaceIdling());
 }
 
 

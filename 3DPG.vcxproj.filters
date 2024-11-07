@@ -222,7 +222,8 @@
     <ClInclude Include="Game\UI\Header\OperateUI.h" />
     <ClInclude Include="Game\UI\UI.h" />
     <ClInclude Include="Interface\IFace.h" />
-    <ClInclude Include="Game\Enemy\Face\EnemyFaceIdling.h" />
+    <ClInclude Include="Game\Enemy\Face\Header\EnemyFaceIdling.h" />
+    <ClInclude Include="Game\Enemy\Face\Header\EnemyFaceAttacking.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -340,7 +341,8 @@
     <ClCompile Include="Game\UI\Source\Operation.cpp" />
     <ClCompile Include="Game\UI\Source\OperateUI.cpp" />
     <ClCompile Include="Game\UI\UI.cpp" />
-    <ClCompile Include="Game\Enemy\Face\EnemyFaceIdling.cpp" />
+    <ClCompile Include="Game\Enemy\Face\Source\EnemyFaceIdling.cpp" />
+    <ClCompile Include="Game\Enemy\Face\Source\EnemyFaceAttacking.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

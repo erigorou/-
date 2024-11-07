@@ -60,7 +60,6 @@ void SkySphere::DrawSkySphere(
 	using namespace DirectX;
 
 	CommonResources* resources = CommonResources::GetInstance();
-	auto device = resources->GetDeviceResources()->GetD3DDevice();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
 
