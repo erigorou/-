@@ -85,7 +85,7 @@ void PlaySceneUIManager::CreateUI()
 void PlaySceneUIManager::Update(float elapsedTime)
 {
 	m_playerHP	->Update();
-	m_enemyHP	->Update();
+	m_enemyHP	->Update(elapsedTime);
 	m_warning	->Update(elapsedTime);
 	m_operation	->Update(elapsedTime);
 }

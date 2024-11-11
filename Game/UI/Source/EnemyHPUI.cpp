@@ -6,7 +6,7 @@
 
 #include "pch.h"
 #include "Game/UI/Header/EnemyHPUI.h"
-#include "Game/Enemy/EnemyHP.h"
+#include "Game/Data/HPSystem.h"
 #include "Game/Screen.h"
 
 
@@ -14,10 +14,10 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-/// <param name="enemyHp">敵のHPを所持するクラスのポインタ</param>
+/// <param name="hpSystem">HPを所持するクラスのポインタ</param>
 // ----------------------------
-EnemyHPUI::EnemyHPUI(EnemyHP* enemyHp)
-	: m_enemyHPclass(enemyHp)
+EnemyHPUI::EnemyHPUI(HPSystem* hpSystem)
+	: m_enemyHPclass(hpSystem)
 	, m_spriteBatch()
 	, m_enemyHP(0)
 {
@@ -63,8 +63,9 @@ void EnemyHPUI::LoadTexture(const wchar_t* path)
 /// 更新関数
 /// </summary>
 // ----------------------------
-void EnemyHPUI::Update()
+void EnemyHPUI::Update(float elapsedTime)
 {
+
 }
 
 

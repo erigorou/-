@@ -17,16 +17,17 @@ public:
     ~EnemyHP() = default;          // デストラクタ
 
 
-    int  GetMaxHP() const { return MAX_HP; }  // 最大HPの取得
-    int  GetHP() const { return m_hp; }    // 現在のHPの取得
-    void SetHP(int hp) { m_hp = hp; }      // 現在のHPの設定
+    int  GetMaxHP   () const    { return MAX_HP;    }  // 最大HPの取得
+    int  GetHP      () const    { return m_hp;      }  // 現在のHPの取得
+    void SetHP      (int hp)    { m_hp = hp;        }  // 現在のHPの設定
 
 
     // 回復
     void Heal(int hp) { m_hp = std::min(m_hp + hp, MAX_HP); }
 
     // ダメージ
-    bool Damage(int hp) {
+    bool Damage(int hp) 
+    {
         m_hp = std::max(m_hp - hp, 0);
         return CheckPlayerDie();
     }

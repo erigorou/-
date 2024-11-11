@@ -84,7 +84,7 @@ void Enemy::Initialize()
 	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Oni/Body/oni.cmo", *fx);
 
 	// HPを設定
-	m_hp = std::make_unique<EnemyHP>();
+	m_hp = std::make_unique<HPSystem>(20);
 
 	// ビヘイビアツリーを取得
 	m_pBT = std::make_unique<BehaviorTree>();

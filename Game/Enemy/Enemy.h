@@ -15,7 +15,7 @@ class BehaviorTree;
 #include "States/Header/Enemy_Sweeping.h"		// 薙ぎ払い攻撃
 #include "States/Header/EnemyApproaching.h"		// 追尾状態
 
-
+#include "../Data/HPSystem.h"
 #include "Game/Enemy/EnemyHP.h"					// HP
 
 
@@ -33,7 +33,7 @@ public:
 public:
 	// /////////////////敵の基礎情報を渡す関数/////////////////////////////////////////////////////////////////////
 	PlayScene*						GetPlayScene	()	const	{ return m_playScene;	}	// PlaySceneの取得 
-	EnemyHP*						GetEnemyHP		()	const	{ return m_hp.get();	}	// HPの取得	
+	HPSystem*						GetEnemyHP		()	const	{ return m_hp.get();	}	// HPの取得	
 	DirectX::SimpleMath::Vector3	GetPosition		()	override{ return m_position;	}	// 鬼の座標を取得する
 	float							GetAngle		()	const	{ return m_angle;		}	// 鬼の回転角を取得する	
 	DirectX::SimpleMath::Matrix		GetWorldMatrix	()	const	{ return m_worldMatrix; }	// 敵のワールド座標を取得する
@@ -110,7 +110,7 @@ private:
 
 
 	// HP
-	std::unique_ptr<EnemyHP> m_hp;
+	std::unique_ptr<HPSystem> m_hp;
 
 
 	// ==== ステートパターンに使用 =============================================　

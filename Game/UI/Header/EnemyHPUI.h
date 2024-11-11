@@ -7,7 +7,7 @@
 #include "Libraries/Microsoft/DebugDraw.h"
 #include "DeviceResources.h"
 
-class EnemyHP;
+class HPSystem;
 
 class EnemyHPUI
 {
@@ -17,19 +17,21 @@ private:
 	static constexpr int MAX_WIDTH			= 500;
 
 	// 上から参照
-	static constexpr int TOP_POSITION		= 650;
-	static constexpr int BOTTOM_POSITION	= 670;
+	static constexpr int	TOP_POSITION	= 650;
+	static constexpr int	BOTTOM_POSITION	= 670;
+	static constexpr float EASING_TIME		= 0.5f;
+
 
 public:
-	EnemyHPUI(EnemyHP* enemyHp);	// コンストラクタ
+	EnemyHPUI(HPSystem* hpSystem);	// コンストラクタ
 	~EnemyHPUI();					// デストラクタ
 
 	void Initialize(DX::DeviceResources* pDR);	// 初期化関数
 	void LoadTexture(const wchar_t* path);		// テクスチャの読み込み
 
-	void Update();		// 更新処理
-	void Render();		// 描画処理
-	void Finalize();	// 終了処理
+	void Update(float elapsedTime);		// 更新処理
+	void Render();						// 描画処理
+	void Finalize();					// 終了処理
 
 private:
 
@@ -37,9 +39,11 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;	// テクスチャ
 	DX::DeviceResources* m_pDR;									// デバイスリソース
 
+	HPSystem* m_enemyHPclass;	// エネミーのHPクラス
+	float m_enemyHP;				// エネミーのHP
 
-	EnemyHP* m_enemyHPclass;	// エネミーのHPクラス
-	int m_enemyHP;				// エネミーのHP
+	// 経過時間
+	float m_totalTime;
 
 
 };

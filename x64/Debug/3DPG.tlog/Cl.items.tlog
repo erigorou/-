@@ -10,6 +10,7 @@ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Effects\Source\SwordTr
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Camera\State\PlayCameraState.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\PlayCameraState.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Camera\State\TitleCameraState.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\TitleCameraState.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Data\GameData.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\GameData.obj
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Data\HPSystem.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\HPSystem.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Enemy\Face\Source\EnemyFaceAttacking.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\EnemyFaceAttacking.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Enemy\Face\Source\EnemyFaceIdling.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\EnemyFaceIdling.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Scene\State\LoseResult.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\LoseResult.obj

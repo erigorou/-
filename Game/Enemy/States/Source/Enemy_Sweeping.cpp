@@ -13,11 +13,11 @@
 #include "Game/Enemy/States/Header/Enemy_Sweeping.h"
 
 
-const float Enemy_Sweeping::CHARGE_TIME = 0.5f;		// êUÇËÇ©Ç¥Çµéûä‘
-const float Enemy_Sweeping::WINDUP_TIME = 1.3f;		// ë“ã@
-const float Enemy_Sweeping::ATTACK_TIME = 1.7f;		// ì„Ç¨ï•Ç¢
-const float Enemy_Sweeping::END_TIME	= 2.5f;		// èIóπ
-const float Enemy_Sweeping::ROTATE_ANGLE = 20.0f;	// êUÇËÇ©Ç¥Çµäpìx
+const float Enemy_Sweeping::CHARGE_TIME		= 0.5f;		// êUÇËÇ©Ç¥Çµéûä‘
+const float Enemy_Sweeping::WINDUP_TIME		= 1.1f;		// ë“ã@
+const float Enemy_Sweeping::ATTACK_TIME		= 1.7f;		// ì„Ç¨ï•Ç¢
+const float Enemy_Sweeping::END_TIME		= 2.5f;		// èIóπ
+const float Enemy_Sweeping::ROTATE_ANGLE	= 20.0f;	// êUÇËÇ©Ç¥Çµäpìx
 
 
 // ----------------------------------
