@@ -3,7 +3,6 @@
 #include "../Header/Operation.h"
 #include "Game/CommonResources.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
-#include "Game/Player/PlayerHP.h"
 #include "CommonStates.h"
 #include "Game/Observer/Messenger.h"
 

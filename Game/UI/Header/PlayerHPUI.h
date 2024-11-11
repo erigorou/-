@@ -7,7 +7,7 @@
 #include "Libraries/Microsoft/DebugDraw.h"
 #include "DeviceResources.h"
 
-class PlayerHP;
+class HPSystem;
 
 class PlayerHPUI
 {
@@ -23,7 +23,7 @@ private:
 	static constexpr int LEFT_POSITION		= 50;
 
 public:
-	PlayerHPUI(PlayerHP* playerHp);	// コンストラクタ
+	PlayerHPUI(HPSystem* HPSystem);	// コンストラクタ
 	~PlayerHPUI();					// デストラクタ
 
 	void Initialize(DX::DeviceResources* pDR);	// 初期化関数
@@ -40,7 +40,7 @@ private:
 	DX::DeviceResources* m_pDR;									// デバイスリソース
 
 
-	PlayerHP* m_playerHPclass;	// プレイヤーのHPクラス
+	HPSystem* m_playerHPclass;	// プレイヤーのHPクラス
 	int m_playerHP;				// プレイヤーのHP
 
 

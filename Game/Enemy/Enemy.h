@@ -16,7 +16,6 @@ class BehaviorTree;
 #include "States/Header/EnemyApproaching.h"		// ’Ç”öó‘Ô
 
 #include "../Data/HPSystem.h"
-#include "Game/Enemy/EnemyHP.h"					// HP
 
 
 

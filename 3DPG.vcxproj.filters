@@ -185,9 +185,7 @@
     <ClInclude Include="Libraries\MyLib\EasingFunctions.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Sweeping.h" />
     <ClInclude Include="Game\UI\Header\PlayerHPUI.h" />
-    <ClInclude Include="Game\Player\PlayerHP.h" />
     <ClInclude Include="Game\UI\Header\IconUI.h" />
-    <ClInclude Include="Game\Enemy\EnemyHP.h" />
     <ClInclude Include="Game\UI\Header\EnemyHPUI.h" />
     <ClInclude Include="Libraries\MyLib\Collision\CollisionManager.h" />
     <ClInclude Include="Interface\IObject.h" />

@@ -16,6 +16,7 @@
 
 #include "Game/Player/Player.h"
 #include "Game/Weapon/Sword/Sword.h"
+#include "../Data/HPSystem.h"
 
 #include "Game/Enemy/Enemy.h"
 #include "Game/Stage/Wall/Wall.h"
@@ -82,7 +83,7 @@ void Player::Initialize()
 	CreateState();
 
 	// HPを管理するクラスの生成
-	m_hp = std::make_unique<PlayerHP>();
+	m_hp = std::make_unique<HPSystem>(PLAYER_HP);
 
 	// ベーシックエフェクトを作成する
 	m_basicEffect = std::make_unique<BasicEffect>(device);

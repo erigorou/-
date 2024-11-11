@@ -7,7 +7,7 @@
 #include "Libraries/Microsoft/DebugDraw.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 
-class PlayerHP;
+class HPSystem;
 
 class Warning
 {
@@ -45,7 +45,7 @@ private:
 
 // パブリック関数
 public:
-	Warning(PlayerHP* hp);
+	Warning(HPSystem* hp);
 	~Warning();
 
 
@@ -62,7 +62,7 @@ private:
 // プライベート変数
 private:
 	
-	PlayerHP* m_hp;
+	HPSystem* m_hp;
 
 	std::unique_ptr<CustomShader>			m_customShader;		// シェーダー
 	DX::DeviceResources*					m_pDR;				// デバイスリソース

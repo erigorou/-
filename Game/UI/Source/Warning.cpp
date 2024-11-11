@@ -3,7 +3,7 @@
 #include "../Header/Warning.h"
 #include "Game/CommonResources.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
-#include "Game/Player/PlayerHP.h"
+#include "Game/Data/HPSystem.h"
 #include "CommonStates.h"
 
 
@@ -15,7 +15,7 @@ const wchar_t* Warning::GS_PATH = L"Resources/Shaders/Warning/WarningGS.cso";
 
 
 // コンストラクタ
-Warning::Warning(PlayerHP* hp)
+Warning::Warning(HPSystem* hp)
 	: m_hp(hp)
 	, m_pDR(nullptr)
 	, m_customShader(nullptr)

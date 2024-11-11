@@ -7,8 +7,8 @@
 #include "Interface/IObserver.h"
 
 // プレイヤーに付与されるもの ===========================================
-#include "Game/Weapon/Sword/Sword.h"		// 武器
-#include "Game/Player/PlayerHP.h"			// プレイヤーのHP
+#include "Game/Weapon/Sword/Sword.h"// 武器
+class HPSystem;						// HP
 
 // プレイヤーの状態 =====================================================
 #include "Game/Player/State/Header/Player_Idling.h"			// 待機状態
@@ -33,12 +33,14 @@ public:
 	// 大きさ
 	static const float PLAYER_SCALE;
 
+	static constexpr float PLAYER_HP			= 5.0f;	// プレイヤーのHP
 	static constexpr float APPLIED_ATTACK_TIME	= 1.4f;	// ２段目以降の攻撃が許されるようになる時間
 	static constexpr float APPLIED_DODGE_TIME	= 0.7f;	// 回避ができるようになる時間
 	static constexpr float COOL_TIME			= 1.0f; // 攻撃のクールタイム
 	static constexpr float X_COOL_TIME			= 0.8f; // 次の攻撃ができるようになる時間
 
 	static constexpr float NORMAL_ATTACK_TIME	= 0.5f; // 通常攻撃のアニメーション時間
+
 
 // アクセサ
 public:
@@ -48,7 +50,7 @@ public:
 	DirectX::SimpleMath::Vector3	GetDirection	()	const	{ return m_direction;			}
 	DirectX::SimpleMath::Vector3	GetinputVelocity()	const	{ return m_inputVelocity;		}
 	float							GetAngle		()	const	{ return m_angle;				}
-	PlayerHP*						GetPlayerHP		()	const	{ return m_hp.get();			}
+	HPSystem*						GetPlayerHP		()	const	{ return m_hp.get();			}
 	DirectX::BoundingSphere*		GetBodyCollision()			{ return m_bodyCollision.get(); }
 
 
@@ -152,7 +154,7 @@ private:
 
 	// プレイヤーに付与されるもの ============
 	std::unique_ptr<Sword> m_sword;
-	std::unique_ptr<PlayerHP> m_hp;
+	std::unique_ptr<HPSystem> m_hp;
 
 	// シェーダーに使用するもの ==============
 	// ベーシックエフェクト

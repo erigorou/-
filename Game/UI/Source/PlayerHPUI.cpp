@@ -6,7 +6,7 @@
 
 #include "pch.h"
 #include "Game/UI/Header/PlayerHPUI.h"
-#include "Game/Player/PlayerHP.h"
+#include "Game/Data/HPSystem.h"
 #include "Game/Screen.h"
 
 
@@ -16,8 +16,8 @@
 /// </summary>
 /// <param name="enemyHp">敵のHPを所持するクラスのポインタ</param>
 // ----------------------------
-PlayerHPUI::PlayerHPUI(PlayerHP* playerHp)
-	: m_playerHPclass(playerHp)
+PlayerHPUI::PlayerHPUI(HPSystem* hpSystem)
+	: m_playerHPclass(hpSystem)
 	, m_spriteBatch()
 	, m_playerHP(0)
 {
