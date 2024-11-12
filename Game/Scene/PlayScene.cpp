@@ -112,7 +112,7 @@ void PlayScene::CreateObjects()
 	m_camera			= Factory::CreateCamera				();			// カメラ
 	m_skySphere			= Factory::CreateSkySphere			(device);	// 天球	
 	m_particles			= Factory::CreateParticle			();			// パーティクル
-	m_floor				= Factory::CreateFloor				();			// フロア
+	m_floor				= Factory::CreateFloor				(device);	// フロア
 	m_wall				= Factory::CreateWall				(this);		// 壁
 	m_player			= Factory::CreatePlayer				(this);		// プレイヤ
 	m_sword				= Factory::CreateSword				(this);		// 刀
@@ -239,8 +239,8 @@ void PlayScene::Render()
 	m_skySphere->DrawSkySphere(view, m_projection);
 	// 床を描画する
 	m_floor->Render(view, m_projection);
-	//// 壁を描画する
-	//m_wall->Render(view, m_projection);
+	// 壁を描画する
+	m_wall->Render(view, m_projection);
 
 	// === オブジェクトの描画 =======================================================
 	// 敵の描画

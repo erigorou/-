@@ -32,7 +32,7 @@ const Vector3 Cudgel_Attacking::ZERO_DIREC = Vector3(6.0f, 1.0f, 0.0f);
 
 // コンストラクタ
 Cudgel_Attacking::Cudgel_Attacking(Cudgel* cudgel)
-	:m_cudgel		(cudgel)
+	:m_cudgel(cudgel)
 	, m_position(0.0f, 0.0f, 0.0f)
 	, m_velocity(0.0f, 0.0f, 0.0f)
 	, m_angleRL(0.0f)
@@ -191,14 +191,14 @@ void Cudgel_Attacking::KeepStampPhase()
 /// </summary>
 void Cudgel_Attacking::UpdateAttackState()
 {
-	// 振りかざす
-	if (m_totalSeconds < CHARGE_TIME)	HandleChargePhase(m_totalSeconds / CHARGE_TIME);
-	// 待機状態
+																			// 振りかざす
+	if (m_totalSeconds < CHARGE_TIME)										HandleChargePhase(m_totalSeconds / CHARGE_TIME);
+																			// 待機状態
 	else if (m_totalSeconds > CHARGE_TIME && m_totalSeconds <= WINDUP_TIME)	HandleWindoupPhase();
-	// 降り下ろす
+																			// 降り下ろす
 	else if (m_totalSeconds > WINDUP_TIME && m_totalSeconds < ATTACK_TIME)	HandleAttackPhase((m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME));
-	// 待機
-	else KeepStampPhase();
+
+	else																	KeepStampPhase();
 }
 
 

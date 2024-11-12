@@ -28,7 +28,7 @@ public:
 	static std::unique_ptr<Camera>				CreateCamera			();
 	static std::unique_ptr<SkySphere>			CreateSkySphere			(ID3D11Device1* device);
 	static std::unique_ptr<Particle>			CreateParticle			();
-	static std::unique_ptr<Floor>				CreateFloor				();
+	static std::unique_ptr<Floor>				CreateFloor				(ID3D11Device1* device);
 	static std::unique_ptr<Wall>				CreateWall				(PlayScene* playScene);
 	static std::unique_ptr<Player>				CreatePlayer			(PlayScene* playScene);
 	static std::unique_ptr<Enemy>				CreateEnemy				(PlayScene* playScene);

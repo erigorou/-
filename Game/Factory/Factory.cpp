@@ -69,11 +69,11 @@ std::unique_ptr<Particle> Factory::CreateParticle()
 
 
 // °‚Ì¶¬ŠÖ”
-std::unique_ptr<Floor> Factory::CreateFloor()
+std::unique_ptr<Floor> Factory::CreateFloor(ID3D11Device1* device)
 {
 	// °‚ğéŒ¾‚·‚é
 	std::unique_ptr<Floor> floor;
-	floor = std::make_unique<Floor>();
+	floor = std::make_unique<Floor>(device);
 	// °‚Ìİ’è
 	return floor;
 }

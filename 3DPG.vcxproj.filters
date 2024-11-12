@@ -390,8 +390,5 @@
     <FxCompile Include="Resources\Shaders\Operation\OperationGS.hlsl" />
     <FxCompile Include="Resources\Shaders\Operation\OperationVS.hlsl" />
     <FxCompile Include="Resources\Shaders\Operation\OperationPS.hlsl" />
-    <FxCompile Include="Resources\Shaders\Voronoi\Voronoi_GS.hlsl" />
-    <FxCompile Include="Resources\Shaders\Voronoi\Voronoi_PS.hlsl" />
-    <FxCompile Include="Resources\Shaders\Voronoi\Voronoi_VS.hlsl" />
   </ItemGroup>
 </Project>

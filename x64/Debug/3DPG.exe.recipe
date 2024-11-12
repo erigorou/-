@@ -49,12 +49,6 @@
       <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\UI\UIVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Voronoi\Voronoi_GS.cso</FullPath>
-    </ContentFile>
-    <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Voronoi\Voronoi_VS.cso</FullPath>
-    </ContentFile>
-    <ContentFile>
       <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Warning\WarningGS.cso</FullPath>
     </ContentFile>
     <ContentFile>
@@ -62,9 +56,6 @@
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Warning\WarningVS.cso</FullPath>
-    </ContentFile>
-    <ContentFile>
-      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Voronoi\Voronoi_PS.cso</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />

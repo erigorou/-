@@ -57,8 +57,6 @@ void SceneManager::Initialize()
 //---------------------------------------------------------
 void SceneManager::Update(float elapsedTime)
 {
-	GameData::GetInstance()->SetElapsedTime(elapsedTime);
-
 	// 効果音の再生
 	Sound::Update();
 	// 各シーンの更新
