@@ -155,7 +155,7 @@ void TitleScene::CreateObjects()
 	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
 
 	m_camera	= Factory::CreateCamera	();
-	m_floor		= Factory::CreateFloor	(device);
+	m_floor		= Factory::CreateFloor	();
 	m_skySphere = Factory::CreateSkySphere(device);
 
 	m_enemy = std::make_unique<TitleEnemy>(this);
