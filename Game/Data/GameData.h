@@ -33,6 +33,10 @@ public:
 	float	GetFadeValue()		const { return m_fadeValue; }
 
 
+	// 経過時間
+	void	SetElapsedTime(float time) { m_elapsedTime = time; }
+	float	GetElapsedTime()	const { return m_elapsedTime; }
+
 
 // インスタンス化の為のprivate	(多重生成を防ぐため)
 private:
@@ -56,5 +60,7 @@ private:
 	BATTLE_RESULT m_battleResult; // 戦闘結果
 
 	float m_fadeValue;	// 画面のフェード量
+
+	float m_elapsedTime; // 経過時間
 
 };

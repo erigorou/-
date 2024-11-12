@@ -223,6 +223,7 @@
     <ClInclude Include="Game\Enemy\Face\Header\EnemyFaceIdling.h" />
     <ClInclude Include="Game\Enemy\Face\Header\EnemyFaceAttacking.h" />
     <ClInclude Include="Game\Data\HPSystem.h" />
+    <ClInclude Include="Game\Stage\Sea\Sea.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -343,6 +344,7 @@
     <ClCompile Include="Game\Enemy\Face\Source\EnemyFaceIdling.cpp" />
     <ClCompile Include="Game\Enemy\Face\Source\EnemyFaceAttacking.cpp" />
     <ClCompile Include="Game\Data\HPSystem.cpp" />
+    <ClCompile Include="Game\Stage\Sea\Sea.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -390,5 +392,8 @@
     <FxCompile Include="Resources\Shaders\Operation\OperationGS.hlsl" />
     <FxCompile Include="Resources\Shaders\Operation\OperationVS.hlsl" />
     <FxCompile Include="Resources\Shaders\Operation\OperationPS.hlsl" />
+    <FxCompile Include="Resources\Shaders\Voronoi\VoronoiGS.hlsl" />
+    <FxCompile Include="Resources\Shaders\Voronoi\VoronoiPS.hlsl" />
+    <FxCompile Include="Resources\Shaders\Voronoi\VoronoiVS.hlsl" />
   </ItemGroup>
 </Project>

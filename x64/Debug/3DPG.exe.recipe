@@ -49,6 +49,15 @@
       <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\UI\UIVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Voronoi\VoronoiGS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Voronoi\VoronoiPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Voronoi\VoronoiVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Warning\WarningGS.cso</FullPath>
     </ContentFile>
     <ContentFile>

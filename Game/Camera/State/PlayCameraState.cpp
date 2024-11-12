@@ -43,6 +43,7 @@ void PlayCameraState::Update(
 	Vector3 cameraPos = playerPos - playerToEnemy * Camera::CAMERA_DIRECTION;
 	cameraPos.y = Camera::CAMERA_POSITION_Y;
 
+
 	m_camera->m_position = cameraPos;
 
 	// ƒJƒƒ‰‚Ì’Ž‹“_‚ð“G‚ÌˆÊ’u‚ÉÝ’è

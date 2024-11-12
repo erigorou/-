@@ -12,9 +12,9 @@ class Camera
 
 public:
 	// 固定値
-	static constexpr float CAMERA_POSITION_Y	= 5.0f;		// カメラのY座標
-	static constexpr float CAMERA_DIRECTION		= 20.0f;	// カメラの距離
-	static constexpr float TARGET_HEIGHT		= 7.5f;		// 注視点の高さ
+	static constexpr float CAMERA_POSITION_Y	= 10.0f;		// カメラのY座標
+	static constexpr float CAMERA_DIRECTION		= 25.0f;	// カメラの距離
+	static constexpr float TARGET_HEIGHT		= 5.5f;		// 注視点の高さ
 
 	static constexpr float SHAKE_TIME	= 0.5f;		// カメラを揺らす時間
 	static constexpr float SHAKE_POWER	= 0.5f;		// カメラのやれる強さ

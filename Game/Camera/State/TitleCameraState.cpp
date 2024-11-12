@@ -42,6 +42,7 @@ void TitleCameraState::Update(
     m_camera->m_position.y = TITLE_DIRECTION.y + m_camera->m_shakePos.y;                 // 高さを固定
     // カメラの注視点を中心に設定
     m_camera->m_target = DirectX::SimpleMath::Vector3::Zero + CAMERA_Y_PLUS + m_camera->m_shakePos;
+
     // ビュー行列を更新
     m_camera->CalculateViewMatrix();
     m_camera->CalculateCameraAngle();

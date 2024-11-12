@@ -15,6 +15,7 @@
 
 #include "../Camera/Camera.h"
 #include "../Stage/Floor/Floor.h"
+#include "../Stage/Sea/Sea.h"
 #include "../TitleObject/TitleEnemy.h"
 #include "Libraries/MyLib/SkySphere.h"
 #include <cassert>
@@ -156,6 +157,7 @@ void TitleScene::CreateObjects()
 
 	m_camera	= Factory::CreateCamera	();
 	m_floor		= Factory::CreateFloor	(device);
+	m_sea = Factory::CreateSea();
 	m_skySphere = Factory::CreateSkySphere(device);
 
 	m_enemy = std::make_unique<TitleEnemy>(this);
@@ -210,6 +212,8 @@ void TitleScene::Render()
 
 	// °‚Ì•`‰æ
 	m_floor->Render(view, m_projection);
+	// ŠC‚Ì•`‰æ
+	m_sea->Render(view, m_projection);
 	// “G‚Ì•`‰æ
 	m_enemy->Render(device, context, states, view, m_projection);
 	// “V‹…‚Ì•`‰æ

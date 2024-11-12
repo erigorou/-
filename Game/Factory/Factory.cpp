@@ -9,6 +9,7 @@
 #include "Libraries/MyLib/SkySphere.h"								// 天球
 #include "Effects/Particle.h"										// パーティクル
 #include "../Stage/Floor/Floor.h"									// 床
+#include "../Stage/Sea/Sea.h"										// 海
 #include "../Stage/Wall/Wall.h"										// 壁
 #include "../Player/Player.h"										// プレイヤー
 #include "../Enemy/Enemy.h"											// 鬼（敵）
@@ -76,6 +77,14 @@ std::unique_ptr<Floor> Factory::CreateFloor(ID3D11Device1* device)
 	floor = std::make_unique<Floor>(device);
 	// 床の設定
 	return floor;
+}
+
+
+std::unique_ptr<Sea> Factory::CreateSea()
+{
+	std::unique_ptr<Sea> sea;
+	sea = std::make_unique<Sea>();
+	return sea;
 }
 
 

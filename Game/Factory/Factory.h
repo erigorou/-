@@ -13,6 +13,7 @@ class Camera;
 class SkySphere;
 class Particle;
 class Floor;
+class Sea;
 class Wall;
 class Player;
 class Enemy;
@@ -29,6 +30,7 @@ public:
 	static std::unique_ptr<SkySphere>			CreateSkySphere			(ID3D11Device1* device);
 	static std::unique_ptr<Particle>			CreateParticle			();
 	static std::unique_ptr<Floor>				CreateFloor				(ID3D11Device1* device);
+	static std::unique_ptr<Sea>					CreateSea				();	
 	static std::unique_ptr<Wall>				CreateWall				(PlayScene* playScene);
 	static std::unique_ptr<Player>				CreatePlayer			(PlayScene* playScene);
 	static std::unique_ptr<Enemy>				CreateEnemy				(PlayScene* playScene);

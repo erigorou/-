@@ -10,6 +10,7 @@
 class CommonResources;
 class Camera;
 class Floor;
+class Sea;
 class TitleEnemy;
 class SkySphere;
 
@@ -76,6 +77,7 @@ private:
 	// オブジェクト達
 	std::unique_ptr<Camera>		m_camera;		//　カメラ
 	std::unique_ptr<Floor>		m_floor;		// 床
+	std::unique_ptr<Sea>		m_sea;			// 海
 	std::unique_ptr<TitleEnemy> m_enemy;		// 敵
 	std::unique_ptr<SkySphere>	m_skySphere;	// スカイスフィア
 };

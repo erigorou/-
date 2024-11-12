@@ -54,7 +54,9 @@ void CustomShader::BeginSharder(ID3D11DeviceContext* context)
 
 	//	ì¬‚³‚ê‚Ä‚¢‚ê‚Î“ü—ÍƒŒƒCƒAƒEƒg‚Ì“o˜^
 	if (m_inputLayout.Get() != nullptr) 
-	{ context->IASetInputLayout(m_inputLayout.Get()); }
+	{ 
+ 		context->IASetInputLayout(m_inputLayout.Get()); 
+	}
 }
 
 

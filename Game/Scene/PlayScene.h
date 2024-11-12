@@ -20,6 +20,7 @@ class Enemy;
 class Cudgel;
 // === ステージ関連 =============
 class Floor;
+class Sea;
 class Wall;
 // UI関連 ========================
 class PlaySceneUIManager;
@@ -86,6 +87,7 @@ private:
 
 	// ステージ関連の変数 ====================================================================
 	std::unique_ptr<Floor> m_floor;							// 床
+	std::unique_ptr<Sea> m_sea;
 	std::unique_ptr<Wall>  m_wall;							// 壁（天球の枠）
 	
 	// UI関連の変数 ==========================================================================

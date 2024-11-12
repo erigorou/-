@@ -28,6 +28,7 @@
 
 // ステージ関連 ==============================================
 #include "Game/Stage/Floor/Floor.h"		// 床
+#include "Game/Stage/Sea/Sea.h"
 #include "Game/Stage/Wall/Wall.h"		// 壁
 
 // UI関連　====================================================
@@ -113,6 +114,7 @@ void PlayScene::CreateObjects()
 	m_skySphere			= Factory::CreateSkySphere			(device);	// 天球	
 	m_particles			= Factory::CreateParticle			();			// パーティクル
 	m_floor				= Factory::CreateFloor				(device);	// フロア
+	m_sea				= Factory::CreateSea();			// 海
 	m_wall				= Factory::CreateWall				(this);		// 壁
 	m_player			= Factory::CreatePlayer				(this);		// プレイヤ
 	m_sword				= Factory::CreateSword				(this);		// 刀
@@ -239,8 +241,10 @@ void PlayScene::Render()
 	m_skySphere->DrawSkySphere(view, m_projection);
 	// 床を描画する
 	m_floor->Render(view, m_projection);
-	// 壁を描画する
-	m_wall->Render(view, m_projection);
+	// 海を描画する
+	m_sea->Render(view, m_projection);
+	//// 壁を描画する
+	//m_wall->Render(view, m_projection);
 
 	// === オブジェクトの描画 =======================================================
 	// 敵の描画
