@@ -4,6 +4,7 @@
 
 #include "pch.h"
 
+// ëOï˚êÈåæ
 class PlayScene;
 class IObserver;
 
@@ -17,6 +18,7 @@ class Sea;
 class Wall;
 class Player;
 class Enemy;
+class Goblin;
 class Sword;
 class Cudgel;
 class PlaySceneUIManager;
@@ -34,6 +36,7 @@ public:
 	static std::unique_ptr<Wall>				CreateWall				(PlayScene* playScene);
 	static std::unique_ptr<Player>				CreatePlayer			(PlayScene* playScene);
 	static std::unique_ptr<Enemy>				CreateEnemy				(PlayScene* playScene);
+	static std::unique_ptr<Goblin>				CreateGoblin			(PlayScene* playScene);
 	static std::unique_ptr<Sword>				CreateSword				(PlayScene* playScene);
 	static std::unique_ptr<Cudgel>				CreateCudgel			(PlayScene* playScene);
 	static std::unique_ptr<PlaySceneUIManager>	CreateUIManager			(PlayScene* playScene);

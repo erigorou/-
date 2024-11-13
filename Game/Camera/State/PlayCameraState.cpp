@@ -41,7 +41,7 @@ void PlayCameraState::Update(
     playerToEnemy.Normalize();
 
 	Vector3 cameraPos = playerPos - playerToEnemy * Camera::CAMERA_DIRECTION;
-	cameraPos.y = Camera::CAMERA_POSITION_Y;
+    cameraPos.y = Camera::CAMERA_POSITION_Y;
 
 
 	m_camera->m_position = cameraPos;

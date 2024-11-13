@@ -205,7 +205,6 @@
     <ClInclude Include="Game\Goblin\Goblin.h" />
     <ClInclude Include="Game\Goblin\State\Header\GoblinIdling.h" />
     <ClInclude Include="Game\Goblin\State\Header\GoblinAttacking.h" />
-    <ClInclude Include="Game\Goblin\GoblinHP.h" />
     <ClInclude Include="Game\Camera\State\TitleCameraState.h" />
     <ClInclude Include="Game\Camera\State\PlayCameraState.h" />
     <ClInclude Include="Game\TitleObject\EnemyTitleMoving.h" />
@@ -224,6 +223,7 @@
     <ClInclude Include="Game\Enemy\Face\Header\EnemyFaceAttacking.h" />
     <ClInclude Include="Game\Data\HPSystem.h" />
     <ClInclude Include="Game\Stage\Sea\Sea.h" />
+    <ClInclude Include="Game\HitStop\HitStop.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -345,6 +345,7 @@
     <ClCompile Include="Game\Enemy\Face\Source\EnemyFaceAttacking.cpp" />
     <ClCompile Include="Game\Data\HPSystem.cpp" />
     <ClCompile Include="Game\Stage\Sea\Sea.cpp" />
+    <ClCompile Include="Game\HitStop\HitStop.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

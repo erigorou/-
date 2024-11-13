@@ -14,7 +14,7 @@
 
 class Player;
 class PlayScene;
-class GoblinHP;
+class HPSystem;
 
 class Goblin : public IObject
 {
@@ -23,8 +23,10 @@ public:
 	class GoblinAttacking;
 
 	// 固定値
-	static constexpr float GOBLIN_SPEED = 1.0f;
-	static constexpr float GOBLIN_SCALE = 1.0f;
+	static const float GOBLIN_SPEED;
+	static const float GOBLIN_SCALE;
+
+	static constexpr float GOBLIN_HP = 3.0f;
 
 	// 譲渡関数
 	DirectX::SimpleMath::Vector3	GetPosition()	override{ return m_position;	}	// 鬼の座標を取得する
@@ -72,7 +74,7 @@ private:
 	std::unique_ptr<Goblin::GoblinAttacking	> m_attacking	;	// 攻撃
  
 	// HP
-	std::unique_ptr<GoblinHP> m_hp;	// HP
+	std::unique_ptr<HPSystem> m_hp;	// HP
 
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;										// エフェクト
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;	// プリミティブバッチ

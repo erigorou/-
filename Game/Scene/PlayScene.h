@@ -13,11 +13,13 @@
 // === データ処理系 ==============
 class CommonResources;
 class Sound;
+class HitStop;
 // === プレイヤー関連 ============
 class Player;
 class Sword;
 class Enemy;
 class Cudgel;
+class Goblin;
 // === ステージ関連 =============
 class Floor;
 class Sea;
@@ -32,18 +34,17 @@ class PlayScene final :	public IScene
 
 	 
 {
+// アクセサ関数 ===
 public:
-	// 受け渡し用関数 ===============================================
 	Player*		GetPlayer()		{ return m_player.get();}
 	Enemy*		GetEnemy()		{ return m_enemy.get(); }
 	Sword*		GetSword()		{ return m_sword.get(); }
 	Cudgel*		GetCudgel()		{ return m_cudgel.get();}
 	Particle*	GetParticle()	{ return m_particles.get(); }	
 
-	// 当たり判定処理用関数 ==========================================
 	CollisionManager* GetCollisionManager() { return m_collisionManager.get(); }
 
-
+// 共通関数 ===
 public:
 	PlayScene();
 	~PlayScene()					override;
@@ -55,6 +56,7 @@ public:
 
 	void SetShakeCamera();			// カメラを揺らす
 
+// 非公開関数 ===
 private:
 	void CreateObjects();			// オブジェクトの生成
 	SceneID GetNextSceneID() const;	// 次のシーンIDを取得
@@ -62,42 +64,41 @@ private:
 	void CheckResult();				// 勝敗判定
 
 
+// 内部変数 ===
+private:
 	// データに必要な物 ============================================
 	CommonResources* m_commonResources;					// 共通リソース
 	std::unique_ptr<mylib::DebugCamera> m_debugCamera;	// デバッグカメラ
 	DirectX::SimpleMath::Matrix			m_projection;	// プロジェクション行列
 
-
 	bool m_isChangeScene;								// シーン遷移フラグ
-
-	std::unique_ptr<Camera>				m_camera;		// カメラ
-	std::unique_ptr<SkySphere>			m_skySphere;	// 天球
-	std::unique_ptr<Particle>			m_particles;	// パーティクル
-
-
 
 	// システム周り ==========================================================================
 	Sound* m_sound;											// 音
-
-	// オブジェクト関連の変数 ================================================================
-	std::unique_ptr<Player>	m_player;						// プレイヤー
-	std::unique_ptr<Sword>	m_sword;						// 刀
-	std::unique_ptr<Enemy>  m_enemy;						// 鬼
-	std::unique_ptr<Cudgel> m_cudgel;						// 金棒
-
-	// ステージ関連の変数 ====================================================================
-	std::unique_ptr<Floor> m_floor;							// 床
-	std::unique_ptr<Sea> m_sea;
-	std::unique_ptr<Wall>  m_wall;							// 壁（天球の枠）
-	
-	// UI関連の変数 ==========================================================================
 	std::unique_ptr<PlaySceneUIManager> m_uiManager;		// UIマネージャ
-
-	// 当たり判定関連の変数 ==================================================================
-	std::unique_ptr<CollisionManager> m_collisionManager;	// 当たり判定マネージャ
+	std::unique_ptr<CollisionManager>	m_collisionManager;	// 当たり判定マネージャ
+	HitStop*							m_hitStop;			// ヒットストップ
+	// オブジェクト関連の変数 ================================================================
+	std::unique_ptr<Camera>		m_camera;		// カメラ
+	std::unique_ptr<SkySphere>	m_skySphere;	// 天球
+	std::unique_ptr<Particle>	m_particles;	// パーティクル
+	std::unique_ptr<Player>		m_player;		// プレイヤー
+	std::unique_ptr<Sword>		m_sword;		// 刀
+	std::unique_ptr<Enemy>		m_enemy;		// 鬼
+	std::unique_ptr<Cudgel>		m_cudgel;		// 金棒
+	std::unique_ptr<Goblin>		m_goblin;		// ゴブリン
+	// ステージ関連の変数 ====================================================================
+	std::unique_ptr<Floor>	m_floor;			// 床
+	std::unique_ptr<Sea>	m_sea;				// 海	
+	std::unique_ptr<Wall>	m_wall;				// 壁（天球の枠）
 
 
 	// キーボード用の変数 ====================================================================
 	DirectX::Keyboard::State				m_keyboardState;
 	DirectX::Keyboard::KeyboardStateTracker m_keyboardStateTracker;
+
+
+	// ヒットストップのかかるオブジェクト用の変数
+	float m_smoothDeltaTime;
+
 };

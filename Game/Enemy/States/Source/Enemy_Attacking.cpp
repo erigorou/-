@@ -100,10 +100,6 @@ void Enemy_Attacking::Render(
 	UNREFERENCED_PARAMETER(m_model);
 
 #ifdef _DEBUG
-	// ƒŠƒ\[ƒX‚ÌŽæ“¾
-	CommonResources* resources = CommonResources::GetInstance();
-	auto debugString = resources->GetDebugString();
-	debugString->AddString("enemyAngle : %f", m_angle);
 #endif // _DEBUG
 }
 

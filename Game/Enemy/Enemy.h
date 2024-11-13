@@ -25,8 +25,9 @@ public:
 	// ŒÅ’è’l
 	static const float ENEMY_SPEED;
 	static const float ENEMY_SCALE;
-
 	static const float COOL_TIME;
+
+	static constexpr float HP = 20.0f;
 
 
 public:

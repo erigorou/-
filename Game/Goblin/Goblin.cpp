@@ -10,10 +10,19 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/Microsoft/DebugDraw.h"
 #include "Interface/IState.h"
-#include "GoblinHP.h"
+#include "Game/Data/HPSystem.h"
+#include "../Enemy/Enemy.h"
 
 #include "State/Header/GoblinIdling.h"
 #include "State/Header/GoblinAttacking.h"
+
+
+// ---------------
+// 固定値
+// ---------------
+const float Goblin::GOBLIN_SPEED = Enemy::ENEMY_SPEED / 2.0f;	// 移動速
+const float Goblin::GOBLIN_SCALE = Enemy::ENEMY_SCALE / 4.0f;	// サイズ
+
 
 // コンストラクタ
 Goblin::Goblin(PlayScene* playScene)
@@ -43,13 +52,13 @@ void Goblin::Initialize()
 	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
 	fx->SetDirectory(L"Resources/Models");
 	// モデルを読み込む
-	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/oni.cmo", *fx);
+	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Goblin/goblin.cmo", *fx);
 
 	// ステートの作成
 	CreateState();
 
 	// HPの生成
-	m_hp = std::make_unique<GoblinHP>();
+	m_hp = std::make_unique<HPSystem>(GOBLIN_HP);
 }
 
 
@@ -86,7 +95,7 @@ void Goblin::Update(const float elapsedTime)
 	using namespace DirectX::SimpleMath;
 
 	// ワールド行列の初期化
-	m_worldMatrix = Matrix::Identity;
+	m_worldMatrix = Matrix::CreateScale(GOBLIN_SCALE);
 
 	// ステートの更新処理
 	m_currentState->Update(elapsedTime);

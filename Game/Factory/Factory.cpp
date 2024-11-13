@@ -5,6 +5,7 @@
 #include "../Scene/PlayScene.h"										// プレイシーン
 #include "Interface/IObserver.h"									// オブザーバー
 #include "Libraries/MyLib/Collision/CollisionManager.h"				// 当たり判定統括
+#include "Game/Sound/Sound.h"										// 音
 #include "../Camera/Camera.h"										// カメラ
 #include "Libraries/MyLib/SkySphere.h"								// 天球
 #include "Effects/Particle.h"										// パーティクル
@@ -13,6 +14,7 @@
 #include "../Stage/Wall/Wall.h"										// 壁
 #include "../Player/Player.h"										// プレイヤー
 #include "../Enemy/Enemy.h"											// 鬼（敵）
+#include "../Goblin/Goblin.h"										// ゴブリン
 #include "../Weapon/Sword/Sword.h"									// プレイヤーの武器
 #include "../Weapon/Cudgel/Cudgel.h"								// 鬼（敵）の武器
 #include "../UI/!PlaySceneUIManager/PlaySceneUIManager.h"			// プレイシーンのUI
@@ -137,6 +139,21 @@ std::unique_ptr<Enemy> Factory::CreateEnemy(PlayScene* playScene)
 }
 
 
+
+// ゴブリンの生成関数
+std::unique_ptr<Goblin> Factory::CreateGoblin(PlayScene* playScene)
+{
+	// ゴブリンの宣言
+	std::unique_ptr<Goblin> goblin;
+	goblin = std::make_unique<Goblin>(playScene);
+	// 初期化処理
+	goblin->Initialize();
+	// ゴブリンの設定
+	return goblin;
+}
+
+
+
 // プレイヤーの武器の生成関数
 std::unique_ptr<Sword> Factory::CreateSword(PlayScene* playScene)
 {
@@ -161,6 +178,7 @@ std::unique_ptr<Cudgel> Factory::CreateCudgel(PlayScene* playScene)
 	// 鬼（敵）の武器の設定
 	return cudgel;
 }
+
 
 
 // プレイシーンのUIの生成関数

@@ -14,6 +14,7 @@
 #include "Libraries/Microsoft/DebugDraw.h"
 #include "Libraries/MyLib/Math.h"
 #include "Game/Scene/PlayScene.h"
+#include "../HitStop/HitStop.h"
 
 #include "Game/Enemy/Enemy.h"
 #include "Game/Stage/Wall/Wall.h"
@@ -84,7 +85,7 @@ void Enemy::Initialize()
 	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Oni/Body/oni.cmo", *fx);
 
 	// HPを設定
-	m_hp = std::make_unique<HPSystem>(20);
+	m_hp = std::make_unique<HPSystem>(HP);
 
 	// ビヘイビアツリーを取得
 	m_pBT = std::make_unique<BehaviorTree>();
@@ -293,6 +294,9 @@ void Enemy::HitSword(InterSectData data)
 		m_hp->Damage(1);
 		m_isHit = true;
 		m_canHit = false;
+
+		// ヒットストップを有効にする
+		HitStop::GetInstance()->SetActive();
 	}
 }
 

@@ -13,68 +13,52 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/InputManager.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
-
-// ファクトリーメゾット ======================================
-#include "Game/Factory/Factory.h"
-
 // システム面 ================================================
-#include "Game/Sound/Sound.h"	// 音
-
+#include "Game/Factory/Factory.h"						// ファクトリ
+#include "Game/Sound/Sound.h"							// 音
+#include "Game/HitStop/HitStop.h"						// ヒットストップ
+#include "Libraries/MyLib/Collision/CollisionManager.h"	// 当たり判定
+#include "Game/Data/GameData.h"							// ゲームデータ
+#include"Interface/IObserver.h"							// オブザーバー
+#include "Game/Observer/Messenger.h"					// メッセンジャー
 // オブジェクト関連　=========================================
 #include "Game/Player/Player.h"			// プレイヤー
 #include "Game/Enemy/Enemy.h"			// 鬼
 #include "Game/Weapon/Sword/Sword.h"	// 刀
 #include "Game/Weapon/Cudgel/Cudgel.h"	// 金棒
+#include "Game/Goblin/Goblin.h"			// ゴブリン
 
-// ステージ関連 ==============================================
 #include "Game/Stage/Floor/Floor.h"		// 床
-#include "Game/Stage/Sea/Sea.h"
+#include "Game/Stage/Sea/Sea.h"			// 海
 #include "Game/Stage/Wall/Wall.h"		// 壁
-
 // UI関連　====================================================
 #include "Game/UI/!PlaySceneUIManager/PlaySceneUIManager.h"	// UI描画関連
 
-// 当たり判定関連 =============================================
-#include "Libraries/MyLib/Collision/CollisionManager.h"	// 当たり判定
-
-// ゲームデータ ===============================================
-#include "Game/Data/GameData.h"
-
-// Sound　======================================================
-#include "Game/Sound/Sound.h"
-#include"Interface/IObserver.h"
-#include "Game/Observer/Messenger.h"
 
 /// <summary>
 /// コンストラクタ
 /// </summary>
 PlayScene::PlayScene()
-	:
-	m_commonResources{}
-	,m_debugCamera{}
-	,m_projection{}
-	,m_isChangeScene{}
-	,m_player{}
-	,m_sword{}
-	,m_enemy{}
-	,m_cudgel{}
-	,m_skySphere{}
-	,m_particles{}
+	: m_commonResources{}
+	, m_debugCamera{}
+	, m_projection{}
+	, m_isChangeScene{}
+	, m_smoothDeltaTime{}
 {
 	m_commonResources = CommonResources::GetInstance();
 	GameData::GetInstance()->SetBattleResult(GameData::BATTLE_RESULT::NONE);
 }
 
-/// <summary>
-/// デストラクタ
-/// </summary>
+// ----------------
+// デストラクタ
+// ----------------
 PlayScene::~PlayScene()
 {
 }
 
-/// <summary>
-/// 初期化関数
-/// </summary>
+// ----------------
+// 初期化関数
+// ----------------
 void PlayScene::Initialize()
 {
 	using namespace DirectX;
@@ -109,18 +93,22 @@ void PlayScene::CreateObjects()
 
 	Messenger::Clear();	// メッセンジャーのクリア
 
+	m_hitStop = HitStop::GetInstance();
+
 	m_collisionManager	= Factory::CreateCollisionManager	();			// パーティクル
 	m_camera			= Factory::CreateCamera				();			// カメラ
 	m_skySphere			= Factory::CreateSkySphere			(device);	// 天球	
 	m_particles			= Factory::CreateParticle			();			// パーティクル
 	m_floor				= Factory::CreateFloor				(device);	// フロア
-	m_sea				= Factory::CreateSea();			// 海
+	m_sea				= Factory::CreateSea				();			// 海
 	m_wall				= Factory::CreateWall				(this);		// 壁
 	m_player			= Factory::CreatePlayer				(this);		// プレイヤ
 	m_sword				= Factory::CreateSword				(this);		// 刀
 	m_enemy				= Factory::CreateEnemy				(this); 	// 鬼
 	m_cudgel			= Factory::CreateCudgel				(this);		// 金棒
+	m_goblin			= Factory::CreateGoblin				(this);		// ゴブリン
 	m_uiManager			= Factory::CreateUIManager			(this);		// UIマネージャ
+
 
 	// 観察者リストをソートする
 	Messenger::SortObserverList();
@@ -187,18 +175,25 @@ void PlayScene::Update(float elapsedTime)
 	if (IsKeyDown	(m_keyboardState)		)	Messenger::Notify(m_keyboardState		); 
 	if (IsKeyPress	(m_keyboardStateTracker))	Messenger::Notify(m_keyboardStateTracker); 
 
+	// ヒットストップの更新
+	m_hitStop->Update(elapsedTime);
+
+	// ヒットストップの残り時間を取得
+	float smoothDeltaTime = m_hitStop->GetSmoothDeltaTime();
+
 	// UIの更新
 	m_uiManager->Update(elapsedTime);
-
 	// プレイヤーの更新処理
-	m_player->Update(m_enemy->GetPosition(), elapsedTime);
+	m_player->Update(m_enemy->GetPosition(), smoothDeltaTime);
 	// プレイヤーの武器の更新処理
-	m_sword->Update(elapsedTime);
+	m_sword->Update(smoothDeltaTime);
 
 	// 鬼の更新処理
-	m_enemy->Update(elapsedTime);
+	m_enemy->Update(smoothDeltaTime);
 	// 鬼の武器の更新処理
-	m_cudgel->Update(elapsedTime);
+	m_cudgel->Update(smoothDeltaTime);
+
+	m_goblin->Update(smoothDeltaTime);
 
 	// カメラの回転行列の作成	引数にはプレイヤーの回転角を入れる
 	SimpleMath::Matrix matrix = SimpleMath::Matrix::CreateRotationY( XMConvertToRadians ( m_player->GetAngle() ) );
@@ -256,6 +251,9 @@ void PlayScene::Render()
 	// プレイヤーの武器の描画を行う
 	m_sword->Render(view, m_projection);
 
+	// ゴブリンの描画
+	//m_goblin->Render(view, m_projection);
+
 	//==== エフェクト系の描画 ======================================================
 	// パーティクルのビルボード作成
 	m_particles->CreateBillboard(m_camera->GetTargetPosition(), m_camera->GetEyePosition(), DirectX::SimpleMath::Vector3::Up);
@@ -264,6 +262,7 @@ void PlayScene::Render()
 
 	//==== UI系の描画 ======================================================-------
 	m_uiManager->Render();
+
 }
 
 /// <summary>
