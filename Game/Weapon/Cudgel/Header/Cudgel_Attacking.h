@@ -17,6 +17,8 @@ public:
 	static const float CHARGE_TIME;	// 攻撃の貯めモーションの時間
 	static const float WINDUP_TIME;	// 攻撃する前の時間
 	static const float ATTACK_TIME;	// 攻撃する時間
+	static const float STOP_TIME;	// 攻撃が終わってから待機する時間
+	static const float RETURN_TIME;	// 攻撃が終わってから元に戻る時間
 	static const float END_TIME;	// 攻撃（全体）が終了する時間
 
 	static const DirectX::SimpleMath::Vector3 ARM_LENGTH;		// 架空の腕の長さ
@@ -58,16 +60,20 @@ public:
 
 private:
 	void HandleChargePhase(float t);	// ためモーション
-	void HandleWindoupPhase();			// 
-	void HandleAttackPhase(float t);
-	void KeepStampPhase();
-	void HandleSlamParticles();
+	void HandleWindoupPhase();	// 攻撃前のモーション
+	void HandleAttackPhase(float t);	// 攻撃モーション
+	void KeepStampPhase();				// 攻撃後のモーション
+	void ReturnToOriginalPhase(float t);	// 元に戻るモーション
+
+
+	void HandleSlamParticles();	// パーティクルを生成する
 	
 	void UpdateAttackState();
 
 
 	DirectX::SimpleMath::Vector3 m_position;	// 座標
 	DirectX::SimpleMath::Vector3 m_velocity;	// 速度
+	bool m_canHit;
 
 	float m_enemyAngle;							// 敵の角度
 

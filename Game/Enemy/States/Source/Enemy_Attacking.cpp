@@ -61,7 +61,14 @@ void Enemy_Attacking::Update(const float& elapsedTime)
 	// 敵から見たプレイヤーの位置を計算する
 	m_angle = Math::CalculationAngle(parentPos, playerPos);
 
-	if (m_totalSeconds >= 2.5f)
+	// 攻撃中まではプレイヤーを追尾するようにする
+	if (m_totalSeconds <= Cudgel_Attacking::ATTACK_TIME)
+	{
+		// プレイヤーを追尾
+		m_enemy->SetAngle(m_angle);
+	}
+
+	if (m_totalSeconds >= 4.3f)
 		m_enemy->ChangeState(m_enemy->GetEnemyIdling());	// 待機状態に遷移
 }
 

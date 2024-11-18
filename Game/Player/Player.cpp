@@ -264,7 +264,7 @@ void Player::CalculationAngle(DirectX::SimpleMath::Vector3 const enemyPos)
 	m_angle = acosf(dotProduct);					// 内積から角度を取得(弧度法)
 
 	Vector3 crossProduct = forward.Cross(worldForward);	// カメラの前方向ベクトルが右方向に向いているかどうかで符号を決定6
-	m_angle = (crossProduct.y < 0) ? -m_angle: m_angle;	// -180 ~ 180に収める。
+	m_angle = (crossProduct.y <= 0) ? -m_angle: m_angle;	// -180 ~ 180に収める。
 }
 
 

@@ -22,9 +22,11 @@
 
 // 固定値 ==================================
 const float Cudgel_Attacking::CHARGE_TIME = 0.8f;	// 振りかざし時間
-const float Cudgel_Attacking::WINDUP_TIME = 1.0f;	// 待機
-const float Cudgel_Attacking::ATTACK_TIME = 1.7f;	// 降り下ろし
-const float Cudgel_Attacking::END_TIME = 2.2f;		// 終了時間
+const float Cudgel_Attacking::WINDUP_TIME = 1.3f;	// 待機
+const float Cudgel_Attacking::ATTACK_TIME = 2.0f;	// 降り下ろし
+const float Cudgel_Attacking::STOP_TIME	  = 3.0f;	// 待機
+const float Cudgel_Attacking::RETURN_TIME = 4.0f;	// 元に戻る
+const float Cudgel_Attacking::END_TIME    = 4.3f;	// 終了時間
 
 const Vector3 Cudgel_Attacking::ARM_LENGTH = Vector3(0.0f, 4.0f, 0.0f);
 const Vector3 Cudgel_Attacking::ZERO_DIREC = Vector3(6.0f, 1.0f, 0.0f);
@@ -67,13 +69,16 @@ void Cudgel_Attacking::PreUpdate()
 	// 経過時間の初期化
 	m_totalSeconds = 0.0f;
 	m_angleUD = 0.0f;
+	m_canHit = false;
 	m_recordPointTimer = 0.0f;
 
 	// 頂点情報の初期化
 	m_rootPos.clear();
 	m_tipPos.clear();
 
+	// パーティクルを生成可能に
 	m_canGenerateSlamParticles = true;
+	// 音声サウンドを可能に
 	m_playSound = false;
 }
 
@@ -109,17 +114,7 @@ void Cudgel_Attacking::Update(float elapsedTime)
 /// </summary>
 void Cudgel_Attacking::UpdateCudgelRotation()
 {
-	bool canHit = false;
-
-	// -----------------------------------------------------------------
-	// 敵の攻撃の流れ
-	// 振りかざす（1秒）→ 待機（0.2秒）→ 降り下ろす(0.7秒) → 後隙
-
-
 	UpdateAttackState();	// 攻撃状態の更新
-
-	// プレイヤーに攻撃可能状態を通知
-	m_cudgel->GetPlayScene()->GetPlayer()->CanHit(canHit);
 }
 
 
@@ -139,13 +134,15 @@ void Cudgel_Attacking::HandleChargePhase(float t)
 /// </summary>
 void Cudgel_Attacking::HandleWindoupPhase()
 {
+	m_canHit = true;
+
 	// 振りかざしの角度を保持（-40度の状態を維持）
 	m_angleUD = DirectX::XMConvertToRadians(-40.0f);
 }
 
 
 /// <summary>
-/// 攻撃フェーズの処理。武器を20度から115度まで振り下ろす。
+/// 攻撃フェーズの処理。武器を20度から95度まで振り下ろす。
 /// </summary>
 /// <param name="t">0から1に正規化された時間。</param>
 void Cudgel_Attacking::HandleAttackPhase(float t)
@@ -159,6 +156,33 @@ void Cudgel_Attacking::HandleAttackPhase(float t)
 		Sound::PlaySE(Sound::SE_TYPE::ENEMY_ATTACK);
 		m_playSound = true;
 	}
+}
+
+/// <summary>
+/// たたきつけてから待機するモーション
+/// </summary>
+void Cudgel_Attacking::KeepStampPhase()
+{
+	m_canHit = false;
+
+	// たたきつけた瞬間にパーティクルの生成
+	HandleSlamParticles();
+
+	m_angleUD = DirectX::XMConvertToRadians(95.0f);
+	m_angleRL = DirectX::XMConvertToRadians(-20.0f) + m_angleRL;
+}
+
+
+/// <summary>
+/// 待機状態に戻る処理。
+/// </summary>
+/// <param name="t"></param>
+void Cudgel_Attacking::ReturnToOriginalPhase(float t)
+{
+
+	// 横と縦の回転を元に戻す
+	m_angleUD = DirectX::XMConvertToRadians(95.0f - 95.0f * t);
+	m_angleRL = DirectX::XMConvertToRadians(- 20 + 20 * t) + m_angleRL;
 }
 
 /// <summary>
@@ -177,28 +201,25 @@ void Cudgel_Attacking::HandleSlamParticles()
 }
 
 
-void Cudgel_Attacking::KeepStampPhase()
-{
-	HandleSlamParticles();
-
-	m_angleUD = DirectX::XMConvertToRadians(95.0f);
-	m_angleRL = DirectX::XMConvertToRadians(-20.0f) + m_angleRL;
-}
-
 
 /// <summary>
 /// 更新する処理
 /// </summary>
 void Cudgel_Attacking::UpdateAttackState()
 {
-																			// 振りかざす
+	// 振りかざす
 	if (m_totalSeconds < CHARGE_TIME)										HandleChargePhase(m_totalSeconds / CHARGE_TIME);
-																			// 待機状態
+	// 待機状態
 	else if (m_totalSeconds > CHARGE_TIME && m_totalSeconds <= WINDUP_TIME)	HandleWindoupPhase();
-																			// 降り下ろす
-	else if (m_totalSeconds > WINDUP_TIME && m_totalSeconds < ATTACK_TIME)	HandleAttackPhase((m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME));
+	// 降り下ろす
+	else if (m_totalSeconds > WINDUP_TIME && m_totalSeconds <= ATTACK_TIME)	HandleAttackPhase((m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME));
 
-	else																	KeepStampPhase();
+	else if (m_totalSeconds > ATTACK_TIME && m_totalSeconds <= STOP_TIME)	KeepStampPhase();
+
+	else if (m_totalSeconds > STOP_TIME && m_totalSeconds <= RETURN_TIME)	ReturnToOriginalPhase((m_totalSeconds - STOP_TIME) / (RETURN_TIME - STOP_TIME));
+
+	// プレイヤーに攻撃可能状態を通知
+	m_cudgel->GetPlayScene()->GetPlayer()->CanHit(m_canHit);
 }
 
 
