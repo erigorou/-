@@ -96,7 +96,9 @@ void PlayerAttacking_4::UpdateAnimation()
 	{
 		// イージング値を計算
 		t = m_totalSeconds / DOWN_TIME;
-		m_downValue = m_upValue - m_upValue * Easing::easeOutElastic(t);
+		m_downValue = m_upValue - m_upValue * Easing::easeOutBack(t);
+
+		m_downValue = fabsf(m_downValue);
 	}
 
 	// 下限量を更新したものを設定する

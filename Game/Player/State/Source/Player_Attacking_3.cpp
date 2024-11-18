@@ -98,7 +98,7 @@ void PlayerAttacking_3::UpdateAnimation()
 	// イージングで使用するための変数 0 - 1
 	t = m_totalSeconds / Player::APPLIED_ATTACK_TIME;
 
-	float JUMP_VALUE = 4.0f;
+	float JUMP_VALUE = 6.0f;
 
 	// イージングの経過時間をサイン波として扱う
 	t = Math::CalculatingSinWave(t / 2, 1.0f, 1.0f);
@@ -115,8 +115,7 @@ void PlayerAttacking_3::UpdateAnimation()
 // キー入力
 void PlayerAttacking_3::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 {
-	if (key == DirectX::Keyboard::X			&& m_totalSeconds >= ATTACKING_TIME	)	m_player->ChangeState(m_player->GetPlayerAttackingState4());
-	if (key == DirectX::Keyboard::LeftShift										)	m_player->ChangeState(m_player->GetPlayerDodgingState());
+	if (key == DirectX::Keyboard::X			&& m_totalSeconds >= Player::X_COOL_TIME)	m_player->ChangeState(m_player->GetPlayerAttackingState4());
 }
 
 

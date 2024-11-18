@@ -14,7 +14,7 @@ class HitStop
 public:
 
 	static constexpr float DELAY = 0.1f;					// ヒットストップの遅延時間
-	static constexpr float HITSTOP_TIME = DELAY + 0.1f;	// ヒットストップ時間
+	static constexpr float HITSTOP_TIME = DELAY + 0.2f;	// ヒットストップ時間
 
 
 // 静的関数　=============

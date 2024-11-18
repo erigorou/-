@@ -94,7 +94,7 @@ void Sword_Attacking_1::Update(float elapsedTime)
 	{
 		// 0-1‚ÌŠÔ‚Ì’l‚ðŽæ“¾
 		t = m_totalSeconds / ATTACK_TIME;
-		m_rot.y = 250.0f * Easing::easeOutBack(t);
+		m_rot.y = 250.0f * Easing::easeInOutBack(t);
 		m_rot.x = 10 + 30.0f * Easing::easeOutBack(t);
 
 

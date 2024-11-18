@@ -17,7 +17,7 @@ class Player;
 class PlayerAttacking_3 : public IPlayer
 {
 public:
-	static constexpr float ATTACKING_TIME = 1.0f;
+	static constexpr float ATTACKING_TIME = 0.8f;
 
 	// コンストラクタ
 	PlayerAttacking_3(Player* player);

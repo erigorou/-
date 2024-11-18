@@ -37,7 +37,7 @@ public:
 	static constexpr float APPLIED_ATTACK_TIME	= 1.4f;	// ２段目以降の攻撃が許されるようになる時間
 	static constexpr float APPLIED_DODGE_TIME	= 0.7f;	// 回避ができるようになる時間
 	static constexpr float COOL_TIME			= 1.0f; // 攻撃のクールタイム
-	static constexpr float X_COOL_TIME			= 0.8f; // 次の攻撃ができるようになる時間
+	static constexpr float X_COOL_TIME			= 0.7f; // 次の攻撃ができるようになる時間
 
 	static constexpr float NORMAL_ATTACK_TIME	= 0.5f; // 通常攻撃のアニメーション時間
 

@@ -24,7 +24,7 @@
 
 // ここで静的メンバー変数を定義する
 const DirectX::SimpleMath::Vector3 Player::HOME_POSITION(0.0f);
-const float Player::PLAYER_SPEED = 0.01f;
+const float Player::PLAYER_SPEED = 0.1f;
 const float Player::PLAYER_SCALE = 0.1f;
 
 
@@ -314,7 +314,7 @@ void Player::MovePlayer()
 		// 基本移動量を計算する
 		moveVelocity += m_inputVelocity * PLAYER_SPEED;
 
-		float acceleration = 0.05f;							// 加速度
+		float acceleration = 0.05f;								// 加速度
 		m_acceleration += m_inputVelocity * acceleration;		// 加速度の計算を行う
 
 		// 2乗にすることで符号を外す
