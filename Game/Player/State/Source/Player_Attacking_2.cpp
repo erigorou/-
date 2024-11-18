@@ -18,7 +18,9 @@
 #include "Game/Player/State/Header/Player_Attacking_2.h"
 
 
+// -----------------------
 // コンストラクタ
+// -----------------------
 PlayerAttacking_2::PlayerAttacking_2(Player* player)
 	:
 	 m_player(player)
@@ -28,13 +30,17 @@ PlayerAttacking_2::PlayerAttacking_2(Player* player)
 }
 
 
+// -----------------------
 // デストラクタ
+// -----------------------
 PlayerAttacking_2::~PlayerAttacking_2()
 {
 }
 
 
+// -----------------------
 // 初期化処理
+// -----------------------
 void PlayerAttacking_2::Initialize(DirectX::Model* model)
 {
 	// モデルを取得する
@@ -42,7 +48,9 @@ void PlayerAttacking_2::Initialize(DirectX::Model* model)
 }
 
 
+// -----------------------
 // 事前更新処理
+// -----------------------
 void PlayerAttacking_2::PreUpdate()
 {
 	// 経過時間の初期化
@@ -57,7 +65,9 @@ void PlayerAttacking_2::PreUpdate()
 }
 
 
+// -----------------------
 // 更新処理
+// -----------------------
 void PlayerAttacking_2::Update(const float& elapsedTime)
 {
 	m_totalSeconds += elapsedTime;
@@ -71,7 +81,9 @@ void PlayerAttacking_2::Update(const float& elapsedTime)
 
 
 
+// -----------------------
 // アニメーション更新
+// -----------------------
 void PlayerAttacking_2::UpdateAnimation()
 {
 	if (m_totalSeconds > Player::NORMAL_ATTACK_TIME) return;
@@ -93,21 +105,30 @@ void PlayerAttacking_2::UpdateAnimation()
 }
 
 
+// -----------------------
 // キー入力
+// -----------------------
 void PlayerAttacking_2::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 {
-	if (key == DirectX::Keyboard::X			&& m_totalSeconds >= Player::X_COOL_TIME)	m_player->ChangeState(m_player->GetPlayerAttackingState3());
-	if (key == DirectX::Keyboard::LeftShift											)	m_player->ChangeState(m_player->GetPlayerDodgingState());
+	// 回避
+	if (key == DirectX::Keyboard::LeftShift)
+	{
+		m_player->ChangeState(m_player->GetPlayerDodgingState());
+	}
 }
 
-
+// -----------------------
+// キー入力
+// -----------------------
 void PlayerAttacking_2::OnKeyDown(const DirectX::Keyboard::Keys& key)
 {
 	UNREFERENCED_PARAMETER(key);
 }
 
 
-// 事後更新処理
+// -----------------------
+// 事後更新
+// -----------------------
 void PlayerAttacking_2::PostUpdate()
 {
 	m_player->SetAnimationRotate(DirectX::SimpleMath::Vector3::Zero);
@@ -119,7 +140,9 @@ void PlayerAttacking_2::PostUpdate()
 }
 
 
-// 描画処理
+// -----------------------
+// 描画
+// -----------------------
 void PlayerAttacking_2::Render(
 	ID3D11DeviceContext* context,
 	DirectX::CommonStates* states,
@@ -143,7 +166,9 @@ void PlayerAttacking_2::Render(
 }
 
 
+// -----------------------
 // 終了処理
+// -----------------------
 void PlayerAttacking_2::Finalize()
 {
 }

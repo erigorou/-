@@ -161,8 +161,6 @@
     <ClInclude Include="Game\Enemy\States\Header\EnemyIdling.h" />
     <ClInclude Include="Game\Enemy\States\Header\EnemyApproaching.h" />
     <ClInclude Include="Game\Player\State\Header\Player_Attacking_2.h" />
-    <ClInclude Include="Game\Player\State\Header\Player_Attacking_3.h" />
-    <ClInclude Include="Game\Player\State\Header\Player_Attacking_4.h" />
     <ClInclude Include="Game\Weapon\Sword\Sword.h" />
     <ClInclude Include="Interface\IWeapon.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Idling.h" />
@@ -296,8 +294,6 @@
     <ClCompile Include="Game\Enemy\States\Source\EnemyIdling.cpp" />
     <ClCompile Include="Game\Enemy\States\Source\EnemyApproaching.cpp" />
     <ClCompile Include="Game\Player\State\Source\Player_Attacking_2.cpp" />
-    <ClCompile Include="Game\Player\State\Source\Player_Attacking_3.cpp" />
-    <ClCompile Include="Game\Player\State\Source\Player_Attacking_4.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Sword.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Idling.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Attacking_1.cpp" />

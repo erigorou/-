@@ -93,6 +93,8 @@ private:
 	void CreateCollision();
 	// 当たったときの処理
 	void HitAction(InterSectData data)override;
+	// 衝突クールタイムを計測
+	void CheckHitCoolTime(float elapsedTime);
 
 	void HitSword(InterSectData data);
 	void HitStage(InterSectData data);

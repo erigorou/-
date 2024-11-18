@@ -37,7 +37,7 @@
 // 固定値
 const float Enemy::ENEMY_SPEED	= 0.1f;
 const float Enemy::ENEMY_SCALE	= 0.4f;
-const float Enemy::COOL_TIME	= 0.4f;
+const float Enemy::COOL_TIME	= 0.3f;
 
 // --------------------------------
 //  コンストラクタ
@@ -159,7 +159,7 @@ void Enemy::CreateFace()
 void Enemy::CreateCollision()
 {
 	// 当たり判定の生成
-	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, ENEMY_SCALE * 15.0f);
+	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, ENEMY_SCALE * 25.0f);
 
 	// 衝突判定をMessengerに登録
 	m_playScene->GetCollisionManager()->AddCollision(
@@ -200,6 +200,8 @@ void Enemy::Update(float elapsedTime)
 	// キー入力を受け付ける。
 	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
 
+
+#ifdef _DEBUG
 	if (keyboardState.Enter)
 	{
 		// ビヘイビアツリーを実行。
@@ -216,6 +218,7 @@ void Enemy::Update(float elapsedTime)
 		ChangeState(m_sweeping.get());
 	}
 
+#endif // _DEBUG
 
 	m_worldMatrix = DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle + DirectX::XMConvertToRadians(180));	// 回転角の設定
 
@@ -230,10 +233,29 @@ void Enemy::Update(float elapsedTime)
 	// 当たり判定の更新
 	m_bodyCollision->Center = m_position;
 
-	//////////////////////////////////クールタイムの計測を行う//////////////////////////////////
-	if (m_isHit && m_coolTime < COOL_TIME) {	m_coolTime += elapsedTime;				}
-	else if (m_coolTime >= COOL_TIME	 ) {	m_isHit = false;	m_coolTime = 0.0f;	}
+	// 衝突のクールタイムの計測
+	CheckHitCoolTime(elapsedTime);
 }
+
+// --------------------------------
+//  衝突のクールタイムの計測を行う
+// --------------------------------
+void Enemy::CheckHitCoolTime(float elapsedTime)
+{	
+	// クールタイムの計測を行う
+	if (m_isHit && m_coolTime < COOL_TIME)
+	{
+		m_coolTime += elapsedTime;
+	}
+
+	// クールタイムが終了したら
+	else if (m_coolTime >= COOL_TIME)
+	{
+		m_isHit = false;
+		m_coolTime = 0.0f;
+	}
+}
+
 
 
 // --------------------------------

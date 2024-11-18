@@ -15,8 +15,6 @@ class HPSystem;						// HP
 #include "Game/Player/State/Header/Player_Dodging.h"		// ‰ñ”ğó‘Ô
 #include "Game/Player/State/Header/Player_Attacking_1.h"	// UŒ‚ó‘Ô‚P
 #include "Game/Player/State/Header/Player_Attacking_2.h"	// UŒ‚ó‘Ô‚Q
-#include "Game/Player/State/Header/Player_Attacking_3.h"	// UŒ‚ó‘Ô‚R
-#include "Game/Player/State/Header/Player_Attacking_4.h"	// UŒ‚ó‘Ô‚S
 
 class Wall;
 
@@ -63,8 +61,6 @@ public:
 	PlayerDodging*		GetPlayerDodgingState	()	const { return m_playerDodging.		get(); }
 	PlayerAttacking_1*	GetPlayerAttackingState1()	const { return m_playerAttacking_1.	get(); }
 	PlayerAttacking_2*	GetPlayerAttackingState2()	const { return m_playerAttacking_2.	get(); }
-	PlayerAttacking_3*	GetPlayerAttackingState3()	const { return m_playerAttacking_3.	get(); }
-	PlayerAttacking_4*	GetPlayerAttackingState4()	const { return m_playerAttacking_4.	get(); }
 
 	////////////ƒvƒŒƒCƒ„[‚ÌˆÚ“®‚ÉŠÖ‚·‚éƒXƒe[ƒg‚ğİ’è‚·‚éŠÖ”///////////////////////////////////////////
 	void SetSpeed		(DirectX::SimpleMath::Vector3 velocity)		{ m_velocity = velocity;			}
@@ -148,8 +144,6 @@ private:
 
 	std::unique_ptr<PlayerAttacking_1> m_playerAttacking_1;		// UŒ‚ó‘Ô‚P
 	std::unique_ptr<PlayerAttacking_2> m_playerAttacking_2;		// UŒ‚ó‘Ô‚Q
-	std::unique_ptr<PlayerAttacking_3> m_playerAttacking_3;		// UŒ‚ó‘Ô‚R
-	std::unique_ptr<PlayerAttacking_4> m_playerAttacking_4;		// UŒ‚ó‘Ô‚S
 
 
 	// ƒvƒŒƒCƒ„[‚É•t—^‚³‚ê‚é‚à‚Ì ============

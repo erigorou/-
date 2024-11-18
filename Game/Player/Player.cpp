@@ -130,16 +130,12 @@ void Player::CreateState()
 	m_playerDodging		= std::make_unique<PlayerDodging>		(this);
 	m_playerAttacking_1 = std::make_unique<PlayerAttacking_1>	(this);
 	m_playerAttacking_2 = std::make_unique<PlayerAttacking_2>	(this);
-	m_playerAttacking_3 = std::make_unique<PlayerAttacking_3>	(this);
-	m_playerAttacking_4 = std::make_unique<PlayerAttacking_4>	(this);
 
 	//////////////////////ステートの初期化////////////////////////////
 	m_playerIdling		->Initialize(m_model.get());
 	m_playerDodging		->Initialize(m_model.get());
 	m_playerAttacking_1	->Initialize(m_model.get());
 	m_playerAttacking_2	->Initialize(m_model.get());
-	m_playerAttacking_3	->Initialize(m_model.get());
-	m_playerAttacking_4	->Initialize(m_model.get());
 
 	// 最初のステートを設定
 	m_currentState = m_playerIdling.get();
