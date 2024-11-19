@@ -19,10 +19,10 @@
 #include "Game/Weapon/Cudgel/Cudgel.h"
 
 
-const float Cudgel::CUDGEL_SCALE = Enemy::ENEMY_SCALE * 1.1f;						// ‹à–_‚ÌŠg‘å—¦
+const float Cudgel::CUDGEL_SCALE = Enemy::ENEMY_SCALE * 1.2f;						// ‹à–_‚ÌŠg‘å—¦
 const DirectX::SimpleMath::Vector3 Cudgel::DIRECTION_ENEMY = { 6.0f, 5.0f, 0.0f };	// ‚¿è‚Ì‹——£i“G‚Æ”äŠrj
-const DirectX::SimpleMath::Vector3 Cudgel::CUDGEL_LENGTH =	{ 0.0f, 22.0f, 0.0f };	// ‹à–_‚Ì’·‚³iˆê”Ô‰º‚©‚çj
-const DirectX::SimpleMath::Vector3 Cudgel::CUDGEL_HADLE_POS = { 0.0f, 7.0f, 0.0f };	// ‹à–_‚Ìæ‚Áè‚Ì•”•ªiˆê”Ôãj
+const DirectX::SimpleMath::Vector3 Cudgel::CUDGEL_LENGTH =	{ 0.0f, 35.0f, 0.0f };	// ‹à–_‚Ì’·‚³iˆê”Ô‰º‚©‚çj
+const DirectX::SimpleMath::Vector3 Cudgel::CUDGEL_HADLE_POS = { 0.0f, 10.0f, 0.0f };	// ‹à–_‚Ìæ‚Áè‚Ì•”•ªiˆê”Ôãj
 
 
 // --------------------------------

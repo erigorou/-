@@ -4,6 +4,7 @@
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
+#include "Libraries//MyLib/EasingFunctions.h"
 
 #include "Game/Enemy/Enemy.h"
 #include "Game/Player/Player.h"
@@ -14,7 +15,8 @@
 // コンストラクタ
 EnemyDashAttacking::EnemyDashAttacking(Enemy* enemy)
 	:m_model()
-	, m_angle(0.f)
+	, m_angle(0.0f)
+	, m_bodyTilt(0.0f)
 	, m_enemy(enemy)
 	, m_totalSeconds()
 {
@@ -30,7 +32,7 @@ EnemyDashAttacking::~EnemyDashAttacking()
 // 初期化処理
 void EnemyDashAttacking::Initialize(DirectX::Model* model)
 {
-	m_model = model;										// モデルの取得
+	m_model = model;	// モデルの取得
 }
 
 
@@ -52,25 +54,26 @@ void EnemyDashAttacking::PreUpdate()
 // 更新処理
 void EnemyDashAttacking::Update(const float& elapsedTime)
 {
-	m_totalSeconds += elapsedTime;
+	// 経過時間を更新
+	m_elapsedTime = elapsedTime;
+	m_totalSeconds += m_elapsedTime;
 
 	// 敵の挙動を更新する
-	UpdateAction(elapsedTime);
+	UpdateAction();
 
-
+	// 待機状態に遷移
 	if (m_totalSeconds >= 4.3f)
-		m_enemy->ChangeState(m_enemy->GetEnemyIdling());	// 待機状態に遷移
+		m_enemy->ChangeState(m_enemy->GetEnemyIdling());
 }
 
 // --------------------
 // 敵の挙動更新処理
 // --------------------
-void EnemyDashAttacking::UpdateAction(float elapsedTime)
+void EnemyDashAttacking::UpdateAction()
 {
-
 	// ためモーションの時
 	if (m_totalSeconds <= CHARGE_TIME)		ChargeAction();	// 貯め
-	else if (m_totalSeconds <= DASH_TIME)	DashAction(elapsedTime);	// ダッシュ
+	else if (m_totalSeconds <= DASH_TIME)	DashAction();	// ダッシュ
 	else if (m_totalSeconds <= WAIT_TIME)	WaitAction();	// 待機
 	else if (m_totalSeconds <= RETURN_TIME)	ReturnAction();	// 元に戻る
 }
@@ -87,35 +90,46 @@ void EnemyDashAttacking::ChargeAction()
 	Vector3 parentPos = m_enemy->GetPosition();
 	// 敵から見たプレイヤーの位置を計算する
 	m_angle = Math::CalculationAngle(parentPos, playerPos);
-	// プレイヤーの方向を探索する
+	m_rotMatrix = DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle);
+
 	m_enemy->SetAngle(m_angle);
+
+
+	// 体を傾ける
+	float t = m_totalSeconds / CHARGE_TIME;
+	
+	// プレイヤーを傾ける
+	m_bodyTilt = DirectX::XMConvertToRadians(-10 * Easing::easeOutBack(t));
+	m_enemy->SetBodyTilt(m_bodyTilt);
 }
 
 
 // --------------------
 // ダッシュ
 // --------------------
-void EnemyDashAttacking::DashAction(float elapsedTime)
+void EnemyDashAttacking::DashAction()
 {
 	// 現在の時間に基づいてサイン波で加速度を計算
 	float t = (m_totalSeconds - CHARGE_TIME) / (DASH_TIME - CHARGE_TIME);
-	float accelerationFactor = sin(t * 2.0f); // サイン波で速度を変化
 	
-	// 敵の座標を取得
+	// 座標の更新 *
+	float accelerationFactor = sin(t * M_PI); // サイン波で速度を変化
+
 	Vector3 position = m_enemy->GetPosition();
-
 	// 敵の向きに基づいて前方向を計算
-	DirectX::SimpleMath::Matrix rotationMatrix = DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle);
+	m_velocity = Vector3(0, 0, -MAX_SPEED * accelerationFactor);
+	position += Vector3::Transform(m_velocity, m_rotMatrix) * m_elapsedTime;
 
-	// 速度を計算
-	Vector3 velocity = Vector3(0, 0, -MAX_SPEED * accelerationFactor);
-
-	position += Vector3::Transform(velocity, rotationMatrix) * elapsedTime;
-
-
+	float y = fabsf(sin(t * 15.0f)) * accelerationFactor;
+	position.y = y;
 
 	// 敵の座標を設定
 	m_enemy->SetPosition(position);
+
+	// 傾きの更新 *
+	// プレイヤーを傾ける
+	m_bodyTilt = DirectX::XMConvertToRadians(-10 + 30 * Easing::easeOutBack(t));
+	m_enemy->SetBodyTilt(m_bodyTilt);
 }
 
 
@@ -124,6 +138,12 @@ void EnemyDashAttacking::DashAction(float elapsedTime)
 // --------------------
 void EnemyDashAttacking::WaitAction()
 {
+	// イージングに使用する秒数を計算（秒数のNormalize)
+	float t = (m_totalSeconds - DASH_TIME) / (WAIT_TIME - DASH_TIME);
+
+	// プレイヤーを傾ける *
+	m_bodyTilt = DirectX::XMConvertToRadians(20 - 20 * Easing::easeOutBounce(t));
+	m_enemy->SetBodyTilt(m_bodyTilt);
 }
 
 
@@ -136,9 +156,9 @@ void EnemyDashAttacking::ReturnAction()
 
 
 
-
-
+// --------------------
 // 事後更新処理
+// --------------------
 void EnemyDashAttacking::PostUpdate()
 {
 	// 武器のステートを変更する
@@ -150,7 +170,9 @@ void EnemyDashAttacking::PostUpdate()
 }
 
 
+// --------------------
 // 描画処理
+// --------------------
 void EnemyDashAttacking::Render(
 	ID3D11DeviceContext* context,
 	DirectX::CommonStates* states,

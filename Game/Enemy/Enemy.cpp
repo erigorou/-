@@ -37,7 +37,7 @@
 
 // 固定値
 const float Enemy::ENEMY_SPEED	= 0.1f;
-const float Enemy::ENEMY_SCALE	= 0.4f;
+const float Enemy::ENEMY_SCALE	= 0.6f;
 const float Enemy::COOL_TIME	= 0.3f;
 
 // --------------------------------
@@ -53,6 +53,7 @@ Enemy::Enemy(PlayScene* playScene)
 	, m_coolTime()
 	, m_position{ 0.0f, 0.0f, 0.0f }
 	, m_angle{ 0.0f }
+	, m_bodyTilt{ 0.0f }
 	, m_pushBackValue{ 0.0f, 0.0f, 0.0f }
 	, m_isHit(false)
 	, m_canHit(false)
@@ -134,7 +135,7 @@ void Enemy::CreateState()
 	m_idling		-> Initialize(m_model.get());	// 待機
 	m_attacking		-> Initialize(m_model.get());	// 攻撃
 	m_sweeping		-> Initialize(m_model.get());	// 薙ぎ払い
-	m_dashAttacking	->Initialize(m_model.get());	// 突撃
+	m_dashAttacking	-> Initialize(m_model.get());	// 突撃
 	m_approaching	-> Initialize(m_model.get());	// 追尾
 
 	// 初期のステートを待機状態に割り当てる
@@ -163,7 +164,7 @@ void Enemy::CreateFace()
 void Enemy::CreateCollision()
 {
 	// 当たり判定の生成
-	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, ENEMY_SCALE * 25.0f);
+	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, ENEMY_SCALE * 16.0f);
 
 	// 衝突判定をMessengerに登録
 	m_playScene->GetCollisionManager()->AddCollision(
@@ -205,7 +206,9 @@ void Enemy::Update(float elapsedTime)
 
 
 	// 回転方向の設定
-	m_worldMatrix = DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle + DirectX::XMConvertToRadians(180));
+	m_worldMatrix 
+		= DirectX::SimpleMath::Matrix::CreateRotationX(m_bodyTilt)	// 回転の設定
+		*= DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle + DirectX::XMConvertToRadians(180));
 
 	// 移動を行う
 	m_velocity *= Enemy::ENEMY_SPEED;
@@ -216,8 +219,9 @@ void Enemy::Update(float elapsedTime)
 		*= DirectX::SimpleMath::Matrix::CreateScale(ENEMY_SCALE)			// サイズ計算
 		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);		// 位置の設定
 
+
 	// 当たり判定の更新
-	m_bodyCollision->Center = m_position;
+	m_bodyCollision->Center = DirectX::SimpleMath::Vector3(m_position.x, m_position.y + 5.0f, m_position.z);
 
 	// 衝突のクールタイムの計測
 	CheckHitCoolTime(elapsedTime);

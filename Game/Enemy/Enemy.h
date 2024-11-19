@@ -36,11 +36,13 @@ public:
 	PlayScene*						GetPlayScene	()	const	{ return m_playScene;	}	// PlayScene‚Ìæ“¾ 
 	HPSystem*						GetEnemyHP		()	const	{ return m_hp.get();	}	// HP‚Ìæ“¾	
 	DirectX::SimpleMath::Vector3	GetPosition		()	override{ return m_position;	}	// ‹S‚ÌÀ•W‚ğæ“¾‚·‚é
-	float							GetAngle		()	const	{ return m_angle;		}	// ‹S‚Ì‰ñ“]Šp‚ğæ“¾‚·‚é	
+	float							GetAngle		()	const	{ return m_angle;		}	// ‹S‚Ì‰ñ“]Šp‚ğæ“¾‚·‚é
+	float							GetBodyTilt		()	const	{ return m_bodyTilt;	}	// ‘Ì‚ÌŒX‚«‚ğæ“¾‚·‚é
 	DirectX::SimpleMath::Matrix		GetWorldMatrix	()	const	{ return m_worldMatrix; }	// “G‚Ìƒ[ƒ‹ƒhÀ•W‚ğæ“¾‚·‚é
 
 	void SetPosition	(const DirectX::SimpleMath::Vector3 pos)	{ m_position = pos;		}	// ‹S‚ÌÀ•W‚ğİ’è‚·‚é
-	void SetAngle		(const float angle)							{ m_angle = angle;		}	// ‹S‚Ì‰ñ“]Šp‚ğİ’è‚·‚é	
+	void SetAngle		(const float angle)							{ m_angle = angle;		}	// ‹S‚Ì‰ñ“]Šp‚ğİ’è‚·‚é
+	void SetBodyTilt	(const float tilt)							{ m_bodyTilt = tilt;	}	// ‘Ì‚ÌŒX‚«‚ğİ’è‚·‚é
 	void SetWorldMatrix	(DirectX::SimpleMath::Matrix mat)			{ m_worldMatrix = mat;	}	// “G‚Ìƒ[ƒ‹ƒhÀ•W‚ğİ’è‚·‚é
 
 	////////////////////“G‚Ì“–‚½‚è”»’è‚ğ“n‚·ŠÖ”/////////////////////////////////////////////////////////////////////
@@ -109,6 +111,10 @@ private:
 	DirectX::SimpleMath::Vector3 m_velocity;
 	// Šp“x
 	float m_angle;
+	// ‘Ì‚ÌŒX‚«
+	float m_bodyTilt;
+
+
 	// “G—p‚Ìƒ[ƒ‹ƒhs—ñ
 	DirectX::SimpleMath::Matrix m_worldMatrix;
 	// HP

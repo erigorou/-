@@ -48,14 +48,14 @@ public:
 
 // 内部関数　*
 private:
-	void UpdateAction(float elapsedTime);
+	void UpdateAction();
 
 	////// 行動系
 
 	// 攻撃の貯めモーション
 	void ChargeAction();
 	// ダッシュする
-	void DashAction(float elapsedTime);
+	void DashAction();
 	// 待機
 	void WaitAction();
 	// 元に戻る
@@ -66,6 +66,14 @@ private:
 private:
 	// 回転
 	float m_angle;
+	// 傾き
+	float m_bodyTilt;
+
+	DirectX::SimpleMath::Matrix m_rotMatrix;
+	DirectX::SimpleMath::Vector3 m_velocity;
+
+	// フレーム時間
+	float m_elapsedTime;
 	// 総時間
 	float m_totalSeconds;
 	// 敵
