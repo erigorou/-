@@ -222,6 +222,7 @@
     <ClInclude Include="Game\Data\HPSystem.h" />
     <ClInclude Include="Game\Stage\Sea\Sea.h" />
     <ClInclude Include="Game\HitStop\HitStop.h" />
+    <ClInclude Include="Game\Enemy\States\Header\EnemyDashAttacking.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -342,6 +343,7 @@
     <ClCompile Include="Game\Data\HPSystem.cpp" />
     <ClCompile Include="Game\Stage\Sea\Sea.cpp" />
     <ClCompile Include="Game\HitStop\HitStop.cpp" />
+    <ClCompile Include="Game\Enemy\States\Source\EnemyDashAttacking.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

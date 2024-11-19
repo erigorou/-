@@ -13,6 +13,7 @@ class BehaviorTree;
 #include "States/Header/EnemyIdling.h"			// 待機状態
 #include "States/Header/Enemy_Attacking.h"		// たたきつけ攻撃
 #include "States/Header/Enemy_Sweeping.h"		// 薙ぎ払い攻撃
+#include "States/Header/EnemyDashAttacking.h"	// 突撃
 #include "States/Header/EnemyApproaching.h"		// 追尾状態
 
 #include "../Data/HPSystem.h"
@@ -49,12 +50,15 @@ public:
 	EnemyIdling*		GetEnemyIdling		() const { return m_idling		.get();	}	// 待機状態
 	Enemy_Attacking*	GetEnemyAttacking	() const { return m_attacking	.get();	}	// 攻撃状態
 	Enemy_Sweeping*		GetEnemySweeping	() const { return m_sweeping	.get();	}	// 薙ぎ払い状態
+	EnemyDashAttacking* GetEnemyDashAttacking() const { return m_dashAttacking.get(); }	// 突撃状態
 	EnemyApproaching*	GetEnemyApproaching	() const { return m_approaching	.get();	}	// 追尾状態
 
 	////////////////////　顔　/////////////////////////////////////////////////////////////////////////////////////
 	void SetFace(IFace* face) { m_currentFace = face; }	// 顔の設定
 	EnemyFaceIdling*	GetFaceIdling	() const { return m_faceIdling		.get();	}	// 待機顔
 	EnemyFaceAttacking* GetFaceAttacking() const { return m_faceAttacking	.get();	}	// 攻撃顔
+
+	void SetTargetLockOn(bool flag) { m_isTargetLockOn = flag; }	// ロックオンするかどうか
 
 
 
@@ -107,10 +111,6 @@ private:
 	float m_angle;
 	// 敵用のワールド行列
 	DirectX::SimpleMath::Matrix m_worldMatrix;
-	// モデル
-	std::unique_ptr<DirectX::Model> m_model;
-
-
 	// HP
 	std::unique_ptr<HPSystem> m_hp;
 
@@ -120,6 +120,7 @@ private:
 	std::unique_ptr<EnemyIdling>		m_idling;		// 待機状態
 	std::unique_ptr<Enemy_Attacking>	m_attacking;	// 攻撃状態
 	std::unique_ptr<Enemy_Sweeping>		m_sweeping;		// 薙ぎ払い状態
+	std::unique_ptr<EnemyDashAttacking>	m_dashAttacking;	// 突撃状態
 	std::unique_ptr<EnemyApproaching>	m_approaching;	// 追尾状態
 
 
@@ -132,14 +133,16 @@ private:
 	// ビヘイビアツリー
 	std::unique_ptr<BehaviorTree> m_pBT;
 
-
-	DirectX::SimpleMath::Vector3 m_pushBackValue;	// プッシュバック値
-
-	// モデル描画用
+	// モデル
+	std::unique_ptr<DirectX::Model> m_model;
+	//　エフェクト
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
 	// 入力レイアウト
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
+
+	// 押し戻し量の計算
+	DirectX::SimpleMath::Vector3 m_pushBackValue;
 
 	// プレイシーン(当たり判定の処理に使用)
 	PlayScene* m_playScene;
@@ -149,5 +152,9 @@ private:
 	bool m_isHit;
 	float m_coolTime;
 
+	// 衝突可能かどうか
 	bool m_canHit;
+
+	// ロックオンするかどうか
+	bool m_isTargetLockOn;
 };

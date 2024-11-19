@@ -49,4 +49,4 @@ private:
 
 };
 
-#endif		// ENEMY_IDLING_DEFINED
+#endif		// ENEMY_ATTACKING_DEFINED

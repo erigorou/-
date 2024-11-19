@@ -24,7 +24,7 @@
 
 // ここで静的メンバー変数を定義する
 const DirectX::SimpleMath::Vector3 Player::HOME_POSITION(0.0f);
-const float Player::PLAYER_SPEED = 0.1f;
+const float Player::PLAYER_SPEED = 0.5f;
 const float Player::PLAYER_SCALE = 0.1f;
 
 
@@ -259,7 +259,7 @@ void Player::CalculationAngle(DirectX::SimpleMath::Vector3 const enemyPos)
 	float dotProduct = forward.Dot(worldForward);	// 内積を取得
 	m_angle = acosf(dotProduct);					// 内積から角度を取得(弧度法)
 
-	Vector3 crossProduct = forward.Cross(worldForward);	// カメラの前方向ベクトルが右方向に向いているかどうかで符号を決定6
+	Vector3 crossProduct = forward.Cross(worldForward);		// カメラの前方向ベクトルが右方向に向いているかどうかで符号を決定6
 	m_angle = (crossProduct.y <= 0) ? -m_angle: m_angle;	// -180 ~ 180に収める。
 }
 
@@ -292,7 +292,7 @@ void Player::MovePlayer()
 		{
 			Vector3 accelerationNormal = m_acceleration / accelerationLength;// 保持する加速度の正規化ベクトルを取得する
 
-			float friction = 0.1f;			// 摩擦量
+			float friction = 0.05f;			// 摩擦量
 			accelerationLength -= friction;	// 摩擦を計算
 
 			// 加速度が（ー）になるときにリセットする
@@ -314,7 +314,7 @@ void Player::MovePlayer()
 		m_acceleration += m_inputVelocity * acceleration;		// 加速度の計算を行う
 
 		// 2乗にすることで符号を外す
-		if (m_acceleration.LengthSquared() > 1)
+		if (m_acceleration.LengthSquared() > 1.0f)
 		{
 			m_acceleration.Normalize(); // 上限を1に設定する
 		}
@@ -323,7 +323,7 @@ void Player::MovePlayer()
 		m_velocity = moveVelocity;			// 速度を保存する
 	}
 
-
+	moveVelocity *= PLAYER_SPEED;
 	/////////////////////////// 移動処理 //////////////////////////////////
 	m_position += Vector3::Transform(moveVelocity, Matrix::CreateRotationY(-m_angle));
 

@@ -12,7 +12,7 @@
 // 固定値
 const float PlayerDodging::DODGING_TIME = 0.5f;
 const float PlayerDodging::DODGE_FUNCTION = 0.9f;
-const int   PlayerDodging::TRUNCATION_DIGIT = 3;
+const int   PlayerDodging::TRUNCATION_DIGIT = 4;
 
 // コンストラクタ
 PlayerDodging::PlayerDodging(Player* player)

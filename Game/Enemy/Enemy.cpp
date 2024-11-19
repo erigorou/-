@@ -26,6 +26,7 @@
 #include "States/Header/EnemyIdling.h"			// 待機状態
 #include "States/Header/Enemy_Attacking.h"		// たたきつけ攻撃
 #include "States/Header/Enemy_Sweeping.h"		// 薙ぎ払い攻撃
+#include "States/Header/EnemyDashAttacking.h"	// 突撃攻撃
 #include "States/Header/EnemyApproaching.h"		// 追尾状態
 
 // 顔のパーツ用
@@ -44,17 +45,18 @@ const float Enemy::COOL_TIME	= 0.3f;
 // --------------------------------
 Enemy::Enemy(PlayScene* playScene)
 	: m_playScene(playScene)
+	, m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
 	, m_currentState()
 	, m_idling()
 	, m_attacking()
 	, m_approaching()
-	, m_position{0.f, 0.f, 0.f}
-	, m_angle{0.f}
-	, m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
-	, m_isHit(false)
 	, m_coolTime()
+	, m_position{ 0.0f, 0.0f, 0.0f }
+	, m_angle{ 0.0f }
+	, m_pushBackValue{ 0.0f, 0.0f, 0.0f }
+	, m_isHit(false)
 	, m_canHit(false)
-	, m_pushBackValue{ 0.f, 0.f, 0.f }
+	, m_isTargetLockOn(true)
 {
 }
 
@@ -122,15 +124,17 @@ void Enemy::Initialize()
 void Enemy::CreateState()
 {
 	// === 状態の生成 ====
-	m_idling		= std::make_unique<EnemyIdling>		(this);	// 待機
-	m_attacking		= std::make_unique<Enemy_Attacking>	(this);	// 攻撃
-	m_sweeping		= std::make_unique<Enemy_Sweeping>	(this);	// 薙ぎ払い
-	m_approaching	= std::make_unique<EnemyApproaching>(this);	// 追尾
+	m_idling		= std::make_unique<EnemyIdling>			(this);	// 待機
+	m_attacking		= std::make_unique<Enemy_Attacking>		(this);	// 攻撃
+	m_sweeping		= std::make_unique<Enemy_Sweeping>		(this);	// 薙ぎ払い
+	m_dashAttacking = std::make_unique<EnemyDashAttacking>	(this);	// 突撃
+	m_approaching	= std::make_unique<EnemyApproaching>	(this);	// 追尾
 
 	// === 状態の初期化 ===
 	m_idling		-> Initialize(m_model.get());	// 待機
 	m_attacking		-> Initialize(m_model.get());	// 攻撃
 	m_sweeping		-> Initialize(m_model.get());	// 薙ぎ払い
+	m_dashAttacking	->Initialize(m_model.get());	// 突撃
 	m_approaching	-> Initialize(m_model.get());	// 追尾
 
 	// 初期のステートを待機状態に割り当てる
@@ -190,15 +194,34 @@ void Enemy::ChangeState(IState* newState)
 // --------------------------------
 void Enemy::Update(float elapsedTime)
 {
-	using namespace DirectX::SimpleMath;
-
-	m_worldMatrix = Matrix::Identity;
+	// ワールド行列の初期化
+	m_worldMatrix = DirectX::SimpleMath::Matrix::Identity;
 
 	// ステータスを更新しまーす
 	m_currentState->Update(elapsedTime);
 
 	// キー入力を受け付ける。
 	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
+
+
+	// 回転方向の設定
+	m_worldMatrix = DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle + DirectX::XMConvertToRadians(180));
+
+	// 移動を行う
+	m_velocity *= Enemy::ENEMY_SPEED;
+	m_position += DirectX::SimpleMath::Vector3::Transform(m_velocity, m_worldMatrix);
+
+	// ワールド行列の計算
+	m_worldMatrix
+		*= DirectX::SimpleMath::Matrix::CreateScale(ENEMY_SCALE)			// サイズ計算
+		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);		// 位置の設定
+
+	// 当たり判定の更新
+	m_bodyCollision->Center = m_position;
+
+	// 衝突のクールタイムの計測
+	CheckHitCoolTime(elapsedTime);
+
 
 
 #ifdef _DEBUG
@@ -218,23 +241,12 @@ void Enemy::Update(float elapsedTime)
 		ChangeState(m_sweeping.get());
 	}
 
+	if (keyboardState.F3)
+	{
+		ChangeState(m_dashAttacking.get());
+	}
+
 #endif // _DEBUG
-
-	m_worldMatrix = DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle + DirectX::XMConvertToRadians(180));	// 回転角の設定
-
-	m_velocity *= Enemy::ENEMY_SPEED;
-	m_position += DirectX::SimpleMath::Vector3::Transform(m_velocity, m_worldMatrix);
-
-	// ワールド行列の計算@;;;;;;;;;;;;;;;;
-	m_worldMatrix
-		*= DirectX::SimpleMath::Matrix::CreateScale(ENEMY_SCALE)			// サイズ計算
-		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);		// 位置の設定
-
-	// 当たり判定の更新
-	m_bodyCollision->Center = m_position;
-
-	// 衝突のクールタイムの計測
-	CheckHitCoolTime(elapsedTime);
 }
 
 // --------------------------------
@@ -329,6 +341,8 @@ void Enemy::HitStage(InterSectData data)
 {
 	if (data.objType == ObjectType::Stage && data.colType == CollisionType::Sphere)
 	{
+		m_pushBackValue = DirectX::SimpleMath::Vector3::Zero;
+
 		// 衝突したオブジェクトの情報を取得
 		auto wall = dynamic_cast<Wall*>(data.object);
 		DirectX::BoundingSphere* stageCollision = wall->GetCollision();
