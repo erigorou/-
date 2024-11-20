@@ -50,8 +50,6 @@ void PlayerNockBacking::PreUpdate()
 {
 	// 経過時間の初期化
 	m_totalSeconds = 0.f;
-
-	m_position = m_player->GetPosition();
 }
 
 
@@ -62,6 +60,8 @@ void PlayerNockBacking::Update(const float& elapsedTime)
 {
 	// 経過時間を記録
 	m_elapsedTime = elapsedTime;
+
+	m_position = m_player->GetPosition();
 
 	// アニメーションの更新
 	UpdateAnimation();
