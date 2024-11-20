@@ -120,7 +120,8 @@ std::unique_ptr<Player> Factory::CreatePlayer(PlayScene* playScene)
 	Messenger::Attach(DirectX::Keyboard::Right		, player.get(), Messenger::KeyPressType::DOWN);
 	Messenger::Attach(DirectX::Keyboard::Up			, player.get(), Messenger::KeyPressType::DOWN);
 	Messenger::Attach(DirectX::Keyboard::Down		, player.get(), Messenger::KeyPressType::DOWN);
-	// ƒvƒŒƒCƒ„[‚Ìİ’è
+
+	Messenger::Attach(DirectX::Keyboard::L, player.get(), Messenger::KeyPressType::PRESSED);
 	return player;
 }
 

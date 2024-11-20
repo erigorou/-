@@ -130,12 +130,14 @@ void Player::CreateState()
 	m_playerDodging		= std::make_unique<PlayerDodging>		(this);
 	m_playerAttacking_1 = std::make_unique<PlayerAttacking_1>	(this);
 	m_playerAttacking_2 = std::make_unique<PlayerAttacking_2>	(this);
+	m_playerNockBacking = std::make_unique<PlayerNockBacking>	(this);
 
 	//////////////////////ステートの初期化////////////////////////////
 	m_playerIdling		->Initialize(m_model.get());
 	m_playerDodging		->Initialize(m_model.get());
 	m_playerAttacking_1	->Initialize(m_model.get());
 	m_playerAttacking_2	->Initialize(m_model.get());
+	m_playerNockBacking	->Initialize(m_model.get());
 
 	// 最初のステートを設定
 	m_currentState = m_playerIdling.get();
@@ -415,6 +417,9 @@ void Player::Render(
 		projection);
 
 #ifdef _DEBUG
+	// デバッグ文字の描画
+	auto debugString = resources->GetDebugString();
+	debugString->AddString("player.y :  %f" , m_position.y);
 #endif // !_DEBUG
 
 }
@@ -444,6 +449,17 @@ void Player::HitAction(InterSectData data)
 }
 
 
+void Player::Damage(int damage)
+{
+	// HPを減らす
+	m_hp->Damage(damage);
+	m_isHit = true;
+	m_canHit = false;
+	// ノックバックをする
+	ChangeState(m_playerNockBacking.get());
+}
+
+
 // --------------------------------
 //  敵の体との衝突判定
 // --------------------------------
@@ -456,11 +472,7 @@ void Player::HitEnemyBody(InterSectData data)
 			m_canHit &&
 			dynamic_cast<Enemy*>(data.object)->GetCurrentState() == dynamic_cast<Enemy*>(data.object)->GetEnemyDashAttacking())
 		{
-			// HPを減らす
-			m_hp->Damage(1);
-			m_isHit = true;
-			m_canHit = false;
-			// ノックバックをする
+			Damage(1);
 		}
 
 		// 衝突したオブジェクトの情報を取得
@@ -491,11 +503,7 @@ void Player::HitCudgel(InterSectData data)
 		data.colType == CollisionType::OBB &&
 		m_currentState != m_playerDodging.get())
 	{
-		// HPを減らす
-		m_hp->Damage(1);
-		m_isHit = true;
-		m_canHit = false;
-		// ノックバックをする
+		Damage(1);
 	}
 }
 

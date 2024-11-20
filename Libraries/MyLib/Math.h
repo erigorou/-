@@ -6,10 +6,13 @@
 
 #pragma once
 #include "pch.h"
-#include "cmath"
 #include "random"
 
 using namespace DirectX::SimpleMath;
+
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 class Math
 {
@@ -170,7 +173,12 @@ public:
 	}
 
 
-
+	/// <summary>
+	/// min <= return <= max の範囲で浮動小数点数型の乱数を生成する
+	/// </summary>
+	/// <param name="min">最低値</param>
+	/// <param name="max">最高値</param>
+	/// <returns>生成された乱数</returns>
 	static DirectX::SimpleMath::Vector3 RandomVector3(DirectX::SimpleMath::Vector3 min, DirectX::SimpleMath::Vector3 max)
 	{
 		std::random_device seed;								// ランダムなシード値を生成
@@ -180,6 +188,17 @@ public:
 		std::uniform_real_distribution<float> randomZ(min.z, max.z); // minからmaxまでの一様乱数生成器を定義
 
 		return Vector3(randomX(engine), randomY(engine), randomZ(engine)); // 乱数を生成して返す
+	}
+
+
+	/// <summary>
+	/// 0 ~ 1 で正規化されたサイン波を返す
+	/// </summary>
+	/// <param name="t">秒数</param>
+	/// <returns>正規化されたサイン波</returns>
+	static float NormalizeSin(float t)
+	{
+		return (static_cast<float>(sin(t * M_PI)));
 	}
 };
 

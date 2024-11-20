@@ -15,6 +15,7 @@ class HPSystem;						// HP
 #include "Game/Player/State/Header/Player_Dodging.h"		// 回避状態
 #include "Game/Player/State/Header/Player_Attacking_1.h"	// 攻撃状態１
 #include "Game/Player/State/Header/Player_Attacking_2.h"	// 攻撃状態２
+#include "Game/Player/State/Header/Player_NockBacking.h"	// やられ状態
 
 class Wall;
 
@@ -53,14 +54,15 @@ public:
 
 
 	////////////////////プレイヤー基本情報を設定する関数/////////////////////////////////////////////////
-	void SetPosition(DirectX::SimpleMath::Vector3 position)			{ m_position = position; }
-
+	void SetPosition(DirectX::SimpleMath::Vector3 position)			{ m_position = position;	}
+	void SetAnimarionRotate(DirectX::SimpleMath::Vector3 rotate)	{ m_animationRotate = rotate; }
 
 	////////////////////プレイヤーのステートを渡す関数//////////////////////////////////////////////////
 	PlayerIdling*		GetPlayerIdlingState	()	const { return m_playerIdling.		get(); }
 	PlayerDodging*		GetPlayerDodgingState	()	const { return m_playerDodging.		get(); }
 	PlayerAttacking_1*	GetPlayerAttackingState1()	const { return m_playerAttacking_1.	get(); }
 	PlayerAttacking_2*	GetPlayerAttackingState2()	const { return m_playerAttacking_2.	get(); }
+	PlayerNockBacking* GetPlayerNockBackingState()	const { return m_playerNockBacking.	get(); }
 
 	////////////プレイヤーの移動に関するステートを設定する関数///////////////////////////////////////////
 	void SetSpeed		(DirectX::SimpleMath::Vector3 velocity)		{ m_velocity = velocity;			}
@@ -127,6 +129,8 @@ private:
 	void HitCudgel(InterSectData data);
 	// ステージとの衝突判定
 	void HitStage(InterSectData data);
+	// ダメージ
+	void Damage(int damage);
 
 
 // 内部変数 *
@@ -137,6 +141,7 @@ private:
 	DirectX::SimpleMath::Vector3	m_direction;		// 向き
 	DirectX::SimpleMath::Vector3	m_acceleration;		// 加速度
 	float							m_angle;			// 回転	
+	float							m_tilt;				// 傾き
 	DirectX::SimpleMath::Vector3	m_pushBackValue;	// プッシュバック値
 
 
@@ -150,6 +155,8 @@ private:
 
 	std::unique_ptr<PlayerAttacking_1> m_playerAttacking_1;		// 攻撃状態１
 	std::unique_ptr<PlayerAttacking_2> m_playerAttacking_2;		// 攻撃状態２
+
+	std::unique_ptr<PlayerNockBacking> m_playerNockBacking;		// やられ状態
 
 
 	// プレイヤーに付与されるもの ============
