@@ -26,11 +26,8 @@ private:
 	static constexpr float RETURN_TIME		= 2.0f;		// やられから復帰する時間
 	static constexpr float END_TIME			= 2.3f;		// やられから復帰する時間
 
-	static constexpr float MAX_UP_VALUE		= 10.0f;	// 上昇値
-	static constexpr float RETURN_UP_VALUE	= 5.0f;		// 上昇値
-
-	static constexpr float NORMALIZE = 0.5f;
-
+	static constexpr float MAX_UP_VALUE		= 2.0f;	// 上昇値
+	static constexpr float RETURN_UP_VALUE	= 1.0f;	// 上昇値
 	static constexpr float SPEED = 50.0f;	// 速度
 
 

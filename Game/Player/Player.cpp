@@ -203,6 +203,7 @@ void Player::Update(const DirectX::SimpleMath::Vector3 enemyPos,const float elap
 
 	///////////////////当たり判定の更新////////////////////////////
 	m_bodyCollision->Center = m_position;
+	m_bodyCollision->Center.y = 0;
 
 	// クールタイムを計測中
 	if (m_isHit && m_coolTime < COOL_TIME)	{ m_coolTime += elapsedTime;		 }

@@ -198,7 +198,7 @@ public:
 	/// <returns>³‹K‰»‚³‚ê‚½ƒTƒCƒ“”g</returns>
 	static float NormalizeSin(float t)
 	{
-		return (static_cast<float>(sin(t * M_PI)));
+		return static_cast<float>(sin(t * M_PI));
 	}
 };
 

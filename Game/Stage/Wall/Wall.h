@@ -46,6 +46,7 @@ private:
 	std::unique_ptr<DirectX::Model> m_model;	// モデル
 
 	std::unique_ptr<DirectX::BoundingSphere> m_collision;	// 当たり判定
+	std::unique_ptr<DirectX::BoundingSphere> m_overCollision; // 外の当たり判定に見立てたもの
 
 	PlayScene* m_playScene;	// プレイシーン
 

@@ -69,6 +69,7 @@ void Wall::Initialize()
 void Wall::CreateCollision()
 {
 	m_collision = std::make_unique<DirectX::BoundingSphere>(DirectX::SimpleMath::Vector3::Zero, COLLISION_RADIUS);
+	m_overCollision = std::make_unique<DirectX::BoundingSphere>(DirectX::SimpleMath::Vector3::Zero, COLLISION_RADIUS * 100);
 
 	// “–‚½‚è”»’è‚ð‹L˜^‚·‚é
 	m_playScene->GetCollisionManager()->AddCollision(
@@ -76,6 +77,15 @@ void Wall::CreateCollision()
 		this,
 		m_collision.get()
 	);
+
+	// “–‚½‚è”»’è‚ð‹L˜^‚·‚é
+	m_playScene->GetCollisionManager()->AddCollision(
+		ObjectType::Stage,
+		this,
+		m_overCollision.get()
+	);
+
+
 }
 
 
