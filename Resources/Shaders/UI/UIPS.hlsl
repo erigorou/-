@@ -12,9 +12,7 @@ float4 main(PS_INPUT input) : SV_TARGET
 	//	真っ白な板ポリゴン
 	float4 outputw = float4(1, 1, 1, 1);
 
-	//	ゲージの現在値から、メーター用画像が丁度いい位置でαグラデーションとなるには、
-	//	どのような値を「smoothValue」に代入すればいいだろう？
-	//	ヒント：一つの値を代入すればOK。計算式まで書く必要性なし！
+	
     output.a *= lerp(1.0f, 0.0f, smoothstep(drawRatio.x, drawRatio.x + 0.5f, input.tex.x));
 	
 	return output;

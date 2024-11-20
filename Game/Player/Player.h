@@ -22,7 +22,7 @@ class Wall;
 class Player :  public IObserver
 {
 
-// 固定値
+// 固定値 *
 public:
 	// 初期座標
 	static const DirectX::SimpleMath::Vector3 HOME_POSITION;
@@ -40,7 +40,7 @@ public:
 	static constexpr float NORMAL_ATTACK_TIME	= 0.5f; // 通常攻撃のアニメーション時間
 
 
-// アクセサ
+// アクセサ *
 public:
 	// /////////////////プレイヤーの基礎情報を渡す関数//////////////////////////////////////////////////
 	DirectX::SimpleMath::Vector3	GetPosition		()override	{ return m_position;			}
@@ -77,21 +77,16 @@ public:
 	void SetAnimationRotate(DirectX::SimpleMath::Vector3 rotate) { m_animationRotate = rotate; }
 
 
-// 公開関数
+// 公開関数 *
 public:
 	// コンストラクタ
 	Player(PlayScene* playScene);
 	// デストラクタ
 	~Player();
-
-	// 初期化処理
-	void Initialize();
-	// 当たり判定の生成関数
-	void CreateCollision();
-	// ステートの作成関数
-	void CreateState();
 	// 新しい状態に遷移する
 	void ChangeState(IPlayer* newState);
+	// 初期化処理
+	void Initialize();
 	// 時間計測を行う
 	void TimeComparison(float& nowTime, const float totalTime, IPlayer* newState, const float elapsedTime);
 	// 更新処理
@@ -112,18 +107,29 @@ public:
 	void CalculationMatrix();
 	// 移動の管理
 	void MovePlayer();
-
 	// 当たったときの処理
 	void HitAction(InterSectData data) override;
-
 	// キーボードの入力を取得する
 	void OnKeyPressed(const DirectX::Keyboard::Keys& key) override;
-
 	// キーボードの入力を取得する
 	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
 
 
-// 内部変数
+// 内部関数 *
+private:
+	// 当たり判定の生成関数
+	void CreateCollision();
+	// ステートの作成関数
+	void CreateState();
+	// 敵の体との衝突判定
+	void HitEnemyBody(InterSectData data);
+	// 敵のブキとの衝突判定
+	void HitCudgel(InterSectData data);
+	// ステージとの衝突判定
+	void HitStage(InterSectData data);
+
+
+// 内部変数 *
 private:
 	DirectX::SimpleMath::Vector3	m_position;			// 位置
 	DirectX::SimpleMath::Vector3	m_velocity;			// 速度

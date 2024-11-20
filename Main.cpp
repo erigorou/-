@@ -42,8 +42,14 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 {
     static bool s_fullscreen = false;
 
+#ifdef _DEBUG
+	s_fullscreen = false;
+#endif // !_DEBUG
+
+
+#ifndef _DEBUG
     // 画面モード選択
-    int result = MessageBox(NULL, L"~フルスクリーンにしますか？~", L"画面構成設定",  MB_ICONQUESTION | MB_TOPMOST | MB_YESNOCANCEL);
+    int result = MessageBox(NULL, L"フルスクリーンにしますか？", L"画面構成設定", MB_ICONQUESTION | MB_TOPMOST | MB_YESNOCANCEL);
 
     if (result == IDYES)
     {
@@ -57,6 +63,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
     {
         ExitGame();
     }
+#endif 
+
 
     // ★追記★
 #if defined(_DEBUG)

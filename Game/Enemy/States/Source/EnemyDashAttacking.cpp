@@ -48,6 +48,9 @@ void EnemyDashAttacking::PreUpdate()
 
 	// 顔のステートを変更
 	m_enemy->SetFace(m_enemy->GetFaceAttacking());
+
+	// 最初は攻撃中ではない
+	m_isAttacking = false;
 }
 
 
@@ -76,6 +79,9 @@ void EnemyDashAttacking::UpdateAction()
 	else if (m_totalSeconds <= DASH_TIME)	DashAction();	// ダッシュ
 	else if (m_totalSeconds <= WAIT_TIME)	WaitAction();	// 待機
 	else if (m_totalSeconds <= RETURN_TIME)	ReturnAction();	// 元に戻る
+
+	// 衝突可能かどうか
+	m_enemy->GetPlayScene()->GetPlayer()->CanHit(m_isAttacking);
 }
 
 
@@ -88,17 +94,14 @@ void EnemyDashAttacking::ChargeAction()
 	Vector3 playerPos = m_enemy->GetPlayScene()->GetPlayer()->GetPosition();
 	// 敵の座標を取得
 	Vector3 parentPos = m_enemy->GetPosition();
-	// 敵から見たプレイヤーの位置を計算する
+	// 敵から見たプレイヤーの位置を設定する
 	m_angle = Math::CalculationAngle(parentPos, playerPos);
 	m_rotMatrix = DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle);
-
 	m_enemy->SetAngle(m_angle);
 
-
-	// 体を傾ける
+	// イージング用の変数
 	float t = m_totalSeconds / CHARGE_TIME;
-	
-	// プレイヤーを傾ける
+	// 体の傾きの角度設定
 	m_bodyTilt = DirectX::XMConvertToRadians(-10 * Easing::easeOutBack(t));
 	m_enemy->SetBodyTilt(m_bodyTilt);
 }
@@ -109,11 +112,14 @@ void EnemyDashAttacking::ChargeAction()
 // --------------------
 void EnemyDashAttacking::DashAction()
 {
+	// アタック中
+	m_isAttacking = true;
+
 	// 現在の時間に基づいてサイン波で加速度を計算
 	float t = (m_totalSeconds - CHARGE_TIME) / (DASH_TIME - CHARGE_TIME);
 	
 	// 座標の更新 *
-	float accelerationFactor = sin(t * M_PI); // サイン波で速度を変化
+	float accelerationFactor = sin(static_cast<float>(t * M_PI)); // サイン波で速度を変化
 
 	Vector3 position = m_enemy->GetPosition();
 	// 敵の向きに基づいて前方向を計算
@@ -138,6 +144,9 @@ void EnemyDashAttacking::DashAction()
 // --------------------
 void EnemyDashAttacking::WaitAction()
 {
+	// アタック終わり
+	m_isAttacking = false;
+
 	// イージングに使用する秒数を計算（秒数のNormalize)
 	float t = (m_totalSeconds - DASH_TIME) / (WAIT_TIME - DASH_TIME);
 

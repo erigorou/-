@@ -68,6 +68,8 @@ private:
 	float m_angle;
 	// ŒX‚«
 	float m_bodyTilt;
+	// UŒ‚’†
+	bool m_isAttacking;
 
 	DirectX::SimpleMath::Matrix m_rotMatrix;
 	DirectX::SimpleMath::Vector3 m_velocity;

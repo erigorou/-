@@ -57,32 +57,39 @@ void EnemyIdling::Update(const float& elapsedTime)
 	using namespace DirectX::SimpleMath;
 	m_totalSeconds += elapsedTime;
 
-	// ƒvƒŒƒCƒ„[‚ÌÀ•W‚ğæ“¾
 	Vector3 playerPos = m_enemy->GetPlayScene()->GetPlayer()->GetPosition();
-	// “G‚ÌÀ•W‚ğæ“¾
 	Vector3 parentPos = m_enemy->GetPosition();
 
 	// “G‚©‚çŒ©‚½ƒvƒŒƒCƒ„[‚ÌˆÊ’u‚ğŒvZ‚·‚é
 	m_angle = Math::CalculationAngle(parentPos, playerPos);
-
-	// ‰ñ“]Šp‚ğİ’è‚·‚é
 	m_enemy->SetAngle(m_angle);
 
-	if (m_totalSeconds >= 2.f)
+	// ‚P•b‚Ås“®‚ğ•ÏX‚·‚é
+	if (m_totalSeconds >= 1.0f)
 	{
-		// ‹ß‚¢‹——£‚¾‚Æ’Ç]‚ğs‚í‚È‚¢
+		int random = Math::RandomInt(0, 10);
 		float distance = Vector3::Distance(parentPos, playerPos);
-
-		if (distance > 25.0f)
-			m_enemy->ChangeState(m_enemy->GetEnemyApproaching());	// ’Ç]
+		// ‰“‚¢‹——£‚Ìê‡
+		if (distance > 20.0f)
+		{
+			if (random % 2 == 0)
+			{
+				m_enemy->ChangeState(m_enemy->GetEnemyApproaching());	// ’Ç]
+			}
+			else
+			{
+				m_enemy->ChangeState(m_enemy->GetEnemyDashAttacking());	// ƒ_ƒbƒVƒ…UŒ‚
+			}
+		}
+		// ‹ß‚¢‹——£‚Ìê‡
 		else
 		{
-			int random = Math::RandomInt(0, 10);
-
-			if (random <= 4)
+			if (random <= 3)
 				m_enemy->ChangeState(m_enemy->GetEnemySweeping());		// ‘|“¢
-			else if(random == 8)
+			else if(random <= 7)
 				m_enemy->ChangeState(m_enemy->GetEnemyAttacking());		// UŒ‚
+			else if (random == 9)
+				m_enemy->ChangeState(m_enemy->GetEnemyDashAttacking());	// ƒ_ƒbƒVƒ…UŒ‚
 			else if(random == 10)
 				m_enemy->ChangeState(m_enemy->GetEnemyIdling());		// ‰½‚à‚µ‚È‚¢
 		}

@@ -221,7 +221,7 @@ void Enemy::Update(float elapsedTime)
 
 
 	// 当たり判定の更新
-	m_bodyCollision->Center = DirectX::SimpleMath::Vector3(m_position.x, m_position.y + 5.0f, m_position.z);
+	m_bodyCollision->Center = DirectX::SimpleMath::Vector3(m_position.x, m_position.y + 10.0f, m_position.z);
 
 	// 衝突のクールタイムの計測
 	CheckHitCoolTime(elapsedTime);

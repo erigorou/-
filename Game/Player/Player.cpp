@@ -433,9 +433,36 @@ void Player::Finalize()
 // --------------------------------
 void Player::HitAction(InterSectData data)
 {
-	//////////////////////敵の体と衝突した時の処理////////////////////////////
+	// 体との当たり判定
+	HitEnemyBody(data);
+
+	// 武器との当たり判定
+	HitCudgel(data);
+
+	// ステージとの当たり判定
+	HitStage(data);
+}
+
+
+// --------------------------------
+//  敵の体との衝突判定
+// --------------------------------
+void Player::HitEnemyBody(InterSectData data)
+{
 	if (data.objType == ObjectType::Enemy && data.colType == CollisionType::Sphere)
 	{
+		// 敵のステートがダッシュ攻撃の場合で相手が攻撃中の場合
+		if (!m_isHit &&
+			m_canHit &&
+			dynamic_cast<Enemy*>(data.object)->GetCurrentState() == dynamic_cast<Enemy*>(data.object)->GetEnemyDashAttacking())
+		{
+			// HPを減らす
+			m_hp->Damage(1);
+			m_isHit = true;
+			m_canHit = false;
+			// ノックバックをする
+		}
+
 		// 衝突したオブジェクトの情報を取得
 		DirectX::BoundingSphere playerCollision = *m_bodyCollision.get();
 		auto enemy = dynamic_cast<Enemy*>(data.object);
@@ -449,14 +476,20 @@ void Player::HitAction(InterSectData data)
 		m_position += m_pushBackValue;
 		m_bodyCollision->Center = m_position;
 	}
+}
 
 
-	/////////////////////敵が持つ武器と衝突した時の処理////////////////////////
-	else if (	! m_isHit							&&
-				m_canHit							&&
-				data.objType == ObjectType::Cudgel	&&
-				data.colType == CollisionType::OBB	&&
-				m_currentState != m_playerDodging.get())
+
+// --------------------------------
+// 敵の武器（金棒）との衝突判定
+// --------------------------------
+void Player::HitCudgel(InterSectData data)
+{
+	if (!m_isHit &&
+		m_canHit &&
+		data.objType == ObjectType::Cudgel &&
+		data.colType == CollisionType::OBB &&
+		m_currentState != m_playerDodging.get())
 	{
 		// HPを減らす
 		m_hp->Damage(1);
@@ -464,10 +497,15 @@ void Player::HitAction(InterSectData data)
 		m_canHit = false;
 		// ノックバックをする
 	}
+}
 
 
-	////////////////////ステージと衝突したときの処理//////////////////////////
-	else if (data.objType == ObjectType::Stage && data.colType == CollisionType::Sphere)
+// --------------------------------
+// ステージとの衝突判定
+// --------------------------------
+void Player::HitStage(InterSectData data)
+{
+	if (data.objType == ObjectType::Stage && data.colType == CollisionType::Sphere)
 	{
 		// 衝突したオブジェクトの情報を取得
 		auto wall = dynamic_cast<Wall*>(data.object);
@@ -481,8 +519,4 @@ void Player::HitAction(InterSectData data)
 		m_position += m_pushBackValue;
 		m_bodyCollision->Center = m_position;
 	}
-
 }
-
-
-
