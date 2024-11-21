@@ -1,6 +1,6 @@
 /// ---------------------------
 ///
-/// プレイヤーの剣の攻撃（円切り）(反転)
+/// プレイヤーの剣の攻撃（円切り）
 /// 
 /// ---------------------------
 
@@ -12,6 +12,7 @@
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/Collision.h"
 #include "Libraries/MyLib/EasingFunctions.h"
+#include "GeometricPrimitive.h"
 
 #include "Game/Player/Player.h"
 #include "Game/Enemy/Enemy.h"
@@ -22,24 +23,23 @@
 //  固定値
 // --------------------------------
 const float Sword_Attacking_2::RADIAN_90 = DirectX::XMConvertToRadians(90);
-const float Sword_Attacking_2::ATTACK_TIME  = 0.5f;
+const float Sword_Attacking_2::ATTACK_TIME = 0.5f;
 
 
 // --------------------------------
 //  コンストラクタ
 // --------------------------------
 Sword_Attacking_2::Sword_Attacking_2(Sword* sword)
-	: m_sword		(sword)
-	, m_position	(5.0f, 0.0f, 5.0f)
-	, m_velocity	(0.0f, 0.0f, 0.0f)
-	, m_angle		(0.0f)
-	, m_rot			(0.0f, 0.0f, 0.0f)
+	: m_sword(sword)
+	, m_position(5.0f, 0.0f, 5.0f)
+	, m_velocity(0.0f, 0.0f, 0.0f)
+	, m_angle(0.0f)
+	, m_rot(0.0f, 0.0f, 0.0f)
 	, m_totalSeconds(0.0f)
-	, m_worldMatrix	(DirectX::SimpleMath::Matrix::Identity)
-	, m_model		(nullptr)
+	, m_worldMatrix(DirectX::SimpleMath::Matrix::Identity)
+	, m_model(nullptr)
 {
 }
-
 
 // --------------------------------
 //  デストラクタ
@@ -54,7 +54,7 @@ Sword_Attacking_2::~Sword_Attacking_2()
 // --------------------------------
 void Sword_Attacking_2::Initialize()
 {
-	m_model		= m_sword->GetModel();						// モデルの取得
+	m_model = m_sword->GetModel();						// モデルの取得
 	m_particles = m_sword->GetPlayScene()->GetParticle();	// パーティクルの取得
 }
 
@@ -64,11 +64,11 @@ void Sword_Attacking_2::Initialize()
 // --------------------------------
 void Sword_Attacking_2::PreUpdate()
 {
-	m_totalSeconds = 0.0f;								// 時間経過のリセット
-	m_sword->GetPlayScene()->GetEnemy()->CanHit(true);	// 衝突可能フラグを有効に
+	m_totalSeconds = 0.0f;									// 経過時間の初期化
+	m_sword->GetPlayScene()->GetEnemy()->CanHit(true);		// 衝突可能にする
 
-	m_rootPos	.clear();	// 根本の座標をクリア
-	m_tipPos	.clear();	// 先端の座標をクリア
+	m_rootPos.clear();	// 根本の座標をクリア
+	m_tipPos.clear();	// 先端の座標をクリア
 }
 
 
@@ -82,19 +82,21 @@ void Sword_Attacking_2::Update(float elapsedTime)
 	// 経過時間を計測
 	m_totalSeconds += elapsedTime;
 
-	// プレイヤーの座標を取得
-	m_position = m_sword->GetPlayScene()->GetPlayer()->GetPosition();
-	// プレイヤーの回転を取得
-	m_angle = m_sword->GetPlayScene()->GetPlayer()->GetAngle();
 
-	// イージング関数を使って回転を計算
+	m_position = m_sword->GetPlayScene()->GetPlayer()->GetPosition();	// プレイヤーの座標を取得
+	m_angle = m_sword->GetPlayScene()->GetPlayer()->GetAngle();		// プレイヤーの回転を取得
+
+	// イージングで使用するための変数
 	float t = 0.0f;
 
+	// 攻撃中の回転処理 ////
 	if (m_totalSeconds <= ATTACK_TIME)
 	{
+		// 0-1の間の値を取得
 		t = m_totalSeconds / ATTACK_TIME;
-		m_rot.y = -250.0f * Easing::easeOutBack(t);
-		m_rot.x = 10 - 40 * Easing::easeOutBack(t);
+		m_rot.y = 250.0f * Easing::easeOutBack(t);
+		m_rot.x = 10 + 30.0f * Easing::easeOutBack(t);
+
 
 		m_rot.x = XMConvertToRadians(m_rot.x);
 		m_rot.y = XMConvertToRadians(m_rot.y);
@@ -105,14 +107,14 @@ void Sword_Attacking_2::Update(float elapsedTime)
 		m_sword->GetPlayScene()->GetEnemy()->CanHit(false);
 	}
 
-	// ワールド行列を更新する
+	// ワールド行列を更新する ////
 	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE);							// 剣のサイズの設定
 
 	m_worldMatrix
-		*= SimpleMath::Matrix::CreateRotationY(XMConvertToRadians(180))					// 反転
-		*= SimpleMath::Matrix::CreateRotationX(RADIAN_90)								// 剣を90度横に向ける
+		*= SimpleMath::Matrix::CreateRotationX(RADIAN_90 / 2)							// 剣を90度横に向ける
 		*= SimpleMath::Matrix::CreateTranslation(Vector3(1.0f, 2.0f, 0.0f))				// 少しだけずらす
 		*= SimpleMath::Matrix::CreateRotationX(m_rot.x)									// 薙ぎ払いの回転を反映
+
 		*= SimpleMath::Matrix::CreateRotationY(-m_angle)								// プレイヤーの横に回転させる
 		*= SimpleMath::Matrix::CreateRotationY(m_rot.y)									// 薙ぎ払いの回転を反映
 		*= SimpleMath::Matrix::CreateTranslation(m_position);							// プレイヤーの位置に設定
@@ -126,7 +128,7 @@ void Sword_Attacking_2::Update(float elapsedTime)
 
 
 // --------------------------------
-//  量頂点の取得
+//  両端座標の取得処理
 // --------------------------------
 void Sword_Attacking_2::GetCudgelBothEnds()
 {
@@ -140,7 +142,7 @@ void Sword_Attacking_2::GetCudgelBothEnds()
 
 
 // --------------------------------
-//  斬撃エフェクトの生成処理
+//  斬撃エフェクト生成処理
 // --------------------------------
 void Sword_Attacking_2::CreateSwordParticle()
 {
@@ -197,7 +199,7 @@ void Sword_Attacking_2::Finalize()
 
 
 // --------------------------------
-//  衝突処理イベント
+//  衝突時イベント
 // --------------------------------
 void Sword_Attacking_2::HitAction(InterSectData data)
 {

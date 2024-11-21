@@ -14,43 +14,49 @@
 #include "Libraries/MyLib/EasingFunctions.h"
 
 #include "Game/Player/Player.h"
-#include "Game/Weapon/Sword/Sword.h"
 #include "Game/Enemy/Enemy.h"
 #include "Game/Player/State/Header/Player_Attacking_1.h"
 
 
-
+// -----------------------
 // コンストラクタ
+// -----------------------
 PlayerAttacking_1::PlayerAttacking_1(Player* player)
 	:
-	 m_player(player)
-	,m_totalSeconds()
-	,m_attackElapsedTime()
-	,m_model()
+	m_player(player)
+	, m_totalSeconds()
+	, m_model()
 {
 }
 
+
+// -----------------------
 // デストラクタ
+// -----------------------
 PlayerAttacking_1::~PlayerAttacking_1()
 {
 }
 
 
+// -----------------------
 // 初期化処理
+// -----------------------
 void PlayerAttacking_1::Initialize(DirectX::Model* model)
 {
 	// モデルを取得する
 	m_model = model;
-
 }
 
+
+// -----------------------
 // 事前更新処理
+// -----------------------
 void PlayerAttacking_1::PreUpdate()
 {
 	// 経過時間の初期化
 	m_totalSeconds = 0.f;
-	
-	// 武器を攻撃状態に変更
+
+	// 剣の攻撃状態に変更
 	m_player->GetPlayScene()->GetSword()->ChangeState(
 		m_player->GetPlayScene()->GetSword()->GetAttacking_1State()
 	);
@@ -58,11 +64,15 @@ void PlayerAttacking_1::PreUpdate()
 	Sound::PlaySE(Sound::SE_TYPE::PLAYER_ATTACK);
 }
 
+
+// -----------------------
 // 更新処理
+// -----------------------
 void PlayerAttacking_1::Update(const float& elapsedTime)
 {
 	m_totalSeconds += elapsedTime;
 
+	// アニメーションの更新
 	UpdateAnimation();
 
 	// 時間を計測し、一定時間経過でステートを遷移
@@ -70,7 +80,10 @@ void PlayerAttacking_1::Update(const float& elapsedTime)
 }
 
 
-// アニメーションの更新
+
+// -----------------------
+// アニメーション更新
+// -----------------------
 void PlayerAttacking_1::UpdateAnimation()
 {
 	if (m_totalSeconds > Player::NORMAL_ATTACK_TIME) return;
@@ -82,51 +95,62 @@ void PlayerAttacking_1::UpdateAnimation()
 
 	// 回転量の計算を行う
 	float currentAngle = m_player->GetAngle();
-	currentAnimPos.y = -40 + 80 * Easing::easeOutBack(t) + currentAngle;
+	currentAnimPos.y = 40 - 80 * Easing::easeOutExpo(t) + currentAngle;
 
 	// radianに変換
 	currentAnimPos.y = DirectX::XMConvertToRadians(currentAnimPos.y);
-	
-	// 付与
-	m_player->SetAnimationRotate(currentAnimPos);
 
+	// プレイヤーに設定する
+	m_player->SetAnimationRotate(currentAnimPos);
 }
 
 
+// -----------------------
 // キー入力
+// -----------------------
 void PlayerAttacking_1::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 {
-	if (key == DirectX::Keyboard::LeftShift	&& m_totalSeconds >= Player::X_COOL_TIME)	m_player->ChangeState(m_player->GetPlayerDodgingState());
+	if (key == DirectX::Keyboard::X && m_totalSeconds >= Player::X_COOL_TIME)	m_player->ChangeState(m_player->GetPlayerAttackingState2());
+
+	// 回避
+	if (key == DirectX::Keyboard::LeftShift)
+	{
+		m_player->ChangeState(m_player->GetPlayerDodgingState());
+	}
 }
 
-
+// -----------------------
+// キー入力
+// -----------------------
 void PlayerAttacking_1::OnKeyDown(const DirectX::Keyboard::Keys& key)
 {
 	UNREFERENCED_PARAMETER(key);
 }
 
 
-
-// 事後更新処理
+// -----------------------
+// 事後更新
+// -----------------------
 void PlayerAttacking_1::PostUpdate()
 {
+	m_player->SetAnimationRotate(DirectX::SimpleMath::Vector3::Zero);
+
 	// 武器を攻撃状態に変更
 	m_player->GetPlayScene()->GetSword()->ChangeState(
 		m_player->GetPlayScene()->GetSword()->GetIdlingState()
 	);
-
-	// アニメーションを初期化
-	m_player->SetAnimationRotate(DirectX::SimpleMath::Vector3::Zero);
 }
 
 
-// 描画処理
+// -----------------------
+// 描画
+// -----------------------
 void PlayerAttacking_1::Render(
 	ID3D11DeviceContext* context,
 	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
 	const DirectX::SimpleMath::Matrix& projection
-	)
+)
 {
 	UNREFERENCED_PARAMETER(context);
 	UNREFERENCED_PARAMETER(states);
@@ -134,17 +158,19 @@ void PlayerAttacking_1::Render(
 	UNREFERENCED_PARAMETER(projection);
 	UNREFERENCED_PARAMETER(m_model);
 
-#ifdef _DEBUG
 	// コモンリソースを取得する
 	CommonResources* resources = CommonResources::GetInstance();
+
+
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = resources->GetDebugString();
 	debugString->AddString("");
-#endif // _DEBUG
 }
 
 
+// -----------------------
 // 終了処理
+// -----------------------
 void PlayerAttacking_1::Finalize()
 {
 }

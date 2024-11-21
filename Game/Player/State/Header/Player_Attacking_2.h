@@ -3,7 +3,7 @@
 #define PLAYER_ATTACKING_2_DEFINED
 // -----------------------------
 //
-// プレイヤーの待機状態
+// プレイヤーの攻撃状態
 //
 // -----------------------------
 
@@ -12,10 +12,12 @@
 #include "pch.h"
 #include "Interface/IPlayer.h"
 
+
 class Player;
 
 class PlayerAttacking_2 : public IPlayer
 {
+
 public:
 	// コンストラクタ
 	PlayerAttacking_2(Player* player);
@@ -31,16 +33,16 @@ public:
 	void PostUpdate() override;
 	// 描画する
 	void Render(
-				ID3D11DeviceContext*			context,
-				DirectX::CommonStates*			states,
-		const	DirectX::SimpleMath::Matrix&	view,
-		const	DirectX::SimpleMath::Matrix&	projection	) override;
+		ID3D11DeviceContext* context,
+		DirectX::CommonStates* states,
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& projection) override;
 	// 終了処理
 	void Finalize() override;
 
-	// キー入力
+	// キー入力を通知
 	void OnKeyPressed(const DirectX::Keyboard::Keys& key) override;
-	// キー入力
+
 	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
 
 private:

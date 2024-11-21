@@ -1,9 +1,10 @@
+
 #pragma once
 #ifndef PLAYER_ATTACKING_1_DEFINED
 #define PLAYER_ATTACKING_1_DEFINED
 // -----------------------------
 //
-// プレイヤーの待機状態
+// プレイヤーの攻撃状態
 //
 // -----------------------------
 
@@ -12,12 +13,10 @@
 #include "pch.h"
 #include "Interface/IPlayer.h"
 
-
 class Player;
 
 class PlayerAttacking_1 : public IPlayer
 {
-
 public:
 	// コンストラクタ
 	PlayerAttacking_1(Player* player);
@@ -35,14 +34,14 @@ public:
 	void Render(
 		ID3D11DeviceContext* context,
 		DirectX::CommonStates* states,
-		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection) override;
+		const	DirectX::SimpleMath::Matrix& view,
+		const	DirectX::SimpleMath::Matrix& projection) override;
 	// 終了処理
 	void Finalize() override;
 
-	// キー入力を通知
+	// キー入力
 	void OnKeyPressed(const DirectX::Keyboard::Keys& key) override;
-
+	// キー入力
 	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
 
 private:
@@ -52,8 +51,8 @@ private:
 	// 座標
 	DirectX::SimpleMath::Vector3 m_position;
 	// 速度
-	DirectX::SimpleMath::Vector3 m_velocity; 
-	 
+	DirectX::SimpleMath::Vector3 m_velocity;
+
 	// １回の攻撃の間隔
 	float m_attackElapsedTime;
 
@@ -62,7 +61,7 @@ private:
 	// プレイヤー
 	Player* m_player;
 	// モデル
-	DirectX::Model* m_model;	
+	DirectX::Model* m_model;
 };
 
 #endif  // PLAYER_ATTACKING_1_DEFINED

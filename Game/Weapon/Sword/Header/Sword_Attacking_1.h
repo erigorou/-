@@ -4,7 +4,6 @@
 
 class Sword;
 class Easying;
-class Particle;
 
 /// <summary>
 /// 桃太郎が持つ刀の攻撃
@@ -27,6 +26,7 @@ public:
 	void PreUpdate()override;
 	// 更新処理
 	void Update(float elapsedTime)override;
+	void CreateSwordParticle();
 	// 事後処理
 	void PostUpdate()override;
 	// 描画処理
@@ -43,10 +43,6 @@ private:
 	// 根本と頂点の座標を取得する ※ both ends = 両端
 	void GetCudgelBothEnds();
 
-	// ソードのパーティクルを生成
-	void CreateSwordParticle();
-
-
 	// ソードの元を取得
 	Sword* m_sword;
 
@@ -55,7 +51,7 @@ private:
 	float							m_angle;		// 剣の回転
 	DirectX::SimpleMath::Vector3	m_rot;			// 3方向の剣の回転
 	DirectX::SimpleMath::Matrix		m_worldMatrix;	// ワールド行列
-	DirectX::Model*					m_model;		// モデルのポインタ
+	DirectX::Model* m_model;		// モデルのポインタ
 	Particle* m_particles;							// パーティクル
 	float m_totalSeconds;
 
