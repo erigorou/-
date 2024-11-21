@@ -65,7 +65,7 @@ void EnemyDashAttacking::Update(const float& elapsedTime)
 	UpdateAction();
 
 	// 待機状態に遷移
-	if (m_totalSeconds >= 4.3f)
+	if (m_totalSeconds >= TOTAL_TIME)
 		m_enemy->ChangeState(m_enemy->GetEnemyIdling());
 }
 
@@ -102,7 +102,7 @@ void EnemyDashAttacking::ChargeAction()
 	// イージング用の変数
 	float t = m_totalSeconds / CHARGE_TIME;
 	// 体の傾きの角度設定
-	m_bodyTilt = DirectX::XMConvertToRadians(-10 * Easing::easeOutBack(t));
+	m_bodyTilt = DirectX::XMConvertToRadians(-20 * Easing::easeOutBack(t));
 	m_enemy->SetBodyTilt(m_bodyTilt);
 }
 
@@ -134,7 +134,7 @@ void EnemyDashAttacking::DashAction()
 
 	// 傾きの更新 *
 	// プレイヤーを傾ける
-	m_bodyTilt = DirectX::XMConvertToRadians(-10 + 30 * Easing::easeOutBack(t));
+	m_bodyTilt = DirectX::XMConvertToRadians(-20 + 40 * Easing::easeOutBack(t));
 	m_enemy->SetBodyTilt(m_bodyTilt);
 }
 
@@ -161,6 +161,20 @@ void EnemyDashAttacking::WaitAction()
 // --------------------
 void EnemyDashAttacking::ReturnAction()
 {
+	// 時間の正規化
+	float t = (m_totalSeconds - WAIT_TIME) / (RETURN_TIME - WAIT_TIME);
+
+	// プレイヤーの座標を取得
+	Vector3 playerPos = m_enemy->GetPlayScene()->GetPlayer()->GetPosition();
+	// 敵の座標を取得
+	Vector3 parentPos = m_enemy->GetPosition();
+	// 敵から見たプレイヤーの位置を設定する
+	float angle = Math::CalculationAngle(parentPos, playerPos);
+
+	m_angle = Math::LerpFloat(m_angle, angle, t);
+
+	m_rotMatrix = DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle);
+	m_enemy->SetAngle(m_angle);
 }
 
 

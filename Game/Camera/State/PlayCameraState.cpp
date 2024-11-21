@@ -40,13 +40,22 @@ void PlayCameraState::Update(
     Vector3 playerToEnemy = enemyPos - playerPos;
     playerToEnemy.Normalize();
 
+    // プレイヤと敵の距離を取得
+	float distance = Vector3::Distance(playerPos, enemyPos);
+
+    float normalizedDistance = std::min(std::max((distance / STAGE_LENGTH), 0.8f), 1.2f);
+
     // カメラの目標位置を計算
     Vector3 targetCameraPos = playerPos - playerToEnemy * Camera::CAMERA_DIRECTION;
-    targetCameraPos.y = Camera::CAMERA_POSITION_Y;
+
+    // 高さを距離依存に変更
+    targetCameraPos.y = Camera::CAMERA_POSITION_Y * normalizedDistance;
 
     // カメラ位置を補間して追従
     float followSpeed = 0.15f; // 追従速度 (0.0f ～ 1.0f)
     m_camera->m_position = Math::LerpVector(m_camera->m_position, targetCameraPos, followSpeed);
+
+
 
     // 注視点の目標位置を計算
     Vector3 targetLookAt = enemyPos;

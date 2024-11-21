@@ -16,9 +16,9 @@ class EnemyDashAttacking : public IState
 public:
 	static constexpr float CHARGE_TIME	= 1.0f;	// 攻撃の貯めモーションの時間
 	static constexpr float DASH_TIME	= 3.0f;	// ダッシュする時間
-	static constexpr float WAIT_TIME	= 4.0f;	// 待機
-	static constexpr float RETURN_TIME	= 4.5f;	// 攻撃が終わってから元に戻る時間
-	static constexpr float TOTAL_TIME	= 5.0f;	// 総時間
+	static constexpr float WAIT_TIME	= 4.5f;	// 待機
+	static constexpr float RETURN_TIME	= 6.0f;	// 攻撃が終わってから元に戻る時間
+	static constexpr float TOTAL_TIME	= 6.0f;	// 総時間
 
 	static constexpr float MAX_SPEED = 100.0f; // 最大速度
 
