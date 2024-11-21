@@ -88,14 +88,20 @@ void Camera::CalculateCameraAngle()
 	float dotProduct = forward.Dot(worldForward);
 
 	// 内積から角度を計算（弧度法）
-	m_angle = acosf(dotProduct);
+	float targetAngle = acosf(dotProduct);
 
 	// カメラの前方向ベクトルが右方向に向いているかどうかで符号を決定
 	Vector3 crossProduct = forward.Cross(worldForward);
 	if (crossProduct.y < 0)
 	{
-		m_angle = -m_angle;
+		targetAngle = -targetAngle;
 	}
+
+	// 線形補間で現在のアングルを更新
+	m_currentAngle = Math::LerpFloat(m_currentAngle, targetAngle, CAMERA_TARGET_RATE);
+
+	// 更新されたアングルを反映
+	m_angle = m_currentAngle;
 }
 
 

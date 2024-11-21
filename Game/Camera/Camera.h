@@ -20,6 +20,8 @@ public:
 	static constexpr float SHAKE_POWER	= 0.5f;		// カメラのやれる強さ
 	static constexpr float MINIMAL		= 0.01f;	// 極小値
 
+	static constexpr float CAMERA_EYE_RATE		= 0.5f;	// カメラの追従係数
+	static constexpr float CAMERA_TARGET_RATE	= 0.1f;	// ターゲットの追従係数
 
 	// ステート
 	TitleCameraState*	GetTitleState()	{ return m_titleState.get();	}
@@ -63,7 +65,7 @@ public:
 	DirectX::SimpleMath::Vector3	m_target;		// 注視点
 	DirectX::SimpleMath::Vector3	m_up;			// カメラの頭の方向
 	
-
+	float m_currentAngle;			// 現在のアングル
 	float m_angle;					// アングル
 	float m_targetHeight;			// 注視点の高さ
 

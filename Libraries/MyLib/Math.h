@@ -200,5 +200,42 @@ public:
 	{
 		return static_cast<float>(sin(t * M_PI));
 	}
+
+
+	static float LerpFloat(float start, float end, float t)
+	{
+		// t を範囲 [0, 1] にクランプ
+		t = Clamp(t, 0.0f, 1.0f);
+
+		// 線形補間の計算
+		return (1.0f - t) * start + t * end;
+	}
+
+
+	static DirectX::SimpleMath::Vector3 LerpVector(
+		const DirectX::SimpleMath::Vector3& start,
+		const DirectX::SimpleMath::Vector3& end,
+		float t
+	)
+	{
+		// t を範囲 [0, 1] にクランプ
+		t = Clamp(t, 0.0f, 1.0f);
+
+		// 各成分を線形補間
+		return {
+			(1.0f - t) * start.x + t * end.x,
+			(1.0f - t) * start.y + t * end.y,
+			(1.0f - t) * start.z + t * end.z
+		};
+	}
+
+
+	template <typename T>
+	static T Clamp(const T& value, const T& min, const T& max)
+	{
+		if (value < min) return min;
+		if (value > max) return max;
+		return value;
+	}
 };
 
