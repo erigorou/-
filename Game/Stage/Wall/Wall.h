@@ -31,7 +31,6 @@ public:
 	// ワールド行列更新処理
 	void UpdateWorldMatrix();
 
-
 	// インターフェースで使用するからしゃーなしでおいている。
 	void HitAction(InterSectData data)override;
 	DirectX::SimpleMath::Vector3 GetPosition()override;

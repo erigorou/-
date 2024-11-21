@@ -20,13 +20,14 @@ public:
 	// 固定値
 	static const float SWORD_SCALE;
 
-	static constexpr DirectX::SimpleMath::Vector3 SWORD_DIR_FOR_PLAYER = { 1.5f, 1.0f, 0.0f };	// プレイヤーの刀の位置
+	static constexpr DirectX::SimpleMath::Vector3 SWORD_DIR_FOR_PLAYER = { -1.5f, 1.0f, -2.0f };	// プレイヤーの刀の位置
 
 	static constexpr float MODEL_TOP_HEIGHT  = 55.0f;
 	static constexpr float MODEL_ROOT_HEIGHT = 50.0f;
 
 	DirectX::Model* GetModel()		const { return m_model.get();	}	// モデルのゲッター
 	PlayScene*	GetPlayScene()		const { return m_playScene;		}	// プレイシーンのゲッター
+	DirectX::BoundingOrientedBox GetCollision() const { return *m_collision.get(); }	// 当たり判定の取得
 
 	// 状態のゲッター
 	IWeapon* GetIdlingState()		const { return m_swordIdling.get();			}	// 待機状態

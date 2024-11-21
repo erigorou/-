@@ -62,7 +62,7 @@ void PlayerIdling::Update(const float& elapsedTime)
 // ƒL[“ü—Í
 void PlayerIdling::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 {
-	if (key == DirectX::Keyboard::X			)	m_player->ChangeState(m_player->GetPlayerAttackingState1());
+	if (key == DirectX::Keyboard::X			)	m_player->ChangeState(m_player->GetPlayerAttackingState2());
 	if (key == DirectX::Keyboard::LeftShift	)	m_player->ChangeState(m_player->GetPlayerDodgingState());
 }
 

@@ -116,6 +116,8 @@ void Sword::CreateCollision()
 		this,					// このクラスのポインタ
 		m_collision.get()		// 当たり判定
 	);
+
+	m_originalBox.Center;
 }
 
 

@@ -62,9 +62,16 @@ void Sword_Idling::Update(float elapsedTime)
 
 	// ワールド行列を更新する
 	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE);								// サイズの設定
-	m_worldMatrix *= SimpleMath::Matrix::CreateTranslation(Sword::SWORD_DIR_FOR_PLAYER)		// 原点で、少しだけずらす
-		*= SimpleMath::Matrix::CreateRotationY(-m_angle)									// 回転を行うx
-		*= SimpleMath::Matrix::CreateTranslation(m_position);								// プレイヤの位置に設定する
+	
+	m_worldMatrix
+		// 傾ける
+		*= SimpleMath::Matrix::CreateRotationY(XMConvertToRadians(-90.0f))				// 回転
+		*= SimpleMath::Matrix::CreateRotationX(XMConvertToRadians(90.0f))				// 回転
+		// 手の位置に移動する
+		*= SimpleMath::Matrix::CreateTranslation(Sword::SWORD_DIR_FOR_PLAYER)
+		// プレイヤの移動情報を付与
+		*= SimpleMath::Matrix::CreateRotationY(-m_angle)							// プレイヤの回転を付与
+		*= SimpleMath::Matrix::CreateTranslation(m_position);						// プレイヤの位置に設定する
 
 	m_sword->SetCollisionPosition(m_worldMatrix);
 }

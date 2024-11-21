@@ -96,7 +96,6 @@ void PlayerAttacking_1::UpdateAnimation()
 // ƒL[“ü—Í
 void PlayerAttacking_1::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 {
-	if (key == DirectX::Keyboard::X			&& m_totalSeconds >= Player::X_COOL_TIME)	m_player->ChangeState(m_player->GetPlayerAttackingState2());
 	if (key == DirectX::Keyboard::LeftShift	&& m_totalSeconds >= Player::X_COOL_TIME)	m_player->ChangeState(m_player->GetPlayerDodgingState());
 }
 
