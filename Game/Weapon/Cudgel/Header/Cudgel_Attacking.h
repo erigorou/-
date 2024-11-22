@@ -24,6 +24,8 @@ public:
 	static const DirectX::SimpleMath::Vector3 ARM_LENGTH;		// 架空の腕の長さ
 	static const DirectX::SimpleMath::Vector3 ZERO_DIREC;		// 原点から移動する地点
 
+	static constexpr float ATTACK_ANGLE_UD = 15.0f;
+
 
 	// コンストラクタ
 	Cudgel_Attacking(Cudgel* cudgel);

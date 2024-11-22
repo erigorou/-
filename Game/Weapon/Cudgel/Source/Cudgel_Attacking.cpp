@@ -149,7 +149,7 @@ void Cudgel_Attacking::HandleAttackPhase(float t)
 {
 	// 20度から115度振り下ろす（0.3秒間で、イージング使用）
 	m_angleUD = DirectX::XMConvertToRadians(-40.0f + 135.0f * Easing::easeInQuint(t));
-	m_angleRL = DirectX::XMConvertToRadians(-20 * Easing::easeInQuint(t))	+m_angleRL;
+	m_angleRL = DirectX::XMConvertToRadians(-ATTACK_ANGLE_UD * Easing::easeInQuint(t)) + m_angleRL;
 
 	if (t > 0.9f && m_playSound == false)
 	{
@@ -165,11 +165,11 @@ void Cudgel_Attacking::KeepStampPhase()
 {
 	m_canHit = false;
 
+	m_angleUD = DirectX::XMConvertToRadians(95.0f);
+	m_angleRL = DirectX::XMConvertToRadians(-ATTACK_ANGLE_UD) + m_angleRL;
+
 	// たたきつけた瞬間にパーティクルの生成
 	HandleSlamParticles();
-
-	m_angleUD = DirectX::XMConvertToRadians(95.0f);
-	m_angleRL = DirectX::XMConvertToRadians(-20.0f) + m_angleRL;
 }
 
 
@@ -182,7 +182,7 @@ void Cudgel_Attacking::ReturnToOriginalPhase(float t)
 
 	// 横と縦の回転を元に戻す
 	m_angleUD = DirectX::XMConvertToRadians(95.0f - 95.0f * t);
-	m_angleRL = DirectX::XMConvertToRadians(- 20 + 20 * t) + m_angleRL;
+	m_angleRL = DirectX::XMConvertToRadians(- ATTACK_ANGLE_UD + ATTACK_ANGLE_UD * t) + m_angleRL;
 }
 
 /// <summary>
