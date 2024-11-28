@@ -11,7 +11,10 @@
 
 #include "Game/Player/State/Header/Player_Idling.h"
 
+
+// -------------------------------
 // コンストラクタ
+// -------------------------------
 PlayerIdling::PlayerIdling(Player* player)
 	:
 	 m_player(player)
@@ -21,13 +24,17 @@ PlayerIdling::PlayerIdling(Player* player)
 }
 
 
+// -------------------------------
 // デストラクタ
+// -------------------------------
 PlayerIdling::~PlayerIdling()
 {
 }
 
 
+// -------------------------------
 // 初期化処理
+// -------------------------------
 void PlayerIdling::Initialize(DirectX::Model* model)
 {
 	// モデルを取得する
@@ -35,7 +42,9 @@ void PlayerIdling::Initialize(DirectX::Model* model)
 }
 
 
-// 事前更新処理
+// -------------------------------
+// 変更処理（in）
+// -------------------------------
 void PlayerIdling::PreUpdate()
 {
 	// 経過時間の初期化
@@ -46,7 +55,9 @@ void PlayerIdling::PreUpdate()
 }
 
 
+// -------------------------------
 // 更新処理
+// -------------------------------
 void PlayerIdling::Update(const float& elapsedTime)
 {
 	// elapsedTime使わないけどエラー出さないでねって文
@@ -59,7 +70,19 @@ void PlayerIdling::Update(const float& elapsedTime)
 }
 
 
-// キー入力
+// -------------------------------
+// 変更処理（out）
+// -------------------------------
+void PlayerIdling::PostUpdate()
+{
+	// 修正点があればここに記載
+}
+
+
+
+// -------------------------------
+// キーボード入力
+// -------------------------------
 void PlayerIdling::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 {
 	if (key == DirectX::Keyboard::X			)	m_player->ChangeState(m_player->GetPlayerAttackingState1());
@@ -72,14 +95,10 @@ void PlayerIdling::OnKeyDown(const DirectX::Keyboard::Keys& key)
 }
 
 
-// 事後更新処理
-void PlayerIdling::PostUpdate()
-{
-	// 修正点があればここに記載
-}
 
-
+// -------------------------------
 // 描画処理
+// -------------------------------
 void PlayerIdling::Render(
 	ID3D11DeviceContext* context,
 	DirectX::CommonStates* states,
@@ -98,7 +117,9 @@ void PlayerIdling::Render(
 }
 
 
+// -------------------------------
 // 終了処理
+// -------------------------------
 void PlayerIdling::Finalize()
 {
 }

@@ -20,7 +20,7 @@
 
 
 const float Cudgel::CUDGEL_SCALE = Enemy::ENEMY_SCALE * 1.2f;						// 金棒の拡大率
-const DirectX::SimpleMath::Vector3 Cudgel::DIRECTION_ENEMY = { 6.0f, 5.0f, 0.0f };	// 持ち手の距離（敵と比較）
+const DirectX::SimpleMath::Vector3 Cudgel::DIRECTION_ENEMY = { 8.0f, 5.0f, 0.0f };	// 持ち手の距離（敵と比較）
 const DirectX::SimpleMath::Vector3 Cudgel::CUDGEL_LENGTH =	{ 0.0f, 35.0f, 0.0f };	// 金棒の長さ（一番下から）
 const DirectX::SimpleMath::Vector3 Cudgel::CUDGEL_HADLE_POS = { 0.0f, 10.0f, 0.0f };	// 金棒の取っ手の部分（一番上）
 
@@ -105,6 +105,10 @@ void Cudgel::CreateState()
 	m_currentState = m_idling.get();
 }
 
+
+// --------------------------------
+// 当たり判定の生成
+// --------------------------------
 void Cudgel::CreateCollision()
 {
 	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model.get());
@@ -117,6 +121,7 @@ void Cudgel::CreateCollision()
 		m_collision.get()		// 当たり判定
 	);
 }
+
 
 // --------------------------------
 // 更新処理

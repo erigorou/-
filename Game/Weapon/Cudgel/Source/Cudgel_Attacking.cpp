@@ -29,7 +29,7 @@ const float Cudgel_Attacking::RETURN_TIME = 4.0f;	// 元に戻る
 const float Cudgel_Attacking::END_TIME    = 4.3f;	// 終了時間
 
 const Vector3 Cudgel_Attacking::ARM_LENGTH = Vector3(0.0f, 4.0f, 0.0f);
-const Vector3 Cudgel_Attacking::ZERO_DIREC = Vector3(6.0f, 1.0f, 0.0f);
+const Vector3 Cudgel_Attacking::ZERO_DIREC = Vector3(8.0f, 1.0f, 0.0f);
 
 
 // コンストラクタ

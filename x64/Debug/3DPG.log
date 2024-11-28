@@ -1,13 +1,5 @@
-﻿  EnemyDashAttacking.cpp
-  Factory.cpp
-  EnemyApproaching.cpp
-  Enemy_Attacking.cpp
-  EnemyIdling.cpp
-  Enemy_Sweeping.cpp
-  PlayScene.cpp
+﻿  Player_Idling.cpp
+  Player_NockBacking.cpp
   Cudgel.cpp
-  Cudgel_Attacking.cpp
-  Cudgel_Idling.cpp
-  Cudgel_Sweeping.cpp
   コードを生成中...
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exe
