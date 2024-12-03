@@ -7,17 +7,15 @@
 #include "pch.h"
 #include <Model.h>
 #include <cassert>
-
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/Microsoft/DebugDraw.h"
 #include "Libraries/MyLib/Math.h"
-
+#include "Libraries/MyLib/KeyboardChacker.h"
 #include "Game/Player/Player.h"
 #include "Game/Weapon/Sword/Sword.h"
 #include "../Data/HPSystem.h"
-
 #include "Game/Enemy/Enemy.h"
 #include "Game/Stage/Wall/Wall.h"
 
@@ -37,6 +35,7 @@ Player::Player(PlayScene* playScene)
 	m_model{},
 	m_position{ 0, 0, 40 },
 	m_angle{ 0.f },
+	m_inputVector{ 0.0f, 0.0f },
 	m_acceleration{},
 	m_pushBackValue{},
 	m_worldMatrix{},
@@ -45,7 +44,9 @@ Player::Player(PlayScene* playScene)
 	m_isHit{},
 	m_coolTime{},
 	m_canHit{false},
-	m_animationRotate{}
+	m_animationRotate{},
+	m_isInputMoveKey{ false }
+
 {
 }
 
@@ -197,7 +198,8 @@ void Player::Update(const DirectX::SimpleMath::Vector3 enemyPos,const float elap
 	m_currentState->Update(elapsedTime);
 
 	///////////////////プレイヤーの移動////////////////////////////
-	m_angle = Math::CalculationAngle(m_position, enemyPos);
+	m_angle = CalucratePlayerRotation(enemyPos);
+
 	CalculationMatrix();
 	m_pushBackValue = Vector3::Zero;
 
@@ -234,15 +236,25 @@ void Player::OnKeyDown(const DirectX::Keyboard::Keys& key)
 {
 	m_velocity = DirectX::SimpleMath::Vector3::Zero;
 
-	// 移動
-	if (key == DirectX::Keyboard::Up)		m_inputVelocity += Vector3::Forward;	// 「↑」で前進
-	if (key == DirectX::Keyboard::Down)		m_inputVelocity += Vector3::Backward;	// 「↓」で後退
-	if (key == DirectX::Keyboard::Left)		m_inputVelocity += Vector3::Left;		// 「←」で左移動
-	if (key == DirectX::Keyboard::Right)	m_inputVelocity += Vector3::Right;		// 「→」で右移動
+	if (KeyboardChacker::IsInputArrowKey(key))
+	{
+		if (!m_isInputMoveKey)
+		{
+			// 移動キーの入力がある場合
+			m_isInputMoveKey = true;
+			// リセット
+			m_inputVector = DirectX::SimpleMath::Vector2::Zero;
+		}
+
+		// 移動キーに応じて入力ベクトルを設定する
+		if (key == DirectX::Keyboard::Up)		m_inputVector += INPUT_FLONT;
+		if (key == DirectX::Keyboard::Down)		m_inputVector += INPUT_BACK;
+		if (key == DirectX::Keyboard::Left)		m_inputVector += INPUT_LEFT;
+		if (key == DirectX::Keyboard::Right)	m_inputVector += INPUT_RIGHT;
+	}
 
 	m_currentState->OnKeyDown(key);
 }
-
 
 
 // ----------------------------------------------
@@ -251,20 +263,39 @@ void Player::OnKeyDown(const DirectX::Keyboard::Keys& key)
 /// </summary>
 /// <param name="enemyPos"></param>
 //　---------------------------------------------
-void Player::CalculationAngle(DirectX::SimpleMath::Vector3 const enemyPos)
+float Player::CalucratePlayerRotation(DirectX::SimpleMath::Vector3 const enemyPos)
 {
 	using namespace DirectX::SimpleMath;
 
-	Vector3 forward = m_position - enemyPos;		// 敵の方向をベクトルで取得
-	forward.Normalize();							// 正規化
+	// 入力がない場合は0を返す
+	if (m_inputVector.LengthSquared() < FLT_EPSILON) {
+		return 0.0f;
+	}
 
-	Vector3 worldForward = Vector3::Forward;		// ワールド座標の前方ベクトルを作成
-	float dotProduct = forward.Dot(worldForward);	// 内積を取得
-	m_angle = acosf(dotProduct);					// 内積から角度を取得(弧度法)
+	// 敵の方向を取得（ラジアン単位で計算）
+	float lookEnemy = Math::CalculationAngle(m_position, enemyPos);
 
-	Vector3 crossProduct = forward.Cross(worldForward);		// カメラの前方向ベクトルが右方向に向いているかどうかで符号を決定6
-	m_angle = (crossProduct.y <= 0) ? -m_angle: m_angle;	// -180 ~ 180に収める。
+	// 入力ベクトルを正規化
+	Vector2 normalizedInput = m_inputVector;
+	normalizedInput.Normalize();
+
+	// atan2で入力ベクトルの角度を計算（ラジアン単位）
+	float inputAngle = std::atan2(normalizedInput.x, normalizedInput.y);
+
+	// 敵の方向と入力方向の差分角度を計算
+	float resultAngle = lookEnemy + inputAngle;
+
+	// 必要なら角度を0～2πの範囲に正規化
+	while (resultAngle < 0) {
+		resultAngle += DirectX::XM_2PI; // 2πを加えて正の範囲に
+	}
+	while (resultAngle > DirectX::XM_2PI) {
+		resultAngle -= DirectX::XM_2PI; // 2πを引いて範囲内に
+	}
+
+	return resultAngle; // 計算結果（ラジアン単位）を返す
 }
+
 
 
 
@@ -280,14 +311,10 @@ void Player::MovePlayer()
 	Keyboard::State keyboardState = Keyboard::Get().GetState();
 
 	Vector3 moveVelocity  = Vector3::Zero;	// 加速用速度
-
-
-	m_inputVelocity.Normalize();
-	m_direction = m_inputVelocity;
 	
 
 	///////////////////// 移動キーの入力がない場合の処理 /////////////////
-	if (m_inputVelocity == Vector3::Zero)
+	if (m_isInputMoveKey == false)
 	{
 		float accelerationLength = m_acceleration.Length();				// 速度の長さを取得する
 		// 0の近似値より大きい場合
@@ -311,10 +338,10 @@ void Player::MovePlayer()
 	else
 	{
 		// 基本移動量を計算する
-		moveVelocity += m_inputVelocity * PLAYER_SPEED;
+		moveVelocity += Vector3::Forward * PLAYER_SPEED;
 
-		float acceleration = 0.05f;								// 加速度
-		m_acceleration += m_inputVelocity * acceleration;		// 加速度の計算を行う
+		float acceleration = 0.05f;				// 加速度
+		m_acceleration += Vector3::Forward * acceleration;		// 加速度の計算を行う
 
 		// 2乗にすることで符号を外す
 		if (m_acceleration.LengthSquared() > 1.0f)
@@ -342,7 +369,9 @@ void Player::MovePlayer()
 		}
 	}
 
-	m_inputVelocity = Vector3::Zero;	// 基本速度
+
+
+	m_isInputMoveKey = false;	// 移動キーの入力をリセットする
 }
 
 
@@ -420,7 +449,8 @@ void Player::Render(
 #ifdef _DEBUG
 	// デバッグ文字の描画
 	auto debugString = resources->GetDebugString();
-	debugString->AddString("player.y :  %f" , m_position.y);
+	debugString->AddString("Player, %f, %f", m_inputVector.x, m_inputVector.y);
+
 #endif // !_DEBUG
 
 }

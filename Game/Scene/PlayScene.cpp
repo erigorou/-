@@ -252,7 +252,7 @@ void PlayScene::Render()
 	m_sword->Render(view, m_projection);
 
 	// ゴブリンの描画
-	//m_goblin->Render(view, m_projection);
+	m_goblin->Render(view, m_projection);
 
 	//==== エフェクト系の描画 ======================================================
 	// パーティクルのビルボード作成

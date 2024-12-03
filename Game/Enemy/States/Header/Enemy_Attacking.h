@@ -31,9 +31,6 @@ public:
 	// 終了処理
 	void Finalize() override;
 
-	// プレイヤーのボディとの当たり判定
-	void CheckHitPlayerBody();
-
 
 
 private:

@@ -275,6 +275,7 @@
     <ClInclude Include="Libraries\MyLib\DebugString.h" />
     <ClInclude Include="Libraries\MyLib\EasingFunctions.h" />
     <ClInclude Include="Libraries\MyLib\InputManager.h" />
+    <ClInclude Include="Libraries\MyLib\KeyboardChacker.h" />
     <ClInclude Include="Libraries\MyLib\Math.h" />
     <ClInclude Include="Libraries\MyLib\MemoryLeakDetector.h" />
     <ClInclude Include="Libraries\MyLib\SkySphere.h" />

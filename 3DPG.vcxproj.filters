@@ -224,6 +224,7 @@
     <ClInclude Include="Game\HitStop\HitStop.h" />
     <ClInclude Include="Game\Enemy\States\Header\EnemyDashAttacking.h" />
     <ClInclude Include="Game\Player\State\Header\Player_NockBacking.h" />
+    <ClInclude Include="Libraries\MyLib\KeyboardChacker.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />

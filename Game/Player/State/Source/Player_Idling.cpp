@@ -63,8 +63,6 @@ void PlayerIdling::Update(const float& elapsedTime)
 	// elapsedTime使わないけどエラー出さないでねって文
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-
-
 	// プレイヤーの移動
 	m_player->MovePlayer();
 }

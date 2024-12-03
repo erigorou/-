@@ -40,6 +40,11 @@ public:
 
 	static constexpr float NORMAL_ATTACK_TIME	= 0.5f; // 通常攻撃のアニメーション時間
 
+	static constexpr DirectX::SimpleMath::Vector2 INPUT_FLONT	= { 0.0f	, 1.0f	};	// 前
+	static constexpr DirectX::SimpleMath::Vector2 INPUT_BACK	= { 0.0f	, -1.0f };	// 後
+	static constexpr DirectX::SimpleMath::Vector2 INPUT_LEFT	= { -1.0f	, 0.0f	};	// 左
+	static constexpr DirectX::SimpleMath::Vector2 INPUT_RIGHT	= { 1.0f	, 0.0f	};	// 右
+
 
 // アクセサ *
 public:
@@ -47,7 +52,7 @@ public:
 	DirectX::SimpleMath::Vector3	GetPosition		()override	{ return m_position;			}
 	DirectX::SimpleMath::Vector3	GetVelocity		()	const	{ return m_velocity;			}
 	DirectX::SimpleMath::Vector3	GetDirection	()	const	{ return m_direction;			}
-	DirectX::SimpleMath::Vector3	GetinputVelocity()	const	{ return m_inputVelocity;		}
+	DirectX::SimpleMath::Vector2	GetinputVector	()	const	{ return m_inputVector;			}
 	float							GetAngle		()	const	{ return m_angle;				}
 	HPSystem*						GetPlayerHP		()	const	{ return m_hp.get();			}
 	DirectX::BoundingSphere*		GetBodyCollision()			{ return m_bodyCollision.get(); }
@@ -104,7 +109,7 @@ public:
 	// 終了処理
 	void Finalize();
 	// 回転角の計算
-	void CalculationAngle(DirectX::SimpleMath::Vector3 const enemyPos);
+	float CalucratePlayerRotation(DirectX::SimpleMath::Vector3 const enemyPos);
 	// Matrixの計算
 	void CalculationMatrix();
 	// 移動の管理
@@ -137,12 +142,14 @@ private:
 private:
 	DirectX::SimpleMath::Vector3	m_position;			// 位置
 	DirectX::SimpleMath::Vector3	m_velocity;			// 速度
-	DirectX::SimpleMath::Vector3	m_inputVelocity;	// 入力保持用変数
+	DirectX::SimpleMath::Vector2	m_inputVector;		// 入力保持用変数
 	DirectX::SimpleMath::Vector3	m_direction;		// 向き
 	DirectX::SimpleMath::Vector3	m_acceleration;		// 加速度
 	float							m_angle;			// 回転	
 	float							m_tilt;				// 傾き
 	DirectX::SimpleMath::Vector3	m_pushBackValue;	// プッシュバック値
+
+	bool m_isInputMoveKey;		// 移動キーが押されているか
 
 
 	// プレイヤー用のワールド行列
@@ -152,12 +159,9 @@ private:
 	IPlayer* m_currentState;									// 現在のステート
 	std::unique_ptr<PlayerIdling> m_playerIdling;				// 待機状態
 	std::unique_ptr<PlayerDodging> m_playerDodging;				// 回避状態
-
 	std::unique_ptr<PlayerAttacking_1> m_playerAttacking_1;		// 攻撃状態１
 	std::unique_ptr<PlayerAttacking_2> m_playerAttacking_2;		// 攻撃状態２
-
 	std::unique_ptr<PlayerNockBacking> m_playerNockBacking;		// やられ状態
-
 
 	// プレイヤーに付与されるもの ============
 	std::unique_ptr<Sword> m_sword;
@@ -170,11 +174,10 @@ private:
 	// 入力レイアウト
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
 
+	// パーティクル
 	float m_particleTime;
 	float m_elapsedTime;
 
-// 内部関数
-private:
 	// プレイシーン(他のオブジェクトの情報の取得などに使う)
 	PlayScene* m_playScene;
 

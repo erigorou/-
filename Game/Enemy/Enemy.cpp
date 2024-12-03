@@ -195,6 +195,7 @@ void Enemy::ChangeState(IState* newState)
 // --------------------------------
 void Enemy::Update(float elapsedTime)
 {
+
 	// ワールド行列の初期化
 	m_worldMatrix = DirectX::SimpleMath::Matrix::Identity;
 
@@ -203,7 +204,6 @@ void Enemy::Update(float elapsedTime)
 
 	// キー入力を受け付ける。
 	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
-
 
 	// 回転方向の設定
 	m_worldMatrix 
@@ -219,9 +219,8 @@ void Enemy::Update(float elapsedTime)
 		*= DirectX::SimpleMath::Matrix::CreateScale(ENEMY_SCALE)			// サイズ計算
 		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);		// 位置の設定
 
-
 	// 当たり判定の更新
-	m_bodyCollision->Center = DirectX::SimpleMath::Vector3(m_position.x, m_position.y + 10.0f, m_position.z);
+	m_bodyCollision->Center = DirectX::SimpleMath::Vector3(m_position.x, m_position.y + COLISION_POS_Y, m_position.z);
 
 	// 衝突のクールタイムの計測
 	CheckHitCoolTime(elapsedTime);
@@ -229,11 +228,6 @@ void Enemy::Update(float elapsedTime)
 
 
 #ifdef _DEBUG
-	if (keyboardState.Enter)
-	{
-		// ビヘイビアツリーを実行。
-		m_pBT->run();
-	}
 
 	if (keyboardState.F1)
 	{

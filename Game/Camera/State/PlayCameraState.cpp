@@ -43,6 +43,7 @@ void PlayCameraState::Update(
     // ƒvƒŒƒCƒ„‚Æ“G‚Ì‹——£‚ðŽæ“¾
 	float distance = Vector3::Distance(playerPos, enemyPos);
 
+
     float normalizedDistance = std::min(std::max((distance / STAGE_LENGTH), 0.8f), 1.2f);
 
     // ƒJƒƒ‰‚Ì–Ú•WˆÊ’u‚ðŒvŽZ
@@ -52,7 +53,7 @@ void PlayCameraState::Update(
     targetCameraPos.y = Camera::CAMERA_POSITION_Y * normalizedDistance;
 
     // ƒJƒƒ‰ˆÊ’u‚ð•âŠÔ‚µ‚Ä’Ç]
-    float followSpeed = 0.15f; // ’Ç]‘¬“x (0.0f ` 1.0f)
+    float followSpeed = 0.25f; // ’Ç]‘¬“x (0.0f ` 1.0f)
     m_camera->m_position = Math::LerpVector(m_camera->m_position, targetCameraPos, followSpeed);
 
 

@@ -30,7 +30,8 @@ Enemy_Attacking::~Enemy_Attacking()
 // 初期化処理
 void Enemy_Attacking::Initialize(DirectX::Model* model)
 {
-	m_model = model;										// モデルの取得
+	// モデルを取得する
+	m_model = model;
 }
 
 
@@ -68,15 +69,8 @@ void Enemy_Attacking::Update(const float& elapsedTime)
 		m_enemy->SetAngle(m_angle);
 	}
 
-	if (m_totalSeconds >= 4.3f)
+	if (m_totalSeconds >= 5.0f)
 		m_enemy->ChangeState(m_enemy->GetEnemyIdling());	// 待機状態に遷移
-}
-
-
-// プレイヤーの体との当たり判定を行う
-void Enemy_Attacking::CheckHitPlayerBody()
-{
-
 }
 
 
