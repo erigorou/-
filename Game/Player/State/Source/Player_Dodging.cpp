@@ -43,11 +43,8 @@ void PlayerDodging::PreUpdate()
 {
 	// 経過時間の初期化
 	m_totalSeconds = 0.f;
-	// 回避する方向を取得(正規化) 
-	//m_inputVelocity = m_player->GetinputVelocity();　　エラー002
-	m_inputVelocity.Normalize();
 
-	m_velocity = m_inputVelocity * DODGING_SPEED;
+	m_velocity = DirectX::SimpleMath::Vector3::Forward * DODGING_SPEED;
 
 	m_position = m_player->GetPosition();
 }

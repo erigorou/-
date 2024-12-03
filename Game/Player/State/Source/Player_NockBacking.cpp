@@ -63,6 +63,10 @@ void PlayerNockBacking::Update(const float& elapsedTime)
 
 	m_position = m_player->GetPosition();
 
+	DirectX::SimpleMath::Vector3 enemyPos = m_player->GetPlayScene()->GetEnemy()->GetPosition();
+
+	m_player->SetAngle(Math::CalculationAngle(m_position, enemyPos));
+
 	// アニメーションの更新
 	UpdateAnimation();
 
@@ -105,7 +109,7 @@ void PlayerNockBacking::NockBackAnimation()
 	Vector3 enemyPos = m_player->GetPosition();
 
 	// どっちの方向にノックバックするのか
-	m_nockBackAngle = Math::CalculationAngle(playerPos,enemyPos);
+	m_nockBackAngle = Math::CalculationAngle(playerPos, enemyPos);
 	Matrix rotMatrix = Matrix::CreateRotationY(-m_nockBackAngle);
 
 	// ノックバック量

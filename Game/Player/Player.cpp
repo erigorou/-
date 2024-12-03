@@ -22,7 +22,7 @@
 
 // ここで静的メンバー変数を定義する
 const DirectX::SimpleMath::Vector3 Player::HOME_POSITION(0.0f);
-const float Player::PLAYER_SPEED = 0.5f;
+const float Player::PLAYER_SPEED = 0.4f;
 const float Player::PLAYER_SCALE = 0.1f;
 
 
@@ -198,7 +198,7 @@ void Player::Update(const DirectX::SimpleMath::Vector3 enemyPos,const float elap
 	m_currentState->Update(elapsedTime);
 
 	///////////////////プレイヤーの移動////////////////////////////
-	m_angle = CalucratePlayerRotation(enemyPos);
+	//m_angle = CalucratePlayerRotation(enemyPos);
 
 	CalculationMatrix();
 	m_pushBackValue = Vector3::Zero;
