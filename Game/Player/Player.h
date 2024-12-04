@@ -61,6 +61,7 @@ public:
 	////////////////////プレイヤー基本情報を設定する関数/////////////////////////////////////////////////
 	void SetPosition(DirectX::SimpleMath::Vector3 position)			{ m_position = position;	}
 	void SetAnimarionRotate(DirectX::SimpleMath::Vector3 rotate)	{ m_animationRotate = rotate; }
+	void SetInputVector(DirectX::SimpleMath::Vector2 inputVector)	{ m_inputVector = inputVector; }
 
 	////////////////////プレイヤーのステートを渡す関数//////////////////////////////////////////////////
 	PlayerIdling*		GetPlayerIdlingState	()	const { return m_playerIdling.		get(); }

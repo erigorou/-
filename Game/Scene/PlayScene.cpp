@@ -198,7 +198,7 @@ void PlayScene::Update(float elapsedTime)
 	// カメラの回転行列の作成	引数にはプレイヤーの回転角を入れる
 	SimpleMath::Matrix matrix = SimpleMath::Matrix::CreateRotationY( XMConvertToRadians ( m_player->GetAngle() ) );
 	// カメラの更新
-	m_camera->Update(m_player->GetPosition(), m_enemy->GetPosition(), matrix, elapsedTime);
+	m_camera->Update(m_player->GetPosition(), m_enemy->GetPosition(), matrix, smoothDeltaTime);
 
 	// パーティクルの更新
 	m_particles->Update(

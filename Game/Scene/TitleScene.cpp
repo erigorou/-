@@ -12,6 +12,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "../Factory/Factory.h"
 #include "../Sound/Sound.h"
+#include "Libraries/MyLib/EasingFunctions.h"
 
 #include "../Camera/Camera.h"
 #include "../Stage/Floor/Floor.h"
@@ -28,6 +29,7 @@ using namespace DirectX::SimpleMath;
 //---------------------------------------------------------
 TitleScene::TitleScene()
 	:
+	m_totalSeconds{},
 	m_spriteBatch{},
 	m_spriteFont{},
 	m_texture{},
@@ -174,8 +176,7 @@ void TitleScene::CreateObjects()
 //---------------------------------------------------------
 void TitleScene::Update(float elapsedTime)
 {
-	// 宣言をしたが、実際は使用していない変数
-	UNREFERENCED_PARAMETER(elapsedTime);
+	m_totalSeconds += elapsedTime;
 
 	// キーボードステートトラッカーを取得する
 	const auto& kbTracker = m_commonResources->GetInputManager()->GetKeyboardTracker();
@@ -243,11 +244,31 @@ void TitleScene::DrawTexture()
 	Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
 	Vector2 titlePos = pos + TITLE_DIRECTION_CENTER;
 	
+	Vector2 logoPos;
+
+	if (m_totalSeconds < DELAY)
+	{
+		logoPos =
+		{
+			pos.x,
+			rect.top + TITLE_DIRECTION_CENTER.y
+		};
+	}
+
+	if (m_totalSeconds >= DELAY)
+	{
+		logoPos =
+		{
+			titlePos.x ,
+			TITLE_DIRECTION_CENTER.y + titlePos.y * 2 * Easing::easeOutBounce(std::min((m_totalSeconds - DELAY), ANIM_END - DELAY))
+		};
+	}
+
 
 	// LOGO.png を中央に描画する
 	m_spriteBatch->Draw(
 		m_texture.Get(),	// テクスチャ(SRV)
-		titlePos,			// スクリーンの表示位置(originの描画位置)
+		logoPos,			// スクリーンの表示位置(originの描画位置)
 		nullptr,			// 矩形(RECT)
 		Colors::White,		// 背景色
 		0.0f,				// 回転角(ラジアン)

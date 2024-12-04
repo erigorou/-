@@ -47,6 +47,11 @@ private:
 	static constexpr const wchar_t* DUST_PS = L"Resources/Shaders/Dust/DustPS.cso";
 	static constexpr const wchar_t* DUST_GS = L"Resources/Shaders/Dust/DustGS.cso";
 
+	static constexpr int	MAX_SMASH_ATTACK_DUST = 25;
+	static constexpr float	MIN_SMASH_DUST_SPEED_Y = 1.0f;
+	static constexpr float	MAX_SMASH_DUST_SPEED_Y = 5.0f;
+	static constexpr float  SMASH_DUST_RADIUS = 1.0f;
+
 public:
 	// ä÷êî
 	static const std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT;

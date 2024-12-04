@@ -143,7 +143,7 @@ void Particle::CreateSlamDust(DirectX::SimpleMath::Vector3 center)
 	using namespace DirectX;
 
 	// 25個生成
-	for (int i = 0; i < 25; i++)
+	for (int i = 0; i < MAX_SMASH_ATTACK_DUST; i++)
 	{
 		// 完全なランダムをハードウェア的に生成するためのクラスの変数
 		std::random_device seed;
@@ -152,38 +152,47 @@ void Particle::CreateSlamDust(DirectX::SimpleMath::Vector3 center)
 		std::default_random_engine engine(seed());
 		// とばして欲しいランダムの範囲をDistributionに任せる。今回は0～2PI
 		std::uniform_real_distribution<> dist(0, XM_2PI);
-		float range = 5.0f;
 		// ランダムな角度を生成する
 		float randAngle = static_cast<float>(dist(engine));
 
-		std::uniform_real_distribution<> dist2(0.5f, 2.0f);
-		float Yspeed = static_cast<float>(dist2(engine));
+		// 速度のランダム生成
+		std::uniform_real_distribution<> dist2(MIN_SMASH_DUST_SPEED_Y, MAX_SMASH_DUST_SPEED_Y);
+		float Yspeed = static_cast<float>(dist2(engine) / 1.5f);
 		float XZspeed = static_cast<float>(dist2(engine));
 
 		// 中心からのベクトルを生成
-		SimpleMath::Vector3 vectorFromCenter = center + SimpleMath::Vector3(range * cosf(randAngle), 0.0f, range * sinf(randAngle)) - center;
+		SimpleMath::Vector3 vectorFromCenter = center + SimpleMath::Vector3(
+			SMASH_DUST_RADIUS * cosf(randAngle), 
+			0.0f, 
+			SMASH_DUST_RADIUS * sinf(randAngle)
+		) - center;
+
 		// ベクトルの長さを取得（距離）
 		float distanceFromCenter = vectorFromCenter.Length();
 		// 中心からのベクトルを正規化して方向を保持
 		SimpleMath::Vector3 normalizedVectorFromCenter = vectorFromCenter / distanceFromCenter;
 		// ベクトルを外側に広げるためのスケールを適用
-		float scaleFactor = 1.0f + (distanceFromCenter / range); // rangeは円の半径
+		float scaleFactor = 2.0f + (distanceFromCenter / SMASH_DUST_RADIUS);
 		SimpleMath::Vector3 adjustedVelocity = normalizedVectorFromCenter * scaleFactor;
 		// 速度ベクトルを生成
 		SimpleMath::Vector3 velocity = -adjustedVelocity;
 
 		// 生成したダストの座標を取得する
-		SimpleMath::Vector3 dustPosition = center + SimpleMath::Vector3(range * cosf(randAngle), 0.0f, range * sinf(randAngle));    // 基準座標
+		SimpleMath::Vector3 dustPosition = center + SimpleMath::Vector3(
+			SMASH_DUST_RADIUS * cosf(randAngle), 
+			0.0f, 
+			SMASH_DUST_RADIUS * sinf(randAngle)
+		);
 
 		// パーティクル生成
 		DustTrailParticle pB(
-			1.4f,																				// 生存時間(s)
-			dustPosition,																		// 基準座標
-			SimpleMath::Vector3{ -velocity.x * XZspeed, Yspeed / 10, -velocity.z * XZspeed } * 2,	// 速度
+			0.9f,																						// 生存時間(s)
+			dustPosition,																				// 基準座標
+			SimpleMath::Vector3{ -velocity.x * XZspeed, Yspeed , -velocity.z * XZspeed } * 2,	// 速度
 			SimpleMath::Vector3(0.1f, 0.1f, 0.1f),												// 加速度
 			SimpleMath::Vector3::One, SimpleMath::Vector3{ 10.0f, 25.0f, 10.0f },				// 初期スケール、最終スケール
 			SimpleMath::Color(1.f, 1.f, 1.f, 1.f),												// 初期カラー
-			SimpleMath::Color(1.f, 1.f, 1.f, 0.f)												// 最終カラー
+			SimpleMath::Color(1.f, 1.f, 1.f, -1.f)												// 最終カラー
 		);
 
 		m_dustTrail.push_back(pB);
@@ -204,7 +213,7 @@ void Particle::CreateSwordTrail(DirectX::VertexPositionTexture ver[4])
 	// SwordTrailParticleを生成
 	SwordTrailParticle sTP(
 		ver,															//	頂点情報
-		0.6f,															//	生存時間(s)
+		0.2f,															//	生存時間(s)
 		Color(1.0f, 1.0f, 1.0f, 1.0f), Color(1.0f, 1.0f, 1.0f, 0.0f)	//	初期カラー、最終カラー
 	);
 

@@ -168,7 +168,6 @@ void PlayerNockBacking::OnKeyDown(const DirectX::Keyboard::Keys& key)
 // -------------------------------
 void PlayerNockBacking::PostUpdate()
 {
-	// C³“_‚ª‚ ‚ê‚Î‚±‚±‚É‹LÚ
 }
 
 

@@ -24,9 +24,16 @@ namespace mylib
 class TitleScene final : public IScene
 {
 private:
-	DirectX::SimpleMath::Vector2 TITLE_DIRECTION_CENTER = { 0.0f, -150.0f };
+	DirectX::SimpleMath::Vector2 TITLE_DIRECTION_CENTER = { 0.0f, -175.0f };
 
 public:
+
+	static constexpr float DELAY = 1.0f;	// タイトル画面の遅延時間
+	static constexpr float ANIM_END = 2.0f;	// タイトル画面のアニメーション終了時間
+
+
+public:
+
 	// コンストラクタ
 	TitleScene();
 	// デストラクタ
@@ -73,6 +80,8 @@ private:
 	// シーンチェンジフラグ
 	bool m_isChangeScene;
 
+	// 経過時間を取得
+	float m_totalSeconds;
 
 	// オブジェクト達
 	std::unique_ptr<Camera>		m_camera;		//　カメラ
