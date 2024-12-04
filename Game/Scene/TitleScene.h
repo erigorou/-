@@ -23,13 +23,13 @@ namespace mylib
 
 class TitleScene final : public IScene
 {
-private:
-	DirectX::SimpleMath::Vector2 TITLE_DIRECTION_CENTER = { 0.0f, -175.0f };
 
 public:
 
 	static constexpr float DELAY = 1.0f;	// タイトル画面の遅延時間
 	static constexpr float ANIM_END = 2.0f;	// タイトル画面のアニメーション終了時間
+
+	static constexpr 	DirectX::SimpleMath::Vector2 TITLE_LOGO_CENTER = { 0.0f, -175.0f };	// タイトルの中心座標 ※bottom基準
 
 
 public:

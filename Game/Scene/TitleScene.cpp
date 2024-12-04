@@ -13,6 +13,7 @@
 #include "../Factory/Factory.h"
 #include "../Sound/Sound.h"
 #include "Libraries/MyLib/EasingFunctions.h"
+#include "Libraries/MyLib/Math.h"
 
 #include "../Camera/Camera.h"
 #include "../Stage/Floor/Floor.h"
@@ -242,27 +243,18 @@ void TitleScene::DrawTexture()
 
 	// 画像の中心を計算する
 	Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
-	Vector2 titlePos = pos + TITLE_DIRECTION_CENTER;
-	
-	Vector2 logoPos;
+	Vector2 titlePos = pos;
+	titlePos.y += TITLE_LOGO_CENTER_Y;
 
-	if (m_totalSeconds < DELAY)
-	{
-		logoPos =
-		{
-			pos.x,
-			rect.top + TITLE_DIRECTION_CENTER.y
-		};
-	}
+	// タイトルロゴの上下移動の総量
+	float moveValue = titlePos.y * 2;
 
-	if (m_totalSeconds >= DELAY)
+	// タイトルロゴの描画位置を決める（移動も考慮）
+	Vector2 logoPos
 	{
-		logoPos =
-		{
-			titlePos.x ,
-			TITLE_DIRECTION_CENTER.y + titlePos.y * 2 * Easing::easeOutBounce(std::min((m_totalSeconds - DELAY), ANIM_END - DELAY))
-		};
-	}
+		titlePos.x ,
+		TITLE_LOGO_CENTER_Y + moveValue * Easing::easeOutBounce(Math::Clamp(m_totalSeconds - DELAY, 0.0f, DELAY))
+	};
 
 
 	// LOGO.png を中央に描画する
