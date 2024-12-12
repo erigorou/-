@@ -34,6 +34,12 @@ class PlayScene final :	public IScene
 
 	 
 {
+// 固定値 *
+public:
+	// キーボードのキーの最大値
+	static constexpr int MAX_KEY = 256;
+
+
 // アクセサ関数 ===
 public:
 	Player*		GetPlayer()		{ return m_player.get();}
@@ -58,10 +64,11 @@ public:
 
 // 非公開関数 ===
 private:
-	void CreateObjects();			// オブジェクトの生成
-	SceneID GetNextSceneID() const;	// 次のシーンIDを取得
-
-	void CheckResult();				// 勝敗判定
+	void CreateObjects();					// オブジェクトの生成
+	SceneID GetNextSceneID()const;			// 次のシーンIDを取得
+	void UpdateObjects(float elapsedTime);	// オブジェクトの更新
+	void UpdateKeyboard();					// キーボードの更新
+	void CheckResult();						// 勝敗判定
 
 
 // 内部変数 ===

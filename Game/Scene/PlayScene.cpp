@@ -42,7 +42,7 @@ PlayScene::PlayScene()
 	: m_commonResources{}
 	, m_debugCamera{}
 	, m_projection{}
-	, m_isChangeScene{}
+	, m_isChangeScene{false}
 	, m_smoothDeltaTime{}
 {
 	m_commonResources = CommonResources::GetInstance();
@@ -61,8 +61,6 @@ PlayScene::~PlayScene()
 // ----------------
 void PlayScene::Initialize()
 {
-	using namespace DirectX;
-
 	// デバッグカメラを作成する
 	RECT rect{ m_commonResources->GetDeviceResources()->GetOutputSize() };
 
@@ -70,14 +68,11 @@ void PlayScene::Initialize()
 	m_debugCamera->Initialize(rect.right, rect.bottom);
 
 	// 射影行列を作成する
-	m_projection = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
-		XMConvertToRadians(45.0f),
+	m_projection = DirectX::SimpleMath::Matrix::CreatePerspectiveFieldOfView(
+		DirectX::XMConvertToRadians(40.0f),
 		static_cast<float>(rect.right) / static_cast<float>(rect.bottom),
 		0.1f, 100000.0f
 	);
-
-	// シーン変更フラグを初期化する
-	m_isChangeScene = false;
 
 	// オブジェクトの生成
 	CreateObjects();
@@ -114,21 +109,17 @@ void PlayScene::CreateObjects()
 	Messenger::SortObserverList();
 	// キー範囲リストを生成する
 	Messenger::CreateKeyRangeList();
-
 	// カメラをプレイシーンで設定
 	m_camera->ChangeState(m_camera->GetPlayState());
-
 	// BGM変更
 	Sound::GetInstance()->ChangeBGM(Sound::BGM_TYPE::PLAY);
 }
-
-
 
 // すべてのキーの押下状態を検出する
 inline bool IsKeyPress(DirectX::Keyboard::KeyboardStateTracker& stateTracker)
 {
 	// すべてのキーが押されたかどうかをチェック
-	for (int key = 0; key < 256; key++)
+	for (int key = 0; key < PlayScene::MAX_KEY; key++)
 	{
 		// 特定のキーが押されているかを確認
 		if (stateTracker.IsKeyPressed(static_cast<DirectX::Keyboard::Keys>(key)))
@@ -163,40 +154,51 @@ inline bool IsKeyDown(DirectX::Keyboard::State& state)
 /// <param name="elapsedTime">フレーム毎秒</param>
 void PlayScene::Update(float elapsedTime)
 {
-	using namespace DirectX;
-	UNREFERENCED_PARAMETER(elapsedTime);
+	// キーボードの更新処理
+	UpdateKeyboard();
+	// オブジェクトの更新処理
+	UpdateObjects(elapsedTime);
+	// 勝敗を決める
+	CheckResult();
+}
 
+
+// キーボードの状態更新処理
+void PlayScene::UpdateKeyboard()
+{
 	// キーボードの状態を取得する
 	m_keyboardState = DirectX::Keyboard::Get().GetState();
 	// キーボードステートトラッカーを更新する
 	m_keyboardStateTracker.Update(m_keyboardState);
 
 	// キーボードが押下げられたかどうかを判定する
-	if (IsKeyDown	(m_keyboardState)		)	Messenger::Notify(m_keyboardState		); 
-	if (IsKeyPress	(m_keyboardStateTracker))	Messenger::Notify(m_keyboardStateTracker); 
+	if (IsKeyDown(m_keyboardState))	Messenger::Notify(m_keyboardState);
+	if (IsKeyPress(m_keyboardStateTracker))	Messenger::Notify(m_keyboardStateTracker);
+}
 
+
+// オブジェクトの更新処理
+void PlayScene::UpdateObjects(float elapsedTime)
+{
 	// ヒットストップの更新
 	m_hitStop->Update(elapsedTime);
-
 	// ヒットストップの残り時間を取得
 	float smoothDeltaTime = m_hitStop->GetSmoothDeltaTime();
-
 	// UIの更新
 	m_uiManager->Update(elapsedTime);
 	// プレイヤーの更新処理
 	m_player->Update(smoothDeltaTime);
 	// プレイヤーの武器の更新処理
 	m_sword->Update(smoothDeltaTime);
-
 	// 鬼の更新処理
 	m_enemy->Update(smoothDeltaTime);
 	// 鬼の武器の更新処理
 	m_cudgel->Update(smoothDeltaTime);
-
+	// ゴブリンの更新処理
 	m_goblin->Update(smoothDeltaTime);
 
 	// カメラの回転行列の作成	引数にはプレイヤーの回転角を入れる
-	SimpleMath::Matrix matrix = SimpleMath::Matrix::CreateRotationY( XMConvertToRadians ( m_player->GetAngle() ) );
+	DirectX::SimpleMath::Matrix matrix = DirectX::SimpleMath::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_player->GetAngle()));
 	// カメラの更新
 	m_camera->Update(m_player->GetPosition(), m_enemy->GetPosition(), matrix, smoothDeltaTime);
 
@@ -209,13 +211,6 @@ void PlayScene::Update(float elapsedTime)
 
 	// 衝突判定の更新処理
 	m_collisionManager->Update();
-
-	// 勝敗を決める
-	CheckResult();
-
-
-#ifdef _DEBUG
-#endif // _DEBUG
 }
 
 
@@ -224,10 +219,8 @@ void PlayScene::Update(float elapsedTime)
 /// </summary>
 void PlayScene::Render()
 {
-	using namespace DirectX;
-
 	// ビュー行列を取得する
-	const SimpleMath::Matrix& view = m_camera->GetViewMatrix();
+	const DirectX::SimpleMath::Matrix& view = m_camera->GetViewMatrix();
 
 	m_collisionManager->Render(view, m_projection);
 
@@ -270,8 +263,6 @@ void PlayScene::Render()
 /// </summary>
 void PlayScene::Finalize()
 {
-	// 終わるよー！とmessageを出す
-	MessageBox(nullptr, L"終了します", L"終了", MB_OK);
 }
 
 /// <summary>
