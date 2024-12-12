@@ -249,11 +249,13 @@ void TitleScene::DrawTexture()
 	// タイトルロゴの上下移動の総量
 	float moveValue = titlePos.y * 2;
 
+	float t = Math::Clamp(m_totalSeconds - DELAY, 0.0f, ANIM_END) / ANIM_END;
+
 	// タイトルロゴの描画位置を決める（移動も考慮）
 	Vector2 logoPos
 	{
 		titlePos.x ,
-		TITLE_LOGO_CENTER_Y + moveValue * Easing::easeOutBounce(Math::Clamp(m_totalSeconds - DELAY, 0.0f, DELAY))
+		TITLE_LOGO_CENTER_Y + moveValue * Easing::easeOutBounce(t)
 	};
 
 

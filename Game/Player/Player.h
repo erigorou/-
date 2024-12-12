@@ -98,9 +98,7 @@ public:
 	// 時間計測を行う
 	void TimeComparison(float& nowTime, const float totalTime, IPlayer* newState, const float elapsedTime);
 	// 更新処理
-	void Update(
-		const DirectX::SimpleMath::Vector3	enemyPos,
-		const float							elapsedTime);
+	void Update(const float elapsedTime);
 
 	// 描画処理
 	void Render(

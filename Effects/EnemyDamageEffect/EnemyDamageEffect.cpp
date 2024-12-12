@@ -1,0 +1,164 @@
+// ** ---------------------------------------- **
+// <意図>　敵の体の状態処理クラスの実装(被ダメ)
+// <作者>　池田
+// <日付>　2024/12/09
+// ** ---------------------------------------- **
+
+#include "pch.h"
+#include "Effects/EnemyDamageEffect/EnemyDamageEffect.h"
+#include "Libraries/MyLib/CustomShader/CustomShader.h"
+#include "Libraries/MyLib/EasingFunctions.h"
+#include "Game/CommonResources.h"
+#include "DeviceResources.h"
+
+
+// 固定値
+const wchar_t* EnemyDamageEffect::VS_PATH = L"Resources/Shaders/DamageEffect/DamageEffectVS.cso";
+const wchar_t* EnemyDamageEffect::PS_PATH = L"Resources/Shaders/DamageEffect/DamageEffectPS.cso";
+
+
+// ----------------------------
+/// コンストラクタ
+// ----------------------------
+EnemyDamageEffect::EnemyDamageEffect()
+	:
+	m_totalTime(0.0f),
+	m_damageShader(nullptr),
+	m_buffer(nullptr),
+	m_isDamaged(false)
+{
+	// シェーダーの生成
+	CreateShader();
+
+	// 定数バッファの作成
+	CreateConstBuffer();
+}
+
+
+
+// ----------------------------
+/// デストラクタ
+// ----------------------------
+EnemyDamageEffect::~EnemyDamageEffect()
+{
+}
+
+
+// ----------------------------
+/// 更新処理
+// ----------------------------
+void EnemyDamageEffect::Update(float elapsedTime)
+{
+	// ダメージを受けてない場合は処理なし
+	if (!m_isDamaged)	return;
+
+	// 経過時間の記録
+	m_totalTime = std::max(0.0f, (m_totalTime - elapsedTime));
+
+	// ダメージエフェクトの表示を終了させるかどうか
+	m_isDamaged = (m_totalTime > 0.0f);
+}
+
+
+// ----------------------------
+/// 体パーツの描画
+// ----------------------------
+void EnemyDamageEffect::DrawWithDamageEffect(
+	DirectX::Model* model, 
+	const DirectX::SimpleMath::Matrix world, 
+	const DirectX::SimpleMath::Matrix& view, 
+	const DirectX::SimpleMath::Matrix& proj)
+{
+	// 必要情報の取得
+	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
+	auto states = CommonResources::GetInstance()->GetCommonStates();
+
+	// 定数バッファの更新
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	context->Map(m_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	ConstBuffer* cb = static_cast<ConstBuffer*>(mappedResource.pData);
+
+	// ワールド、ビュー、プロジェクション行列の設定
+	cb->world = world.Transpose();
+	cb->view = view.Transpose();
+	cb->projection = proj.Transpose();
+
+	// 時間の設定（イージングと正規化をしてある状態のもの）
+	cb->Time = Easing::easeInCirc(m_totalTime / TOTAL_TIME);
+	cb->Padding[0] = 0;
+	cb->Padding[1] = 0;
+	cb->Padding[2] = 0;
+
+	context->Unmap(m_buffer.Get(), 0);
+
+	// モデルの描画
+	model->Draw(context, *states, world, view, proj, false, [&]
+		{
+			if (m_isDamaged)
+			{
+				// 定数バッファを設定
+				ID3D11Buffer* cbuff = { m_buffer.Get() };
+				// シェーダーにバッファを渡す
+				context->VSSetConstantBuffers(1, 1, &cbuff);
+				context->PSSetConstantBuffers(1, 1, &cbuff);
+
+				// シェーダーの設定
+				m_damageShader->BeginSharder(context);
+			}
+		}
+	);
+
+	m_damageShader->EndSharder(context);
+}
+
+
+// ----------------------------
+/// シェーダーの作成
+// ----------------------------
+void EnemyDamageEffect::CreateShader()
+{
+	// デバイスの取得
+	auto device = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
+
+	// シェーダーの作成
+	m_damageShader = std::make_unique<CustomShader>
+		(
+			device,
+			VS_PATH,
+			PS_PATH,
+			nullptr,
+			INPUT_LAYOUT
+		);
+}
+
+
+// ----------------------------
+/// 定数バッファの作成
+// ----------------------------
+void EnemyDamageEffect::CreateConstBuffer()
+{
+	// デバイスの取得
+	auto device = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
+
+	// 定数バッファの作成
+	D3D11_BUFFER_DESC desc = {};
+	desc.ByteWidth = sizeof(ConstBuffer);
+	desc.Usage = D3D11_USAGE_DYNAMIC;
+	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+	DX::ThrowIfFailed(
+		device->CreateBuffer(&desc, nullptr, m_buffer.GetAddressOf())
+	);
+}
+
+
+// --------------------------------------
+/// ダメージを受けたことを通達する関数
+// --------------------------------------
+void EnemyDamageEffect::IsDamaged()
+{
+	// ダメージを受けたことを通達
+	m_totalTime = TOTAL_TIME;
+	m_isDamaged = true;
+}

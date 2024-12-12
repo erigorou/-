@@ -69,8 +69,8 @@ void HitStop::CalculateSmoothDeltaTime(float elapsedTime)
 	if (m_totalSeconds < DELAY) return;
 
 	// イージング用の時間を計算
-	float t = Easing::easeOutBack(m_totalSeconds - DELAY) / (HITSTOP_TIME - DELAY);
+	float t = Easing::easeInCirc((m_totalSeconds - DELAY) / (HITSTOP_TIME - DELAY));
 
 	// ヒットストップの状態に応じて経過時間を設定　TRUE : FALSE
-	m_smoothDeltaTime = m_isActive ? elapsedTime / t / 10.0f : (m_totalSeconds = 0.0f);
+	m_smoothDeltaTime = m_isActive ? elapsedTime * t : (m_totalSeconds = 0.0f);
 }

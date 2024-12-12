@@ -187,10 +187,9 @@ void Player::TimeComparison(float& nowTime, const float totalTime, IPlayer* newS
 /// <summary>
 /// プレイヤーの更新処理
 /// </summary>
-/// <param name="enemyPos">敵の座標</param>
 /// <param name="elapsedTime">経過時間</param>
 // ---------------------------------------------
-void Player::Update(const DirectX::SimpleMath::Vector3 enemyPos,const float elapsedTime)
+void Player::Update(const float elapsedTime)
 {
 	m_elapsedTime = elapsedTime;	// 経過時間を保存する
 
@@ -198,7 +197,6 @@ void Player::Update(const DirectX::SimpleMath::Vector3 enemyPos,const float elap
 	m_currentState->Update(elapsedTime);
 
 	///////////////////プレイヤーの移動////////////////////////////
-	//m_angle = CalucratePlayerRotation(enemyPos);
 
 	CalculationMatrix();
 	m_pushBackValue = Vector3::Zero;
@@ -532,7 +530,8 @@ void Player::HitCudgel(InterSectData data)
 		m_canHit &&
 		data.objType == ObjectType::Cudgel &&
 		data.colType == CollisionType::OBB &&
-		m_currentState != m_playerDodging.get())
+		m_currentState != m_playerDodging.get()
+		)
 	{
 		Damage(1);
 	}

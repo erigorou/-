@@ -198,6 +198,7 @@
     <ClInclude Include="Game\Camera\State\TitleCameraState.h" />
     <ClInclude Include="Game\Data\GameData.h" />
     <ClInclude Include="Game\Data\HPSystem.h" />
+    <ClInclude Include="Effects\EnemyDamageEffect\EnemyDamageEffect.h" />
     <ClInclude Include="Game\Enemy\Face\Header\EnemyFaceAttacking.h" />
     <ClInclude Include="Game\Enemy\Face\Header\EnemyFaceIdling.h" />
     <ClInclude Include="Game\Enemy\States\Header\EnemyDashAttacking.h" />
@@ -298,6 +299,7 @@
     <ClCompile Include="Game\Camera\State\TitleCameraState.cpp" />
     <ClCompile Include="Game\Data\GameData.cpp" />
     <ClCompile Include="Game\Data\HPSystem.cpp" />
+    <ClCompile Include="Effects\EnemyDamageEffect\EnemyDamageEffect.cpp" />
     <ClCompile Include="Game\Enemy\Face\Source\EnemyFaceAttacking.cpp" />
     <ClCompile Include="Game\Enemy\Face\Source\EnemyFaceIdling.cpp" />
     <ClCompile Include="Game\Enemy\States\Source\EnemyDashAttacking.cpp" />
@@ -388,6 +390,8 @@
     <None Include="fmod.dll" />
     <None Include="fmodL.dll" />
     <None Include="packages.config" />
+    <None Include="Resources\Shaders\DamageEffect\Common.hlsli" />
+    <None Include="Resources\Shaders\DamageEffect\DamageEffect.hlsli" />
     <None Include="Resources\Shaders\Particle.hlsli" />
     <None Include="Resources\Shaders\ParticleGS.cso" />
     <None Include="Resources\Shaders\ParticlePS.cso" />
@@ -397,6 +401,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Resources\Shaders\DamageEffect\DamageEffectPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Resources\Shaders\DamageEffect\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\DamageEffect\DamageEffectVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Resources\Shaders\DamageEffect\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
     <FxCompile Include="Resources\Shaders\Dust\DustGS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>

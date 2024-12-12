@@ -184,7 +184,7 @@ void PlayScene::Update(float elapsedTime)
 	// UIの更新
 	m_uiManager->Update(elapsedTime);
 	// プレイヤーの更新処理
-	m_player->Update(m_enemy->GetPosition(), smoothDeltaTime);
+	m_player->Update(smoothDeltaTime);
 	// プレイヤーの武器の更新処理
 	m_sword->Update(smoothDeltaTime);
 
@@ -238,7 +238,7 @@ void PlayScene::Render()
 	m_floor->Render(view, m_projection);
 	// 海を描画する
 	m_sea->Render(view, m_projection);
-	//// 壁を描画する
+	// 壁を描画する
 	//m_wall->Render(view, m_projection);
 
 	// === オブジェクトの描画 =======================================================
@@ -252,7 +252,7 @@ void PlayScene::Render()
 	m_sword->Render(view, m_projection);
 
 	// ゴブリンの描画
-	m_goblin->Render(view, m_projection);
+	// m_goblin->Render(view, m_projection);
 
 	//==== エフェクト系の描画 ======================================================
 	// パーティクルのビルボード作成

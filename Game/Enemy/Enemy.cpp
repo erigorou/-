@@ -33,6 +33,9 @@
 #include "Face/Header/EnemyFaceIdling.h"
 #include "Face/Header/EnemyFaceAttacking.h"
 
+// ダメージエフェクト
+#include "Effects/EnemyDamageEffect/EnemyDamageEffect.h"
+
 
 
 // 固定値
@@ -99,6 +102,8 @@ void Enemy::Initialize()
 	// 顔パーツの生成
 	CreateFace();
 
+	// ダメージエフェクトの生成
+	m_damageEffect = std::make_unique<EnemyDamageEffect>();
 
 	// 当たり判定の作成
 	CreateCollision();
@@ -195,18 +200,35 @@ void Enemy::ChangeState(IState* newState)
 // --------------------------------
 void Enemy::Update(float elapsedTime)
 {
-
-	// ワールド行列の初期化
-	m_worldMatrix = DirectX::SimpleMath::Matrix::Identity;
-
-	// ステータスを更新しまーす
+	// ステータスの更新処理
 	m_currentState->Update(elapsedTime);
+	// ダメージ情報の更新処理
+	m_damageEffect->Update(elapsedTime);
+	// ワールド行列の計算
+	CalcrationWorldMatrix();
+	// 当たり判定の更新
+	m_bodyCollision->Center = DirectX::SimpleMath::Vector3(m_position.x, m_position.y + COLISION_POS_Y, m_position.z);
+	// 衝突のクールタイムの計測
+	CheckHitCoolTime(elapsedTime);
+
+
+
+#ifdef _DEBUG
 
 	// キー入力を受け付ける。
 	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
 
+	if (keyboardState.F1)	ChangeState(m_attacking.get());
+	if (keyboardState.F2)	ChangeState(m_sweeping.get());
+	if (keyboardState.F3)	ChangeState(m_dashAttacking.get());
+
+#endif // _DEBUG
+}
+
+void Enemy::CalcrationWorldMatrix()
+{
 	// 回転方向の設定
-	m_worldMatrix 
+	m_worldMatrix
 		= DirectX::SimpleMath::Matrix::CreateRotationX(m_bodyTilt)	// 回転の設定
 		*= DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle + DirectX::XMConvertToRadians(180));
 
@@ -218,34 +240,9 @@ void Enemy::Update(float elapsedTime)
 	m_worldMatrix
 		*= DirectX::SimpleMath::Matrix::CreateScale(ENEMY_SCALE)			// サイズ計算
 		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);		// 位置の設定
-
-	// 当たり判定の更新
-	m_bodyCollision->Center = DirectX::SimpleMath::Vector3(m_position.x, m_position.y + COLISION_POS_Y, m_position.z);
-
-	// 衝突のクールタイムの計測
-	CheckHitCoolTime(elapsedTime);
-
-
-
-#ifdef _DEBUG
-
-	if (keyboardState.F1)
-	{
-		ChangeState(m_attacking.get());
-	}
-
-	if (keyboardState.F2)
-	{
-		ChangeState(m_sweeping.get());
-	}
-
-	if (keyboardState.F3)
-	{
-		ChangeState(m_dashAttacking.get());
-	}
-
-#endif // _DEBUG
 }
+
+
 
 // --------------------------------
 //  衝突のクールタイムの計測を行う
@@ -285,7 +282,10 @@ void Enemy::Render(
 
 	m_currentState->Render(context,states,view,projection);				// ステート側の描画
 	m_currentFace->DrawFace(m_worldMatrix, view, projection);			// 顔の描画
-	m_model->Draw(context, *states, m_worldMatrix, view, projection);	// モデルの描画
+
+	m_damageEffect->DrawWithDamageEffect(m_model.get(), m_worldMatrix, view, projection);	// ダメージエフェクトの描画
+
+	//m_model->Draw(context, *states, m_worldMatrix, view, projection);	// モデルの描画
 
 #ifdef _DEBUG
 #endif // _DEBUG
@@ -329,6 +329,8 @@ void Enemy::HitSword(InterSectData data)
 
 		// ヒットストップを有効にする
 		HitStop::GetInstance()->SetActive();
+		// 体のエフェクトを再生
+		m_damageEffect->IsDamaged();
 	}
 }
 

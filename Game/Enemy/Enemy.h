@@ -18,7 +18,7 @@ class BehaviorTree;
 
 #include "../Data/HPSystem.h"
 
-
+class EnemyDamageEffect;
 
 class Enemy : public IObject
 {
@@ -82,6 +82,7 @@ public:
 	void ChangeState(IState* newState);
 	// 更新処理
 	void Update(float elapsedTime);
+	void CalcrationWorldMatrix();
 	// 描画処理
 	void Render(
 		const DirectX::SimpleMath::Matrix& view,
@@ -136,6 +137,8 @@ private:
 	std::unique_ptr<EnemyFaceIdling>	m_faceIdling;		// 待機顔
 	std::unique_ptr<EnemyFaceAttacking>	m_faceAttacking;	// 攻撃顔
 
+	// 敵のダメージエフェクト
+	std::unique_ptr<EnemyDamageEffect> m_damageEffect;
 
 	// ビヘイビアツリー
 	std::unique_ptr<BehaviorTree> m_pBT;

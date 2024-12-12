@@ -10,10 +10,10 @@
 
 class HitStop
 {
-// 固定値 ==============
+// 固定値 ================
 public:
 
-	static constexpr float DELAY = 0.1f;				// ヒットストップの遅延時間
+	static constexpr float DELAY = 0.05f;				// ヒットストップの遅延時間
 	static constexpr float HITSTOP_TIME = DELAY + 0.1f;	// ヒットストップ時間
 
 

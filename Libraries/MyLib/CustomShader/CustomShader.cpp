@@ -48,9 +48,9 @@ void CustomShader::LoadTexture(ID3D11Device* device, const wchar_t* path, std::v
 void CustomShader::BeginSharder(ID3D11DeviceContext* context)
 {
 	//	作成されているシェーダーの設定
-	if (m_vertexShader		.Get()	!= nullptr) { context->VSSetShader(m_vertexShader.Get(), nullptr, 0);	}
-	if (m_pixelShader		.Get()	!= nullptr) { context->PSSetShader(m_pixelShader.Get(), nullptr, 0);	}
-	if (m_geometryShader	.Get()	!= nullptr) { context->GSSetShader(m_geometryShader.Get(), nullptr, 0); }
+	if (m_vertexShader		.Get()	!= nullptr) { context->VSSetShader(m_vertexShader.Get(),	nullptr, 0); }
+	if (m_pixelShader		.Get()	!= nullptr) { context->PSSetShader(m_pixelShader.Get(),		nullptr, 0); }
+	if (m_geometryShader	.Get()	!= nullptr) { context->GSSetShader(m_geometryShader.Get(),	nullptr, 0); }
 
 	//	作成されていれば入力レイアウトの登録
 	if (m_inputLayout.Get() != nullptr) 

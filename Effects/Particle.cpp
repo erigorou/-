@@ -324,7 +324,7 @@ void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::Simp
 
 	ID3D11BlendState* blendstate = m_states->NonPremultiplied();	//  半透明描画指定
 	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);		//	透明判定処理
-	context->OMSetDepthStencilState(m_states->DepthRead(), 0);	//	深度バッファはなし
+	context->OMSetDepthStencilState(m_states->DepthRead(), 0);		//	深度バッファはなし
 	context->RSSetState(m_states->CullNone());						//	カリングなし
 
 
