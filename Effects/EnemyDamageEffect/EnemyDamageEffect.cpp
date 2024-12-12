@@ -94,6 +94,7 @@ void EnemyDamageEffect::DrawWithDamageEffect(
 	// モデルの描画
 	model->Draw(context, *states, world, view, proj, false, [&]
 		{
+			// ダメージを受けている場合はシェーダーを適用
 			if (m_isDamaged)
 			{
 				// 定数バッファを設定
@@ -107,7 +108,7 @@ void EnemyDamageEffect::DrawWithDamageEffect(
 			}
 		}
 	);
-
+	// シェーダーの登録を解除
 	m_damageShader->EndSharder(context);
 }
 
@@ -123,11 +124,11 @@ void EnemyDamageEffect::CreateShader()
 	// シェーダーの作成
 	m_damageShader = std::make_unique<CustomShader>
 		(
-			device,
-			VS_PATH,
-			PS_PATH,
-			nullptr,
-			INPUT_LAYOUT
+			device,			// デバイス
+			VS_PATH,		// 頂点シェーダー
+			PS_PATH,		// ピクセルシェーダー
+			nullptr,		// ジオメトリシェーダー(使用無し)
+			INPUT_LAYOUT	// 入力レイアウト
 		);
 }
 
@@ -158,7 +159,8 @@ void EnemyDamageEffect::CreateConstBuffer()
 // --------------------------------------
 void EnemyDamageEffect::IsDamaged()
 {
-	// ダメージを受けたことを通達
+	// 残り時間をリセット
 	m_totalTime = TOTAL_TIME;
+	// ダメージフラグを有効化
 	m_isDamaged = true;
 }

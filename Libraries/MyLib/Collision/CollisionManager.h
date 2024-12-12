@@ -20,7 +20,6 @@ enum class ObjectType : UINT
 
 
 /// <summary>
-
 /// 当たり判定の形状の種類
 /// </summary>
 enum class CollisionType : UINT
@@ -29,53 +28,21 @@ enum class CollisionType : UINT
 	Sphere
 };
 
-/// <summary>
-/////////////// OBBCollision構造体 /////////////////////////
-/// </summary>
-struct OBBCollision
+
+template<typename T>
+struct CollisionData
 {
-	ObjectType							objType;
-	CollisionType						colType;
-	IObject*							object;
-	const DirectX::BoundingOrientedBox*	obb;
+	ObjectType		objType;
+	CollisionType	colType;
+	IObject*		object;
+	const T*		collision;
 
 	// コンストラクタ
-	OBBCollision
-	(
-		ObjectType						type,
-		IObject*						obj,
-		const DirectX::BoundingOrientedBox*	obb
-	) 
-		: objType	(type)
-		, colType	(CollisionType::OBB)
-		, object	(obj)
-		, obb		(obb)
-	{}
-};
-
-
-
-/// <summary>
-///	//////////// SphereCollision構造体 ////////////////////////
-/// </summary>
-struct SphereCollision
-{
-	ObjectType						objType;
-	CollisionType					colType;
-	IObject*						object;
-	const DirectX::BoundingSphere*	sphere;
-
-	// コンストラクタ
-	SphereCollision
-	(
-		ObjectType					type,
-		IObject*					obj,
-		const DirectX::BoundingSphere*	sphere
-	)
-		: objType	(type)
-		, colType	(CollisionType::Sphere)
-		, object	(obj)
-		, sphere	(sphere)
+	CollisionData(ObjectType objType,CollisionType collType, IObject* obj, const T* collision)
+		: objType(objType)
+		, colType(collType)
+		, object(obj)
+		, collision(collision)
 	{}
 };
 
@@ -108,12 +75,18 @@ public:
 	);
 
 	// 追加関数
-	void AddCollision(ObjectType type, IObject* obj, const DirectX::BoundingOrientedBox* obb)	{ m_obbs	.emplace_back(OBBCollision		(type, obj, obb))	; }
-	void AddCollision(ObjectType type, IObject* obj, const DirectX::BoundingSphere* sphere)		{ m_spheres	.emplace_back(SphereCollision	(type, obj, sphere)); }
+	void AddCollision(ObjectType objType, IObject* obj, const DirectX::BoundingOrientedBox* obb)	
+	{ 
+		m_obbs.emplace_back(CollisionData<DirectX::BoundingOrientedBox>(objType,CollisionType::OBB, obj, obb)); 
+	}
 
-	// 削除関数
-	void DeleteOBBCollision		(IObject* object);
-	void DeleteSphereCollision	(IObject* object);
+	void AddCollision(ObjectType objType, IObject* obj, const DirectX::BoundingSphere* sphere)		
+	{ 
+		m_spheres	.emplace_back(CollisionData<DirectX::BoundingSphere>(objType,CollisionType::Sphere, obj, sphere)); 
+	}
+
+	// テンプレート削除関数
+	void DeleteCollision(CollisionType collType, IObject* object);
 
 	// 初期化関数
 	void Clear();
@@ -126,8 +99,9 @@ private:
 
 // メンバ変数
 private:
-	std::vector<OBBCollision>		m_obbs;		// 四角の当たり判定を格納
-	std::vector<SphereCollision>	m_spheres;	// 球体の当たり判定を格納
+	std::vector<CollisionData<DirectX::BoundingOrientedBox>>	m_obbs;		// 四角の当たり判定を格納
+	std::vector<CollisionData<DirectX::BoundingSphere>>			m_spheres;	// 球体の当たり判定を格納
+
 
 
 	// デバッグ用に描画するための変数 *********************************

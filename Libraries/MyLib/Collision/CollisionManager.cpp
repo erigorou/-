@@ -33,6 +33,7 @@ CollisionManager::CollisionManager()
 // -------------------------------------------------------
 CollisionManager::~CollisionManager()
 {
+	Clear();
 }
 
 
@@ -79,7 +80,7 @@ void CollisionManager::Update()
         for (size_t j = 0; j < m_spheres.size(); j++)
         {
 			/////////////////衝突した場合の当たり判定を比較する/////////////////////
-            if (m_obbs[i].obb->Intersects(*m_spheres[j].sphere))
+            if (m_obbs[i].collision->Intersects(*m_spheres[j].collision))
             {
 				InterSectData obbData	= { m_obbs[i]	.objType, m_obbs[i].colType,	m_obbs[i].object	};
 				InterSectData sphereData= { m_spheres[j].objType, m_spheres[i].colType,	m_spheres[j].object	};
@@ -97,7 +98,7 @@ void CollisionManager::Update()
 		for (size_t j = i + 1; j < m_spheres.size(); j++)
 		{
 			/////////////////衝突した場合の当たり判定を比較する/////////////////////
-			if (m_spheres[i].sphere->Intersects(*m_spheres[j].sphere))
+			if (m_spheres[i].collision->Intersects(*m_spheres[j].collision))
 			{
 				InterSectData sphereData1 = { m_spheres[i].objType, m_spheres[i].colType, m_spheres[i].object};
 				InterSectData sphereData2 = { m_spheres[j].objType, m_spheres[j].colType, m_spheres[j].object};
@@ -151,33 +152,34 @@ void CollisionManager::Clear()
 
 
 // -------------------------------------------------------
-/// <summary>
-/// 当たり判定一覧から指定したオブジェクトの当たり判定を削除
-/// </summary>
-/// <param name="object">オブジェクトのポインタをIDとして使用</param>
+/// 当たり判定を削除する
 // -------------------------------------------------------
-void CollisionManager::DeleteOBBCollision(IObject* object)
+void CollisionManager::DeleteCollision(CollisionType collType, IObject* object)
 {
-	// m_obbsからobjectを削除
-	m_obbs.erase(std::remove_if(m_obbs.begin(), m_obbs.end(),
-		[object](const OBBCollision& obbCollision) { return obbCollision.object == object; }),
-		m_obbs.end());
-}
+	// 不正なCollisionTypeの場合は処理を終了
+	if (collType != CollisionType::OBB && collType != CollisionType::Sphere)	return;
 
+	// オブジェクト削除処理を補助関数として共通化
+	auto EraseMatchingObject = [object](auto& container) {
+		container.erase(
+			std::remove_if(container.begin(), container.end(),
+				[object](const auto& collision) {
+					return collision.object == object;
+				}),
+			container.end());
+		};
 
+	// CollisionTypeに応じて適切なコンテナから削除
+	switch (collType)
+	{
+	case CollisionType::OBB:
+		EraseMatchingObject(m_obbs);
+		break;
 
-// -------------------------------------------------------
-/// <summary>
-/// 当たり判定一覧から指定したオブジェクトの当たり判定を削除
-/// </summary>
-/// <param name="object">オブジェクトのポインタをIDとして使用</param>
-// -------------------------------------------------------
-void CollisionManager::DeleteSphereCollision(IObject* object)
-{
-	// m_spheresからobjectを削除
-	m_spheres.erase(std::remove_if(m_spheres.begin(), m_spheres.end(),
-		[object](const SphereCollision& sphereCollision) { return sphereCollision.object == object; }),
-		m_spheres.end());
+	case CollisionType::Sphere:
+		EraseMatchingObject(m_spheres);
+		break;
+	}
 }
 
 
@@ -204,7 +206,7 @@ inline void CollisionManager::DrawCollision(DirectX::SimpleMath::Matrix view, Di
 		DX::Draw
 		(
 			m_primitiveBatch.get(),
-			*obb.obb,
+			*obb.collision,
 			DirectX::Colors::Red
 		);
 	}
@@ -214,7 +216,7 @@ inline void CollisionManager::DrawCollision(DirectX::SimpleMath::Matrix view, Di
 		DX::Draw
 		(
 			m_primitiveBatch.get(),
-			*sphere.sphere,
+			*sphere.collision,
 			DirectX::Colors::Blue
 		);
 	}

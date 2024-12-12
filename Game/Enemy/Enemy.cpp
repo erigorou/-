@@ -297,7 +297,7 @@ void Enemy::Render(
 // --------------------------------
 void Enemy::Finalize()
 {
-	GetPlayScene()->GetCollisionManager()->DeleteSphereCollision(this);
+	GetPlayScene()->GetCollisionManager()->DeleteCollision(CollisionType::Sphere, this);
 }
 
 

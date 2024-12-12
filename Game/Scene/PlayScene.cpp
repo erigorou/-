@@ -270,6 +270,8 @@ void PlayScene::Render()
 /// </summary>
 void PlayScene::Finalize()
 {
+	// 終わるよー！とmessageを出す
+	MessageBox(nullptr, L"終了します", L"終了", MB_OK);
 }
 
 /// <summary>

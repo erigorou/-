@@ -47,6 +47,8 @@ void Goblin::GoblinIdling::Render(
 	const DirectX::SimpleMath::Matrix& projection)
 {
 	DirectX::SimpleMath::Matrix world = DirectX::SimpleMath::Matrix::Identity;
+
+	m_model->Draw(context, *states, world, view, projection);
 }
 
 
