@@ -134,7 +134,7 @@ private:
 	// ステージとの衝突判定
 	void HitStage(InterSectData data);
 	// ダメージ
-	void Damage(int damage);
+	void Damage(float damage);
 
 
 // 内部変数 *

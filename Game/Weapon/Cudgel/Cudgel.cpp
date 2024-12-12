@@ -117,6 +117,7 @@ void Cudgel::CreateCollision()
 	// 当たり判定を記録する
 	m_playScene->GetCollisionManager()->AddCollision(
 		ObjectType::Cudgel,		// オブジェクトの種類
+		CollisionType::OBB,		// 当たり判定の種類
 		this,					// このクラスのポインタ
 		m_collision.get()		// 当たり判定
 	);

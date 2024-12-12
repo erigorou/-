@@ -174,6 +174,7 @@ void Enemy::CreateCollision()
 	// Õ“Ë”»’è‚ðMessenger‚É“o˜^
 	m_playScene->GetCollisionManager()->AddCollision(
 		ObjectType::Enemy,
+		CollisionType::Sphere,
 		this,
 		m_bodyCollision.get());
 }

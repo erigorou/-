@@ -65,6 +65,7 @@ void CollisionManager::Initialize()
 
 
 
+
 // -------------------------------------------------------
 /// <summary>
 /// 更新関数
@@ -72,27 +73,31 @@ void CollisionManager::Initialize()
 // -------------------------------------------------------
 void CollisionManager::Update()
 {
-	// 4分割で当たるかどうか
+	// OBBのプロキシと球の当たり判定 *
+	for (size_t i = 0; i < m_obbs.size(); i++)
+	{
+		// OBBのプロキシ球の中心をOBBの中心に設定
+		m_obbProxies[i] = CreateProxySphere(m_obbs[i].collision);
 
-	 //////////////////OBBと球の当たり判定/////////////////////
-    for (size_t i = 0; i < m_obbs.size(); i++)
-    {
-        for (size_t j = 0; j < m_spheres.size(); j++)
-        {
-			/////////////////衝突した場合の当たり判定を比較する/////////////////////
-            if (m_obbs[i].collision->Intersects(*m_spheres[j].collision))
-            {
-				InterSectData obbData	= { m_obbs[i]	.objType, m_obbs[i].colType,	m_obbs[i].object	};
-				InterSectData sphereData= { m_spheres[j].objType, m_spheres[i].colType,	m_spheres[j].object	};
+		for (size_t j = 0; j < m_spheres.size(); j++)
+		{
+			// プロキシと衝突していなければ次の球に移る
+			if (!m_obbProxies[i].Intersects(*m_spheres[j].collision))	continue;
 
-				m_obbs[i]	.object->HitAction(sphereData);
+			// OBBと球の当たり判定
+			if (m_obbs[i].collision->Intersects(*m_spheres[j].collision))
+			{
+				InterSectData obbData = { m_obbs[i].objType, m_obbs[i].colType,	m_obbs[i].object };
+				InterSectData sphereData = { m_spheres[j].objType, m_spheres[i].colType,	m_spheres[j].object };
+
+				m_obbs[i].object->HitAction(sphereData);
 				m_spheres[j].object->HitAction(obbData);
-            }
-        }
-    }
+			}
+		}
+	}
 
 
-	/////////////////球同士の当たり判定////////////////////////
+	// 球同士による当たり判定
 	for (size_t i = 0; i < m_spheres.size() - 1; i++)
 	{
 		for (size_t j = i + 1; j < m_spheres.size(); j++)
@@ -150,6 +155,40 @@ void CollisionManager::Clear()
 }
 
 
+// -------------------------------------------------------
+// 衝突判定を追加する
+// -------------------------------------------------------
+template</* OBB */>
+void CollisionManager::AddCollision<DirectX::BoundingOrientedBox*>(ObjectType objType, CollisionType colType, IObject* obj, DirectX::BoundingOrientedBox* collision)
+{
+	// CollisionDataを生成してコンテナに追加
+	m_obbs.emplace_back(objType, colType, obj, collision);
+
+	// OBBのプロキシ球を生成してコンテナに追加
+	m_obbProxies.push_back(CreateProxySphere(collision));
+}
+
+template</* Sphere */>
+void CollisionManager::AddCollision<DirectX::BoundingSphere*>(ObjectType objType, CollisionType colType, IObject* obj, DirectX::BoundingSphere* collision)
+{
+	// CollisionDataを生成してコンテナに追加
+	m_spheres.emplace_back(objType, colType, obj, collision);
+}
+
+// -------------------------------------------------------
+// OBBのプロキシ球を生成する
+// -------------------------------------------------------
+inline DirectX::BoundingSphere CollisionManager::CreateProxySphere(const DirectX::BoundingOrientedBox* collision)
+{
+	// BoundingSphereをOBBの中心と最大半径で作成
+	float radius = sqrtf(
+		collision->Extents.x * collision->Extents.x +
+		collision->Extents.y * collision->Extents.y +
+		collision->Extents.z * collision->Extents.z
+	);
+
+	return DirectX::BoundingSphere(collision->Center, radius);
+}
 
 // -------------------------------------------------------
 /// 当たり判定を削除する
@@ -184,46 +223,42 @@ void CollisionManager::DeleteCollision(CollisionType collType, IObject* object)
 
 
 
-
+// -------------------------------------------------------
+// 衝突判定の範囲の描画
+// -------------------------------------------------------
 inline void CollisionManager::DrawCollision(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection)
 {
 	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = CommonResources::GetInstance()->GetCommonStates();
 
+	// 描画設定を行う
 	context->OMSetBlendState(states->Opaque(), nullptr, 0xFFFFFFFF);
 	context->OMSetDepthStencilState(states->DepthDefault(), 0);
 	context->RSSetState(states->CullNone());
 	context->IASetInputLayout(m_inputLayout.Get());
-	//** デバッグドローでは、ワールド変換いらない
+	// ビュー行列と射影行列を設定
 	m_basicEffect->SetView(view);
 	m_basicEffect->SetProjection(projection);
 	m_basicEffect->Apply(context);
-
+	// 描画開始
 	m_primitiveBatch->Begin();
 
 	for (auto obb : m_obbs)
 	{
-		DX::Draw
-		(
-			m_primitiveBatch.get(),
-			*obb.collision,
-			DirectX::Colors::Red
-		);
+		DX::Draw(m_primitiveBatch.get(), *obb.collision, DirectX::Colors::Red);
 	}
 
 	for (auto sphere : m_spheres)
 	{
-		DX::Draw
-		(
-			m_primitiveBatch.get(),
-			*sphere.collision,
-			DirectX::Colors::Blue
-		);
+		DX::Draw( m_primitiveBatch.get(), *sphere.collision, DirectX::Colors::Blue);
+	}
+
+	for (auto sphere : m_obbProxies)
+	{
+		DX::Draw(m_primitiveBatch.get(),sphere,DirectX::Colors::LimeGreen);
 	}
 	m_primitiveBatch->End();
 }
-
-
 
 
 

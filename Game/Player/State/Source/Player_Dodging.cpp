@@ -52,9 +52,6 @@ void PlayerDodging::PreUpdate()
 // 更新処理
 void PlayerDodging::Update(const float& elapsedTime)
 {
-	using namespace DirectX;
-	using namespace DirectX::SimpleMath;
-
 	// プレイヤーの座標を取得
 	Vector3 parentPos = m_player->GetPosition();
 
@@ -112,7 +109,7 @@ void PlayerDodging::Render(
 	CommonResources* resources = CommonResources::GetInstance();
 	// デバッグ文字の描画
 	auto debugString = resources->GetDebugString();
-	debugString->AddString("PlayerDodging");
+	debugString->AddString("");
 #endif // _DEBUG
 }
 

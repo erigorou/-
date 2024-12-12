@@ -84,6 +84,7 @@ void Goblin::CreateCollision()
 	// “–‚½‚è”»’è‚ðCollisionManager‚É“o˜^‚·‚é
 	m_playScene->GetCollisionManager()->AddCollision(
 		ObjectType::Goblin,
+		CollisionType::Sphere,
 		this,
 		m_bodyCollision.get());
 }

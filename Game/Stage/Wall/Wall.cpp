@@ -74,6 +74,7 @@ void Wall::CreateCollision()
 	// “–‚½‚è”»’è‚ð‹L˜^‚·‚é
 	m_playScene->GetCollisionManager()->AddCollision(
 		ObjectType::Stage,
+		CollisionType::Sphere,
 		this,
 		m_collision.get()
 	);
@@ -81,6 +82,7 @@ void Wall::CreateCollision()
 	// “–‚½‚è”»’è‚ð‹L˜^‚·‚é
 	m_playScene->GetCollisionManager()->AddCollision(
 		ObjectType::Stage,
+		CollisionType::Sphere,
 		this,
 		m_overCollision.get()
 	);

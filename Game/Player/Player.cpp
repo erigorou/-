@@ -115,6 +115,7 @@ void Player::CreateCollision()
 	// 当たり判定を記録する
 	m_playScene->GetCollisionManager()->AddCollision(
 		ObjectType::Player,		// オブジェクトの種類
+		CollisionType::Sphere,	// 当たり判定形状の種類
 		this,					// オブジェクトのアドレス
 		m_bodyCollision.get()	// 当たり判定のアドレス
 	);
@@ -478,7 +479,7 @@ void Player::HitAction(InterSectData data)
 }
 
 
-void Player::Damage(int damage)
+void Player::Damage(float damage)
 {
 	// HPを減らす
 	m_hp->Damage(damage);
