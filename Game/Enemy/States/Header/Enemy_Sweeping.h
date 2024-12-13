@@ -5,7 +5,7 @@
 
 class Enemy;
 class Player;
-class Easying;
+class Easing;
 
 // 敵の薙ぎ払いステートを定義
 class Enemy_Sweeping : public IState

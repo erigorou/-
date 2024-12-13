@@ -17,15 +17,20 @@ class Enemy;
 
 class PlayerDodging : public IPlayer
 {
-
+// 定数
 private:
-	/////////////////////////固定値///////////////////////////////
-	static const float DODGING_TIME;		// 回避全体の時間
-	static const float DODGE_FUNCTION;		// 回避時の摩擦
-	static const int   TRUNCATION_DIGIT;	// 少数〇〇桁以下削除
+	
+	static constexpr float DODGING_TIME = 1.0f;			// 回避全体の時間
+	static constexpr float ROWLING_END_TIME = 0.7f;		// ローリング終了時間
+	static constexpr float ROWLING_TIME = 0.3f;			// 回避中のローリング時間
 
-	static constexpr float DODGING_SPEED = 1.5f;	// 回避時の速度
 
+	static constexpr float DODGE_FUNCTION	= 0.9f;		// 回避時の摩擦
+	static constexpr int   TRUNCATION_DIGIT = 4;		// 少数〇〇桁以下削除
+
+	static constexpr float DODGING_SPEED = 1.5f;		// 回避時の速度
+
+// 公開関数
 public:
 	// デストラクタ
 	~PlayerDodging() override;
@@ -54,6 +59,15 @@ public:
 	// キー入力
 	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
 
+// 内部関数
+private:
+	// プレイヤーのアニメーション用更新処理
+	void UpdateAnimation(float totalTime);
+	// プレイヤーの移動を適用
+	void ApplyPlayerMovement(DirectX::SimpleMath::Vector3& parentPos);
+
+
+// 内部変数
 private:
 	// 総時間
 	float m_totalSeconds;
@@ -62,10 +76,10 @@ private:
 
 	// ポジション
 	DirectX::SimpleMath::Vector3 m_position;
-	// 回避方向を取得するための向き
-	DirectX::SimpleMath::Vector3 m_inputVelocity;
 	// プレイヤーの移動速度
 	DirectX::SimpleMath::Vector3 m_velocity;
+	//
+	
 	// プレイヤー
 	Player* m_player;
 	// モデル

@@ -127,6 +127,8 @@ private:
 	void CreateCollision();
 	// ステートの作成関数
 	void CreateState();
+	// 描画関連の初期化設定
+	void InitializeRender();
 	// 敵の体との衝突判定
 	void HitEnemyBody(InterSectData data);
 	// 敵のブキとの衝突判定

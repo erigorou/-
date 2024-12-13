@@ -65,39 +65,14 @@ Player::~Player()
 // --------------------------------
 void Player::Initialize()
 {
-	using namespace DirectX;
-	CommonResources* resources = CommonResources::GetInstance();
-
-	auto device = resources->GetDeviceResources()->GetD3DDevice();
-	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
-
-	// モデルを読み込む準備
-	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
-	fx->SetDirectory(L"Resources/Models");
-	// モデルを読み込む
-	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Player/Body/player.cmo", *fx);
-
+	// 描画関連の初期化
+	InitializeRender();
 	// 当たり判定の作成
 	CreateCollision();
-
 	// ステートの作成
 	CreateState();
-
 	// HPを管理するクラスの生成
 	m_hp = std::make_unique<HPSystem>(PLAYER_HP);
-
-	// ベーシックエフェクトを作成する
-	m_basicEffect = std::make_unique<BasicEffect>(device);
-	m_basicEffect->SetVertexColorEnabled(true);
-	// 入力レイアウトを作成する
-	DX::ThrowIfFailed(
-		CreateInputLayoutFromEffect<VertexPositionColor>(
-			device,
-			m_basicEffect.get(),
-			m_inputLayout.ReleaseAndGetAddressOf())
-	);
-	// プリミティブバッチの作成
-	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
 }
 
 
@@ -143,6 +118,35 @@ void Player::CreateState()
 
 	// 最初のステートを設定
 	m_currentState = m_playerIdling.get();
+}
+
+
+void Player::InitializeRender()
+{
+	CommonResources* resources = CommonResources::GetInstance();
+
+	auto device = resources->GetDeviceResources()->GetD3DDevice();
+	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
+
+	// モデルを読み込む準備
+	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
+	fx->SetDirectory(L"Resources/Models");
+	// モデルを読み込む
+	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Player/Body/player.cmo", *fx);
+
+	// ベーシックエフェクトを作成する
+	m_basicEffect = std::make_unique<DirectX::BasicEffect>(device);
+	m_basicEffect->SetVertexColorEnabled(true);
+	// 入力レイアウトを作成する
+	DX::ThrowIfFailed(
+		DirectX::CreateInputLayoutFromEffect<DirectX::VertexPositionColor>(
+			device,
+			m_basicEffect.get(),
+			m_inputLayout.ReleaseAndGetAddressOf())
+	);
+	// プリミティブバッチの作成
+	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
+
 }
 
 
