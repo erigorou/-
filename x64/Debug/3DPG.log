@@ -25,13 +25,7 @@ C:\Users\it232012\Desktop\�A�E��i\�S�ގ�\GitHub\-\Resources\Shader
   compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Warning\WarningGS.cso
   compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Warning\WarningPS.cso
   compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Warning\WarningVS.cso
-  pch.cpp
-  Action.cpp
-  BehaviorTree.cpp
-  IfDecorator.cpp
-  Selector.cpp
-  Sequence.cpp
-  DeviceResources.cpp
+  EnemyDamageEffect.cpp
   Particle.cpp
   DustTrailParticle.cpp
   SwordTrialParticle.cpp
@@ -39,48 +33,49 @@ C:\Users\it232012\Desktop\�A�E��i\�S�ގ�\GitHub\-\Resources\Shader
   TitleCameraState.cpp
   GameData.cpp
   HPSystem.cpp
-  EnemyDamageEffect.cpp
   EnemyFaceAttacking.cpp
   EnemyFaceIdling.cpp
-  EnemyDashAttacking.cpp
-  HitStop.cpp
-  Player_NockBacking.cpp
-  LoseResult.cpp
-  コードを生成中...
-  コンパイル中...
-  WinResult.cpp
-  Sea.cpp
-  EnemyTitleIdling.cpp
-  EnemyTitleMoving.cpp
-  Factory.cpp
-  Game.cpp
-  Camera.cpp
-  CommonResources.cpp
-  Enemy.cpp
   EnemyApproaching.cpp
-  Enemy_Attacking.cpp
+  EnemyDashAttacking.cpp
   EnemyIdling.cpp
+  Enemy_Attacking.cpp
   Enemy_Sweeping.cpp
+  Factory.cpp
   Goblin.cpp
   GoblinAttacking.cpp
   GoblinIdling.cpp
+  HitStop.cpp
+  コードを生成中...
+  コンパイル中...
+  Messenger.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\utility(270,61): warning C4267: '初期化中': 'size_t' から '_Ty2' に変換しました。データが失われているかもしれません。
+          with
+          [
+              _Ty2=int
+          ]
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Observer\Messenger.cpp(138,57): message : コンパイル対象の関数 テンプレート インスタンス化 'std::pair<int,int>::pair<int,unsigned __int64,0>(std::pair<int,unsigned __int64> &&) noexcept' のリファレンスを確認してください
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Observer\Messenger.cpp(138,42): message : 'Messenger::CreateKeyRangeList' の 'std::pair<int,int>::pair' への最初の参照を参照してください
   Player.cpp
   Player_Attacking_1.cpp
   Player_Attacking_2.cpp
-  Player_Idling.cpp
-  コードを生成中...
-  コンパイル中...
   Player_Dodging.cpp
+  Player_Idling.cpp
+  Player_NockBacking.cpp
   PlayScene.cpp
   ResultScene.cpp
-  SceneManager.cpp
-  TitleScene.cpp
+  LoseResult.cpp
+  WinResult.cpp
   Sound.cpp
   Floor.cpp
+  Sea.cpp
   Wall.cpp
+  EnemyTitleIdling.cpp
+  EnemyTitleMoving.cpp
   TitleEnemy.cpp
-  Fade.cpp
   PlaySceneUIManager.cpp
+  Fade.cpp
+  コードを生成中...
+  コンパイル中...
   EnemyHPUI.cpp
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\UI\Source\EnemyHPUI.cpp(66,30): warning C4100: 'elapsedTime': 引数は関数の本体部で 1 度も参照されません。
   Gauge.cpp
@@ -93,8 +88,6 @@ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\UI\Source\PlayerH
   Warning.cpp
   UI.cpp
   Cudgel.cpp
-  コードを生成中...
-  コンパイル中...
   Cudgel_Attacking.cpp
   Cudgel_Idling.cpp
   Cudgel_Sweeping.cpp
@@ -104,24 +97,14 @@ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\UI\Source\PlayerH
   Sword_Attacking_4.cpp
   Sword_Idling.cpp
   Sword.cpp
-  DebugDraw.cpp
   BinaryFile.cpp
   CollisionManager.cpp
+  コードを生成中...
+  コンパイル中...
   CustomShader.cpp
-  DebugCamera.cpp
-  DebugString.cpp
-  InputManager.cpp
   SkySphere.cpp
   Texture.cpp
-  Main.cpp
-  Messenger.cpp
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\utility(270,61): warning C4267: '初期化中': 'size_t' から '_Ty2' に変換しました。データが失われているかもしれません。
-          with
-          [
-              _Ty2=int
-          ]
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Observer\Messenger.cpp(138,57): message : コンパイル対象の関数 テンプレート インスタンス化 'std::pair<int,int>::pair<int,unsigned __int64,0>(std::pair<int,unsigned __int64> &&) noexcept' のリファレンスを確認してください
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Observer\Messenger.cpp(138,42): message : 'Messenger::CreateKeyRangeList' の 'std::pair<int,int>::pair' への最初の参照を参照してください
   コードを生成中...
+  LINK : 前回のインクリメンタル リンクで C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exe が見つからなかったか、ビルドされませんでした。フル リンクを行います。
      ライブラリ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.lib とオブジェクト C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exp を作成中
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exe

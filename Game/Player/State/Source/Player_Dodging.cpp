@@ -54,7 +54,7 @@ void PlayerDodging::Update(const float& elapsedTime)
 	// アニメーションの更新
 	UpdateAnimation(m_totalSeconds);
 	// ステート開始から時間を計測、一定時間で別のStateへ遷移させる
-	m_player->TimeComparison(m_totalSeconds, DODGING_TIME, m_player->GetPlayerIdlingState(), elapsedTime);
+	m_player->TimeComparison(m_totalSeconds, ROLLING_END_TIME, m_player->GetPlayerIdlingState(), elapsedTime);
 }
 
 
@@ -67,26 +67,26 @@ void PlayerDodging::UpdateAnimation(float totalTime)
 	float value;
 
 	// 回転処理の部分
-	if (totalTime <= ROWLING_END_TIME)
+	if (totalTime <= ROLLING_END_TIME)
 	{
-		value = Easing::easeOutBack(totalTime / ROWLING_END_TIME);
+		value = Easing::easeOutBack(totalTime / ROLLING_END_TIME);
 
 		m_rollingValue.x = DirectX::XMConvertToRadians(value * 360);
 	}
 
 
 	// ローリング処理の部分
-	if (totalTime <= ROWLING_TIME)
+	if (totalTime <= ROLLING_END_TIME)
 	{
 		// イージングを掛けるための時間
-		value = Easing::easeOutCubic(totalTime / ROWLING_TIME);
+		value = Easing::easeOutCubic(totalTime / ROLLING_TIME);
 		m_position.y = value * 2;
 	}
 	// ローリング後の硬直処理
-	else if( totalTime - ROWLING_TIME <= DODGING_RECOVERY_TIME - ROWLING_TIME)
+	else if( totalTime - ROLLING_TIME <= DODGING_RECOVERY_TIME - ROLLING_TIME)
 	{
 		// 後処理を行う
-		value = Easing::easeOutBounce((totalTime - ROWLING_TIME) / (DODGING_RECOVERY_TIME - ROWLING_TIME));
+		value = Easing::easeOutBounce((totalTime - ROLLING_TIME) / (DODGING_RECOVERY_TIME - ROLLING_TIME));
 		m_position.y = 2 - (value * 2);
 	}
 
