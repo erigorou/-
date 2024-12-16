@@ -11,7 +11,6 @@
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
-#include "Libraries/Microsoft/DebugDraw.h"
 #include "Libraries/MyLib/Math.h"
 #include "Game/Scene/PlayScene.h"
 #include "../HitStop/HitStop.h"

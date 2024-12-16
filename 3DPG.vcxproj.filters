@@ -87,7 +87,7 @@
     <ClInclude Include="Game\CommonResources.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Libraries\Microsoft\DebugDraw.h">
+    <ClInclude Include="Libraries\MyLib\DebugDraw.h">
       <Filter>Libraries\Microsoft</Filter>
     </ClInclude>
     <ClInclude Include="Game\Screen.h">
@@ -237,7 +237,7 @@
     <ClCompile Include="Game\CommonResources.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="Libraries\Microsoft\DebugDraw.cpp">
+    <ClCompile Include="Libraries\MyLib\DebugDraw.cpp">
       <Filter>Libraries\Microsoft</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\MyLib\DebugCamera.cpp">

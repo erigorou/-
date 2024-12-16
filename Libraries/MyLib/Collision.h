@@ -9,7 +9,7 @@
 #pragma once
 
 #include "pch.h"							// プリコンパイル済みヘッダー
-#include "Libraries/Microsoft/DebugDraw.h"	// 当たり判定を可視化するのに使用
+#include "Libraries/MyLib/DebugDraw.h"	// 当たり判定を可視化するのに使用
 
 class Collision
 {

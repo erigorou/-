@@ -10,9 +10,10 @@
 #include "Libraries/MyLib/BinaryFile.h"
 #include "Game/Scene/SceneManager.h"
 #include "Libraries/MyLib/EasingFunctions.h"
-#include "Libraries/Microsoft/DebugDraw.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "Game/Data/GameData.h"
+#include "Libraries/MyLib/CustomShader/CustomShader.h"
+
 ///	<summary>
 ///	インプットレイアウト
 ///	</summary>
@@ -58,9 +59,9 @@ void Fade::Initialize()
 	CommonResources* commonResources = CommonResources::GetInstance();
 	// デバイスリソースの取得
 	m_pDR = commonResources->GetDeviceResources();
+	auto device = m_pDR->GetD3DDevice();
 
-	// テクスチャの読み込み
-	LoadTexture(TEXTURE_PATH);
+	m_customShader->LoadTexture(device, TEXTURE_PATH, m_texture);
 	// シェーダーの生成
 	CreateShader();
 	// プリミティブバッチの生成
@@ -71,29 +72,6 @@ void Fade::Initialize()
 
 
 
-/// <summary>
-/// テクスチャリソース読み込み処理
-/// </summary>
-/// <param name="path">テクスチャの相対パス</param>
-void Fade::LoadTexture(const wchar_t* path)
-{
-	// テクスチャを保存する変数
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture;
-
-	// テクスチャの読み込み
-	DX::ThrowIfFailed(
-		DirectX::CreateWICTextureFromFile(
-			m_pDR->GetD3DDevice(),
-			path,
-			nullptr,
-			texture.ReleaseAndGetAddressOf()
-		)
-	);
-
-	// 配列に格納
-	m_texture.push_back(texture);
-}
-
 
 /// <summary>
 /// シェーダー作成部分用関数
@@ -103,33 +81,17 @@ void Fade::CreateShader()
 	// デバイスの取得
 	ID3D11Device* device = m_pDR->GetD3DDevice();
 
-	// コンパイルされたシェーダーファイルを読み込む
-	BinaryFile VSData = BinaryFile::LoadFile(VS_PATH);
-	BinaryFile GSData = BinaryFile::LoadFile(GS_PATH);
-	BinaryFile PSData = BinaryFile::LoadFile(PS_PATH);
+	// カスタムシェーダーの初期化
+	m_customShader = std::make_unique<CustomShader>
+		(
+			device,
+			VS_PATH,
+			PS_PATH,
+			GS_PATH,
+			INPUT_LAYOUT
+		);
 
-	// インプットレイアウトの作成
-	device->CreateInputLayout(
-		&INPUT_LAYOUT[0],
-		(UINT)INPUT_LAYOUT.size(),
-		VSData.GetData(),
-		VSData.GetSize(),
-		m_input_Layout.GetAddressOf()
-	);
-
-	// 頂点シェーダーの作成
-	if (FAILED(device->CreateVertexShader(VSData.GetData(), VSData.GetSize(), nullptr, m_vertexShader.GetAddressOf())))
-		MessageBox(0, L"頂点シェーダーの生成に失敗しました.", NULL, MB_OK);
-
-	// ジオメトリシェーダーの作成
-	if (FAILED(device->CreateGeometryShader(GSData.GetData(), GSData.GetSize(), nullptr, m_geometryShader.GetAddressOf())))
-		MessageBox(0, L"ジオメトリシェーダーの生成に失敗しました.", NULL, MB_OK);
-
-	// ピクセルシェーダーの作成
-	if (FAILED(device->CreatePixelShader(PSData.GetData(), PSData.GetSize(), nullptr, m_pixelShader.GetAddressOf())))
-		MessageBox(0, L"ピクセルシェーダーの生成に失敗しました.", NULL, MB_OK);
-
-	//	シェーダーにデータを渡すためのコンスタントバッファ生成
+	// シェーダーにデータを渡すためのコンスタントバッファ生成
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
 	bd.Usage			= D3D11_USAGE_DEFAULT;
@@ -278,17 +240,14 @@ void Fade::Render()
 	context->OMSetDepthStencilState(m_states->DepthDefault(), 0);
 	//	カリングは正面のみ行う
 	context->RSSetState(m_states->CullCounterClockwise());
-	//	シェーダをセットする
-	context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
-	context->GSSetShader(m_geometryShader.Get(), nullptr, 0);
-	context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
+
 
 	//	ピクセルシェーダにテクスチャを登録する。
 	for (int i = 0; i < m_texture.size(); i++)
 		context->PSSetShaderResources(i, 1, m_texture[i].GetAddressOf());
 
-	// インプットレイアウトの登録
-	context->IASetInputLayout(m_input_Layout.Get());
+	//	シェーダの開始
+	m_customShader->BeginSharder(context);
 
 	// 板ポリゴンで描画
 	m_batch->Begin();
@@ -296,9 +255,7 @@ void Fade::Render()
 	m_batch->End();
 
 	//	シェーダーの解除
-	context->VSSetShader(nullptr, nullptr, 0);
-	context->GSSetShader(nullptr, nullptr, 0);
-	context->PSSetShader(nullptr, nullptr, 0);
+	m_customShader->EndSharder(context);
 
 
 #ifdef _DEBUG

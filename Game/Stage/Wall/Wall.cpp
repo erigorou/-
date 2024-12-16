@@ -8,7 +8,6 @@
 #include "Game/CommonResources.h"	
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
-#include "Libraries/Microsoft/DebugDraw.h"
 #include "DeviceResources.h"
 
 #include "Wall.h"

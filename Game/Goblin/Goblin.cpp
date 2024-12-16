@@ -8,7 +8,6 @@
 #include "Game/Scene/PlayScene.h"
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/DebugString.h"
-#include "Libraries/Microsoft/DebugDraw.h"
 #include "Interface/IState.h"
 #include "Game/Data/HPSystem.h"
 #include "../Enemy/Enemy.h"

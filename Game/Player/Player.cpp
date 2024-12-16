@@ -10,7 +10,6 @@
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
-#include "Libraries/Microsoft/DebugDraw.h"
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/KeyboardChacker.h"
 #include "Game/Player/Player.h"

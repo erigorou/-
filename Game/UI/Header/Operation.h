@@ -4,7 +4,6 @@
 
 #include "pch.h"
 #include "DeviceResources.h"
-#include "Libraries/Microsoft/DebugDraw.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "OperateUI.h"
 #include "../UI.h"

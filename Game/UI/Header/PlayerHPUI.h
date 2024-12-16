@@ -4,7 +4,6 @@
 #define PLAYER_HP_UI
 
 #include "pch.h"
-#include "Libraries/Microsoft/DebugDraw.h"
 #include "DeviceResources.h"
 
 class HPSystem;

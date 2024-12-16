@@ -5,7 +5,7 @@
 #include "Interface/IObject.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
-#include "Libraries/Microsoft/DebugDraw.h"
+#include "Libraries/Mylib/DebugDraw.h"
 
 // -------------------------------------------------------
 /// <summary>

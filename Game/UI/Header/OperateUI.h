@@ -3,7 +3,6 @@
 #include "pch.h"
 #include "Interface/IObserver.h"
 #include "DeviceResources.h"
-#include "Libraries/Microsoft/DebugDraw.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 
 class OperateUI : public IObserver

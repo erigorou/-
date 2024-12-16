@@ -7,6 +7,8 @@
 #include "Game/CommonResources.h"
 
 class SceneManager;
+class CustomShader;
+
 class Fade
 {
 public:
@@ -51,7 +53,6 @@ public:
 
 
 private:
-	void LoadTexture(const wchar_t* path);		// テクスチャの読み込み
 	void CreateShader();						// シェーダーの生成処理
 	void CountTimer();							// タイマーのカウント処理
 
@@ -68,17 +69,23 @@ private:
 	float		m_easingValue;	// イージング値
 
 	DX::DeviceResources*						m_pDR;		// デバイスリソーシーズ
-	Microsoft::WRL::ComPtr<ID3D11Buffer>		m_CBuffer;
-	Microsoft::WRL::ComPtr<ID3D11InputLayout>	m_input_Layout;
+	Microsoft::WRL::ComPtr<ID3D11Buffer>		m_CBuffer;	// コンスタントバッファ
 
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_batch;
 	std::unique_ptr<DirectX::CommonStates> m_states;
 	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> m_texture;
 
-	Microsoft::WRL::ComPtr<ID3D11VertexShader>		m_vertexShader;
-	Microsoft::WRL::ComPtr<ID3D11PixelShader>		m_pixelShader;
-	Microsoft::WRL::ComPtr<ID3D11GeometryShader>	m_geometryShader;
+	std::unique_ptr<CustomShader> m_customShader;
 
+
+
+	// 型抜き用の変数
+
+	// 型抜き用テクスチャ
+	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> m_maskTexture;
+
+	// レンダーテクスチャ
+	//std::unique_ptr<>
 };
 
 #endif // !FADE_DEFINED

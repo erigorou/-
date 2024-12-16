@@ -267,7 +267,7 @@
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Idling.h" />
     <ClInclude Include="Game\Weapon\Sword\Sword.h" />
     <ClInclude Include="Interface\IState.h" />
-    <ClInclude Include="Libraries\Microsoft\DebugDraw.h" />
+    <ClInclude Include="Libraries\MyLib\DebugDraw.h" />
     <ClInclude Include="Libraries\MyLib\BinaryFile.h" />
     <ClInclude Include="Libraries\MyLib\Collision.h" />
     <ClInclude Include="Libraries\MyLib\Collision\CollisionManager.h" />
@@ -355,7 +355,7 @@
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Attacking_4.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Idling.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Sword.cpp" />
-    <ClCompile Include="Libraries\Microsoft\DebugDraw.cpp" />
+    <ClCompile Include="Libraries\MyLib\DebugDraw.cpp" />
     <ClCompile Include="Libraries\MyLib\BinaryFile.cpp" />
     <ClCompile Include="Libraries\MyLib\Collision\CollisionManager.cpp" />
     <ClCompile Include="Libraries\MyLib\CustomShader\CustomShader.cpp" />

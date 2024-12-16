@@ -20,15 +20,19 @@ class PlayerDodging : public IPlayer
 // 定数
 private:
 	
-	static constexpr float ROLLING_TIME = 0.7f;			// 回避中のローリング時間
-	static constexpr float DODGING_RECOVERY_TIME = 1.2f;	// 回避後の硬直時間
-	static constexpr float ROLLING_END_TIME = 1.5f;		// ローリング終了時間
+	static constexpr float SPIN_TIME = 1.0f;			// 回避中の回転時間
+	static constexpr float SPIN_REST_TIME = 1.5f;		// 回避後の回転時間
 
+	static constexpr float ANIMATION_TIME = 0.4f;				// 回避中のアニメーション時間
+	static constexpr float DODGING_RECOVERY_TIME = 1.0f;	// 回避後の硬直時間
+	static constexpr float ANIMATION_END_TIME = 1.5f;			// ローリング終了時間
 
-	static constexpr float DODGE_FUNCTION	= 0.92f;		// 回避時の摩擦
+	static constexpr float DODGE_FUNCTION	= 0.93f;	// 回避時の摩擦
 	static constexpr int   TRUNCATION_DIGIT = 4;		// 少数〇〇桁以下削除
-
 	static constexpr float DODGING_SPEED = 1.5f;		// 回避時の速度
+	static constexpr float UP_VALUE = 3.0f;				// 上昇量
+	static constexpr float ROLLING_ROT = 360.0f;		// 回転量
+	static constexpr float ROLLING_REST_ROT = 30.0f;	// ローリング後の回転角度
 
 // 公開関数
 public:
@@ -63,6 +67,8 @@ public:
 private:
 	// プレイヤーのアニメーション用更新処理
 	void UpdateAnimation(float totalTime);
+	void RollingAnimation(float totalTime);
+	void AdjustCharacterTransition(float totalTime);
 	// プレイヤーの移動を適用
 	void ApplyPlayerMovement(DirectX::SimpleMath::Vector3& parentPos);
 
