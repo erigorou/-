@@ -20,12 +20,13 @@ class PlayerDodging : public IPlayer
 // 定数
 private:
 	
-	static constexpr float DODGING_TIME = 1.0f;			// 回避全体の時間
-	static constexpr float ROWLING_END_TIME = 0.7f;		// ローリング終了時間
-	static constexpr float ROWLING_TIME = 0.3f;			// 回避中のローリング時間
+	static constexpr float DODGING_TIME = 1.5f;			// 回避全体の時間
+	static constexpr float ROWLING_END_TIME = 1.5f;		// ローリング終了時間
+	static constexpr float ROWLING_TIME = 0.7f;			// 回避中のローリング時間
+	static constexpr float DODGING_RECOVERY_TIME = 1.2f;	// 回避後の硬直時間
 
 
-	static constexpr float DODGE_FUNCTION	= 0.9f;		// 回避時の摩擦
+	static constexpr float DODGE_FUNCTION	= 0.92f;		// 回避時の摩擦
 	static constexpr int   TRUNCATION_DIGIT = 4;		// 少数〇〇桁以下削除
 
 	static constexpr float DODGING_SPEED = 1.5f;		// 回避時の速度
@@ -89,6 +90,7 @@ private:
 	float m_upValue;	// 上昇量
 	float m_downValue;	// 下降量
 
+	DirectX::SimpleMath::Vector3 m_rollingValue;
 };
 
 #endif  // PLAYER_DODGING_DEFINED

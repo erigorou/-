@@ -18,6 +18,8 @@ PlayerDodging::PlayerDodging(Player* player)
 	,m_model(nullptr)
 	,m_totalSeconds(0.0f)
 	,m_finishTime(0.0f)
+	,m_rollingValue()
+
 {
 }
 
@@ -46,8 +48,9 @@ void PlayerDodging::PreUpdate()
 // 更新処理
 void PlayerDodging::Update(const float& elapsedTime)
 {
+	float t = elapsedTime;	
 	// 経過時間を加算
-	m_totalSeconds += elapsedTime;
+	m_totalSeconds += t;
 	// アニメーションの更新
 	UpdateAnimation(m_totalSeconds);
 	// ステート開始から時間を計測、一定時間で別のStateへ遷移させる
@@ -63,23 +66,33 @@ void PlayerDodging::UpdateAnimation(float totalTime)
 	// イージングの要素数
 	float value;
 
-	if (totalTime < ROWLING_END_TIME)
+	// 回転処理の部分
+	if (totalTime <= ROWLING_END_TIME)
 	{
-		value = Easing::easeOutCubic(totalTime / ROWLING_END_TIME);
+		value = Easing::easeOutBack(totalTime / ROWLING_END_TIME);
 
+		m_rollingValue.x = DirectX::XMConvertToRadians(value * 360);
 	}
 
-	// ローリング部分
-	if (totalTime < ROWLING_TIME)
+
+	// ローリング処理の部分
+	if (totalTime <= ROWLING_TIME)
 	{
 		// イージングを掛けるための時間
 		value = Easing::easeOutCubic(totalTime / ROWLING_TIME);
 		m_position.y = value * 2;
 	}
-
+	// ローリング後の硬直処理
+	else if( totalTime - ROWLING_TIME <= DODGING_RECOVERY_TIME - ROWLING_TIME)
+	{
+		// 後処理を行う
+		value = Easing::easeOutBounce((totalTime - ROWLING_TIME) / (DODGING_RECOVERY_TIME - ROWLING_TIME));
+		m_position.y = 2 - (value * 2);
+	}
 
 	// プレイヤーの移動を適用
 	ApplyPlayerMovement(m_position);
+	m_player->SetAnimarionRotate(m_rollingValue);
 }
 
 
