@@ -14,12 +14,14 @@
 #include "../Sound/Sound.h"
 #include "Libraries/MyLib/EasingFunctions.h"
 #include "Libraries/MyLib/Math.h"
+#include "Effects/Particle.h"
 
 #include "../Camera/Camera.h"
 #include "../Stage/Floor/Floor.h"
 #include "../Stage/Sea/Sea.h"
 #include "../TitleObject/TitleEnemy.h"
 #include "Libraries/MyLib/SkySphere.h"
+
 #include <cassert>
 
 using namespace DirectX;
@@ -169,6 +171,8 @@ void TitleScene::CreateObjects()
 
 	// タイトルシーンのカメラステートを設定
 	m_camera->ChangeState(m_camera->GetTitleState());
+
+	m_particle = Factory::CreateParticle();
 }
 
 
@@ -199,6 +203,8 @@ void TitleScene::Update(float elapsedTime)
 			Sound::PlaySE(Sound::SE_TYPE::SYSTEM_OK);
 		}
 	}
+
+	m_particle->Update(elapsedTime, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero);
 }
 
 //---------------------------------------------------------
@@ -224,6 +230,9 @@ void TitleScene::Render()
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
 	DrawTexture();
+
+	m_particle->CreateBillboard(m_camera->GetEyePosition(),DirectX::SimpleMath::Vector3::Zero,m_camera->GetUpVector());
+	m_particle->Render(view, m_projection);
 
 	// スプライトバッチの終わり
 	m_spriteBatch->End();
@@ -255,7 +264,7 @@ void TitleScene::DrawTexture()
 	Vector2 logoPos
 	{
 		titlePos.x ,
-		TITLE_LOGO_CENTER_Y + moveValue * Easing::easeOutBounce(t)
+		TITLE_LOGO_CENTER_Y + moveValue * Easing::easeOutElastic(t)
 	};
 
 
@@ -323,3 +332,8 @@ void TitleScene::SetShakeCamera()
  	m_camera->SetShake();
 }
 
+
+void TitleScene::CleateSpamDust(DirectX::SimpleMath::Vector3 pos)
+{
+	m_particle->CreateSlamDust(pos);
+}

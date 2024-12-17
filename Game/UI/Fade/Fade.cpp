@@ -321,7 +321,7 @@ void Fade::Render()
 	float t = 0.0f;
 	t = std::max(0.0f, 1.0f - (m_totalTime / FADE_TIME));
 	t = std::max(0.0001f, Easing::easeInCubic(t));
-	GameData::GetInstance()->SetFadeValue(t);
+	GameData::GetInstance()->SetFadeValue(1 - t);
 
 	ID3D11DeviceContext1* context = m_pDR->GetD3DDeviceContext();
 
@@ -396,28 +396,10 @@ float Fade::CalcrateFadeValue(float t)
 {
 	if (FadeType::FADE_IN == m_fadeType)
 	{
-		return CalcrateFadeIn(t);
+		return Easing::easeInOutExpo(t) * 6;
 	}
 	else if (FadeType::FADE_OUT == m_fadeType)
 	{
-		return CalcrateFadeOut(t);
+		return Easing::easeInOutExpo(t) * 6;
 	}
-}
-
-
-// ----------------------------------
-// フェードインの計算
-// ----------------------------------
-float Fade::CalcrateFadeIn(float t)
-{
-	return Easing::easeInOutExpo(t) * 8.0f;
-}
-
-
-// ----------------------------------
-// フェードアウトの計算
-// ----------------------------------
-float Fade::CalcrateFadeOut(float t)
-{
-	return Easing::easeInOutExpo(t) * 8.0f;
 }

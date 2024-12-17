@@ -13,6 +13,7 @@ class Floor;
 class Sea;
 class TitleEnemy;
 class SkySphere;
+class Particle;
 
 namespace mylib
 {
@@ -26,11 +27,14 @@ class TitleScene final : public IScene
 
 public:
 
-	static constexpr float DELAY = 0.5f;		// タイトル画面の遅延時間
-	static constexpr float ANIM_END = 1.75f;	// タイトル画面のアニメーション終了時間
+	static constexpr float DELAY = 2.0f;		// タイトル画面の遅延時間
+	static constexpr float ANIM_END = 2.0f;	// タイトル画面のアニメーション終了時間
 
 	static constexpr float TITLE_LOGO_CENTER_Y = -165.0f;	// タイトルの中心座標 ※bottom基準
 
+
+public:
+	void CleateSpamDust(DirectX::SimpleMath::Vector3 pos);
 
 public:
 
@@ -89,5 +93,7 @@ private:
 	std::unique_ptr<Sea>		m_sea;			// 海
 	std::unique_ptr<TitleEnemy> m_enemy;		// 敵
 	std::unique_ptr<SkySphere>	m_skySphere;	// スカイスフィア
+
+	std::unique_ptr<Particle> m_particle;		// パーティクル
 };
 

@@ -72,6 +72,7 @@ c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\debugcamera.
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\customshader.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\collisionmanager.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\binaryfile.obj
+c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\debugdraw.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\sword.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\sword_idling.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\sword_attacking_4.obj
@@ -90,8 +91,10 @@ c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\dust
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\dust\dustps.cso
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\dust\dustvs.cso
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\fade\fadegs.cso
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\fade\fadeps.cso
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\fade\fadevs.cso
+c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\mask\maskgs.cso
+c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\mask\maskps.cso
+c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\mask\maskvs.cso
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\operation\operationgs.cso
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\operation\operationps.cso
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\operation\operationvs.cso
@@ -106,9 +109,7 @@ c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\voro
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\warning\warninggs.cso
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\warning\warningps.cso
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\warning\warningvs.cso
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\mask\maskgs.cso
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\mask\maskps.cso
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\mask\maskvs.cso
+c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\fade\fadeps.cso
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.lib
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.exp
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.exe
@@ -116,12 +117,8 @@ c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.ilk
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.pdb
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\resource.res
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.exe.embed.manifest.res
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\bgm_player.obj
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\debugdraw.obj
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\player_attacking_3.obj
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\player_attacking_4.obj
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\rendertexture.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\fade.obj.enc
+c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\scenemanager.obj.enc
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.exe.embed.manifest
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg_manifest.rc
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.tlog\cl.command.1.tlog

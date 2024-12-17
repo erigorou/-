@@ -82,7 +82,7 @@ void OperateUI::Render()
 	{
 		m_totalTime -= m_elapsedTime;
 
-		if (m_totalTime <= 0.0f)	
+		if (m_totalTime <= 0.0f)
 			m_downKey = false;
 	}
 

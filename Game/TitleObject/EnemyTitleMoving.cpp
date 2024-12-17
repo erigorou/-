@@ -104,6 +104,9 @@ void EnemyTitleMoving::PostUpdate()
 	// “G‚ÌˆÊ’u‚ð0‚ÅŒÅ’è‚·‚é
 	m_position.y = 0.f;
 	m_enemy->SetPosition(m_position);
+
+	// ƒXƒpƒ“
+	m_enemy->GetTitleScene()->CleateSpamDust(m_position);
 }
 
 
@@ -120,7 +123,6 @@ void EnemyTitleMoving::Render(
 	UNREFERENCED_PARAMETER(view);
 	UNREFERENCED_PARAMETER(projection);
 	UNREFERENCED_PARAMETER(m_model);
-
 
 #ifdef _DEBUG
 	CommonResources* resources = CommonResources::GetInstance();

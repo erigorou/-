@@ -149,10 +149,6 @@ public:
         }
     }
 
- /// <summary>
- /// Ease-in-out Bounce ŠÖ”
- /// </summary>
- /// <param name="x">0.0‚©‚ç1.0‚Ü‚Å‚Ì“ü—Í’l</param>
  static float easeInOutBounce(float x) {
 	 return x < 0.5
 		 ? (1 - easeOutBounce(1 - 2 * x)) / 2
@@ -160,7 +156,29 @@ public:
  }
 
 
+ static float easeInBounseToExpo(float t, float threshold)
+ {
+     if (t < threshold)
+     {
+		 return easeOutBack(t / threshold) * 0.5f;
+     }
+     else
+     {
+         return threshold + easeInOutExpo((t - threshold) / (1.0f - threshold)) * (1.0f - threshold);
+     }
+ }
 
+ static float easeOutBounseToExpo(float t, float threshold)
+ {
+     if (t < threshold)
+     {
+		 return easeInExpo(t / threshold) * threshold;
+	 }
+     else
+     {
+		 return threshold + easeInBack((t - threshold) / (1.0f - threshold)) * (1.0f - threshold);
+	 }
+ }
 };
 
 #endif // EASING_FUNCTIONS_H

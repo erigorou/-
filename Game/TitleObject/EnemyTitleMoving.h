@@ -4,6 +4,7 @@
 #include "Interface/IState.h"
 
 class Enemy;
+class Particle;
 
 // 敵の待機ステートを定義
 class EnemyTitleMoving : public IState
@@ -31,7 +32,7 @@ public:
 	// 終了処理
 	void Finalize() override;
 
-
+	
 
 private:
 	static constexpr float MINIMAL		= 0.01f;

@@ -49,10 +49,10 @@ void SceneManager::Initialize()
 	m_fade = std::make_unique<Fade>(this);
 	m_fade->Initialize();
 
-#ifdef _DEBUG
-	ChangeScene(IScene::SceneID::PLAY);
-#endif // !_DEBUG
 #ifndef _DEBUG
+	ChangeScene(IScene::SceneID::TITLE);
+#endif // !_DEBUG
+#ifdef _DEBUG
 	ChangeScene(IScene::SceneID::TITLE);
 #endif // !_DEBUG
 
