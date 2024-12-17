@@ -83,7 +83,7 @@ void SceneManager::Update(float elapsedTime)
 	{
 		m_nextSceneID = nextSceneID;
 		m_isFade = true;
-		m_fade->StartFadeIn();
+		m_fade->StartFadeOut();
 		m_canChangeScene = false;
 	}
 
@@ -123,7 +123,7 @@ void SceneManager::ChangeScene(IScene::SceneID sceneID)
 	DeleteScene();
 	CreateScene(sceneID);
 
-	m_fade->StartFadeOut();
+	m_fade->StartFadeIn();
 }
 
 //---------------------------------------------------------

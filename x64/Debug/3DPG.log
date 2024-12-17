@@ -1,27 +1,5 @@
-﻿  EnemyApproaching.cpp
-  EnemyDashAttacking.cpp
-  EnemyIdling.cpp
-  Enemy_Attacking.cpp
-  Enemy_Sweeping.cpp
-  Factory.cpp
-  Goblin.cpp
-  Player.cpp
-  Player_Attacking_1.cpp
-  Player_Attacking_2.cpp
-  Player_Dodging.cpp
-  Player_Idling.cpp
-  Player_NockBacking.cpp
-  PlayScene.cpp
-  PlaySceneUIManager.cpp
-  Cudgel_Attacking.cpp
-  Cudgel_Idling.cpp
-  Cudgel_Sweeping.cpp
-  Sword_Attacking_1.cpp
-  Sword_Attacking_2.cpp
-  コードを生成中...
-  コンパイル中...
-  Sword_Attacking_3.cpp
-  Sword_Attacking_4.cpp
-  Sword_Idling.cpp
-  コードを生成中...
+﻿  Fade.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\UI\Fade\Fade.cpp(298,10): warning C4189: 'hr': ローカル変数が初期化されましたが、参照されていません
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\UI\Fade\Fade.cpp(375,46): warning C4267: '引数': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\UI\Fade\Fade.cpp(407): warning C4715: 'Fade::CalcrateFadeValue': 値を返さないコントロール パスがあります。
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exe

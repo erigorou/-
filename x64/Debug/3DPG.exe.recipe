@@ -31,6 +31,15 @@
       <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Fade\FadeVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Mask\MaskGS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Mask\MaskPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Mask\MaskVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Operation\OperationGS.cso</FullPath>
     </ContentFile>
     <ContentFile>

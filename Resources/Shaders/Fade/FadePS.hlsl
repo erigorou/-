@@ -36,6 +36,12 @@ float CalcAlpha2(float2 uv, float2 center, float size)
 }
 
 
+float EraseDifference(float4 dst)
+{
+    return(1.0 - dst.a);
+}
+
+
 
 float4 main(PS_INPUT input) : SV_TARGET
 {
@@ -54,6 +60,8 @@ float4 main(PS_INPUT input) : SV_TARGET
     float t = easing.x;
 	
     output.a = CalcAlpha2(input.Tex, float2(0.5f, 0.5f), t * 50);
+    
+    output.a = EraseDifference(output2);
     
     return output;
 }

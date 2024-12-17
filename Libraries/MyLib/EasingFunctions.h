@@ -159,6 +159,8 @@ public:
 		 : (1 + easeOutBounce(2 * x - 1)) / 2;
  }
 
+
+
 };
 
 #endif // EASING_FUNCTIONS_H

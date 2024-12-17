@@ -39,7 +39,15 @@ public:
 	static const wchar_t* GS_PATH;
 	static const wchar_t* PS_PATH;
 
-	static constexpr float FADE_TIME = 1.2f;
+	static const wchar_t* STENCIL_TEX_PATH;
+	static const wchar_t* MASK_VS_PATH;
+	static const wchar_t* MASK_GS_PATH;
+	static const wchar_t* MASK_PS_PATH;
+
+
+	static constexpr float CHANGE_SCENE_TIME = 2.2f;
+	static constexpr float FADE_TIME = 2.0f;
+
 
 	void StartFadeIn();
 	void StartFadeOut();
@@ -59,6 +67,12 @@ private:
 	void FadeIn();
 	void FadeOut();
 
+	float CalcrateFadeValue(float t);
+	float CalcrateFadeIn(float t);
+	float CalcrateFadeOut(float t);
+
+	void DrawStencilImage();					// 型抜き画像の描画処理
+
 	SceneManager* m_scene;		// シーンマネージャ
 
 	float		m_elapsedTime;	// 1Fの時間
@@ -75,17 +89,21 @@ private:
 	std::unique_ptr<DirectX::CommonStates> m_states;
 	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> m_texture;
 
+	// カスタムシェーダー
 	std::unique_ptr<CustomShader> m_customShader;
 
+	std::unique_ptr<CustomShader> m_maskShader;
 
+	// 型抜き用画像
+	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> m_stencilImage;
 
-	// 型抜き用の変数
+	// 型抜き画像のみの描画結果を持つ画像
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_capture;
+	// 型抜き画像のみの描画結果を持つ画像のビュー
+	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_captureRTV;
+	// 型抜き画像のみの描画結果を持つ画像のシェーダーリソースビュー
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_captureSRV;
 
-	// 型抜き用テクスチャ
-	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> m_maskTexture;
-
-	// レンダーテクスチャ
-	//std::unique_ptr<>
 };
 
 #endif // !FADE_DEFINED
