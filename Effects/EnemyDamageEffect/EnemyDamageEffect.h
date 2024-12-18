@@ -18,11 +18,8 @@ private:
 	// 定数バッファ
 	struct ConstBuffer
 	{
-		DirectX::SimpleMath::Matrix world;
-		DirectX::SimpleMath::Matrix view;
-		DirectX::SimpleMath::Matrix projection;
-		float Time; // 時間 (シェーダー用) // ★
-		float Padding[3]; // 16バイトアライメント // ★
+		float Time; // 時間
+		DirectX::SimpleMath::Vector3 Padding;
 	};
 
 

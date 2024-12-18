@@ -94,31 +94,17 @@ void Enemy::Initialize()
 
 	// ビヘイビアツリーを取得
 	m_pBT = std::make_unique<BehaviorTree>();
-
 	// ステートの作成
 	CreateState();
-
 	// 顔パーツの生成
 	CreateFace();
-
 	// ダメージエフェクトの生成
 	m_damageEffect = std::make_unique<EnemyDamageEffect>();
-
 	// 当たり判定の作成
 	CreateCollision();
 
-	// ベーシックエフェクトを作成する
-	m_basicEffect = std::make_unique<DirectX::BasicEffect>(device);
-	m_basicEffect->SetVertexColorEnabled(true);
-	// 入力レイアウトを作成する
-	DX::ThrowIfFailed(
-		DirectX::CreateInputLayoutFromEffect<DirectX::VertexPositionColor>(
-			device,
-			m_basicEffect.get(),
-			m_inputLayout.ReleaseAndGetAddressOf())
-	);
-	// プリミティブバッチの作成
-	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
+	//// プリミティブバッチの作成
+	//m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
 }
 
 

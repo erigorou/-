@@ -77,16 +77,9 @@ void EnemyDamageEffect::DrawWithDamageEffect(
 	context->Map(m_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	ConstBuffer* cb = static_cast<ConstBuffer*>(mappedResource.pData);
 
-	// ワールド、ビュー、プロジェクション行列の設定
-	cb->world = world.Transpose();
-	cb->view = view.Transpose();
-	cb->projection = proj.Transpose();
-
 	// 時間の設定（イージングと正規化をしてある状態のもの）
 	cb->Time = Easing::easeInCirc(m_totalTime / TOTAL_TIME);
-	cb->Padding[0] = 0;
-	cb->Padding[1] = 0;
-	cb->Padding[2] = 0;
+	cb->Padding = DirectX::SimpleMath::Vector3::Zero;
 
 	context->Unmap(m_buffer.Get(), 0);
 

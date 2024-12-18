@@ -1,5 +1,12 @@
 #include "Common.hlsli"
 
+// 定数バッファ
+cbuffer ConstBuffer : register(b1)
+{
+    float time;
+    float3 padding;
+};
+
 // ピクセルシェーダ用構造体
 struct PS_Input
 {
@@ -24,11 +31,12 @@ float4 main(PS_Input input) : SV_Target0
     // 拡散反射の強さを計算する
     float3 diffuse = DiffuseColor.rgb * LightDiffuseColor[0] * intensity1 + EmissiveColor;
 
-    diffuse.r += 0.5f;
+    
+    diffuse.rgb -= time / 1.5f;
+    diffuse.r += time * 2;
     
     // 最終的な色を計算する：今回はあまり意味がない代入
     float3 finalColor = diffuse;
-    
     
     return float4(finalColor, 1.0f);
 }
