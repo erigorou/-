@@ -1,8 +1,7 @@
 /*
-    複数のHLSLファイルで共通で使用するパラメータ
+    ■DirectXTKで標準的に定義されているパラメータ
+    ・レジスタのゼロ番目はここで使用されている
 */
-
-// DirectXTKで標準的に定義されているパラメータ
 Texture2D<float4> Texture : register(t0);
 sampler Sampler : register(s0);
 

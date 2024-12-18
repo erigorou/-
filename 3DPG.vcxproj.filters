@@ -377,7 +377,6 @@
     <None Include="ClassDiagram2.cd" />
     <None Include="ClassDiagram3.cd" />
     <None Include="Resources\Shaders\DamageEffect\Common.hlsli" />
-    <None Include="Resources\Shaders\DamageEffect\DamageEffect.hlsli" />
     <None Include="Resources\Shaders\Mask\Particle.hlsli" />
   </ItemGroup>
   <ItemGroup>
@@ -401,10 +400,9 @@
     <FxCompile Include="Resources\Shaders\Voronoi\VoronoiGS.hlsl" />
     <FxCompile Include="Resources\Shaders\Voronoi\VoronoiPS.hlsl" />
     <FxCompile Include="Resources\Shaders\Voronoi\VoronoiVS.hlsl" />
-    <FxCompile Include="Resources\Shaders\DamageEffect\DamageEffectPS.hlsl" />
-    <FxCompile Include="Resources\Shaders\DamageEffect\DamageEffectVS.hlsl" />
     <FxCompile Include="Resources\Shaders\Mask\MaskGS.hlsl" />
     <FxCompile Include="Resources\Shaders\Mask\MaskPS.hlsl" />
     <FxCompile Include="Resources\Shaders\Mask\MaskVS.hlsl" />
+    <FxCompile Include="Resources\Shaders\DamageEffect\DamageEffectPS.hlsl" />
   </ItemGroup>
 </Project>

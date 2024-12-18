@@ -13,7 +13,6 @@
 
 
 // 固定値
-const wchar_t* EnemyDamageEffect::VS_PATH = L"Resources/Shaders/DamageEffect/DamageEffectVS.cso";
 const wchar_t* EnemyDamageEffect::PS_PATH = L"Resources/Shaders/DamageEffect/DamageEffectPS.cso";
 
 
@@ -91,6 +90,21 @@ void EnemyDamageEffect::DrawWithDamageEffect(
 
 	context->Unmap(m_buffer.Get(), 0);
 
+	// エフェクトの設定
+	model->UpdateEffects([&](DirectX::IEffect* effect)
+		{
+			auto basicEffect = dynamic_cast<DirectX::BasicEffect*>(effect);
+			if (basicEffect)
+			{
+				basicEffect->SetLightingEnabled(true);		// ライト有効化
+				basicEffect->SetPerPixelLighting(true);		// ピクセル単位のライティング有効化
+				basicEffect->SetTextureEnabled(false);		// テクスチャの有効化
+				basicEffect->SetVertexColorEnabled(false);	// 頂点カラーの有効化
+				basicEffect->SetFogEnabled(false);			// フォグの有効化
+			}
+		}
+	);
+
 	// モデルの描画
 	model->Draw(context, *states, world, view, proj, false, [&]
 		{
@@ -100,7 +114,6 @@ void EnemyDamageEffect::DrawWithDamageEffect(
 				// 定数バッファを設定
 				ID3D11Buffer* cbuff = { m_buffer.Get() };
 				// シェーダーにバッファを渡す
-				context->VSSetConstantBuffers(1, 1, &cbuff);
 				context->PSSetConstantBuffers(1, 1, &cbuff);
 
 				// シェーダーの設定
@@ -125,7 +138,7 @@ void EnemyDamageEffect::CreateShader()
 	m_damageShader = std::make_unique<CustomShader>
 		(
 			device,			// デバイス
-			VS_PATH,		// 頂点シェーダー
+			nullptr,		// 頂点シェーダー
 			PS_PATH,		// ピクセルシェーダー
 			nullptr,		// ジオメトリシェーダー(使用無し)
 			INPUT_LAYOUT	// 入力レイアウト

@@ -1,5 +1,2 @@
-﻿  Fade.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\UI\Fade\Fade.cpp(296,10): warning C4189: 'hr': ローカル変数が初期化されましたが、参照されていません
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\UI\Fade\Fade.cpp(377,46): warning C4267: '引数': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\UI\Fade\Fade.cpp(409): warning C4715: 'Fade::CalcrateFadeValue': 値を返さないコントロール パスがあります。
+﻿  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\DamageEffect\DamageEffectPS.cso
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exe
