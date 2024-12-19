@@ -63,9 +63,8 @@ void EnemyHPUI::LoadTexture(const wchar_t* path)
 /// XVŠÖ”
 /// </summary>
 // ----------------------------
-void EnemyHPUI::Update(float elapsedTime)
+void EnemyHPUI::Update()
 {
-
 }
 
 

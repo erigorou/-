@@ -28,7 +28,7 @@ public:
 	void Initialize(DX::DeviceResources* pDR);	// 初期化関数
 	void LoadTexture(const wchar_t* path);		// テクスチャの読み込み
 
-	void Update(float elapsedTime);		// 更新処理
+	void Update();		// 更新処理
 	void Render();						// 描画処理
 	void Finalize();					// 終了処理
 

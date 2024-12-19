@@ -10,7 +10,7 @@ float4 main(PS_INPUT input) : SV_TARGET
     // テクスチャをサンプリング
     float4 output = tex.Sample(samLinear, input.Tex);
     float v = 0.5f;
-    float4 push = (v, v, v, v);
+    float4 push = float4(v, v, v, v);
     
     // キー入力があったときに少し暗くする
     output -= push * time.x;

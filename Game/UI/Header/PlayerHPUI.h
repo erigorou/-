@@ -40,7 +40,7 @@ private:
 
 
 	HPSystem* m_playerHPclass;	// プレイヤーのHPクラス
-	int m_playerHP;				// プレイヤーのHP
+	float m_playerHP;				// プレイヤーのHP
 
 
 };

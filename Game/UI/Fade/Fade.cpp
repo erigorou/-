@@ -318,7 +318,7 @@ void Fade::DrawStencilImage()
 
 
 	//	描画した画面をcaptureSRVに保存する
-	HRESULT hr = m_pDR->GetD3DDevice()->CreateShaderResourceView
+	m_pDR->GetD3DDevice()->CreateShaderResourceView
 	(
 		m_capture.Get(), &srvDesc, m_captureSRV.ReleaseAndGetAddressOf()
 	);
@@ -390,13 +390,13 @@ void Fade::Render()
 	//	カリングは正面のみ行う
 	context->RSSetState(m_states->CullCounterClockwise());
 
-
 	//	ピクセルシェーダにテクスチャを登録する。
-	for (int i = 0; i < m_texture.size(); i++)
-		context->PSSetShaderResources(i, 1, m_texture[i].GetAddressOf());
-
-	context->PSSetShaderResources(m_texture.size(), 1, m_captureSRV.GetAddressOf());
-
+	for (size_t i = 0; i < m_texture.size(); i++)
+	{
+		context->PSSetShaderResources(static_cast<UINT>(i), 1, m_texture[i].GetAddressOf());
+	}
+	// マスク画像をピクセルシェーダに登録する
+	context->PSSetShaderResources(static_cast<UINT>(m_texture.size()), 1, m_captureSRV.GetAddressOf());
 
 	// 板ポリゴンで描画
 	m_batch->Begin();
@@ -417,6 +417,8 @@ void Fade::Render()
 // ----------------------------------
 float Fade::CalcrateFadeValue(float t)
 {
-	if		(FadeType::FADE_IN == m_fadeType)	return Easing::easeBetweenIn (t, FADE_THRESHOLD, FADE_FIRST_SIZE, FADE_MAX_SIZE);
+	if		(FadeType::FADE_IN == m_fadeType)	return Easing::easeBetweenIn(t, FADE_THRESHOLD, FADE_FIRST_SIZE, FADE_MAX_SIZE);
 	else if (FadeType::FADE_OUT == m_fadeType)	return Easing::easeBetweenOut(t, FADE_THRESHOLD, FADE_FIRST_SIZE, FADE_MAX_SIZE);
+
+	else return 0;
 }
