@@ -6,6 +6,7 @@
 #include "IScene.h"
 #include <unordered_map>
 #include "Game/Camera/Camera.h"
+#include "Interface/IObject.h"
 
 #include "Libraries/MyLib/SkySphere.h"
 #include "Effects/Particle.h"
@@ -29,7 +30,6 @@ class PlaySceneUIManager;
 // 当たり判定関連 ===============
 class CollisionManager;
 
-
 class PlayScene final :	public IScene
 
 	 
@@ -49,6 +49,8 @@ public:
 	Particle*	GetParticle()	{ return m_particles.get(); }	
 
 	CollisionManager* GetCollisionManager() { return m_collisionManager.get(); }
+
+	DirectX::SimpleMath::Vector3 GetTargetPosition() { return m_targetEnemy->GetPosition(); }
 
 // 共通関数 ===
 public:
@@ -104,6 +106,7 @@ private:
 	DirectX::Keyboard::State				m_keyboardState;
 	DirectX::Keyboard::KeyboardStateTracker m_keyboardStateTracker;
 
+	IObject* m_targetEnemy;		// ターゲットとなる敵
 
 	// ヒットストップのかかるオブジェクト用の変数
 	float m_smoothDeltaTime;

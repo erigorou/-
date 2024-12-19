@@ -26,11 +26,12 @@ const float Goblin::GOBLIN_SCALE = Enemy::ENEMY_SCALE / 4.0f;	// サイズ
 // コンストラクタ
 Goblin::Goblin(PlayScene* playScene)
 	: m_playScene(playScene)
-	, m_position{ 0.f, 0.f, 0.f }
+	, m_position{ 80.f, 0.f, 0.f }
 	, m_velocity{ 0.f, 0.f, 0.f }
 	, m_angle{ 0.f, 0.f, 0.f }
 	, m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
 	, m_model(nullptr)
+	, m_nowAttacking(false)
 {
 }
 
@@ -51,10 +52,12 @@ void Goblin::Initialize()
 	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
 	fx->SetDirectory(L"Resources/Models");
 	// モデルを読み込む
-	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Goblin/goblin.cmo", *fx);
+	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Oni/Body/oni.cmo", *fx);
 
 	// ステートの作成
 	CreateState();
+	// 当たり判定の生成
+	CreateCollision();
 
 	// HPの生成
 	m_hp = std::make_unique<HPSystem>(GOBLIN_HP);
@@ -74,11 +77,21 @@ void Goblin::CreateState()
 }
 
 
+void Goblin::HitPlayer(InterSectData data)
+{
+	if (data.objType == ObjectType::Player && data.colType == CollisionType::Sphere)
+	{
+
+	}
+}
+
+
+
 // 当たり判定の生成
 void Goblin::CreateCollision()
 {
 	// 当たり判定の生成
-	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, GOBLIN_SCALE);
+	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, GOBLIN_SCALE * COLLISION_RADIUS);
 
 	// 当たり判定をCollisionManagerに登録する
 	m_playScene->GetCollisionManager()->AddCollision(
@@ -92,15 +105,22 @@ void Goblin::CreateCollision()
 // 更新処理
 void Goblin::Update(const float elapsedTime)
 {
-	using namespace DirectX::SimpleMath;
-
 	// ワールド行列の初期化
-	m_worldMatrix = Matrix::CreateScale(GOBLIN_SCALE);
-
+	m_worldMatrix = 
+		DirectX::SimpleMath::Matrix::CreateScale(GOBLIN_SCALE) * DirectX::SimpleMath::Matrix::CreateTranslation(m_position);
 	// ステートの更新処理
 	m_currentState->Update(elapsedTime);
+	// 衝突判定の移動
+	MoveCollision();
 }
 
+
+void Goblin::MoveCollision()
+{
+	DirectX::SimpleMath::Vector3 pos = m_position;
+	pos.y = 2.0f;
+	m_bodyCollision->Center = pos;
+}
 
 // 描画関数
 void Goblin::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection)
@@ -109,7 +129,6 @@ void Goblin::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::Simp
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
 
-	m_currentState->Render(context, states, view, projection);			// ステート側の描画
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);	// モデルの描画
 }
 
@@ -125,7 +144,9 @@ void Goblin::Finalize()
 // 当たったときの処理
 void Goblin::HitAction(InterSectData data)
 {
-	UNREFERENCED_PARAMETER(data);
+	if (data.objType == ObjectType::Sword)
+	{
+	}
 }
 
 
@@ -140,4 +161,11 @@ void Goblin::ChangeState(IState* state)
 	m_currentState = state;
 	// 変更後ステートの初期処理
 	m_currentState->PreUpdate();
+}
+
+
+// ダメージを受けたときの処理
+void Goblin::Damaged(float damage)
+{
+	m_hp->Damage(damage);
 }

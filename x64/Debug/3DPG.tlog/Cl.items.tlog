@@ -12,6 +12,7 @@ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Camera\State\Titl
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Data\GameData.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\GameData.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Data\HPSystem.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\HPSystem.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Effects\EnemyDamageEffect\EnemyDamageEffect.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\EnemyDamageEffect.obj
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\EnemyManager\EnemyManager.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\EnemyManager.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Enemy\Face\Source\EnemyFaceAttacking.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\EnemyFaceAttacking.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Enemy\Face\Source\EnemyFaceIdling.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\EnemyFaceIdling.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Enemy\States\Source\EnemyDashAttacking.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\EnemyDashAttacking.obj
@@ -67,6 +68,7 @@ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Weapon\Sword\Sour
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Weapon\Sword\Source\Sword_Attacking_4.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\Sword_Attacking_4.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Weapon\Sword\Source\Sword_Idling.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\Sword_Idling.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Weapon\Sword\Sword.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\Sword.obj
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Interface\IEnemy.h;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\IEnemy.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Libraries\MyLib\DebugDraw.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\DebugDraw.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Libraries\MyLib\BinaryFile.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\BinaryFile.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Libraries\MyLib\Collision\CollisionManager.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\CollisionManager.obj
@@ -74,6 +76,7 @@ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Libraries\MyLib\Custom
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Libraries\MyLib\DebugCamera.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\DebugCamera.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Libraries\MyLib\DebugString.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\DebugString.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Libraries\MyLib\InputManager.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\InputManager.obj
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Libraries\MyLib\Invincibility\InvincibilityFrames.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\InvincibilityFrames.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Libraries\MyLib\SkySphere.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\SkySphere.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Libraries\MyLib\Texture.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\Texture.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Main.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\Main.obj

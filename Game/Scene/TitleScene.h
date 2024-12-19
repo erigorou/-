@@ -27,8 +27,8 @@ class TitleScene final : public IScene
 
 public:
 
-	static constexpr float DELAY = 2.0f;		// タイトル画面の遅延時間
-	static constexpr float ANIM_END = 2.0f;	// タイトル画面のアニメーション終了時間
+	static constexpr float DELAY = 1.5f;		// タイトル画面の遅延時間
+	static constexpr float ANIM_END = 1.5f;	// タイトル画面のアニメーション終了時間
 
 	static constexpr float TITLE_LOGO_CENTER_Y = -165.0f;	// タイトルの中心座標 ※bottom基準
 

@@ -30,6 +30,7 @@ public:
 
 	static constexpr float COLISION_POS_Y = 10.0f;
 	static constexpr float HP = 100.0f;
+	static constexpr float COLLISION_RADIUS = 20.0f;
 
 
 public:
@@ -167,4 +168,14 @@ private:
 
 	// ÉçÉbÉNÉIÉìÇ∑ÇÈÇ©Ç«Ç§Ç©
 	bool m_isTargetLockOn;
+
+
+
+
+
+
+
+
+
+	bool debug = true;
 };

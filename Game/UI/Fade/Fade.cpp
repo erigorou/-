@@ -13,6 +13,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Game/Data/GameData.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
+#include "Libraries/MyLib/Math.h"
 
 ///	<summary>
 ///	インプットレイアウト
@@ -160,6 +161,7 @@ void Fade::CountTimer()
 	{
 	case FadeType::FADE_IN:		FadeIn();	break;
 	case FadeType::FADE_OUT:	FadeOut();	break;
+	case FadeType::END_DELAY:	FadeEnd();	break;
 	
 	default:								break;
 	}
@@ -177,13 +179,8 @@ void Fade::FadeIn()
 
 	if (m_totalTime >= FADE_TIME)
 	{
-		m_totalTime = FADE_TIME;
+		// フェード中ではない
 		m_isFade = false;
-	}
-	else if (m_totalTime >= CHANGE_SCENE_TIME)
-	{
-		// シーン変更を許可する
-		m_scene->SetCanChangeScene();
 	}
 }
 
@@ -198,12 +195,35 @@ void Fade::FadeOut()
 
 	if (m_totalTime <= 0.0f)
 	{
-		m_totalTime = 0.0f;
-		m_isFade = false;
-		// シーン変更を許可する
-		m_scene->SetCanChangeScene();
+		// フェードが終了したことを通知
+		m_endFade = true;
+		// フェード終了処理
+		m_fadeType = FadeType::END_DELAY;
+		// ディレイ開始
+		m_delayTime = CHANGE_SCENE_EDLAY;
 	}
 }
+
+
+void Fade::FadeEnd()
+{
+	// 時間を減らす
+	m_delayTime -= m_elapsedTime;
+
+	// 遅延込みで0秒になったら
+	if (m_delayTime <= 0.0f)
+	{
+		// フェード中ではない
+		m_isFade = false;
+		// フェード終了
+		m_endFade = false;
+		// シーンに変更フラグを立てる
+		m_scene->SetCanChangeScene();
+		// フェード無し
+		m_fadeType = FadeType::FADE_NONE;
+	}
+}
+
 
 void Fade::DrawStencilImage()
 {
@@ -254,6 +274,11 @@ void Fade::DrawStencilImage()
 
 	// フェードのサイズを計算
 	float size = CalcrateFadeValue(t);
+
+	auto resources = CommonResources::GetInstance();
+	auto debugString = resources->GetDebugString();
+	debugString->AddString("t, %f, %f", t, size);
+	debugString->AddString("totalTime , %f", m_totalTime);
 
 	DirectX::SimpleMath::Matrix world;
 	world = DirectX::SimpleMath::Matrix::CreateScale(size, size, 1.0f);
@@ -387,19 +412,11 @@ void Fade::Render()
 
 }
 
-
-
 // ----------------------------------
 // フェードの値を計算する
 // ----------------------------------
 float Fade::CalcrateFadeValue(float t)
 {
-	if (FadeType::FADE_IN == m_fadeType)
-	{
-		return Easing::easeInOutExpo(t) * 6;
-	}
-	else if (FadeType::FADE_OUT == m_fadeType)
-	{
-		return Easing::easeInOutExpo(t) * 6;
-	}
+	if		(FadeType::FADE_IN == m_fadeType)	return Easing::easeBetweenIn (t, FADE_THRESHOLD, FADE_FIRST_SIZE, FADE_MAX_SIZE);
+	else if (FadeType::FADE_OUT == m_fadeType)	return Easing::easeBetweenOut(t, FADE_THRESHOLD, FADE_FIRST_SIZE, FADE_MAX_SIZE);
 }

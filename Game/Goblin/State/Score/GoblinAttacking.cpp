@@ -26,6 +26,7 @@ void Goblin::GoblinAttacking::Initialize(DirectX::Model* model)
 // 事前更新
 void Goblin::GoblinAttacking::PreUpdate()
 {
+	m_goblin->SetIsAttacking(true);
 }
 
 
@@ -40,6 +41,7 @@ void Goblin::GoblinAttacking::Update(const float& elapsedTime)
 // 事後更新
 void Goblin::GoblinAttacking::PostUpdate()
 {
+	m_goblin->SetIsAttacking(false);
 }
 
 

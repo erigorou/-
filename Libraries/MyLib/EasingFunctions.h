@@ -1,16 +1,17 @@
-#ifndef EASING_FUNCTIONS_H
-#define EASING_FUNCTIONS_H
+    #ifndef EASING_FUNCTIONS_H
+    #define EASING_FUNCTIONS_H
 
-#include <cmath> // For sin, cos, pow
+    #include "Math.h"
+    #include <cmath> // For sin, cos, pow
 
-// M_PI が定義されていない場合は手動で定義
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
+    // M_PI が定義されていない場合は手動で定義
+    #ifndef M_PI
+    #define M_PI 3.14159265358979323846
+    #endif
 
-class Easing
-{
-public:
+    class Easing
+    {
+    public:
     static float easeInSine(float x) {
         return 1.0f - static_cast<float>(cos((x * M_PI) / 2.0f));
     }
@@ -149,36 +150,41 @@ public:
         }
     }
 
- static float easeInOutBounce(float x) {
-	 return x < 0.5
-		 ? (1 - easeOutBounce(1 - 2 * x)) / 2
-		 : (1 + easeOutBounce(2 * x - 1)) / 2;
- }
+    static float easeInOutBounce(float x) {
+	    return x < 0.5
+		    ? (1 - easeOutBounce(1 - 2 * x)) / 2
+		    : (1 + easeOutBounce(2 * x - 1)) / 2;
+    }
+
+ 
+    static float easeBetweenIn(float t, float threshold, float firstSize, float maxSize)
+    {
+    // threshold が 0 ~ 1 の範囲外の場合、補正
+    threshold = Math::Clamp(threshold, 0.0f, 1.0f);
+
+        if (t <= threshold){
+            return firstSize * Easing::easeOutBack(t / threshold);
+        }
+        else{
+            return firstSize + (maxSize - firstSize) * Easing::easeInQuad((t - threshold) / (1.0f - threshold));
+        }
+    }
 
 
- static float easeInBounseToExpo(float t, float threshold)
- {
-     if (t < threshold)
-     {
-		 return easeOutBack(t / threshold) * 0.5f;
-     }
-     else
-     {
-         return threshold + easeInOutExpo((t - threshold) / (1.0f - threshold)) * (1.0f - threshold);
-     }
- }
+    static float easeBetweenOut(float t, float threshold, float firstSize, float maxSize)
+    {
+        // threshold が 0 ~ 1 の範囲外の場合、補正
+        threshold = Math::Clamp(threshold, 0.0f, 1.0f);
 
- static float easeOutBounseToExpo(float t, float threshold)
- {
-     if (t < threshold)
-     {
-		 return easeInExpo(t / threshold) * threshold;
-	 }
-     else
-     {
-		 return threshold + easeInBack((t - threshold) / (1.0f - threshold)) * (1.0f - threshold);
-	 }
- }
+        if (t <= threshold)
+        {
+            return firstSize * Easing::easeOutSine(t / threshold);
+        }
+        else
+        {
+            return firstSize + (maxSize - firstSize) * Easing::easeInOutCubic((t - threshold) / (1.0f - threshold));
+        }
+    }
 };
 
-#endif // EASING_FUNCTIONS_H
+    #endif // EASING_FUNCTIONS_H

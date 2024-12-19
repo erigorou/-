@@ -242,6 +242,8 @@ inline void CollisionManager::DrawCollision(DirectX::SimpleMath::Matrix view, Di
 	m_basicEffect->Apply(context);
 	// •`‰æŠJn
 	m_primitiveBatch->Begin();
+	
+	// Collision–ˆ‚É”»’è‚ğ•`‰æ
 
 	for (auto obb : m_obbs)
 	{
@@ -257,6 +259,7 @@ inline void CollisionManager::DrawCollision(DirectX::SimpleMath::Matrix view, Di
 	{
 		DX::Draw(m_primitiveBatch.get(),sphere,DirectX::Colors::LimeGreen);
 	}
+	// •b‚ªI—¹
 	m_primitiveBatch->End();
 }
 

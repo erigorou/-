@@ -226,6 +226,8 @@
     <ClInclude Include="Game\Player\State\Header\Player_NockBacking.h" />
     <ClInclude Include="Libraries\MyLib\KeyboardChacker.h" />
     <ClInclude Include="Effects\EnemyDamageEffect\EnemyDamageEffect.h" />
+    <ClInclude Include="Game\EnemyManager\EnemyManager.h" />
+    <ClInclude Include="Libraries\MyLib\Invincibility\InvincibilityFrames.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -349,6 +351,9 @@
     <ClCompile Include="Game\Enemy\States\Source\EnemyDashAttacking.cpp" />
     <ClCompile Include="Game\Player\State\Source\Player_NockBacking.cpp" />
     <ClCompile Include="Effects\EnemyDamageEffect\EnemyDamageEffect.cpp" />
+    <ClCompile Include="Game\EnemyManager\EnemyManager.cpp" />
+    <ClCompile Include="Interface\IEnemy.h" />
+    <ClCompile Include="Libraries\MyLib\Invincibility\InvincibilityFrames.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

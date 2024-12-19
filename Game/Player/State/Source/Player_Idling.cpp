@@ -63,7 +63,7 @@ void PlayerIdling::Update(const float& elapsedTime)
 	// elapsedTime使わないけどエラー出さないでねって文
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	DirectX::SimpleMath::Vector3 enemyPos = m_player->GetPlayScene()->GetEnemy()->GetPosition();
+	DirectX::SimpleMath::Vector3 enemyPos = m_player->GetPlayScene()->GetTargetPosition();
 
 	m_player->SetAngle(m_player->CalucratePlayerRotation(enemyPos));
 

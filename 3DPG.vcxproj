@@ -199,6 +199,7 @@
     <ClInclude Include="Game\Data\GameData.h" />
     <ClInclude Include="Game\Data\HPSystem.h" />
     <ClInclude Include="Effects\EnemyDamageEffect\EnemyDamageEffect.h" />
+    <ClInclude Include="Game\EnemyManager\EnemyManager.h" />
     <ClInclude Include="Game\Enemy\Face\Header\EnemyFaceAttacking.h" />
     <ClInclude Include="Game\Enemy\Face\Header\EnemyFaceIdling.h" />
     <ClInclude Include="Game\Enemy\States\Header\EnemyDashAttacking.h" />
@@ -276,6 +277,7 @@
     <ClInclude Include="Libraries\MyLib\DebugString.h" />
     <ClInclude Include="Libraries\MyLib\EasingFunctions.h" />
     <ClInclude Include="Libraries\MyLib\InputManager.h" />
+    <ClInclude Include="Libraries\MyLib\Invincibility\InvincibilityFrames.h" />
     <ClInclude Include="Libraries\MyLib\KeyboardChacker.h" />
     <ClInclude Include="Libraries\MyLib\Math.h" />
     <ClInclude Include="Libraries\MyLib\MemoryLeakDetector.h" />
@@ -300,6 +302,7 @@
     <ClCompile Include="Game\Data\GameData.cpp" />
     <ClCompile Include="Game\Data\HPSystem.cpp" />
     <ClCompile Include="Effects\EnemyDamageEffect\EnemyDamageEffect.cpp" />
+    <ClCompile Include="Game\EnemyManager\EnemyManager.cpp" />
     <ClCompile Include="Game\Enemy\Face\Source\EnemyFaceAttacking.cpp" />
     <ClCompile Include="Game\Enemy\Face\Source\EnemyFaceIdling.cpp" />
     <ClCompile Include="Game\Enemy\States\Source\EnemyDashAttacking.cpp" />
@@ -355,6 +358,7 @@
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Attacking_4.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Idling.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Sword.cpp" />
+    <ClCompile Include="Interface\IEnemy.h" />
     <ClCompile Include="Libraries\MyLib\DebugDraw.cpp" />
     <ClCompile Include="Libraries\MyLib\BinaryFile.cpp" />
     <ClCompile Include="Libraries\MyLib\Collision\CollisionManager.cpp" />
@@ -362,6 +366,7 @@
     <ClCompile Include="Libraries\MyLib\DebugCamera.cpp" />
     <ClCompile Include="Libraries\MyLib\DebugString.cpp" />
     <ClCompile Include="Libraries\MyLib\InputManager.cpp" />
+    <ClCompile Include="Libraries\MyLib\Invincibility\InvincibilityFrames.cpp" />
     <ClCompile Include="Libraries\MyLib\SkySphere.cpp" />
     <ClCompile Include="Libraries\MyLib\Texture.cpp" />
     <ClCompile Include="Main.cpp" />

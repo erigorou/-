@@ -113,6 +113,8 @@ void PlayScene::CreateObjects()
 	m_camera->ChangeState(m_camera->GetPlayState());
 	// BGM変更
 	Sound::GetInstance()->ChangeBGM(Sound::BGM_TYPE::PLAY);
+
+	m_targetEnemy = m_goblin.get();
 }
 
 // すべてのキーの押下状態を検出する
@@ -200,7 +202,7 @@ void PlayScene::UpdateObjects(float elapsedTime)
 	// カメラの回転行列の作成	引数にはプレイヤーの回転角を入れる
 	DirectX::SimpleMath::Matrix matrix = DirectX::SimpleMath::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_player->GetAngle()));
 	// カメラの更新
-	m_camera->Update(m_player->GetPosition(), m_enemy->GetPosition(), matrix, smoothDeltaTime);
+	m_camera->Update(m_player->GetPosition(), m_goblin->GetPosition(), matrix, smoothDeltaTime);
 
 	// パーティクルの更新
 	m_particles->Update(
@@ -243,9 +245,8 @@ void PlayScene::Render()
 	m_player->Render(view, m_projection);
 	// プレイヤーの武器の描画を行う
 	m_sword->Render(view, m_projection);
-
 	// ゴブリンの描画
-	// m_goblin->Render(view, m_projection);
+	m_goblin->Render(view, m_projection);
 
 	//==== エフェクト系の描画 ======================================================
 	// パーティクルのビルボード作成

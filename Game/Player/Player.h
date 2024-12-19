@@ -133,6 +133,8 @@ private:
 	void HitEnemyBody(InterSectData data);
 	// 敵のブキとの衝突判定
 	void HitCudgel(InterSectData data);
+	// ゴブリンと衝突
+	void HitGoblin(InterSectData data);
 	// ステージとの衝突判定
 	void HitStage(InterSectData data);
 	// ダメージ

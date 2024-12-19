@@ -17,6 +17,7 @@ public:
 	{
 		FADE_IN,	// 明　→　暗
 		FADE_OUT,	// 暗　→　明
+		END_DELAY,	// フェード終了
 		FADE_NONE,	// なし
 	};
 
@@ -45,8 +46,12 @@ public:
 	static const wchar_t* MASK_PS_PATH;
 
 
-	static constexpr float CHANGE_SCENE_TIME = 2.2f;
-	static constexpr float FADE_TIME = 2.0f;
+	static constexpr float CHANGE_SCENE_EDLAY = 1.0f;
+	static constexpr float FADE_TIME = 1.0f;
+
+	static constexpr float FADE_FIRST_SIZE = 1.25f;
+	static constexpr float FADE_MAX_SIZE = 6.0f;
+	static constexpr float FADE_THRESHOLD = 0.7f;
 
 
 	void StartFadeIn();
@@ -67,6 +72,8 @@ private:
 	void FadeIn();
 	void FadeOut();
 
+	void FadeEnd();
+
 	float CalcrateFadeValue(float t);
 	float CalcurateFadeIn(float t);
 	float CalcurateFadeOut(float t);
@@ -77,7 +84,9 @@ private:
 
 	float		m_elapsedTime;	// 1Fの時間
 	float		m_totalTime;	// 経過時間
+	float		m_delayTime;		// フェード時間
 	bool		m_isFade;		// フェード中かどうか
+	bool		m_endFade;		// フェード終了かどうか
 	FadeType	m_fadeType;		// フェードの状態
 
 	float		m_easingValue;	// イージング値

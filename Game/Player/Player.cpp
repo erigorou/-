@@ -16,6 +16,7 @@
 #include "Game/Weapon/Sword/Sword.h"
 #include "../Data/HPSystem.h"
 #include "Game/Enemy/Enemy.h"
+#include "Game/Goblin/Goblin.h"
 #include "Game/Stage/Wall/Wall.h"
 
 
@@ -309,11 +310,7 @@ void Player::MovePlayer()
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
-	// キー入力を受け付ける。
-	Keyboard::State keyboardState = Keyboard::Get().GetState();
-
 	Vector3 moveVelocity  = Vector3::Zero;	// 加速用速度
-	
 
 	///////////////////// 移動キーの入力がない場合の処理 /////////////////
 	if (m_isInputMoveKey == false)
@@ -334,7 +331,6 @@ void Player::MovePlayer()
 			moveVelocity += m_acceleration;								// 基本速度に加速度を上書きする
 		}
 	}
-
 
 	///////////////////// 移動キーの入力があった場合の処理 /////////////////
 	else
@@ -479,6 +475,9 @@ void Player::HitAction(InterSectData data)
 
 	// ステージとの当たり判定
 	HitStage(data);
+
+	// ゴブリンとの当たり判定
+	HitGoblin(data);
 }
 
 
@@ -500,17 +499,18 @@ void Player::HitEnemyBody(InterSectData data)
 {
 	if (data.objType == ObjectType::Enemy && data.colType == CollisionType::Sphere)
 	{
+		auto enemy = dynamic_cast<Enemy*>(data.object);
+
 		// 敵のステートがダッシュ攻撃の場合で相手が攻撃中の場合
 		if (!m_isHit &&
 			m_canHit &&
-			dynamic_cast<Enemy*>(data.object)->GetCurrentState() == dynamic_cast<Enemy*>(data.object)->GetEnemyDashAttacking())
+			enemy->GetCurrentState() == enemy->GetEnemyDashAttacking())
 		{
 			Damage(1);
 		}
 
 		// 衝突したオブジェクトの情報を取得
 		DirectX::BoundingSphere playerCollision = *m_bodyCollision.get();
-		auto enemy = dynamic_cast<Enemy*>(data.object);
 		DirectX::BoundingSphere enemyCollision = enemy->GetBodyCollision();
 
 		// 押し戻し量を計算
@@ -522,6 +522,39 @@ void Player::HitEnemyBody(InterSectData data)
 		m_bodyCollision->Center = m_position;
 	}
 }
+
+
+// ---------------------------------
+// ゴブリンとの衝突
+// ---------------------------------
+void Player::HitGoblin(InterSectData data)
+{
+	if (data.objType == ObjectType::Goblin && data.colType == CollisionType::Sphere)
+	{
+		Goblin* goblin = dynamic_cast<Goblin*>(data.object);
+
+		// 敵のステートがダッシュ攻撃の場合で相手が攻撃中の場合
+		if (!m_isHit &&
+			m_canHit &&
+			goblin->IsAttacking())
+		{
+			Damage(1);
+		}
+
+		// 衝突したオブジェクトの情報を取得
+		DirectX::BoundingSphere playerCollision = *m_bodyCollision.get();
+		DirectX::BoundingSphere goblinCollision = goblin->GetCollision();
+
+		// 押し戻し量を計算
+		m_pushBackValue += Math::pushBack_BoundingSphere(playerCollision, goblinCollision);
+		// y座標には反映無しに設定
+		m_pushBackValue.y = 0;
+		// プレイヤーの位置を押し戻す
+		m_position += m_pushBackValue;
+		m_bodyCollision->Center = m_position;
+	}
+}
+
 
 
 
@@ -540,6 +573,8 @@ void Player::HitCudgel(InterSectData data)
 		Damage(1);
 	}
 }
+
+
 
 
 // --------------------------------

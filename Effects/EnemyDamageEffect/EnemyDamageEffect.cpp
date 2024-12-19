@@ -131,7 +131,7 @@ void EnemyDamageEffect::CreateShader()
 	m_damageShader = std::make_unique<CustomShader>
 		(
 			device,			// デバイス
-			nullptr,		// 頂点シェーダー
+			nullptr,		// 頂点シェーダー(使用無し)
 			PS_PATH,		// ピクセルシェーダー
 			nullptr,		// ジオメトリシェーダー(使用無し)
 			INPUT_LAYOUT	// 入力レイアウト

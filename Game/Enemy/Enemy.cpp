@@ -78,10 +78,6 @@ void Enemy::Initialize()
 	CommonResources* resources = CommonResources::GetInstance();
 
 	auto device = resources->GetDeviceResources()->GetD3DDevice();
-	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = resources->GetCommonStates();
-
-	UNREFERENCED_PARAMETER(states);
 
 	// モデルを読み込む準備
 	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
@@ -102,9 +98,6 @@ void Enemy::Initialize()
 	m_damageEffect = std::make_unique<EnemyDamageEffect>();
 	// 当たり判定の作成
 	CreateCollision();
-
-	//// プリミティブバッチの作成
-	//m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
 }
 
 
@@ -154,7 +147,7 @@ void Enemy::CreateFace()
 void Enemy::CreateCollision()
 {
 	// 当たり判定の生成
-	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, ENEMY_SCALE * 16.0f);
+	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, ENEMY_SCALE * COLLISION_RADIUS);
 
 	// 衝突判定をMessengerに登録
 	m_playScene->GetCollisionManager()->AddCollision(
@@ -186,6 +179,8 @@ void Enemy::ChangeState(IState* newState)
 // --------------------------------
 void Enemy::Update(float elapsedTime)
 {
+	if (debug) return;
+
 	// ステータスの更新処理
 	m_currentState->Update(elapsedTime);
 	// ダメージ情報の更新処理
@@ -207,6 +202,7 @@ void Enemy::Update(float elapsedTime)
 	if (keyboardState.F1)	ChangeState(m_attacking.get());
 	if (keyboardState.F2)	ChangeState(m_sweeping.get());
 	if (keyboardState.F3)	ChangeState(m_dashAttacking.get());
+	if (keyboardState.F4)	debug = !debug;
 
 #endif // _DEBUG
 }
