@@ -57,7 +57,7 @@ void Sea::Create()
 			);
 	
 	// プリミティブバッチの生成
-	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>>(context);
+	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(context);
 
 	// コモンステートの生成
 	m_states = std::make_unique<DirectX::CommonStates>(device);
@@ -89,17 +89,18 @@ void Sea::Render(DirectX::SimpleMath::Matrix view,
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 
 	//	頂点情報(板ポリゴンの４頂点の座標情報）
-	DirectX::VertexPositionTexture vertex[4] =
+	DirectX::VertexPositionColorTexture vertex[4] =
 	{
-		DirectX::VertexPositionTexture(DirectX::SimpleMath::Vector3(0.0f,  0.0f, 0.0f), DirectX::SimpleMath::Vector2(0.0f, 0.0f)),
+		DirectX::VertexPositionColorTexture(
+			DirectX::SimpleMath::Vector3(0.0f,  0.0f, 0.0f),
+			DirectX::SimpleMath::Vector4(0.0f,0.0f,0.0f,1.0f), 
+			DirectX::SimpleMath::Vector2(0.0f, 0.0f)),
 	};
 
 	// 渡す用のデータを作成
 	DirectX::SimpleMath::Matrix world = DirectX::SimpleMath::Matrix::Identity;
-
 	world *= DirectX::SimpleMath::Matrix::CreateScale(DirectX::SimpleMath::Vector3(1000, 1000, 1));
 	world *= DirectX::SimpleMath::Matrix::CreateRotationX(DirectX::XMConvertToRadians(-90));
-
 	// 経過時間の更新
 	m_totalTime += GameData::GetInstance()->GetElapsedTime();
 

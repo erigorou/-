@@ -59,7 +59,7 @@ private:
 	// 入力
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
 	// プリミティブバッチ
-	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>> m_batch;
+	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_batch;
 	// ステート
 	std::unique_ptr<DirectX::CommonStates>	m_states;
 
