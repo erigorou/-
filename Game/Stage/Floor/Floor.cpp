@@ -89,7 +89,8 @@ void Floor::Render(
 
 	CommonResources* resources = CommonResources::GetInstance();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
-	
+	auto states = resources->GetCommonStates();
+
 	// プリミティブバッチの作成
 	m_Batch = std::make_unique<PrimitiveBatch<VertexPositionTexture>>(context);
 
@@ -112,6 +113,9 @@ void Floor::Render(
 	m_BatchEffect->SetTexture(m_texture.Get());
 	m_BatchEffect->Apply(context);
 	context->IASetInputLayout(m_inputLayout.Get());
+
+	ID3D11SamplerState* sampler[1] = { states->LinearWrap() };		//	サンプラーステートの設定
+	context->PSSetSamplers(0, 1, sampler);
 
 	// 半透明部分を描画
 	m_Batch->Begin();
