@@ -75,8 +75,6 @@ private:
 	void FadeEnd();
 
 	float CalcrateFadeValue(float t);
-	float CalcurateFadeIn(float t);
-	float CalcurateFadeOut(float t);
 
 	void DrawStencilImage();					// Œ^”²‚«‰æ‘œ‚Ì•`‰æˆ—
 

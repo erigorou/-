@@ -87,11 +87,6 @@ void Warning::Update(float elapsedTime)
 
 	// 経過時間の加算
 	m_totalTime += elapsedTime;
-
-
-	if (m_elapsedTime >= 1.0f)
-	{
-	}
 }
 
 
@@ -103,13 +98,7 @@ void Warning::Render()
 
 	// 頂点情報
 	VertexPositionColorTexture vertex[4] =
-	{
-		VertexPositionColorTexture(
-		SimpleMath::Vector3::Zero,
-		SimpleMath::Vector4::One,
-		XMFLOAT2(0.0f, 0.0f)
-		)
-	};
+	{ VertexPositionColorTexture(SimpleMath::Vector3::Zero,SimpleMath::Vector4::One,XMFLOAT2(0.0f, 0.0f)) };
 
 	// バッファの作成
 	ConstBuffer cbuff;
@@ -123,33 +112,40 @@ void Warning::Render()
 	// コンスタントバッファの設定
 	context->UpdateSubresource(m_CBuffer.Get(), 0, nullptr, &cbuff, 0, 0);
 
+	// シェーダーの開始
+	m_customShader->BeginSharder(context);
+
 	// シェーダーにバッファを渡す
 	ID3D11Buffer* cb[1] = { m_CBuffer.Get() };
 	context->VSSetConstantBuffers(0, 1, cb);
 	context->GSSetConstantBuffers(0, 1, cb);
 	context->PSSetConstantBuffers(0, 1, cb);
 	
+	// サンプラーステートの設定
 	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
 	context->PSSetSamplers(0, 1, sampler);
 
+	// ブレンドステートの設定
 	ID3D11BlendState* blendstate = m_states->NonPremultiplied();
 	context->OMSetDepthStencilState(m_states->DepthDefault(), 0);
 	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
 	context->RSSetState(m_states->CullNone());
 
-	m_customShader->BeginSharder(context);
-
+	// テクスチャの設定
 	for (int i = 0; i < m_texture.size(); i++)
 	{
 		context->PSSetShaderResources(i, 1, m_texture[i].GetAddressOf());
 	}
 
+	// 入力レイアウトの設定
 	context->IASetInputLayout(m_customShader->GetInputLayout());
 
+	// 描画
 	m_batch->Begin();
 	m_batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], 4);
 	m_batch->End();
 
+	// シェーダーの終了
 	m_customShader->EndSharder(context);
 }
 

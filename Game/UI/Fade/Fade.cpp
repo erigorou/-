@@ -15,9 +15,8 @@
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "Libraries/MyLib/Math.h"
 
-///	<summary>
-///	インプットレイアウト
-///	</summary>
+
+// 固定値 **
 const std::vector<D3D11_INPUT_ELEMENT_DESC> Fade::INPUT_LAYOUT =
 {
 	{ "POSITION",	0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -25,11 +24,13 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> Fade::INPUT_LAYOUT =
 	{ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3) + sizeof(DirectX::SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
 
+// ゲーム画面に表示するフェード関連処理
 const wchar_t* Fade::TEXTURE_PATH	= L"Resources/Textures/Load.png";
 const wchar_t* Fade::VS_PATH		= L"Resources/Shaders/Fade/FadeVS.cso";
 const wchar_t* Fade::GS_PATH		= L"Resources/Shaders/Fade/FadeGS.cso";
 const wchar_t* Fade::PS_PATH		= L"Resources/Shaders/Fade/FadePS.cso";
 
+// マスク画像に関する処理
 const wchar_t* Fade::STENCIL_TEX_PATH = L"Resources/Textures/mask.png";
 const wchar_t* Fade::MASK_VS_PATH = L"Resources/Shaders/Mask/MaskVS.cso";
 const wchar_t* Fade::MASK_GS_PATH = L"Resources/Shaders/Mask/MaskGS.cso";
@@ -41,8 +42,12 @@ const wchar_t* Fade::MASK_PS_PATH = L"Resources/Shaders/Mask/MaskPS.cso";
 /// </summary>
 Fade::Fade(SceneManager* scene)
 	: m_scene(scene)
+	, m_elapsedTime(0.0f)
 	, m_totalTime(0.0f)
+	, m_delayTime(0.0f)
 	, m_isFade(false)
+	, m_endFade(false)
+	, m_fadeType(FadeType::FADE_NONE)
 {
 }
 
@@ -225,9 +230,9 @@ void Fade::FadeEnd()
 }
 
 
+// 切り抜き用の画像を取得する
 void Fade::DrawStencilImage()
 {
-	// デバイスコンテキストの取得
 	ID3D11DeviceContext* context = m_pDR->GetD3DDeviceContext();
 
 	//	描画についての設定を行う
@@ -302,6 +307,10 @@ void Fade::DrawStencilImage()
 	context->GSSetConstantBuffers(0, 1, ccb);
 	context->PSSetConstantBuffers(0, 1, ccb);
 
+	//	画像用サンプラーの登録
+	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
+	context->PSSetSamplers(0, 1, sampler);
+
 	//	描画するオブジェクトの情報を設定
 	DirectX::VertexPositionColorTexture vertex[4] =
 	{
@@ -312,6 +321,7 @@ void Fade::DrawStencilImage()
 	for (int i = 0; i < m_texture.size(); i++)
 		context->PSSetShaderResources(i, 1, m_stencilImage[i].GetAddressOf());
 
+	// (実際には表示しないが) 描画を行う
 	m_batch->Begin();
 	m_batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], 4);
 	m_batch->End();
@@ -323,14 +333,12 @@ void Fade::DrawStencilImage()
 		m_capture.Get(), &srvDesc, m_captureSRV.ReleaseAndGetAddressOf()
 	);
 
+	//	シェーダの解除
 	m_maskShader->EndSharder(context);
 
 	//	保持しておいたデフォルト設定に戻して、画面描画が正常に出来るようにしておく
-	backColor[0] = 0.3f;
-	backColor[1] = 0.3f;
-	backColor[2] = 0.3f;
-	backColor[3] = 0.0f;
 	context->OMSetRenderTargets(1, &defaultRTV, pDSV);
+	// 使用した物を解放
 	context->ClearDepthStencilView(pDSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 0.0f, 0);
 }
 

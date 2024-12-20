@@ -307,14 +307,14 @@ void Particle::Render(
 /// <param name="proj"></param>
 void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj)
 {
-	using namespace DirectX;
+	auto device = m_pDR->GetD3DDevice();
 
 	// 剣のパーティクルのためのコンスタントバッファの作成と更新
 	ConstBuffer cbuff;
 	cbuff.matView = view.Transpose();
 	cbuff.matProj = proj.Transpose();
-	cbuff.matWorld = SimpleMath::Matrix::Identity;		// 剣のパーティクルではビルボードを適用しない
-	cbuff.Diffuse = SimpleMath::Vector4(1, 1, 1, 1);
+	cbuff.matWorld = DirectX::SimpleMath::Matrix::Identity;		// 剣のパーティクルではビルボードを適用しない
+	cbuff.Diffuse = DirectX::SimpleMath::Vector4(1, 1, 1, 1);
 
 	ID3D11DeviceContext1* context = m_pDR->GetD3DDeviceContext();
 	context->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);
@@ -322,13 +322,16 @@ void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::Simp
 	context->VSSetConstantBuffers(0, 1, cb);
 	context->PSSetConstantBuffers(0, 1, cb);
 
+	m_swordShader->BeginSharder(context);
+
 	ID3D11BlendState* blendstate = m_states->NonPremultiplied();	//  半透明描画指定
 	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);		//	透明判定処理
 	context->OMSetDepthStencilState(m_states->DepthRead(), 0);		//	深度バッファはなし
 	context->RSSetState(m_states->CullNone());						//	カリングなし
 
-
-	m_swordShader->BeginSharder(context);
+	//	画像用サンプラーの登録
+	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
+	context->PSSetSamplers(0, 1, sampler);
 
 	// 剣の残像パーティクルを描画
 	m_batch->Begin();
@@ -370,14 +373,14 @@ void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::Simp
 /// <param name="cameraDir"></param>
 void Particle::DrawDustParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj, DirectX::SimpleMath::Vector3 cameraDir)
 {
-	using namespace DirectX;
+	auto device = m_pDR->GetD3DDevice();
 
 	// 土埃パーティクルのためのコンスタントバッファの作成と更新
 	ConstBuffer cbuff;
 	cbuff.matView = view.Transpose();
 	cbuff.matProj = proj.Transpose();
 	cbuff.matWorld = m_billboard.Transpose(); // 土埃パーティクルではビルボードを適用する
-	cbuff.Diffuse = SimpleMath::Vector4(1, 1, 1, 1);
+	cbuff.Diffuse = DirectX::SimpleMath::Vector4(1, 1, 1, 1);
 
 	ID3D11DeviceContext1* context = m_pDR->GetD3DDeviceContext();
 	context->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);
@@ -386,8 +389,13 @@ void Particle::DrawDustParticle(DirectX::SimpleMath::Matrix view, DirectX::Simpl
 	context->GSSetConstantBuffers(0, 1, cb);
 	context->PSSetConstantBuffers(0, 1, cb);
 
-
 	m_dustShader->BeginSharder(context);
+
+	ID3D11SamplerState* m_samplerState;  // サンプラー状態
+
+	//	画像用サンプラーの登録
+	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
+	context->PSSetSamplers(0, 1, sampler);
 
 	// 土埃パーティクルの頂点リストをクリア
 	m_dustVertices.clear();
@@ -398,10 +406,10 @@ void Particle::DrawDustParticle(DirectX::SimpleMath::Matrix view, DirectX::Simpl
 			continue;
 
 		// パーティクルの現在の情報を設定
-		VertexPositionColorTexture vPCT;
-		vPCT.position = XMFLOAT3(li.GetPosition());
-		vPCT.color = XMFLOAT4(li.GetNowColor());
-		vPCT.textureCoordinate = XMFLOAT2(li.GetNowScale().x, 0.0f);
+		DirectX::VertexPositionColorTexture vPCT;
+		vPCT.position = DirectX::XMFLOAT3(li.GetPosition());
+		vPCT.color = DirectX::XMFLOAT4(li.GetNowColor());
+		vPCT.textureCoordinate = DirectX::XMFLOAT2(li.GetNowScale().x, 0.0f);
 
 		m_dustVertices.push_back(vPCT);
 	}
@@ -411,7 +419,7 @@ void Particle::DrawDustParticle(DirectX::SimpleMath::Matrix view, DirectX::Simpl
 	{
 		// カメラとの距離に基づいてパーティクルをソート
 		std::sort(m_dustVertices.begin(), m_dustVertices.end(),
-			[&](VertexPositionColorTexture lhs, VertexPositionColorTexture rhs)
+			[&](DirectX::VertexPositionColorTexture lhs, DirectX::VertexPositionColorTexture rhs)
 			{
 				return cameraDir.Dot(lhs.position - m_cameraPosition) > cameraDir.Dot(rhs.position - m_cameraPosition);
 			});

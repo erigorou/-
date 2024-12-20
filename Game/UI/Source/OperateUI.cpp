@@ -109,6 +109,9 @@ void OperateUI::Render()
 	// コンスタントバッファの設定
 	context->UpdateSubresource(m_CBuffer.Get(), 0, nullptr, &cbuff, 0, 0);
 
+	// シェーダーの開始
+	m_customShader->BeginSharder(context);
+
 	// シェーダーにバッファを渡す
 	ID3D11Buffer* cb[1] = { m_CBuffer.Get() };
 	context->VSSetConstantBuffers(0, 1, cb);
@@ -122,8 +125,6 @@ void OperateUI::Render()
 	context->OMSetDepthStencilState(m_states->DepthDefault(), 0);
 	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
 	context->RSSetState(m_states->CullNone());
-
-	m_customShader->BeginSharder(context);
 
 	// テクスチャの設定
 	for (int i = 0; i < m_texture.size(); i++)
