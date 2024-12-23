@@ -83,6 +83,8 @@ private:
 
 	std::unique_ptr<DirectX::Model> m_model;	// モデル
 
+	// 押し戻し量
+	DirectX::SimpleMath::Vector3 m_oushBackValue;
 
 	// 現在のステート
 	IState* m_currentState;										// 現在のステート

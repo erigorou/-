@@ -55,13 +55,9 @@ void EnemyTitleMoving::PreUpdate()
 
 // 更新処理
 void EnemyTitleMoving::Update(const float& elapsedTime)
-{
-
-	using namespace DirectX::SimpleMath;
-	
+{	
 	// 合計の時間を計算する
 	m_totalSeconds += elapsedTime;
-
 
 	// サイン波の計算(上下移動)
 	m_position.y = Math::CalculatingSinWave(m_totalSeconds, m_amplitude, m_frequency);
@@ -69,18 +65,12 @@ void EnemyTitleMoving::Update(const float& elapsedTime)
 	// 絶対値を取ることでジャンプしているような挙動をする　※
 	m_position.y = fabsf(m_position.y);
 
-
 	// 移動でカメラを揺らす
 	if (m_position.y <= MINIMAL)
 	{
 		m_enemy->GetTitleScene()->SetShakeCamera();
 		m_enemy->ChangeState(m_enemy->GetTitleEnemyIdling());
 	}
-
-
-	// 回転行列の作成
-	Matrix angleMat  = Matrix::CreateScale(TitleEnemy::TITLE_ENEMY_SCALE)
-					*= Matrix::CreateRotationY(-m_angle);
 
 	// 回転角を設定する
 	m_enemy->SetAngle(m_angle);

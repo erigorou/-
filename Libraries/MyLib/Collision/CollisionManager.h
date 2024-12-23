@@ -7,15 +7,7 @@ class IObject;
 
 // オブジェクトの種類
 enum class ObjectType : UINT
-{
-	Player,
-	Enemy,
-	Goblin,
-	Sword,
-	Cudgel,
-	Stage
-};
-
+{ Player, Enemy, Goblin, Sword, Cudgel, Stage };
 
 // 衝突判定の形状
 enum class CollisionType : UINT

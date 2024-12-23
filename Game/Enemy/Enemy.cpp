@@ -254,10 +254,10 @@ void Enemy::Render(
 	const DirectX::SimpleMath::Matrix& view,
 	const DirectX::SimpleMath::Matrix& projection)
 {
+	// 描画に必要なデータを取得する
 	CommonResources* resources = CommonResources::GetInstance();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
-
 
 	// 深度値を参照して書き込む
 	context->OMSetDepthStencilState(states->DepthDefault(), 0);

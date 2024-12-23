@@ -98,6 +98,11 @@ void Goblin::HitEnemy(InterSectData data)
 
 void Goblin::HitStage(InterSectData data)
 {
+	if (data.objType == ObjectType::Stage && data.colType == CollisionType::Sphere)
+	{
+		// リセット
+		m_oushBackValue = DirectX::SimpleMath::Vector3::Zero;
+	}
 }
 
 
@@ -141,11 +146,13 @@ void Goblin::MoveCollision()
 // 描画関数
 void Goblin::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection)
 {
+	// 描画に必要なデータを取得する
 	CommonResources* resources = CommonResources::GetInstance();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
 
-	m_model->Draw(context, *states, m_worldMatrix, view, projection);	// モデルの描画
+	// モデルの描画
+	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 }
 
 
@@ -154,6 +161,9 @@ void Goblin::Finalize()
 {
 	m_idling	->	Finalize();
 	m_attacking	->	Finalize();
+
+	// 当たり判定の削除
+	m_playScene->GetCollisionManager()->DeleteCollision(CollisionType::Sphere, this);
 }
 
 
