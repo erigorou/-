@@ -115,11 +115,11 @@ void Enemy::CreateState()
 	m_approaching	= std::make_unique<EnemyApproaching>	(this);	// 追尾
 
 	// === 状態の初期化 ===
-	m_idling		-> Initialize(m_model.get());	// 待機
-	m_attacking		-> Initialize(m_model.get());	// 攻撃
-	m_sweeping		-> Initialize(m_model.get());	// 薙ぎ払い
-	m_dashAttacking	-> Initialize(m_model.get());	// 突撃
-	m_approaching	-> Initialize(m_model.get());	// 追尾
+	m_idling		-> Initialize(); // 待機
+	m_attacking		-> Initialize(); // 攻撃
+	m_sweeping		-> Initialize(); // 薙ぎ払い
+	m_dashAttacking	-> Initialize(); // 突撃
+	m_approaching	-> Initialize(); // 追尾
 
 	// 初期のステートを待機状態に割り当てる
 	m_currentState = m_idling.get();
@@ -261,8 +261,7 @@ void Enemy::Render(
 
 	// 深度値を参照して書き込む
 	context->OMSetDepthStencilState(states->DepthDefault(), 0);
-
-	m_currentState->Render(context,states,view,projection);				// ステート側の描画
+	// 顔の描画
 	m_currentFace->DrawFace(m_worldMatrix, view, projection);			// 顔の描画
 
 	m_damageEffect->DrawWithDamageEffect(m_model.get(), m_worldMatrix, view, projection);	// ダメージエフェクトの描画

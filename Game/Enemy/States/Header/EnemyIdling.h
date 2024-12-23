@@ -15,19 +15,13 @@ public:
 	// デストラクタ
 	~EnemyIdling() override;
 	// 初期化する
-	void Initialize(DirectX::Model* model) override;
+	void Initialize() override;
 	// 事前更新する
 	void PreUpdate() override;
 	// 更新処理する
 	void Update(const float& elapsedTime) override;
 	// 事後更新する
 	void PostUpdate() override;
-	// 描画する
-	void Render(
-		ID3D11DeviceContext* context,
-		DirectX::CommonStates* states,
-		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection) override;
 	// 終了処理
 	void Finalize() override;
 
@@ -44,8 +38,6 @@ private:
 	float m_totalSeconds;
 	// 敵
 	Enemy* m_enemy;
-	// モデル
-	DirectX::Model* m_model;
 };
 
 #endif		// ENEMY_IDLING_DEFINED

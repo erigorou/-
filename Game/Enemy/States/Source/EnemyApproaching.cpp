@@ -18,7 +18,6 @@ EnemyApproaching::EnemyApproaching(Enemy* enemy)
 	m_enemy(enemy),
 	m_position(0.0f, 0.0f, 0.0f),
 	m_velocity(DirectX::SimpleMath::Vector3(0.0f, 0.0f, 0.0f)* Enemy::ENEMY_SPEED),
-	m_model(nullptr),
 	m_angle(0.0f),
 	m_worldMat(DirectX::SimpleMath::Matrix::Identity),
 	m_totalSeconds(0.0f),
@@ -37,21 +36,16 @@ EnemyApproaching::~EnemyApproaching()
 
 
 // 初期化処理
-void EnemyApproaching::Initialize(DirectX::Model* model)
+void EnemyApproaching::Initialize()
 {
-	using namespace DirectX;
-	// モデルを取得
-	m_model = model;
 	// 速度を設定（前にしか動かない）
-	m_velocity = SimpleMath::Vector3::Forward;
+	m_velocity = DirectX::SimpleMath::Vector3::Forward;
 }
 
 
 // 事前更新処理
 void EnemyApproaching::PreUpdate()
 {
-	using namespace DirectX::SimpleMath;
-
 	// 経過時間を初期化
 	m_totalSeconds = 0.f; 
 
@@ -139,30 +133,6 @@ void EnemyApproaching::PostUpdate()
 	m_enemy->SetPosition(m_position);
 	// パーティクルを生成する
 	m_particles->CreateSlamDust(m_position);
-}
-
-
-// 描画処理
-void EnemyApproaching::Render(
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection
-	)
-{
-	UNREFERENCED_PARAMETER(context);
-	UNREFERENCED_PARAMETER(states);
-	UNREFERENCED_PARAMETER(view);
-	UNREFERENCED_PARAMETER(projection);
-	UNREFERENCED_PARAMETER(m_model);
-
-
-#ifdef _DEBUG
-	CommonResources* resources = CommonResources::GetInstance();
-	auto debugString = resources->GetDebugString();
-
-	UNREFERENCED_PARAMETER(debugString);
-#endif // _DEBUG
 }
 
 

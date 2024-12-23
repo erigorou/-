@@ -17,7 +17,7 @@ public:
 	~GoblinIdling() override;
 
 	// 初期化する
-	void Initialize(DirectX::Model* model) override;
+	void Initialize() override;
 
 	// 事前更新する
 	void PreUpdate() override;
@@ -28,13 +28,6 @@ public:
 	// 事後更新する
 	void PostUpdate() override;
 
-	// 描画する
-	void Render(
-		ID3D11DeviceContext* context,
-		DirectX::CommonStates* states,
-		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection) override;
-
 	// 後処理を行う
 	void Finalize() override;
 
@@ -42,9 +35,7 @@ public:
 // メンバ
 private:
 	Goblin* m_goblin;	// 親
-
-	DirectX::Model* m_model;
-	float m_TotalTime;
+	float m_TotalTime;	// 経過時間
 };
 
 

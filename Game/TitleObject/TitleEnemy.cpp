@@ -89,8 +89,8 @@ void TitleEnemy::CreateState()
 
 
 	// === 状態の初期化 ===
-	m_titleIdling->Initialize(m_model.get());	// タイトル画面の敵の待機
-	m_titleMoving->Initialize(m_model.get());	// タイトル画面の敵の移動
+	m_titleIdling->Initialize();	// タイトル画面の敵の待機
+	m_titleMoving->Initialize();	// タイトル画面の敵の移動
 
 	// 初期のステートを待機状態に割り当てる
 	m_currentState = m_titleIdling.get();
@@ -152,8 +152,6 @@ void TitleEnemy::Render(
 
 	// 深度値を参照して書き込む
 	context->OMSetDepthStencilState(states->DepthDefault(), 0);
-
-	m_currentState->Render(context,states,view,projection);				// ステート側の描画
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);	// モデルの描画
 
 #ifdef _DEBUG

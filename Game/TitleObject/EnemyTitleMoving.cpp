@@ -15,7 +15,6 @@ EnemyTitleMoving::EnemyTitleMoving(TitleEnemy* enemy)
 	: m_enemy(enemy)
 	, m_position(0.0f, 0.0f, 0.0f)
 	, m_velocity(DirectX::SimpleMath::Vector3(0.0f, 0.0f, 0.0f))
-	, m_model(nullptr)
 	, m_angle(0.0f)
 	, m_worldMat(DirectX::SimpleMath::Matrix::Identity)
 	, m_totalSeconds(0.0f)
@@ -35,13 +34,10 @@ EnemyTitleMoving::~EnemyTitleMoving()
 
 
 // 初期化処理
-void EnemyTitleMoving::Initialize(DirectX::Model* model)
+void EnemyTitleMoving::Initialize()
 {
-	using namespace DirectX;
-	// モデルを取得
-	m_model = model;
 	// 速度を設定（前にしか動かない）
-	m_velocity = SimpleMath::Vector3::Forward;
+	m_velocity = DirectX::SimpleMath::Vector3::Forward;
 }
 
 
@@ -107,29 +103,6 @@ void EnemyTitleMoving::PostUpdate()
 
 	// スパン
 	m_enemy->GetTitleScene()->CleateSpamDust(m_position);
-}
-
-
-// 描画処理
-void EnemyTitleMoving::Render(
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection
-	)
-{
-	UNREFERENCED_PARAMETER(context);
-	UNREFERENCED_PARAMETER(states);
-	UNREFERENCED_PARAMETER(view);
-	UNREFERENCED_PARAMETER(projection);
-	UNREFERENCED_PARAMETER(m_model);
-
-#ifdef _DEBUG
-	CommonResources* resources = CommonResources::GetInstance();
-	auto debugString = resources->GetDebugString();
-
-	UNREFERENCED_PARAMETER(debugString);
-#endif // _DEBUG
 }
 
 

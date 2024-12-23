@@ -15,28 +15,28 @@ public:
 	// デストラクタ
 	~GoblinAttacking() override;
 	// 初期化する
-	void Initialize(DirectX::Model* model) override;
+	void Initialize() override;
 	// 事前更新する
 	void PreUpdate() override;
 	// 更新する
 	void Update(const float& elapsedTime) override;
 	// 事後更新する
 	void PostUpdate() override;
-	// 描画する
-	void Render(
-		ID3D11DeviceContext* context,
-		DirectX::CommonStates* states,
-		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection) override;
-
 	// 後処理を行う
 	void Finalize() override;
 
+// 内部関数 **
 private:
-	Goblin* m_goblin;	// 親
+	// プレイヤーの探索を行う。
+	void SearchPlayer();
 
-	DirectX::Model* m_model;
-	float m_totalTime;
+
+
+private:
+	Goblin* m_goblin;			// 親
+	float m_totalTime;			// 経過時間
+
+	
 };
 
 

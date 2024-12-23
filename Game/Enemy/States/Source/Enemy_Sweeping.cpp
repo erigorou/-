@@ -24,8 +24,7 @@ const float Enemy_Sweeping::ROTATE_ANGLE	= 20.0f;	// 振りかざし角度
 // コンストラクタ
 // ----------------------------------
 Enemy_Sweeping::Enemy_Sweeping(Enemy* enemy)
-	:m_model()
-	, m_angle(0.f)
+	: m_angle(0.f)
 	, m_enemy(enemy)
 	, m_totalSeconds()
 {
@@ -43,10 +42,8 @@ Enemy_Sweeping::~Enemy_Sweeping()
 // ----------------------------------
 // 初期化処理
 // ----------------------------------
-void Enemy_Sweeping::Initialize(DirectX::Model* model)
+void Enemy_Sweeping::Initialize()
 {
-	// モデルの取得
-	m_model = model;
 }
 
 
@@ -120,31 +117,6 @@ void Enemy_Sweeping::PostUpdate()
 void Enemy_Sweeping::CheckHitPlayerBody()
 {
 
-}
-
-
-// ----------------------------------
-// 描画処理
-// ----------------------------------
-void Enemy_Sweeping::Render(
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection
-)
-{
-	UNREFERENCED_PARAMETER(context);
-	UNREFERENCED_PARAMETER(states);
-	UNREFERENCED_PARAMETER(view);
-	UNREFERENCED_PARAMETER(projection);
-	UNREFERENCED_PARAMETER(m_model);
-
-#ifdef _DEBUG
-	// リソースの取得
-	CommonResources* resources = CommonResources::GetInstance();
-	auto debugString = resources->GetDebugString();
-	debugString->AddString("enemyAngle : %f", m_angle);
-#endif // _DEBUG
 }
 
 

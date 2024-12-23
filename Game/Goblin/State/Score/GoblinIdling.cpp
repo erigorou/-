@@ -15,9 +15,8 @@ Goblin::GoblinIdling::~GoblinIdling()
 
 
 
-void Goblin::GoblinIdling::Initialize(DirectX::Model* model)
+void Goblin::GoblinIdling::Initialize()
 {
-	m_model = model;
 }
 
 
@@ -37,18 +36,6 @@ void Goblin::GoblinIdling::Update(const float& elapsedTime)
 
 void Goblin::GoblinIdling::PostUpdate()
 {
-}
-
-
-void Goblin::GoblinIdling::Render(
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection)
-{
-	DirectX::SimpleMath::Matrix world = DirectX::SimpleMath::Matrix::Identity;
-
-	m_model->Draw(context, *states, world, view, projection);
 }
 
 

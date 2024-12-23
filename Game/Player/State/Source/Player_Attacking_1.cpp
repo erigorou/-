@@ -41,10 +41,8 @@ PlayerAttacking_1::~PlayerAttacking_1()
 // -----------------------
 // 初期化処理
 // -----------------------
-void PlayerAttacking_1::Initialize(DirectX::Model* model)
+void PlayerAttacking_1::Initialize()
 {
-	// モデルを取得する
-	m_model = model;
 }
 
 
@@ -139,32 +137,6 @@ void PlayerAttacking_1::PostUpdate()
 	m_player->GetPlayScene()->GetSword()->ChangeState(
 		m_player->GetPlayScene()->GetSword()->GetIdlingState()
 	);
-}
-
-
-// -----------------------
-// 描画
-// -----------------------
-void PlayerAttacking_1::Render(
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection
-)
-{
-	UNREFERENCED_PARAMETER(context);
-	UNREFERENCED_PARAMETER(states);
-	UNREFERENCED_PARAMETER(view);
-	UNREFERENCED_PARAMETER(projection);
-	UNREFERENCED_PARAMETER(m_model);
-
-	// コモンリソースを取得する
-	CommonResources* resources = CommonResources::GetInstance();
-
-
-	// デバッグ情報を「DebugString」で表示する
-	auto debugString = resources->GetDebugString();
-	debugString->AddString("");
 }
 
 

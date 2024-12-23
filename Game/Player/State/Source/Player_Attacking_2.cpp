@@ -37,10 +37,9 @@ PlayerAttacking_2::~PlayerAttacking_2()
 
 
 // 初期化処理
-void PlayerAttacking_2::Initialize(DirectX::Model* model)
+void PlayerAttacking_2::Initialize()
 {
-	// モデルを取得する
-	m_model = model;
+
 
 }
 
@@ -119,29 +118,6 @@ void PlayerAttacking_2::PostUpdate()
 	m_player->SetAnimationRotate(DirectX::SimpleMath::Vector3::Zero);
 }
 
-
-// 描画処理
-void PlayerAttacking_2::Render(
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection
-)
-{
-	UNREFERENCED_PARAMETER(context);
-	UNREFERENCED_PARAMETER(states);
-	UNREFERENCED_PARAMETER(view);
-	UNREFERENCED_PARAMETER(projection);
-	UNREFERENCED_PARAMETER(m_model);
-
-#ifdef _DEBUG
-	// コモンリソースを取得する
-	CommonResources* resources = CommonResources::GetInstance();
-	// デバッグ情報を「DebugString」で表示する
-	auto debugString = resources->GetDebugString();
-	debugString->AddString("");
-#endif // _DEBUG
-}
 
 
 // 終了処理

@@ -36,10 +36,8 @@ PlayerDodging::~PlayerDodging()
 // -------------------------------------
 // 初期化処理
 // --------------------------------------
-void PlayerDodging::Initialize(DirectX::Model* model)
+void PlayerDodging::Initialize()
 {
-	// モデルを取得する
-	m_model = model;
 }
 
 
@@ -182,30 +180,6 @@ void PlayerDodging::PostUpdate()
 	m_position.y = 0.0f;
 	// プレイヤーの座標を更新
 	m_player->SetPosition(m_position);
-}
-
-
-// 描画処理
-void PlayerDodging::Render(
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection
-	)
-{
-	UNREFERENCED_PARAMETER(context);
-	UNREFERENCED_PARAMETER(states);
-	UNREFERENCED_PARAMETER(view);
-	UNREFERENCED_PARAMETER(projection);
-	UNREFERENCED_PARAMETER(m_model);
-
-#ifdef _DEBUG
-	// コモンリソースを取得する
-	CommonResources* resources = CommonResources::GetInstance();
-	// デバッグ文字の描画
-	auto debugString = resources->GetDebugString();
-	debugString->AddString("");
-#endif // _DEBUG
 }
 
 

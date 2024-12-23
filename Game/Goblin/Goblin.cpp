@@ -58,7 +58,6 @@ void Goblin::Initialize()
 	CreateState();
 	// “–‚½‚è”»’è‚Ì¶¬
 	CreateCollision();
-
 	// HP‚Ì¶¬
 	m_hp = std::make_unique<HPSystem>(GOBLIN_HP);
 }
@@ -70,21 +69,36 @@ void Goblin::CreateState()
 	m_idling		=	std::make_unique<GoblinIdling>		(this);	// ‘Ò‹@
 	m_attacking		=	std::make_unique<GoblinAttacking>	(this);	// UŒ‚
 
-	m_idling	->	Initialize(m_model.get());
-	m_attacking	->	Initialize(m_model.get());
+	m_idling	->	Initialize();
+	m_attacking	->	Initialize();
 
 	m_currentState = m_idling.get();
 }
 
-
+// ƒvƒŒƒCƒ„[‚É“–‚½‚Á‚½‚Æ‚«‚Ìˆ—
 void Goblin::HitPlayer(InterSectData data)
 {
 	if (data.objType == ObjectType::Player && data.colType == CollisionType::Sphere)
 	{
-
 	}
 }
 
+
+// ¬‹S‚É“–‚½‚Á‚½‚Æ‚«‚Ìˆ—
+void Goblin::HitGoblin(InterSectData data)
+{
+	if (data.objType == ObjectType::Goblin && data.colType == CollisionType::Sphere)
+	{
+	}
+}
+
+void Goblin::HitEnemy(InterSectData data)
+{
+}
+
+void Goblin::HitStage(InterSectData data)
+{
+}
 
 
 // “–‚½‚è”»’è‚Ì¶¬
@@ -115,12 +129,14 @@ void Goblin::Update(const float elapsedTime)
 }
 
 
+// Õ“Ë”»’è‚ÌˆÚ“®
 void Goblin::MoveCollision()
 {
 	DirectX::SimpleMath::Vector3 pos = m_position;
 	pos.y = 2.0f;
 	m_bodyCollision->Center = pos;
 }
+
 
 // •`‰æŠÖ”
 void Goblin::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection)
@@ -144,8 +160,12 @@ void Goblin::Finalize()
 // “–‚½‚Á‚½‚Æ‚«‚Ìˆ—
 void Goblin::HitAction(InterSectData data)
 {
-	if (data.objType == ObjectType::Sword)
+	switch (data.objType)
 	{
+	case ObjectType::Player:	HitPlayer(data);	break;
+	case ObjectType::Goblin:	HitGoblin(data);	break;
+	case ObjectType::Enemy:		HitEnemy(data);		break;
+	case ObjectType::Stage:		HitStage(data);		break;
 	}
 }
 

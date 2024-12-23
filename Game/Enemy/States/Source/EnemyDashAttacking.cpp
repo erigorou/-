@@ -14,8 +14,7 @@
 
 // コンストラクタ
 EnemyDashAttacking::EnemyDashAttacking(Enemy* enemy)
-	:m_model()
-	, m_angle(0.0f)
+	: m_angle(0.0f)
 	, m_bodyTilt(0.0f)
 	, m_enemy(enemy)
 	, m_totalSeconds()
@@ -30,9 +29,8 @@ EnemyDashAttacking::~EnemyDashAttacking()
 
 
 // 初期化処理
-void EnemyDashAttacking::Initialize(DirectX::Model* model)
+void EnemyDashAttacking::Initialize()
 {
-	m_model = model;	// モデルの取得
 }
 
 
@@ -191,28 +189,6 @@ void EnemyDashAttacking::PostUpdate()
 	// 顔のステートを変更
 	m_enemy->SetFace(m_enemy->GetFaceIdling());
 }
-
-
-// --------------------
-// 描画処理
-// --------------------
-void EnemyDashAttacking::Render(
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection
-)
-{
-	UNREFERENCED_PARAMETER(context);
-	UNREFERENCED_PARAMETER(states);
-	UNREFERENCED_PARAMETER(view);
-	UNREFERENCED_PARAMETER(projection);
-	UNREFERENCED_PARAMETER(m_model);
-
-#ifdef _DEBUG
-#endif // _DEBUG
-}
-
 
 void EnemyDashAttacking::Finalize()
 {

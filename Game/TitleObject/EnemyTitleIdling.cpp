@@ -34,13 +34,10 @@ EnemyTitleIdling::~EnemyTitleIdling()
 
 
 // 初期化処理
-void EnemyTitleIdling::Initialize(DirectX::Model* model)
+void EnemyTitleIdling::Initialize()
 {
-	using namespace DirectX;
-	// モデルを取得
-	m_model = model;
 	// 速度を設定（前にしか動かない）
-	m_velocity = SimpleMath::Vector3::Forward;
+	m_velocity = DirectX::SimpleMath::Vector3::Forward;
 }
 
 
@@ -96,29 +93,6 @@ void EnemyTitleIdling::PostUpdate()
 	m_enemy->SetPosition(m_position);
 }
 
-
-// 描画処理
-void EnemyTitleIdling::Render(
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection
-	)
-{
-	UNREFERENCED_PARAMETER(context);
-	UNREFERENCED_PARAMETER(states);
-	UNREFERENCED_PARAMETER(view);
-	UNREFERENCED_PARAMETER(projection);
-	UNREFERENCED_PARAMETER(m_model);
-
-
-#ifdef _DEBUG
-	CommonResources* resources = CommonResources::GetInstance();
-	auto debugString = resources->GetDebugString();
-
-	UNREFERENCED_PARAMETER(debugString);
-#endif // _DEBUG
-}
 
 
 void EnemyTitleIdling::Finalize()

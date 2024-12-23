@@ -30,10 +30,10 @@ public:
 	static constexpr float COLLISION_RADIUS = 16.0f;
 
 	// 譲渡関数
-	DirectX::SimpleMath::Vector3	GetPosition()	override{ return m_position;	}	// 鬼の座標を取得する
-	DirectX::SimpleMath::Vector3	GetVelocity()	const	{ return m_velocity;	}	// 速度の取得
-	DirectX::SimpleMath::Vector3	GetAngle()		const	{ return m_angle;		}	// 回転角の取得
-	DirectX::SimpleMath::Matrix		GetWorldMatrix()const	{ return m_worldMatrix; }	// ワールド座標の取得
+	DirectX::SimpleMath::Vector3	GetPosition()	override{ return m_position;	}			// 鬼の座標を取得する
+	DirectX::SimpleMath::Vector3	GetVelocity()	const	{ return m_velocity;	}			// 速度の取得
+	DirectX::SimpleMath::Vector3	GetAngle()		const	{ return m_angle;		}			// 回転角の取得
+	DirectX::SimpleMath::Matrix		GetWorldMatrix()const	{ return m_worldMatrix; }			// ワールド座標の取得
 	DirectX::BoundingSphere 		GetCollision() const	{ return *m_bodyCollision.get(); }	// 体の当たり判定の取得
 
 	// ステートパターン

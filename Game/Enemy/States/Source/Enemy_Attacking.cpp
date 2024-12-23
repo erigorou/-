@@ -13,8 +13,7 @@
 
 // コンストラクタ
 Enemy_Attacking::Enemy_Attacking(Enemy* enemy)
-	:m_model()
-	,m_angle(0.f)
+	:m_angle(0.f)
 	,m_enemy(enemy)
 	,m_totalSeconds()
 {
@@ -28,10 +27,8 @@ Enemy_Attacking::~Enemy_Attacking()
 
 
 // 初期化処理
-void Enemy_Attacking::Initialize(DirectX::Model* model)
+void Enemy_Attacking::Initialize()
 {
-	// モデルを取得する
-	m_model = model;
 }
 
 
@@ -84,26 +81,6 @@ void Enemy_Attacking::PostUpdate()
 	// 顔のステートを変更
 	m_enemy->SetFace(m_enemy->GetFaceIdling());
 }
-
-
-// 描画処理
-void Enemy_Attacking::Render(
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection
-	)
-{
-	UNREFERENCED_PARAMETER(context);
-	UNREFERENCED_PARAMETER(states);
-	UNREFERENCED_PARAMETER(view);
-	UNREFERENCED_PARAMETER(projection);
-	UNREFERENCED_PARAMETER(m_model);
-
-#ifdef _DEBUG
-#endif // _DEBUG
-}
-
 
 void Enemy_Attacking::Finalize()
 {

@@ -15,9 +15,7 @@
 // コンストラクタ
 // -------------------------------
 PlayerNockBacking::PlayerNockBacking(Player* player)
-	:
-	m_player(player)
-	, m_model(nullptr)
+	: m_player(player)
 	, m_totalSeconds(0.0f)
 	, m_elapsedTime(0.0f)
 	, m_velocity(0.0f, 0.0f, -SPEED)
@@ -36,10 +34,8 @@ PlayerNockBacking::~PlayerNockBacking()
 // -------------------------------
 // 初期化処理
 // -------------------------------
-void PlayerNockBacking::Initialize(DirectX::Model* model)
+void PlayerNockBacking::Initialize()
 {
-	// モデルを取得する
-	m_model = model;
 }
 
 
@@ -168,32 +164,6 @@ void PlayerNockBacking::OnKeyDown(const DirectX::Keyboard::Keys& key)
 // -------------------------------
 void PlayerNockBacking::PostUpdate()
 {
-}
-
-
-// -------------------------------
-// 描画処理
-// -------------------------------
-void PlayerNockBacking::Render(
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection
-)
-{
-	UNREFERENCED_PARAMETER(context);
-	UNREFERENCED_PARAMETER(states);
-	UNREFERENCED_PARAMETER(view);
-	UNREFERENCED_PARAMETER(projection);
-	UNREFERENCED_PARAMETER(m_model);
-
-#ifdef _DEBUG
-	// コモンリソースを取得する
-	CommonResources* resources = CommonResources::GetInstance();
-	// デバッグ文字の描画
-	auto debugString = resources->GetDebugString();
-	debugString->AddString("PlayerNockBacking");
-#endif // _DEBUG
 }
 
 

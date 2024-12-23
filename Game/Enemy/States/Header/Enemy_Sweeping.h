@@ -24,19 +24,13 @@ public:
 	// デストラクタ
 	~Enemy_Sweeping() override;
 	// 初期化する
-	void Initialize(DirectX::Model* model) override;
+	void Initialize() override;
 	// 事前更新する
 	void PreUpdate() override;
 	// 更新処理する
 	void Update(const float& elapsedTime) override;
 	// 事後更新する
 	void PostUpdate() override;
-	// 描画する
-	void Render(
-		ID3D11DeviceContext* context,
-		DirectX::CommonStates* states,
-		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection) override;
 	// 終了処理
 	void Finalize() override;
 
@@ -47,7 +41,6 @@ private:
 	float m_angle;				// 角度	
 	float m_totalSeconds;		// 総時間
 	Enemy* m_enemy;				// 敵（ステートの元）	
-	DirectX::Model* m_model;	// モデル
 
 };
 

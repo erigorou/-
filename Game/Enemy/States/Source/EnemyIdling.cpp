@@ -31,9 +31,8 @@ EnemyIdling::~EnemyIdling()
 
 
 // 初期化処理
-void EnemyIdling::Initialize(DirectX::Model* model)
+void EnemyIdling::Initialize()
 {
-	m_model = model;
 }
 
 
@@ -109,33 +108,6 @@ void EnemyIdling::PostUpdate()
 {
 	// 修正点があればここに記載
 }
-
-
-// 描画処理
-void EnemyIdling::Render(
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection
-	)
-{
-	UNREFERENCED_PARAMETER(context);
-	UNREFERENCED_PARAMETER(states);
-	UNREFERENCED_PARAMETER(view);
-	UNREFERENCED_PARAMETER(projection);
-	UNREFERENCED_PARAMETER(m_model);
-
-
-
-#ifdef _DEBUG
-	// リソースの取得
-	CommonResources* resources = CommonResources::GetInstance();
-	// デバッグ情報を「DebugString」で表示する
-	auto debugString = resources->GetDebugString();
-	debugString->AddString("enemyAngle : %f", m_angle);
-#endif // _DEBUG
-}
-
 
 void EnemyIdling::Finalize()
 {

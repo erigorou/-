@@ -110,11 +110,11 @@ void Player::CreateState()
 	m_playerNockBacking = std::make_unique<PlayerNockBacking>	(this);
 
 	//////////////////////ステートの初期化////////////////////////////
-	m_playerIdling		->Initialize(m_model.get());
-	m_playerDodging		->Initialize(m_model.get());
-	m_playerAttacking_1	->Initialize(m_model.get());
-	m_playerAttacking_2	->Initialize(m_model.get());
-	m_playerNockBacking	->Initialize(m_model.get());
+	m_playerIdling		->Initialize();
+	m_playerDodging		->Initialize();
+	m_playerAttacking_1	->Initialize();
+	m_playerAttacking_2	->Initialize();
+	m_playerNockBacking	->Initialize();
 
 	// 最初のステートを設定
 	m_currentState = m_playerIdling.get();
@@ -436,13 +436,6 @@ void Player::Render(
 
 	// モデルを描画する
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
-
-	// ステートで描画する
-	m_currentState->Render(
-		context,
-		states,
-		view,
-		projection);
 
 #ifdef _DEBUG
 	// デバッグ文字の描画

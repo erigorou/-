@@ -16,10 +16,8 @@
 // コンストラクタ
 // -------------------------------
 PlayerIdling::PlayerIdling(Player* player)
-	:
-	 m_player(player)
-	,m_totalSeconds()
-	,m_model()
+	: m_player(player)
+	, m_totalSeconds(0.0f)
 {
 }
 
@@ -35,10 +33,8 @@ PlayerIdling::~PlayerIdling()
 // -------------------------------
 // 初期化処理
 // -------------------------------
-void PlayerIdling::Initialize(DirectX::Model* model)
+void PlayerIdling::Initialize()
 {
-	// モデルを取得する
-	m_model = model;
 }
 
 
@@ -77,7 +73,6 @@ void PlayerIdling::Update(const float& elapsedTime)
 // -------------------------------
 void PlayerIdling::PostUpdate()
 {
-	// 修正点があればここに記載
 }
 
 
@@ -96,27 +91,6 @@ void PlayerIdling::OnKeyDown(const DirectX::Keyboard::Keys& key)
 	UNREFERENCED_PARAMETER(key);
 }
 
-
-
-// -------------------------------
-// 描画処理
-// -------------------------------
-void PlayerIdling::Render(
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection
-	)
-{
-	UNREFERENCED_PARAMETER(context);
-	UNREFERENCED_PARAMETER(states);
-	UNREFERENCED_PARAMETER(view);
-	UNREFERENCED_PARAMETER(projection);
-	UNREFERENCED_PARAMETER(m_model);
-
-	//// コモンリソースを取得する
-	//CommonResources* resources = CommonResources::GetInstance();
-}
 
 
 // -------------------------------
