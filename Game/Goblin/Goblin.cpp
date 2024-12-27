@@ -66,14 +66,29 @@ void Goblin::Initialize()
 // ステートの作成
 void Goblin::CreateState()
 {
-	m_idling		=	std::make_unique<GoblinIdling>		(this);	// 待機
-	m_attacking		=	std::make_unique<GoblinAttacking>	(this);	// 攻撃
+	m_idling = std::make_unique<GoblinIdling>(this);		// 待機
+	m_attacking = std::make_unique<GoblinAttacking>(this);	// 攻撃
 
-	m_idling	->	Initialize();
-	m_attacking	->	Initialize();
+	m_idling->Initialize();
+	m_attacking->Initialize();
 
 	m_currentState = m_idling.get();
 }
+
+// 当たり判定の生成
+void Goblin::CreateCollision()
+{
+	// 当たり判定の生成
+	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, GOBLIN_SCALE * COLLISION_RADIUS);
+
+	// 当たり判定をCollisionManagerに登録する
+	m_playScene->GetCollisionManager()->AddCollision(
+		ObjectType::Goblin,
+		CollisionType::Sphere,
+		this,
+		m_bodyCollision.get());
+}
+
 
 // プレイヤーに当たったときの処理
 void Goblin::HitPlayer(InterSectData data)
@@ -106,26 +121,12 @@ void Goblin::HitStage(InterSectData data)
 }
 
 
-// 当たり判定の生成
-void Goblin::CreateCollision()
-{
-	// 当たり判定の生成
-	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, GOBLIN_SCALE * COLLISION_RADIUS);
-
-	// 当たり判定をCollisionManagerに登録する
-	m_playScene->GetCollisionManager()->AddCollision(
-		ObjectType::Goblin,
-		CollisionType::Sphere,
-		this,
-		m_bodyCollision.get());
-}
-
 
 // 更新処理
 void Goblin::Update(const float elapsedTime)
 {
 	// ワールド行列の初期化
-	m_worldMatrix = 
+	m_worldMatrix =
 		DirectX::SimpleMath::Matrix::CreateScale(GOBLIN_SCALE) * DirectX::SimpleMath::Matrix::CreateTranslation(m_position);
 	// ステートの更新処理
 	m_currentState->Update(elapsedTime);
@@ -159,8 +160,8 @@ void Goblin::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::Simp
 // 終了関数
 void Goblin::Finalize()
 {
-	m_idling	->	Finalize();
-	m_attacking	->	Finalize();
+	m_idling->Finalize();
+	m_attacking->Finalize();
 
 	// 当たり判定の削除
 	m_playScene->GetCollisionManager()->DeleteCollision(CollisionType::Sphere, this);

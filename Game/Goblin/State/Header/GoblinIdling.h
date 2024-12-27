@@ -3,10 +3,10 @@
 #define GOBLIN_IDLING
 
 #include "pch.h"
-#include "../../Goblin.h"
+#include "Interface/IState.h"
+class Goblin;
 
-
-class Goblin::GoblinIdling : public IState
+class GoblinIdling : public IState
 {
 
 // ‹¤’Ê

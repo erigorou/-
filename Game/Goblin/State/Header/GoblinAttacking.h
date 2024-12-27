@@ -4,10 +4,9 @@
 
 #include "pch.h"
 #include "Interface/IState.h"
+class Goblin;
 
-#include "../../Goblin.h"
-
-class Goblin::GoblinAttacking : public IState
+class GoblinAttacking : public IState
 {
 public:
 	// コンストラクタ

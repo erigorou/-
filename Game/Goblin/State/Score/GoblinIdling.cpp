@@ -3,42 +3,50 @@
 #include "../../Goblin.h"
 
 
-Goblin::GoblinIdling::GoblinIdling(Goblin* goblin)
+GoblinIdling::GoblinIdling(Goblin* goblin)
 	: m_goblin(goblin)
 {
 }
 
 
-Goblin::GoblinIdling::~GoblinIdling()
+GoblinIdling::~GoblinIdling()
 {
 }
 
 
 
-void Goblin::GoblinIdling::Initialize()
+void GoblinIdling::Initialize()
 {
 }
 
 
-void Goblin::GoblinIdling::PreUpdate()
+void GoblinIdling::PreUpdate()
 {
+	m_goblin->SetIsAttacking(false);
 }
 
 
 
-void Goblin::GoblinIdling::Update(const float& elapsedTime)
+void GoblinIdling::Update(const float& elapsedTime)
 {
 	// ŽžŠÔ‚ð‰ÁŽZ‚·‚é
 	m_TotalTime += elapsedTime;
+
+	// UŒ‚ƒXƒe[ƒg‚É‘JˆÚ‚·‚é
+	if (m_TotalTime > 3.0f)
+	{
+		m_goblin->ChangeState(m_goblin->GetAttacking());
+
+	}
 }
 
 
 
-void Goblin::GoblinIdling::PostUpdate()
+void GoblinIdling::PostUpdate()
 {
 }
 
 
-void Goblin::GoblinIdling::Finalize()
+void GoblinIdling::Finalize()
 {
 }

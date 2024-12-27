@@ -15,12 +15,12 @@
 class Player;
 class PlayScene;
 class HPSystem;
+#include "State/Header/GoblinIdling.h"
+#include "State/Header/GoblinAttacking.h"
 
 class Goblin : public IObject
 {
 public:
-	class GoblinIdling;
-	class GoblinAttacking;
 
 	// 固定値
 	static const float GOBLIN_SPEED;
@@ -30,20 +30,20 @@ public:
 	static constexpr float COLLISION_RADIUS = 16.0f;
 
 	// 譲渡関数
-	DirectX::SimpleMath::Vector3	GetPosition()	override{ return m_position;	}			// 鬼の座標を取得する
-	DirectX::SimpleMath::Vector3	GetVelocity()	const	{ return m_velocity;	}			// 速度の取得
-	DirectX::SimpleMath::Vector3	GetAngle()		const	{ return m_angle;		}			// 回転角の取得
-	DirectX::SimpleMath::Matrix		GetWorldMatrix()const	{ return m_worldMatrix; }			// ワールド座標の取得
-	DirectX::BoundingSphere 		GetCollision() const	{ return *m_bodyCollision.get(); }	// 体の当たり判定の取得
+	DirectX::SimpleMath::Vector3	GetPosition		()	override{ return m_position; }				// 鬼の座標を取得する
+	DirectX::SimpleMath::Vector3	GetVelocity		()	const	{ return m_velocity; }				// 速度の取得
+	DirectX::SimpleMath::Vector3	GetAngle		()	const	{ return m_angle; }					// 回転角の取得
+	DirectX::SimpleMath::Matrix		GetWorldMatrix	()	const	{ return m_worldMatrix; }			// ワールド座標の取得
+	DirectX::BoundingSphere 		GetCollision	()	const	{ return *m_bodyCollision.get(); }	// 体の当たり判定の取得
 
 	// ステートパターン
-	GoblinIdling*		GetIdling()		const { return m_idling.get		(); }	// 待機ステートの取得
-	GoblinAttacking*	GetAttacking()	const { return m_attacking.get	();	}	// 攻撃ステートの取得
-	
+	GoblinIdling*	 GetIdling()	const { return m_idling.get(); }	// 待機ステートの取得
+	GoblinAttacking* GetAttacking()	const { return m_attacking.get(); }	// 攻撃ステートの取得
+
 	IState* GetCurrentState() const { return m_currentState; }	// 現在のステートの取得
 
-	void SetIsAttacking(bool isAttacking) { m_nowAttacking = isAttacking; }	// 攻撃中かどうかの設定
-	bool IsAttacking() const { return m_nowAttacking; }	// 攻撃中かどうか
+	void SetIsAttacking(bool isAttacking)	{ m_nowAttacking = isAttacking; }	// 攻撃中かどうかの設定
+	bool IsAttacking() const				{ return m_nowAttacking; }			// 攻撃中かどうか
 
 	PlayScene* GetPlayScen() const { return m_playScene; }	// PlaySceneの取得
 
@@ -59,7 +59,7 @@ public:
 	void Render(
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& projection);	// 描画関数
-	
+
 	void Finalize();									// 終了関数
 	void HitAction(InterSectData data) override;		// 当たったときの処理
 
@@ -75,7 +75,7 @@ private:
 
 
 	void CreateState();		// ステートの作成
-	
+
 	DirectX::SimpleMath::Vector3 m_position;	// 座標
 	DirectX::SimpleMath::Vector3 m_velocity;	// 速度
 	DirectX::SimpleMath::Vector3 m_angle;		// 回転角
@@ -87,10 +87,10 @@ private:
 	DirectX::SimpleMath::Vector3 m_oushBackValue;
 
 	// 現在のステート
-	IState* m_currentState;										// 現在のステート
-	std::unique_ptr<Goblin::GoblinIdling	> m_idling		;	// 待機
-	std::unique_ptr<Goblin::GoblinAttacking	> m_attacking	;	// 攻撃
- 
+	IState* m_currentState;								// 現在のステート
+	std::unique_ptr<GoblinIdling>		m_idling;		// 待機
+	std::unique_ptr<GoblinAttacking>	m_attacking;	// 攻撃
+
 	// HP
 	std::unique_ptr<HPSystem> m_hp;	// HP
 
@@ -98,7 +98,7 @@ private:
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;	// プリミティブバッチ
 
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;	// 入力レイアウト
-	
+
 	// プレイシーン(当たり判定の処理に使用)
 	PlayScene* m_playScene;
 
