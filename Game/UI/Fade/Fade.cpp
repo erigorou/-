@@ -280,11 +280,6 @@ void Fade::DrawStencilImage()
 	// フェードのサイズを計算
 	float size = CalcrateFadeValue(t);
 
-	auto resources = CommonResources::GetInstance();
-	auto debugString = resources->GetDebugString();
-	debugString->AddString("t, %f, %f", t, size);
-	debugString->AddString("totalTime , %f", m_totalTime);
-
 	DirectX::SimpleMath::Matrix world;
 	world = DirectX::SimpleMath::Matrix::CreateScale(size, size, 1.0f);
 
@@ -413,11 +408,6 @@ void Fade::Render()
 
 	//	シェーダーの解除
 	m_customShader->EndSharder(context);
-
-
-#ifdef _DEBUG
-#endif // !_DEBUG
-
 }
 
 // ----------------------------------

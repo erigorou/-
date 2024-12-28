@@ -26,9 +26,9 @@ const float Goblin::GOBLIN_SCALE = Enemy::ENEMY_SCALE / 4.0f;	// サイズ
 // コンストラクタ
 Goblin::Goblin(PlayScene* playScene)
 	: m_playScene(playScene)
-	, m_position{ 80.f, 0.f, 0.f }
-	, m_velocity{ 0.f, 0.f, 0.f }
-	, m_angle{ 0.f, 0.f, 0.f }
+	, m_position{ 80.0f, 0.0f, 0.0f } // ★　仮置き
+	, m_velocity{}
+	, m_angle{}
 	, m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
 	, m_model(nullptr)
 	, m_nowAttacking(false)
@@ -45,6 +45,7 @@ Goblin::~Goblin()
 // 初期化関数
 void Goblin::Initialize()
 {
+	// リソースの取得
 	CommonResources* resources = CommonResources::GetInstance();
 	auto device = resources->GetDeviceResources()->GetD3DDevice();
 
@@ -52,7 +53,7 @@ void Goblin::Initialize()
 	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
 	fx->SetDirectory(L"Resources/Models");
 	// モデルを読み込む
-	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Oni/Body/oni.cmo", *fx);
+	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Goblin/goblin.cmo", *fx);
 
 	// ステートの作成
 	CreateState();
@@ -90,44 +91,15 @@ void Goblin::CreateCollision()
 }
 
 
-// プレイヤーに当たったときの処理
-void Goblin::HitPlayer(InterSectData data)
-{
-	if (data.objType == ObjectType::Player && data.colType == CollisionType::Sphere)
-	{
-	}
-}
-
-
-// 小鬼に当たったときの処理
-void Goblin::HitGoblin(InterSectData data)
-{
-	if (data.objType == ObjectType::Goblin && data.colType == CollisionType::Sphere)
-	{
-	}
-}
-
-void Goblin::HitEnemy(InterSectData data)
-{
-}
-
-void Goblin::HitStage(InterSectData data)
-{
-	if (data.objType == ObjectType::Stage && data.colType == CollisionType::Sphere)
-	{
-		// リセット
-		m_oushBackValue = DirectX::SimpleMath::Vector3::Zero;
-	}
-}
-
-
 
 // 更新処理
 void Goblin::Update(const float elapsedTime)
 {
 	// ワールド行列の初期化
 	m_worldMatrix =
-		DirectX::SimpleMath::Matrix::CreateScale(GOBLIN_SCALE) * DirectX::SimpleMath::Matrix::CreateTranslation(m_position);
+		DirectX::SimpleMath::Matrix::CreateRotationY(m_angle) *
+		DirectX::SimpleMath::Matrix::CreateScale(GOBLIN_SCALE) * 
+		DirectX::SimpleMath::Matrix::CreateTranslation(m_position);
 	// ステートの更新処理
 	m_currentState->Update(elapsedTime);
 	// 衝突判定の移動
@@ -139,7 +111,7 @@ void Goblin::Update(const float elapsedTime)
 void Goblin::MoveCollision()
 {
 	DirectX::SimpleMath::Vector3 pos = m_position;
-	pos.y = 2.0f;
+	pos.y = COLLISION_POS_Y;
 	m_bodyCollision->Center = pos;
 }
 
@@ -179,6 +151,37 @@ void Goblin::HitAction(InterSectData data)
 	case ObjectType::Stage:		HitStage(data);		break;
 	}
 }
+
+// プレイヤーに当たったときの処理
+void Goblin::HitPlayer(InterSectData data)
+{
+	if (data.objType == ObjectType::Player && data.colType == CollisionType::Sphere)
+	{
+	}
+}
+
+
+// 小鬼に当たったときの処理
+void Goblin::HitGoblin(InterSectData data)
+{
+	if (data.objType == ObjectType::Goblin && data.colType == CollisionType::Sphere)
+	{
+	}
+}
+
+void Goblin::HitEnemy(InterSectData data)
+{
+}
+
+void Goblin::HitStage(InterSectData data)
+{
+	if (data.objType == ObjectType::Stage && data.colType == CollisionType::Sphere)
+	{
+		// リセット
+		m_oushBackValue = DirectX::SimpleMath::Vector3::Zero;
+	}
+}
+
 
 
 // ステートの変更

@@ -80,7 +80,7 @@ private:
 	std::unique_ptr<mylib::DebugCamera> m_debugCamera;	// デバッグカメラ
 	DirectX::SimpleMath::Matrix			m_projection;	// プロジェクション行列
 
-	bool m_isChangeScene;								// シーン遷移フラグ
+	bool m_isChangeScene;	// シーン遷移フラグ
 
 	// システム周り ==========================================================================
 	Sound* m_sound;											// 音

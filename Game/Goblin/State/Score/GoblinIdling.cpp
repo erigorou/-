@@ -5,6 +5,7 @@
 
 GoblinIdling::GoblinIdling(Goblin* goblin)
 	: m_goblin(goblin)
+	, m_TotalTime(0.0f)
 {
 }
 
@@ -23,6 +24,7 @@ void GoblinIdling::Initialize()
 void GoblinIdling::PreUpdate()
 {
 	m_goblin->SetIsAttacking(false);
+	m_TotalTime = 0.0f;
 }
 
 
@@ -36,7 +38,6 @@ void GoblinIdling::Update(const float& elapsedTime)
 	if (m_TotalTime > 3.0f)
 	{
 		m_goblin->ChangeState(m_goblin->GetAttacking());
-
 	}
 }
 

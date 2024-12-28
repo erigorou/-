@@ -53,7 +53,7 @@ void SceneManager::Initialize()
 	ChangeScene(IScene::SceneID::TITLE);
 #endif // !_DEBUG
 #ifdef _DEBUG
-	ChangeScene(IScene::SceneID::TITLE);
+	ChangeScene(IScene::SceneID::PLAY);
 #endif // !_DEBUG
 
 }

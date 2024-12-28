@@ -28,13 +28,20 @@ public:
 
 	static constexpr float GOBLIN_HP = 3.0f;
 	static constexpr float COLLISION_RADIUS = 16.0f;
+	static constexpr float COLLISION_POS_Y = 2.0f;
 
 	// 譲渡関数
 	DirectX::SimpleMath::Vector3	GetPosition		()	override{ return m_position; }				// 鬼の座標を取得する
 	DirectX::SimpleMath::Vector3	GetVelocity		()	const	{ return m_velocity; }				// 速度の取得
-	DirectX::SimpleMath::Vector3	GetAngle		()	const	{ return m_angle; }					// 回転角の取得
+	float							GetAngle		()	const	{ return m_angle; }					// 回転角の取得
 	DirectX::SimpleMath::Matrix		GetWorldMatrix	()	const	{ return m_worldMatrix; }			// ワールド座標の取得
 	DirectX::BoundingSphere 		GetCollision	()	const	{ return *m_bodyCollision.get(); }	// 体の当たり判定の取得
+
+	// 設定関数
+	void SetPosition(const DirectX::SimpleMath::Vector3& position) { m_position = position; }	// 鬼の座標を設定する
+	void SetVelocity(const DirectX::SimpleMath::Vector3& velocity) { m_velocity = velocity; }	// 速度の設定
+	void SetAngle(const float angle) { m_angle = angle; }				// 回転角の設定
+
 
 	// ステートパターン
 	GoblinIdling*	 GetIdling()	const { return m_idling.get(); }	// 待機ステートの取得
@@ -45,7 +52,7 @@ public:
 	void SetIsAttacking(bool isAttacking)	{ m_nowAttacking = isAttacking; }	// 攻撃中かどうかの設定
 	bool IsAttacking() const				{ return m_nowAttacking; }			// 攻撃中かどうか
 
-	PlayScene* GetPlayScen() const { return m_playScene; }	// PlaySceneの取得
+	PlayScene* GetPlayScene() const { return m_playScene; }	// PlaySceneの取得
 
 	Goblin(PlayScene* playScene);
 	~Goblin();
@@ -78,7 +85,7 @@ private:
 
 	DirectX::SimpleMath::Vector3 m_position;	// 座標
 	DirectX::SimpleMath::Vector3 m_velocity;	// 速度
-	DirectX::SimpleMath::Vector3 m_angle;		// 回転角
+	float m_angle;		// 回転角
 	DirectX::SimpleMath::Matrix m_worldMatrix;	// ワールド座標
 
 	std::unique_ptr<DirectX::Model> m_model;	// モデル

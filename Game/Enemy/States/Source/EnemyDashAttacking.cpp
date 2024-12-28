@@ -119,15 +119,16 @@ void EnemyDashAttacking::DashAction()
 	// 座標の更新 *
 	float accelerationFactor = sin(static_cast<float>(t * M_PI)); // サイン波で速度を変化
 
-	Vector3 position = m_enemy->GetPosition();
 	// 敵の向きに基づいて前方向を計算
+	Vector3 position = m_enemy->GetPosition();
 	m_velocity = Vector3(0, 0, -MAX_SPEED * accelerationFactor);
 	position += Vector3::Transform(m_velocity, m_rotMatrix) * m_elapsedTime;
 
+	// サイン波で上下運動
 	float y = fabsf(sin(t * 15.0f)) * accelerationFactor;
 	position.y = y;
 
-	// 敵の座標を設定
+	// 計算した座標を本体に設定する
 	m_enemy->SetPosition(position);
 
 	// 傾きの更新 *

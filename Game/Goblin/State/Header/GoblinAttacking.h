@@ -30,12 +30,12 @@ private:
 	void SearchPlayer();
 
 
-
 private:
-	Goblin* m_goblin;			// 親
-	float m_totalTime;			// 経過時間
+	Goblin* m_goblin;	// 親
+	float m_totalTime;	// 経過時間
 
-	
+	float m_angle;	// 角度
+	DirectX::SimpleMath::Matrix m_rotMatrix;	// 移動用の回転行列
 };
 
 
