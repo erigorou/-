@@ -29,6 +29,7 @@ Goblin::Goblin(PlayScene* playScene)
 	, m_position{ 80.0f, 0.0f, 0.0f } // ★　仮置き
 	, m_velocity{}
 	, m_angle{}
+	, m_scale{1.0f, 1.0f, 1.0f}
 	, m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
 	, m_model(nullptr)
 	, m_nowAttacking(false)
@@ -98,7 +99,7 @@ void Goblin::Update(const float elapsedTime)
 	// ワールド行列の初期化
 	m_worldMatrix =
 		DirectX::SimpleMath::Matrix::CreateRotationY(m_angle) *
-		DirectX::SimpleMath::Matrix::CreateScale(GOBLIN_SCALE) * 
+		DirectX::SimpleMath::Matrix::CreateScale(GOBLIN_SCALE * m_scale) * 
 		DirectX::SimpleMath::Matrix::CreateTranslation(m_position);
 	// ステートの更新処理
 	m_currentState->Update(elapsedTime);

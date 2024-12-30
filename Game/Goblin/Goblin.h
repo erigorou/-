@@ -38,10 +38,10 @@ public:
 	DirectX::BoundingSphere 		GetCollision	()	const	{ return *m_bodyCollision.get(); }	// 体の当たり判定の取得
 
 	// 設定関数
-	void SetPosition(const DirectX::SimpleMath::Vector3& position) { m_position = position; }	// 鬼の座標を設定する
-	void SetVelocity(const DirectX::SimpleMath::Vector3& velocity) { m_velocity = velocity; }	// 速度の設定
-	void SetAngle(const float angle) { m_angle = angle; }				// 回転角の設定
-
+	void SetPosition(const DirectX::SimpleMath::Vector3& position)	{ m_position = position; }	// 鬼の座標を設定する
+	void SetVelocity(const DirectX::SimpleMath::Vector3& velocity)	{ m_velocity = velocity; }	// 速度の設定
+	void SetAngle	(const float angle)								{ m_angle = angle; }		// 回転角の設定
+	void SetScale(const DirectX::SimpleMath::Vector3& scale) { m_scale = scale; }			// スケールの設定
 
 	// ステートパターン
 	GoblinIdling*	 GetIdling()	const { return m_idling.get(); }	// 待機ステートの取得
@@ -86,6 +86,7 @@ private:
 	DirectX::SimpleMath::Vector3 m_position;	// 座標
 	DirectX::SimpleMath::Vector3 m_velocity;	// 速度
 	float m_angle;		// 回転角
+	DirectX::SimpleMath::Vector3 m_scale;	// スケール
 	DirectX::SimpleMath::Matrix m_worldMatrix;	// ワールド座標
 
 	std::unique_ptr<DirectX::Model> m_model;	// モデル

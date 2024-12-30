@@ -280,5 +280,20 @@ public:
 		if (value > max) return max;
 		return value;
 	}
+
+
+	// ====================================================================================================
+	/// <summary>
+	/// ŠÔ“à‚É‚¢‚é‚Ì‚©‚ğ”»’è‚·‚é
+	/// </summary>
+	/// <param name="first">ŠJnŠÔ</param>
+	/// <param name="now">Œ»İ</param>
+	/// <param name="end">I—¹ŠÔ</param>
+	/// <returns>”»’è(bool)</returns>
+	// ====================================================================================================
+	static bool InTime(float first, float now, float end)
+	{
+		return first < now && now <= end;
+	}
 };
 
