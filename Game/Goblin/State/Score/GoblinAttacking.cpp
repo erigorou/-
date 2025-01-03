@@ -72,6 +72,9 @@ void GoblinAttacking::Update(const float& elapsedTime)
 // -------------------------------
 void GoblinAttacking::UpdateAnimation()
 {
+	// 攻撃中フラグをおろす
+	m_goblin->SetIsAttacking(false);
+
 	ChargeAnimation();
 	AttackAnimation();
 	ReturnAnimation();
@@ -85,6 +88,7 @@ void GoblinAttacking::ChargeAnimation()
 {
 	// 時間内出ない場合は終了
 	if (! Math::InTime(0, m_totalTime, CHARGE_TIME)) return;
+
 
 	// 秒数を正規化
 	float t = m_totalTime / CHARGE_TIME;
@@ -105,16 +109,19 @@ void GoblinAttacking::AttackAnimation()
 	// 攻撃時間を過ぎたら終了
 	if (! Math::InTime(CHARGE_TIME, m_totalTime, ATTACK_TIME)) return;
 
+	// 攻撃中フラグを立てる
+	m_goblin->SetIsAttacking(true);
+
 	// 秒数を正規化
 	float t = (m_totalTime - CHARGE_TIME) / (ATTACK_TIME - CHARGE_TIME);
 
 	// sinとイージングを掛けて上下移動を実装
 	float sin = Math::NormalizeSin(t);
-	float easingUD = 1 - Easing::easeOutBounce(t);
+	float easingUD = std::fabs(1 - Easing::easeOutBack(t));
 	float posY = sin * easingUD * MAX_Y_POS;
 
 	// 横軸の移動
-	float easingLR = Easing::easeOutCirc(t);
+	float easingLR = Easing::easeOutCubic(t);
 
 	// 移動位置を設定
 	m_movePosition = m_position + m_moveValue * easingLR;

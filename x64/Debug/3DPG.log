@@ -1,15 +1,2 @@
-﻿  EnemyManager.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\EnemyManager\EnemyManager.cpp(34,42): warning C4100: 'playScene': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\EnemyManager\EnemyManager.cpp(42,33): warning C4100: 'elapsedTime': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\EnemyManager\EnemyManager.cpp(50,37): warning C4100: 'projection': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\EnemyManager\EnemyManager.cpp(49,37): warning C4100: 'view': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\EnemyManager\EnemyManager.cpp(62,37): warning C4100: 'position': 引数は関数の本体部で 1 度も参照されません。
-  Factory.cpp
-  Goblin.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Goblin\Goblin.cpp(173,37): warning C4100: 'data': 引数は関数の本体部で 1 度も参照されません。
-  GoblinAttacking.cpp
-  GoblinIdling.cpp
-  Player.cpp
-  PlayScene.cpp
-  コードを生成中...
+﻿  GoblinAttacking.cpp
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exe

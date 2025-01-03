@@ -45,7 +45,7 @@ void Wall::Initialize()
 	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
 	fx->SetDirectory(L"Resources/Models");
 	// ƒ‚ƒfƒ‹‚ð“Ç‚Ýž‚Þ
-	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Stage/wall.cmo", *fx);
+	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Stage/Wall/wall.cmo", *fx);
 
 	CreateCollision();
 	
@@ -115,11 +115,6 @@ void Wall::Render(
 	UpdateWorldMatrix();
 	// ƒ‚ƒfƒ‹‚ð•`‰æ‚·‚é
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
-
-
-
-#ifdef _DEBUG
-#endif // !_DEBUG
 }
 
 

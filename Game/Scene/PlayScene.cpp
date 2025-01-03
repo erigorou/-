@@ -234,7 +234,7 @@ void PlayScene::Render()
 	// 海を描画する
 	m_sea->Render(view, m_projection);
 	// 壁を描画する
-	//m_wall->Render(view, m_projection);
+	m_wall->Render(view, m_projection);
 
 	// === オブジェクトの描画 =======================================================
 	// 敵の描画
