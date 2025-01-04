@@ -63,6 +63,9 @@ void Sword_Attacking_3::Initialize()
 // --------------------------------
 void Sword_Attacking_3::PreUpdate()
 {
+	// 攻撃中のフラグを立てる
+	m_sword->SetAttackFlag(true);
+
 	m_totalSeconds = 0.0f;								// 経過時間のリセット
 	m_sword->GetPlayScene()->GetEnemy()->CanHit(true);	// 衝突可能フラグを有効に
 

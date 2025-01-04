@@ -31,7 +31,7 @@ public:
 	static constexpr float COLLISION_RADIUS = 16.0f;
 	static constexpr float COLLISION_POS_Y = 2.0f;
 
-	static constexpr float COOL_TIME = 0.5f;
+	static constexpr float COOL_TIME = 0.4f;
 
 	// ÷“nŠÖ”**
 	DirectX::SimpleMath::Vector3	GetPosition		()	override{ return m_position; }				// ‹S‚ÌÀ•W‚ğæ“¾‚·‚é

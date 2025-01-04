@@ -23,8 +23,11 @@ const float Sword::SWORD_SCALE = Player::PLAYER_SCALE * 1.5f;
 
 // コンストラクタ
 Sword::Sword(PlayScene* playScene)
-	:
-	  m_playScene(playScene)
+	: m_playScene(playScene)
+	, m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
+	, m_collision()
+	, m_originalBox()
+	, m_canAttack(false)
 {
 }
 
@@ -52,7 +55,6 @@ void Sword::Initialize()
 	// モデルを読み込む
 	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Weapon/Sword/sword.cmo", *fx);
 
-
 	// ベーシックエフェクトを作成する
 	m_basicEffect = std::make_unique<DirectX::BasicEffect>(device);
 	m_basicEffect->SetVertexColorEnabled(true);
@@ -68,7 +70,7 @@ void Sword::Initialize()
 
 	// ステートを作成
 	CreateState();
-
+	// 当たり判定を作成
 	CreateCollision();
 
 	// ワールド座標の初期化
@@ -87,7 +89,6 @@ void Sword::CreateState()
 	m_swordAttacking_3	= std::make_unique<Sword_Attacking_3>	(this);
 	m_swordAttacking_4	= std::make_unique<Sword_Attacking_4>	(this);
 
-
 	// ステートを初期化する
 	m_swordIdling->Initialize();
 	m_swordAttacking_1->Initialize();
@@ -95,17 +96,17 @@ void Sword::CreateState()
 	m_swordAttacking_3->Initialize();
 	m_swordAttacking_4->Initialize();
 
-
 	// 現在のステートを設定
 	m_currentState = m_swordIdling.get();
 }
 
 
-/// <summary>
-/// 当たり判定の生成
-/// </summary>
+// --------------------------------------------
+// 衝突判定の生成
+// --------------------------------------------
 void Sword::CreateCollision()
 {
+	// モデルの大きさから衝突判定を取得する
 	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model.get());
 	m_collision = std::make_unique<DirectX::BoundingOrientedBox>(m_originalBox);
 
@@ -116,16 +117,11 @@ void Sword::CreateCollision()
 		this,					// このクラスのポインタ
 		m_collision.get()		// 当たり判定
 	);
-
-	m_originalBox.Center;
 }
 
 
 // --------------------------------------------
-/// <summary>
-/// 桃太郎の刀の更新処理
-/// </summary>
-/// <param name="elapsedTime">経過時間</param>
+// 更新処理
 // --------------------------------------------
 void Sword::Update(float elapsedTime)
 {
@@ -134,7 +130,9 @@ void Sword::Update(float elapsedTime)
 }
 
 
+// --------------------------------------------
 // 描画処理
+// --------------------------------------------
 void Sword::Render(
 	const DirectX::SimpleMath::Matrix& view,
 	const DirectX::SimpleMath::Matrix& projection)
@@ -153,13 +151,18 @@ void Sword::Render(
 #endif // _DEBUG
 }
 
+
+// --------------------------------------------
 // 終了処理
+// --------------------------------------------
 void Sword::Finalize()
 {
 }
 
 
+// --------------------------------------------
 // シーン変更処理
+// --------------------------------------------
 void Sword::ChangeState(IWeapon* state)
 {
 	// 同じステートに変更しようとしたら早期リターン
@@ -172,6 +175,10 @@ void Sword::ChangeState(IWeapon* state)
 	m_currentState->PreUpdate();
 }
 
+
+// --------------------------------------------
+// 当たったときの処理
+// --------------------------------------------
 void Sword::HitAction(InterSectData data)
 {
 	m_currentState->HitAction(data);

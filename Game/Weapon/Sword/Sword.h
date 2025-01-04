@@ -16,8 +16,8 @@
 
 class Sword : public IObject
 {
+// 固定値**
 public:
-	// 固定値
 	static const float SWORD_SCALE;
 
 	static constexpr DirectX::SimpleMath::Vector3 SWORD_DIR_FOR_PLAYER = { -1.5f, 1.0f, -2.0f };	// プレイヤーの刀の位置
@@ -25,6 +25,7 @@ public:
 	static constexpr float MODEL_TOP_HEIGHT  = 55.0f;
 	static constexpr float MODEL_ROOT_HEIGHT = 50.0f;
 
+// 公開関数**
 	DirectX::Model* GetModel()		const { return m_model.get();	}	// モデルのゲッター
 	PlayScene*	GetPlayScene()		const { return m_playScene;		}	// プレイシーンのゲッター
 	DirectX::BoundingOrientedBox GetCollision() const { return *m_collision.get(); }	// 当たり判定の取得
@@ -38,37 +39,36 @@ public:
 
 	IWeapon* GetCurrentState() const { return m_currentState; }	// 現在のステートの取得
 
+	void SetAttackFlag	(bool flag) { m_canAttack = flag; }	// 攻撃可能かどうかの設定
+	bool GetAttackFlag	()			{ return m_canAttack; }	// 攻撃可能かどうか
+
 	// 位置のゲッター
 	DirectX::SimpleMath::Vector3 GetPosition() override { return m_position; }
 
 	// 当たり判定の位置の設定
 	void SetCollisionPosition(DirectX::SimpleMath::Matrix mat) { m_originalBox.Transform(*m_collision.get(), mat); }
-public:
+
 	// コンストラクタ
 	Sword(PlayScene* playScene);
 	// デストラクタ
 	~Sword();
-
 	// 初期化
 	void Initialize();
 	// 更新処理
 	void Update(float elapsedTime);
-
 	// 描画処理
 	void Render(
 		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection
-	);
-
+		const DirectX::SimpleMath::Matrix& projection);
 	// 終了処理
 	void Finalize();
 
 	// ステートを更新する
 	void ChangeState(IWeapon* state);
-
 	// 当たったときの処理
 	void HitAction(InterSectData data)  override;
 
+// 内部関数**
 private:
 	// ステートを生成
 	void CreateState();
@@ -85,8 +85,9 @@ private:
 	std::unique_ptr<DirectX::BoundingOrientedBox> m_collision;
 	// オリジナルの当たり判定（オリジナルは生成をするだけのもの）
 	DirectX::BoundingOrientedBox m_originalBox;
+	// 攻撃できるかどうか
+	bool m_canAttack;
 
-private:
 	// 現在のステート
 	IWeapon* m_currentState;
 	// 待機モーション

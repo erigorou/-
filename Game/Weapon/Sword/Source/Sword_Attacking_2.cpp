@@ -22,8 +22,8 @@
 // --------------------------------
 //  固定値
 // --------------------------------
+// 
 const float Sword_Attacking_2::RADIAN_90 = DirectX::XMConvertToRadians(90);
-const float Sword_Attacking_2::ATTACK_TIME = 0.5f;
 
 
 // --------------------------------
@@ -64,11 +64,14 @@ void Sword_Attacking_2::Initialize()
 // --------------------------------
 void Sword_Attacking_2::PreUpdate()
 {
+	// 攻撃フラグを立てる
+	m_sword->SetAttackFlag(true);
+
 	m_totalSeconds = 0.0f;									// 経過時間の初期化
 	m_sword->GetPlayScene()->GetEnemy()->CanHit(true);		// 衝突可能にする
 
-	m_rootPos.clear();	// 根本の座標をクリア
-	m_tipPos.clear();	// 先端の座標をクリア
+	m_rootPos.clear();	// 根本の座標配列をクリア
+	m_tipPos.clear();	// 先端の座標配列をクリア
 }
 
 
@@ -86,38 +89,10 @@ void Sword_Attacking_2::Update(float elapsedTime)
 	m_position = m_sword->GetPlayScene()->GetPlayer()->GetPosition();	// プレイヤーの座標を取得
 	m_angle = m_sword->GetPlayScene()->GetPlayer()->GetAngle();		// プレイヤーの回転を取得
 
-	// イージングで使用するための変数
-	float t = 0.0f;
-
-	// 攻撃中の回転処理 ////
-	if (m_totalSeconds <= ATTACK_TIME)
-	{
-		// 0-1の間の値を取得
-		t = m_totalSeconds / ATTACK_TIME;
-		m_rot.y = 250.0f * Easing::easeOutBack(t);
-		m_rot.x = 10 + 30.0f * Easing::easeOutBack(t);
-
-
-		m_rot.x = XMConvertToRadians(m_rot.x);
-		m_rot.y = XMConvertToRadians(m_rot.y);
-	}
-	else
-	{
-		// 攻撃時間を過ぎたら当たり判定を無効にする
-		m_sword->GetPlayScene()->GetEnemy()->CanHit(false);
-	}
-
-	// ワールド行列を更新する ////
-	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE);							// 剣のサイズの設定
-
-	m_worldMatrix
-		*= SimpleMath::Matrix::CreateRotationX(RADIAN_90 / 2)							// 剣を90度横に向ける
-		*= SimpleMath::Matrix::CreateTranslation(Vector3(1.0f, 2.0f, 0.0f))				// 少しだけずらす
-		*= SimpleMath::Matrix::CreateRotationX(m_rot.x)									// 薙ぎ払いの回転を反映
-
-		*= SimpleMath::Matrix::CreateRotationY(-m_angle)								// プレイヤーの横に回転させる
-		*= SimpleMath::Matrix::CreateRotationY(m_rot.y)									// 薙ぎ払いの回転を反映
-		*= SimpleMath::Matrix::CreateTranslation(m_position);							// プレイヤーの位置に設定
+	// アニメーションの更新
+	UpdateAnimation();
+	// ワールド行列の更新
+	UpdateWorldMatrix();
 
 	// 当たり判定の位置を設定
 	m_sword->SetCollisionPosition(m_worldMatrix);
@@ -128,13 +103,60 @@ void Sword_Attacking_2::Update(float elapsedTime)
 
 
 // --------------------------------
+// アニメーション更新処理
+// --------------------------------
+void Sword_Attacking_2::UpdateAnimation()
+{
+	// 攻撃中の回転処理
+	if (m_totalSeconds <= ATTACK_TIME)
+	{
+		// 秒数を正規化する
+		float t = m_totalSeconds / ATTACK_TIME;
+		// イージング関数を使って回転を計算
+		m_rot.y = 250.0f * Easing::easeOutBack(t);
+		m_rot.x = 10 + 30.0f * Easing::easeOutBack(t);
+
+		if (m_rot.y > 250.0f)
+		{
+			// 攻撃時間を過ぎたら当たり判定を無効にする
+			m_sword->GetPlayScene()->GetEnemy()->CanHit(false);
+			m_sword->SetAttackFlag(false);
+		}
+
+		// ラジアンに変換
+		m_rot.x = DirectX::XMConvertToRadians(m_rot.x);
+		m_rot.y = DirectX::XMConvertToRadians(m_rot.y);
+	}
+}
+
+
+// --------------------------------
+// ワールド行列の更新処理
+// --------------------------------
+void Sword_Attacking_2::UpdateWorldMatrix()
+{
+	// ワールド行列を更新する
+	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE); // 剣のサイズの設定
+
+	m_worldMatrix
+		*= DirectX::SimpleMath::Matrix::CreateRotationX(RADIAN_90 / 2)		// 剣を90度横に向ける
+		*= DirectX::SimpleMath::Matrix::CreateTranslation(MATRIX_DIRECTION)	// 少しだけずらす
+		*= DirectX::SimpleMath::Matrix::CreateRotationX(m_rot.x)			// 薙ぎ払いの回転を反映
+		*= DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle)			// プレイヤーの横に回転させる
+		*= DirectX::SimpleMath::Matrix::CreateRotationY(m_rot.y)			// 薙ぎ払いの回転を反映
+		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);		// プレイヤーの位置に設定
+}
+
+
+
+// --------------------------------
 //  両端座標の取得処理
 // --------------------------------
 void Sword_Attacking_2::GetCudgelBothEnds()
 {
 	// 根本と頂点のワールド座標をそれぞれ取得
-	m_rootPos.push_back(Vector3::Transform(Vector3(0.0f, Sword::MODEL_ROOT_HEIGHT, 0.0f), m_worldMatrix));
-	m_tipPos.push_back(Vector3::Transform(Vector3(0.0f, Sword::MODEL_TOP_HEIGHT, 0.0f), m_worldMatrix));
+	m_rootPos.	push_back(Vector3::Transform(Vector3(0.0f, Sword::MODEL_ROOT_HEIGHT, 0.0f)	, m_worldMatrix));
+	m_tipPos.	push_back(Vector3::Transform(Vector3(0.0f, Sword::MODEL_TOP_HEIGHT, 0.0f)	, m_worldMatrix));
 
 	// パーティクルを生成
 	CreateSwordParticle();

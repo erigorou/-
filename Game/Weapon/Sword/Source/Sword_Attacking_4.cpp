@@ -64,6 +64,9 @@ void Sword_Attacking_4::Initialize()
 // --------------------------------
 void Sword_Attacking_4::PreUpdate()
 {
+	// 攻撃のフラグを立てる
+	m_sword->SetAttackFlag(true);
+
 	// 経過時間のリセット
 	m_totalSeconds = 0.0f;
 

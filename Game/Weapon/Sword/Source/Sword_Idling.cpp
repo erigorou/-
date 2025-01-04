@@ -15,8 +15,9 @@
 #include "Game/Player/Player.h"
 #include "Game/Weapon/Sword/Header/Sword_Idling.h"
 
-
+// -----------------------
 // コンストラクタ
+// -----------------------
 Sword_Idling::Sword_Idling(Sword* sword)
 	:
 	m_sword(sword),
@@ -28,13 +29,18 @@ Sword_Idling::Sword_Idling(Sword* sword)
 {
 }
 
+
+// -----------------------
 // デストラクタ
+// -----------------------
 Sword_Idling::~Sword_Idling()
 {
 }
 
 
+// -----------------------
 // 初期化処理
+// -----------------------
 void Sword_Idling::Initialize()
 {
 	using namespace DirectX::SimpleMath;
@@ -44,12 +50,19 @@ void Sword_Idling::Initialize()
 	m_worldMatrix = Matrix::Identity;
 }
 
+
+// -----------------------
 // 事前処理
+// -----------------------
 void Sword_Idling::PreUpdate()
 {
+	m_sword->SetAttackFlag(false);
 }
 
+
+// -----------------------
 // 更新処理
+// -----------------------
 void Sword_Idling::Update(float elapsedTime)
 {
 	using namespace DirectX;
@@ -76,12 +89,18 @@ void Sword_Idling::Update(float elapsedTime)
 	m_sword->SetCollisionPosition(m_worldMatrix);
 }
 
+
+// -----------------------
 // 事後処理
+// -----------------------
 void Sword_Idling::PostUpdate()
 {
 }
 
+
+// -----------------------
 // 描画処理
+// -----------------------
 void Sword_Idling::Render(ID3D11DeviceContext* context,
 	DirectX::CommonStates* states,
 	const DirectX::SimpleMath::Matrix& view,
@@ -95,17 +114,22 @@ void Sword_Idling::Render(ID3D11DeviceContext* context,
 
 #ifdef _DEBUG
 	auto debugString = resources->GetDebugString();
-	debugString->AddString("sword, %f : %f : %f", m_position.x, m_position.y, m_position.z);
+	debugString->AddString("");
 #endif // _DEBUG
 }
 
 
+// -----------------------
 // 終了処理
+// -----------------------
 void Sword_Idling::Finalize()
 {
 }
 
 
+// -----------------------
+// 当たり判定処理
+// -----------------------
 void Sword_Idling::HitAction(InterSectData data)
 {
 	UNREFERENCED_PARAMETER(data);

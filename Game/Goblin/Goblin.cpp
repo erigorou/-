@@ -256,7 +256,7 @@ void Goblin::HitSword(InterSectData data)
 {
 	auto sword = static_cast<Sword*>(data.object);
 	// 剣が待機中でない場合
-	if (sword->GetCurrentState() != sword->GetIdlingState())
+	if (sword->GetAttackFlag())
 	{
 		// ダメージを受ける
 		Damaged(1);

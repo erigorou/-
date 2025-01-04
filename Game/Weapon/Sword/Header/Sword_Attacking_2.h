@@ -11,11 +11,17 @@ class Particle;
 /// </summary>
 class Sword_Attacking_2 : public IWeapon
 {
+// 固定値 **
 public:
-	// 固定値
+	// 90度のラジアン
 	static const float RADIAN_90;
-	static const float ATTACK_TIME;
+	// 攻撃の時間
+	static constexpr float ATTACK_TIME = 0.5f;
+	// 位置調整用
+	static constexpr DirectX::SimpleMath::Vector3 MATRIX_DIRECTION = DirectX::SimpleMath::Vector3(1.0f, 2.0f, 0.0f);
 
+// 公開関数 **
+public:
 	// コンストラクタ
 	Sword_Attacking_2(Sword* sword);
 	// デストラクタ
@@ -36,10 +42,18 @@ public:
 		const DirectX::SimpleMath::Matrix& projection) override;
 	// 終了処理
 	void Finalize()override;
-
+	// 衝突処理
 	void HitAction(InterSectData data)override;
 
+
+// ---------------------
+// 非公開関数
+// ---------------------
 private:
+	// アニメーション更新処理
+	void UpdateAnimation();
+	// ワールド行列の更新
+	void UpdateWorldMatrix();
 	// 根本と頂点の座標を取得する ※ both ends = 両端
 	void GetCudgelBothEnds();
 

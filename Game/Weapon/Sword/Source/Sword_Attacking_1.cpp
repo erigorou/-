@@ -22,7 +22,6 @@
 //  固定値
 // --------------------------------
 const float Sword_Attacking_1::RADIAN_90 = DirectX::XMConvertToRadians(90);
-const float Sword_Attacking_1::ATTACK_TIME = 0.5f;
 
 
 // --------------------------------
@@ -64,6 +63,9 @@ void Sword_Attacking_1::Initialize()
 // --------------------------------
 void Sword_Attacking_1::PreUpdate()
 {
+	// 攻撃フラグを立てる
+	m_sword->SetAttackFlag(true);
+
 	m_totalSeconds = 0.0f;								// 時間経過のリセット
 	m_sword->GetPlayScene()->GetEnemy()->CanHit(true);	// 衝突可能フラグを有効に
 
@@ -77,16 +79,28 @@ void Sword_Attacking_1::PreUpdate()
 // --------------------------------
 void Sword_Attacking_1::Update(float elapsedTime)
 {
-	using namespace DirectX;
-
 	// 経過時間を計測
 	m_totalSeconds += elapsedTime;
 
-	// プレイヤーの座標を取得
-	m_position = m_sword->GetPlayScene()->GetPlayer()->GetPosition();
-	// プレイヤーの回転を取得
-	m_angle = m_sword->GetPlayScene()->GetPlayer()->GetAngle();
+	m_position	= m_sword->GetPlayScene()->GetPlayer()->GetPosition();	// プレイヤーの座標を取得
+	m_angle		= m_sword->GetPlayScene()->GetPlayer()->GetAngle();		// プレイヤーの回転を取得
 
+	// アニメーションの更新
+	UpdateAnimation();
+	// ワールド行列の更新
+	UpdateWorldMatrix();
+	// 当たり判定の位置を設定
+	m_sword->SetCollisionPosition(m_worldMatrix);
+	// エフェクト描画用の根本と頂点を描画
+	GetCudgelBothEnds();
+}
+
+
+// --------------------------------
+//  アニメーション更新処理
+// --------------------------------
+void Sword_Attacking_1::UpdateAnimation()
+{
 	// イージング関数を使って回転を計算
 	float t = 0.0f;
 
@@ -96,33 +110,37 @@ void Sword_Attacking_1::Update(float elapsedTime)
 		m_rot.y = -250.0f * Easing::easeOutBack(t);
 		m_rot.x = 10 - 40 * Easing::easeOutBack(t);
 
-		m_rot.x = XMConvertToRadians(m_rot.x);
-		m_rot.y = XMConvertToRadians(m_rot.y);
-	}
-	else
-	{
-		// 攻撃時間を過ぎたら当たり判定を無効にする
-		m_sword->GetPlayScene()->GetEnemy()->CanHit(false);
-	}
+		if (m_rot.y < -250.0f)
+		{
+			// 攻撃時間を過ぎたら当たり判定を無効にする
+			m_sword->GetPlayScene()->GetEnemy()->CanHit(false);
+			m_sword->SetAttackFlag(false);
+		}
 
-	// ワールド行列を更新する
-	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE);							// 剣のサイズの設定
+		m_rot.x = DirectX::XMConvertToRadians(m_rot.x);
+		m_rot.y = DirectX::XMConvertToRadians(m_rot.y);
+	}
+}
+
+
+// --------------------------------
+// ワールド行列の更新処理
+// --------------------------------
+void Sword_Attacking_1::UpdateWorldMatrix()
+{	// ワールド行列を更新する
+	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE);	// 剣のサイズの設定
 
 	m_worldMatrix
-		*= SimpleMath::Matrix::CreateRotationY(XMConvertToRadians(180))					// 反転
-		*= SimpleMath::Matrix::CreateRotationX(RADIAN_90)								// 剣を90度横に向ける
-		*= SimpleMath::Matrix::CreateTranslation(Vector3(1.0f, 2.0f, 0.0f))				// 少しだけずらす
-		*= SimpleMath::Matrix::CreateRotationX(m_rot.x)									// 薙ぎ払いの回転を反映
-		*= SimpleMath::Matrix::CreateRotationY(-m_angle)								// プレイヤーの横に回転させる
-		*= SimpleMath::Matrix::CreateRotationY(m_rot.y)									// 薙ぎ払いの回転を反映
-		*= SimpleMath::Matrix::CreateTranslation(m_position);							// プレイヤーの位置に設定
+		*= DirectX::SimpleMath::Matrix::CreateRotationY(DirectX::XMConvertToRadians(180))	// 反転
+		*= DirectX::SimpleMath::Matrix::CreateRotationX(RADIAN_90)							// 剣を90度横に向ける
+		*= DirectX::SimpleMath::Matrix::CreateTranslation(Vector3(1.0f, 2.0f, 0.0f))		// 少しだけずらす
+		*= DirectX::SimpleMath::Matrix::CreateRotationX(m_rot.x)							// 薙ぎ払いの回転を反映
+		*= DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle)							// プレイヤーの横に回転させる
+		*= DirectX::SimpleMath::Matrix::CreateRotationY(m_rot.y)							// 薙ぎ払いの回転を反映
+		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);						// プレイヤーの位置に設定
 
-	// 当たり判定の位置を設定
-	m_sword->SetCollisionPosition(m_worldMatrix);
-
-	// エフェクト描画用の根本と頂点を描画
-	GetCudgelBothEnds();
 }
+
 
 
 // --------------------------------
