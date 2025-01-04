@@ -271,7 +271,8 @@ float Player::CalucratePlayerRotation(DirectX::SimpleMath::Vector3 const enemyPo
 	using namespace DirectX::SimpleMath;
 
 	// 入力がない場合は0を返す
-	if (m_inputVector.LengthSquared() < FLT_EPSILON) {
+	if (m_inputVector.LengthSquared() < FLT_EPSILON) 
+	{
 		return 0.0f;
 	}
 
@@ -367,8 +368,6 @@ void Player::MovePlayer()
 		}
 	}
 
-
-
 	m_isInputMoveKey = false;	// 移動キーの入力をリセットする
 }
 
@@ -381,7 +380,7 @@ void Player::CalculationMatrix()
 	using namespace DirectX::SimpleMath;
 	using namespace DirectX;
 	// 行列の計算を行う
-	m_worldMatrix = Matrix::Identity;		// 更新ごとに初期化を行う
+	m_worldMatrix = Matrix::Identity;	// 更新ごとに初期化を行う
 	m_worldMatrix
 		*= Matrix::CreateTranslation(Vector3::Zero)							// 原点に移動
 		*= Matrix::CreateScale		(PLAYER_SCALE)							// プレイヤーのサイズ変更
@@ -401,8 +400,7 @@ void Player::CalculationMatrix()
 // --------------------------------
 void Player::Render(
 	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection
-	)
+	const DirectX::SimpleMath::Matrix& projection)
 {
 	using namespace DirectX;
 	
@@ -438,10 +436,6 @@ void Player::Render(
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 
 #ifdef _DEBUG
-	// デバッグ文字の描画
-	auto debugString = resources->GetDebugString();
-	debugString->AddString("Player, %f, %f", m_inputVector.x, m_inputVector.y);
-
 #endif // !_DEBUG
 
 }

@@ -266,8 +266,6 @@ void Enemy::Render(
 
 	m_damageEffect->DrawWithDamageEffect(m_model.get(), m_worldMatrix, view, projection);	// ダメージエフェクトの描画
 
-	//m_model->Draw(context, *states, m_worldMatrix, view, projection);	// モデルの描画
-
 #ifdef _DEBUG
 #endif // _DEBUG
 }

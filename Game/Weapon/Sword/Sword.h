@@ -36,6 +36,8 @@ public:
 	IWeapon* GetAttacking_3State()	const { return m_swordAttacking_3.get();	}	// UŒ‚ó‘Ô‚R
 	IWeapon* GetAttacking_4State()	const { return m_swordAttacking_4.get();	}	// UŒ‚ó‘Ô‚S
 
+	IWeapon* GetCurrentState() const { return m_currentState; }	// Œ»İ‚ÌƒXƒe[ƒg‚Ìæ“¾
+
 	// ˆÊ’u‚ÌƒQƒbƒ^[
 	DirectX::SimpleMath::Vector3 GetPosition() override { return m_position; }
 

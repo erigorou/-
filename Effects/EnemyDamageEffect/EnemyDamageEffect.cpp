@@ -78,7 +78,7 @@ void EnemyDamageEffect::DrawWithDamageEffect(
 	ConstBuffer* cb = static_cast<ConstBuffer*>(mappedResource.pData);
 
 	// 時間の設定（イージングと正規化をしてある状態のもの）
-	cb->Time = Easing::easeInCirc(m_totalTime / TOTAL_TIME);
+	cb->Time = Easing::easeOutCirc(m_totalTime / TOTAL_TIME);
 	cb->Padding = DirectX::SimpleMath::Vector3::Zero;
 
 	context->Unmap(m_buffer.Get(), 0);

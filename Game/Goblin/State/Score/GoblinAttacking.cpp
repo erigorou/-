@@ -89,7 +89,6 @@ void GoblinAttacking::ChargeAnimation()
 	// ŠÔ“ào‚È‚¢ê‡‚ÍI—¹
 	if (! Math::InTime(0, m_totalTime, CHARGE_TIME)) return;
 
-
 	// •b”‚ğ³‹K‰»
 	float t = m_totalTime / CHARGE_TIME;
 	

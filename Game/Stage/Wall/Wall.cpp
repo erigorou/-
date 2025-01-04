@@ -98,6 +98,7 @@ void Wall::UpdateWorldMatrix()
 
 	m_worldMatrix = Matrix::Identity;					// ‰Šú‰»
 	m_worldMatrix *= Matrix::CreateScale(WALL_SCALE);	// Šg‘å@k¬
+	m_worldMatrix *= Matrix::CreateTranslation(0.0f, -20.0f, 0.0f);	// ˆÚ“®
 }
 
 

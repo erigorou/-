@@ -11,6 +11,8 @@
 #include "Interface/IState.h"
 #include "Game/Data/HPSystem.h"
 #include "../Enemy/Enemy.h"
+#include "Effects/EnemyDamageEffect/EnemyDamageEffect.h"
+#include "Game/HitStop/HitStop.h"
 
 #include "State/Header/GoblinIdling.h"
 #include "State/Header/GoblinAttacking.h"
@@ -23,7 +25,9 @@ const float Goblin::GOBLIN_SPEED = Enemy::ENEMY_SPEED / 2.0f;	// 移動速
 const float Goblin::GOBLIN_SCALE = Enemy::ENEMY_SCALE / 4.0f;	// サイズ
 
 
+// -------------------------------
 // コンストラクタ
+// -------------------------------
 Goblin::Goblin(PlayScene* playScene)
 	: m_playScene(playScene)
 	, m_position{ 80.0f, 0.0f, 0.0f } // ★　仮置き
@@ -33,17 +37,22 @@ Goblin::Goblin(PlayScene* playScene)
 	, m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
 	, m_model(nullptr)
 	, m_nowAttacking(false)
+	, m_pushBackValue{}
+	, m_isHit(false)
+	, m_coolTime(0.0f)
 {
 }
 
-
+// -------------------------------
 // デストラクタ
+// -------------------------------
 Goblin::~Goblin()
 {
 }
 
-
+// --------------------------------
 // 初期化関数
+// --------------------------------
 void Goblin::Initialize()
 {
 	// リソースの取得
@@ -62,10 +71,14 @@ void Goblin::Initialize()
 	CreateCollision();
 	// HPの生成
 	m_hp = std::make_unique<HPSystem>(GOBLIN_HP);
+	// ダメージエフェクトの生成
+	m_damageEffect = std::make_unique<EnemyDamageEffect>();
+
 }
 
-
+// --------------------------------
 // ステートの作成
+// --------------------------------
 void Goblin::CreateState()
 {
 	m_idling = std::make_unique<GoblinIdling>(this);		// 待機
@@ -77,7 +90,10 @@ void Goblin::CreateState()
 	m_currentState = m_idling.get();
 }
 
+
+// --------------------------------
 // 当たり判定の生成
+// --------------------------------
 void Goblin::CreateCollision()
 {
 	// 当たり判定の生成
@@ -88,27 +104,44 @@ void Goblin::CreateCollision()
 		ObjectType::Goblin,
 		CollisionType::Sphere,
 		this,
-		m_bodyCollision.get());
+		m_bodyCollision.get()
+	);
 }
 
 
-
+// --------------------------------
 // 更新処理
+// --------------------------------
 void Goblin::Update(const float elapsedTime)
 {
 	// ワールド行列の初期化
-	m_worldMatrix =
-		DirectX::SimpleMath::Matrix::CreateRotationY(m_angle) *
-		DirectX::SimpleMath::Matrix::CreateScale(GOBLIN_SCALE * m_scale) * 
-		DirectX::SimpleMath::Matrix::CreateTranslation(m_position);
+	CalcWorldMatrix();
 	// ステートの更新処理
 	m_currentState->Update(elapsedTime);
+	// ダメージエフェクトの更新
+	m_damageEffect->Update(elapsedTime);
 	// 衝突判定の移動
 	MoveCollision();
+	// クールタイムのカウント
+	CountCoolTime(elapsedTime);
 }
 
 
+// --------------------------------
+// ワールド行列の計算
+// --------------------------------
+void Goblin::CalcWorldMatrix()
+{
+	m_worldMatrix =
+		DirectX::SimpleMath::Matrix::CreateRotationY(m_angle) *
+		DirectX::SimpleMath::Matrix::CreateScale(GOBLIN_SCALE * m_scale) *
+		DirectX::SimpleMath::Matrix::CreateTranslation(m_position);
+}
+
+
+// --------------------------------
 // 衝突判定の移動
+// --------------------------------
 void Goblin::MoveCollision()
 {
 	DirectX::SimpleMath::Vector3 pos = m_position;
@@ -117,7 +150,9 @@ void Goblin::MoveCollision()
 }
 
 
+// --------------------------------
 // 描画関数
+// --------------------------------
 void Goblin::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection)
 {
 	// 描画に必要なデータを取得する
@@ -125,12 +160,14 @@ void Goblin::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::Simp
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
 
-	// モデルの描画
-	m_model->Draw(context, *states, m_worldMatrix, view, projection);
+	// ダメージエフェクト付きでモデルを描画する
+	m_damageEffect->DrawWithDamageEffect(m_model.get(), m_worldMatrix, view, projection);
 }
 
 
+// --------------------------------
 // 終了関数
+// --------------------------------
 void Goblin::Finalize()
 {
 	m_idling->Finalize();
@@ -141,7 +178,9 @@ void Goblin::Finalize()
 }
 
 
+// --------------------------------
 // 当たったときの処理
+// --------------------------------
 void Goblin::HitAction(InterSectData data)
 {
 	switch (data.objType)
@@ -150,42 +189,84 @@ void Goblin::HitAction(InterSectData data)
 	case ObjectType::Goblin:	HitGoblin(data);	break;
 	case ObjectType::Enemy:		HitEnemy(data);		break;
 	case ObjectType::Stage:		HitStage(data);		break;
+	case ObjectType::Sword:		HitSword(data);		break;
 	}
 }
 
+// --------------------------------
 // プレイヤーに当たったときの処理
+// --------------------------------
 void Goblin::HitPlayer(InterSectData data)
 {
-	if (data.objType == ObjectType::Player && data.colType == CollisionType::Sphere)
-	{
-	}
 }
 
 
+// --------------------------------
 // 小鬼に当たったときの処理
+// --------------------------------
 void Goblin::HitGoblin(InterSectData data)
 {
-	if (data.objType == ObjectType::Goblin && data.colType == CollisionType::Sphere)
-	{
-	}
+	auto goblin = static_cast<Goblin*>(data.object);
+
+	// 衝突したオブジェクトの情報を取得
+	auto goblinCollision = *m_bodyCollision.get();
+	auto goblinCollision2 = goblin->GetCollision();
+
+	// 押し戻し量を計算
+	m_pushBackValue = Math::pushBack_BoundingSphere(goblinCollision, goblinCollision2);
+	m_pushBackValue.y = 0.0f;
+	// プレイヤーの位置を押し戻す
+	m_position += m_pushBackValue;
+	m_bodyCollision->Center = m_position;
 }
 
+
+// --------------------------------
+// 敵に当たったときの処理
+// --------------------------------
 void Goblin::HitEnemy(InterSectData data)
 {
+	auto enemy = static_cast<Enemy*>(data.object);
+
+	// 衝突したオブジェクトの情報を取得
+	auto goblinCollision = *m_bodyCollision.get();
+	auto enemyCollision = enemy->GetBodyCollision();
+
+	// 押し戻し量を計算
+	m_pushBackValue = Math::pushBack_BoundingSphere(goblinCollision, enemyCollision);
+	m_pushBackValue.y = 0.0f;
+	// プレイヤーの位置を押し戻す
+	m_position += m_pushBackValue;
+	m_bodyCollision->Center = m_position;
 }
 
+
+// --------------------------------
+// ステージに当たったときの処理
+// --------------------------------
 void Goblin::HitStage(InterSectData data)
 {
-	if (data.objType == ObjectType::Stage && data.colType == CollisionType::Sphere)
+}
+
+
+// --------------------------------
+// 剣に当たったときの処理
+// --------------------------------
+void Goblin::HitSword(InterSectData data)
+{
+	auto sword = static_cast<Sword*>(data.object);
+	// 剣が待機中でない場合
+	if (sword->GetCurrentState() != sword->GetIdlingState())
 	{
-		// リセット
-		m_oushBackValue = DirectX::SimpleMath::Vector3::Zero;
+		// ダメージを受ける
+		Damaged(1);
 	}
 }
 
 
-
+// --------------------------------
 // ステートの変更
+// --------------------------------
 void Goblin::ChangeState(IState* state)
 {
 	// すでに同じステートの場合は変更しない
@@ -199,8 +280,38 @@ void Goblin::ChangeState(IState* state)
 }
 
 
+// --------------------------------
 // ダメージを受けたときの処理
+// --------------------------------
 void Goblin::Damaged(float damage)
 {
+	// すでにダメージを受けている場合は処理を行わない
+	if (m_isHit)return;
+	// HPを減らす
 	m_hp->Damage(damage);
+	// ヒットストップを有効にする
+	HitStop::GetInstance()->SetActive();
+	// ダメージエフェクトを再生
+	m_damageEffect->IsDamaged();
+	// クールタイムを有効にする
+	m_isHit = true;
+}
+
+
+// --------------------------------
+// クールタイムのカウント
+// --------------------------------
+void Goblin::CountCoolTime(float elapsedTime)
+{
+	// 過去に攻撃を受けていない場合は処理を行わない
+	if (!m_isHit)return;
+
+	// クールタイムをカウント
+	m_coolTime += elapsedTime;
+
+	if (m_coolTime > COOL_TIME)
+	{
+		m_isHit = false;
+		m_coolTime = 0.0f;
+	}
 }
