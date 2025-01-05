@@ -196,7 +196,7 @@ void Enemy::Update(float elapsedTime)
 
 
 
-#ifdef _DEBUG
+#ifndef _DEBUG
 
 	// キー入力を受け付ける。
 	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
@@ -204,7 +204,6 @@ void Enemy::Update(float elapsedTime)
 	if (keyboardState.F1)	ChangeState(m_attacking.get());
 	if (keyboardState.F2)	ChangeState(m_sweeping.get());
 	if (keyboardState.F3)	ChangeState(m_dashAttacking.get());
-	if (keyboardState.F4)	debug = !debug;
 
 #endif // _DEBUG
 }
@@ -317,7 +316,7 @@ void Enemy::HitSword(InterSectData data)
 		// 体のエフェクトを再生
 		m_damageEffect->IsDamaged();
 		// 画面を揺らす
-		m_playScene->SetShakeCamera(0.5f);
+		m_playScene->SetShakeCamera(0.25f);
 	}
 }
 

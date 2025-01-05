@@ -55,6 +55,7 @@ void EnemyStarting::PreUpdate()
 // XVˆ—
 void EnemyStarting::Update(const float& elapsedTime)
 {
+
 	using namespace DirectX::SimpleMath;
 	m_totalSeconds += elapsedTime;
 

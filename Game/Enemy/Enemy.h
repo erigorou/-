@@ -31,7 +31,7 @@ public:
 	static const float COOL_TIME;
 
 	static constexpr float COLISION_POS_Y = 10.0f;
-	static constexpr float HP = 100.0f;
+	static constexpr float HP = 20.0f;
 	static constexpr float COLLISION_RADIUS = 20.0f;
 
 
