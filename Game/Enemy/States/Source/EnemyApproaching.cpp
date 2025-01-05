@@ -73,7 +73,7 @@ void EnemyApproaching::Update(const float& elapsedTime)
 	// 移動でカメラを揺らす
 	if (m_position.y <= MINIMAL)
 	{
-		m_enemy->GetPlayScene()->SetShakeCamera();
+		m_enemy->GetPlayScene()->SetShakeCamera(1.0f);
 		Sound::PlaySE(Sound::SE_TYPE::ENEMY_MOVE);
 	}
 
@@ -87,11 +87,12 @@ void EnemyApproaching::Update(const float& elapsedTime)
 	// 回転行列の作成
 	Matrix angleMat  = Matrix::CreateScale(Enemy::ENEMY_SCALE)
 					*= Matrix::CreateRotationY(-m_angle);
+
 	// 前方に移動
-	m_position += Vector3::Transform(m_velocity, angleMat);
+	m_position += Vector3::Transform(m_velocity * elapsedTime * NORMALIZE_VELOCITY, angleMat);
 
 	// 2秒経過で待機モーションに変更
-	if (m_totalSeconds >= 2.f)
+	if (m_totalSeconds >= 2.0f)
 	{
 		m_enemy->ChangeState(m_enemy->GetEnemyIdling());
 	}
@@ -99,7 +100,7 @@ void EnemyApproaching::Update(const float& elapsedTime)
 	// プレイヤーとの距離が　20以下なら攻撃モーションに変更
 	if (Vector3::Distance(m_position, playerPos) <= 10.f)
 	{
-		m_enemy->GetPlayScene()->SetShakeCamera();
+		m_enemy->GetPlayScene()->SetShakeCamera(0.1f);
 		Sound::PlaySE(Sound::SE_TYPE::ENEMY_MOVE);
 
 		int random = Math::RandomInt(0, 4);

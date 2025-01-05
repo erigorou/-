@@ -290,6 +290,8 @@ void Goblin::Damaged(float damage)
 	HitStop::GetInstance()->SetActive();
 	// ダメージエフェクトを再生
 	m_damageEffect->IsDamaged();
+	// 画面を揺らす
+	m_playScene->SetShakeCamera(0.5f);
 	// クールタイムを有効にする
 	m_isHit = true;
 }

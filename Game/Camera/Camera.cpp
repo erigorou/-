@@ -124,7 +124,7 @@ void Camera::Shake(float elapsedTime)
 	}
 
 	// shakeTime‚É‰‚¶‚ÄU“®‚Ì‹­‚³‚ğŒˆ’è
-	float power = (m_shakeTime / SHAKE_TIME) * SHAKE_POWER;
+	float power = (m_shakeTime / SHAKE_TIME) * m_shakePower;
 
 	SimpleMath::Vector3 max = SimpleMath::Vector3(power	, power	, power	);
 	SimpleMath::Vector3 min = SimpleMath::Vector3(-power, -power, -power);
@@ -167,8 +167,9 @@ void Camera::CreateState()
 //-------------------------------------------------------------------
 // ƒJƒƒ‰‚ÌU“®‚ğŠJn
 //-------------------------------------------------------------------
-void Camera::SetShake()
+void Camera::SetShake(float power)
 {
 	m_isShake = true;
 	m_shakeTime = SHAKE_TIME;
+	m_shakePower = power;
 }

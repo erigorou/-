@@ -196,7 +196,7 @@ void Cudgel_Attacking::HandleSlamParticles()
 		m_cudgel->GetPlayScene()->GetParticle()->CreateSlamDust(m_tipPos[m_tipPos.size() - 1]);
 
 		// ƒJƒƒ‰‚ÌU“®‚ðÝ’è
-		m_cudgel->GetPlayScene()->SetShakeCamera();
+		m_cudgel->GetPlayScene()->SetShakeCamera(1.5f);
 	}
 }
 

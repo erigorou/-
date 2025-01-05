@@ -49,7 +49,7 @@ public:
 		const float elapsedTime
 	);
 
-	void SetShake();	// カメラを揺らす
+	void SetShake(float power);	// カメラを揺らす
 
 	void CalculateViewMatrix();			// ビュー行列を計算する
 	void CalculateCameraAngle();		// カメラのアングルを計算する
@@ -72,7 +72,8 @@ public:
 	bool m_isShake;					// カメラを揺らすかどうか
 	float m_shakeTime;				// 揺れる時間
 
-	DirectX::SimpleMath::Vector3 m_shakePos;
+	DirectX::SimpleMath::Vector3 m_shakePos;	// 揺れる座標
+	float m_shakePower;							// 揺れる強さ
 
 private:
 

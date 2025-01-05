@@ -69,7 +69,7 @@ public:
 	void Render()					override;
 	void Finalize()					override;
 
-	void SetShakeCamera();			// ƒJƒƒ‰‚ğ—h‚ç‚·
+	void SetShakeCamera(float power);			// ƒJƒƒ‰‚ğ—h‚ç‚·
 
 // ”ñŒöŠJŠÖ” ===
 private:

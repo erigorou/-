@@ -11,6 +11,15 @@ class EnemyApproaching : public IState
 {
 public:
 
+
+// 定数
+	// 最小値
+	static constexpr float MINIMAL = 0.01f;
+	// 速度の正規化
+	static constexpr float NORMALIZE_VELOCITY = 75.0f;
+
+
+
 	// コンストラクタ
 	EnemyApproaching(Enemy* enemy);
 	// デストラクタ
@@ -26,10 +35,6 @@ public:
 	// 終了処理
 	void Finalize() override;
 
-
-
-private:
-	static constexpr float MINIMAL = 0.01f;
 
 	// 座標
 	DirectX::SimpleMath::Vector3 m_position;

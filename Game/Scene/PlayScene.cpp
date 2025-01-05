@@ -272,9 +272,9 @@ void PlayScene::Finalize()
 // --------------------------------
 // ƒJƒƒ‰‚ð—h‚ç‚·ŠÖ”
 // --------------------------------
-void PlayScene::SetShakeCamera()
+void PlayScene::SetShakeCamera(float power)
 {
-	m_camera->SetShake();
+	m_camera->SetShake(power);
 }
 
 

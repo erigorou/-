@@ -11,10 +11,11 @@ class BehaviorTree;
 #include "Face/Header/EnemyFaceAttacking.h"
 
 // ===== 敵の状態 =================================================================
+#include "States/Header/EnemyStarting.h"		// 開始状態
 #include "States/Header/EnemyIdling.h"			// 待機状態
 #include "States/Header/Enemy_Attacking.h"		// たたきつけ攻撃
 #include "States/Header/Enemy_Sweeping.h"		// 薙ぎ払い攻撃
-#include "States/Header/EnemyDashAttacking.h"	// 突撃
+#include "States/Header/EnemyDashAttacking.h"	// 突撃状態
 #include "States/Header/EnemyApproaching.h"		// 追尾状態
 
 #include "../Data/HPSystem.h"
@@ -127,10 +128,11 @@ private:
 
 	// ==== ステートパターンに使用 =============================================　
 	IState* m_currentState;			// 現在のステート（ステートパターン）
+	std::unique_ptr<EnemyStarting>		m_starting;		// 開始状態
 	std::unique_ptr<EnemyIdling>		m_idling;		// 待機状態
 	std::unique_ptr<Enemy_Attacking>	m_attacking;	// 攻撃状態
 	std::unique_ptr<Enemy_Sweeping>		m_sweeping;		// 薙ぎ払い状態
-	std::unique_ptr<EnemyDashAttacking>	m_dashAttacking;	// 突撃状態
+	std::unique_ptr<EnemyDashAttacking>	m_dashAttacking;// 突撃状態
 	std::unique_ptr<EnemyApproaching>	m_approaching;	// 追尾状態
 
 

@@ -108,6 +108,7 @@ void Enemy::Initialize()
 void Enemy::CreateState()
 {
 	// === 状態の生成 ====
+	m_starting		= std::make_unique<EnemyStarting>		(this);	// 開始
 	m_idling		= std::make_unique<EnemyIdling>			(this);	// 待機
 	m_attacking		= std::make_unique<Enemy_Attacking>		(this);	// 攻撃
 	m_sweeping		= std::make_unique<Enemy_Sweeping>		(this);	// 薙ぎ払い
@@ -115,6 +116,7 @@ void Enemy::CreateState()
 	m_approaching	= std::make_unique<EnemyApproaching>	(this);	// 追尾
 
 	// === 状態の初期化 ===
+	m_starting		->Initialize(); // 開始
 	m_idling		-> Initialize(); // 待機
 	m_attacking		-> Initialize(); // 攻撃
 	m_sweeping		-> Initialize(); // 薙ぎ払い
@@ -122,7 +124,7 @@ void Enemy::CreateState()
 	m_approaching	-> Initialize(); // 追尾
 
 	// 初期のステートを待機状態に割り当てる
-	m_currentState = m_idling.get();
+	m_currentState = m_starting.get();
 }
 
 
@@ -314,6 +316,8 @@ void Enemy::HitSword(InterSectData data)
 		HitStop::GetInstance()->SetActive();
 		// 体のエフェクトを再生
 		m_damageEffect->IsDamaged();
+		// 画面を揺らす
+		m_playScene->SetShakeCamera(0.5f);
 	}
 }
 
