@@ -46,11 +46,12 @@ public:
 
 // ** 譲渡関数 **
 public:
-	// ターゲットの敵の座標を取得
-	DirectX::SimpleMath::Vector3 GetTargetEnemyPosition()
-	{
-		return m_enemies[m_targetEnemyIndex].data->GetPosition();
-	}
+	// ボスのポインタを取得
+	Enemy* GetBossEnemy();
+	// ボスの座標を取得
+	DirectX::SimpleMath::Vector3 GetBossPosition();
+	// ターゲットとしている敵の座標を取得
+	DirectX::SimpleMath::Vector3 GetPicupEnemyPosition();
 
 // ** 公開関数 **
 public:

@@ -207,6 +207,10 @@ void Enemy::Update(float elapsedTime)
 #endif // _DEBUG
 }
 
+
+// --------------------------------
+//  ワールド行列の計算
+// --------------------------------
 void Enemy::CalcrationWorldMatrix()
 {
 	// 回転方向の設定

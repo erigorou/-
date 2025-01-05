@@ -99,17 +99,17 @@ void PlayScene::CreateObjects()
 	m_wall				= Factory::CreateWall				(this);		// 壁
 	m_player			= Factory::CreatePlayer				(this);		// プレイヤ
 	m_sword				= Factory::CreateSword				(this);		// 刀
-	m_enemy				= Factory::CreateEnemy				(this); 	// 鬼
 	m_cudgel			= Factory::CreateCudgel				(this);		// 金棒
-	m_goblin			= Factory::CreateGoblin				(this);		// ゴブリン
-	m_uiManager			= Factory::CreateUIManager			(this);		// UIマネージャ
 
 	// 敵マネージャーの生成
 	m_enemyManager = std::make_unique<EnemyManager>(this);
 	// 敵マネージャーの初期化
 	m_enemyManager->Initialize(this);
 
-
+	// UIマネージャーの生成
+	m_uiManager = std::make_unique<PlaySceneUIManager>(this);
+	// UIマネージャーの初期化
+	m_uiManager->Initialize();
 
 	// 観察者リストをソートする
 	Messenger::SortObserverList();
@@ -119,8 +119,6 @@ void PlayScene::CreateObjects()
 	m_camera->ChangeState(m_camera->GetPlayState());
 	// BGM変更
 	Sound::GetInstance()->ChangeBGM(Sound::BGM_TYPE::PLAY);
-
-	m_targetEnemy = m_goblin.get();
 }
 
 // すべてのキーの押下状態を検出する
@@ -198,21 +196,15 @@ void PlayScene::UpdateObjects(float elapsedTime)
 	m_player->Update(smoothDeltaTime);
 	// プレイヤーの武器の更新処理
 	m_sword->Update(smoothDeltaTime);
-	// 鬼の更新処理
-	m_enemy->Update(smoothDeltaTime);
 	// 鬼の武器の更新処理
 	m_cudgel->Update(smoothDeltaTime);
-
-	//// ゴブリンの更新処理
-	//m_goblin->Update(smoothDeltaTime);
-
 	// 敵マネージャーの更新
 	m_enemyManager->Update(smoothDeltaTime);
 
 	// カメラの回転行列の作成	引数にはプレイヤーの回転角を入れる
 	DirectX::SimpleMath::Matrix matrix = DirectX::SimpleMath::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_player->GetAngle()));
 	// カメラの更新
-	m_camera->Update(m_player->GetPosition(), m_enemyManager->GetTargetEnemyPosition(), matrix, smoothDeltaTime);
+	m_camera->Update(m_player->GetPosition(), m_enemyManager->GetPicupEnemyPosition(), matrix, smoothDeltaTime);
 
 	// パーティクルの更新
 	m_particles->Update(
@@ -226,9 +218,9 @@ void PlayScene::UpdateObjects(float elapsedTime)
 }
 
 
-/// <summary>
-/// 描画処理
-/// </summary>
+// --------------------------------
+// 描画関数
+// --------------------------------
 void PlayScene::Render()
 {
 	// ビュー行列を取得する
@@ -247,16 +239,12 @@ void PlayScene::Render()
 	m_wall->Render(view, m_projection);
 
 	// === オブジェクトの描画 =======================================================
-	// 敵の描画
-	m_enemy->Render(view, m_projection);
 	// 敵の武器の描画を行う
 	m_cudgel->Render(view, m_projection);
 	// プレイヤーの描画を行う
 	m_player->Render(view, m_projection);
 	// プレイヤーの武器の描画を行う
 	m_sword->Render(view, m_projection);
-	// ゴブリンの描画
-	m_goblin->Render(view, m_projection);
 
 	// 敵の描画
 	m_enemyManager->Render(view, m_projection);
@@ -272,26 +260,42 @@ void PlayScene::Render()
 
 }
 
-/// <summary>
-/// 終了処理
-/// </summary>
+// --------------------------------
+// 終了関数
+// --------------------------------
 void PlayScene::Finalize()
 {
 }
 
-/// <summary>
-/// カメラを揺らす
-/// </summary>
+// --------------------------------
+// カメラを揺らす関数
+// --------------------------------
 void PlayScene::SetShakeCamera()
 {
 	m_camera->SetShake();
 }
 
 
-/// <summary>
-/// 次のシーンIDの取得関数
-/// </summary>
-/// <returns>リザルト or 何も返さない</returns>
+// --------------------------------
+// ボスのポインタを取得
+// --------------------------------
+Enemy* PlayScene::GetEnemy()
+{
+	return m_enemyManager->GetBossEnemy();
+}
+
+// --------------------------------
+// ターゲットとなる敵の座標を取得
+// --------------------------------
+DirectX::SimpleMath::Vector3 PlayScene::GetTargetPosition()
+{
+	return m_enemyManager->GetPicupEnemyPosition();
+}
+
+
+// --------------------------------
+// 次のシーンIDを取得
+// --------------------------------
 IScene::SceneID PlayScene::GetNextSceneID() const
 {
 	// シーン変更がある場合
@@ -305,16 +309,23 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 }
 
 
+// --------------------------------
+// リザルトに行けるかどうかを判定
+// --------------------------------
 void PlayScene::CheckResult()
 {
 	auto data = GameData::GetInstance();
 
+	// ボスのポインタを取得
+	auto enemy = m_enemyManager->GetBossEnemy();
+
 	// 敵が死亡
-	if (m_enemy->GetEnemyHP()->GetHP() <= 0)
+	if (enemy->GetEnemyHP()->GetHP() <= 0)
 	{
 		m_isChangeScene = true;
 		data->SetBattleResult(GameData::BATTLE_RESULT::WIN);
 	}
+
 	// プレイヤーが死亡
 	else if (m_player->GetPlayerHP()->GetHP() <= 0)
 	{

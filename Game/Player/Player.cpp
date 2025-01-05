@@ -198,15 +198,15 @@ void Player::Update(const float elapsedTime)
 {
 	m_elapsedTime = elapsedTime;	// 経過時間を保存する
 
-	////////////////////ステートの更新/////////////////////////////
+	// ステートの更新
 	m_currentState->Update(elapsedTime);
 
-	///////////////////プレイヤーの移動////////////////////////////
+	// プレイヤーの移動
 
 	CalculationMatrix();
 	m_pushBackValue = Vector3::Zero;
 
-	///////////////////当たり判定の更新////////////////////////////
+	// 当たり判定の更新
 	m_bodyCollision->Center = m_position;
 	m_bodyCollision->Center.y = 0;
 
@@ -218,10 +218,7 @@ void Player::Update(const float elapsedTime)
 
 
 // ----------------------------------------------
-/// <summary>
-/// キー入力を取得する
-/// </summary>
-/// <param name="key">入力された1キー</param>
+// キー入力を取得する
 // ----------------------------------------------
 void Player::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 {
@@ -230,10 +227,7 @@ void Player::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 
 
 // ----------------------------------------------
-/// <summary>
-/// キー入力を取得する
-/// </summary>
-/// <param name="key">入力された1キー</param>
+// キー入力を取得する
 // ----------------------------------------------
 void Player::OnKeyDown(const DirectX::Keyboard::Keys& key)
 {
@@ -261,10 +255,7 @@ void Player::OnKeyDown(const DirectX::Keyboard::Keys& key)
 
 
 // ----------------------------------------------
-/// <summary>
-/// 回転角の計算関数
-/// </summary>
-/// <param name="enemyPos"></param>
+// 回転角の計算関数
 //　---------------------------------------------
 float Player::CalucratePlayerRotation(DirectX::SimpleMath::Vector3 const enemyPos)
 {

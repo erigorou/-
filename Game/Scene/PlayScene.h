@@ -49,15 +49,16 @@ public:
 // アクセサ関数 ===
 public:
 	Player*		GetPlayer()		{ return m_player.get();}
-	Enemy*		GetEnemy()		{ return m_enemy.get(); }
+	Enemy*		GetEnemy();
 	Sword*		GetSword()		{ return m_sword.get(); }
 	Cudgel*		GetCudgel()		{ return m_cudgel.get();}
-	Particle*	GetParticle()	{ return m_particles.get(); }	
+	Particle*	GetParticle()	{ return m_particles.get(); }
 
+	// 衝突判定管理クラスを取得
 	CollisionManager* GetCollisionManager() { return m_collisionManager.get(); }
 
-	DirectX::SimpleMath::Vector3 GetTargetPosition() { return m_targetEnemy->GetPosition(); }
-
+	// ターゲットとなる敵の座標を取得
+	DirectX::SimpleMath::Vector3 GetTargetPosition();
 // 共通関数 ===
 public:
 	PlayScene();
@@ -100,9 +101,8 @@ private:
 	std::unique_ptr<Particle>	m_particles;	// パーティクル
 	std::unique_ptr<Player>		m_player;		// プレイヤー
 	std::unique_ptr<Sword>		m_sword;		// 刀
-	std::unique_ptr<Enemy>		m_enemy;		// 鬼
 	std::unique_ptr<Cudgel>		m_cudgel;		// 金棒
-	std::unique_ptr<Goblin>		m_goblin;		// ゴブリン
+
 	// ステージ関連の変数 ====================================================================
 	std::unique_ptr<Floor>	m_floor;			// 床
 	std::unique_ptr<Sea>	m_sea;				// 海	
@@ -112,8 +112,6 @@ private:
 	// キーボード用の変数 ====================================================================
 	DirectX::Keyboard::State				m_keyboardState;
 	DirectX::Keyboard::KeyboardStateTracker m_keyboardStateTracker;
-
-	IObject* m_targetEnemy;		// ターゲットとなる敵
 
 	// ヒットストップのかかるオブジェクト用の変数
 	float m_smoothDeltaTime;

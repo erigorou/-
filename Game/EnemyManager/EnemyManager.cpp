@@ -33,6 +33,7 @@ EnemyManager::EnemyManager(PlayScene* playScene)
 }
 
 
+
 // --------------------------------
 // デストラクタ
 // --------------------------------
@@ -49,7 +50,9 @@ void EnemyManager::Initialize(PlayScene* playScene)
 	m_goblinModel = CreateModel(GOBLIN_MODEL_PATH);
 	m_bossModel = CreateModel(BOSS_MODEL_PATH);
 
-	// 試しに1体生成する
+
+	GenerateBoss(DirectX::SimpleMath::Vector3(0.0f, 0.0f, 0.0f));
+
 	GenerateGoblin(DirectX::SimpleMath::Vector3(40.0f, 0.0f, 0.0f));
 }
 
@@ -117,6 +120,50 @@ void EnemyManager::GenerateEnemy(const DirectX::SimpleMath::Vector3& position, E
 }
 
 
+// --------------------------------
+// ボスのポインタを取得
+// --------------------------------
+Enemy* EnemyManager::GetBossEnemy()
+{
+	// ボスを探索
+	for (auto& enemy : m_enemies)
+	{
+		if (enemy.type == EnemyType::Boss)
+		{
+			return dynamic_cast<Enemy*>(enemy.data.get());
+		}
+	}
+
+	return nullptr;
+}
+
+// --------------------------------
+// ボスの座標を取得
+// --------------------------------
+DirectX::SimpleMath::Vector3 EnemyManager::GetBossPosition()
+{
+	// ボスを探索
+	for (auto& enemy : m_enemies)
+	{
+		if (enemy.type == EnemyType::Boss)
+		{
+			return enemy.data->GetPosition();
+		}
+	}
+
+	return DirectX::SimpleMath::Vector3::Zero;
+}
+
+
+// --------------------------------
+// ターゲット中の敵の座標を取得
+// --------------------------------
+DirectX::SimpleMath::Vector3 EnemyManager::GetPicupEnemyPosition()
+{
+	// ターゲットの敵の座標を取得
+	return m_enemies[m_targetEnemyIndex].data->GetPosition();
+}
+
 
 
 // --------------------------------
@@ -137,6 +184,7 @@ void EnemyManager::DeleteAllGoblin()
 
 // --------------------------------
 // カメラのターゲットを変更
+// --------------------------------
 void EnemyManager::ChangeCameraTarget()
 {
 	// ターゲットのインデックスを変更
@@ -150,7 +198,9 @@ void EnemyManager::ChangeCameraTarget()
 }
 
 
-
+// --------------------------------
+// ゴブリンの生成
+// --------------------------------
 void EnemyManager::GenerateGoblin(const DirectX::SimpleMath::Vector3& position)
 {
 	// ゴブリンの生成
@@ -162,6 +212,9 @@ void EnemyManager::GenerateGoblin(const DirectX::SimpleMath::Vector3& position)
 }
 
 
+// --------------------------------
+// ボスの生成
+// --------------------------------
 void EnemyManager::GenerateBoss(const DirectX::SimpleMath::Vector3& position)
 {
 	// ボスの生成
@@ -171,6 +224,7 @@ void EnemyManager::GenerateBoss(const DirectX::SimpleMath::Vector3& position)
 	// 配列に格納
 	m_enemies.push_back(EnemyData{ EnemyType::Boss, std::move(boss)});
 }
+
 
 // --------------------------------
 // モデルの生成処理
