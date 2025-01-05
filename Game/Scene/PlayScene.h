@@ -25,10 +25,10 @@ class Goblin;
 class Floor;
 class Sea;
 class Wall;
-// UI関連 ========================
+// マネージャー ========================
 class PlaySceneUIManager;
-// 当たり判定関連 ===============
 class CollisionManager;
+class EnemyManager;
 
 class PlayScene final :	public IScene
 
@@ -38,6 +38,12 @@ class PlayScene final :	public IScene
 public:
 	// キーボードのキーの最大値
 	static constexpr int MAX_KEY = 256;
+	// 視野角
+	static constexpr float FOV = 45.0f;
+	// 視錐台
+	static constexpr float NEAR_Z = 0.1f;
+	static constexpr float FAR_Z = 50000.0f;
+
 
 
 // アクセサ関数 ===
@@ -86,6 +92,7 @@ private:
 	Sound* m_sound;											// 音
 	std::unique_ptr<PlaySceneUIManager> m_uiManager;		// UIマネージャ
 	std::unique_ptr<CollisionManager>	m_collisionManager;	// 当たり判定マネージャ
+	std::unique_ptr<EnemyManager>		m_enemyManager;		// 敵マネージャ
 	HitStop*							m_hitStop;			// ヒットストップ
 	// オブジェクト関連の変数 ================================================================
 	std::unique_ptr<Camera>		m_camera;		// カメラ
@@ -110,5 +117,4 @@ private:
 
 	// ヒットストップのかかるオブジェクト用の変数
 	float m_smoothDeltaTime;
-
 };

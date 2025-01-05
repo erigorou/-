@@ -84,7 +84,7 @@ void Player::CreateCollision()
 	// ‘Ì‚Ì“–‚½‚è”»’è‚ğì¬
 	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>
 		(
-			m_position, PLAYER_SCALE * 12
+			m_position, PLAYER_SCALE * COLLISION_RADIUS
 		);
 	
 	// “–‚½‚è”»’è‚ğ‹L˜^‚·‚é

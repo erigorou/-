@@ -22,15 +22,16 @@
 #include"Interface/IObserver.h"							// オブザーバー
 #include "Game/Observer/Messenger.h"					// メッセンジャー
 // オブジェクト関連　=========================================
-#include "Game/Player/Player.h"			// プレイヤー
-#include "Game/Enemy/Enemy.h"			// 鬼
-#include "Game/Weapon/Sword/Sword.h"	// 刀
-#include "Game/Weapon/Cudgel/Cudgel.h"	// 金棒
-#include "Game/Goblin/Goblin.h"			// ゴブリン
+#include "Game/EnemyManager/EnemyManager.h"	// 敵マネージャー
+#include "Game/Player/Player.h"				// プレイヤー
+#include "Game/Enemy/Enemy.h"				// 鬼
+#include "Game/Weapon/Sword/Sword.h"		// 刀
+#include "Game/Weapon/Cudgel/Cudgel.h"		// 金棒
+#include "Game/Goblin/Goblin.h"				// ゴブリン
 
-#include "Game/Stage/Floor/Floor.h"		// 床
-#include "Game/Stage/Sea/Sea.h"			// 海
-#include "Game/Stage/Wall/Wall.h"		// 壁
+#include "Game/Stage/Floor/Floor.h"			// 床
+#include "Game/Stage/Sea/Sea.h"				// 海
+#include "Game/Stage/Wall/Wall.h"			// 壁
 // UI関連　====================================================
 #include "Game/UI/!PlaySceneUIManager/PlaySceneUIManager.h"	// UI描画関連
 
@@ -69,10 +70,9 @@ void PlayScene::Initialize()
 
 	// 射影行列を作成する
 	m_projection = DirectX::SimpleMath::Matrix::CreatePerspectiveFieldOfView(
-		DirectX::XMConvertToRadians(40.0f),
+		DirectX::XMConvertToRadians(FOV),
 		static_cast<float>(rect.right) / static_cast<float>(rect.bottom),
-		0.1f, 100000.0f
-	);
+		NEAR_Z, FAR_Z);
 
 	// オブジェクトの生成
 	CreateObjects();
@@ -103,6 +103,12 @@ void PlayScene::CreateObjects()
 	m_cudgel			= Factory::CreateCudgel				(this);		// 金棒
 	m_goblin			= Factory::CreateGoblin				(this);		// ゴブリン
 	m_uiManager			= Factory::CreateUIManager			(this);		// UIマネージャ
+
+	// 敵マネージャーの生成
+	m_enemyManager = std::make_unique<EnemyManager>(this);
+	// 敵マネージャーの初期化
+	m_enemyManager->Initialize(this);
+
 
 
 	// 観察者リストをソートする
@@ -196,13 +202,17 @@ void PlayScene::UpdateObjects(float elapsedTime)
 	m_enemy->Update(smoothDeltaTime);
 	// 鬼の武器の更新処理
 	m_cudgel->Update(smoothDeltaTime);
-	// ゴブリンの更新処理
-	m_goblin->Update(smoothDeltaTime);
+
+	//// ゴブリンの更新処理
+	//m_goblin->Update(smoothDeltaTime);
+
+	// 敵マネージャーの更新
+	m_enemyManager->Update(smoothDeltaTime);
 
 	// カメラの回転行列の作成	引数にはプレイヤーの回転角を入れる
 	DirectX::SimpleMath::Matrix matrix = DirectX::SimpleMath::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_player->GetAngle()));
 	// カメラの更新
-	m_camera->Update(m_player->GetPosition(), m_goblin->GetPosition(), matrix, smoothDeltaTime);
+	m_camera->Update(m_player->GetPosition(), m_enemyManager->GetTargetEnemyPosition(), matrix, smoothDeltaTime);
 
 	// パーティクルの更新
 	m_particles->Update(
@@ -247,6 +257,9 @@ void PlayScene::Render()
 	m_sword->Render(view, m_projection);
 	// ゴブリンの描画
 	m_goblin->Render(view, m_projection);
+
+	// 敵の描画
+	m_enemyManager->Render(view, m_projection);
 
 	//==== エフェクト系の描画 ======================================================
 	// パーティクルのビルボード作成

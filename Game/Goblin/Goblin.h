@@ -11,6 +11,7 @@
 #include "pch.h"
 #include "Interface/IObject.h"
 #include "Interface/IState.h"
+#include "Interface/IEnemy.h"
 
 class Player;
 class PlayScene;
@@ -19,7 +20,7 @@ class EnemyDamageEffect;
 #include "State/Header/GoblinIdling.h"
 #include "State/Header/GoblinAttacking.h"
 
-class Goblin : public IObject
+class Goblin : public IEnemy
 {
 public:
 
@@ -39,8 +40,8 @@ public:
 	float							GetAngle		()	const	{ return m_angle; }					// ‰ñ“]Šp‚Ìæ“¾
 	DirectX::SimpleMath::Matrix		GetWorldMatrix	()	const	{ return m_worldMatrix; }			// ƒ[ƒ‹ƒhÀ•W‚Ìæ“¾
 	DirectX::BoundingSphere 		GetCollision	()	const	{ return *m_bodyCollision.get(); }	// ‘Ì‚Ì“–‚½‚è”»’è‚Ìæ“¾
-	PlayScene*						GetPlayScene	() const	{ return m_playScene; }				// PlayScene‚Ìæ“¾
-	bool							IsAttacking		()const		{ return m_nowAttacking; }			// UŒ‚’†‚©‚Ç‚¤‚©‚Ìæ“¾
+	PlayScene*						GetPlayScene	()	const	{ return m_playScene; }				// PlayScene‚Ìæ“¾
+	bool							IsAttacking		()	const	{ return m_nowAttacking; }			// UŒ‚’†‚©‚Ç‚¤‚©‚Ìæ“¾
 
 	// İ’èŠÖ”**
 	void SetPosition(const DirectX::SimpleMath::Vector3& position)	{ m_position = position; }		// ‹S‚ÌÀ•W‚ğİ’è‚·‚é
@@ -65,7 +66,7 @@ public:
 	// “–‚½‚è”»’è‚Ì¶¬
 	void CreateCollision();
 	// XVˆ—
-	void Update(const float elapsedTime);
+	void Update(float elapsedTime);
 	// •`‰æˆ—
 	void Render(
 		const DirectX::SimpleMath::Matrix& view,

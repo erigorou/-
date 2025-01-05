@@ -2,6 +2,7 @@
 #include "Interface/IState.h"
 #include "Interface/IObject.h"
 #include "Interface/IFace.h"
+#include "Interface/IEnemy.h"
 
 class PlayScene;
 class BehaviorTree;
@@ -20,7 +21,7 @@ class BehaviorTree;
 
 class EnemyDamageEffect;
 
-class Enemy : public IObject
+class Enemy : public IEnemy
 {
 public:
 	// ŒÅ’è’l

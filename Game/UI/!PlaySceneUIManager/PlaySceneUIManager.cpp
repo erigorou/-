@@ -65,6 +65,9 @@ void PlaySceneUIManager::Initialize()
 // ----------------------------
 void PlaySceneUIManager::CreateUI()
 {
+	auto player = m_playScene->GetPlayer();
+	auto hp = m_playScene->GetPlayer()->GetPlayerHP();
+
 	m_playerHP	= std::make_unique<PlayerHPUI>	(m_playScene->GetPlayer()->GetPlayerHP())	;
 	m_enemyHP	= std::make_unique<EnemyHPUI>	(m_playScene->GetEnemy ()->GetEnemyHP ())	;
 	m_warning	= std::make_unique<Warning>		(m_playScene->GetPlayer()->GetPlayerHP())	;

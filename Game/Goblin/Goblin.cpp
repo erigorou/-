@@ -155,11 +155,6 @@ void Goblin::MoveCollision()
 // --------------------------------
 void Goblin::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection)
 {
-	// 描画に必要なデータを取得する
-	CommonResources* resources = CommonResources::GetInstance();
-	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = resources->GetCommonStates();
-
 	// ダメージエフェクト付きでモデルを描画する
 	m_damageEffect->DrawWithDamageEffect(m_model.get(), m_worldMatrix, view, projection);
 }
@@ -198,6 +193,7 @@ void Goblin::HitAction(InterSectData data)
 // --------------------------------
 void Goblin::HitPlayer(InterSectData data)
 {
+	UNREFERENCED_PARAMETER(data);
 }
 
 
@@ -246,6 +242,7 @@ void Goblin::HitEnemy(InterSectData data)
 // --------------------------------
 void Goblin::HitStage(InterSectData data)
 {
+	UNREFERENCED_PARAMETER(data);
 }
 
 
