@@ -329,7 +329,7 @@ IScene::SceneID TitleScene::GetNextSceneID() const
 //---------------------------------------------------------
 void TitleScene::SetShakeCamera()
 {
- 	m_camera->SetShake(2.0f);
+ 	m_camera->SetShake(1.0f);
 }
 
 
