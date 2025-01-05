@@ -180,6 +180,8 @@ void PlayScene::UpdateKeyboard()
 	// キーボードが押下げられたかどうかを判定する
 	if (IsKeyDown(m_keyboardState))	Messenger::Notify(m_keyboardState);
 	if (IsKeyPress(m_keyboardStateTracker))	Messenger::Notify(m_keyboardStateTracker);
+
+	if (m_keyboardStateTracker.IsKeyPressed(DirectX::Keyboard::Keys::Space)) m_enemyManager->ChangeCameraTarget();
 }
 
 
