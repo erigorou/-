@@ -1,19 +1,2 @@
-﻿  Enemy.cpp
-  EnemyApproaching.cpp
-  EnemyStarting.cpp
-  Factory.cpp
-  Goblin.cpp
-  Player.cpp
-  Player_Attacking_1.cpp
-  Player_Attacking_2.cpp
-  PlayScene.cpp
-  PlaySceneUIManager.cpp
-  Cudgel_Attacking.cpp
-  Cudgel_Idling.cpp
-  Cudgel_Sweeping.cpp
-  Sword_Attacking_1.cpp
-  Sword_Attacking_2.cpp
-  Sword_Attacking_3.cpp
-  Sword_Attacking_4.cpp
-  コードを生成中...
+﻿  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\DamageEffect\DamageEffectPS.cso
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exe

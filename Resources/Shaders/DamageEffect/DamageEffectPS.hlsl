@@ -33,10 +33,10 @@ float4 main(PS_Input input) : SV_Target0
 
     
     diffuse.rgb -= time / 1.5f;
-    diffuse.r += time * 2;
+    diffuse.r += time;
     
     // 最終的な色を計算する：今回はあまり意味がない代入
     float3 finalColor = diffuse;
     
-    return float4(finalColor, 1.0f);
+    return float4(finalColor, 0);
 }

@@ -78,7 +78,7 @@ void EnemyDamageEffect::DrawWithDamageEffect(
 	ConstBuffer* cb = static_cast<ConstBuffer*>(mappedResource.pData);
 
 	// 時間の設定（イージングと正規化をしてある状態のもの）
-	cb->Time = Easing::easeOutCirc(m_totalTime / TOTAL_TIME);
+	cb->Time = Easing::easeInCirc(m_totalTime / TOTAL_TIME);
 	cb->Padding = DirectX::SimpleMath::Vector3::Zero;
 
 	context->Unmap(m_buffer.Get(), 0);
@@ -89,11 +89,11 @@ void EnemyDamageEffect::DrawWithDamageEffect(
 			auto basicEffect = dynamic_cast<DirectX::BasicEffect*>(effect);
 			if (basicEffect)
 			{
-				basicEffect->SetLightingEnabled(true);		// ライト有効化
-				basicEffect->SetPerPixelLighting(true);		// ピクセル単位のライティング有効化
-				basicEffect->SetTextureEnabled(false);		// テクスチャの有効化
-				basicEffect->SetVertexColorEnabled(false);	// 頂点カラーの有効化
-				basicEffect->SetFogEnabled(false);			// フォグの有効化
+				basicEffect->SetLightingEnabled		(true);		// ライト有効化
+				basicEffect->SetPerPixelLighting	(true);		// ピクセル単位のライティング有効化
+				basicEffect->SetTextureEnabled		(false);	// テクスチャの有効化
+				basicEffect->SetVertexColorEnabled	(false);	// 頂点カラーの有効化
+				basicEffect->SetFogEnabled			(false);	// フォグの有効化
 			}
 		}
 	);
