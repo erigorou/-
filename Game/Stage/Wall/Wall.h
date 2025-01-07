@@ -8,11 +8,24 @@ class PlayScene;
 class Wall : public IObject
 {
 public: 
+	// ------------------------
 	// 固定値
+	// ------------------------
 	static const float WALL_SCALE;						// 大きさ（固定値）
+	
 	static constexpr float COLLISION_RADIUS = 160.0f;	// 当たり判定の半径
+	static constexpr float COLLISION_SCALE = 10.0f;		// 当たり判定の大きさ
 
-	DirectX::BoundingSphere* GetCollision() { return m_collision.get(); }	// 当たり判定の取得
+	static constexpr DirectX::SimpleMath::Vector3 MOVE_POS = { 0.0f, -60.0f, 0.0f };	// モデルを移動させる位置
+
+
+	// ------------------------
+	// 公開関数
+	// ------------------------
+	// 壁の衝突判定を取得
+	DirectX::BoundingSphere* GetCollision() { return m_collision.get();	}
+	// 壁の座標の取得
+	DirectX::SimpleMath::Vector3 GetPosition() override	{ return DirectX::SimpleMath::Vector3::Zero; }
 
 	// コンストラクタ
 	Wall(PlayScene* playScene);
@@ -28,18 +41,17 @@ public:
 	// 終了処理
 	void Finalize();
 
-	// ワールド行列更新処理
-	void UpdateWorldMatrix();
-
-	// インターフェースで使用するからしゃーなしでおいている。
+	// 衝突処理
 	void HitAction(InterSectData data)override;
-	DirectX::SimpleMath::Vector3 GetPosition()override;
 
 
 private:
 
-	void CreateCollision();	// 当たり判定の生成
+	// 衝突判定の生成
+	void CreateCollision();
 
+	// ワールド行列更新処理
+	void UpdateWorldMatrix();
 
 	DirectX::SimpleMath::Matrix m_worldMatrix;	// ワールド行列
 	std::unique_ptr<DirectX::Model> m_model;	// モデル

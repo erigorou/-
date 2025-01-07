@@ -68,7 +68,7 @@ void Wall::Initialize()
 void Wall::CreateCollision()
 {
 	m_collision = std::make_unique<DirectX::BoundingSphere>(DirectX::SimpleMath::Vector3::Zero, COLLISION_RADIUS);
-	m_overCollision = std::make_unique<DirectX::BoundingSphere>(DirectX::SimpleMath::Vector3::Zero, COLLISION_RADIUS * 100);
+	m_overCollision = std::make_unique<DirectX::BoundingSphere>(DirectX::SimpleMath::Vector3::Zero, COLLISION_RADIUS * COLLISION_SCALE);
 
 	// ìñÇΩÇËîªíËÇãLò^Ç∑ÇÈ
 	m_playScene->GetCollisionManager()->AddCollision(
@@ -85,8 +85,6 @@ void Wall::CreateCollision()
 		this,
 		m_overCollision.get()
 	);
-
-
 }
 
 
@@ -96,9 +94,9 @@ void Wall::UpdateWorldMatrix()
 	using namespace DirectX::SimpleMath;
 	using namespace DirectX;
 
-	m_worldMatrix = Matrix::Identity;					// èâä˙âª
-	m_worldMatrix *= Matrix::CreateScale(WALL_SCALE);	// ägëÂÅ@èkè¨
-	m_worldMatrix *= Matrix::CreateTranslation(0.0f, -20.0f, 0.0f);	// à⁄ìÆ
+	m_worldMatrix = Matrix::Identity;						// èâä˙âª
+	m_worldMatrix *= Matrix::CreateScale(WALL_SCALE);		// ägëÂÅ@èkè¨
+	m_worldMatrix *= Matrix::CreateTranslation(WALL_POS);	// à⁄ìÆ
 }
 
 
@@ -130,5 +128,3 @@ void Wall::HitAction(InterSectData data)
 {
 	UNREFERENCED_PARAMETER(data);
 }
-
-DirectX::SimpleMath::Vector3 Wall::GetPosition()	{ return DirectX::SimpleMath::Vector3(); }

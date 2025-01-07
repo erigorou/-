@@ -207,15 +207,10 @@ void Cudgel_Attacking::HandleSlamParticles()
 /// </summary>
 void Cudgel_Attacking::UpdateAttackState()
 {
-	// 振りかざす
-	if (m_totalSeconds < CHARGE_TIME)										HandleChargePhase(m_totalSeconds / CHARGE_TIME);
-	// 待機状態
+	if		(m_totalSeconds < CHARGE_TIME)									HandleChargePhase(m_totalSeconds / CHARGE_TIME);
 	else if (m_totalSeconds > CHARGE_TIME && m_totalSeconds <= WINDUP_TIME)	HandleWindoupPhase();
-	// 降り下ろす
 	else if (m_totalSeconds > WINDUP_TIME && m_totalSeconds <= ATTACK_TIME)	HandleAttackPhase((m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME));
-
 	else if (m_totalSeconds > ATTACK_TIME && m_totalSeconds <= STOP_TIME)	KeepStampPhase();
-
 	else if (m_totalSeconds > STOP_TIME && m_totalSeconds <= RETURN_TIME)	ReturnToOriginalPhase((m_totalSeconds - STOP_TIME) / (RETURN_TIME - STOP_TIME));
 
 	// プレイヤーに攻撃可能状態を通知
