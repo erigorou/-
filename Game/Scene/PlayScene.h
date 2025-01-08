@@ -29,10 +29,10 @@ class Wall;
 class PlaySceneUIManager;
 class CollisionManager;
 class EnemyManager;
+class QuestManager;
+
 
 class PlayScene final :	public IScene
-
-	 
 {
 // 固定値 *
 public:
@@ -95,6 +95,7 @@ private:
 	std::unique_ptr<CollisionManager>	m_collisionManager;	// 当たり判定マネージャ
 	std::unique_ptr<EnemyManager>		m_enemyManager;		// 敵マネージャ
 	HitStop*							m_hitStop;			// ヒットストップ
+	std::unique_ptr<QuestManager>		m_questManager;		// クエストマネージャ
 	// オブジェクト関連の変数 ================================================================
 	std::unique_ptr<Camera>		m_camera;		// カメラ
 	std::unique_ptr<SkySphere>	m_skySphere;	// 天球

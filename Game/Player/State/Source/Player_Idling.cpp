@@ -46,7 +46,9 @@ void PlayerIdling::PreUpdate()
 	// 経過時間の初期化
 	m_totalSeconds = 0.0f;
 
+	// 移動速度の初期化
 	m_player->SetSpeed(DirectX::SimpleMath::Vector3::Zero);
+	// 移動加速度の初期化
 	m_player->SetAcceleration(DirectX::SimpleMath::Vector3::Zero);
 }
 
@@ -56,11 +58,11 @@ void PlayerIdling::PreUpdate()
 // -------------------------------
 void PlayerIdling::Update(const float& elapsedTime)
 {
-	// elapsedTime使わないけどエラー出さないでねって文
-	UNREFERENCED_PARAMETER(elapsedTime);
+	// 経過時間の加算
+	m_totalSeconds += elapsedTime;
 
+	// プレイヤーの向きを敵に向ける
 	DirectX::SimpleMath::Vector3 enemyPos = m_player->GetPlayScene()->GetTargetPosition();
-
 	m_player->SetAngle(m_player->CalucratePlayerRotation(enemyPos));
 
 	// プレイヤーの移動
@@ -78,7 +80,7 @@ void PlayerIdling::PostUpdate()
 
 
 // -------------------------------
-// キーボード入力
+// キーボード入力(押した瞬間)
 // -------------------------------
 void PlayerIdling::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 {
@@ -86,6 +88,10 @@ void PlayerIdling::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 	if (key == DirectX::Keyboard::LeftShift	)	m_player->ChangeState(m_player->GetPlayerDodgingState());
 }
 
+
+// -------------------------------
+// キーボード入力(押してる間)
+// -------------------------------
 void PlayerIdling::OnKeyDown(const DirectX::Keyboard::Keys& key)
 {
 	UNREFERENCED_PARAMETER(key);

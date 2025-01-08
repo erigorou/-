@@ -23,7 +23,9 @@ class Wall;
 class Player :  public IObserver
 {
 
-// 固定値 *
+// -----------------
+// 定数
+// -----------------
 public:
 	// 初期座標
 	static const DirectX::SimpleMath::Vector3 HOME_POSITION;
@@ -47,47 +49,42 @@ public:
 	static constexpr DirectX::SimpleMath::Vector2 INPUT_LEFT	= { -1.0f	, 0.0f	};	// 左
 	static constexpr DirectX::SimpleMath::Vector2 INPUT_RIGHT	= { 1.0f	, 0.0f	};	// 右
 
-
-// アクセサ *
+// -----------------
+// アクセサ
+// -----------------
 public:
-	// /////////////////プレイヤーの基礎情報を渡す関数//////////////////////////////////////////////////
-	DirectX::SimpleMath::Vector3	GetPosition		()override	{ return m_position;			}
-	DirectX::SimpleMath::Vector3	GetVelocity		()	const	{ return m_velocity;			}
-	DirectX::SimpleMath::Vector3	GetDirection	()	const	{ return m_direction;			}
-	DirectX::SimpleMath::Vector2	GetinputVector	()	const	{ return m_inputVector;			}
-	float							GetAngle		()	const	{ return m_angle;				}
-	HPSystem*						GetPlayerHP		()	const	{ return m_hp.get();			}
-	DirectX::BoundingSphere*		GetBodyCollision()			{ return m_bodyCollision.get(); }
+	DirectX::SimpleMath::Vector3	GetPosition		()override	{ return m_position;			}	// 座標
+	DirectX::SimpleMath::Vector3	GetVelocity		()	const	{ return m_velocity;			}	// 速度
+	DirectX::SimpleMath::Vector3	GetDirection	()	const	{ return m_direction;			}	// 向き
+	DirectX::SimpleMath::Vector2	GetinputVector	()	const	{ return m_inputVector;			}	// 入力ベクトル
+	float							GetAngle		()	const	{ return m_angle;				}	// 回転角
+	HPSystem*						GetPlayerHP		()	const	{ return m_hp.get();			}	// HP
+	DirectX::BoundingSphere*		GetBodyCollision()			{ return m_bodyCollision.get(); }	// 当たり判定
+
+	void SetPosition(DirectX::SimpleMath::Vector3 position)			{ m_position = position;		}	// 座標
+	void SetAnimationRotate(DirectX::SimpleMath::Vector3 rotate)	{ m_animationRotate = rotate;	}	// アニメーション用回転
+
+	void SetInputVector(DirectX::SimpleMath::Vector2 inputVector)	{ m_inputVector = inputVector;	}	// 入力ベクトル
 
 
-	////////////////////プレイヤー基本情報を設定する関数/////////////////////////////////////////////////
-	void SetPosition(DirectX::SimpleMath::Vector3 position)			{ m_position = position;	}
-	void SetAnimarionRotate(DirectX::SimpleMath::Vector3 rotate)	{ m_animationRotate = rotate; }
-	void SetInputVector(DirectX::SimpleMath::Vector2 inputVector)	{ m_inputVector = inputVector; }
+	PlayerIdling*		GetPlayerIdlingState	()	const { return m_playerIdling.		get();	}	// 待機状態
+	PlayerDodging*		GetPlayerDodgingState	()	const { return m_playerDodging.		get();	}	// 回避状態
+	PlayerAttacking_1*	GetPlayerAttackingState1()	const { return m_playerAttacking_1.	get();	}	// 攻撃状態１
+	PlayerAttacking_2*	GetPlayerAttackingState2()	const { return m_playerAttacking_2.	get();	}	// 攻撃状態２
+	PlayerNockBacking*	GetPlayerNockBackingState()	const { return m_playerNockBacking.	get();	}	// やられ状態
+	IPlayer*			GetCurrentState()			const { return m_currentState;				}	// 現在のステート
 
-	////////////////////プレイヤーのステートを渡す関数//////////////////////////////////////////////////
-	PlayerIdling*		GetPlayerIdlingState	()	const { return m_playerIdling.		get(); }
-	PlayerDodging*		GetPlayerDodgingState	()	const { return m_playerDodging.		get(); }
-	PlayerAttacking_1*	GetPlayerAttackingState1()	const { return m_playerAttacking_1.	get(); }
-	PlayerAttacking_2*	GetPlayerAttackingState2()	const { return m_playerAttacking_2.	get(); }
-	PlayerNockBacking* GetPlayerNockBackingState()	const { return m_playerNockBacking.	get(); }
-
-	////////////プレイヤーの移動に関するステートを設定する関数///////////////////////////////////////////
 	void SetSpeed		(DirectX::SimpleMath::Vector3 velocity)		{ m_velocity = velocity;			}
 	void SetAcceleration(DirectX::SimpleMath::Vector3 acceleration)	{ m_acceleration = acceleration;	}
 	void SetAngle		(const float angle)							{ m_angle = angle;					}
 
-	////////////////////プレイシーンに干渉するのに使用すr関数/////////////////////////////////////////////
 	PlayScene* GetPlayScene()const { return m_playScene; }
 
-	//////////////////////////////////衝突判定に使用//////////////////////////////////////////////////////
 	void CanHit(bool flag) { m_canHit = flag; }
 
-	//////////////////////////////////アニメーションに使用////////////////////////////////////////////////
-	void SetAnimationRotate(DirectX::SimpleMath::Vector3 rotate) { m_animationRotate = rotate; }
-
-
-// 公開関数 *
+// -------------------
+// 公開関数
+// -------------------
 public:
 	// コンストラクタ
 	Player(PlayScene* playScene);
@@ -122,8 +119,9 @@ public:
 	// キーボードの入力を取得する
 	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
 
-
-// 内部関数 *
+// -------------------
+// 内部関数
+// -------------------
 private:
 	// 当たり判定の生成関数
 	void CreateCollision();
@@ -143,7 +141,9 @@ private:
 	void Damage(float damage);
 
 
-// 内部変数 *
+// -------------------
+// 内部変数
+// -------------------
 private:
 	DirectX::SimpleMath::Vector3	m_position;			// 位置
 	DirectX::SimpleMath::Vector3	m_velocity;			// 速度

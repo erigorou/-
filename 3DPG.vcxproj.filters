@@ -229,6 +229,12 @@
     <ClInclude Include="Game\EnemyManager\EnemyManager.h" />
     <ClInclude Include="Libraries\MyLib\Invincibility\InvincibilityFrames.h" />
     <ClInclude Include="Game\Enemy\States\Header\EnemyStarting.h" />
+    <ClInclude Include="Game\Quest\QuestManager.h" />
+    <ClInclude Include="Interface\IQuestChecker.h" />
+    <ClInclude Include="Game\Quest\QuestList\QuestPlayerMove.h" />
+    <ClInclude Include="Game\Quest\QuestList\QuestPlayerAttack.h" />
+    <ClInclude Include="Game\Quest\QuestList\QuestPlayerCombo.h" />
+    <ClInclude Include="Game\Quest\QuestList\QuestPlayerAvoid.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -356,6 +362,7 @@
     <ClCompile Include="Interface\IEnemy.h" />
     <ClCompile Include="Libraries\MyLib\Invincibility\InvincibilityFrames.cpp" />
     <ClCompile Include="Game\Enemy\States\Source\EnemyStarting.cpp" />
+    <ClCompile Include="Game\Quest\QuestManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

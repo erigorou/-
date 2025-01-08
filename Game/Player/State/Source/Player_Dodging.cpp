@@ -111,7 +111,7 @@ void PlayerDodging::RollingAnimation(float totalTime)
 		m_rollingValue.x = DirectX::XMConvertToRadians(rot);
 	}
 	// ‰ñ“]‚ð“K—p
-	m_player->SetAnimarionRotate(m_rollingValue);
+	m_player->SetAnimationRotate(m_rollingValue);
 }
 
 

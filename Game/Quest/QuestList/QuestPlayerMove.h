@@ -1,0 +1,21 @@
+#pragma once
+#include "pch.h"
+#include "Interface/IQuestChecker.h"
+
+
+#include "Game/Scene/PlayScene.h"
+#include "Game/Player/Player.h"
+
+class QuestPlayerMove : public IQuestChecker
+{
+public:
+	// チェッカーを実行する
+	bool ExecuteChecker(PlayScene* playScene) override
+	{
+		// プレイヤーの取得
+		auto player = playScene->GetPlayer();
+
+		// プレイヤーが移動しているか
+		return (player->GetinputVector() != DirectX::SimpleMath::Vector2::Zero);
+	};
+};

@@ -69,7 +69,6 @@ public:
 
 	void Render();							// •`‰æŠÖ”
 
-
 private:
 
 	void CreateShader();

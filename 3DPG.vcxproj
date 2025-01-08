@@ -206,6 +206,11 @@
     <ClInclude Include="Game\Enemy\States\Header\EnemyStarting.h" />
     <ClInclude Include="Game\HitStop\HitStop.h" />
     <ClInclude Include="Game\Player\State\Header\Player_NockBacking.h" />
+    <ClInclude Include="Game\Quest\QuestList\QuestPlayerAttack.h" />
+    <ClInclude Include="Game\Quest\QuestList\QuestPlayerAvoid.h" />
+    <ClInclude Include="Game\Quest\QuestList\QuestPlayerCombo.h" />
+    <ClInclude Include="Game\Quest\QuestList\QuestPlayerMove.h" />
+    <ClInclude Include="Game\Quest\QuestManager.h" />
     <ClInclude Include="Game\Scene\State\LoseResult.h" />
     <ClInclude Include="Game\Scene\State\WinResult.h" />
     <ClInclude Include="Game\Stage\Sea\Sea.h" />
@@ -262,6 +267,7 @@
     <ClInclude Include="Interface\IObject.h" />
     <ClInclude Include="Interface\IObserver.h" />
     <ClInclude Include="Interface\IPlayer.h" />
+    <ClInclude Include="Interface\IQuestChecker.h" />
     <ClInclude Include="Interface\IResultScene.h" />
     <ClInclude Include="Interface\IUserInterface.h" />
     <ClInclude Include="Interface\IParticle.h" />
@@ -310,6 +316,7 @@
     <ClCompile Include="Game\Enemy\States\Source\EnemyStarting.cpp" />
     <ClCompile Include="Game\HitStop\HitStop.cpp" />
     <ClCompile Include="Game\Player\State\Source\Player_NockBacking.cpp" />
+    <ClCompile Include="Game\Quest\QuestManager.cpp" />
     <ClCompile Include="Game\Scene\State\LoseResult.cpp" />
     <ClCompile Include="Game\Scene\State\WinResult.cpp" />
     <ClCompile Include="Game\Stage\Sea\Sea.cpp" />

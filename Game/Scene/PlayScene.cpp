@@ -21,6 +21,7 @@
 #include "Game/Data/GameData.h"							// ゲームデータ
 #include"Interface/IObserver.h"							// オブザーバー
 #include "Game/Observer/Messenger.h"					// メッセンジャー
+#include "Game/Quest/QuestManager.h"					// クエストマネージャー
 // オブジェクト関連　=========================================
 #include "Game/EnemyManager/EnemyManager.h"	// 敵マネージャー
 #include "Game/Player/Player.h"				// プレイヤー
@@ -110,6 +111,11 @@ void PlayScene::CreateObjects()
 	m_uiManager = std::make_unique<PlaySceneUIManager>(this);
 	// UIマネージャーの初期化
 	m_uiManager->Initialize();
+
+	// クエストマネージャーの生成
+	m_questManager = std::make_unique<QuestManager>(this);
+	// クエストマネージャーの初期化
+	m_questManager->InitializeQuest();
 
 	// 観察者リストをソートする
 	Messenger::SortObserverList();
@@ -202,6 +208,9 @@ void PlayScene::UpdateObjects(float elapsedTime)
 	m_cudgel->Update(smoothDeltaTime);
 	// 敵マネージャーの更新
 	m_enemyManager->Update(smoothDeltaTime);
+
+	// クエストマネージャーの更新
+	m_questManager->Update(elapsedTime);
 
 	// カメラの回転行列の作成	引数にはプレイヤーの回転角を入れる
 	DirectX::SimpleMath::Matrix matrix = DirectX::SimpleMath::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_player->GetAngle()));

@@ -119,7 +119,7 @@ void PlayerNockBacking::NockBackAnimation()
 
 	// Ý’è€–Ú
 	m_player->SetPosition(m_position);
-	m_player->SetAnimarionRotate(m_bodyTilt);
+	m_player->SetAnimationRotate(m_bodyTilt);
 }
 
 
@@ -142,7 +142,7 @@ void PlayerNockBacking::ReturnAnimation()
 	m_bodyTilt.x = DirectX::XMConvertToRadians(-90 - 270 * Easing::easeOutBack(t));
 
 	m_player->SetPosition(m_position);
-	m_player->SetAnimarionRotate(m_bodyTilt);
+	m_player->SetAnimationRotate(m_bodyTilt);
 }
 
 

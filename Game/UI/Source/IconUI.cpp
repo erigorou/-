@@ -181,9 +181,11 @@ void IconUI::Render()
 	// Color.zw		:画像サイズ
 	// Tex.xy		:ウィンドウサイズ（バッファも同じ。こちらは未使用）
 	VertexPositionColorTexture vertex[1] = {
-		VertexPositionColorTexture(SimpleMath::Vector3(m_scale.x, m_scale.y, static_cast<float>(m_anchor))
-		, SimpleMath::Vector4(m_position.x, m_position.y, static_cast<float>(m_textureWidth), static_cast<float>(m_textureHeight))
-		, SimpleMath::Vector2(static_cast<float>(m_windowWidth), static_cast<float>(m_windowHeight)))
+		VertexPositionColorTexture(
+			SimpleMath::Vector3(m_scale.x, m_scale.y, static_cast<float>(m_anchor)),
+			SimpleMath::Vector4(m_position.x, m_position.y,static_cast<float>(m_textureWidth),static_cast<float>(m_textureHeight)),
+			SimpleMath::Vector2(static_cast<float>(m_windowWidth),
+			static_cast<float>(m_windowHeight)))
 	};
 	//	ただし上記の設定値には、WorldやViewなどの3D空間から変換するための計算を一切しないため、
 	//	スクリーン座標として描画される
@@ -221,6 +223,7 @@ void IconUI::Render()
 	//	シェーダをセットする
 	context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
 	context->GSSetShader(m_geometryShader.Get(), nullptr, 0);
+
 	context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
 
 	//	ピクセルシェーダにテクスチャを登録する。
@@ -240,6 +243,7 @@ void IconUI::Render()
 	context->PSSetShader(nullptr, nullptr, 0);
 
 }
+
 
 
 // -------------------------------------------------------

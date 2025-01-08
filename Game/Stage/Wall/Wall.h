@@ -16,7 +16,7 @@ public:
 	static constexpr float COLLISION_RADIUS = 160.0f;	// 当たり判定の半径
 	static constexpr float COLLISION_SCALE = 10.0f;		// 当たり判定の大きさ
 
-	static constexpr DirectX::SimpleMath::Vector3 MOVE_POS = { 0.0f, -60.0f, 0.0f };	// モデルを移動させる位置
+	static constexpr DirectX::SimpleMath::Vector3 WALL_POS = { 0.0f, -60.0f, 0.0f };	// モデルを移動させる位置
 
 
 	// ------------------------
