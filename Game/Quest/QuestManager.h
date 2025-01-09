@@ -25,6 +25,8 @@ public:
 
 	// クールタイム
 	static constexpr float COOL_TIME = 1.0f;
+	// 最初の遅延
+	static constexpr float DELAY_TIME = 1.0f;
 
 
 // ---------------

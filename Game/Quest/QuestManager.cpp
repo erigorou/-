@@ -22,7 +22,8 @@
 // -----------------------------
 QuestManager::QuestManager(PlayScene* playScene)
 	: m_playScene(playScene)
-	, m_currentQuestNo()	// ★
+	, m_currentQuestNo()
+	, m_totalTime()
 {
 }
 
@@ -54,6 +55,8 @@ void QuestManager::InitializeQuest()
 // -----------------------------
 void QuestManager::Update(float elapsedTime)
 {
+	m_totalTime += elapsedTime;
+
 	// クエストの更新
 	UpdateQuest();
 
@@ -67,7 +70,7 @@ void QuestManager::Update(float elapsedTime)
 // -----------------------------
 void QuestManager::UpdateQuest()
 {
-	m_renderer->IsClear(true);
+	if (m_totalTime < DELAY_TIME) return;
 
 	// クエストの更新
 	if (m_currentQuestNo < m_questList.size())
