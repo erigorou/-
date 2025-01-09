@@ -5,8 +5,9 @@
 #pragma once
 #include "pch.h"
 
-class PlayScene;
-class IQuestChecker;
+class PlayScene;		// プレイシーン
+class QuestRenderer;	// クエスト内容の描画
+class IQuestChecker;	// クエストのチェッカー
 
 class QuestManager
 {
@@ -25,6 +26,13 @@ public:
 	// クールタイム
 	static constexpr float COOL_TIME = 1.0f;
 
+
+// ---------------
+// アクセサ
+// ---------------
+
+
+
 // ---------------
 // 公開関数
 // ---------------
@@ -42,6 +50,8 @@ public:
 	// クエストの終了
 	void Finalize();
 
+	// クエストを一つ更新する
+	void ChangeNextQuest();
 
 // ---------------
 // 内部関数
@@ -49,8 +59,6 @@ public:
 private:
 	// クエストの更新
 	void UpdateQuest();
-	// エフェクトの更新処理
-	void UpdateEffect(float elapsedTime);
 
 
 	// クエストリストの作成 1st
@@ -59,6 +67,9 @@ private:
 	void CreateQuestList_2nd();
 	// クエストリストの作成 3rd
 	void CreateQuestList_3rd();
+
+	// クエストのテクスチャを読み込む
+	void AddQuestTexture();
 	// クエストデータの消去
 	void ClearQuestData();
 
@@ -73,8 +84,11 @@ private:
 	// プレイシーン
 	PlayScene* m_playScene;
 
-	// クエストのリスト
-	std::vector<IQuestChecker*> m_questList;
+	std::vector<IQuestChecker*>										m_questList;	// クエストのリスト
+	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>>	m_textureList;	// テクスチャのリスト
+
+	// クエストの描画
+	std::unique_ptr<QuestRenderer> m_renderer;
 
 	// 経過時間
 	float m_totalTime;

@@ -46,6 +46,15 @@
       <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Operation\OperationVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Quest\Quest_GS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Quest\Quest_PS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Quest\Quest_VS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Sword\SwordTrailPS.cso</FullPath>
     </ContentFile>
     <ContentFile>

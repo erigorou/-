@@ -1,10 +1,2 @@
-﻿  QuestManager.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Quest\QuestManager.cpp(45,33): warning C4100: 'elapsedTime': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Quest\QuestManager.cpp(74,39): warning C4100: 'elapsedTime': 引数は関数の本体部で 1 度も参照されません。
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Quest\QuestManager.cpp(143,3): warning C5205: 非仮想デストラクターを持つ抽象クラス 'IQuestChecker' を削除すると、未定義の動作が発生します
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Interface\IQuestChecker.h(6,7): message : 'IQuestChecker' の宣言を確認してください
-  PlayScene.cpp
-  IconUI.cpp
-  コードを生成中...
-     ライブラリ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.lib とオブジェクト C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exp を作成中
+﻿  QuestRenderer.cpp
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exe

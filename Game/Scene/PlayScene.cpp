@@ -266,6 +266,8 @@ void PlayScene::Render()
 	// ƒp[ƒeƒBƒNƒ‹‚Ì•`‰æ
 	m_particles->Render(view, m_projection);
 
+	m_questManager->DrawQuest();
+
 	//==== UIŒn‚Ì•`‰æ ======================================================-------
 	m_uiManager->Render();
 

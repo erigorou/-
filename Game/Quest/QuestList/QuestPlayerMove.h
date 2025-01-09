@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------------------------------
+// プレイヤーが移動しているかをチェックするクラス	: チュートリアル
+// ---------------------------------------------------------------------------------------
+
 #pragma once
 #include "pch.h"
 #include "Interface/IQuestChecker.h"
@@ -9,6 +13,11 @@
 class QuestPlayerMove : public IQuestChecker
 {
 public:
+
+	// テクスチャパスを取得する
+	const wchar_t* GetTexturePath() override { return L"Resources/Textures/Quest/Quest.png"; }
+
+
 	// チェッカーを実行する
 	bool ExecuteChecker(PlayScene* playScene) override
 	{

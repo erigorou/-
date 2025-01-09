@@ -8,7 +8,7 @@
 class OperateUI : public IObserver
 {
 	// ŒÅ’è’l
-private:
+public:
 	static const wchar_t* VS_PATH;
 	static const wchar_t* PS_PATH;
 	static const wchar_t* GS_PATH;

@@ -10,7 +10,7 @@
 #include "SimpleMath.h"
 #include "StepTimer.h"
 
-	//UIのアンカーポイントの列挙数
+//UIのアンカーポイントの列挙数
 enum ANCHOR
 {
 	TOP_LEFT = 0,
@@ -24,7 +24,6 @@ enum ANCHOR
 	BOTTOM_LEFT,
 	BOTTOM_CENTER,
 	BOTTOM_RIGHT
-
 };
 
 // アイコンクラス

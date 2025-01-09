@@ -307,7 +307,6 @@ void Particle::Render(
 /// <param name="proj"></param>
 void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj)
 {
-	auto device = m_pDR->GetD3DDevice();
 
 	// 剣のパーティクルのためのコンスタントバッファの作成と更新
 	ConstBuffer cbuff;
@@ -373,8 +372,6 @@ void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::Simp
 /// <param name="cameraDir"></param>
 void Particle::DrawDustParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj, DirectX::SimpleMath::Vector3 cameraDir)
 {
-	auto device = m_pDR->GetD3DDevice();
-
 	// 土埃パーティクルのためのコンスタントバッファの作成と更新
 	ConstBuffer cbuff;
 	cbuff.matView = view.Transpose();
@@ -390,8 +387,6 @@ void Particle::DrawDustParticle(DirectX::SimpleMath::Matrix view, DirectX::Simpl
 	context->PSSetConstantBuffers(0, 1, cb);
 
 	m_dustShader->BeginSharder(context);
-
-	ID3D11SamplerState* m_samplerState;  // サンプラー状態
 
 	//	画像用サンプラーの登録
 	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };

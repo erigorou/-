@@ -1,14 +1,20 @@
+// ---------------------------------------------------------------------------------------
+// プレイヤーが回避中かどうかをチェックするクラス		: チュートリアル
+// ---------------------------------------------------------------------------------------
+
 #pragma once
 #include "pch.h"
 #include "Interface/IQuestChecker.h"
-
-
 #include "Game/Scene/PlayScene.h"
 #include "Game/Player/Player.h"
 
 class QuestPlayerAvoid : public IQuestChecker
 {
 public:
+	// テクスチャパスを取得する
+	const wchar_t* GetTexturePath() override { return L"Resources/Textures/Quest/Quest.png"; }
+
+
 	// チェッカーを実行する
 	bool ExecuteChecker(PlayScene* playScene) override
 	{

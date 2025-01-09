@@ -5,6 +5,7 @@
 #include "pch.h"
 #include "QuestManager.h"
 #include "../Scene/PlayScene.h"
+#include "QuestRenderer/QuestRenderer.h"
 
 #include "Interface/IQuestChecker.h"
 #include "QuestList/QuestPlayerMove.h"
@@ -13,12 +14,15 @@
 #include "QuestList/QuestPlayerAvoid.h"
 
 
+#include "Libraries/MyLib/DebugString.h"
+
+
 // -----------------------------
 // コンストラクタ
 // -----------------------------
 QuestManager::QuestManager(PlayScene* playScene)
 	: m_playScene(playScene)
-	, m_currentQuestNo(0)	// ★
+	, m_currentQuestNo()	// ★
 {
 }
 
@@ -36,7 +40,13 @@ QuestManager::~QuestManager()
 // -----------------------------
 void QuestManager::InitializeQuest()
 {
+	// クエストリストの作成
 	CreateQuestList_1st();
+
+	// クエスト内容の描画オブジェクト
+	m_renderer = std::make_unique<QuestRenderer>(this);
+	// 初期化処理
+	m_renderer->Initialize(m_textureList[0]);
 }
 
 // -----------------------------
@@ -46,6 +56,9 @@ void QuestManager::Update(float elapsedTime)
 {
 	// クエストの更新
 	UpdateQuest();
+
+	// 描画の更新
+	m_renderer->Update(elapsedTime);
 }
 
 
@@ -54,25 +67,38 @@ void QuestManager::Update(float elapsedTime)
 // -----------------------------
 void QuestManager::UpdateQuest()
 {
+	m_renderer->IsClear(true);
+
 	// クエストの更新
 	if (m_currentQuestNo < m_questList.size())
 	{
 		// クエストの実行
 		auto quest = m_questList[m_currentQuestNo];
-		if (quest->ExecuteChecker(m_playScene))
-		{
-			// 次のクエストへ
-			m_currentQuestNo++;
-		}
+
+		// クエストのクリアを描画オブジェクトに通知
+		m_renderer->IsClear(quest->ExecuteChecker(m_playScene));
 	}
 }
 
 
 // -----------------------------
-// エフェクトの更新処理
+// クエストを一つ更新する
 // -----------------------------
-void QuestManager::UpdateEffect(float elapsedTime)
+void QuestManager::ChangeNextQuest()
 {
+	// クエストを１つ進める
+	m_currentQuestNo++;
+
+	// クエストが最後まで行っていない場合
+	if (m_currentQuestNo < m_questList.size())
+	{
+		// クエストの描画
+		m_renderer->ChangeTexture(m_textureList[m_currentQuestNo]);
+	}
+	else
+	{
+		// クエストクリア
+	}
 }
 
 
@@ -82,7 +108,8 @@ void QuestManager::UpdateEffect(float elapsedTime)
 // -----------------------------
 void QuestManager::DrawQuest()
 {
-
+	// クエストの描画
+	m_renderer->Draw();
 }
 
 
@@ -103,10 +130,13 @@ void QuestManager::CreateQuestList_1st()
 	ClearQuestData();
 
 	// クエストの作成
-	m_questList.push_back(new QuestPlayerMove());
-	m_questList.push_back(new QuestPlayerAttack());
-	m_questList.push_back(new QuestPlayerCombo());
-	m_questList.push_back(new QuestPlayerAvoid());
+	m_questList.push_back(new QuestPlayerMove	());
+	m_questList.push_back(new QuestPlayerAttack	());
+	m_questList.push_back(new QuestPlayerCombo	());
+	m_questList.push_back(new QuestPlayerAvoid	());
+
+	// クエストの中のテクスチャを読み込む
+	AddQuestTexture();
 }
 
 
@@ -131,6 +161,31 @@ void QuestManager::CreateQuestList_3rd()
 	ClearQuestData();
 }
 
+// -----------------------------------
+// クエストのテクスチャを読み込む
+// -----------------------------------
+void QuestManager::AddQuestTexture()
+{
+	// 設定したクエストから全て抜き出す
+	for (auto quest : m_questList)
+	{
+		// テクスチャの読み込み
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture;
+
+		DX::ThrowIfFailed(
+			DirectX::CreateWICTextureFromFile(
+				CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice(),
+				quest->GetTexturePath(),
+				nullptr,
+				texture.ReleaseAndGetAddressOf()
+			)
+		);
+
+		// テクスチャリストに追加
+		m_textureList.push_back(texture);
+	}
+}
+
 
 // -----------------------------------
 // クエストデータの消去
@@ -143,6 +198,13 @@ void QuestManager::ClearQuestData()
 		delete quest;
 	}
 
-	// クエストリストをクリア
+	// 画像リストをすべて削除する
+	for (auto texture : m_textureList)
+	{
+		texture.Reset();
+	}
+
+	// クエストリストとテクスチャリストをクリアする
 	m_questList.clear();
+	m_textureList.clear();
 }

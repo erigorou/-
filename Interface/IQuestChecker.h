@@ -10,6 +10,9 @@ class IQuestChecker
 // ---------------
 public:
 
+	// テクスチャパスを取得する
+	virtual const wchar_t* GetTexturePath() = 0;
+
 	// チェッカーを実行する
-	bool virtual ExecuteChecker(PlayScene* playScene) = 0;
+	virtual bool ExecuteChecker(PlayScene* playScene) = 0;
 };

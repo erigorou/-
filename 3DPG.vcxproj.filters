@@ -235,6 +235,7 @@
     <ClInclude Include="Game\Quest\QuestList\QuestPlayerAttack.h" />
     <ClInclude Include="Game\Quest\QuestList\QuestPlayerCombo.h" />
     <ClInclude Include="Game\Quest\QuestList\QuestPlayerAvoid.h" />
+    <ClInclude Include="Game\Quest\QuestRenderer\QuestRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -363,6 +364,7 @@
     <ClCompile Include="Libraries\MyLib\Invincibility\InvincibilityFrames.cpp" />
     <ClCompile Include="Game\Enemy\States\Source\EnemyStarting.cpp" />
     <ClCompile Include="Game\Quest\QuestManager.cpp" />
+    <ClCompile Include="Game\Quest\QuestRenderer\QuestRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -392,6 +394,7 @@
     <None Include="ClassDiagram3.cd" />
     <None Include="Resources\Shaders\DamageEffect\Common.hlsli" />
     <None Include="Resources\Shaders\Mask\Particle.hlsli" />
+    <None Include="Resources\Shaders\Quest\Quest.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Sword\SwordTrailPS.hlsl" />
@@ -418,5 +421,8 @@
     <FxCompile Include="Resources\Shaders\Mask\MaskPS.hlsl" />
     <FxCompile Include="Resources\Shaders\Mask\MaskVS.hlsl" />
     <FxCompile Include="Resources\Shaders\DamageEffect\DamageEffectPS.hlsl" />
+    <FxCompile Include="Resources\Shaders\Quest\Quest_VS.hlsl" />
+    <FxCompile Include="Resources\Shaders\Quest\Quest_PS.hlsl" />
+    <FxCompile Include="Resources\Shaders\Quest\Quest_GS.hlsl" />
   </ItemGroup>
 </Project>
