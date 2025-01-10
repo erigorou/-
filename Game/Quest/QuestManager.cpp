@@ -6,6 +6,7 @@
 #include "QuestManager.h"
 #include "../Scene/PlayScene.h"
 #include "QuestRenderer/QuestRenderer.h"
+#include "Tutorial/Tutorial.h"
 
 #include "Interface/IQuestChecker.h"
 #include "QuestList/QuestPlayerMove.h"
@@ -13,6 +14,8 @@
 #include "QuestList/QuestPlayerCombo.h"
 #include "QuestList/QuestPlayerAvoid.h"
 
+#include "TutorialList/TutorialStart.h"
+#include "TutorialList/TutorialEnd.h"
 
 #include "Libraries/MyLib/DebugString.h"
 
@@ -60,6 +63,12 @@ void QuestManager::Update(float elapsedTime)
 	// クエストの更新
 	UpdateQuest();
 
+	// チュートリアルの更新
+	if (m_tutorial != nullptr)
+	{
+		m_tutorial->Update(elapsedTime);
+	}
+
 	// 描画の更新
 	m_renderer->Update(elapsedTime);
 }
@@ -73,14 +82,10 @@ void QuestManager::UpdateQuest()
 	if (m_totalTime < DELAY_TIME) return;
 
 	// クエストの更新
-	if (m_currentQuestNo < m_questList.size())
-	{
-		// クエストの実行
-		auto quest = m_questList[m_currentQuestNo];
+	if (! (m_currentQuestNo < m_questList.size()))	return;
 
-		// クエストのクリアを描画オブジェクトに通知
-		m_renderer->IsClear(quest->ExecuteChecker(m_playScene));
-	}
+	// クエストのクリアを描画オブジェクトに通知
+	m_renderer->IsClear(m_questList[m_currentQuestNo]->ExecuteChecker(m_playScene));
 }
 
 
@@ -95,12 +100,19 @@ void QuestManager::ChangeNextQuest()
 	// クエストが最後まで行っていない場合
 	if (m_currentQuestNo < m_questList.size())
 	{
-		// クエストの描画
+		// クエストの描画の更新
 		m_renderer->ChangeTexture(m_textureList[m_currentQuestNo]);
+
+		// チュートリアルの描画の更新
+		if (m_tutorial != nullptr)
+		{
+			m_tutorial->ChangeTexture(m_tutorialTextureList[m_currentQuestNo]);
+		}
 	}
 	else
 	{
 		// クエストクリア
+
 	}
 }
 
@@ -113,6 +125,12 @@ void QuestManager::DrawQuest()
 {
 	// クエストの描画
 	m_renderer->Draw();
+
+	// チュートリアルの描画
+	if (m_tutorial != nullptr)
+	{
+		m_tutorial->Draw();
+	}
 }
 
 
@@ -133,13 +151,18 @@ void QuestManager::CreateQuestList_1st()
 	ClearQuestData();
 
 	// クエストの作成
+	m_questList.push_back(new TutorialStart		());
 	m_questList.push_back(new QuestPlayerMove	());
 	m_questList.push_back(new QuestPlayerAttack	());
 	m_questList.push_back(new QuestPlayerCombo	());
 	m_questList.push_back(new QuestPlayerAvoid	());
+	m_questList.push_back(new TutorialEnd		());
 
 	// クエストの中のテクスチャを読み込む
 	AddQuestTexture();
+
+	// チュートリアルの作成
+	CreateTutorial();
 }
 
 
@@ -157,7 +180,6 @@ void QuestManager::CreateQuestList_2nd()
 // -----------------------------------
 // クエストリストの作成 ステージ３
 // -----------------------------------
-
 void QuestManager::CreateQuestList_3rd()
 {
 	// クエストデータの消去
@@ -172,6 +194,14 @@ void QuestManager::AddQuestTexture()
 	// 設定したクエストから全て抜き出す
 	for (auto quest : m_questList)
 	{
+		if (quest->GetTexturePath() == nullptr)
+		{
+			// テクスチャリストにnullptrを追加(何も入れないが要素は増やす)
+			m_textureList.push_back(nullptr);
+			continue;
+		}
+
+
 		// テクスチャの読み込み
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture;
 
@@ -188,6 +218,54 @@ void QuestManager::AddQuestTexture()
 		m_textureList.push_back(texture);
 	}
 }
+
+
+// -----------------------------------
+// チュートリアルのテクスチャを読み込む
+// -----------------------------------
+void QuestManager::AddTutorialTexture()
+{
+	for (auto tutorial : m_questList)
+	{
+		if (tutorial->GetTutorialTexturePath() == nullptr)
+		{
+			// テクスチャリストにnullptrを追加(何も入れないが要素は増やす)
+			m_tutorialTextureList.push_back(nullptr);
+			continue;
+		}
+
+		// チュートリアルのテクスチャを読み込む
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture;
+
+		DX::ThrowIfFailed(
+			DirectX::CreateWICTextureFromFile(
+				CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice(),
+				tutorial->GetTutorialTexturePath(),
+				nullptr,
+				texture.ReleaseAndGetAddressOf()
+			)
+		);
+
+		// テクスチャリストに追加
+		m_tutorialTextureList.push_back(texture);
+	}
+
+}
+
+
+// -----------------------------------
+// チュートリアルの作成
+// -----------------------------------
+void QuestManager::CreateTutorial()
+{
+	// チュートリアルのテクスチャを読み込む
+	AddTutorialTexture();
+
+	// チュートリアルの作成
+	m_tutorial = std::make_unique<Tutorial>(this);
+	m_tutorial->Initialize(m_tutorialTextureList[0]);
+}
+
 
 
 // -----------------------------------

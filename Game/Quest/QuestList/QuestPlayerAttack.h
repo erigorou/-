@@ -13,7 +13,11 @@ class QuestPlayerAttack : public IQuestChecker
 {
 public:
 	// テクスチャパスを取得する
-	const wchar_t* GetTexturePath() override { return L"Resources/Textures/Quest/Quest.png"; }
+	const wchar_t* GetTexturePath() override { return L"Resources/Textures/Quest/QuestUI_Attack.png"; }
+
+
+	// チュートリアルのテクスチャパスを取得する
+	const wchar_t* GetTutorialTexturePath() override { return L"Resources/Textures/Quest/TutorialAttack.png"; }
 
 
 	// チェッカーを実行する

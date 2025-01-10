@@ -59,6 +59,10 @@ public:
 
 	// ターゲットとなる敵の座標を取得
 	DirectX::SimpleMath::Vector3 GetTargetPosition();
+
+	// クエストマネージャーを取得
+	QuestManager* GetQuestManager() { return m_questManager.get(); }
+
 // 共通関数 ===
 public:
 	PlayScene();

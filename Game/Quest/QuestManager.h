@@ -7,6 +7,7 @@
 
 class PlayScene;		// プレイシーン
 class QuestRenderer;	// クエスト内容の描画
+class Tutorial;			// チュートリアル
 class IQuestChecker;	// クエストのチェッカー
 
 class QuestManager
@@ -29,9 +30,15 @@ public:
 	static constexpr float DELAY_TIME = 1.0f;
 
 
+
 // ---------------
 // アクセサ
 // ---------------
+	// 現在のクエスト番号を取得
+	int GetCurrentQuestNo() const { return m_currentQuestNo; }
+
+	// チュートリアルを取得
+	Tutorial* GetTutorial() { return m_tutorial.get(); }
 
 
 
@@ -55,6 +62,7 @@ public:
 	// クエストを一つ更新する
 	void ChangeNextQuest();
 
+
 // ---------------
 // 内部関数
 // ---------------
@@ -72,8 +80,16 @@ private:
 
 	// クエストのテクスチャを読み込む
 	void AddQuestTexture();
+	// チュートリアルのテクスチャを読み込む
+	void AddTutorialTexture();
+
+	// チュートリアルの作成
+	void CreateTutorial();
+
+
 	// クエストデータの消去
 	void ClearQuestData();
+
 
 // ---------------
 // メンバ変数
@@ -88,9 +104,14 @@ private:
 
 	std::vector<IQuestChecker*>										m_questList;	// クエストのリスト
 	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>>	m_textureList;	// テクスチャのリスト
+	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>>	m_tutorialTextureList;	// チュートリアルのリスト
+
 
 	// クエストの描画
 	std::unique_ptr<QuestRenderer> m_renderer;
+
+	// チュートリアルの描画
+	std::unique_ptr<Tutorial> m_tutorial;
 
 	// 経過時間
 	float m_totalTime;

@@ -168,6 +168,7 @@ void CollisionManager::AddCollision<DirectX::BoundingOrientedBox*>(ObjectType ob
 	m_obbProxies.push_back(CreateProxySphere(collision));
 }
 
+
 template</* Sphere */>
 void CollisionManager::AddCollision<DirectX::BoundingSphere*>(ObjectType objType, CollisionType colType, IObject* obj, DirectX::BoundingSphere* collision)
 {
@@ -262,6 +263,3 @@ inline void CollisionManager::DrawCollision(DirectX::SimpleMath::Matrix view, Di
 	// •b‚ªI—¹
 	m_primitiveBatch->End();
 }
-
-
-

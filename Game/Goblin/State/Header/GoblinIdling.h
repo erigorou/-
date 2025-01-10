@@ -9,7 +9,18 @@ class Goblin;
 class GoblinIdling : public IState
 {
 
-// 共通
+// -----------0-
+// 固定値
+// -------------
+public:
+	static constexpr float MIN_COOLTIME = 1.0f;
+	static constexpr float MAX_COOLTIME = 3.0f;
+
+
+
+// -----------0-
+// 公開関数
+// -------------
 public:
 
 	GoblinIdling(Goblin* goblin);
@@ -36,6 +47,9 @@ public:
 private:
 	Goblin* m_goblin;	// 親
 	float m_TotalTime;	// 経過時間
+
+	float m_coolTime;	// クールタイム
+
 };
 
 

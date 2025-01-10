@@ -8,23 +8,6 @@ class CustomShader;
 class DeviceResources;
 
 
-//UIのアンカーポイントの列挙数
-enum ANCHOR
-{
-	TOP_LEFT = 0,
-	TOP_CENTER,
-	TOP_RIGHT,
-
-	MIDDLE_LEFT,
-	MIDDLE_CENTER,
-	MIDDLE_RIGHT,
-
-	BOTTOM_LEFT,
-	BOTTOM_CENTER,
-	BOTTOM_RIGHT
-};
-
-
 //スライドアクションの列挙数
 enum SLIDE_ACTION : int
 {
@@ -42,12 +25,12 @@ class QuestRenderer
 // --------------------
 public:
 	// テクスチャサイズの大きさ
-	static constexpr int WIDTH = 300;
-	static constexpr int HEIGHT = 75;
+	static constexpr int WIDTH  = 400;
+	static constexpr int HEIGHT = 100;
 
 	// テクスチャの初期座標
 	static constexpr int INIT_POSITION_X = 1280;
-	static constexpr int INIT_POSITION_Y = 300;
+	static constexpr int INIT_POSITION_Y = 450;
 
 	// 画面サイズの大きさ
 	static constexpr float WINDOW_WIDTH = 1280;

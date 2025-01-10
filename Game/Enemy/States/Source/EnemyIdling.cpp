@@ -87,7 +87,7 @@ void EnemyIdling::Update(const float& elapsedTime)
 				m_enemy->ChangeState(m_enemy->GetEnemySweeping());		// ‘|“¢
 			else if(random <= 7)
 				m_enemy->ChangeState(m_enemy->GetEnemyAttacking());		// UŒ‚
-			else if (random == 9)
+			else if (random <= 8)
 				m_enemy->ChangeState(m_enemy->GetEnemyDashAttacking());	// ƒ_ƒbƒVƒ…UŒ‚
 			else if(random == 10)
 				m_enemy->ChangeState(m_enemy->GetEnemyIdling());		// ‰½‚à‚µ‚È‚¢

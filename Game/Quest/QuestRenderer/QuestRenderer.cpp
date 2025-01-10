@@ -3,6 +3,7 @@
 #include "../QuestManager.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "Libraries/MyLib/EasingFunctions.h"
+#include "Game/UI/UIAnchor.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "CommonStates.h"
@@ -116,6 +117,8 @@ void QuestRenderer::Draw()
 	// テクスチャの設定
 	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
 
+
+
 	//	板ポリゴンを描画
 	m_batch->Begin();
 	m_batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], 1);
@@ -200,8 +203,6 @@ void QuestRenderer::UpdateConstantBuffer()
 	context->VSSetConstantBuffers(0, 1, cb);
 	context->GSSetConstantBuffers(0, 1, cb);
 	context->PSSetConstantBuffers(0, 1, cb);
-
-
 }
 
 
@@ -219,6 +220,27 @@ void QuestRenderer::SetRenderState()
 	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);		// 透明処理
 	context->OMSetDepthStencilState(m_states->DepthNone(), 0);		// 深度バッファに書き込み参照しない
 	context->RSSetState(m_states->CullClockwise());					// カリングは左回り
+}
+
+
+
+
+// --------------------------------
+// スライドアクションの追加
+// --------------------------------
+void QuestRenderer::AddSlideAction()
+{
+	// アクションの追加
+	m_slideActions.push_back([this]() { return NoSlideTexture(); }); // 待機
+	m_slideActions.push_back([this]() { return SlideOutTexture(); }); // スライドアウト
+	m_slideActions.push_back([this]() { return SlideCoolTime();	 }); // クールタイム
+	m_slideActions.push_back([this]() { return SlideInTexture(); }); // スライドイン
+
+	// 現在のアクションを設定
+	m_currentAction = m_slideActions[SLIDE_ACTION::SLIDE_IN];
+
+	// 経過時間を-から始めることで遅延を設定
+	m_currentTime = INITIAL_TIME;
 }
 
 
@@ -313,23 +335,4 @@ void QuestRenderer::SlideInTexture()
 		m_currentTime = 0.0f;
 		m_currentAction = m_slideActions[SLIDE_ACTION::WAIT];
 	}
-}
-
-
-// --------------------------------
-// スライドアクションの追加
-// --------------------------------
-void QuestRenderer::AddSlideAction() 
-{
-	// アクションの追加
-	m_slideActions.push_back([this]() { return NoSlideTexture(); }); // 待機
-	m_slideActions.push_back([this]() { return SlideOutTexture();}); // スライドアウト
-	m_slideActions.push_back([this]() { return SlideCoolTime();	 }); // クールタイム
-	m_slideActions.push_back([this]() { return SlideInTexture(); }); // スライドイン
-
-	// 現在のアクションを設定
-	m_currentAction = m_slideActions[SLIDE_ACTION::SLIDE_IN];
-
-	// 経過時間を-から始めることで遅延を設定
-	m_currentTime = INITIAL_TIME;
 }

@@ -62,8 +62,6 @@ void EnemyManager::Initialize(PlayScene* playScene)
 // --------------------------------
 void EnemyManager::Update(float elapsedTime)
 {
-	return;
-
 	if (m_enemies.empty()) return;
 
 	for (auto& enemy : m_enemies)
