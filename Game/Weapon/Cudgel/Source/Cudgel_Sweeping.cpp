@@ -22,9 +22,9 @@
 
 // 固定値 ==================================
 const float Cudgel_Sweeping::CHARGE_TIME = 0.8f;	// 振りかざし時間
-const float Cudgel_Sweeping::WINDUP_TIME = 1.1f;	// 待機
-const float Cudgel_Sweeping::ATTACK_TIME = 1.7f;	// 薙ぎ払い
-const float Cudgel_Sweeping::END_TIME	 = 2.5f;	// 終了
+const float Cudgel_Sweeping::WINDUP_TIME = 0.9f;	// 待機
+const float Cudgel_Sweeping::ATTACK_TIME = 1.5f;	// 薙ぎ払い
+const float Cudgel_Sweeping::END_TIME	 = 2.3f;	// 終了
 
 const float Cudgel_Sweeping::CHARGE_ROTATE_ANGLE = 30.0f;	// 振りかざし角度
 const float Cudgel_Sweeping::WINDUP_ROTATE_ANGLE = 240.0f;	// 薙ぎ払い角度

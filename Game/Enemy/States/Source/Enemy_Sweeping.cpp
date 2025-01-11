@@ -14,9 +14,11 @@
 
 
 const float Enemy_Sweeping::CHARGE_TIME		= 0.5f;		// 振りかざし時間
-const float Enemy_Sweeping::WINDUP_TIME		= 1.1f;		// 待機
-const float Enemy_Sweeping::ATTACK_TIME		= 1.7f;		// 薙ぎ払い
-const float Enemy_Sweeping::END_TIME		= 2.5f;		// 終了
+const float Enemy_Sweeping::WINDUP_TIME		= 0.6f;		// 待機
+const float Enemy_Sweeping::ATTACK_TIME		= 1.2f;		// 薙ぎ払い
+const float Enemy_Sweeping::END_TIME		= 2.0f;		// 終了
+
+
 const float Enemy_Sweeping::ROTATE_ANGLE	= 20.0f;	// 振りかざし角度
 
 

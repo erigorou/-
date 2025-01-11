@@ -22,11 +22,11 @@
 
 // 固定値 ==================================
 const float Cudgel_Attacking::CHARGE_TIME = 0.8f;	// 振りかざし時間
-const float Cudgel_Attacking::WINDUP_TIME = 1.1f;	// 待機
-const float Cudgel_Attacking::ATTACK_TIME = 1.7f;	// 降り下ろし
-const float Cudgel_Attacking::STOP_TIME	  = 2.5f;	// 待機
-const float Cudgel_Attacking::RETURN_TIME = 3.0f;	// 元に戻る
-const float Cudgel_Attacking::END_TIME    = 3.5f;	// 終了時間
+const float Cudgel_Attacking::WINDUP_TIME = 0.9f;	// 待機
+const float Cudgel_Attacking::ATTACK_TIME = 1.5f;	// 降り下ろし
+const float Cudgel_Attacking::STOP_TIME	  = 2.3f;	// 待機
+const float Cudgel_Attacking::RETURN_TIME = 2.8f;	// 元に戻る
+const float Cudgel_Attacking::END_TIME    = 3.3f;	// 終了時間
 
 const Vector3 Cudgel_Attacking::ARM_LENGTH = Vector3(0.0f, 4.0f, 0.0f);
 const Vector3 Cudgel_Attacking::ZERO_DIREC = Vector3(8.0f, 1.0f, 0.0f);

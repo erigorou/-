@@ -42,7 +42,7 @@ public:
 	// アニメーション時間
 	static constexpr float ANIMATION_TIME = 1.0f;
 	static constexpr float INITIAL_TIME = -0.5f;
-	static constexpr float ANIMATION_WAIT = 0.5f;
+	static constexpr float ANIMATION_WAIT = 1.0f;
 
 	// 透明度
 	static constexpr float MAX_ALPHA = 1.0f;
