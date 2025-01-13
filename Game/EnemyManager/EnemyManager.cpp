@@ -47,12 +47,12 @@ EnemyManager::~EnemyManager()
 // --------------------------------
 void EnemyManager::Initialize(PlayScene* playScene)
 {
+	m_playScene = playScene;
+
 	m_goblinModel = CreateModel(GOBLIN_MODEL_PATH);
 	m_bossModel = CreateModel(BOSS_MODEL_PATH);
 
-
 	GenerateBoss(DirectX::SimpleMath::Vector3(0.0f, 0.0f, 0.0f));
-
 	GenerateGoblin(DirectX::SimpleMath::Vector3(40.0f, 0.0f, 0.0f));
 }
 
@@ -111,11 +111,8 @@ void EnemyManager::GenerateEnemy(const DirectX::SimpleMath::Vector3& position, E
 	// “G‚Ì¶¬
 	switch (type)
 	{
-	case EnemyType::Goblin:
-		break;
-
-	case EnemyType::Boss:
-		break;
+	case EnemyType::Goblin:	GenerateGoblin(position);	break;	// ƒSƒuƒŠƒ“‚Ì¶¬
+	case EnemyType::Boss:	GenerateBoss(position);		break;	// ƒ{ƒX‚Ì¶¬
 	}
 }
 

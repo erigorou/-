@@ -84,9 +84,11 @@ void Goblin::CreateState()
 {
 	m_idling = std::make_unique<GoblinIdling>(this);		// 待機
 	m_attacking = std::make_unique<GoblinAttacking>(this);	// 攻撃
+	m_dead = std::make_unique<GoblinDead>(this);			// 死亡
 
 	m_idling->Initialize();
 	m_attacking->Initialize();
+	m_dead->Initialize();
 
 	m_currentState = m_idling.get();
 }
@@ -117,8 +119,6 @@ void Goblin::Update(const float elapsedTime)
 {
 	// ワールド行列の初期化
 	CalcWorldMatrix();
-	// ステートの更新処理
-	m_currentState->Update(elapsedTime);
 	// ダメージエフェクトの更新
 	m_damageEffect->Update(elapsedTime);
 	// 衝突判定の移動
@@ -127,6 +127,9 @@ void Goblin::Update(const float elapsedTime)
 	CountCoolTime(elapsedTime);
 	// 生存確認
 	CheckAlive();
+
+	// ステートの更新処理
+	m_currentState->Update(elapsedTime);
 }
 
 
@@ -136,9 +139,9 @@ void Goblin::Update(const float elapsedTime)
 void Goblin::CalcWorldMatrix()
 {
 	m_worldMatrix =
-		DirectX::SimpleMath::Matrix::CreateRotationY(m_angle) *
-		DirectX::SimpleMath::Matrix::CreateScale(GOBLIN_SCALE * m_scale) *
-		DirectX::SimpleMath::Matrix::CreateTranslation(m_position);
+		DirectX::SimpleMath::Matrix::CreateRotationY(m_angle) *				// 回転
+		DirectX::SimpleMath::Matrix::CreateScale(GOBLIN_SCALE * m_scale) *	// 大きさ
+		DirectX::SimpleMath::Matrix::CreateTranslation(m_position);			// 座標
 }
 
 
@@ -147,6 +150,7 @@ void Goblin::CalcWorldMatrix()
 // --------------------------------
 void Goblin::MoveCollision()
 {
+	// 衝突判定の座標を動いた座標に合わせる
 	DirectX::SimpleMath::Vector3 pos = m_position;
 	pos.y = COLLISION_POS_Y;
 	m_bodyCollision->Center = pos;
@@ -170,6 +174,7 @@ void Goblin::Finalize()
 {
 	m_idling->Finalize();
 	m_attacking->Finalize();
+	m_dead->Finalize();
 
 	// 当たり判定の削除
 	m_playScene->GetCollisionManager()->DeleteCollision(CollisionType::Sphere, this);
@@ -319,10 +324,23 @@ void Goblin::CountCoolTime(float elapsedTime)
 }
 
 
+// --------------------------------
+// 生存確認
+// --------------------------------
 void Goblin::CheckAlive()
 {
 	if (m_hp->GetHP() <= 0)
 	{
-		m_playScene->GetEnemyManager()->DeleteEnemy(this);
+		// ステートを変更
+		ChangeState(m_dead.get());
 	}
+}
+
+
+// --------------------------------
+// ゴブリンを消す
+// --------------------------------
+void Goblin::DeleteGoblin()
+{
+	m_playScene->GetEnemyManager()->DeleteEnemy(this);
 }

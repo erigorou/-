@@ -19,6 +19,7 @@ class HPSystem;
 class EnemyDamageEffect;
 #include "State/Header/GoblinIdling.h"
 #include "State/Header/GoblinAttacking.h"
+#include "State/Header/GoblinDead.h"
 
 class Goblin : public IEnemy
 {
@@ -53,6 +54,7 @@ public:
 	// ステート用 **
 	GoblinIdling*	 GetIdling		()	const { return m_idling.get(); }	// 待機状態の取得
 	GoblinAttacking* GetAttacking	()	const { return m_attacking.get(); }	// 攻撃状態の取得
+	GoblinDead*		 GetDead		()	const { return m_dead.get(); }		// 死亡状態の取得
 	IState* GetCurrentState			()	const { return m_currentState; }	// 現在のステートの取得
 
 
@@ -78,6 +80,9 @@ public:
 	void HitAction(InterSectData data) override;
 	// ステートの変更
 	void ChangeState(IState* state);
+
+	// ゴブリンを消す
+	void DeleteGoblin();
 
 // 内部関数
 private:
@@ -115,6 +120,7 @@ private:
 	IState* m_currentState;								// 現在のステート
 	std::unique_ptr<GoblinIdling>		m_idling;		// 待機
 	std::unique_ptr<GoblinAttacking>	m_attacking;	// 攻撃
+	std::unique_ptr<GoblinDead>			m_dead;			// 死亡
 
 	// システム **
 	std::unique_ptr<HPSystem> m_hp;						// HP
