@@ -76,6 +76,9 @@ public:
 	// ゴブリンの全削除
 	void DeleteAllGoblin();
 
+	// 敵１体の削除
+	void DeleteEnemy(IEnemy* enemy);
+
 	// カメラのターゲットの設定
 	void ChangeCameraTarget();
 

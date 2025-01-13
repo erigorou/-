@@ -28,7 +28,7 @@ public:
 	static const float GOBLIN_SPEED;
 	static const float GOBLIN_SCALE;
 
-	static constexpr float GOBLIN_HP = 3.0f;
+	static constexpr float GOBLIN_HP = 1.0f;
 	static constexpr float COLLISION_RADIUS = 16.0f;
 	static constexpr float COLLISION_POS_Y = 2.0f;
 
@@ -85,6 +85,8 @@ private:
 	void CalcWorldMatrix();
 	// 当たり判定の移動
 	void MoveCollision();
+	// 生存確認
+	void CheckAlive();
 
 
 	void HitPlayer(InterSectData data);	// プレイヤーに当たったときの処理

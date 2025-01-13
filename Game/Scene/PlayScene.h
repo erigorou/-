@@ -53,6 +53,7 @@ public:
 	Sword*		GetSword()		{ return m_sword.get(); }
 	Cudgel*		GetCudgel()		{ return m_cudgel.get();}
 	Particle*	GetParticle()	{ return m_particles.get(); }
+	EnemyManager* GetEnemyManager() { return m_enemyManager.get(); }
 
 	// Õ“Ë”»’èŠÇ—ƒNƒ‰ƒX‚ğæ“¾
 	CollisionManager* GetCollisionManager() { return m_collisionManager.get(); }

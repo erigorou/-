@@ -13,6 +13,7 @@
 #include "../Enemy/Enemy.h"
 #include "Effects/EnemyDamageEffect/EnemyDamageEffect.h"
 #include "Game/HitStop/HitStop.h"
+#include "Game/EnemyManager/EnemyManager.h"
 
 #include "State/Header/GoblinIdling.h"
 #include "State/Header/GoblinAttacking.h"
@@ -124,6 +125,8 @@ void Goblin::Update(const float elapsedTime)
 	MoveCollision();
 	// クールタイムのカウント
 	CountCoolTime(elapsedTime);
+	// 生存確認
+	CheckAlive();
 }
 
 
@@ -312,5 +315,14 @@ void Goblin::CountCoolTime(float elapsedTime)
 	{
 		m_isHit = false;
 		m_coolTime = 0.0f;
+	}
+}
+
+
+void Goblin::CheckAlive()
+{
+	if (m_hp->GetHP() <= 0)
+	{
+		m_playScene->GetEnemyManager()->DeleteEnemy(this);
 	}
 }

@@ -160,6 +160,9 @@ DirectX::SimpleMath::Vector3 EnemyManager::GetBossPosition()
 // --------------------------------
 DirectX::SimpleMath::Vector3 EnemyManager::GetPicupEnemyPosition()
 {
+	// 敵がいない場合
+	if (m_enemies.size() - 1 < m_targetEnemyIndex) m_targetEnemyIndex = 0;
+
 	// ターゲットの敵の座標を取得
 	return m_enemies[m_targetEnemyIndex].data->GetPosition();
 }
@@ -171,16 +174,42 @@ DirectX::SimpleMath::Vector3 EnemyManager::GetPicupEnemyPosition()
 // --------------------------------
 void EnemyManager::DeleteAllGoblin()
 {
-	// 全ての敵を探索
-	for (auto& Enemy : m_enemies)
-	{
-		// ゴブリンなら削除
-		if (Enemy.type == EnemyType::Goblin)
+	// 配列の要素を安全に削除するためにerase-removeイディオムを使用
+	m_enemies.erase(std::remove_if(m_enemies.begin(),m_enemies.end(),[](EnemyData& enemy)
 		{
-			Enemy.data->Finalize();
+			// ゴブリンの場合
+			if (enemy.type == EnemyType::Goblin) 
+				{
+				// Finalize処理と削除
+				enemy.data->Finalize();
+				return true;
+				}	
+			return false; // 削除しない
+		}),
+		m_enemies.end()
+	);
+}
+
+
+// --------------------------------
+// 敵１体の削除
+// --------------------------------
+void EnemyManager::DeleteEnemy(IEnemy* enemy)
+{
+	// 該当する敵を探索
+	for (auto it = m_enemies.begin(); it != m_enemies.end(); ++it)
+	{
+		if (it->data.get() == enemy)
+		{
+			// 敵の終了処理
+			it->data->Finalize();
+			// 配列から削除
+			m_enemies.erase(it);
+			return;
 		}
 	}
 }
+
 
 // --------------------------------
 // カメラのターゲットを変更

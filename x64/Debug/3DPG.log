@@ -1,2 +1,4 @@
-﻿  Cudgel_Attacking.cpp
+﻿  EnemyManager.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\EnemyManager\EnemyManager.cpp(48,42): warning C4100: 'playScene': 引数は関数の本体部で 1 度も参照されません。
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\EnemyManager\EnemyManager.cpp(109,70): warning C4100: 'position': 引数は関数の本体部で 1 度も参照されません。
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exe
