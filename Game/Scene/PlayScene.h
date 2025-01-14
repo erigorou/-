@@ -34,7 +34,10 @@ class QuestManager;
 
 class PlayScene final :	public IScene
 {
-// 固定値 *
+
+// --------------------------
+// 固定値
+// --------------------------
 public:
 	// キーボードのキーの最大値
 	static constexpr int MAX_KEY = 256;
@@ -46,7 +49,9 @@ public:
 
 
 
-// アクセサ関数 ===
+// --------------------------
+// アクセサ
+// --------------------------
 public:
 	Player*		GetPlayer()		{ return m_player.get();}
 	Enemy*		GetEnemy();
@@ -64,7 +69,9 @@ public:
 	// クエストマネージャーを取得
 	QuestManager* GetQuestManager() { return m_questManager.get(); }
 
-// 共通関数 ===
+// --------------------------
+// 公開関数
+// --------------------------
 public:
 	PlayScene();
 	~PlayScene()					override;
@@ -78,32 +85,43 @@ public:
 
 	void GameEnd();								// ゲーム終了処理
 
-// 非公開関数 ===
+
+// --------------------------
+// 内部関数
+// --------------------------
 private:
 	void CreateObjects();					// オブジェクトの生成
 	SceneID GetNextSceneID()const;			// 次のシーンIDを取得
+
 	void UpdateObjects(float elapsedTime);	// オブジェクトの更新
+	void UpdateCamera(float elapsedTime);	// カメラの更新
 	void UpdateKeyboard();					// キーボードの更新
+
+	// パーティクルの描画
+	void DrawParticle(const DirectX::SimpleMath::Matrix &view, DirectX::SimpleMath::Matrix projection);	
+
 	void CheckResult();						// 勝敗判定
 
 
-// 内部変数 ===
+// --------------------------
+// 内部変数
+// --------------------------
 private:
-	// データに必要な物 ============================================
+	// データ関連
 	CommonResources* m_commonResources;					// 共通リソース
 	std::unique_ptr<mylib::DebugCamera> m_debugCamera;	// デバッグカメラ
 	DirectX::SimpleMath::Matrix			m_projection;	// プロジェクション行列
+	bool m_isChangeScene; // シーン遷移フラグ
 
-	bool m_isChangeScene;	// シーン遷移フラグ
-
-	// システム周り ==========================================================================
-	Sound* m_sound;											// 音
+	// システム周り
+	Sound*								m_sound;			// 音
 	std::unique_ptr<PlaySceneUIManager> m_uiManager;		// UIマネージャ
 	std::unique_ptr<CollisionManager>	m_collisionManager;	// 当たり判定マネージャ
 	std::unique_ptr<EnemyManager>		m_enemyManager;		// 敵マネージャ
 	HitStop*							m_hitStop;			// ヒットストップ
 	std::unique_ptr<QuestManager>		m_questManager;		// クエストマネージャ
-	// オブジェクト関連の変数 ================================================================
+
+	// オブジェクト関連の変数
 	std::unique_ptr<Camera>		m_camera;		// カメラ
 	std::unique_ptr<SkySphere>	m_skySphere;	// 天球
 	std::unique_ptr<Particle>	m_particles;	// パーティクル
@@ -111,15 +129,15 @@ private:
 	std::unique_ptr<Sword>		m_sword;		// 刀
 	std::unique_ptr<Cudgel>		m_cudgel;		// 金棒
 
-	// ステージ関連の変数 ====================================================================
+	// ステージ関連の変数
 	std::unique_ptr<Floor>	m_floor;			// 床
 	std::unique_ptr<Sea>	m_sea;				// 海	
 	std::unique_ptr<Wall>	m_wall;				// 壁（天球の枠）
 
 
-	// キーボード用の変数 ====================================================================
-	DirectX::Keyboard::State				m_keyboardState;
-	DirectX::Keyboard::KeyboardStateTracker m_keyboardStateTracker;
+	// キーボード用の変数
+	DirectX::Keyboard::State				m_keyboardState;		// キーボードの状態
+	DirectX::Keyboard::KeyboardStateTracker m_keyboardStateTracker;	// キーボードの状態トラッカー
 
 	// ヒットストップのかかるオブジェクト用の変数
 	float m_smoothDeltaTime;

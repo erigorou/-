@@ -118,7 +118,6 @@ void QuestRenderer::Draw()
 	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
 
 
-
 	//	”Âƒ|ƒŠƒSƒ“‚ð•`‰æ
 	m_batch->Begin();
 	m_batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], 1);

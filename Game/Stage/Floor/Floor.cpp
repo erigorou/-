@@ -8,18 +8,25 @@
 #include "DeviceResources.h"
 
 
+// ------------------------------
+// 定数
+// ------------------------------
+const wchar_t* Floor::TEXTURE_PATH = L"Resources/Textures/floor.png";
+
+
 // -------------------------------------------------------------------^
 /// <summary>
 /// コンストラクタ
 /// </summary>
 /// <param name="device">デバイスのポインタ</param>
 /// // ---------------------------------------------------------------^
-Floor::Floor(ID3D11Device1* device)
+Floor::Floor()
 {
-	using namespace DirectX;
+	CommonResources* resources = CommonResources::GetInstance();
+	auto device = resources->GetDeviceResources()->GetD3DDevice();
 
 	// エフェクトの作成
-	m_BatchEffect = std::make_unique<AlphaTestEffect>(device);
+	m_BatchEffect = std::make_unique<DirectX::AlphaTestEffect>(device);
 	m_BatchEffect->SetAlphaFunction(D3D11_COMPARISON_EQUAL);
 	m_BatchEffect->SetReferenceAlpha(255);
 
@@ -28,18 +35,18 @@ Floor::Floor(ID3D11Device1* device)
 	size_t byteCodeLength;
 	m_BatchEffect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
 	device->CreateInputLayout(
-		VertexPositionTexture::InputElements,
-		VertexPositionTexture::InputElementCount,
+		DirectX::VertexPositionTexture::InputElements,
+		DirectX::VertexPositionTexture::InputElementCount,
 		shaderByteCode, byteCodeLength, m_inputLayout.GetAddressOf()
 	);
 
 	// 共通ステートの作成
-	m_states = std::make_unique<CommonStates>(device);
+	m_states = std::make_unique<DirectX::CommonStates>(device);
 
 	// テクスチャのロード
-	CreateWICTextureFromFile(
+	DirectX::CreateWICTextureFromFile(
 		device,
-		L"Resources/Textures/floor.png",
+		TEXTURE_PATH,
 		nullptr,
 		m_texture.GetAddressOf()
 	);
@@ -64,6 +71,7 @@ Floor::~Floor()
 /// -------------------------------------------
 void Floor::GenerateCircleVertices(DirectX::VertexPositionTexture* vertices, float radius, int segments)
 {
+	// 円の頂点を生成
 	for (int i = 0; i < segments; ++i)
 	{
 		float angle = (2.0f * DirectX::XM_PI / segments) * i;
@@ -84,18 +92,15 @@ void Floor::Render(
 	DirectX::SimpleMath::Matrix view,
 	DirectX::SimpleMath::Matrix proj)
 {
-	using namespace DirectX;
-	using namespace DirectX::SimpleMath;
-
 	CommonResources* resources = CommonResources::GetInstance();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
 
 	// プリミティブバッチの作成
-	m_Batch = std::make_unique<PrimitiveBatch<VertexPositionTexture>>(context);
+	m_Batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>>(context);
 
 	// 頂点情報（円の頂点）
-	std::vector<VertexPositionTexture> vertices(SEGMENTS);
+	std::vector<DirectX::VertexPositionTexture> vertices(SEGMENTS);
 	GenerateCircleVertices(vertices.data(), RADIUS, SEGMENTS);
 
 	// 深度バッファに書き込み参照する
@@ -107,14 +112,15 @@ void Floor::Render(
 	// 不透明のみ描画する設定
 	m_BatchEffect->SetAlphaFunction(D3D11_COMPARISON_NOT_EQUAL);
 	m_BatchEffect->SetReferenceAlpha(0);
-	m_BatchEffect->SetWorld(SimpleMath::Matrix::Identity);
+	m_BatchEffect->SetWorld(DirectX::SimpleMath::Matrix::Identity);
 	m_BatchEffect->SetView(view);
 	m_BatchEffect->SetProjection(proj);
 	m_BatchEffect->SetTexture(m_texture.Get());
 	m_BatchEffect->Apply(context);
 	context->IASetInputLayout(m_inputLayout.Get());
 
-	ID3D11SamplerState* sampler[1] = { states->LinearWrap() };		//	サンプラーステートの設定
+	//	サンプラーステートの設定
+	ID3D11SamplerState* sampler[1] = { states->LinearWrap() };
 	context->PSSetSamplers(0, 1, sampler);
 
 	// 半透明部分を描画

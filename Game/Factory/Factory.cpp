@@ -4,11 +4,11 @@
 
 #include "../Scene/PlayScene.h"										// プレイシーン
 #include "Interface/IObserver.h"									// オブザーバー
-#include "Libraries/MyLib/Collision/CollisionManager.h"				// 当たり判定統括
-#include "Game/Sound/Sound.h"										// 音
 #include "../Camera/Camera.h"										// カメラ
-#include "Libraries/MyLib/SkySphere.h"								// 天球
 #include "Effects/Particle.h"										// パーティクル
+#include "Game/Sound/Sound.h"										// 音
+
+#include "Libraries/MyLib/SkySphere.h"								// 天球
 #include "../Stage/Floor/Floor.h"									// 床
 #include "../Stage/Sea/Sea.h"										// 海
 #include "../Stage/Wall/Wall.h"										// 壁
@@ -17,13 +17,18 @@
 #include "../Goblin/Goblin.h"										// ゴブリン
 #include "../Weapon/Sword/Sword.h"									// プレイヤーの武器
 #include "../Weapon/Cudgel/Cudgel.h"								// 鬼（敵）の武器
+
+#include "Libraries/MyLib/Collision/CollisionManager.h"				// 当たり判定統括
 #include "../UI/!PlaySceneUIManager/PlaySceneUIManager.h"			// プレイシーンのUI
 #include "Game/UI/Header/Warning.h"									// HP減ったときの警告UI
+#include "../EnemyManager/EnemyManager.h"							// 敵マネージャー
+#include "../Quest/QuestManager.h"									// クエストマネージャー
 
 using namespace DirectX;
 
-
+// ---------------------------------------------
 // 当たり判定統括の生成関数
+// ---------------------------------------------
 std::unique_ptr<CollisionManager> Factory::CreateCollisionManager()
 {
 	// 当たり判定統括を宣言する
@@ -34,7 +39,9 @@ std::unique_ptr<CollisionManager> Factory::CreateCollisionManager()
 }
 
 
+// ---------------------------------------------
 // カメラの生成関数
+// ---------------------------------------------
 std::unique_ptr<Camera> Factory::CreateCamera()
 {
 	// カメラを宣言する
@@ -45,20 +52,23 @@ std::unique_ptr<Camera> Factory::CreateCamera()
 }
 
 
+// ---------------------------------------------
 // 天球の生成関数
-std::unique_ptr<SkySphere> Factory::CreateSkySphere(ID3D11Device1* device)
+// ---------------------------------------------
+std::unique_ptr<SkySphere> Factory::CreateSkySphere()
 {
 	// 天球を宣言する
 	std::unique_ptr<SkySphere> skySphere;
 	skySphere = std::make_unique<SkySphere>();
 	// 初期化処理
-	skySphere->LoadSkySphereModel(device);
+	skySphere->LoadSkySphereModel();
 	// 天球の設定
 	return skySphere;
 }
 
-
+// ---------------------------------------------
 // パーティクルの生成関数
+// ---------------------------------------------
 std::unique_ptr<Particle> Factory::CreateParticle()
 {
 	// パーティクルを宣言する
@@ -71,17 +81,22 @@ std::unique_ptr<Particle> Factory::CreateParticle()
 }
 
 
+// ---------------------------------------------
 // 床の生成関数
-std::unique_ptr<Floor> Factory::CreateFloor(ID3D11Device1* device)
+// ---------------------------------------------
+std::unique_ptr<Floor> Factory::CreateFloor()
 {
 	// 床を宣言する
 	std::unique_ptr<Floor> floor;
-	floor = std::make_unique<Floor>(device);
+	floor = std::make_unique<Floor>();
 	// 床の設定
 	return floor;
 }
 
 
+// ---------------------------------------------
+// 海の生成関数
+// ---------------------------------------------
 std::unique_ptr<Sea> Factory::CreateSea()
 {
 	std::unique_ptr<Sea> sea;
@@ -90,7 +105,9 @@ std::unique_ptr<Sea> Factory::CreateSea()
 }
 
 
+// ---------------------------------------------
 // 壁の生成関数
+// ---------------------------------------------
 std::unique_ptr<Wall> Factory::CreateWall(PlayScene* playScene)
 {
 	// 壁を宣言する
@@ -104,7 +121,9 @@ std::unique_ptr<Wall> Factory::CreateWall(PlayScene* playScene)
 }
 
 
+// ---------------------------------------------
 // プレイヤーの生成関数
+// ---------------------------------------------
 std::unique_ptr<Player> Factory::CreatePlayer(PlayScene* playScene)
 {
 	// プレイヤーを宣言する
@@ -127,7 +146,9 @@ std::unique_ptr<Player> Factory::CreatePlayer(PlayScene* playScene)
 
 
 
+// ---------------------------------------------
 // 鬼（敵）の生成関数
+// ---------------------------------------------
 std::unique_ptr<Enemy> Factory::CreateEnemy(PlayScene* playScene)
 {
 	// 鬼（敵）を宣言する
@@ -140,8 +161,9 @@ std::unique_ptr<Enemy> Factory::CreateEnemy(PlayScene* playScene)
 }
 
 
-
+// ---------------------------------------------
 // ゴブリンの生成関数
+// ---------------------------------------------
 std::unique_ptr<Goblin> Factory::CreateGoblin(PlayScene* playScene)
 {
 	// ゴブリンの宣言
@@ -155,7 +177,9 @@ std::unique_ptr<Goblin> Factory::CreateGoblin(PlayScene* playScene)
 
 
 
+// ---------------------------------------------
 // プレイヤーの武器の生成関数
+// ---------------------------------------------
 std::unique_ptr<Sword> Factory::CreateSword(PlayScene* playScene)
 {
 	// プレイヤーの武器を宣言する
@@ -168,7 +192,9 @@ std::unique_ptr<Sword> Factory::CreateSword(PlayScene* playScene)
 }
 
 
+// ---------------------------------------------
 // 鬼（敵）の武器の生成関数
+// ---------------------------------------------
 std::unique_ptr<Cudgel> Factory::CreateCudgel(PlayScene* playScene)
 {
 	// 鬼（敵）の武器を宣言する
@@ -181,8 +207,9 @@ std::unique_ptr<Cudgel> Factory::CreateCudgel(PlayScene* playScene)
 }
 
 
-
+// ---------------------------------------------
 // プレイシーンのUIの生成関数
+// ---------------------------------------------
 std::unique_ptr<PlaySceneUIManager> Factory::CreateUIManager(PlayScene* playScene)
 {
 	// プレイシーンのUIを宣言する
@@ -192,4 +219,34 @@ std::unique_ptr<PlaySceneUIManager> Factory::CreateUIManager(PlayScene* playScen
 	uiManager->Initialize();
 	// プレイシーンのUIの設定
 	return uiManager;
+}
+
+
+// ---------------------------------------------
+// 敵マネージャーの生成関数
+// ---------------------------------------------
+std::unique_ptr<EnemyManager> Factory::CreateEnemyManager(PlayScene* playScene)
+{
+	// 敵マネージャーを宣言する
+	std::unique_ptr<EnemyManager> enemyManager;
+	enemyManager = std::make_unique<EnemyManager>(playScene);
+	// 初期化処理
+	enemyManager->Initialize(playScene);
+	// 敵マネージャーの設定
+	return enemyManager;
+}
+
+
+// ---------------------------------------------
+// クエストマネージャーの生成関数
+// ---------------------------------------------
+std::unique_ptr<QuestManager> Factory::CreateQuestManager(PlayScene* playScene)
+{
+	// クエストマネージャーを宣言する
+	std::unique_ptr<QuestManager> questManager;
+	questManager = std::make_unique<QuestManager>(playScene);
+	// 初期化処理
+	questManager->InitializeQuest();
+	// クエストマネージャーの設定
+	return questManager;
 }

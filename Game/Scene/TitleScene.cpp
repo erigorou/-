@@ -158,16 +158,14 @@ void TitleScene::CalculateTextureCenter()
 //---------------------------------------------------------
 void TitleScene::CreateObjects()
 {
-	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
-
 	m_camera	= Factory::CreateCamera	();
-	m_floor		= Factory::CreateFloor	(device);
+	m_floor		= Factory::CreateFloor	();
 	m_sea = Factory::CreateSea();
-	m_skySphere = Factory::CreateSkySphere(device);
+	m_skySphere = Factory::CreateSkySphere();
 
 	m_enemy = std::make_unique<TitleEnemy>(this);
 	m_enemy->Initialize();
-	m_skySphere->LoadSkySphereModel(device);
+	m_skySphere->LoadSkySphereModel();
 
 	// タイトルシーンのカメラステートを設定
 	m_camera->ChangeState(m_camera->GetTitleState());

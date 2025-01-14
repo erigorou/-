@@ -18,7 +18,7 @@ public:
 	void Update();
 
 	// ƒ‚ƒfƒ‹‚ðŽæ“¾‚·‚é
-	void LoadSkySphereModel(ID3D11Device* device);
+	void LoadSkySphereModel();
 
 	// ƒ‚ƒfƒ‹‚Ì•`‰æ
 	void DrawSkySphere(

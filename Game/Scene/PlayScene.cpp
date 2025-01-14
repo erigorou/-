@@ -87,37 +87,25 @@ void PlayScene::Initialize()
 // ----------------
 void PlayScene::CreateObjects()
 {
-	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
-
 	Messenger::Clear();	// メッセンジャーのクリア
 
 	m_hitStop = HitStop::GetInstance();
 
-	m_collisionManager	= Factory::CreateCollisionManager	();			// パーティクル
-	m_camera			= Factory::CreateCamera				();			// カメラ
-	m_skySphere			= Factory::CreateSkySphere			(device);	// 天球	
-	m_particles			= Factory::CreateParticle			();			// パーティクル
-	m_floor				= Factory::CreateFloor				(device);	// フロア
-	m_sea				= Factory::CreateSea				();			// 海
-	m_wall				= Factory::CreateWall				(this);		// 壁
-	m_player			= Factory::CreatePlayer				(this);		// プレイヤ
-	m_sword				= Factory::CreateSword				(this);		// 刀
-	m_cudgel			= Factory::CreateCudgel				(this);		// 金棒
+	m_collisionManager	= Factory::CreateCollisionManager	();		// パーティクル
+	m_camera			= Factory::CreateCamera				();		// カメラ
+	m_particles			= Factory::CreateParticle			();		// パーティクル
 
-	// 敵マネージャーの生成
-	m_enemyManager = std::make_unique<EnemyManager>(this);
-	// 敵マネージャーの初期化
-	m_enemyManager->Initialize(this);
+	m_skySphere			= Factory::CreateSkySphere			();		// 天球	
+	m_floor				= Factory::CreateFloor				();		// フロア
+	m_sea				= Factory::CreateSea				();		// 海
+	m_wall				= Factory::CreateWall				(this);	// 壁
+	m_player			= Factory::CreatePlayer				(this);	// プレイヤ
+	m_sword				= Factory::CreateSword				(this);	// 刀
+	m_cudgel			= Factory::CreateCudgel				(this);	// 金棒
 
-	// UIマネージャーの生成
-	m_uiManager = std::make_unique<PlaySceneUIManager>(this);
-	// UIマネージャーの初期化
-	m_uiManager->Initialize();
-
-	// クエストマネージャーの生成
-	m_questManager = std::make_unique<QuestManager>(this);
-	// クエストマネージャーの初期化
-	m_questManager->InitializeQuest();
+	m_enemyManager	= Factory::CreateEnemyManager			(this);	// 敵マネージャー
+	m_uiManager		= Factory::CreateUIManager				(this);	// UIマネージャー
+	m_questManager	= Factory::CreateQuestManager			(this);	// クエストマネージャー
 
 	// 観察者リストをソートする
 	Messenger::SortObserverList();
@@ -168,7 +156,6 @@ inline bool IsKeyDown(DirectX::Keyboard::State& state)
 }
 
 
-
 // --------------------------------
 // 更新処理
 // --------------------------------
@@ -208,6 +195,7 @@ void PlayScene::UpdateObjects(float elapsedTime)
 	m_hitStop->Update(elapsedTime);
 	// ヒットストップの残り時間を取得
 	float smoothDeltaTime = m_hitStop->GetSmoothDeltaTime();
+
 	// オブジェクトの更新
 	m_uiManager		->Update(elapsedTime);
 	m_player		->Update(smoothDeltaTime);
@@ -215,11 +203,7 @@ void PlayScene::UpdateObjects(float elapsedTime)
 	m_cudgel		->Update(smoothDeltaTime);
 	m_enemyManager	->Update(smoothDeltaTime);
 	m_questManager	->Update(elapsedTime);
-
-	// カメラの回転行列の作成	引数にはプレイヤーの回転角を入れる
-	DirectX::SimpleMath::Matrix matrix = DirectX::SimpleMath::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_player->GetAngle()));
-	// カメラの更新
-	m_camera->Update(m_player->GetPosition(), m_enemyManager->GetPicupEnemyPosition(), matrix, smoothDeltaTime);
+	UpdateCamera(elapsedTime);
 
 	// パーティクルの更新
 	m_particles->Update(elapsedTime,m_player->GetPosition(),m_player->GetVelocity());
@@ -237,41 +221,36 @@ void PlayScene::Render()
 	// ビュー行列を取得する
 	const DirectX::SimpleMath::Matrix& view = m_camera->GetViewMatrix();
 
-	m_collisionManager->Render(view, m_projection);
+	m_collisionManager->Render(view, m_projection);	// 当たり判定
 
-	// ==== ステージの描画 =========================================================
-	// 天球の描画
-	m_skySphere->DrawSkySphere(view, m_projection);
-	// 床を描画する
-	m_floor->Render(view, m_projection);
-	// 海を描画する
-	m_sea->Render(view, m_projection);
-	// 壁を描画する
-	m_wall->Render(view, m_projection);
+	m_skySphere->	DrawSkySphere	(view, m_projection);	// 空
+	m_floor->		Render			(view, m_projection);	// 地面
+	m_sea->			Render			(view, m_projection);	// 海
+	m_wall->		Render			(view, m_projection);	// 壁
 
-	// === オブジェクトの描画 =======================================================
-	// 敵の武器の描画を行う
-	m_cudgel->Render(view, m_projection);
-	// プレイヤーの描画を行う
-	m_player->Render(view, m_projection);
-	// プレイヤーの武器の描画を行う
-	m_sword->Render(view, m_projection);
+	m_cudgel->		Render(view, m_projection);	// 金棒
+	m_player->		Render(view, m_projection);	// プレイヤー
+	m_sword->		Render(view, m_projection); // 刀
+	m_enemyManager->Render(view, m_projection); // 敵（複数）
+	
+	DrawParticle(view, m_projection);	// パーティクル
 
-	// 敵の描画
-	m_enemyManager->Render(view, m_projection);
-
-	//==== エフェクト系の描画 ======================================================
-	// パーティクルのビルボード作成
-	m_particles->CreateBillboard(m_camera->GetTargetPosition(), m_camera->GetEyePosition(), DirectX::SimpleMath::Vector3::Up);
-	// パーティクルの描画
-	m_particles->Render(view, m_projection);
-
-	m_questManager->DrawQuest();
-
-	//==== UI系の描画 ======================================================-------
-	m_uiManager->Render();
+	m_questManager->DrawQuest();	// クエスト
+	m_uiManager->	Render();		// UI
 
 }
+
+// --------------------------------
+// パーティクルの描画
+// --------------------------------
+void PlayScene::DrawParticle(const DirectX::SimpleMath::Matrix& view, DirectX::SimpleMath::Matrix projection)
+{
+	// ビルボード行列の計算
+	m_particles->CreateBillboard(m_camera->GetTargetPosition(), m_camera->GetEyePosition(), DirectX::SimpleMath::Vector3::Up);
+	// パーティクルの描画
+	m_particles->Render(view, projection);
+}
+
 
 // --------------------------------
 // 終了関数
@@ -288,6 +267,16 @@ void PlayScene::SetShakeCamera(float power)
 	m_camera->SetShake(power);
 }
 
+// --------------------------------
+// カメラの更新
+// --------------------------------
+void PlayScene::UpdateCamera(float elapsedTime)
+{
+	// カメラの回転行列の作成	引数にはプレイヤーの回転角を入れる
+	DirectX::SimpleMath::Matrix matrix = DirectX::SimpleMath::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_player->GetAngle()));
+	// カメラの更新
+	m_camera->Update(m_player->GetPosition(), m_enemyManager->GetPicupEnemyPosition(), matrix, elapsedTime);
+}
 
 // --------------------------------
 // ボスのポインタを取得
@@ -320,6 +309,7 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 	// シーン変更がない場合
 	return IScene::SceneID::NONE;
 }
+
 
 
 // --------------------------------

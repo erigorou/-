@@ -9,12 +9,14 @@ class Floor
 {
 public:
 	// 固定値
+	static const wchar_t* TEXTURE_PATH;
+
 	static constexpr float	RADIUS = 175.0f;
 	static constexpr int	SEGMENTS = 16;
 
 
 	// コンストラクタ
-	Floor(ID3D11Device1* device);
+	Floor();
 	// デストラクタ
 	~Floor();
 	void GenerateCircleVertices(DirectX::VertexPositionTexture* vertices, float radius, int segments);

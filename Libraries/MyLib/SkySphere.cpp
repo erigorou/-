@@ -34,11 +34,10 @@ SkySphere::~SkySphere()
 // -------------------------------
 //  ƒ[ƒhˆ—
 // -------------------------------
-void SkySphere::LoadSkySphereModel(ID3D11Device* device)
+void SkySphere::LoadSkySphereModel()
 {
 	auto commonResources = CommonResources::GetInstance();
-
-	UNREFERENCED_PARAMETER(commonResources);
+	auto device = commonResources->GetDeviceResources()->GetD3DDevice();
 
 	// ƒ‚ƒfƒ‹‚ğ“Ç‚İ‚Ş€”õ
 	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
