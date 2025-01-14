@@ -45,7 +45,9 @@ QuestManager::~QuestManager()
 void QuestManager::InitializeQuest()
 {
 	// クエストリストの作成
-	CreateQuestList_1st();
+	CreateQuestList_2nd();
+
+	if (m_questList.size() <= 0) return;
 
 	// クエスト内容の描画オブジェクト
 	m_renderer = std::make_unique<QuestRenderer>(this);
@@ -69,8 +71,12 @@ void QuestManager::Update(float elapsedTime)
 		m_tutorial->Update(elapsedTime);
 	}
 
-	// 描画の更新
-	m_renderer->Update(elapsedTime);
+	if (m_renderer != nullptr)
+	{
+		// クエスト描画の更新
+		m_renderer->Update(elapsedTime);
+
+	}
 }
 
 
@@ -79,10 +85,10 @@ void QuestManager::Update(float elapsedTime)
 // -----------------------------
 void QuestManager::UpdateQuest()
 {
-	if (m_totalTime < DELAY_TIME) return;
+	if (m_renderer == nullptr	) return;	// クエストがない場合は終了
+	if (m_totalTime < DELAY_TIME) return;	// 最初の遅延時間内なら終了
 
-	// クエストの更新
-	if (! (m_currentQuestNo < m_questList.size()))	return;
+	if (!(m_currentQuestNo < m_questList.size() - 1))	return;	// クエストが最後まで行っている場合は終了
 
 	// クエストのクリアを描画オブジェクトに通知
 	m_renderer->IsClear(m_questList[m_currentQuestNo]->ExecuteChecker(m_playScene));
@@ -123,8 +129,12 @@ void QuestManager::ChangeNextQuest()
 // -----------------------------
 void QuestManager::DrawQuest()
 {
-	// クエストの描画
-	m_renderer->Draw();
+
+	if (m_renderer != nullptr)
+	{
+		// クエストの描画
+		m_renderer->Draw();
+	}
 
 	// チュートリアルの描画
 	if (m_tutorial != nullptr)
@@ -200,7 +210,6 @@ void QuestManager::AddQuestTexture()
 			m_textureList.push_back(nullptr);
 			continue;
 		}
-
 
 		// テクスチャの読み込み
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture;
