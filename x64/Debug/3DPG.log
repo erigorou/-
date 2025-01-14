@@ -1,5 +1,3 @@
 ﻿  QuestSelectScene.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Scene\QuestSelectScene.cpp(57,7): warning C4189: 'device': ローカル変数が初期化されましたが、参照されていません
-  SceneManager.cpp
-  コードを生成中...
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Scene\QuestSelectScene.cpp(58,7): warning C4189: 'device': ローカル変数が初期化されましたが、参照されていません
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exe

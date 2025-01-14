@@ -15,6 +15,7 @@
 #include "Libraries/MyLib/EasingFunctions.h"
 #include "Libraries/MyLib/Math.h"
 #include "Effects/Particle.h"
+#include "Game/UI/UIAnchor.h"
 
 #include "../Camera/Camera.h"
 #include "../Stage/Floor/Floor.h"
@@ -65,7 +66,7 @@ void QuestSelectScene::Initialize()
 	LoadTextures();
 
 	// テクスチャの中心座標を計算する
-	CalculateTextureCenter();
+	CalculateTextureCenters();
 
 	// オブジェクトを生成する
 	CreateObjects();
@@ -85,6 +86,9 @@ void QuestSelectScene::LoadTextures()
 {
 	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
 
+	// テクスチャを仮置きする
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> tex;
+
 	// 画像をロードする
 	DX::ThrowIfFailed(
 		CreateWICTextureFromFile(
@@ -103,6 +107,28 @@ void QuestSelectScene::LoadTextures()
 			m_texture2.ReleaseAndGetAddressOf()
 		)
 	);
+
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(
+			device,
+			L"Resources/Textures/Quest/TitleTutorial.png",
+			nullptr,
+			tex.ReleaseAndGetAddressOf()
+		)
+	);
+
+	m_textureList.push_back(tex);
+
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(
+			device,
+			L"Resources/Textures/Quest/TitleBossFight.png",
+			nullptr,
+			tex.ReleaseAndGetAddressOf()
+		)
+	);
+	
+	m_textureList.push_back(tex);
 	
 }
 
@@ -110,41 +136,41 @@ void QuestSelectScene::LoadTextures()
 //---------------------------------------------------------
 // テクスチャの中心を取得する
 //---------------------------------------------------------
-void QuestSelectScene::CalculateTextureCenter()
+void QuestSelectScene::CalculateTextureCenters()
 {
-	// 一時的な変数の宣言
-	Microsoft::WRL::ComPtr<ID3D11Resource> resource{};
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> tex2D{};
-	D3D11_TEXTURE2D_DESC desc{};
-	Vector2 texSize{};
+	CalculateTextureCenter(m_texture		, m_texCenter1);
+	CalculateTextureCenter(m_texture2		, m_texCenter2);
+	CalculateTextureCenter(m_textureList[0]	, m_texCenter3);
+	CalculateTextureCenter(m_textureList[1]	, m_texCenter4);
 
-	// LOGO.png の中心位置を計算
-	m_texture->GetResource(resource.GetAddressOf());
-	resource.As(&tex2D);
-	tex2D->GetDesc(&desc);
-	texSize.x = static_cast<float>(desc.Width);
-	texSize.y = static_cast<float>(desc.Height);
-	m_texCenter1 = texSize / 2.0f;
-
-	// SPACEでスタート.png の中心位置を計算
-	resource = nullptr;
-	tex2D = nullptr;
-	desc = {};
-
-	m_texture2->GetResource(resource.GetAddressOf());
-	resource.As(&tex2D);
-	tex2D->GetDesc(&desc);
-	texSize.x = static_cast<float>(desc.Width);
-	texSize.y = static_cast<float>(desc.Height);
-	m_texCenter2 = texSize / 2.0f;
 
 	RECT rect{ m_commonResources->GetDeviceResources()->GetOutputSize() };
+
 	// 射影行列を作成する
 	m_projection = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
-		XMConvertToRadians(45.0f),
+		XMConvertToRadians(40.0f),
 		static_cast<float>(rect.right) / static_cast<float>(rect.bottom),
 		0.1f, 100000.0f
 	);
+}
+
+
+void QuestSelectScene::CalculateTextureCenter(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture, DirectX::SimpleMath::Vector2& texCenter)
+{
+	Microsoft::WRL::ComPtr<ID3D11Resource> resource;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> tex2D;
+	D3D11_TEXTURE2D_DESC desc = {};
+
+	// テクスチャの情報を取得
+	texture->GetResource(resource.GetAddressOf());
+	resource.As(&tex2D);
+	tex2D->GetDesc(&desc);
+
+	// テクスチャの中心を計算
+	DirectX::SimpleMath::Vector2 texSize;
+	texSize.x = static_cast<float>(desc.Width);
+	texSize.y = static_cast<float>(desc.Height);
+	texCenter = texSize / 2.0f;
 }
 
 
@@ -226,6 +252,8 @@ void QuestSelectScene::Render()
 	m_particle->CreateBillboard(m_camera->GetEyePosition(),DirectX::SimpleMath::Vector3::Zero,m_camera->GetUpVector());
 	m_particle->Render(view, m_projection);
 
+	DrawStageSelect();
+
 	// スプライトバッチの終わり
 	m_spriteBatch->End();
 
@@ -239,7 +267,6 @@ void QuestSelectScene::Render()
 //---------------------------------------------------------
 void QuestSelectScene::DrawTexture()
 {
-	// TRIDENTロゴの描画位置を決める
 	RECT rect{ m_commonResources->GetDeviceResources()->GetOutputSize() };
 
 	// 画像の中心を計算する
@@ -275,7 +302,7 @@ void QuestSelectScene::DrawTexture()
 	);
 
 	// SPACEでスタート.png の描画位置を調整
-	DirectX::SimpleMath::Vector2 pos2 = DirectX::SimpleMath::Vector2(pos.x, pos.y + 300.0f);
+	DirectX::SimpleMath::Vector2 pos2 = DirectX::SimpleMath::Vector2(pos.x , pos.y + 325.0f);
 
 	// SPACEでスタート.png を中央に描画する
 	m_spriteBatch->Draw(
@@ -288,6 +315,66 @@ void QuestSelectScene::DrawTexture()
 		1.0f,               // スケール(scale)
 		SpriteEffects_None, // エフェクト(effects)
 		0.0f                // レイヤ深度(画像のソートで必要)(layerDepth)
+	);
+}
+
+
+void QuestSelectScene::DrawStageSelect()
+{
+	RECT rect{ m_commonResources->GetDeviceResources()->GetOutputSize() };
+
+	// 画像の中心を計算する
+	Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
+	Vector2 titlePos = pos;
+
+	// 移動量;
+	float moveValue = m_texCenter3.x * 2;
+
+	// 秒数を正規化
+	float t = Math::Clamp(m_totalSeconds - STAGE_SELECT_DELAY, 0.0f, STAGE_SELECT_END) / STAGE_SELECT_END;
+
+	// タイトルロゴの描画位置を決める（移動も考慮）
+	Vector2 tutorialPos
+	{
+		WINDOW_WIDTH + m_texCenter3.x - moveValue * Easing::easeOutBounce(t),
+		450.0f
+	};
+
+
+	// LOGO.png を中央に描画する
+	m_spriteBatch->Draw(
+		m_textureList[0].Get(),	// テクスチャ(SRV)
+		tutorialPos,			// スクリーンの表示位置(originの描画位置)
+		nullptr,				// 矩形(RECT)
+		Colors::White,			// 背景色
+		0.0f,					// 回転角(ラジアン)
+		m_texCenter3,			// テクスチャの基準になる表示位置(描画中心)(origin)
+		1.0f,					// スケール(scale)
+		SpriteEffects_None,		// エフェクト(effects)
+		0.0f					// レイヤ深度(画像のソートで必要)(layerDepth)
+	);
+
+
+	// タイトルロゴの描画位置を決める（移動も考慮）
+	Vector2 BossFightPos
+	{
+		WINDOW_WIDTH + m_texCenter3.x - moveValue * Easing::easeOutBounce(t),
+		575.0f
+	};
+
+
+
+	// SPACEでスタート.png を中央に描画する
+	m_spriteBatch->Draw(
+		m_textureList[1].Get(), // テクスチャ(SRV)
+		BossFightPos,			// スクリーンの表示位置(originの描画位置)
+		nullptr,				// 矩形(RECT)
+		Colors::White,			// 背景色
+		0.0f,					// 回転角(ラジアン)
+		m_texCenter4,			// テクスチャの基準になる表示位置(描画中心)(origin)
+		1.0f,					// スケール(scale)
+		SpriteEffects_None,		// エフェクト(effects)
+		0.0f					// レイヤ深度(画像のソートで必要)(layerDepth)
 	);
 }
 

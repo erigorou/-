@@ -31,7 +31,16 @@ public:
 	static constexpr float DELAY = 1.5f;		// タイトル画面の遅延時間
 	static constexpr float ANIM_END = 1.5f;	// タイトル画面のアニメーション終了時間
 
+	static constexpr float STAGE_SELECT_DELAY = 2.0f;	// ステージセレクト画面の遅延時間
+	static constexpr float STAGE_SELECT_END = 1.5f;	// ステージセレクト画面のアニメーション終了時間
+
 	static constexpr float TITLE_LOGO_CENTER_Y = -165.0f;	// タイトルの中心座標 ※bottom基準
+
+	static constexpr float WINDOW_WIDTH = 1280.0f;	// ウィンドウの幅
+	static constexpr float WINDOW_HEIGHT = 720.0f;	// ウィンドウの高さ
+
+	static constexpr float QUEST_LOTO_1_CENTER_X = -115.0f;	// クエストロゴ１の中心座標 ※bottom基準
+	static constexpr float QUEST_LOTO_2_CENTER_X = -165.0f;	// クエストロゴ２の中心座標 ※bottom基準
 
 
 public:
@@ -62,11 +71,18 @@ private:
 	// 画像のロード処理
 	void LoadTextures();
 	// 画像の中心：大きさを取得
-	void CalculateTextureCenter();
+	void CalculateTextureCenters();
+
+	void CalculateTextureCenter(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture, DirectX::SimpleMath::Vector2& texCenter);
+
+
 	// オブジェクトを生成
 	void CreateObjects();
 	// 画像の描画処理
 	void DrawTexture();
+
+	// ステージの描画
+	void DrawStageSelect();
 
 	// 共通リソース
 	CommonResources* m_commonResources;
@@ -77,9 +93,14 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	m_texture;		// テクスチャ１
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	m_texture2;		// テクスチャ２
 
+	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> m_textureList; // テクスチャリスト
+
 	DirectX::SimpleMath::Vector2 m_texCenter;	// テクスチャの中心座標
+
 	DirectX::SimpleMath::Vector2 m_texCenter1;
 	DirectX::SimpleMath::Vector2 m_texCenter2;
+	DirectX::SimpleMath::Vector2 m_texCenter3;
+	DirectX::SimpleMath::Vector2 m_texCenter4;
 
 	// シーンチェンジフラグ
 	bool m_isChangeScene;
