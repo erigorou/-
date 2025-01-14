@@ -36,13 +36,14 @@ public:
 	static constexpr float COOL_TIME = 0.4f;
 
 	// ÷“nŠÖ”**
-	DirectX::SimpleMath::Vector3	GetPosition		()	override{ return m_position; }				// ‹S‚ÌÀ•W‚ğæ“¾‚·‚é
-	DirectX::SimpleMath::Vector3	GetVelocity		()	const	{ return m_velocity; }				// ‘¬“x‚Ìæ“¾
-	float							GetAngle		()	const	{ return m_angle; }					// ‰ñ“]Šp‚Ìæ“¾
-	DirectX::SimpleMath::Matrix		GetWorldMatrix	()	const	{ return m_worldMatrix; }			// ƒ[ƒ‹ƒhÀ•W‚Ìæ“¾
-	DirectX::BoundingSphere 		GetCollision	()	const	{ return *m_bodyCollision.get(); }	// ‘Ì‚Ì“–‚½‚è”»’è‚Ìæ“¾
-	PlayScene*						GetPlayScene	()	const	{ return m_playScene; }				// PlayScene‚Ìæ“¾
-	bool							IsAttacking		()	const	{ return m_nowAttacking; }			// UŒ‚’†‚©‚Ç‚¤‚©‚Ìæ“¾
+	DirectX::SimpleMath::Vector3	GetPosition		()	override{ return m_position;			}	// ‹S‚ÌÀ•W‚ğæ“¾‚·‚é
+	DirectX::SimpleMath::Vector3	GetVelocity		()	const	{ return m_velocity;			}	// ‘¬“x‚Ìæ“¾
+	float							GetAngle		()	const	{ return m_angle;				}	// ‰ñ“]Šp‚Ìæ“¾
+	DirectX::SimpleMath::Matrix		GetWorldMatrix	()	const	{ return m_worldMatrix;			}	// ƒ[ƒ‹ƒhÀ•W‚Ìæ“¾
+	DirectX::BoundingSphere 		GetCollision	()	const	{ return *m_bodyCollision.get();}	// ‘Ì‚Ì“–‚½‚è”»’è‚Ìæ“¾
+	PlayScene*						GetPlayScene	()	const	{ return m_playScene;			}	// PlayScene‚Ìæ“¾
+	bool							IsAttacking		()	const	{ return m_nowAttacking;		}	// UŒ‚’†‚©‚Ç‚¤‚©‚Ìæ“¾
+	HPSystem*						GetHPSystem		()	override{ return m_hp.get();			}	// HP‚Ìæ“¾
 
 	// İ’èŠÖ”**
 	void SetPosition(const DirectX::SimpleMath::Vector3& position)	{ m_position = position; }		// ‹S‚ÌÀ•W‚ğİ’è‚·‚é

@@ -22,8 +22,10 @@ public:
 // -------------
 public:
 
+	// コンストラクタ
 	GoblinDead(Goblin* goblin);
 
+	// デストラクタ
 	~GoblinDead() override;
 
 	// 初期化する
@@ -45,20 +47,21 @@ public:
 // -------------------
 // 内部関数
 // -------------------
-private:	
+private:
+
+	// アニメーションの更新処理
 	void UpdateAnimation();
 
 
-
-// メンバ
+// -------------------
+// 内部変数
+// -------------------
 private:
+
 	Goblin* m_goblin;	// 親
 	float m_totalTime;	// 経過時間
-	float m_scale;
-
-	DirectX::SimpleMath::Vector3	m_startPos;		// 開始地点
-	float							m_startPos_y;	// 開始地点_Y
-
+	float m_scale;		// スケール
+	DirectX::SimpleMath::Vector3 m_startPos;	// 開始地点
 };
 
 

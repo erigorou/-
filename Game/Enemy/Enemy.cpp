@@ -27,6 +27,7 @@
 #include "States/Header/Enemy_Sweeping.h"		// 薙ぎ払い攻撃
 #include "States/Header/EnemyDashAttacking.h"	// 突撃攻撃
 #include "States/Header/EnemyApproaching.h"		// 追尾状態
+#include "States/Header/EnemyDead.h"			// 死亡状態
 
 // 顔のパーツ用
 #include "Face/Header/EnemyFaceIdling.h"
@@ -114,6 +115,7 @@ void Enemy::CreateState()
 	m_sweeping		= std::make_unique<Enemy_Sweeping>		(this);	// 薙ぎ払い
 	m_dashAttacking = std::make_unique<EnemyDashAttacking>	(this);	// 突撃
 	m_approaching	= std::make_unique<EnemyApproaching>	(this);	// 追尾
+	m_dead			= std::make_unique<EnemyDead>			(this);	// 死亡
 
 	// === 状態の初期化 ===
 	m_starting		->Initialize(); // 開始
@@ -122,6 +124,7 @@ void Enemy::CreateState()
 	m_sweeping		-> Initialize(); // 薙ぎ払い
 	m_dashAttacking	-> Initialize(); // 突撃
 	m_approaching	-> Initialize(); // 追尾
+	m_dead			->Initialize(); // 死亡
 
 	// 初期のステートを待機状態に割り当てる
 	m_currentState = m_starting.get();
@@ -194,7 +197,8 @@ void Enemy::Update(float elapsedTime)
 	// 衝突のクールタイムの計測
 	CheckHitCoolTime(elapsedTime);
 
-
+	// 生存確認
+	CheckAlive();
 
 #ifndef _DEBUG
 
@@ -341,4 +345,30 @@ void Enemy::HitStage(InterSectData data)
 		m_position += m_pushBackValue;
 		m_bodyCollision->Center = m_position;
 	}
+}
+
+// --------------------------------
+//  生存確認
+// --------------------------------
+void Enemy::CheckAlive()
+{
+	// HPが0以下になったら
+	if (m_hp->GetHP() <= 0)
+	{
+		ChangeState(m_dead.get());
+	}
+}
+
+
+
+// --------------------------------
+// 死亡処理
+// --------------------------------
+void Enemy::DeadAction()
+{
+	// 衝突判定の解除
+	GetPlayScene()->GetCollisionManager()->DeleteCollision(CollisionType::Sphere, this);
+
+	// ゲーム終了
+	GetPlayScene()->GameEnd();
 }

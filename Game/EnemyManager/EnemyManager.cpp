@@ -29,6 +29,7 @@ const wchar_t* EnemyManager::BOSS_MODEL_PATH = L"Resources/Models/Oni/Body/oni.c
 EnemyManager::EnemyManager(PlayScene* playScene)
 	: m_targetEnemyIndex()
 	, m_playScene(playScene)
+	, m_selectQuestIndex()
 {
 }
 
@@ -52,8 +53,11 @@ void EnemyManager::Initialize(PlayScene* playScene)
 	m_goblinModel = CreateModel(GOBLIN_MODEL_PATH);
 	m_bossModel = CreateModel(BOSS_MODEL_PATH);
 
-	GenerateBoss(DirectX::SimpleMath::Vector3(0.0f, 0.0f, 0.0f));
-	GenerateGoblin(DirectX::SimpleMath::Vector3(40.0f, 0.0f, 0.0f));
+	//GenerateBoss(DirectX::SimpleMath::Vector3(0.0f, 0.0f, 0.0f));
+	//GenerateGoblin(DirectX::SimpleMath::Vector3(40.0f, 0.0f, 0.0f));
+
+	// 初期敵の生成
+	GenerateStartEnemy();
 }
 
 
@@ -189,6 +193,23 @@ void EnemyManager::DeleteAllGoblin()
 
 
 // --------------------------------
+// 全てのゴブリンのHPを0にする
+// --------------------------------
+void EnemyManager::AllGoblinHPZero()
+{
+	// ゴブリンのHPを0にする
+	for (auto& enemy : m_enemies)
+	{
+		if (enemy.type == EnemyType::Goblin)
+		{
+			// 最大HP分のダメージを全体に与える
+			enemy.data->GetHPSystem()->Damage(enemy.data->GetHPSystem()->GetHP());
+		}
+	}
+}
+
+
+// --------------------------------
 // 敵１体の削除
 // --------------------------------
 void EnemyManager::DeleteEnemy(IEnemy* enemy)
@@ -265,3 +286,59 @@ DirectX::Model* EnemyManager::CreateModel(const wchar_t* filePath)
 	// モデルを生成
 	return DirectX::Model::CreateFromCMO(device, filePath, *fx).get();
 }
+
+// --------------------------------
+// 初期敵の生成
+// --------------------------------
+void EnemyManager::GenerateStartEnemy()
+{
+	switch (m_selectQuestIndex)
+	{
+	case 0:
+		GenerateEnemy0();
+		break;
+	case 1:
+		GenerateEnemy1();
+		break;
+	case 2:
+		GenerateEnemy2();
+
+	default:
+		// エラーメッセージ
+		MessageBox(nullptr, L"敵の生成に失敗しました", L"エラー", MB_OK);
+		break;
+	}
+}
+
+
+// --------------------------------
+// クエスト0の敵生成 ()
+// --------------------------------
+void EnemyManager::GenerateEnemy0()
+{
+	// 敵の生成
+	GenerateEnemy(DirectX::SimpleMath::Vector3(0.0f, 0.0f, -40.0f), EnemyType::Boss);
+	GenerateEnemy(DirectX::SimpleMath::Vector3(40.0f, 0.0f, -20.0f), EnemyType::Goblin);
+
+}
+
+
+// --------------------------------
+// クエスト1の敵生成
+// --------------------------------
+void EnemyManager::GenerateEnemy1()
+{
+	// ゴブリンの生成
+	GenerateEnemy(DirectX::SimpleMath::Vector3(0.0f, 0.0f, -40.0f), EnemyType::Boss);
+}
+
+
+// --------------------------------
+// クエスト2の敵生成
+// --------------------------------
+void EnemyManager::GenerateEnemy2()
+{
+	// ゴブリンの生成
+	GenerateEnemy(DirectX::SimpleMath::Vector3(0.0f, 0.0f, -40.0f), EnemyType::Boss);
+}
+

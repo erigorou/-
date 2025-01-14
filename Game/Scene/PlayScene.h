@@ -76,6 +76,8 @@ public:
 
 	void SetShakeCamera(float power);			// カメラを揺らす
 
+	void GameEnd();								// ゲーム終了処理
+
 // 非公開関数 ===
 private:
 	void CreateObjects();					// オブジェクトの生成

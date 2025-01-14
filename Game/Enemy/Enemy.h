@@ -17,6 +17,7 @@ class BehaviorTree;
 #include "States/Header/Enemy_Sweeping.h"		// “ã‚¬•¥‚¢UŒ‚
 #include "States/Header/EnemyDashAttacking.h"	// “ËŒ‚ó‘Ô
 #include "States/Header/EnemyApproaching.h"		// ’Ç”öó‘Ô
+#include "States/Header/EnemyDead.h"			// €–Só‘Ô
 
 #include "../Data/HPSystem.h"
 
@@ -31,7 +32,7 @@ public:
 	static const float COOL_TIME;
 
 	static constexpr float COLISION_POS_Y = 10.0f;
-	static constexpr float HP = 20.0f;
+	static constexpr float HP = 1.0f;
 	static constexpr float COLLISION_RADIUS = 20.0f;
 
 
@@ -43,6 +44,7 @@ public:
 	float							GetAngle		()	const	{ return m_angle;		}	// ‹S‚Ì‰ñ“]Šp‚ğæ“¾‚·‚é
 	float							GetBodyTilt		()	const	{ return m_bodyTilt;	}	// ‘Ì‚ÌŒX‚«‚ğæ“¾‚·‚é
 	DirectX::SimpleMath::Matrix		GetWorldMatrix	()	const	{ return m_worldMatrix; }	// “G‚Ìƒ[ƒ‹ƒhÀ•W‚ğæ“¾‚·‚é
+	HPSystem*						GetHPSystem		()	override{ return m_hp.get();	}	// HP‚Ìæ“¾
 
 	void SetPosition	(const DirectX::SimpleMath::Vector3 pos)	{ m_position = pos;		}	// ‹S‚ÌÀ•W‚ğİ’è‚·‚é
 	void SetAngle		(const float angle)							{ m_angle = angle;		}	// ‹S‚Ì‰ñ“]Šp‚ğİ’è‚·‚é
@@ -56,8 +58,9 @@ public:
 	EnemyIdling*		GetEnemyIdling		() const { return m_idling		.get();	}	// ‘Ò‹@ó‘Ô
 	Enemy_Attacking*	GetEnemyAttacking	() const { return m_attacking	.get();	}	// UŒ‚ó‘Ô
 	Enemy_Sweeping*		GetEnemySweeping	() const { return m_sweeping	.get();	}	// “ã‚¬•¥‚¢ó‘Ô
-	EnemyDashAttacking* GetEnemyDashAttacking() const { return m_dashAttacking.get(); }	// “ËŒ‚ó‘Ô
+	EnemyDashAttacking* GetEnemyDashAttacking()const { return m_dashAttacking.get();}	// “ËŒ‚ó‘Ô
 	EnemyApproaching*	GetEnemyApproaching	() const { return m_approaching	.get();	}	// ’Ç”öó‘Ô
+	EnemyDead*			GetEnemyDead		() const { return m_dead		.get(); }	// €–Só‘Ô
 
 	////////////////////@Šç@/////////////////////////////////////////////////////////////////////////////////////
 	void SetFace(IFace* face) { m_currentFace = face; }	// Šç‚Ìİ’è
@@ -65,8 +68,6 @@ public:
 	EnemyFaceAttacking* GetFaceAttacking() const { return m_faceAttacking	.get();	}	// UŒ‚Šç
 
 	void SetTargetLockOn(bool flag) { m_isTargetLockOn = flag; }	// ƒƒbƒNƒIƒ“‚·‚é‚©‚Ç‚¤‚©
-
-
 
 	// Õ“Ë‚ğ‹–‰Â‚·‚é
 	void CanHit(bool flag) { m_canHit = flag; }
@@ -87,12 +88,12 @@ public:
 	void Update(float elapsedTime);
 	void CalcrationWorldMatrix();
 	// •`‰æˆ—
-	void Render(
-		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection);
+	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection);
 	// I—¹ˆ—
 	void Finalize();
 
+	// €–Sˆ—‚ğs‚¤
+	void DeadAction();
 
 private:
 	// ƒXƒe[ƒg‚Ìì¬ˆ—
@@ -110,6 +111,9 @@ private:
 	void HitSword(InterSectData data);
 	void HitStage(InterSectData data);
 
+	void CheckAlive();
+
+private:
 	// ˆÊ’u
 	DirectX::SimpleMath::Vector3 m_position;
 	// ‘¬“x
@@ -134,6 +138,7 @@ private:
 	std::unique_ptr<Enemy_Sweeping>		m_sweeping;		// “ã‚¬•¥‚¢ó‘Ô
 	std::unique_ptr<EnemyDashAttacking>	m_dashAttacking;// “ËŒ‚ó‘Ô
 	std::unique_ptr<EnemyApproaching>	m_approaching;	// ’Ç”öó‘Ô
+	std::unique_ptr<EnemyDead>			m_dead;			// €–Só‘Ô
 
 
 	// ==== Šçƒp[ƒc ============================================================

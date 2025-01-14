@@ -201,11 +201,10 @@ void CollisionManager::DeleteCollision(CollisionType collType, IObject* object)
 
 	// オブジェクト削除処理を補助関数として共通化
 	auto EraseMatchingObject = [object](auto& container) {
-		container.erase(
-			std::remove_if(container.begin(), container.end(),
-				[object](const auto& collision) {
-					return collision.object == object;
-				}),
+		container.erase(std::remove_if(container.begin(), container.end(),[object](const auto& collision)
+			{
+				return collision.object == object;
+			}),
 			container.end());
 		};
 

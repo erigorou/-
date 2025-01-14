@@ -35,7 +35,9 @@ public:
 	};
 
 
-// ** 固定値 **
+// ---------------------------
+// 固定値
+// ---------------------------
 public:
 	// モデルのパス
 	static const wchar_t* GOBLIN_MODEL_PATH;
@@ -44,7 +46,10 @@ public:
 	// ゴブリンの最大沸き数
 	static constexpr int MAX_GOBLIN = 3;
 
-// ** 譲渡関数 **
+
+// ---------------------------
+// アクセサ
+// ---------------------------
 public:
 	// ボスのポインタを取得
 	Enemy* GetBossEnemy();
@@ -53,7 +58,10 @@ public:
 	// ターゲットとしている敵の座標を取得
 	DirectX::SimpleMath::Vector3 GetPicupEnemyPosition();
 
-// ** 公開関数 **
+
+// ---------------------------
+// 公開関数
+// ---------------------------
 public:
 	// コンストラクタ
 	EnemyManager(PlayScene* playScene);
@@ -76,6 +84,9 @@ public:
 	// ゴブリンの全削除
 	void DeleteAllGoblin();
 
+	// 全てのゴブリンのHPを0にする
+	void AllGoblinHPZero();
+
 	// 敵１体の削除
 	void DeleteEnemy(IEnemy* enemy);
 
@@ -83,8 +94,22 @@ public:
 	void ChangeCameraTarget();
 
 
-// ** 非公開関数 **
+// ---------------------------
+// 内部関数
+// ---------------------------
 private:
+
+	// 敵生成関連 *****
+	// クエストの選択
+	void GenerateStartEnemy();
+	// クエスト１の敵生成
+	void GenerateEnemy0();
+	// クエスト２の敵生成
+	void GenerateEnemy1();
+	// クエスト３の敵生成
+	void GenerateEnemy2();
+
+
 	// ゴブリンの生成処理
 	void GenerateGoblin(const DirectX::SimpleMath::Vector3& position);
 	// ボスの生成処理
@@ -93,7 +118,10 @@ private:
 	// モデルの生成処理
 	DirectX::Model* CreateModel(const wchar_t* filePath);
 
-// ** メンバ変数 **
+
+// ---------------------------
+// メンバ変数
+// ---------------------------
 private:
 	// 敵の配列
 	std::vector<EnemyData> m_enemies;
@@ -106,4 +134,7 @@ private:
 
 	DirectX::Model* m_goblinModel;
 	DirectX::Model* m_bossModel;
+
+	// インデックス数
+	int m_selectQuestIndex;
 };

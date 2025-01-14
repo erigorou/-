@@ -37,9 +37,9 @@
 #include "Game/UI/!PlaySceneUIManager/PlaySceneUIManager.h"	// UI描画関連
 
 
-/// <summary>
-/// コンストラクタ
-/// </summary>
+// ----------------
+// コンストラクタ
+// ----------------
 PlayScene::PlayScene()
 	: m_commonResources{}
 	, m_debugCamera{}
@@ -51,12 +51,14 @@ PlayScene::PlayScene()
 	GameData::GetInstance()->SetBattleResult(GameData::BATTLE_RESULT::NONE);
 }
 
+
 // ----------------
 // デストラクタ
 // ----------------
 PlayScene::~PlayScene()
 {
 }
+
 
 // ----------------
 // 初期化関数
@@ -80,9 +82,9 @@ void PlayScene::Initialize()
 }
 
 
-/// <summary>
-/// factoryメゾットを用いて生成する関数
-/// </summary>
+// ----------------
+// オブジェクトの生成
+// ----------------
 void PlayScene::CreateObjects()
 {
 	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
@@ -127,7 +129,11 @@ void PlayScene::CreateObjects()
 	Sound::GetInstance()->ChangeBGM(Sound::BGM_TYPE::PLAY);
 }
 
-// すべてのキーの押下状態を検出する
+
+
+// --------------------------------
+// キーが押されたかどうかを判定する
+// --------------------------------
 inline bool IsKeyPress(DirectX::Keyboard::KeyboardStateTracker& stateTracker)
 {
 	// すべてのキーが押されたかどうかをチェック
@@ -144,6 +150,9 @@ inline bool IsKeyPress(DirectX::Keyboard::KeyboardStateTracker& stateTracker)
 }
 
 
+// --------------------------------
+// キーが押下げられたかどうかを判定する
+// --------------------------------
 inline bool IsKeyDown(DirectX::Keyboard::State& state)
 {
 	// キーボードステートへのポインタを取得する
@@ -160,22 +169,21 @@ inline bool IsKeyDown(DirectX::Keyboard::State& state)
 
 
 
-/// <summary>
-/// 更新関数
-/// </summary>
-/// <param name="elapsedTime">フレーム毎秒</param>
+// --------------------------------
+// 更新処理
+// --------------------------------
 void PlayScene::Update(float elapsedTime)
 {
 	// キーボードの更新処理
 	UpdateKeyboard();
 	// オブジェクトの更新処理
 	UpdateObjects(elapsedTime);
-	// 勝敗を決める
-	CheckResult();
 }
 
 
-// キーボードの状態更新処理
+// --------------------------------
+// キーボードの更新処理
+// --------------------------------
 void PlayScene::UpdateKeyboard()
 {
 	// キーボードの状態を取得する
@@ -191,26 +199,22 @@ void PlayScene::UpdateKeyboard()
 }
 
 
+// --------------------------------
 // オブジェクトの更新処理
+// --------------------------------
 void PlayScene::UpdateObjects(float elapsedTime)
 {
 	// ヒットストップの更新
 	m_hitStop->Update(elapsedTime);
 	// ヒットストップの残り時間を取得
 	float smoothDeltaTime = m_hitStop->GetSmoothDeltaTime();
-	// UIの更新
-	m_uiManager->Update(elapsedTime);
-	// プレイヤーの更新処理
-	m_player->Update(smoothDeltaTime);
-	// プレイヤーの武器の更新処理
-	m_sword->Update(smoothDeltaTime);
-	// 鬼の武器の更新処理
-	m_cudgel->Update(smoothDeltaTime);
-	// 敵マネージャーの更新
-	m_enemyManager->Update(smoothDeltaTime);
-
-	// クエストマネージャーの更新
-	m_questManager->Update(elapsedTime);
+	// オブジェクトの更新
+	m_uiManager		->Update(elapsedTime);
+	m_player		->Update(smoothDeltaTime);
+	m_sword			->Update(smoothDeltaTime);
+	m_cudgel		->Update(smoothDeltaTime);
+	m_enemyManager	->Update(smoothDeltaTime);
+	m_questManager	->Update(elapsedTime);
 
 	// カメラの回転行列の作成	引数にはプレイヤーの回転角を入れる
 	DirectX::SimpleMath::Matrix matrix = DirectX::SimpleMath::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_player->GetAngle()));
@@ -218,11 +222,7 @@ void PlayScene::UpdateObjects(float elapsedTime)
 	m_camera->Update(m_player->GetPosition(), m_enemyManager->GetPicupEnemyPosition(), matrix, smoothDeltaTime);
 
 	// パーティクルの更新
-	m_particles->Update(
-		elapsedTime,
-		m_player->GetPosition(),
-		m_player->GetVelocity()
-	);
+	m_particles->Update(elapsedTime,m_player->GetPosition(),m_player->GetVelocity());
 
 	// 衝突判定の更新処理
 	m_collisionManager->Update();
@@ -355,4 +355,13 @@ void PlayScene::CheckResult()
 	}
 #endif // !_DEBUG
 
+}
+
+
+// --------------------------------
+// ゲーム終了処理
+// --------------------------------
+void PlayScene::GameEnd()
+{
+	CheckResult();
 }

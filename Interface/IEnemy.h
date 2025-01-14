@@ -7,6 +7,7 @@
 #pragma once
 #include "pch.h"
 #include "IObject.h"
+#include "Game/Data/HPSystem.h"
 
 class IEnemy : public IObject
 {
@@ -29,4 +30,7 @@ public:
 	virtual void HitAction(InterSectData data) = 0;
 	// ˆÊ’u‚ðŽæ“¾‚·‚é
 	virtual DirectX::SimpleMath::Vector3 GetPosition() = 0;
+
+	// HPSystem‚ð“n‚·
+	virtual HPSystem* GetHPSystem() = 0;
 };
