@@ -35,6 +35,8 @@ public:
 	static constexpr float HP = 1.0f;
 	static constexpr float COLLISION_RADIUS = 20.0f;
 
+	static constexpr float ENEMY_HEIGHT = 50.0f;
+
 
 public:
 	// /////////////////“G‚ÌŠî‘bî•ñ‚ğ“n‚·ŠÖ”/////////////////////////////////////////////////////////////////////

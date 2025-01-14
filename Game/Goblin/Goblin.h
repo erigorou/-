@@ -23,9 +23,10 @@ class EnemyDamageEffect;
 
 class Goblin : public IEnemy
 {
+	// ---------------
+	// 固定値
+	// ---------------
 public:
-
-	// 固定値**
 	static const float GOBLIN_SPEED;
 	static const float GOBLIN_SCALE;
 
@@ -35,7 +36,11 @@ public:
 
 	static constexpr float COOL_TIME = 0.4f;
 
-	// 譲渡関数**
+
+	// ---------------
+	// アクセサ
+	// ---------------
+public:
 	DirectX::SimpleMath::Vector3	GetPosition		()	override{ return m_position;			}	// 鬼の座標を取得する
 	DirectX::SimpleMath::Vector3	GetVelocity		()	const	{ return m_velocity;			}	// 速度の取得
 	float							GetAngle		()	const	{ return m_angle;				}	// 回転角の取得
@@ -45,20 +50,20 @@ public:
 	bool							IsAttacking		()	const	{ return m_nowAttacking;		}	// 攻撃中かどうかの取得
 	HPSystem*						GetHPSystem		()	override{ return m_hp.get();			}	// HPの取得
 
-	// 設定関数**
 	void SetPosition(const DirectX::SimpleMath::Vector3& position)	{ m_position = position; }		// 鬼の座標を設定する
 	void SetVelocity(const DirectX::SimpleMath::Vector3& velocity)	{ m_velocity = velocity; }		// 速度の設定
 	void SetAngle	(const float angle)								{ m_angle = angle; }			// 回転角の設定
 	void SetScale	(const DirectX::SimpleMath::Vector3& scale)		{ m_scale = scale; }			// スケールの設定
 	void SetIsAttacking(bool isAttacking)							{ m_nowAttacking = isAttacking; }// 攻撃中かどうかの設定
 
-	// ステート用 **
 	GoblinIdling*	 GetIdling		()	const { return m_idling.get(); }	// 待機状態の取得
 	GoblinAttacking* GetAttacking	()	const { return m_attacking.get(); }	// 攻撃状態の取得
 	GoblinDead*		 GetDead		()	const { return m_dead.get(); }		// 死亡状態の取得
 	IState* GetCurrentState			()	const { return m_currentState; }	// 現在のステートの取得
 
-
+	// ---------------
+	// 公開関数
+	// ---------------
 public:
 	// コンストラクタ
 	Goblin(PlayScene* playScene);
@@ -85,7 +90,10 @@ public:
 	// ゴブリンを消す
 	void DeleteGoblin();
 
-// 内部関数
+
+	// ---------------
+	// 内部関数
+	// ---------------
 private:
 	// ワールド行列の計算
 	void CalcWorldMatrix();
@@ -106,6 +114,11 @@ private:
 
 	void CreateState();		// ステートの作成
 
+
+// ---------------
+// メンバ変数
+// ---------------
+private:
 	DirectX::SimpleMath::Vector3 m_position;	// 座標
 	DirectX::SimpleMath::Vector3 m_velocity;	// 速度
 	float m_angle;								// 回転角

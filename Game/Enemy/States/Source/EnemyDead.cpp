@@ -56,6 +56,8 @@ void EnemyDead::PreUpdate()
 
 	// 回転を取得
 	m_angle = m_enemy->GetAngle();
+	// 状態開始時の傾きを取得
+	m_startTilt = m_enemy->GetBodyTilt();
 
 	// 武器のステートを変更
 	auto cudgel = m_enemy->GetPlayScene()->GetCudgel();
@@ -98,10 +100,22 @@ void EnemyDead::UpdateAnimation()
 	// 正規化した時間を求める
 	float t = m_totalSeconds / TOTAL_TIME;
 
-	m_tiltAngle = -90.0f * Easing::easeOutBounce(t);
+	// イージングアニメーションを用いて傾きを求める
+	m_tiltAngle = m_startTilt + ( MAX_TILT_ANGLE - m_startTilt) * Easing::easeOutBounce(t);
 
 	// 傾きを設定
 	m_enemy->SetBodyTilt(DirectX::XMConvertToRadians(m_tiltAngle));
+
+	// カメラを揺らすタイミングを図る
+	if (m_tiltAngle <= CAMERA_SHAKE_TIMING)
+	{
+		// カメラを揺らす
+		m_enemy->GetPlayScene()->SetShakeCamera(CAMERA_SHAKE_POWER);
+
+		// パーティクルの生成
+		auto particle = m_enemy->GetPlayScene()->GetParticle();
+		particle->CreateSlamDust(m_enemy->GetPosition());
+	}
 }
 
 
@@ -110,7 +124,6 @@ void EnemyDead::UpdateAnimation()
 // ---------------------------
 void EnemyDead::PostUpdate()
 {
-	// 修正点があればここに記載
 }
 
 

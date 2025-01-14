@@ -13,8 +13,15 @@ class EnemyDead : public IState
 // 固定値
 // ---------------------------
 private:
+	// 総時間
 	static constexpr float TOTAL_TIME = 3.0f;
+	// 傾ける量
+	static constexpr float MAX_TILT_ANGLE = -90.0f;
 
+	// カメラを揺らす強さ
+	static constexpr float CAMERA_SHAKE_POWER = 1.0f;
+	// カメラを揺らすタイミング
+	static constexpr float CAMERA_SHAKE_TIMING = -89.0f;
 
 // ---------------------------
 // 公開関数
@@ -57,6 +64,9 @@ private:
 
 	// アニメーション用の回転座標
 	float m_tiltAngle;
+
+	// 状態開始時の体の傾きを取得
+	float m_startTilt;
 };
 
 #endif		// ENEMY_IDLING_DEFINED

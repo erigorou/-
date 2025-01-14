@@ -13,8 +13,9 @@
 // ヘッダーファイル
 #include "Game/Enemy/States/Header/EnemyIdling.h"
 
-
+// --------------------------
 // コンストラクタ
+// --------------------------
 EnemyIdling::EnemyIdling(Enemy* enemy)
 	:
 	m_angle(0.f),
@@ -24,19 +25,25 @@ EnemyIdling::EnemyIdling(Enemy* enemy)
 }
 
 
+// --------------------------
 // デストラクタ
+// --------------------------
 EnemyIdling::~EnemyIdling()
 {
 }
 
 
+// --------------------------
 // 初期化処理
+// --------------------------
 void EnemyIdling::Initialize()
 {
 }
 
 
-// 事前更新処理
+// --------------------------
+// 設定処理(in)
+// --------------------------
 void EnemyIdling::PreUpdate()
 {
 	// 経過時間を初期化
@@ -50,7 +57,9 @@ void EnemyIdling::PreUpdate()
 }
 
 
+// --------------------------
 // 更新処理
+// --------------------------
 void EnemyIdling::Update(const float& elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
@@ -95,20 +104,18 @@ void EnemyIdling::Update(const float& elapsedTime)
 	}
 }
 
-
-// プレイヤーの体との当たり判定を行う
-void EnemyIdling::CheckHitPlayerBody()
-{
-
-}
-
-
-// 事後更新処理
+// --------------------------
+// 設定処理(out)
+// --------------------------
 void EnemyIdling::PostUpdate()
 {
 	// 修正点があればここに記載
 }
 
+
+// ---------------------------
+// 終了処理
+// ---------------------------
 void EnemyIdling::Finalize()
 {
 }

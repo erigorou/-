@@ -9,6 +9,9 @@ class Player;
 // 敵の待機ステートを定義
 class EnemyIdling : public IState
 {
+// ---------------------------
+// 公開関数
+// ---------------------------
 public:
 	// コンストラクタ
 	EnemyIdling(Enemy* enemy);
@@ -25,11 +28,10 @@ public:
 	// 終了処理
 	void Finalize() override;
 
-	// プレイヤーのボディとの当たり判定
-	void CheckHitPlayerBody();
 
-
-
+// ---------------------------
+// 内部関数
+// ---------------------------
 private:
 	// 回転
 	float m_angle;

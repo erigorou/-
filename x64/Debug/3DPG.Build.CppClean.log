@@ -2,8 +2,8 @@ c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.pch
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\vc143.pdb
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\vc143.idb
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\pch.obj
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\goblindead.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\enemystarting.obj
+c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\enemydead.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\enemydashattacking.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\enemyfaceidling.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\enemyfaceattacking.obj
@@ -22,7 +22,6 @@ c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\selector.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\ifdecorator.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\behaviortree.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\action.obj
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\goblin.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\enemy_sweeping.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\enemyidling.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\enemy_attacking.obj
@@ -42,7 +41,7 @@ c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\questrendere
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\questmanager.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\player_nockbacking.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\hitstop.obj
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\iconui.obj
+c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\goblindead.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\gauge.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\enemyhpui.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\playsceneuimanager.obj
@@ -62,7 +61,7 @@ c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\player_attac
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\player.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\goblinidling.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\goblinattacking.obj
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\customshader.obj
+c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\goblin.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\collisionmanager.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\binaryfile.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\debugdraw.obj
@@ -82,6 +81,7 @@ c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\warning.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\playerhpui.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\operation.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\operateui.obj
+c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\iconui.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\messenger.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\main.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\texture.obj
@@ -90,7 +90,7 @@ c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\invincibilit
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\inputmanager.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\debugstring.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\debugcamera.obj
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\enemydead.obj
+c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\customshader.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\xapobaseredist.pdb
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\xaudio2_9redist.pdb
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\xaudio2_9redist.dll
@@ -128,6 +128,7 @@ c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.ilk
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.pdb
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\resource.res
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.exe.embed.manifest.res
+c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\collisionmanager.obj.enc
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.exe.embed.manifest
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg_manifest.rc
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.tlog\cl.command.1.tlog
