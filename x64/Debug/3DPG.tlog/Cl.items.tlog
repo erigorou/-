@@ -24,6 +24,7 @@ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Player\State\Sour
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Quest\QuestManager.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\QuestManager.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Quest\QuestRenderer\QuestRenderer.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\QuestRenderer.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Quest\Tutorial\Tutorial.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\Tutorial.obj
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Scene\QuestSelectScene.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\QuestSelectScene.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Scene\State\LoseResult.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\LoseResult.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Scene\State\WinResult.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\WinResult.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Stage\Sea\Sea.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\Sea.obj

@@ -27,10 +27,9 @@ const float TitleEnemy::COOL_TIME	= 0.4f;
 // --------------------------------
 //  コンストラクタ
 // --------------------------------
-TitleEnemy::TitleEnemy(TitleScene* titleScene)
-	: m_TitleScene(titleScene)
-	, m_currentState()
-	, m_position{0.f, 0.f, 0.f}
+TitleEnemy::TitleEnemy()
+	: m_currentState()
+	, m_position{0.0f, 0.0f, 0.0f}
 	, m_angle{0.f}
 	, m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
 {
@@ -141,14 +140,10 @@ void TitleEnemy::Update(float elapsedTime)
 // --------------------------------
 //  表示処理
 // --------------------------------
-void TitleEnemy::Render(
-	ID3D11Device* device,
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection)
+void TitleEnemy::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection)
 {
-	device = nullptr;
+	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
+	auto states = CommonResources::GetInstance()->GetCommonStates();
 
 	// 深度値を参照して書き込む
 	context->OMSetDepthStencilState(states->DepthDefault(), 0);

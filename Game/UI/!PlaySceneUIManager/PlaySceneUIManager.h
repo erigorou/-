@@ -14,16 +14,16 @@ class EnemyHPUI;
 class Warning;
 class Operation;
 
-class CommonResources; // CommonResources の前方宣言
+class CommonResources;
 
-namespace DX {
-    class DeviceResources; // DX::DeviceResources の前方宣言
+namespace DX 
+{
+    class DeviceResources;
 }
 
 class PlaySceneUIManager
 {
 public:
-
 	// ====================================================================================
 	static const DirectX::SimpleMath::Vector2 PLAYER_HP_POSITION; // プレイヤーのHPUIの座標
 
@@ -33,8 +33,13 @@ public:
     PlaySceneUIManager(PlayScene* playScene);   // コンストラクタ
 	~PlaySceneUIManager();                      // デストラクタ
 
-	void Initialize	();  					// 初期化関数
-	void CreateUI	();						// UIの生成関数
+	void Initialize	();  		// 初期化関数
+	void CreateUI	();			// UIの生成関数
+	void CreatePlayerHPUI();	// プレイヤーのHPUIの生成関数
+	void CreateEnemyHPUI();		// エネミーのHPUIの生成関数
+	void CreateWarning();		// 警告UIの生成関数
+	void CreateOperation();		// 操作説明UIの生成関数
+
 	void Update		(float elapsedTime);	// 更新関数
 	void Render		();						// 描画関数
 	void Finalize	();						// 終了関数

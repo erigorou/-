@@ -66,11 +66,13 @@ void Sword_Attacking_1::PreUpdate()
 	// 攻撃フラグを立てる
 	m_sword->SetAttackFlag(true);
 
-	m_totalSeconds = 0.0f;								// 時間経過のリセット
-	m_sword->GetPlayScene()->GetEnemy()->CanHit(true);	// 衝突可能フラグを有効に
+	m_totalSeconds = 0.0f;	// 時間経過のリセット
 
 	m_rootPos.clear();	// 根本の座標をクリア
 	m_tipPos.clear();	// 先端の座標をクリア
+
+	if (!m_sword->GetPlayScene()->GetEnemy()) return;
+	m_sword->GetPlayScene()->GetEnemy()->CanHit(true);	// 衝突可能フラグを有効に
 }
 
 
@@ -106,17 +108,24 @@ void Sword_Attacking_1::UpdateAnimation()
 
 	if (m_totalSeconds <= ATTACK_TIME)
 	{
+		// 時間の正規化
 		t = m_totalSeconds / ATTACK_TIME;
-		m_rot.y = -250.0f * Easing::easeOutBack(t);
-		m_rot.x = 10 - 40 * Easing::easeOutBack(t);
 
-		if (m_rot.y < -250.0f)
+		m_rot.y = MAX_SIDE_ANGLE					* Easing::easeOutBack(t);
+		m_rot.x = INIT_ANGLE - MAX_VERTICAL_ANGLE	* Easing::easeOutBack(t);
+
+		if (m_rot.y < MAX_SIDE_ANGLE)
 		{
-			// 攻撃時間を過ぎたら当たり判定を無効にする
-			m_sword->GetPlayScene()->GetEnemy()->CanHit(false);
+			// ボスが存在する場合
+			if (m_sword->GetPlayScene()->GetEnemy())
+			{
+				// 当たり判定を無効にする
+				m_sword->GetPlayScene()->GetEnemy()->CanHit(false);
+			}
 			m_sword->SetAttackFlag(false);
 		}
 
+		// 設定
 		m_rot.x = DirectX::XMConvertToRadians(m_rot.x);
 		m_rot.y = DirectX::XMConvertToRadians(m_rot.y);
 	}

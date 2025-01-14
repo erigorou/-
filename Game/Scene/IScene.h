@@ -21,6 +21,7 @@ public:
 	{
 		NONE,
 		TITLE,
+		QUEST,
 		PLAY,
 		RESULT
 	};

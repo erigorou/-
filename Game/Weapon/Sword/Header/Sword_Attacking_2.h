@@ -20,6 +20,13 @@ public:
 	// 位置調整用
 	static constexpr DirectX::SimpleMath::Vector3 MATRIX_DIRECTION = DirectX::SimpleMath::Vector3(1.0f, 2.0f, 0.0f);
 
+	// 横の貯め角度
+	static constexpr float MAX_SIDE_ANGLE = 250.0f;
+	// 初期角度
+	static constexpr float INIT_ANGLE = 10.0f;
+	// 縦の最大
+	static constexpr float MAX_VERTICAL_ANGLE = 30.0f;
+
 // 公開関数 **
 public:
 	// コンストラクタ

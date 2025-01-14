@@ -68,7 +68,7 @@ void EnemyTitleMoving::Update(const float& elapsedTime)
 	// ˆÚ“®‚ÅƒJƒƒ‰‚ğ—h‚ç‚·
 	if (m_position.y <= MINIMAL)
 	{
-		m_enemy->GetTitleScene()->SetShakeCamera();
+		//m_enemy->GetTitleScene()->SetShakeCamera();
 		m_enemy->ChangeState(m_enemy->GetTitleEnemyIdling());
 	}
 
@@ -92,7 +92,7 @@ void EnemyTitleMoving::PostUpdate()
 	m_enemy->SetPosition(m_position);
 
 	// ƒXƒpƒ“
-	m_enemy->GetTitleScene()->CleateSpamDust(m_position);
+	//m_enemy->GetTitleScene()->CleateSpamDust(m_position);
 }
 
 

@@ -18,7 +18,6 @@ public:
 
 
 public:
-	TitleScene* GetTitleScene()	const { return m_TitleScene; }		// タイトルシーンの取得
 
 	// /////////////////敵の基礎情報を渡す関数/////////////////////////////////////////////////////////////////////
 	DirectX::SimpleMath::Vector3	GetPosition()	const	{ return m_position; }		// 鬼の座標を取得する
@@ -38,7 +37,7 @@ public:
 
 public:
 	// コンストラクタ
-	TitleEnemy(TitleScene* title);
+	TitleEnemy();
 	// デストラクタ
 	~TitleEnemy();
 	// 初期化処理
@@ -48,12 +47,7 @@ public:
 	// 更新処理
 	void Update(float elapsedTime);
 	// 描画処理
-	void Render(
-		ID3D11Device* device,
-		ID3D11DeviceContext* context,
-		DirectX::CommonStates* states,
-		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection);
+	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection);
 	// 終了処理
 	void Finalize();
 
@@ -85,7 +79,4 @@ private:
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
 	// 入力レイアウト
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
-
-	// タイトルシーン
-	TitleScene* m_TitleScene;
 };

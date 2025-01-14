@@ -64,14 +64,14 @@ void Sword_Attacking_2::Initialize()
 // --------------------------------
 void Sword_Attacking_2::PreUpdate()
 {
-	// 攻撃フラグを立てる
-	m_sword->SetAttackFlag(true);
+	m_sword->SetAttackFlag(true); // 攻撃フラグを立てる
 
-	m_totalSeconds = 0.0f;									// 経過時間の初期化
-	m_sword->GetPlayScene()->GetEnemy()->CanHit(true);		// 衝突可能にする
+	m_totalSeconds = 0.0f;	// 経過時間の初期化
+	m_rootPos	.clear();	// 根本の座標配列をクリア
+	m_tipPos	.clear();	// 先端の座標配列をクリア
 
-	m_rootPos.clear();	// 根本の座標配列をクリア
-	m_tipPos.clear();	// 先端の座標配列をクリア
+	if (!m_sword->GetPlayScene()->GetEnemy()) return;
+	m_sword->GetPlayScene()->GetEnemy()->CanHit(true); // 衝突可能にする
 }
 
 
@@ -112,14 +112,19 @@ void Sword_Attacking_2::UpdateAnimation()
 	{
 		// 秒数を正規化する
 		float t = m_totalSeconds / ATTACK_TIME;
-		// イージング関数を使って回転を計算
-		m_rot.y = 250.0f * Easing::easeOutBack(t);
-		m_rot.x = 10 + 30.0f * Easing::easeOutBack(t);
 
-		if (m_rot.y > 250.0f)
+		// イージング関数を使って回転を計算
+		m_rot.y = MAX_SIDE_ANGLE					* Easing::easeOutBack(t);
+		m_rot.x = INIT_ANGLE + MAX_VERTICAL_ANGLE	* Easing::easeOutBack(t);
+
+		if (m_rot.y > MAX_SIDE_ANGLE)
 		{
-			// 攻撃時間を過ぎたら当たり判定を無効にする
-			m_sword->GetPlayScene()->GetEnemy()->CanHit(false);
+			// 敵がいる場合
+			if (m_sword->GetPlayScene()->GetEnemy())
+			{
+				// 当たり判定を無効にする
+				m_sword->GetPlayScene()->GetEnemy()->CanHit(false);
+			}
 			m_sword->SetAttackFlag(false);
 		}
 

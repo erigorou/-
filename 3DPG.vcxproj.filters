@@ -242,6 +242,7 @@
     <ClInclude Include="Game\UI\UIAnchor.h" />
     <ClInclude Include="Game\Goblin\State\Header\GoblinDead.h" />
     <ClInclude Include="Game\Enemy\States\Header\EnemyDead.h" />
+    <ClInclude Include="Game\Scene\QuestSelectScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -374,6 +375,7 @@
     <ClCompile Include="Game\Quest\Tutorial\Tutorial.cpp" />
     <ClCompile Include="Game\Goblin\State\Score\GoblinDead.cpp" />
     <ClCompile Include="Game\Enemy\States\Source\EnemyDead.cpp" />
+    <ClCompile Include="Game\Scene\QuestSelectScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

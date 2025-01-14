@@ -6,6 +6,8 @@
 
 #pragma once
 #include "pch.h"
+#include"Game/Scene/PlayScene.h"
+#include "Game/UI/!PlaySceneUIManager/PlaySceneUIManager.h"
 #include "EnemyManager.h"
 #include "../Enemy/Enemy.h"
 #include "../Goblin/Goblin.h"
@@ -29,7 +31,7 @@ const wchar_t* EnemyManager::BOSS_MODEL_PATH = L"Resources/Models/Oni/Body/oni.c
 EnemyManager::EnemyManager(PlayScene* playScene)
 	: m_targetEnemyIndex()
 	, m_playScene(playScene)
-	, m_selectQuestIndex()
+	, m_selectQuestIndex(1)
 {
 }
 
@@ -52,9 +54,6 @@ void EnemyManager::Initialize(PlayScene* playScene)
 
 	m_goblinModel = CreateModel(GOBLIN_MODEL_PATH);
 	m_bossModel = CreateModel(BOSS_MODEL_PATH);
-
-	//GenerateBoss(DirectX::SimpleMath::Vector3(0.0f, 0.0f, 0.0f));
-	//GenerateGoblin(DirectX::SimpleMath::Vector3(40.0f, 0.0f, 0.0f));
 
 	// èâä˙ìGÇÃê∂ê¨
 	GenerateStartEnemy();
@@ -161,6 +160,8 @@ DirectX::SimpleMath::Vector3 EnemyManager::GetBossPosition()
 // --------------------------------
 DirectX::SimpleMath::Vector3 EnemyManager::GetPicupEnemyPosition()
 {
+	if (m_enemies.empty()) return DirectX::SimpleMath::Vector3::Zero;
+
 	// ìGÇ™Ç¢Ç»Ç¢èÍçá
 	if (m_enemies.size() - 1 < m_targetEnemyIndex) m_targetEnemyIndex = 0;
 
@@ -328,8 +329,8 @@ void EnemyManager::GenerateEnemy0()
 // --------------------------------
 void EnemyManager::GenerateEnemy1()
 {
-	// ÉSÉuÉäÉìÇÃê∂ê¨
-	GenerateEnemy(DirectX::SimpleMath::Vector3(0.0f, 0.0f, -40.0f), EnemyType::Boss);
+	// ê∂ê¨
+	GenerateEnemy(DirectX::SimpleMath::Vector3(0.0f, 0.0f, -40.0f), EnemyType::Goblin);
 }
 
 

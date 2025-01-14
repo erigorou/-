@@ -8,6 +8,7 @@
 
 #include "TitleScene.h"
 #include "PlayScene.h"
+#include "QuestSelectScene.h"
 #include "ResultScene.h"
 
 #include "Game/Screen.h"
@@ -53,7 +54,7 @@ void SceneManager::Initialize()
 	ChangeScene(IScene::SceneID::TITLE);
 #endif // !_DEBUG
 #ifdef _DEBUG
-	ChangeScene(IScene::SceneID::PLAY);
+	ChangeScene(IScene::SceneID::QUEST);
 #endif // !_DEBUG
 
 }
@@ -138,12 +139,19 @@ void SceneManager::CreateScene(IScene::SceneID sceneID)
 		case IScene::SceneID::TITLE:
 			m_currentScene = std::make_unique<TitleScene>();
 			break;
+
+		case IScene::SceneID::QUEST:
+			m_currentScene = std::make_unique<QuestSelectScene>();
+			break;
+
 		case IScene::SceneID::PLAY:
 			m_currentScene = std::make_unique<PlayScene>();
 			break;
+
 		case IScene::SceneID::RESULT:
 			m_currentScene = std::make_unique<ResultScene>();
 			break;
+
 		default:
 			assert(!"SceneManager::CreateScene::ÉVÅ[ÉìñºÇ™ë∂ç›ÇµÇ‹ÇπÇÒÅI");
 			// no break

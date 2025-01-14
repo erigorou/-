@@ -103,10 +103,12 @@ void PlayScene::CreateObjects()
 	m_sword				= Factory::CreateSword				(this);	// 刀
 	m_cudgel			= Factory::CreateCudgel				(this);	// 金棒
 
-	m_enemyManager	= Factory::CreateEnemyManager			(this);	// 敵マネージャー
 	m_uiManager		= Factory::CreateUIManager				(this);	// UIマネージャー
+	m_enemyManager	= Factory::CreateEnemyManager			(this);	// 敵マネージャー
 	m_questManager	= Factory::CreateQuestManager			(this);	// クエストマネージャー
 
+
+	m_uiManager->CreateUI();	// UIの生成
 	// 観察者リストをソートする
 	Messenger::SortObserverList();
 	// キー範囲リストを生成する

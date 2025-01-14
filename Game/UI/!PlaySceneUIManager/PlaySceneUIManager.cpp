@@ -49,8 +49,6 @@ PlaySceneUIManager::~PlaySceneUIManager()
 // ----------------------------
 void PlaySceneUIManager::Initialize()
 {
-	// UIの一括生成
-	CreateUI();
 }
 
 
@@ -59,22 +57,13 @@ void PlaySceneUIManager::Initialize()
 // ----------------------------
 void PlaySceneUIManager::CreateUI()
 {
-	// HPSystemを取得
-	auto playerHP = m_playScene->GetPlayer()->GetPlayerHP();
-	auto enemyHP = m_playScene->GetEnemy()->GetEnemyHP();
-
-	// 生成処理
-	m_playerHP	= std::make_unique<PlayerHPUI>	(playerHP);
-	m_enemyHP	= std::make_unique<EnemyHPUI>	(enemyHP);
-	m_warning	= std::make_unique<Warning>		(playerHP);
-	m_operation = std::make_unique<Operation>	();
-
-	// 初期化処理
-	m_playerHP	->	Initialize(m_pDR);
-	m_enemyHP	->	Initialize(m_pDR);
-	m_warning	->	Initialize();
-	m_operation	->	Initialize();
+	// プレイヤーHPの生成と初期化
+	CreatePlayerHPUI();
+	CreateEnemyHPUI();
+	CreateWarning();
+	CreateOperation();
 }
+
 
 
 // ----------------------------
@@ -83,7 +72,12 @@ void PlaySceneUIManager::CreateUI()
 void PlaySceneUIManager::Update(float elapsedTime)
 {
 	m_playerHP	->	Update();
-	m_enemyHP	->	Update();
+
+	if (m_enemyHP)	// エネミーが存在する場合
+	{
+		m_enemyHP->Update();
+	}
+
 	m_warning	->	Update(elapsedTime);
 	m_operation	->	Update(elapsedTime);
 }
@@ -96,7 +90,12 @@ void PlaySceneUIManager::Render()
 {
 	m_warning	->	Render();
 	m_playerHP	->	Render();
-	m_enemyHP	->	Render();
+
+	if (m_enemyHP)	// エネミーが存在する場合
+	{
+		m_enemyHP->Render();
+	}
+
 	m_operation	->	Render();
 }
 
@@ -107,7 +106,74 @@ void PlaySceneUIManager::Render()
 void PlaySceneUIManager::Finalize()
 {
 	m_playerHP	->	Finalize();
-	m_enemyHP	->	Finalize();
+
+	if (m_enemyHP)	// エネミーが存在する場合
+	{
+		m_enemyHP->Finalize();
+	}
+
 	m_warning	->	Finalize();
 	m_operation	->	Finalize();
+}
+
+
+// ----------------------------
+// プレイヤーのHPUIの生成関数
+// ----------------------------
+void PlaySceneUIManager::CreatePlayerHPUI()
+{
+	auto playerHP = m_playScene->GetPlayer()->GetPlayerHP();
+
+	if (playerHP == nullptr) MessageBox(0, L"PlaySceneUIManager : プレイヤーのHPが取得できませんでした。", NULL, MB_OK);
+
+	// プレイヤーHPの生成と初期化
+	m_playerHP = std::make_unique<PlayerHPUI>(playerHP);
+	m_playerHP->Initialize(m_pDR);
+}
+
+
+// ----------------------------
+// エネミーのHPUIの生成関数
+// ----------------------------
+void PlaySceneUIManager::CreateEnemyHPUI()
+{
+	// エネミーのHPを取得
+	auto enemyHP = m_playScene->GetEnemy() ? m_playScene->GetEnemy()->GetEnemyHP() : nullptr;
+
+	// nullチェック
+	if (enemyHP != nullptr)
+	{
+		// エネミーHPの生成と初期化
+		m_enemyHP = std::make_unique<EnemyHPUI>(enemyHP);
+		m_enemyHP->Initialize(m_pDR);
+	}
+}
+
+
+// ----------------------------
+// 警告UIの生成関数
+// ----------------------------
+void PlaySceneUIManager::CreateWarning()
+{
+	// プレイヤーHPの取得
+	auto playerHP = m_playScene->GetPlayer()->GetPlayerHP();
+
+	// nullチェック
+	if (playerHP == nullptr) MessageBox(0, L"PlaySceneUIManager : プレイヤーのHPが取得できませんでした。", NULL, MB_OK);
+
+	// 警告UIの生成と初期化
+	m_warning = std::make_unique<Warning>(playerHP);
+	m_warning->Initialize();
+}
+
+
+
+// ----------------------------
+// 操作説明UIの生成関数
+// ----------------------------
+void PlaySceneUIManager::CreateOperation()
+{
+	// 操作説明UIの生成と初期化
+	m_operation = std::make_unique<Operation>();
+	m_operation->Initialize();
 }

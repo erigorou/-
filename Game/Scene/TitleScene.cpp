@@ -163,7 +163,7 @@ void TitleScene::CreateObjects()
 	m_sea = Factory::CreateSea();
 	m_skySphere = Factory::CreateSkySphere();
 
-	m_enemy = std::make_unique<TitleEnemy>(this);
+	m_enemy = std::make_unique<TitleEnemy>();
 	m_enemy->Initialize();
 	m_skySphere->LoadSkySphereModel();
 
@@ -210,25 +210,22 @@ void TitleScene::Update(float elapsedTime)
 //---------------------------------------------------------
 void TitleScene::Render()
 {
-	auto device		= m_commonResources->GetDeviceResources()->GetD3DDevice();
-	auto context	= m_commonResources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states		= m_commonResources	->	GetCommonStates		();
 	auto view		= m_camera			->	GetViewMatrix		();
 
-
-	// 床の描画
-	m_floor->Render(view, m_projection);
-	// 海の描画
-	m_sea->Render(view, m_projection);
-	// 敵の描画
-	m_enemy->Render(device, context, states, view, m_projection);
-	// 天球の描画
-	m_skySphere->DrawSkySphere(view, m_projection);
+	// オブジェクトの描画
+	m_floor->		Render(view, m_projection);
+	m_sea->			Render(view, m_projection);
+	m_enemy->		Render(view, m_projection);
+	m_skySphere->	DrawSkySphere(view, m_projection);
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
+
+	// テクスチャの描画
 	DrawTexture();
 
+	// パーティクルの描画
 	m_particle->CreateBillboard(m_camera->GetEyePosition(),DirectX::SimpleMath::Vector3::Zero,m_camera->GetUpVector());
 	m_particle->Render(view, m_projection);
 
@@ -256,6 +253,7 @@ void TitleScene::DrawTexture()
 	// タイトルロゴの上下移動の総量
 	float moveValue = titlePos.y * 2;
 
+	// 秒数を正規化
 	float t = Math::Clamp(m_totalSeconds - DELAY, 0.0f, ANIM_END) / ANIM_END;
 
 	// タイトルロゴの描画位置を決める（移動も考慮）
@@ -314,7 +312,7 @@ IScene::SceneID TitleScene::GetNextSceneID() const
 	// シーン変更がある場合
 	if (m_isChangeScene)
 	{
-		return IScene::SceneID::PLAY;
+		return IScene::SceneID::QUEST;
 	}
 
 	// シーン変更がない場合

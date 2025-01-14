@@ -19,6 +19,7 @@ GameData* const GameData::GetInstance()
 		// 生成する
 		s_data.reset(new GameData());
 	}
+
 	// インスタンスを返す
 	return s_data.get();
 }
@@ -29,6 +30,7 @@ GameData* const GameData::GetInstance()
 // ------------------------------------------------
 GameData::GameData()
 	: m_battleResult{ BATTLE_RESULT::NONE }
+	, m_questIndex	{}
 {
 }
 

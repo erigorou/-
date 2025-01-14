@@ -59,6 +59,7 @@ public:
 	Cudgel*		GetCudgel()		{ return m_cudgel.get();}
 	Particle*	GetParticle()	{ return m_particles.get(); }
 	EnemyManager* GetEnemyManager() { return m_enemyManager.get(); }
+	PlaySceneUIManager* GetUIManager() { return m_uiManager.get(); }
 
 	// Õ“Ë”»’èŠÇ—ƒNƒ‰ƒX‚ğæ“¾
 	CollisionManager* GetCollisionManager() { return m_collisionManager.get(); }
