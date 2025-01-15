@@ -11,6 +11,7 @@
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
+#include "Game/Sound/Sound.h"
 #include "Libraries/MyLib/KeyboardChacker.h"
 #include "Game/Player/Player.h"
 #include "Game/Weapon/Sword/Sword.h"
@@ -467,6 +468,8 @@ void Player::Damage(float damage)
 	m_canHit = false;
 	// ノックバックをする
 	ChangeState(m_playerNockBacking.get());
+	// 効果音を鳴らす
+	Sound::GetInstance()->PlaySE(Sound::SE_TYPE::PLAYER_DAMAGED);
 }
 
 

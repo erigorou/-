@@ -25,6 +25,7 @@ public:
 		SYSTEM_OK,
 		PLAYER_ATTACK,
 		PLAYER_ATTACK2,
+		PLAYER_DAMAGED,
 		ENEMY_MOVE,
 		ENEMY_ATTACK,
 		ENEMY_SWEEP
@@ -40,6 +41,7 @@ public:
 	static constexpr const char* SYSTEM_OK_PATH			= "Resources/Sounds/SE/System/OK.mp3";
 	static constexpr const char* PLAYER_ATTACK_SE_PATH = "Resources/Sounds/SE/Player/Attack.mp3";
 	static constexpr const char* PLAYER_ATTACK2_SE_PATH = "Resources/Sounds/SE/Player/Attack2.mp3";
+	static constexpr const char* PLAYER_DAMAGED_SE_PATH = "Resources/Sounds/SE/Player/DamagedSE.mp3";
 	static constexpr const char* ENEMY_MOVE_SE_PATH		= "Resources/Sounds/SE/Enemy/Move.mp3";
 	static constexpr const char* ENEMY_ATTACK_SE_PATH	= "Resources/Sounds/SE/Enemy/Attack.mp3";
 	static constexpr const char* ENEMY_SWEEP_SE_PATH	= "Resources/Sounds/SE/Enemy/Sweep.mp3";

@@ -28,7 +28,7 @@ GoblinIdling::~GoblinIdling()
 void GoblinIdling::Initialize()
 {
 	// ランダムにクールタイムを設定する
-	m_coolTime = Math::RandomFloat(MIN_COOLTIME, MAX_COOLTIME);
+	m_coolTime = 5.0f;
 }
 
 
