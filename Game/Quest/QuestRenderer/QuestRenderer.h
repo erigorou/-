@@ -30,7 +30,7 @@ public:
 
 	// テクスチャの初期座標
 	static constexpr int INIT_POSITION_X = 1280;
-	static constexpr int INIT_POSITION_Y = 250;
+	static constexpr int INIT_POSITION_Y = 300;
 
 	// 画面サイズの大きさ
 	static constexpr float WINDOW_WIDTH = 1280;

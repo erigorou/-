@@ -216,6 +216,9 @@
     <ClInclude Include="Game\Quest\QuestList\TutorialClear.h" />
     <ClInclude Include="Game\Quest\QuestManager.h" />
     <ClInclude Include="Game\Quest\QuestRenderer\QuestRenderer.h" />
+    <ClInclude Include="Game\Quest\TutorialList\TutorialAttackEnd.h" />
+    <ClInclude Include="Game\Quest\TutorialList\TutorialAttackStart.h" />
+    <ClInclude Include="Game\Quest\TutorialList\TutorialDodgStart.h" />
     <ClInclude Include="Game\Quest\TutorialList\TutorialEnd.h" />
     <ClInclude Include="Game\Quest\TutorialList\TutorialStart.h" />
     <ClInclude Include="Game\Quest\Tutorial\Tutorial.h" />

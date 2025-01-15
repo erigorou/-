@@ -245,6 +245,9 @@
     <ClInclude Include="Game\Scene\QuestSelectScene.h" />
     <ClInclude Include="Game\Quest\QuestList\TutorialClear.h" />
     <ClInclude Include="Game\Goblin\State\Header\GoblinTutorial.h" />
+    <ClInclude Include="Game\Quest\TutorialList\TutorialAttackEnd.h" />
+    <ClInclude Include="Game\Quest\TutorialList\TutorialAttackStart.h" />
+    <ClInclude Include="Game\Quest\TutorialList\TutorialDodgStart.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />

@@ -15,7 +15,7 @@ class Tutorial
 public:
 	// テクスチャサイズの大きさ
 	static constexpr int WIDTH  = 1000;
-	static constexpr int HEIGHT = 150;
+	static constexpr int HEIGHT = 100;
 
 	// 画面サイズの大きさ
 	static constexpr float WINDOW_WIDTH = 1280;
@@ -23,7 +23,7 @@ public:
 
 	// テクスチャの初期座標
 	static constexpr float INIT_POSITION_X = (WINDOW_WIDTH - WIDTH) / 2;
-	static constexpr float INIT_POSITION_Y = 100.0f;
+	static constexpr float INIT_POSITION_Y = 50.0f;
 
 	// アニメーション時間
 	static constexpr float ANIMATION_TIME = 2.0f;

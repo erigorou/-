@@ -31,7 +31,7 @@ public:
 	static const float GOBLIN_SPEED;
 	static const float GOBLIN_SCALE;
 
-	static constexpr float GOBLIN_HP = 5.0f;
+	static constexpr float GOBLIN_HP = 8.0f;
 	static constexpr float COLLISION_RADIUS = 16.0f;
 	static constexpr float COLLISION_POS_Y = 2.0f;
 

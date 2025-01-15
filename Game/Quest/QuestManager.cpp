@@ -18,6 +18,9 @@
 
 #include "TutorialList/TutorialStart.h"
 #include "TutorialList/TutorialEnd.h"
+#include "TutorialList/TutorialAttackStart.h"
+#include "TutorialList/TutorialAttackEnd.h"
+#include "TutorialList/TutorialDodgStart.h"
 
 #include "Libraries/MyLib/DebugString.h"
 
@@ -199,13 +202,16 @@ void QuestManager::CreateQuestList_1st()
 	ClearQuestData();
 
 	// クエストの作成
-	m_questList.push_back(new TutorialStart		());
-	m_questList.push_back(new QuestPlayerMove	());
-	m_questList.push_back(new QuestPlayerAttack	());
-	m_questList.push_back(new QuestPlayerCombo	());
-	m_questList.push_back(new QuestPlayerAvoid	());
-	m_questList.push_back(new TutorialEnd		());
-	m_questList.push_back(new TutorialClear		());
+	m_questList.push_back(new TutorialStart			());
+	m_questList.push_back(new QuestPlayerMove		());
+	m_questList.push_back(new TutorialAttackStart	());
+	m_questList.push_back(new QuestPlayerAttack		());
+	m_questList.push_back(new TutorialAttackEnd		());
+	m_questList.push_back(new QuestPlayerCombo		());
+	m_questList.push_back(new TutorialDodgStart		());
+	m_questList.push_back(new QuestPlayerAvoid		());
+	m_questList.push_back(new TutorialEnd			());
+	m_questList.push_back(new TutorialClear			());
 
 
 	// クエストの中のテクスチャを読み込む
