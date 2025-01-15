@@ -24,6 +24,6 @@ public:
 		// alpha’l‚ðŒ¸‚ç‚·
 		tutorial->StartAlphaMinus();
 
-		return false;
+		return tutorial->GetTimerIsEnd();
 	};
 };

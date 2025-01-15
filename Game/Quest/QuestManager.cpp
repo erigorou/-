@@ -14,6 +14,7 @@
 #include "QuestList/QuestPlayerAttack.h"
 #include "QuestList/QuestPlayerCombo.h"
 #include "QuestList/QuestPlayerAvoid.h"
+#include "QuestList/TutorialClear.h"
 
 #include "TutorialList/TutorialStart.h"
 #include "TutorialList/TutorialEnd.h"
@@ -28,6 +29,8 @@ QuestManager::QuestManager(PlayScene* playScene)
 	: m_playScene(playScene)
 	, m_currentQuestNo()
 	, m_totalTime()
+	, m_clearTime()
+	, m_canClear(false)
 {
 }
 
@@ -64,7 +67,9 @@ void QuestManager::InitializeQuest()
 // -----------------------------
 void QuestManager::Update(float elapsedTime)
 {
+	// 経過時間の記録
 	m_totalTime += elapsedTime;
+	m_elapsedTime = elapsedTime;
 
 	// クエストの更新
 	UpdateQuest();
@@ -81,6 +86,9 @@ void QuestManager::Update(float elapsedTime)
 		m_renderer->Update(elapsedTime);
 
 	}
+
+	// クエストのクリア
+	IsQuestClear();
 }
 
 
@@ -92,10 +100,11 @@ void QuestManager::UpdateQuest()
 	if (m_renderer == nullptr	) return;	// クエストがない場合は終了
 	if (m_totalTime < DELAY_TIME) return;	// 最初の遅延時間内なら終了
 
-	if (!(m_currentQuestNo < m_questList.size() - 1))	return;	// クエストが最後まで行っている場合は終了
-
-	// クエストのクリアを描画オブジェクトに通知
-	m_renderer->IsClear(m_questList[m_currentQuestNo]->ExecuteChecker(m_playScene));
+	if ((m_currentQuestNo < m_questList.size()))
+	{
+		// クエストのクリアを描画オブジェクトに通知
+		m_renderer->IsClear(m_questList[m_currentQuestNo]->ExecuteChecker(m_playScene));
+	}
 }
 
 
@@ -121,8 +130,7 @@ void QuestManager::ChangeNextQuest()
 	}
 	else
 	{
-		// クエストクリア
-
+		m_canClear = true;
 	}
 }
 
@@ -197,6 +205,8 @@ void QuestManager::CreateQuestList_1st()
 	m_questList.push_back(new QuestPlayerCombo	());
 	m_questList.push_back(new QuestPlayerAvoid	());
 	m_questList.push_back(new TutorialEnd		());
+	m_questList.push_back(new TutorialClear		());
+
 
 	// クエストの中のテクスチャを読み込む
 	AddQuestTexture();
@@ -214,6 +224,12 @@ void QuestManager::CreateQuestList_2nd()
 {
 	// クエストデータの消去
 	ClearQuestData();
+
+	// クエストの作成
+	m_questList.push_back(new TutorialClear());
+
+	// クエストの中のテクスチャを読み込む
+	AddQuestTexture();
 }
 
 
@@ -327,4 +343,23 @@ void QuestManager::ClearQuestData()
 	// クエストリストとテクスチャリストをクリアする
 	m_questList.clear();
 	m_textureList.clear();
+}
+
+
+// -----------------------------------
+// クエストのクリア
+// -----------------------------------
+void QuestManager::IsQuestClear()
+{
+	// ゲームクリアが可能な場合
+	if (m_canClear)
+	{
+		// 一定時間経過後にゲームクリア
+		m_clearTime += m_elapsedTime;
+
+		if (m_clearTime > CLEAR_DELAY_TIME)
+		{
+			m_playScene->GameEnd();
+		}
+	}
 }

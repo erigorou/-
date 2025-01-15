@@ -93,6 +93,9 @@ public:
 	// カメラのターゲットの設定
 	void ChangeCameraTarget();
 
+	// 敵が生きているかのフラグ
+	bool IsEnemysAlive();
+
 
 // ---------------------------
 // 内部関数

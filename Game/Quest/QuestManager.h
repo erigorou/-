@@ -28,12 +28,15 @@ public:
 	static constexpr float COOL_TIME = 1.0f;
 	// 最初の遅延
 	static constexpr float DELAY_TIME = 1.0f;
+	// クリアの遅延
+	static constexpr float CLEAR_DELAY_TIME = 2.0f;
 
 
 
 // ---------------
 // アクセサ
 // ---------------
+public:
 	// 現在のクエスト番号を取得
 	int GetCurrentQuestNo() const { return m_currentQuestNo; }
 
@@ -88,9 +91,11 @@ private:
 	// チュートリアルの作成
 	void CreateTutorial();
 
-
 	// クエストデータの消去
 	void ClearQuestData();
+
+	// クエストのクリアを確認
+	void IsQuestClear();
 
 
 // ---------------
@@ -117,6 +122,10 @@ private:
 
 	// 経過時間
 	float m_totalTime;
+	// クリアしてからの時間
+	float m_clearTime;
+	// 経過時間
+	float m_elapsedTime;
 
 	// クエストのクリアが可能か
 	bool m_canClear;

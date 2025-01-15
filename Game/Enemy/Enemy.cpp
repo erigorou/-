@@ -16,6 +16,7 @@
 #include "../HitStop/HitStop.h"
 
 #include "Game/Enemy/Enemy.h"
+#include "Game/EnemyManager/EnemyManager.h"
 #include "Game/Stage/Wall/Wall.h"
 
 #include "Interface/IState.h"
@@ -69,6 +70,11 @@ Enemy::Enemy(PlayScene* playScene)
 // --------------------------------
 Enemy::~Enemy()
 {
+	m_idling->Finalize();
+	m_attacking->Finalize();
+	m_approaching->Finalize();
+	m_dead->Finalize();
+	m_dashAttacking->Finalize();
 }
 
 // --------------------------------
@@ -200,7 +206,7 @@ void Enemy::Update(float elapsedTime)
 	// 生存確認
 	CheckAlive();
 
-#ifndef _DEBUG
+#ifdef _DEBUG
 
 	// キー入力を受け付ける。
 	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
@@ -369,6 +375,6 @@ void Enemy::DeadAction()
 	// 衝突判定の解除
 	GetPlayScene()->GetCollisionManager()->DeleteCollision(CollisionType::Sphere, this);
 
-	// ゲーム終了
-	GetPlayScene()->GameEnd();
+	//// ゲーム終了
+	//GetPlayScene()->GameEnd();
 }

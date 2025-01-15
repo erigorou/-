@@ -243,6 +243,7 @@
     <ClInclude Include="Game\Goblin\State\Header\GoblinDead.h" />
     <ClInclude Include="Game\Enemy\States\Header\EnemyDead.h" />
     <ClInclude Include="Game\Scene\QuestSelectScene.h" />
+    <ClInclude Include="Game\Quest\QuestList\TutorialClear.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />

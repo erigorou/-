@@ -212,6 +212,7 @@
     <ClInclude Include="Game\Quest\QuestList\QuestPlayerAvoid.h" />
     <ClInclude Include="Game\Quest\QuestList\QuestPlayerCombo.h" />
     <ClInclude Include="Game\Quest\QuestList\QuestPlayerMove.h" />
+    <ClInclude Include="Game\Quest\QuestList\TutorialClear.h" />
     <ClInclude Include="Game\Quest\QuestManager.h" />
     <ClInclude Include="Game\Quest\QuestRenderer\QuestRenderer.h" />
     <ClInclude Include="Game\Quest\TutorialList\TutorialEnd.h" />

@@ -249,6 +249,31 @@ void EnemyManager::ChangeCameraTarget()
 
 
 // --------------------------------
+// 敵が生きているかのフラグ
+// --------------------------------
+bool EnemyManager::IsEnemysAlive()
+{
+	// 敵がいない場合クリア
+	if (m_enemies.empty()) return false;
+
+
+	// ボスがいる場合
+	if (GetBossEnemy() != nullptr)
+	{
+		// ボスのHPが0以下の場合
+		if (GetBossEnemy()->GetHPSystem()->GetHP() <= 0)
+		{
+			// クリア
+			return false;
+		}
+	}
+
+	// 生存中
+	return true;
+}
+
+
+// --------------------------------
 // ゴブリンの生成
 // --------------------------------
 void EnemyManager::GenerateGoblin(const DirectX::SimpleMath::Vector3& position)
