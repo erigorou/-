@@ -244,6 +244,7 @@
     <ClInclude Include="Game\Enemy\States\Header\EnemyDead.h" />
     <ClInclude Include="Game\Scene\QuestSelectScene.h" />
     <ClInclude Include="Game\Quest\QuestList\TutorialClear.h" />
+    <ClInclude Include="Game\Goblin\State\Header\GoblinTutorial.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -377,6 +378,7 @@
     <ClCompile Include="Game\Goblin\State\Score\GoblinDead.cpp" />
     <ClCompile Include="Game\Enemy\States\Source\EnemyDead.cpp" />
     <ClCompile Include="Game\Scene\QuestSelectScene.cpp" />
+    <ClCompile Include="Game\Goblin\State\Score\GoblinTutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

@@ -99,8 +99,12 @@ void Cudgel_Idling::Render(ID3D11DeviceContext* context,
 	const DirectX::SimpleMath::Matrix& view,
 	const DirectX::SimpleMath::Matrix& projection)
 {
+	// “G‚ª‚¢‚È‚¢ê‡‚Í•`‰æ‚µ‚È‚¢
+	if (m_cudgel->GetPlayScene()->GetEnemy() == nullptr) return;
+
 	// ƒ‚ƒfƒ‹‚ð•`‰æ‚·‚é
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
+
 
 #ifdef _DEBUG
 	CommonResources* resources = CommonResources::GetInstance();

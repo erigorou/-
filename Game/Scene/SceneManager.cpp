@@ -51,7 +51,7 @@ void SceneManager::Initialize()
 	m_fade->Initialize();
 
 #ifndef _DEBUG
-	ChangeScene(IScene::SceneID::TITLE);
+	ChangeScene(IScene::SceneID::QUEST);
 #endif // !_DEBUG
 #ifdef _DEBUG
 	ChangeScene(IScene::SceneID::QUEST);

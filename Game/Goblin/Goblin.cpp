@@ -31,7 +31,7 @@ const float Goblin::GOBLIN_SCALE = Enemy::ENEMY_SCALE / 4.0f;	// サイズ
 // -------------------------------
 Goblin::Goblin(PlayScene* playScene)
 	: m_playScene(playScene)
-	, m_position{ 80.0f, 0.0f, 0.0f } // ★　仮置き
+	, m_position{}
 	, m_velocity{}
 	, m_angle{}
 	, m_scale{1.0f, 1.0f, 1.0f}
@@ -82,13 +82,15 @@ void Goblin::Initialize()
 // --------------------------------
 void Goblin::CreateState()
 {
-	m_idling = std::make_unique<GoblinIdling>(this);		// 待機
-	m_attacking = std::make_unique<GoblinAttacking>(this);	// 攻撃
-	m_dead = std::make_unique<GoblinDead>(this);			// 死亡
+	m_idling	= std::make_unique<GoblinIdling>	(this);	// 待機
+	m_attacking = std::make_unique<GoblinAttacking>	(this);	// 攻撃
+	m_dead		= std::make_unique<GoblinDead>		(this);	// 死亡
+	m_tutorial	= std::make_unique<GoblinTutorial>	(this);	// チュートリアル
 
-	m_idling->Initialize();
-	m_attacking->Initialize();
-	m_dead->Initialize();
+	m_idling->		Initialize();
+	m_attacking->	Initialize();
+	m_dead->		Initialize();
+	m_tutorial->	Initialize();
 
 	m_currentState = m_idling.get();
 }

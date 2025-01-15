@@ -1,4 +1,7 @@
-﻿  QuestManager.cpp
-  QuestRenderer.cpp
+﻿  Factory.cpp
+  PlayScene.cpp
+  QuestSelectScene.cpp
+  TitleScene.cpp
+  Floor.cpp
   コードを生成中...
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exe

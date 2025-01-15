@@ -31,11 +31,10 @@ public:
 	static const float ENEMY_SCALE;
 	static const float COOL_TIME;
 
-	static constexpr float COLISION_POS_Y = 10.0f;
-	static constexpr float HP = 1.0f;
+	static constexpr float COLISION_POS_Y	= 10.0f;
+	static constexpr float HP				= 20.0f;
 	static constexpr float COLLISION_RADIUS = 20.0f;
-
-	static constexpr float ENEMY_HEIGHT = 50.0f;
+	static constexpr float ENEMY_HEIGHT		= 50.0f;
 
 
 public:

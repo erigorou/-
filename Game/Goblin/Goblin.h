@@ -20,6 +20,7 @@ class EnemyDamageEffect;
 #include "State/Header/GoblinIdling.h"
 #include "State/Header/GoblinAttacking.h"
 #include "State/Header/GoblinDead.h"
+#include "State/Header/GoblinTutorial.h"
 
 class Goblin : public IEnemy
 {
@@ -30,7 +31,7 @@ public:
 	static const float GOBLIN_SPEED;
 	static const float GOBLIN_SCALE;
 
-	static constexpr float GOBLIN_HP = 1.0f;
+	static constexpr float GOBLIN_HP = 5.0f;
 	static constexpr float COLLISION_RADIUS = 16.0f;
 	static constexpr float COLLISION_POS_Y = 2.0f;
 
@@ -59,7 +60,8 @@ public:
 	GoblinIdling*	 GetIdling		()	const { return m_idling.get(); }	// 待機状態の取得
 	GoblinAttacking* GetAttacking	()	const { return m_attacking.get(); }	// 攻撃状態の取得
 	GoblinDead*		 GetDead		()	const { return m_dead.get(); }		// 死亡状態の取得
-	IState* GetCurrentState			()	const { return m_currentState; }	// 現在のステートの取得
+	GoblinTutorial*	 GetTutorial	()	const { return m_tutorial.get(); }	// チュートリアル状態の取得
+	IState*			GetCurrentState	()	const { return m_currentState; }	// 現在のステートの取得
 
 	// ---------------
 	// 公開関数
@@ -135,6 +137,7 @@ private:
 	std::unique_ptr<GoblinIdling>		m_idling;		// 待機
 	std::unique_ptr<GoblinAttacking>	m_attacking;	// 攻撃
 	std::unique_ptr<GoblinDead>			m_dead;			// 死亡
+	std::unique_ptr<GoblinTutorial>		m_tutorial;		// チュートリアル
 
 	// システム **
 	std::unique_ptr<HPSystem> m_hp;						// HP

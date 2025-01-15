@@ -11,7 +11,7 @@ public:
 	// ŒÅ’è’l
 	static const wchar_t* TEXTURE_PATH;
 
-	static constexpr float	RADIUS = 175.0f;
+	static constexpr float	RADIUS = 200.0f;
 	static constexpr int	SEGMENTS = 16;
 
 

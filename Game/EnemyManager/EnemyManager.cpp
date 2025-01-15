@@ -345,7 +345,11 @@ void EnemyManager::GenerateStartEnemy()
 void EnemyManager::GenerateEnemy0()
 {
 	// 敵の生成
-	GenerateEnemy(DirectX::SimpleMath::Vector3(0.0f, 0.0f, -40.0f), EnemyType::Boss);
+	GenerateEnemy(DirectX::SimpleMath::Vector3(-20.0f, 0.0f, -40.0f), EnemyType::Goblin);
+
+	// チュートリアル用にステートを変更する
+	auto goblin = dynamic_cast<Goblin*>(m_enemies[0].data.get());
+	goblin->ChangeState(goblin->GetTutorial());
 }
 
 
@@ -355,7 +359,8 @@ void EnemyManager::GenerateEnemy0()
 void EnemyManager::GenerateEnemy1()
 {
 	// 生成
-	GenerateEnemy(DirectX::SimpleMath::Vector3(0.0f, 0.0f, -40.0f), EnemyType::Goblin);
+	GenerateEnemy(DirectX::SimpleMath::Vector3(0.0f, 0.0f, -40.0f), EnemyType::Boss);
+	GenerateEnemy(DirectX::SimpleMath::Vector3(-80.0f, 0.0f, -40.0f), EnemyType::Goblin);
 }
 
 

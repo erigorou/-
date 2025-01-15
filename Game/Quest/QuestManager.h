@@ -10,6 +10,7 @@ class QuestRenderer;	// クエスト内容の描画
 class Tutorial;			// チュートリアル
 class IQuestChecker;	// クエストのチェッカー
 
+
 class QuestManager
 {
 // ---------------
