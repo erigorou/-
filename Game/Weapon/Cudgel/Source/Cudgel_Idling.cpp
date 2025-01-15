@@ -105,8 +105,7 @@ void Cudgel_Idling::Render(ID3D11DeviceContext* context,
 #ifdef _DEBUG
 	CommonResources* resources = CommonResources::GetInstance();
 	auto debugString = resources->GetDebugString();
-	debugString->AddString
-	("");
+	debugString->AddString("");
 #endif // !_DEBUG
 }
 

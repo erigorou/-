@@ -7,6 +7,7 @@
 #pragma once
 #include "pch.h"
 #include"Game/Scene/PlayScene.h"
+#include "Game/Data/GameData.h"
 #include "Game/UI/!PlaySceneUIManager/PlaySceneUIManager.h"
 #include "EnemyManager.h"
 #include "../Enemy/Enemy.h"
@@ -31,8 +32,9 @@ const wchar_t* EnemyManager::BOSS_MODEL_PATH = L"Resources/Models/Oni/Body/oni.c
 EnemyManager::EnemyManager(PlayScene* playScene)
 	: m_targetEnemyIndex()
 	, m_playScene(playScene)
-	, m_selectQuestIndex(1)
 {
+	// セレクトステージの取得
+	m_selectQuestIndex = GameData::GetInstance()->GetSelectStage();
 }
 
 
@@ -150,7 +152,7 @@ DirectX::SimpleMath::Vector3 EnemyManager::GetBossPosition()
 			return enemy.data->GetPosition();
 		}
 	}
-
+	// ボスが入なければ原点を返す
 	return DirectX::SimpleMath::Vector3::Zero;
 }
 
@@ -319,8 +321,6 @@ void EnemyManager::GenerateEnemy0()
 {
 	// 敵の生成
 	GenerateEnemy(DirectX::SimpleMath::Vector3(0.0f, 0.0f, -40.0f), EnemyType::Boss);
-	GenerateEnemy(DirectX::SimpleMath::Vector3(40.0f, 0.0f, -20.0f), EnemyType::Goblin);
-
 }
 
 
@@ -330,6 +330,7 @@ void EnemyManager::GenerateEnemy0()
 void EnemyManager::GenerateEnemy1()
 {
 	// 生成
+	GenerateEnemy(DirectX::SimpleMath::Vector3(0.0f, 0.0f, -40.0f), EnemyType::Boss);
 	GenerateEnemy(DirectX::SimpleMath::Vector3(0.0f, 0.0f, -40.0f), EnemyType::Goblin);
 }
 

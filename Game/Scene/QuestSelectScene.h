@@ -15,6 +15,7 @@ class Sea;
 class TitleEnemy;
 class SkySphere;
 class Particle;
+class CustomShader;
 
 namespace mylib
 {
@@ -25,23 +26,37 @@ namespace mylib
 
 class QuestSelectScene final : public IScene
 {
-
 public:
-
 	static constexpr float DELAY = 1.5f;		// タイトル画面の遅延時間
-	static constexpr float ANIM_END = 1.5f;	// タイトル画面のアニメーション終了時間
+	static constexpr float ANIM_END = 1.5f;		// タイトル画面のアニメーション終了時間
 
-	static constexpr float STAGE_SELECT_DELAY = 2.0f;	// ステージセレクト画面の遅延時間
-	static constexpr float STAGE_SELECT_END = 1.5f;	// ステージセレクト画面のアニメーション終了時間
+	static constexpr float STAGE_SELECT_DELAY = 2.5f;	// ステージセレクト画面の遅延時間
+	static constexpr float STAGE_SELECT_END	  = 1.0f;	// ステージセレクト画面のアニメーション終了時間
 
 	static constexpr float TITLE_LOGO_CENTER_Y = -165.0f;	// タイトルの中心座標 ※bottom基準
 
 	static constexpr float WINDOW_WIDTH = 1280.0f;	// ウィンドウの幅
 	static constexpr float WINDOW_HEIGHT = 720.0f;	// ウィンドウの高さ
 
-	static constexpr float QUEST_LOTO_1_CENTER_X = -115.0f;	// クエストロゴ１の中心座標 ※bottom基準
-	static constexpr float QUEST_LOTO_2_CENTER_X = -165.0f;	// クエストロゴ２の中心座標 ※bottom基準
+	static constexpr int MAX_STAGE_INDEX = 1;
+	static constexpr int MIN_STAGE_INDEX = 0;
 
+	// 入力レイアウト
+	std::vector<D3D11_INPUT_ELEMENT_DESC> InputElements =
+	{
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3), D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3) + sizeof(DirectX::SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 }
+	};
+
+
+	// 定数バッファ
+	struct CBuffer
+	{
+		DirectX::SimpleMath::Vector4	windowSize;	// ウィンドウサイズ
+		float							alpha;		// 透明度
+		DirectX::SimpleMath::Vector3	padding;	// 空白
+	};
 
 public:
 	void CleateSpamDust(DirectX::SimpleMath::Vector3 pos);
@@ -68,6 +83,19 @@ public:
 	void SetShakeCamera();			// カメラを揺らす
 
 private:
+
+	// シェーダーの生成
+	void CreateShader(const wchar_t* VS, const wchar_t* PS, const wchar_t* GS);
+
+	// コンスタントバッファの作成
+	void CreateConstantBuffer();
+
+	// 定数バッファの更新処理
+	void UpdateConstantBuffer();
+
+	// 描画設定
+	void SetRenderState();
+
 	// 画像のロード処理
 	void LoadTextures();
 	// 画像の中心：大きさを取得
@@ -83,6 +111,9 @@ private:
 
 	// ステージの描画
 	void DrawStageSelect();
+
+	// ステージ選択
+	void SelectStage(DirectX::Keyboard::KeyboardStateTracker* keyboard);
 
 	// 共通リソース
 	CommonResources* m_commonResources;
@@ -102,6 +133,13 @@ private:
 	DirectX::SimpleMath::Vector2 m_texCenter3;
 	DirectX::SimpleMath::Vector2 m_texCenter4;
 
+
+
+	std::vector<std::unique_ptr<CustomShader>> m_shaderList;	// シェーダーリスト
+	std::vector<std::unique_ptr<Microsoft::WRL::ComPtr<ID3D10ShaderResourceView>>> m_texList;
+	Microsoft::WRL::ComPtr<ID3D11Buffer>	m_CBuffer;
+	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_batch;
+
 	// シーンチェンジフラグ
 	bool m_isChangeScene;
 
@@ -114,7 +152,8 @@ private:
 	std::unique_ptr<Sea>		m_sea;			// 海
 	std::unique_ptr<TitleEnemy> m_enemy;		// 敵
 	std::unique_ptr<SkySphere>	m_skySphere;	// スカイスフィア
-
 	std::unique_ptr<Particle> m_particle;		// パーティクル
+
+	int m_selectIndex;	// 選択中のステージ番号
 };
 

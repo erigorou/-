@@ -12,10 +12,12 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "../Factory/Factory.h"
 #include "../Sound/Sound.h"
+#include "../Data/GameData.h"
 #include "Libraries/MyLib/EasingFunctions.h"
 #include "Libraries/MyLib/Math.h"
 #include "Effects/Particle.h"
 #include "Game/UI/UIAnchor.h"
+#include "Libraries/MyLib/CustomShader/CustomShader.h"
 
 #include "../Camera/Camera.h"
 #include "../Stage/Floor/Floor.h"
@@ -37,7 +39,8 @@ QuestSelectScene::QuestSelectScene()
 	m_spriteBatch{},
 	m_texture{},
 	m_texCenter{},
-	m_isChangeScene{}
+	m_isChangeScene{},
+	m_selectIndex{}
 {
 	m_commonResources = CommonResources::GetInstance();
 }
@@ -55,12 +58,10 @@ QuestSelectScene::~QuestSelectScene()
 //---------------------------------------------------------
 void QuestSelectScene::Initialize()
 {
-	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
 	auto context = m_commonResources->GetDeviceResources()->GetD3DDeviceContext();
 
 	// スプライトバッチを作成する
 	m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
-
 
 	// テクスチャをロードする
 	LoadTextures();
@@ -119,6 +120,7 @@ void QuestSelectScene::LoadTextures()
 
 	m_textureList.push_back(tex);
 
+
 	DX::ThrowIfFailed(
 		CreateWICTextureFromFile(
 			device,
@@ -154,7 +156,9 @@ void QuestSelectScene::CalculateTextureCenters()
 	);
 }
 
-
+// ---------------------------------------------------------
+// テクスチャの中心を取得する
+// ---------------------------------------------------------
 void QuestSelectScene::CalculateTextureCenter(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture, DirectX::SimpleMath::Vector2& texCenter)
 {
 	Microsoft::WRL::ComPtr<ID3D11Resource> resource;
@@ -181,7 +185,7 @@ void QuestSelectScene::CreateObjects()
 {
 	m_camera	= Factory::CreateCamera	();
 	m_floor		= Factory::CreateFloor	();
-	m_sea = Factory::CreateSea();
+	m_sea		= Factory::CreateSea();
 	m_skySphere = Factory::CreateSkySphere();
 
 	m_enemy = std::make_unique<TitleEnemy>();
@@ -208,25 +212,45 @@ void QuestSelectScene::Update(float elapsedTime)
 	DirectX::SimpleMath::Vector3 zeroV = DirectX::SimpleMath::Vector3::Zero;
 	DirectX::SimpleMath::Matrix zeroM = DirectX::SimpleMath::Matrix::Identity;
 
+	// オブジェクトの更新
 	m_camera->Shake(elapsedTime);
 	m_camera->Update(zeroV, zeroV, zeroM, elapsedTime);
-
 	m_enemy->Update(elapsedTime);
 
+	// パーティクルの更新
+	m_particle->Update(elapsedTime, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero);
+
+	// ステージ選択
+	SelectStage(kbTracker.get());
+}
+
+
+
+void QuestSelectScene::SelectStage(DirectX::Keyboard::KeyboardStateTracker* keyboard)
+{
+	if (m_isChangeScene) return;
+
 	// スペースキーが押されたら
-	if (kbTracker->pressed.Space)
+	if (keyboard->pressed.Space)
 	{
 		if (!m_isChangeScene)
 		{
+			// ゲームデータにステージを設定
+			auto gameData = GameData::GetInstance();
+			gameData->SetSelectStage(m_selectIndex);
 
-
-			//m_isChangeScene = true;
-			//Sound::PlaySE(Sound::SE_TYPE::SYSTEM_OK);
+			// シーン変更フラグを立てるのと音楽を鳴らす
+			m_isChangeScene = true;
+			Sound::PlaySE(Sound::SE_TYPE::SYSTEM_OK);
 		}
 	}
 
-	m_particle->Update(elapsedTime, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero);
+	// ステージ選択
+	if (keyboard->pressed.Up	)	m_selectIndex = Math::Clamp(m_selectIndex - 1, MIN_STAGE_INDEX, MAX_STAGE_INDEX);
+	if (keyboard->pressed.Down	)	m_selectIndex = Math::Clamp(m_selectIndex + 1, MIN_STAGE_INDEX, MAX_STAGE_INDEX);
 }
+
+
 
 //---------------------------------------------------------
 // 描画する
@@ -280,6 +304,7 @@ void QuestSelectScene::DrawTexture()
 	// 秒数を正規化
 	float t = Math::Clamp(m_totalSeconds - DELAY, 0.0f, ANIM_END) / ANIM_END;
 
+
 	// タイトルロゴの描画位置を決める（移動も考慮）
 	Vector2 logoPos
 	{
@@ -287,8 +312,6 @@ void QuestSelectScene::DrawTexture()
 		TITLE_LOGO_CENTER_Y + moveValue * Easing::easeOutElastic(t)
 	};
 
-
-	// LOGO.png を中央に描画する
 	m_spriteBatch->Draw(
 		m_texture.Get(),	// テクスチャ(SRV)
 		logoPos,			// スクリーンの表示位置(originの描画位置)
@@ -321,6 +344,13 @@ void QuestSelectScene::DrawTexture()
 
 void QuestSelectScene::DrawStageSelect()
 {
+	// ステージに応じた色情報の設定
+	float colorRGB1 = 1.0f - 0.5f * m_selectIndex;
+	float colorRGB2 = 0.5f + 0.5f * m_selectIndex;
+
+	DirectX::SimpleMath::Vector4 color1 = DirectX::SimpleMath::Vector4(colorRGB1, colorRGB1, colorRGB1, 1.0f);
+	DirectX::SimpleMath::Vector4 color2 = DirectX::SimpleMath::Vector4(colorRGB2, colorRGB2, colorRGB2, 1.0f);
+
 	RECT rect{ m_commonResources->GetDeviceResources()->GetOutputSize() };
 
 	// 画像の中心を計算する
@@ -328,25 +358,26 @@ void QuestSelectScene::DrawStageSelect()
 	Vector2 titlePos = pos;
 
 	// 移動量;
-	float moveValue = m_texCenter3.x * 2;
+	float moveValue = m_texCenter3.x * 3;
 
 	// 秒数を正規化
 	float t = Math::Clamp(m_totalSeconds - STAGE_SELECT_DELAY, 0.0f, STAGE_SELECT_END) / STAGE_SELECT_END;
 
+
 	// タイトルロゴの描画位置を決める（移動も考慮）
 	Vector2 tutorialPos
 	{
-		WINDOW_WIDTH + m_texCenter3.x - moveValue * Easing::easeOutBounce(t),
+		WINDOW_WIDTH + m_texCenter3.x * 2.0f - moveValue * Easing::easeOutBack(t),
 		450.0f
 	};
 
 
-	// LOGO.png を中央に描画する
+	// チュートリアルを描画
 	m_spriteBatch->Draw(
 		m_textureList[0].Get(),	// テクスチャ(SRV)
 		tutorialPos,			// スクリーンの表示位置(originの描画位置)
 		nullptr,				// 矩形(RECT)
-		Colors::White,			// 背景色
+		color1,					// 背景色
 		0.0f,					// 回転角(ラジアン)
 		m_texCenter3,			// テクスチャの基準になる表示位置(描画中心)(origin)
 		1.0f,					// スケール(scale)
@@ -355,10 +386,10 @@ void QuestSelectScene::DrawStageSelect()
 	);
 
 
-	// タイトルロゴの描画位置を決める（移動も考慮）
+	// 本戦を描画
 	Vector2 BossFightPos
 	{
-		WINDOW_WIDTH + m_texCenter3.x - moveValue * Easing::easeOutBounce(t),
+		WINDOW_WIDTH + m_texCenter3.x * 2.0f - moveValue * Easing::easeOutBack(t),
 		575.0f
 	};
 
@@ -369,7 +400,7 @@ void QuestSelectScene::DrawStageSelect()
 		m_textureList[1].Get(), // テクスチャ(SRV)
 		BossFightPos,			// スクリーンの表示位置(originの描画位置)
 		nullptr,				// 矩形(RECT)
-		Colors::White,			// 背景色
+		color2,				// 背景色
 		0.0f,					// 回転角(ラジアン)
 		m_texCenter4,			// テクスチャの基準になる表示位置(描画中心)(origin)
 		1.0f,					// スケール(scale)
@@ -387,6 +418,7 @@ void QuestSelectScene::Finalize()
 {
 	// do nothing.
 }
+
 
 //---------------------------------------------------------
 // 次のシーンIDを取得する
@@ -411,6 +443,69 @@ void QuestSelectScene::SetShakeCamera()
 {
  	m_camera->SetShake(1.0f);
 }
+
+
+//---------------------------------------------------------
+// シェーダーの生成
+//---------------------------------------------------------
+void QuestSelectScene::CreateShader(const wchar_t* VS, const wchar_t* PS, const wchar_t* GS)
+{
+	// デバイスの取得
+	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
+
+	// シェーダーの生成
+	m_shaderList.push_back(std::make_unique<CustomShader>
+		(
+			device,
+			VS,
+			PS,
+			GS,
+			InputElements
+		)
+	);
+}
+
+
+//---------------------------------------------------------
+// 定数バッファの作成
+//---------------------------------------------------------
+void QuestSelectScene::CreateConstantBuffer()
+{
+	// デバイスの取得
+	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
+
+	//	シェーダーにデータを渡すためのコンスタントバッファ生成
+	D3D11_BUFFER_DESC cbDesc = {};
+	cbDesc.ByteWidth = sizeof(CBuffer);
+	cbDesc.Usage = D3D11_USAGE_DEFAULT;
+	cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbDesc.CPUAccessFlags = 0;
+	cbDesc.MiscFlags = 0;
+
+	// コンスタントバッファの作成
+	DX::ThrowIfFailed(
+		device->CreateBuffer(&cbDesc, nullptr, m_CBuffer.GetAddressOf())
+	);
+}
+
+
+// --------------------
+// レンダーステートの設定
+// --------------------
+void QuestSelectScene::SetRenderState()
+{
+	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
+	auto states = CommonResources::GetInstance()->GetCommonStates();
+
+	//	画像用サンプラーの登録
+	ID3D11SamplerState* sampler[1] = { states->LinearWrap() };
+	context->PSSetSamplers(0, 1, sampler);
+	ID3D11BlendState* blendstate = states->NonPremultiplied(); 	//	半透明描画指定
+	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);		// 透明処理
+	context->OMSetDepthStencilState(states->DepthNone(), 0);		// 深度バッファに書き込み参照しない
+	context->RSSetState(states->CullClockwise());					// カリングは左回り
+}
+
 
 
 void QuestSelectScene::CleateSpamDust(DirectX::SimpleMath::Vector3 pos)

@@ -70,6 +70,8 @@ private:
 	// クエストの更新
 	void UpdateQuest();
 
+	// クエストの作成
+	void CreateQuest(int questIndex);
 
 	// クエストリストの作成 1st
 	void CreateQuestList_1st();

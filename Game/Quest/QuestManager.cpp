@@ -5,6 +5,7 @@
 #include "pch.h"
 #include "QuestManager.h"
 #include "../Scene/PlayScene.h"
+#include "../Data/GameData.h"
 #include "QuestRenderer/QuestRenderer.h"
 #include "Tutorial/Tutorial.h"
 
@@ -44,8 +45,11 @@ QuestManager::~QuestManager()
 // -----------------------------
 void QuestManager::InitializeQuest()
 {
+	// クエストデータに登録された番号を取得
+	int questIndex = GameData::GetInstance()->GetSelectStage();
+
 	// クエストリストの作成
-	CreateQuestList_2nd();
+		CreateQuest(questIndex);
 
 	if (m_questList.size() <= 0) return;
 
@@ -149,6 +153,32 @@ void QuestManager::DrawQuest()
 // -----------------------------
 void QuestManager::Finalize()
 {
+}
+
+
+// -----------------------------
+// クエストの作成
+// -----------------------------
+void QuestManager::CreateQuest(int questIndex)
+{
+	switch (questIndex)
+	{
+	case 0:
+		CreateQuestList_1st();
+		break;
+
+	case 1:
+		CreateQuestList_2nd();
+		break;
+
+	case 2:
+		CreateQuestList_3rd();
+		break;
+	
+	default:
+		MessageBox(nullptr, L"クエストの作成に失敗しました", L"エラー", MB_OK);
+		break;
+	}
 }
 
 
