@@ -355,7 +355,6 @@ void EnemyManager::GenerateEnemy0()
 void EnemyManager::GenerateEnemy1()
 {
 	// ¶¬
-	GenerateEnemy(DirectX::SimpleMath::Vector3(0.0f, 0.0f, -40.0f), EnemyType::Boss);
 	GenerateEnemy(DirectX::SimpleMath::Vector3(0.0f, 0.0f, -40.0f), EnemyType::Goblin);
 }
 

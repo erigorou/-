@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "Interface/IQuestChecker.h"
 #include "../../Scene/PlayScene.h"
+#include "../Tutorial/Tutorial.h"
 
 
 class TutorialEnd : public IQuestChecker

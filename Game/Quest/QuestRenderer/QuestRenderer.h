@@ -26,11 +26,11 @@ class QuestRenderer
 public:
 	// テクスチャサイズの大きさ
 	static constexpr int WIDTH  = 400;
-	static constexpr int HEIGHT = 100;
+	static constexpr int HEIGHT = 120;
 
 	// テクスチャの初期座標
 	static constexpr int INIT_POSITION_X = 1280;
-	static constexpr int INIT_POSITION_Y = 450;
+	static constexpr int INIT_POSITION_Y = 250;
 
 	// 画面サイズの大きさ
 	static constexpr float WINDOW_WIDTH = 1280;
@@ -40,9 +40,9 @@ public:
 	static constexpr float FINAL_POSITION_WIDTH = WINDOW_WIDTH - WIDTH;
 
 	// アニメーション時間
-	static constexpr float ANIMATION_TIME = 1.0f;
-	static constexpr float INITIAL_TIME = -0.5f;
-	static constexpr float ANIMATION_WAIT = 1.0f;
+	static constexpr float ANIMATION_TIME	= 1.0f;
+	static constexpr float INITIAL_TIME		= -0.5f;
+	static constexpr float ANIMATION_WAIT	= 1.0f;
 
 	// 透明度
 	static constexpr float MAX_ALPHA = 1.0f;

@@ -29,7 +29,7 @@ public:
 	// Å‰‚Ì’x‰„
 	static constexpr float DELAY_TIME = 1.0f;
 	// ƒNƒŠƒA‚Ì’x‰„
-	static constexpr float CLEAR_DELAY_TIME = 2.0f;
+	static constexpr float CLEAR_DELAY_TIME = 0.5f;
 
 
 

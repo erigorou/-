@@ -305,7 +305,7 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 	// シーン変更がある場合
 	if (m_isChangeScene)
 	{
-		return IScene::SceneID::RESULT;
+		return IScene::SceneID::QUEST;
 	}
 
 	// シーン変更がない場合
@@ -319,33 +319,35 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 // --------------------------------
 void PlayScene::CheckResult()
 {
-	auto data = GameData::GetInstance();
+	m_isChangeScene = true;
 
-	// ボスのポインタを取得
-	auto enemy = m_enemyManager->GetBossEnemy();
+	//auto data = GameData::GetInstance();
 
-	// 敵が死亡
-	if (enemy->GetEnemyHP()->GetHP() <= 0)
-	{
-		m_isChangeScene = true;
-		data->SetBattleResult(GameData::BATTLE_RESULT::WIN);
-	}
-
-	// プレイヤーが死亡
-	else if (m_player->GetPlayerHP()->GetHP() <= 0)
-	{
-		m_isChangeScene = true;
-		data->SetBattleResult(GameData::BATTLE_RESULT::LOSE);
-	}
-
-
-#ifdef _DEBUG
-	if (m_keyboardStateTracker.IsKeyPressed(DirectX::Keyboard::Keys::F7))
-	{
-		m_isChangeScene = true;
-		data->SetBattleResult(GameData::BATTLE_RESULT::WIN);
-	}
-#endif // !_DEBUG
+//	// ボスのポインタを取得
+//	auto enemy = m_enemyManager->GetBossEnemy();
+//
+//	// 敵が死亡
+//	if (enemy->GetEnemyHP()->GetHP() <= 0)
+//	{
+//		m_isChangeScene = true;
+//		data->SetBattleResult(GameData::BATTLE_RESULT::WIN);
+//	}
+//
+//	// プレイヤーが死亡
+//	else if (m_player->GetPlayerHP()->GetHP() <= 0)
+//	{
+//		m_isChangeScene = true;
+//		data->SetBattleResult(GameData::BATTLE_RESULT::LOSE);
+//	}
+//
+//
+//#ifdef _DEBUG
+//	if (m_keyboardStateTracker.IsKeyPressed(DirectX::Keyboard::Keys::F7))
+//	{
+//		m_isChangeScene = true;
+//		data->SetBattleResult(GameData::BATTLE_RESULT::WIN);
+//	}
+//#endif // !_DEBUG
 
 }
 

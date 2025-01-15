@@ -274,7 +274,7 @@ void QuestRenderer::SlideOutTexture()
 	m_alpha = MAX_ALPHA - t;
 
 	// スライドイン処理
-	m_position.x = FINAL_POSITION_WIDTH + WIDTH * Easing::easeOutBounce(t);
+	m_position.x = FINAL_POSITION_WIDTH + WIDTH * Easing::easeInExpo(t);
 
 	// アニメーション時間を経過した場合、終了
 	if (m_currentTime > ANIMATION_TIME)

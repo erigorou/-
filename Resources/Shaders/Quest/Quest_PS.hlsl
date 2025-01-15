@@ -10,7 +10,7 @@ float4 main(PS_INPUT input) : SV_TARGET
     float4 output = tex.Sample(samLinear, input.Tex);
 
     // ƒ¿’l‚Ìİ’è
-    output.a *= alpha * 1.5f;
+    output.a *= alpha * 1.0f;
     
     return output;
 }
