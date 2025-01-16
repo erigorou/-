@@ -70,16 +70,34 @@ void EnemyApproaching::Update(const float& elapsedTime)
 	// 絶対値を取ることでジャンプしているような挙動をする　※
 	m_position.y = fabsf(m_position.y);
 
+	// プレイヤーの座標を取得
+	Vector3 playerPos = m_enemy->GetPlayScene()->GetPlayer()->GetPosition();
+
 	// 移動でカメラを揺らす
 	if (m_position.y <= MINIMAL)
 	{
 		m_enemy->GetPlayScene()->SetShakeCamera(1.0f);
 		Sound::PlaySE(Sound::SE_TYPE::ENEMY_MOVE);
+
+
+		// プレイヤーとの距離が近い場合
+		if (DirectX::SimpleMath::Vector3::Distance(m_position, playerPos) <= 20.0f)
+		{
+			m_enemy->GetPlayScene()->SetShakeCamera(0.1f);
+			Sound::PlaySE(Sound::SE_TYPE::ENEMY_MOVE);
+
+			int random = Math::RandomInt(0, 4);
+
+			if (random <= 1)
+				m_enemy->ChangeState(m_enemy->GetEnemySweeping());		// 掃討
+			else if (random == 2)
+				m_enemy->ChangeState(m_enemy->GetEnemyAttacking());		// 攻撃
+			else if (random == 3)
+				m_enemy->ChangeState(m_enemy->GetEnemyIdling());		// 何もしない
+
+			return;
+		}
 	}
-
-
-	// プレイヤーの座標を取得
-	Vector3 playerPos = m_enemy->GetPlayScene()->GetPlayer()->GetPosition();
 
 	// 敵から見たプレイヤーの位置を計算する
 	m_angle = Math::CalculationAngle(m_position, playerPos);
@@ -95,22 +113,6 @@ void EnemyApproaching::Update(const float& elapsedTime)
 	if (m_totalSeconds >= 2.0f)
 	{
 		m_enemy->ChangeState(m_enemy->GetEnemyIdling());
-	}
-
-	// プレイヤーとの距離が　20以下なら攻撃モーションに変更
-	if (Vector3::Distance(m_position, playerPos) <= 10.f)
-	{
-		m_enemy->GetPlayScene()->SetShakeCamera(0.1f);
-		Sound::PlaySE(Sound::SE_TYPE::ENEMY_MOVE);
-
-		int random = Math::RandomInt(0, 4);
-
-		if (random <= 1)
-			m_enemy->ChangeState(m_enemy->GetEnemySweeping());		// 掃討
-		else if (random == 2)
-			m_enemy->ChangeState(m_enemy->GetEnemyAttacking());		// 攻撃
-		else if (random == 3)
-			m_enemy->ChangeState(m_enemy->GetEnemyIdling());		// 何もしない
 	}
 
 

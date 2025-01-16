@@ -32,6 +32,8 @@ const wchar_t* EnemyManager::BOSS_MODEL_PATH = L"Resources/Models/Oni/Body/oni.c
 EnemyManager::EnemyManager(PlayScene* playScene)
 	: m_targetEnemyIndex()
 	, m_playScene(playScene)
+	, m_elapsedTime()
+	, m_currentTime()
 {
 	// セレクトステージの取得
 	m_selectQuestIndex = GameData::GetInstance()->GetSelectStage();
@@ -67,6 +69,8 @@ void EnemyManager::Initialize(PlayScene* playScene)
 // --------------------------------
 void EnemyManager::Update(float elapsedTime)
 {
+	m_elapsedTime = elapsedTime;
+
 	if (m_enemies.empty()) return;
 
 	for (auto& enemy : m_enemies)
@@ -263,11 +267,16 @@ bool EnemyManager::IsEnemysAlive()
 		// ボスのHPが0以下の場合
 		if (GetBossEnemy()->GetHPSystem()->GetHP() <= 0)
 		{
-			// クリア
-			return false;
+			// 経過時間を加算
+			m_currentTime += m_elapsedTime;
+
+			// ボスが死んでからの時間が一定時間経過したらfalse(死亡)を返す
+			return (m_currentTime <= BOSS_DEAD_DELAY);
 		}
 	}
 
+	// 秒数をリセット
+	m_currentTime = 0.0f;
 	// 生存中
 	return true;
 }

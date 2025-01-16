@@ -1,26 +1,108 @@
-﻿  EnemyManager.cpp
-  Enemy.cpp
-  EnemyApproaching.cpp
+﻿  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\DamageEffect\DamageEffectPS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Dust\DustGS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Dust\DustPS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Dust\DustVS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Fade\FadeGS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Fade\FadePS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Fade\FadeVS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Mask\MaskGS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Mask\MaskPS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Mask\MaskVS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Operation\OperationGS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Operation\OperationPS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Operation\OperationVS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Quest\Quest_GS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Quest\Quest_PS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Quest\Quest_VS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Sword\SwordTrailPS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Sword\SwordTrailVS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\UI\UIGS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\UI\UIPS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\UI\UIVS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Voronoi\VoronoiGS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Voronoi\VoronoiPS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Voronoi\VoronoiVS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Warning\WarningGS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Warning\WarningPS.cso
+  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Warning\WarningVS.cso
+  pch.cpp
+  Action.cpp
+  BehaviorTree.cpp
+  IfDecorator.cpp
+  Selector.cpp
+  Sequence.cpp
+  DeviceResources.cpp
+  Particle.cpp
+  DustTrailParticle.cpp
+  SwordTrialParticle.cpp
+  PlayCameraState.cpp
+  TitleCameraState.cpp
+  GameData.cpp
+  HPSystem.cpp
+  EnemyDamageEffect.cpp
+  EnemyManager.cpp
+  EnemyFaceAttacking.cpp
+  EnemyFaceIdling.cpp
+  EnemyDashAttacking.cpp
+  EnemyDead.cpp
   EnemyStarting.cpp
-  Enemy_Sweeping.cpp
-  Factory.cpp
-  Goblin.cpp
-  GoblinAttacking.cpp
+  コードを生成中...
+  コンパイル中...
   GoblinDead.cpp
-  GoblinIdling.cpp
   GoblinTutorial.cpp
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Goblin\State\Score\GoblinTutorial.cpp(54,42): warning C4100: 'elapsedTime': 引数は関数の本体部で 1 度も参照されません。
+  HitStop.cpp
+  Player_NockBacking.cpp
+  QuestManager.cpp
+  QuestRenderer.cpp
+  Tutorial.cpp
+  QuestSelectScene.cpp
+  LoseResult.cpp
+  WinResult.cpp
+  Sea.cpp
+  EnemyTitleIdling.cpp
+  EnemyTitleMoving.cpp
+  Factory.cpp
+  Game.cpp
+  Camera.cpp
+  CommonResources.cpp
+  Enemy.cpp
+  EnemyApproaching.cpp
+  Enemy_Attacking.cpp
+  コードを生成中...
+  コンパイル中...
+  EnemyIdling.cpp
+  Enemy_Sweeping.cpp
+  Goblin.cpp
+  GoblinAttacking.cpp
+  GoblinIdling.cpp
   Player.cpp
   Player_Attacking_1.cpp
   Player_Attacking_2.cpp
-  QuestManager.cpp
+  Player_Idling.cpp
+  Player_Dodging.cpp
   PlayScene.cpp
+  ResultScene.cpp
   SceneManager.cpp
+  TitleScene.cpp
+  Sound.cpp
+  Floor.cpp
   Wall.cpp
+  TitleEnemy.cpp
+  Fade.cpp
   PlaySceneUIManager.cpp
-  Cudgel_Attacking.cpp
   コードを生成中...
   コンパイル中...
+  EnemyHPUI.cpp
+  Gauge.cpp
+  IconUI.cpp
+  OperateUI.cpp
+  Operation.cpp
+  PlayerHPUI.cpp
+  Warning.cpp
+  UI.cpp
+  Cudgel.cpp
+  Cudgel_Attacking.cpp
   Cudgel_Idling.cpp
   Cudgel_Sweeping.cpp
   Sword_Attacking_1.cpp
@@ -30,5 +112,27 @@ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Goblin\State\Scor
   Sword_Idling.cpp
   Sword.cpp
   IEnemy.h
+  DebugDraw.cpp
   コードを生成中...
+  コンパイル中...
+  BinaryFile.cpp
+  CollisionManager.cpp
+  CustomShader.cpp
+  DebugCamera.cpp
+  DebugString.cpp
+  InputManager.cpp
+  InvincibilityFrames.cpp
+  SkySphere.cpp
+  Texture.cpp
+  Main.cpp
+  Messenger.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\utility(270,61): warning C4267: '初期化中': 'size_t' から '_Ty2' に変換しました。データが失われているかもしれません。
+          with
+          [
+              _Ty2=int
+          ]
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Observer\Messenger.cpp(138,57): message : コンパイル対象の関数 テンプレート インスタンス化 'std::pair<int,int>::pair<int,unsigned __int64,0>(std::pair<int,unsigned __int64> &&) noexcept' のリファレンスを確認してください
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Observer\Messenger.cpp(138,42): message : 'Messenger::CreateKeyRangeList' の 'std::pair<int,int>::pair' への最初の参照を参照してください
+  コードを生成中...
+     ライブラリ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.lib とオブジェクト C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exp を作成中
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exe

@@ -46,6 +46,9 @@ public:
 	// ゴブリンの最大沸き数
 	static constexpr int MAX_GOBLIN = 3;
 
+	// ボスが死亡したことを伝える際の遅延
+	static constexpr float BOSS_DEAD_DELAY = 2.0f;
+
 
 // ---------------------------
 // アクセサ
@@ -137,6 +140,12 @@ private:
 
 	DirectX::Model* m_goblinModel;
 	DirectX::Model* m_bossModel;
+
+	// 秒数
+	float m_elapsedTime;
+
+	// 経過時間
+	float m_currentTime;
 
 	// インデックス数
 	int m_selectQuestIndex;
