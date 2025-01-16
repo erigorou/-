@@ -102,7 +102,7 @@ private:
 	void DrawParticle(const DirectX::SimpleMath::Matrix &view, DirectX::SimpleMath::Matrix projection);	
 
 	void CheckResult();						// 勝敗判定
-
+	void GameOverChacker();					// ゲームオーバー判定
 
 // --------------------------
 // 内部変数

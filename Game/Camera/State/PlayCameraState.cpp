@@ -53,7 +53,10 @@ void PlayCameraState::Update(
     targetCameraPos.y = Camera::CAMERA_POSITION_Y * normalizedDistance;
 
     // ƒJƒƒ‰ˆÊ’u‚ð•âŠÔ‚µ‚Ä’Ç]
-    float followSpeed = 0.25f; // ’Ç]‘¬“x (0.0f ` 1.0f)
+    float followSpeed = 0.2f; // ’Ç]‘¬“x (0.0f ` 1.0f)
+
+    
+
     m_camera->m_position = Math::LerpVector(m_camera->m_position, targetCameraPos, followSpeed);
 
 

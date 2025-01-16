@@ -212,6 +212,9 @@ void PlayScene::UpdateObjects(float elapsedTime)
 
 	// 衝突判定の更新処理
 	m_collisionManager->Update();
+
+
+	GameOverChacker();	// ゲームオーバー判定
 }
 
 
@@ -349,6 +352,27 @@ void PlayScene::CheckResult()
 //	}
 //#endif // !_DEBUG
 
+}
+
+
+// --------------------------------
+// ゲームオーバー判定
+// --------------------------------
+void PlayScene::GameOverChacker()
+{
+	static bool flag = true;
+
+	if (m_keyboardStateTracker.IsKeyPressed(DirectX::Keyboard::Keys::F2)) {
+		flag = !flag;
+	}
+
+	if (flag) return;
+
+	// プレイヤーが死亡
+	if (m_player->GetPlayerHP()->GetHP() <= 0)
+	{
+		GameEnd();
+	}
 }
 
 

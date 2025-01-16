@@ -171,9 +171,5 @@ void GoblinAttacking::SearchPlayer()
 
 	// ゴブリンとプレイヤーの距離を取得
 	m_moveValue = playerPos - m_position;
-
-	auto resources = CommonResources::GetInstance();
-	auto debugString = resources->GetDebugString();
-	debugString->AddString("GoblinAngle, %f", m_angle);
 }
 
