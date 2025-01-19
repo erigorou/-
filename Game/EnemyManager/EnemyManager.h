@@ -81,27 +81,20 @@ public:
 	// 更新処理
 	void Update(float elapsedTime);
 	// 描画処理
-	void Render(
-		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection
-	);
+	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection);
 	// 終了処理
 	void Finalize();
+
 	// 敵の生成処理
 	void GenerateEnemy(const DirectX::SimpleMath::Vector3& position, EnemyType type);
-
 	// ゴブリンの全削除
 	void DeleteAllGoblin();
-
 	// 全てのゴブリンのHPを0にする
 	void AllGoblinHPZero();
-
 	// 敵１体の削除
 	void DeleteEnemy(IEnemy* enemy);
-
 	// カメラのターゲットの設定
 	void ChangeCameraTarget();
-
 	// 敵が生きているかのフラグ
 	bool IsEnemysAlive();
 
@@ -113,12 +106,10 @@ private:
 
 	// Jsonから敵の生成
 	void GenerateEnemyFromJson();
-
 	// ゴブリンの生成処理
 	void GenerateGoblin(const DirectX::SimpleMath::Vector3& position);
 	// ボスの生成処理
 	void GenerateBoss(const DirectX::SimpleMath::Vector3& position);
-
 	// モデルの生成処理
 	DirectX::Model* CreateModel(const wchar_t* filePath);
 

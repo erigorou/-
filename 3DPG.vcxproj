@@ -207,6 +207,7 @@
     <ClInclude Include="Game\Enemy\States\Header\EnemyDashAttacking.h" />
     <ClInclude Include="Game\Enemy\States\Header\EnemyDead.h" />
     <ClInclude Include="Game\Enemy\States\Header\EnemyStarting.h" />
+    <ClInclude Include="Game\ModelResources.h" />
     <ClInclude Include="Game\Goblin\State\Header\GoblinDead.h" />
     <ClInclude Include="Game\Goblin\State\Header\GoblinTutorial.h" />
     <ClInclude Include="Game\HitStop\HitStop.h" />
@@ -330,6 +331,7 @@
     <ClCompile Include="Game\Enemy\States\Source\EnemyDashAttacking.cpp" />
     <ClCompile Include="Game\Enemy\States\Source\EnemyDead.cpp" />
     <ClCompile Include="Game\Enemy\States\Source\EnemyStarting.cpp" />
+    <ClCompile Include="Game\ModelResources.cpp" />
     <ClCompile Include="Game\Goblin\State\Score\GoblinDead.cpp" />
     <ClCompile Include="Game\Goblin\State\Score\GoblinTutorial.cpp" />
     <ClCompile Include="Game\HitStop\HitStop.cpp" />

@@ -1,0 +1,8 @@
+{
+    "Player" : [
+        {
+            "path": "Resources/Models/Player/Body/player.cmo",
+            "key": "player"
+        }
+    ]
+}

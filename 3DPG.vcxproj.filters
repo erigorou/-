@@ -248,6 +248,7 @@
     <ClInclude Include="Game\Quest\TutorialList\TutorialAttackEnd.h" />
     <ClInclude Include="Game\Quest\TutorialList\TutorialAttackStart.h" />
     <ClInclude Include="Game\Quest\TutorialList\TutorialDodgStart.h" />
+    <ClInclude Include="Game\ModelResources.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -382,6 +383,7 @@
     <ClCompile Include="Game\Enemy\States\Source\EnemyDead.cpp" />
     <ClCompile Include="Game\Scene\QuestSelectScene.cpp" />
     <ClCompile Include="Game\Goblin\State\Score\GoblinTutorial.cpp" />
+    <ClCompile Include="Game\ModelResources.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

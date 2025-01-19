@@ -1,0 +1,8 @@
+{
+    "Floor" : [
+        {
+            "path": "Resources/Textures/Floor.png",
+            "key": "floor"
+        }
+    ]
+}
