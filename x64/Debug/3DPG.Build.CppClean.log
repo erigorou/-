@@ -51,7 +51,6 @@ c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\sound.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\titlescene.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\scenemanager.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\resultscene.obj
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\playscene.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\player_dodging.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\player_idling.obj
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\player_attacking_2.obj
@@ -123,17 +122,7 @@ c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\voro
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\warning\warninggs.cso
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\warning\warningps.cso
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\resources\shaders\warning\warningvs.cso
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.lib
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.exp
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.exe
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.ilk
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.pdb
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\resource.res
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.exe.embed.manifest.res
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.exe.embed.manifest
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg_manifest.rc
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.tlog\cl.command.1.tlog
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.tlog\cl.items.tlog
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.tlog\cl.read.1.tlog
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.tlog\cl.write.1.tlog
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.tlog\copylocal.read.1u.tlog
@@ -141,10 +130,3 @@ c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.tlog\co
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.tlog\fxc.command.1.tlog
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.tlog\fxc.read.1.tlog
 c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.tlog\fxc.write.1.tlog
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.tlog\link.command.1.tlog
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.tlog\link.read.1.tlog
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.tlog\link.write.1.tlog
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.tlog\link.write.2u.tlog
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.tlog\rc.command.1.tlog
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.tlog\rc.read.1.tlog
-c:\users\it232012\desktop\就職作品\鬼退治\github\-\x64\debug\3dpg.tlog\rc.write.1.tlog

@@ -386,10 +386,12 @@ void QuestSelectScene::DrawStageSelect()
 	);
 
 
+	float t2 = Math::Clamp(m_totalSeconds - STAGE_SELECT_DELAY - 0.2f, 0.0f, STAGE_SELECT_END) / STAGE_SELECT_END;
+
 	// ñ{êÌÇï`âÊ
 	Vector2 BossFightPos
 	{
-		WINDOW_WIDTH + m_texCenter3.x * 2.0f - moveValue * Easing::easeOutBack(t),
+		WINDOW_WIDTH + m_texCenter4.x * 2.0f - moveValue * Easing::easeOutBack(t2),
 		575.0f
 	};
 

@@ -17,9 +17,17 @@
 #include "Interface/IEnemy.h"
 #include "Game/CommonResources.h"
 
+#include <iostream>
+#include <fstream>
+#include "nlohmann/json.hpp"
+
 // --------------------------------
 // 固定値
 // --------------------------------
+// Jsonデータのパス
+const wchar_t* EnemyManager::ENEMY_JSON_PATH = L"Resources/Jsons/EnemySpawnPoint.json";
+
+
 // ゴブリンのモデルパス
 const wchar_t* EnemyManager::GOBLIN_MODEL_PATH = L"Resources/Models/Oni/Body/oni.cmo";
 // ボスのモデルパス
@@ -35,8 +43,11 @@ EnemyManager::EnemyManager(PlayScene* playScene)
 	, m_elapsedTime()
 	, m_currentTime()
 {
-	// セレクトステージの取得
+	// セレクトクエストのインデックスを取得
 	m_selectQuestIndex = GameData::GetInstance()->GetSelectStage();
+
+	// Jsonファイルから敵を生成
+	GenerateEnemyFromJson();
 }
 
 
@@ -58,9 +69,6 @@ void EnemyManager::Initialize(PlayScene* playScene)
 
 	m_goblinModel = CreateModel(GOBLIN_MODEL_PATH);
 	m_bossModel = CreateModel(BOSS_MODEL_PATH);
-
-	// 初期敵の生成
-	GenerateStartEnemy();
 }
 
 
@@ -324,61 +332,50 @@ DirectX::Model* EnemyManager::CreateModel(const wchar_t* filePath)
 	return DirectX::Model::CreateFromCMO(device, filePath, *fx).get();
 }
 
-// --------------------------------
-// 初期敵の生成
-// --------------------------------
-void EnemyManager::GenerateStartEnemy()
-{
-	switch (m_selectQuestIndex)
-	{
-	case 0:
-		GenerateEnemy0();
-		break;
-	case 1:
-		GenerateEnemy1();
-		break;
-	case 2:
-		GenerateEnemy2();
 
-	default:
-		// エラーメッセージ
-		MessageBox(nullptr, L"敵の生成に失敗しました", L"エラー", MB_OK);
-		break;
+
+// --------------------------------
+// JSONデータから敵を生成する
+// --------------------------------
+void EnemyManager::GenerateEnemyFromJson()
+{
+	// jsonファイルを読み込む
+	std::ifstream file(ENEMY_JSON_PATH);
+
+	// データを登録
+	auto jsonFile = nlohmann::json::parse(file);
+
+	// ステージの番号を取得
+	std::string stageKey = "stage" + std::to_string(m_selectQuestIndex);
+
+	// ステージキーが存在しない場合
+	if (!jsonFile.contains(stageKey))
+	{
+		MessageBoxA(nullptr, ("指定されたステージデータが見つかりません: " + stageKey).c_str(), "エラー", MB_OK);
+		return;
+	}
+
+
+	for (const auto& enemyData : jsonFile[stageKey])
+	{
+		// 敵のタイプを取得
+		std::string type = enemyData["type"];
+		EnemyType enemyType = (type == "Goblin") ? EnemyType::Goblin : EnemyType::Boss;
+
+		// 座標を取得
+		float x = enemyData["position"]["x"];
+		float y = enemyData["position"]["y"];
+		float z = enemyData["position"]["z"];
+		DirectX::SimpleMath::Vector3 position(x, y, z);
+
+		// 敵の生成
+		GenerateEnemy(position, enemyType);
+	}
+
+	if (m_selectQuestIndex == 0)
+	{
+		// チュートリアル用にステートを変更する
+		auto goblin = dynamic_cast<Goblin*>(m_enemies[0].data.get());
+		goblin->ChangeState(goblin->GetTutorial());
 	}
 }
-
-
-// --------------------------------
-// クエスト0の敵生成 ()
-// --------------------------------
-void EnemyManager::GenerateEnemy0()
-{
-	// 敵の生成
-	GenerateEnemy(DirectX::SimpleMath::Vector3(-20.0f, 0.0f, -40.0f), EnemyType::Goblin);
-
-	// チュートリアル用にステートを変更する
-	auto goblin = dynamic_cast<Goblin*>(m_enemies[0].data.get());
-	goblin->ChangeState(goblin->GetTutorial());
-}
-
-
-// --------------------------------
-// クエスト1の敵生成
-// --------------------------------
-void EnemyManager::GenerateEnemy1()
-{
-	// 生成
-	GenerateEnemy(DirectX::SimpleMath::Vector3(0.0f, 0.0f, -40.0f), EnemyType::Boss);
-	GenerateEnemy(DirectX::SimpleMath::Vector3(-80.0f, 0.0f, -40.0f), EnemyType::Goblin);
-}
-
-
-// --------------------------------
-// クエスト2の敵生成
-// --------------------------------
-void EnemyManager::GenerateEnemy2()
-{
-	// ゴブリンの生成
-	GenerateEnemy(DirectX::SimpleMath::Vector3(0.0f, 0.0f, -40.0f), EnemyType::Boss);
-}
-

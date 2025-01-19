@@ -234,12 +234,14 @@ void Goblin::HitEnemy(InterSectData data)
 {
 	auto enemy = static_cast<Enemy*>(data.object);
 
+	m_pushBackValue = DirectX::SimpleMath::Vector3::Zero;
+
 	// 衝突したオブジェクトの情報を取得
 	auto goblinCollision = *m_bodyCollision.get();
 	auto enemyCollision = enemy->GetBodyCollision();
 
 	// 押し戻し量を計算
-	m_pushBackValue = Math::pushBack_BoundingSphere(goblinCollision, enemyCollision);
+	m_pushBackValue += Math::pushBack_BoundingSphere(goblinCollision, enemyCollision);
 	m_pushBackValue.y = 0.0f;
 	// プレイヤーの位置を押し戻す
 	m_position += m_pushBackValue;

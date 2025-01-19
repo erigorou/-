@@ -57,7 +57,6 @@ void GoblinAttacking::Update(const float& elapsedTime)
 	// 時間を加算する
 	m_totalTime += elapsedTime;
 
-
 	// アニメーションの更新
 	UpdateAnimation();
 
@@ -66,6 +65,7 @@ void GoblinAttacking::Update(const float& elapsedTime)
 		m_goblin->ChangeState(m_goblin->GetIdling());
 	}
 }
+
 
 // -------------------------------
 // アニメーションの更新処理
@@ -99,6 +99,7 @@ void GoblinAttacking::ChargeAnimation()
 	// 大きさを設定
 	m_goblin->SetScale(DirectX::SimpleMath::Vector3(1.0f, sizeY, 1.0f));
 }
+
 
 // -------------------------------
 // 攻撃アニメーション
@@ -139,6 +140,7 @@ void GoblinAttacking::ReturnAnimation()
 	if (! Math::InTime(ATTACK_TIME, m_totalTime, RETURN_TIME))return;
 }
 
+
 // -------------------------------
 // 事後更新
 // -------------------------------
@@ -154,6 +156,7 @@ void GoblinAttacking::PostUpdate()
 void GoblinAttacking::Finalize()
 {
 }
+
 
 // -------------------------------
 // プレイヤーの探索を行う処理

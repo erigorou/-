@@ -1,5 +1,5 @@
 // ---------------------------------------------
-// 「内容」全ての敵の管理を行うクラス
+// 「内容」敵の管理を行うクラス
 // 「日付」12/18
 // 「作成者」池田
 // ---------------------------------------------
@@ -7,14 +7,13 @@
 #include "pch.h"
 #include "Interface/IEnemy.h"
 
+
 // 前方宣言
 class Enemy;
 class Goblin;
 class PlayScene;
 class IObject;
 class PlayScene;
-
-
 
 // ---------------------------
 // 敵の管理クラス
@@ -34,17 +33,24 @@ public:
 		std::unique_ptr<IEnemy> data;
 	};
 
+	// Jsonで読み込む敵のデータ
+	struct JsonEnemyData
+	{
+		std::string type;
+		DirectX::SimpleMath::Vector3 position;
+	};
+
 
 // ---------------------------
 // 固定値
 // ---------------------------
 public:
+	// Jsonデータを読み込む
+	static const wchar_t* ENEMY_JSON_PATH;
+
 	// モデルのパス
 	static const wchar_t* GOBLIN_MODEL_PATH;
 	static const wchar_t* BOSS_MODEL_PATH;
-
-	// ゴブリンの最大沸き数
-	static constexpr int MAX_GOBLIN = 3;
 
 	// ボスが死亡したことを伝える際の遅延
 	static constexpr float BOSS_DEAD_DELAY = 2.0f;
@@ -105,16 +111,8 @@ public:
 // ---------------------------
 private:
 
-	// 敵生成関連 *****
-	// クエストの選択
-	void GenerateStartEnemy();
-	// クエスト１の敵生成
-	void GenerateEnemy0();
-	// クエスト２の敵生成
-	void GenerateEnemy1();
-	// クエスト３の敵生成
-	void GenerateEnemy2();
-
+	// Jsonから敵の生成
+	void GenerateEnemyFromJson();
 
 	// ゴブリンの生成処理
 	void GenerateGoblin(const DirectX::SimpleMath::Vector3& position);

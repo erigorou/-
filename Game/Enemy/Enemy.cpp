@@ -346,7 +346,7 @@ void Enemy::HitStage(InterSectData data)
 		// ‰Ÿ‚µ–ß‚µ—Ê‚ðŒvŽZ
 		m_pushBackValue += Math::pushFront_BoundingSphere(*m_bodyCollision.get(), *stageCollision);
 		// yÀ•W‚É‚Í”½‰f–³‚µ‚ÉÝ’è
-		m_pushBackValue.y = 0;
+		m_pushBackValue.y = 0.0f;
 		// “G‚ÌˆÊ’u‚ð‰Ÿ‚µ–ß‚·
 		m_position += m_pushBackValue;
 		m_bodyCollision->Center = m_position;
