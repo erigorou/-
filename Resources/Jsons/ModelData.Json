@@ -1,8 +1,5 @@
 {
-    "Player" : [
-        {
-            "path": "Resources/Models/Player/Body/player.cmo",
-            "key": "player"
-        }
-    ]
+    "player": "Resources/Models/Player/Body/player.cmo",
+    "goblin": "Resources/Models/Goblin/goblin.cmo"
+
 }

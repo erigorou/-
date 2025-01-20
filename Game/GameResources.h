@@ -1,23 +1,7 @@
 #pragma once
 #include <unordered_map>
 
-enum class MODEL_ID : int
-{
-	PLAYER = 0,
-	ENEMY,
-	SWORD,
-	CUDGEL,
-	WALL
-};
-
-
-enum class TEXTURE_ID : int
-{
-	FLOOR = 0
-};
-
-
-class ModelResources
+class GameResources
 {
 // ------------------------
 // ファイルパス
@@ -35,7 +19,7 @@ public:
 public:
 
 	// Resoucesクラスのインスタンスを取得する
-	static ModelResources* const GetInstance();
+	static GameResources* const GetInstance();
 	// モデルを取得する
 	DirectX::Model* GetModel(std::string key) const;
 	// テクスチャを取得する
@@ -47,9 +31,9 @@ public:
 // ------------------------
 public:
 	// コンストラクタ
-	ModelResources();
+	GameResources();
 	// デストラクタ
-	~ModelResources() = default;
+	~GameResources() = default;
 
 
 // ------------------------
@@ -69,7 +53,7 @@ private:
 private:
 
 	// リソース
-	static std::unique_ptr<ModelResources> m_resources;
+	static std::unique_ptr<GameResources> m_resources;
 
 	// モデルリスト
 	std::unordered_map<std::string, std::unique_ptr<DirectX::Model>> m_modelList;

@@ -13,6 +13,7 @@
 
 #include "Game/Screen.h"
 #include "Game/CommonResources.h"
+#include "Game/GameResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 #include "Libraries/MyLib/InputManager.h"
@@ -31,6 +32,7 @@ SceneManager::SceneManager()
 	, m_isFade(false)
 {
 	m_commonResources	= CommonResources::	GetInstance();
+	m_gameResources		= GameResources::	GetInstance();
 	m_sound				= Sound::			GetInstance();
 }
 

@@ -1,10 +1,2 @@
-﻿  EnemyDamageEffect.cpp
-  ModelResources.cpp
-  Player.cpp
-  Player_Attacking_2.cpp
-  Player_Dodging.cpp
-  TitleEnemy.cpp
-  Main.cpp
-  コードを生成中...
-     ライブラリ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.lib とオブジェクト C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exp を作成中
+﻿  GameResources.cpp
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exe

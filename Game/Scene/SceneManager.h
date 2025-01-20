@@ -7,8 +7,10 @@
 
 // 前方宣言
 class CommonResources;
+class GameResources;
 class Sound;
 class Fade;
+
 
 class SceneManager
 {
@@ -31,8 +33,9 @@ private:
 	std::unique_ptr<IScene> m_currentScene;
 	std::unique_ptr<Fade>	m_fade;
 	
-	CommonResources*		m_commonResources;
-	Sound*					m_sound;
+	CommonResources*	m_commonResources;
+	GameResources*		m_gameResources;
+	Sound*				m_sound;
 
 	IScene::SceneID m_nextSceneID;		// 次のシーンID
 	bool			m_canChangeScene;	// シーン変更可能かどうか

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ModelResources.h"
+#include "GameResources.h"
 #include <cassert>
 #include <fstream>
 #include "nlohmann/json.hpp"
@@ -7,18 +7,18 @@
 #include "DeviceResources.h"
 
 // ユニークポインタ
-std::unique_ptr<ModelResources> ModelResources::m_resources = nullptr;
+std::unique_ptr<GameResources> GameResources::m_resources = nullptr;
 
 // モデルのJsonファイル
-const wchar_t* ModelResources::MODEL_JSON = L"Resources/Jsons/ModelData.Json";
+const wchar_t* GameResources::MODEL_JSON = L"Resources/Jsons/ModelData.Json";
 // テクスチャのJsonファイル
-const wchar_t* ModelResources::TEXTURE_JSON = L"Resources/Jsons/TextureData.Json";
+const wchar_t* GameResources::TEXTURE_JSON = L"Resources/Jsons/TextureData.Json";
 
 
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
-ModelResources::ModelResources()
+GameResources::GameResources()
 {
 	// Jsonファイルを読み込んでモデルを生成する
 	LoadModelFromJson();
@@ -30,14 +30,14 @@ ModelResources::ModelResources()
 //---------------------------------------------------------
 // インスタンスを取得
 //---------------------------------------------------------
-ModelResources* const ModelResources::GetInstance()
+GameResources* const GameResources::GetInstance()
 {
 	if (m_resources == nullptr)
 	{
-		// ModelResourcesクラスのインスタンスを生成する
-		m_resources.reset(new ModelResources());
+		// GameResourcesクラスのインスタンスを生成する
+		m_resources.reset(new GameResources());
 	}
-	// ModelResourcesクラスのインスタンスを返す
+	// GameResourcesクラスのインスタンスを返す
 	return m_resources.get();
 }
 
@@ -45,13 +45,14 @@ ModelResources* const ModelResources::GetInstance()
 // --------------------------------------------------------
 // Jsonファイルを読み込んでモデルを生成する
 // --------------------------------------------------------
-void ModelResources::LoadModelFromJson()
+void GameResources::LoadModelFromJson()
 {
 	// Jsonファイルを開く
 	std::ifstream ifs(MODEL_JSON);
 	if (!ifs)
 	{
 		MessageBoxA(nullptr, "Jsonファイルが見つかりません", "エラー", MB_OK);
+		return; // 処理を終了
 	}
 
 	// デバイスを取得
@@ -60,35 +61,41 @@ void ModelResources::LoadModelFromJson()
 	// Jsonファイルを読み込む
 	nlohmann::json json = nlohmann::json::parse(ifs);
 
-	// モデルの数だけ繰り返す
-	for (auto& data : json)
+	// Jsonデータを順に処理
+	for (auto it = json.begin(); it != json.end(); ++it)
 	{
+		// キーと値を取得
+		std::string key = it.key();
+		std::string pathStr = it.value();
+
+		// std::stringをstd::wstringに変換
+		std::wstring path = std::wstring(pathStr.begin(), pathStr.end());
+
 		// モデルファクトリの生成
 		std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
 		fx->SetDirectory(L"Resources/Models");
-
-		// std::stringをstd::wstringに変換して、const wchar_t*に渡す
-		std::wstring path = std::wstring(data["path"].get<std::string>().begin(), data["path"].get<std::string>().end());
 
 		// モデルを生成
 		auto model = DirectX::Model::CreateFromCMO(device, path.c_str(), *fx);
 
 		// モデルをリストに追加
-		m_modelList[data["key"].get<std::string>()] = std::move(model);
+		m_modelList[key] = std::move(model);
 	}
 }
+
 
 
 // --------------------------------------------------------
 // Jsonファイルを読み込んでテクスチャを生成する
 // --------------------------------------------------------
-void ModelResources::LoadTexture()
+void GameResources::LoadTexture()
 {
 	// Jsonファイルを開く
 	std::ifstream ifs(TEXTURE_JSON);
 	if (!ifs)
 	{
 		MessageBoxA(nullptr, "Jsonファイルが見つかりません", "エラー", MB_OK);
+		return; // 処理を終了
 	}
 
 	// デバイスを取得
@@ -97,11 +104,15 @@ void ModelResources::LoadTexture()
 	// Jsonファイルを読み込む
 	nlohmann::json json = nlohmann::json::parse(ifs);
 
-	// テクスチャの数だけ繰り返す
-	for (auto& data : json)
+	// Jsonデータを順に処理
+	for (auto it = json.begin(); it != json.end(); ++it)
 	{
-		// std::stringをstd::wstringに変換して、const wchar_t*に渡す
-		std::wstring path = std::wstring(data["path"].get<std::string>().begin(), data["path"].get<std::string>().end());
+		// キーと値を取得
+		std::string key = it.key();
+		std::string pathStr = it.value();
+
+		// std::stringをstd::wstringに変換
+		std::wstring path = std::wstring(pathStr.begin(), pathStr.end());
 
 		// テクスチャを生成
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture;
@@ -114,7 +125,7 @@ void ModelResources::LoadTexture()
 		);
 
 		// テクスチャをリストに追加
-		m_textureList[data["key"].get<std::string>()] = texture;
+		m_textureList[key] = texture;
 	}
 }
 
@@ -122,7 +133,7 @@ void ModelResources::LoadTexture()
 //---------------------------------------------------------
 // モデルを取得する
 //---------------------------------------------------------
-DirectX::Model* ModelResources::GetModel(std::string key) const
+DirectX::Model* GameResources::GetModel(std::string key) const
 {
 	return nullptr;
 }
@@ -131,7 +142,7 @@ DirectX::Model* ModelResources::GetModel(std::string key) const
 //---------------------------------------------------------
 // テクスチャを取得する
 //---------------------------------------------------------
-ID3D11ShaderResourceView* ModelResources::GetTexture(std::string key) const
+ID3D11ShaderResourceView* GameResources::GetTexture(std::string key) const
 {
 	return nullptr;
 }
