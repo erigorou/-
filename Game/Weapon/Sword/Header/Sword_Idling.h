@@ -43,9 +43,6 @@ private:
 	float m_angle;
 	// ワールド行列
 	DirectX::SimpleMath::Matrix m_worldMatrix;
-	// モデル
-	DirectX::Model* m_model;
-
 
 private:
 	// ソードの元を取得

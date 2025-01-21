@@ -26,18 +26,18 @@ public:
 	static constexpr float MODEL_ROOT_HEIGHT = 50.0f;
 
 // 公開関数**
-	DirectX::Model* GetModel()		const { return m_model.get();	}	// モデルのゲッター
 	PlayScene*	GetPlayScene()		const { return m_playScene;		}	// プレイシーンのゲッター
 	DirectX::BoundingOrientedBox GetCollision() const { return *m_collision.get(); }	// 当たり判定の取得
 
 	// 状態のゲッター
-	IWeapon* GetIdlingState()		const { return m_swordIdling.get();			}	// 待機状態
-	IWeapon* GetAttacking_1State()	const { return m_swordAttacking_1.get();	}	// 攻撃状態１
-	IWeapon* GetAttacking_2State()	const { return m_swordAttacking_2.get();	}	// 攻撃状態２
-	IWeapon* GetAttacking_3State()	const { return m_swordAttacking_3.get();	}	// 攻撃状態３
-	IWeapon* GetAttacking_4State()	const { return m_swordAttacking_4.get();	}	// 攻撃状態４
+	IWeapon* GetIdlingState()		const { return m_swordIdling.get();		}	// 待機状態
+	IWeapon* GetAttacking_1State()	const { return m_swordAttacking_1.get();}	// 攻撃状態１
+	IWeapon* GetAttacking_2State()	const { return m_swordAttacking_2.get();}	// 攻撃状態２
+	IWeapon* GetAttacking_3State()	const { return m_swordAttacking_3.get();}	// 攻撃状態３
+	IWeapon* GetAttacking_4State()	const { return m_swordAttacking_4.get();}	// 攻撃状態４
+	IWeapon* GetCurrentState()		const { return m_currentState;			}	// 現在のステートの取得
 
-	IWeapon* GetCurrentState() const { return m_currentState; }	// 現在のステートの取得
+	void SetWorldMatrix(DirectX::SimpleMath::Matrix mat) { m_worldMatrix = mat; }	// ワールド行列の設定
 
 	void SetAttackFlag	(bool flag) { m_canAttack = flag; }	// 攻撃可能かどうかの設定
 	bool GetAttackFlag	()			{ return m_canAttack; }	// 攻撃可能かどうか
@@ -79,7 +79,7 @@ private:
 	DirectX::SimpleMath::Vector3 m_velocity;	// 速度
 	DirectX::SimpleMath::Vector3 m_angle;		// 角度
 	DirectX::SimpleMath::Matrix m_worldMatrix;	// ワールド行列
-	std::unique_ptr<DirectX::Model> m_model;	// モデル
+	DirectX::Model*				m_model;		// モデル
 
 	// 剣の当たり判定１（実際の当たり判定）
 	std::unique_ptr<DirectX::BoundingOrientedBox> m_collision;

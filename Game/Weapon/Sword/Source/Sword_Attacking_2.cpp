@@ -148,6 +148,9 @@ void Sword_Attacking_2::UpdateWorldMatrix()
 		*= DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle)			// プレイヤーの横に回転させる
 		*= DirectX::SimpleMath::Matrix::CreateRotationY(m_rot.y)			// 薙ぎ払いの回転を反映
 		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);		// プレイヤーの位置に設定
+
+	//　ワールド行列を設定
+	m_sword->SetWorldMatrix(m_worldMatrix);
 }
 
 

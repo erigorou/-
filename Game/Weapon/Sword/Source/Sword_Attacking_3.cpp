@@ -105,10 +105,7 @@ void Sword_Attacking_3::Update(float elapsedTime)
 	}
 
 	// ワールド行列を更新する
-	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE);							// 剣のサイズの設定
-
-
-	// 1. 剣自体のアニメーション（回転や移動）
+	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE); // 剣のサイズの設定
 	m_worldMatrix
 		*= SimpleMath::Matrix::CreateRotationZ(m_rot.x) // X軸回転を適用
 		*= SimpleMath::Matrix::CreateRotationY(XMConvertToRadians(-90.0f))
@@ -118,6 +115,7 @@ void Sword_Attacking_3::Update(float elapsedTime)
 	m_worldMatrix
 		*= SimpleMath::Matrix::CreateRotationY(-m_angle) // プレイヤーの方向に回転
 		*= SimpleMath::Matrix::CreateTranslation(m_position); // プレイヤーの位置に設定
+
 	// 当たり判定の位置を設定
 	m_sword->SetCollisionPosition(m_worldMatrix);
 

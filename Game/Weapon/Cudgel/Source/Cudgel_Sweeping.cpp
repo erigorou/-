@@ -94,9 +94,11 @@ void Cudgel_Sweeping::Update(float elapsedTime)
 	CalculateModelMatrix();		// ワールド行列を計算
 	GetCudgelBothEnds();		// 両端を取得する
 
-	m_collMatrix = m_worldMatrix;						// 当たり判定用の行列を取得
-	m_collMatrix._42 = 0.0f;							// 当たり判定の高さを0にする
-	m_cudgel->SetCollisionPosition(m_collMatrix);		// 当たり判定の位置を設定する
+
+	m_cudgel->SetWorldMatrix(m_worldMatrix);		// ワールド行列を設定する
+	m_collMatrix = m_worldMatrix;					// 当たり判定用の行列を取得
+	m_collMatrix._42 = 0.0f;						// 当たり判定の高さを0にする
+	m_cudgel->SetCollisionPosition(m_collMatrix);	// 当たり判定の位置を設定する
 }
 
 

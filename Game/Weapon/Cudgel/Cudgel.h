@@ -20,21 +20,20 @@ public:
 	static const DirectX::SimpleMath::Vector3 CUDGEL_HADLE_POS;	// 金棒の取っ手の位置
 
 
-	// ===取得系====================================================================
-	DirectX::SimpleMath::Vector3 GetPosition() override { return m_position; }	// 位置の取得
 
+	DirectX::SimpleMath::Vector3	GetPosition()	override{ return m_position;	}	// 位置の取得
+	DirectX::Model*					GetModel()		const	{ return m_model;		}	// モデルの取得
+	PlayScene*						GetPlayScene()	const	{ return m_playScene;	}	// プレイシーンの取
 
-	DirectX::Model* GetModel()		const { return m_model;			}	// モデルの取得
-	PlayScene*		GetPlayScene()	const { return m_playScene;		}	// プレイシーンの取得
-
-
-	// ===状態の取得================================================================
 	Cudgel_Idling*		GetIdling()		const { return m_idling.get();		}	// 待機
 	Cudgel_Attacking*	GetAttacking()	const { return m_attacking.get();	}	// 攻撃
 	Cudgel_Sweeping*	GetSweeping()	const { return m_sweeping.get();	}	// 薙ぎ払い	
 
-	// ===設定系====================================================================
-	void SetCollisionPosition(DirectX::SimpleMath::Matrix mat) { m_originalBox.Transform(*m_collision.get(), mat); }	// 当たり判定の位置の設定
+	// 当たり判定の位置の設定
+	void SetCollisionPosition(DirectX::SimpleMath::Matrix mat)	{ m_originalBox.Transform(*m_collision.get(), mat); }
+	// ワールド行列の設定
+	void SetWorldMatrix(DirectX::SimpleMath::Matrix mat)		{ m_worldMatrix = mat; }
+
 
 public:
 	// コンストラクタ
@@ -66,8 +65,6 @@ private:
 	void CreateState();
 	// 当たり判定の生成
 	void CreateCollision();
-
-
 
 	DirectX::SimpleMath::Vector3 m_position;	// 位置
 	DirectX::SimpleMath::Vector3 m_velocity;	// 速度

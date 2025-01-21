@@ -97,13 +97,12 @@ void Cudgel_Attacking::Update(float elapsedTime)
 	m_enemyAngle = enemy->GetAngle();	// 敵の回転を取得
 	m_angleRL = m_enemyAngle;			// 敵の回転を設定
 
-
-
 	UpdateCudgelRotation();				// 回転を計算する
 	CalculateModelMatrix();				// ワールド行列を計算
 	GetCudgelBothEnds(m_totalSeconds);	// 両端を取得する
 
-	m_cudgel->SetCollisionPosition(m_worldMatrix);		// 当たり判定の位置を設定する
+	m_cudgel->SetWorldMatrix(m_worldMatrix);		// ワールド行列を設定する
+	m_cudgel->SetCollisionPosition(m_worldMatrix);	// 当たり判定の位置を設定する
 }
 
 

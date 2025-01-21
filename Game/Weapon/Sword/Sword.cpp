@@ -9,6 +9,7 @@
 #include <cassert>
 // ヘッダー
 #include "Game/CommonResources.h"	
+#include "Game/GameResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "DeviceResources.h"
@@ -46,14 +47,11 @@ void Sword::Initialize()
 	auto device = resources->GetDeviceResources()->GetD3DDevice();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 
-	// モデルを生成
-	m_model = std::make_unique<DirectX::Model>();
 
-	// モデルを読み込む準備
-	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
-	fx->SetDirectory(L"Resources/Models");
-	// モデルを読み込む
-	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Weapon/Sword/sword.cmo", *fx);
+	// モデルの読み込み
+	m_model = GameResources::GetInstance()->GetModel("sword");
+
+
 
 	// ベーシックエフェクトを作成する
 	m_basicEffect = std::make_unique<DirectX::BasicEffect>(device);
@@ -107,7 +105,7 @@ void Sword::CreateState()
 void Sword::CreateCollision()
 {
 	// モデルの大きさから衝突判定を取得する
-	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model.get());
+	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model);
 	m_collision = std::make_unique<DirectX::BoundingOrientedBox>(m_originalBox);
 
 	// 当たり判定を記録する

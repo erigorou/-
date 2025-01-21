@@ -24,8 +24,7 @@ Sword_Idling::Sword_Idling(Sword* sword)
 	m_position(0.0f, 0.0f, 0.0f),
 	m_velocity(0.0f, 0.0f, 0.0f),
 	m_angle(0.0f),
-	m_worldMatrix(DirectX::SimpleMath::Matrix::Identity),
-	m_model(nullptr)
+	m_worldMatrix(DirectX::SimpleMath::Matrix::Identity)
 {
 }
 
@@ -43,11 +42,8 @@ Sword_Idling::~Sword_Idling()
 // -----------------------
 void Sword_Idling::Initialize()
 {
-	using namespace DirectX::SimpleMath;
-	// モデルを取得
-	m_model = m_sword->GetModel();
 	// ワールド行列を初期化
-	m_worldMatrix = Matrix::Identity;
+	m_worldMatrix = DirectX::SimpleMath::Matrix::Identity;
 }
 
 
@@ -78,15 +74,15 @@ void Sword_Idling::Update(float elapsedTime)
 	
 	m_worldMatrix
 		// 傾ける
-		*= SimpleMath::Matrix::CreateRotationY(XMConvertToRadians(-90.0f))				// 回転
-		*= SimpleMath::Matrix::CreateRotationX(XMConvertToRadians(90.0f))				// 回転
-		// 手の位置に移動する
-		*= SimpleMath::Matrix::CreateTranslation(Sword::SWORD_DIR_FOR_PLAYER)
-		// プレイヤの移動情報を付与
-		*= SimpleMath::Matrix::CreateRotationY(-m_angle)							// プレイヤの回転を付与
-		*= SimpleMath::Matrix::CreateTranslation(m_position);						// プレイヤの位置に設定する
+		*= SimpleMath::Matrix::CreateRotationY(XMConvertToRadians(-90.0f))			// 回転
+		*= SimpleMath::Matrix::CreateRotationX(XMConvertToRadians(90.0f))			// 回転
+		*= SimpleMath::Matrix::CreateTranslation(Sword::SWORD_DIR_FOR_PLAYER)	// プレイヤの位置に設定する
+		*= SimpleMath::Matrix::CreateRotationY(-m_angle)						// プレイヤの回転を付与
+		*= SimpleMath::Matrix::CreateTranslation(m_position);					// プレイヤの位置に設定する
 
-	m_sword->SetCollisionPosition(m_worldMatrix);
+
+	m_sword->SetWorldMatrix(m_worldMatrix);		// ワールド行列を設定
+	m_sword->SetCollisionPosition(m_worldMatrix);	// 当たり判定の位置を設定
 }
 
 

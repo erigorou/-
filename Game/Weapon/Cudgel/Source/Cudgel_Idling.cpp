@@ -77,6 +77,7 @@ void Cudgel_Idling::Update(float elapsedTime)
 		*= DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle)						// 剣全体の回転を行う
 		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);					// 鬼の座標に移動する
 
+	m_cudgel->SetWorldMatrix(m_worldMatrix);			// ワールド行列を設定する
 	m_cudgel->SetCollisionPosition(m_worldMatrix);		// 当たり判定の位置を設定する
 }
 
