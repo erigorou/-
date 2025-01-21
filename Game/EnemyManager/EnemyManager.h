@@ -48,10 +48,6 @@ public:
 	// Jsonデータを読み込む
 	static const wchar_t* ENEMY_JSON_PATH;
 
-	// モデルのパス
-	static const wchar_t* GOBLIN_MODEL_PATH;
-	static const wchar_t* BOSS_MODEL_PATH;
-
 	// ボスが死亡したことを伝える際の遅延
 	static constexpr float BOSS_DEAD_DELAY = 2.0f;
 
@@ -110,8 +106,6 @@ private:
 	void GenerateGoblin(const DirectX::SimpleMath::Vector3& position);
 	// ボスの生成処理
 	void GenerateBoss(const DirectX::SimpleMath::Vector3& position);
-	// モデルの生成処理
-	DirectX::Model* CreateModel(const wchar_t* filePath);
 
 
 // ---------------------------

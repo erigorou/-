@@ -1,4 +1,5 @@
 {
-  "logo":  "Resources/Textures/LOGO.png",
-  "floor": "Resources/Textures/Floor.png"
+    "logo"  : "LOGO.png",
+    "floor" : "Floor.png",
+    "dust"  : "dust/png" 
 }

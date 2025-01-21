@@ -42,11 +42,6 @@ public:
 	void Update(float elapsedTime)override;
 	// 事後処理
 	void PostUpdate()override;
-	// 描画処理
-	void Render(ID3D11DeviceContext* context,
-		DirectX::CommonStates* states,
-		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection) override;
 	// 終了処理
 	void Finalize()override;
 	// 衝突処理
@@ -76,7 +71,6 @@ private:
 	float							m_angle;		// 剣の回転
 	DirectX::SimpleMath::Vector3	m_rot;			// 3方向の剣の回転
 	DirectX::SimpleMath::Matrix		m_worldMatrix;	// ワールド行列
-	DirectX::Model* m_model;		// モデルのポインタ
 	Particle* m_particles;							// パーティクル
 	float m_totalSeconds;
 

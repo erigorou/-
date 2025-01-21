@@ -40,11 +40,6 @@ public:
 	void Update(float elapsedTime)override;
 	// 事後処理
 	void PostUpdate()override;
-	// 描画処理
-	void Render(ID3D11DeviceContext* context,
-		DirectX::CommonStates* states,
-		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection) override;
 	// 終了処理
 	void Finalize()override;
 
@@ -69,7 +64,6 @@ private:
 
 	DirectX::SimpleMath::Matrix m_worldMatrix;	// ワールド行列
 	DirectX::SimpleMath::Matrix m_collMatrix;	// 当たり判定用の行列
-	DirectX::Model* m_model;					// モデルのポインタ
 	float m_totalSeconds;						// ステートの経過時間
 
 	Cudgel*		m_cudgel;						// ステートを所有する親

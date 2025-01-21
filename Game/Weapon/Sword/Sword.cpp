@@ -141,8 +141,8 @@ void Sword::Render(
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
 
-	// 現在のステートの描画処理
-	m_currentState->Render(context,states,view,projection);
+	// モデルを描画する
+	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 
 
 #ifdef _DEBUG

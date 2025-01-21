@@ -99,27 +99,6 @@ void Sword_Idling::PostUpdate()
 
 
 // -----------------------
-// •`‰æˆ—
-// -----------------------
-void Sword_Idling::Render(ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection)
-{
-	CommonResources* resources = CommonResources::GetInstance();
-
-	// ƒ‚ƒfƒ‹‚ğ•`‰æ‚·‚é
-	m_model->Draw(context, *states, m_worldMatrix, view, projection);
-
-
-#ifdef _DEBUG
-	auto debugString = resources->GetDebugString();
-	debugString->AddString("");
-#endif // _DEBUG
-}
-
-
-// -----------------------
 // I—¹ˆ—
 // -----------------------
 void Sword_Idling::Finalize()

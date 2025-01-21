@@ -28,8 +28,7 @@ Cudgel_Idling::Cudgel_Idling(Cudgel* cudgel)
 	m_position(0.0f, 0.0f, 0.0f),
 	m_velocity(0.0f, 0.0f, 0.0f),
 	m_angle(0.0f),
-	m_worldMatrix(DirectX::SimpleMath::Matrix::Identity),
-	m_model(nullptr)
+	m_worldMatrix(DirectX::SimpleMath::Matrix::Identity)
 {
 }
 
@@ -48,7 +47,6 @@ Cudgel_Idling::~Cudgel_Idling()
 void Cudgel_Idling::Initialize()
 {
 	m_worldMatrix = DirectX::SimpleMath::Matrix::Identity;		// ƒ[ƒ‹ƒhs—ñ‚Ì‰Šú‰»
-	m_model = m_cudgel->GetModel();								// ƒ‚ƒfƒ‹‚ðŽæ“¾
 }
 
 
@@ -88,29 +86,6 @@ void Cudgel_Idling::Update(float elapsedTime)
 // -----------------------------------------------
 void Cudgel_Idling::PostUpdate()
 {
-}
-
-
-// -----------------------------------------------
-// •`‰æˆ—
-// -----------------------------------------------
-void Cudgel_Idling::Render(ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection)
-{
-	// “G‚ª‚¢‚È‚¢ê‡‚Í•`‰æ‚µ‚È‚¢
-	if (m_cudgel->GetPlayScene()->GetEnemy() == nullptr) return;
-
-	// ƒ‚ƒfƒ‹‚ð•`‰æ‚·‚é
-	m_model->Draw(context, *states, m_worldMatrix, view, projection);
-
-
-#ifdef _DEBUG
-	CommonResources* resources = CommonResources::GetInstance();
-	auto debugString = resources->GetDebugString();
-	debugString->AddString("");
-#endif // !_DEBUG
 }
 
 

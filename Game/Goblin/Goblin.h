@@ -127,7 +127,7 @@ private:
 	DirectX::SimpleMath::Vector3 m_scale;		// スケール
 	DirectX::SimpleMath::Matrix m_worldMatrix;	// ワールド座標
 
-	std::unique_ptr<DirectX::Model> m_model;	// モデル
+	DirectX::Model* m_model;	// モデル
 
 	// 押し戻し量
 	DirectX::SimpleMath::Vector3 m_pushBackValue;

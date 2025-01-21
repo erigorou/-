@@ -36,7 +36,6 @@ Sword_Attacking_3::Sword_Attacking_3(Sword* sword)
 	, m_rot			(0.0f, 0.0f, 0.0f)
 	, m_totalSeconds(0.0f)
 	, m_worldMatrix	(DirectX::SimpleMath::Matrix::Identity)
-	, m_model		(nullptr)
 {
 }
 
@@ -53,7 +52,6 @@ Sword_Attacking_3::~Sword_Attacking_3()
 // --------------------------------
 void Sword_Attacking_3::Initialize()
 {
-	m_model		= m_sword->GetModel();						// モデルの取得
 	m_particles = m_sword->GetPlayScene()->GetParticle();	// パーティクルpの取得
 }
 
@@ -167,25 +165,6 @@ void Sword_Attacking_3::CreateSwordParticle()
 // --------------------------------
 void Sword_Attacking_3::PostUpdate()
 {
-}
-
-
-// --------------------------------
-//  描画処理
-// --------------------------------
-void Sword_Attacking_3::Render(ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection)
-{
-	// モデルを描画する
-	m_model->Draw(context, *states, m_worldMatrix, view, projection);
-
-#ifdef _DEBUG
-	CommonResources* resources = CommonResources::GetInstance();
-	auto debugString = resources->GetDebugString();
-	debugString->AddString("rot.x : %f", DirectX::XMConvertToDegrees(m_rot.x));
-#endif // _DEBUG
 }
 
 

@@ -54,14 +54,10 @@ private:
 	void UpdateWorldMatrix();
 
 	DirectX::SimpleMath::Matrix m_worldMatrix;	// ワールド行列
-	std::unique_ptr<DirectX::Model> m_model;	// モデル
-
+	
+	DirectX::Model* m_model;	// モデル
 	std::unique_ptr<DirectX::BoundingSphere> m_collision;	// 当たり判定
 	std::unique_ptr<DirectX::BoundingSphere> m_overCollision; // 外の当たり判定に見立てたもの
 
 	PlayScene* m_playScene;	// プレイシーン
-
-	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;										// ベーシックエフェクト
-	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;	// プリミティブバッチ
-	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;									// 入力レイアウト
 };

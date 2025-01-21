@@ -12,6 +12,8 @@ public:
 	// テクスチャのJsonファイル
 	static const wchar_t* TEXTURE_JSON;
 
+	static const wchar_t* MODEL_BASE_PATH;
+	static const wchar_t* TEXTURE_BASE_PATH;
 
 // ------------------------
 // アクセサ

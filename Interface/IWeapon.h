@@ -15,12 +15,7 @@ public:
 	virtual void Update(float elapsedTime) = 0;
 	// –Œãˆ—
 	virtual void PostUpdate() = 0;
-	// •`‰æˆ—
-	virtual void Render(
-		ID3D11DeviceContext* context,
-		DirectX::CommonStates* states,
-		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection) = 0;
+
 	// I—¹ˆ—
 	virtual void Finalize() = 0;
 

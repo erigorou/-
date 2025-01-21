@@ -35,7 +35,6 @@ Sword_Attacking_1::Sword_Attacking_1(Sword* sword)
 	, m_rot(0.0f, 0.0f, 0.0f)
 	, m_totalSeconds(0.0f)
 	, m_worldMatrix(DirectX::SimpleMath::Matrix::Identity)
-	, m_model(nullptr)
 {
 }
 
@@ -53,7 +52,6 @@ Sword_Attacking_1::~Sword_Attacking_1()
 // --------------------------------
 void Sword_Attacking_1::Initialize()
 {
-	m_model = m_sword->GetModel();						// モデルの取得
 	m_particles = m_sword->GetPlayScene()->GetParticle();	// パーティクルの取得
 }
 
@@ -193,26 +191,6 @@ void Sword_Attacking_1::PostUpdate()
 {
 }
 
-
-// --------------------------------
-//  描画処理
-// --------------------------------
-void Sword_Attacking_1::Render(ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection)
-{
-	CommonResources* resources = CommonResources::GetInstance();
-
-	// モデルを描画する
-	m_model->Draw(context, *states, m_worldMatrix, view, projection);
-
-
-#ifdef _DEBUG
-	auto debugString = resources->GetDebugString();
-	debugString->AddString("");
-#endif // _DEBUG
-}
 
 
 // --------------------------------

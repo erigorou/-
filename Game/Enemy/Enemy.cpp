@@ -14,6 +14,7 @@
 #include "Libraries/MyLib/Math.h"
 #include "Game/Scene/PlayScene.h"
 #include "../HitStop/HitStop.h"
+#include "Game/GameResources.h"
 
 #include "Game/Enemy/Enemy.h"
 #include "Game/EnemyManager/EnemyManager.h"
@@ -86,11 +87,8 @@ void Enemy::Initialize()
 
 	auto device = resources->GetDeviceResources()->GetD3DDevice();
 
-	// モデルを読み込む準備
-	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
-	fx->SetDirectory(L"Resources/Models");
-	// モデルを読み込む
-	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Oni/Body/oni.cmo", *fx);
+	// モデルを取得
+	m_model = GameResources::GetInstance()->GetModel("boss");
 
 	// HPを設定
 	m_hp = std::make_unique<HPSystem>(HP);
@@ -279,7 +277,7 @@ void Enemy::Render(
 	// 顔の描画
 	m_currentFace->DrawFace(m_worldMatrix, view, projection);			// 顔の描画
 
-	m_damageEffect->DrawWithDamageEffect(m_model.get(), m_worldMatrix, view, projection);	// ダメージエフェクトの描画
+	m_damageEffect->DrawWithDamageEffect(m_model, m_worldMatrix, view, projection);	// ダメージエフェクトの描画
 
 #ifdef _DEBUG
 #endif // _DEBUG

@@ -12,6 +12,8 @@
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "DeviceResources.h"
+#include "Game/GameResources.h"
+#include "Game/GameResources.h"
 #include "Libraries/MyLib/Collision.h"
 
 #include "Game/Enemy/Enemy.h"
@@ -67,21 +69,11 @@ void Cudgel::Initialize()
 	// プリミティブバッチの作成
 	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
 
-	CreateModel(device);	// モデルの生成
+	// モデルを取得する
+	m_model = GameResources::GetInstance()->GetModel("cudgel");
+
 	CreateState();			// ステートの作成
 	CreateCollision();		// 当たり判定の生成
-}
-
-
-// モデルを生成する
-void Cudgel::CreateModel(ID3D11Device1* device)
-{
-
-	m_model = std::make_unique<DirectX::Model>();	// モデルを作成
-
-	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);		// エフェクトファクトリーを作成
-	fx->SetDirectory(L"Resources/Models");																// モデルのディレクトリを設定	
-	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Weapon/Cudgel/cudgel.cmo", *fx);	// パスのモデルの読み込みを行う
 }
 
 
@@ -110,7 +102,7 @@ void Cudgel::CreateState()
 // --------------------------------
 void Cudgel::CreateCollision()
 {
-	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model.get());
+	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model);
 	m_collision = std::make_unique<DirectX::BoundingOrientedBox>(m_originalBox);
 
 	// 当たり判定を記録する
@@ -143,9 +135,8 @@ void Cudgel::Render(
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
 
-	// 現在のステートの描画処理
-	m_currentState->Render(context, states, view, projection);
-
+	// モデルを描画
+	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 
 #ifdef _DEBUG
 #endif // _DEBUG

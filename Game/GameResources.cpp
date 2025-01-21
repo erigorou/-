@@ -14,6 +14,11 @@ const wchar_t* GameResources::MODEL_JSON = L"Resources/Jsons/ModelData.Json";
 // テクスチャのJsonファイル
 const wchar_t* GameResources::TEXTURE_JSON = L"Resources/Jsons/TextureData.Json";
 
+// モデルのベースパス
+const wchar_t* GameResources::MODEL_BASE_PATH = L"Resources/Models/";
+// テクスチャのベースパス
+const wchar_t* GameResources::TEXTURE_BASE_PATH = L"Resources/Textures/";
+
 
 //---------------------------------------------------------
 // コンストラクタ
@@ -69,7 +74,7 @@ void GameResources::LoadModelFromJson()
 		std::string pathStr = it.value();
 
 		// std::stringをstd::wstringに変換
-		std::wstring path = std::wstring(pathStr.begin(), pathStr.end());
+		std::wstring path = MODEL_BASE_PATH + std::wstring(pathStr.begin(), pathStr.end());
 
 		// モデルファクトリの生成
 		std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
@@ -112,7 +117,7 @@ void GameResources::LoadTexture()
 		std::string pathStr = it.value();
 
 		// std::stringをstd::wstringに変換
-		std::wstring path = std::wstring(pathStr.begin(), pathStr.end());
+		std::wstring path = TEXTURE_BASE_PATH + std::wstring(pathStr.begin(), pathStr.end());
 
 		// テクスチャを生成
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture;
@@ -135,7 +140,13 @@ void GameResources::LoadTexture()
 //---------------------------------------------------------
 DirectX::Model* GameResources::GetModel(std::string key) const
 {
-	return nullptr;
+	// キーを検索
+	auto it = m_modelList.find(key);
+	if (it != m_modelList.end())
+	{
+		// モデルを返す
+		return it->second.get();
+	}
 }
 
 
@@ -144,5 +155,11 @@ DirectX::Model* GameResources::GetModel(std::string key) const
 //---------------------------------------------------------
 ID3D11ShaderResourceView* GameResources::GetTexture(std::string key) const
 {
-	return nullptr;
+	// キーを検索
+	auto it = m_textureList.find(key);
+	if (it != m_textureList.end())
+	{
+		// テクスチャを返す
+		return it->second.Get();
+	}
 }

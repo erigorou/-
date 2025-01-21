@@ -42,7 +42,6 @@ Cudgel_Attacking::Cudgel_Attacking(Cudgel* cudgel)
 	, m_totalSeconds(0.0f)
 	, m_recordPointTimer(0.0f)
 	, m_worldMatrix(DirectX::SimpleMath::Matrix::Identity)
-	, m_model(nullptr)
 	, m_canGenerateSlamParticles(true)
 {
 	// パーティクルの取得
@@ -59,7 +58,6 @@ Cudgel_Attacking::~Cudgel_Attacking()
 void Cudgel_Attacking::Initialize()
 {
 	m_worldMatrix = Matrix::Identity;			// ワールド行列の初期化
-	m_model = m_cudgel->GetModel();				// モデルの取得
 }
 
 
@@ -298,46 +296,6 @@ void Cudgel_Attacking::GetCudgelBothEnds(float _totalTime)
 /// </summary>
 void Cudgel_Attacking::PostUpdate()
 {
-}
-
-
-/// <summary>
-/// 描画処理
-/// </summary>
-/// <param name="context"></param>
-/// <param name="states"></param>
-/// <param name="view"></param>
-/// <param name="projection"></param>
-void Cudgel_Attacking::Render(ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection)
-{
-	// モデルを描画する
-	m_model->Draw(context, *states, m_worldMatrix, view, projection);
-
-#ifdef _DEBUG
-	CommonResources* resources = CommonResources::GetInstance();
-	auto debugString = resources->GetDebugString();
-	debugString->AddString("");
-
-	// Sphereの生成
-	//auto sphere = DirectX::GeometricPrimitive::CreateSphere(context, 1.0f);
-
-	// m_rootPosの各頂点に球体を描画
-	//for (const auto& rootPos : m_rootPos)
-	//{
-	//	DirectX::SimpleMath::Matrix rootSphereMatrix = DirectX::SimpleMath::Matrix::CreateTranslation(rootPos);
-	//	sphere->Draw(rootSphereMatrix, view, projection, DirectX::Colors::Red, nullptr, true);
-	//}
-
-	// m_tipPosの各頂点に球体を描画
-	//for (const auto& tipPos : m_tipPos)
-	//{
-	//	DirectX::SimpleMath::Matrix tipSphereMatrix = DirectX::SimpleMath::Matrix::CreateTranslation(tipPos);
-	//	sphere->Draw(tipSphereMatrix, view, projection, DirectX::Colors::Blue, nullptr, true);
-	//}
-#endif // _DEBUG
 }
 
 

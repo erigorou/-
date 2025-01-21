@@ -53,20 +53,13 @@ public:
 // アクセサ
 // -----------------
 public:
-	DirectX::SimpleMath::Vector3	GetPosition		()override	{ return m_position;			}	// 座標
-	DirectX::SimpleMath::Vector3	GetVelocity		()	const	{ return m_velocity;			}	// 速度
-	DirectX::SimpleMath::Vector3	GetDirection	()	const	{ return m_direction;			}	// 向き
-	DirectX::SimpleMath::Vector2	GetinputVector	()	const	{ return m_inputVector;			}	// 入力ベクトル
-	float							GetAngle		()	const	{ return m_angle;				}	// 回転角
-	HPSystem*						GetPlayerHP		()	const	{ return m_hp.get();			}	// HP
-	DirectX::BoundingSphere*		GetBodyCollision()			{ return m_bodyCollision.get(); }	// 当たり判定
-
-	void SetPosition(DirectX::SimpleMath::Vector3 position)			{ m_position = position;		}	// 座標
-	void SetAnimationRotate(DirectX::SimpleMath::Vector3 rotate)	{ m_animationRotate = rotate;	}	// アニメーション用回転
-
-	void SetInputVector(DirectX::SimpleMath::Vector2 inputVector)	{ m_inputVector = inputVector;	}	// 入力ベクトル
-
-
+	DirectX::SimpleMath::Vector3 GetPosition		()override	{ return m_position;			}	// 座標
+	DirectX::SimpleMath::Vector3 GetVelocity		()	const	{ return m_velocity;			}	// 速度
+	DirectX::SimpleMath::Vector3 GetDirection		()	const	{ return m_direction;			}	// 向き
+	DirectX::SimpleMath::Vector2 GetinputVector		()	const	{ return m_inputVector;			}	// 入力ベクトル
+	float						 GetAngle			()	const	{ return m_angle;				}	// 回転角
+	HPSystem*					 GetPlayerHP		()	const	{ return m_hp.get();			}	// HP
+	DirectX::BoundingSphere*	 GetBodyCollision	()			{ return m_bodyCollision.get(); }	// 当たり判定
 	PlayerIdling*		GetPlayerIdlingState	()	const { return m_playerIdling.		get();	}	// 待機状態
 	PlayerDodging*		GetPlayerDodgingState	()	const { return m_playerDodging.		get();	}	// 回避状態
 	PlayerAttacking_1*	GetPlayerAttackingState1()	const { return m_playerAttacking_1.	get();	}	// 攻撃状態１
@@ -74,9 +67,12 @@ public:
 	PlayerNockBacking*	GetPlayerNockBackingState()	const { return m_playerNockBacking.	get();	}	// やられ状態
 	IPlayer*			GetCurrentState()			const { return m_currentState;				}	// 現在のステート
 
-	void SetSpeed		(DirectX::SimpleMath::Vector3 velocity)		{ m_velocity = velocity;			}
-	void SetAcceleration(DirectX::SimpleMath::Vector3 acceleration)	{ m_acceleration = acceleration;	}
-	void SetAngle		(const float angle)							{ m_angle = angle;					}
+	void SetPosition		(DirectX::SimpleMath::Vector3 position		) { m_position		= position;		}	// 座標
+	void SetAnimationRotate	(DirectX::SimpleMath::Vector3 rotate		) { m_animationRotate = rotate;		}	// アニメーション用回転
+	void SetInputVector		(DirectX::SimpleMath::Vector2 inputVector	) { m_inputVector	= inputVector;	}	// 入力ベクトル
+	void SetSpeed			(DirectX::SimpleMath::Vector3 velocity		) { m_velocity		= velocity;		}	// 速度
+	void SetAcceleration	(DirectX::SimpleMath::Vector3 acceleration	) { m_acceleration	= acceleration;	}	// 加速度
+	void SetAngle			(const float angle							) { m_angle			= angle;		}	// 回転角
 
 	PlayScene* GetPlayScene()const { return m_playScene; }
 
@@ -176,6 +172,7 @@ private:
 	// ベーシックエフェクト
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
+
 	// 入力レイアウト
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
 
@@ -187,7 +184,7 @@ private:
 	PlayScene* m_playScene;
 
 	// モデル
-	std::unique_ptr<DirectX::Model> m_model;
+	DirectX::Model* m_model;
 
 	// 体の当たり判定 ////////
 	std::unique_ptr<DirectX::BoundingSphere> m_bodyCollision;	// 衝突判定

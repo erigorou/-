@@ -28,11 +28,6 @@ public:
 	void Update(float elapsedTime)override;
 	// –Œãˆ—
 	void PostUpdate()override;
-	// •`‰æˆ—
-	void Render(ID3D11DeviceContext* context,
-		DirectX::CommonStates* states,
-		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection) override;
 	// I—¹ˆ—
 	void Finalize()override;
 

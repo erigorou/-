@@ -43,7 +43,6 @@ Cudgel_Sweeping::Cudgel_Sweeping(Cudgel* cudgel)
 	, m_parentAngleRL(0.0f)
 	, m_totalSeconds(0.0f)
 	, m_worldMatrix(DirectX::SimpleMath::Matrix::Identity)
-	, m_model(nullptr)
 	, m_canGenerateSlamParticles(true)
 {
 	// パーティクルの取得
@@ -60,26 +59,21 @@ Cudgel_Sweeping::~Cudgel_Sweeping()
 void Cudgel_Sweeping::Initialize()
 {
 	m_worldMatrix = Matrix::Identity;			// ワールド行列の初期化
-	m_model = m_cudgel->GetModel();
 }
 
 
 // 事前処理
 void Cudgel_Sweeping::PreUpdate()
 {
-	////////////////////////////////////////////基本情報の初期化//////////////////////////////////////////////////
 	m_totalSeconds = 0.0f;												// 経過時間の初期化
 	m_angleUD = DirectX::XMConvertToRadians(93.0f);						// 金棒を横にする
 	m_angleRL = 0.0f;													// 横回転の初期化
 	m_parentAngleRL = m_cudgel->GetPlayScene()->GetEnemy()->GetAngle();	// 敵の角度を取得（親の角度）
-
-	//////////////////////////////////////エフェクト用頂点配列の初期化///////////////////////////////////////////
 	m_rootPos.clear();
 	m_tipPos.clear();
-	m_canGenerateSlamParticles = true;		// エフェクト生成フラグをtrueにする
 
-	//////////////////////////////////////////////サウンドの再生///////////////////////////////////////////////////
-	m_playSound = false;	// サウンドの再生フラグをfalseにする
+	m_canGenerateSlamParticles = true;		// エフェクト生成フラグをtrueにする
+	m_playSound = false;					// サウンドの再生フラグをfalseにする
 }
 
 
@@ -218,46 +212,6 @@ void Cudgel_Sweeping::GetCudgelBothEnds()
 /// </summary>
 void Cudgel_Sweeping::PostUpdate()
 {
-}
-
-
-/// <summary>
-/// 描画処理
-/// </summary>
-/// <param name="context"></param>
-/// <param name="states"></param>
-/// <param name="view"></param>
-/// <param name="projection"></param>
-void Cudgel_Sweeping::Render(ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection)
-{
-	// モデルを描画する
-	m_model->Draw(context, *states, m_worldMatrix, view, projection);
-
-#ifdef _DEBUG
-	CommonResources* resources = CommonResources::GetInstance();
-	auto debugString = resources->GetDebugString();
-	debugString->AddString("%f", m_angleRL);
-
-	// Sphereの生成
-	//auto sphere = DirectX::GeometricPrimitive::CreateSphere(context, 1.0f);
-
-	// m_rootPosの各頂点に球体を描画
-	//for (const auto& rootPos : m_rootPos)
-	//{
-	//	DirectX::SimpleMath::Matrix rootSphereMatrix = DirectX::SimpleMath::Matrix::CreateTranslation(rootPos);
-	//	sphere->Draw(rootSphereMatrix, view, projection, DirectX::Colors::Red, nullptr, true);
-	//}
-
-	// m_tipPosの各頂点に球体を描画
-	//for (const auto& tipPos : m_tipPos)
-	//{
-	//	DirectX::SimpleMath::Matrix tipSphereMatrix = DirectX::SimpleMath::Matrix::CreateTranslation(tipPos);
-	//	sphere->Draw(tipSphereMatrix, view, projection, DirectX::Colors::Blue, nullptr, true);
-	//}
-#endif // _DEBUG
 }
 
 

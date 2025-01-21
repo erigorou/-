@@ -4,13 +4,13 @@
 //
 // -------------------------------------- //
 
-
-
 #include "pch.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
+#include "Game/GameResources.h"
 #include "../../Enemy.h"
 #include "../Header/EnemyFaceIdling.h"
+
 
 
 // --------------------
@@ -39,14 +39,9 @@ void EnemyFaceIdling::CreateModel()
 	CommonResources* resources = CommonResources::GetInstance();
 	auto device = resources->GetDeviceResources()->GetD3DDevice();
 
-	// ƒ‚ƒfƒ‹‚ğ“Ç‚İ‚Ş€”õ
-	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
-	fx->SetDirectory(L"Resources/Models");
-
-	// ƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
-	m_model = DirectX::Model::CreateFromCMO(device, MODEL_PATH, *fx);
+	// ƒ‚ƒfƒ‹æ“¾
+	m_model = GameResources::GetInstance()->GetModel("bossIdlingFace");
 }
-
 
 
 // --------------------

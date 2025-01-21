@@ -9,7 +9,8 @@
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "DeviceResources.h"
-
+#include "Game/CommonResources.h"
+#include "Game/GameResources.h"
 #include "Wall.h"
 #include "Game/Scene/PlayScene.h"
 
@@ -38,30 +39,11 @@ void Wall::Initialize()
 	auto device = resources->GetDeviceResources()->GetD3DDevice();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 
-	// モデルを生成
-	m_model = std::make_unique<DirectX::Model>();
+	// モデルを取得する
+	m_model = GameResources::GetInstance()->GetModel("wall");
 
-	// モデルを読み込む準備
-	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
-	fx->SetDirectory(L"Resources/Models");
-	// モデルを読み込む
-	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Stage/Wall/wall.cmo", *fx);
-
+	// 当たり判定の生成
 	CreateCollision();
-	
-	// ベーシックエフェクトを作成する
-	m_basicEffect = std::make_unique<BasicEffect>(device);
-	m_basicEffect->SetVertexColorEnabled(true);
-	// 入力レイアウトを作成する
-	DX::ThrowIfFailed(
-		CreateInputLayoutFromEffect<VertexPositionColor>(
-			device,
-			m_basicEffect.get(),
-			m_inputLayout.ReleaseAndGetAddressOf())
-	);
-	// プリミティブバッチの作成
-	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
-
 }
 
 // 当たり判定の生成

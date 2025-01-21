@@ -10,6 +10,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Interface/IState.h"
 #include "Game/Data/HPSystem.h"
+#include "Game/GameResources.h"
 #include "../Enemy/Enemy.h"
 #include "Effects/EnemyDamageEffect/EnemyDamageEffect.h"
 #include "Game/HitStop/HitStop.h"
@@ -60,11 +61,8 @@ void Goblin::Initialize()
 	CommonResources* resources = CommonResources::GetInstance();
 	auto device = resources->GetDeviceResources()->GetD3DDevice();
 
-	// モデルを読み込む準備
-	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
-	fx->SetDirectory(L"Resources/Models");
-	// モデルを読み込む
-	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Goblin/goblin.cmo", *fx);
+	// モデルの読み込み
+	m_model = GameResources::GetInstance()->GetModel("goblin");
 
 	// ステートの作成
 	CreateState();
@@ -165,7 +163,7 @@ void Goblin::MoveCollision()
 void Goblin::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection)
 {
 	// ダメージエフェクト付きでモデルを描画する
-	m_damageEffect->DrawWithDamageEffect(m_model.get(), m_worldMatrix, view, projection);
+	m_damageEffect->DrawWithDamageEffect(m_model, m_worldMatrix, view, projection);
 }
 
 

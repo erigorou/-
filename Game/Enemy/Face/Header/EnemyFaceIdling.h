@@ -31,6 +31,6 @@ private:
 
 // 内部変数
 private:
-	Enemy* m_enemy;								// 敵の大元クラス
-	std::unique_ptr<DirectX::Model> m_model;	// モデル
+	Enemy* m_enemy;				// 敵の大元クラス
+	DirectX::Model* m_model;	// モデル
 };

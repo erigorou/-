@@ -24,7 +24,7 @@ public:
 	DirectX::SimpleMath::Vector3 GetPosition() override { return m_position; }	// 位置の取得
 
 
-	DirectX::Model* GetModel()		const { return m_model.get();	}	// モデルの取得
+	DirectX::Model* GetModel()		const { return m_model;			}	// モデルの取得
 	PlayScene*		GetPlayScene()	const { return m_playScene;		}	// プレイシーンの取得
 
 
@@ -62,8 +62,6 @@ public:
 
 private:
 
-	// モデルの生成
-	void CreateModel(ID3D11Device1* device);
 	// ステートを生成
 	void CreateState();
 	// 当たり判定の生成
@@ -75,7 +73,7 @@ private:
 	DirectX::SimpleMath::Vector3 m_velocity;	// 速度
 	DirectX::SimpleMath::Vector3 m_angle;		// 角度
 	DirectX::SimpleMath::Matrix m_worldMatrix;	// ワールド行列
-	std::unique_ptr<DirectX::Model> m_model;	// モデル
+	DirectX::Model*				m_model;		// モデル
 
 	// 金棒の当たり判定1(実際の当たり判定)　
 	std::unique_ptr<DirectX::BoundingOrientedBox>	m_collision;

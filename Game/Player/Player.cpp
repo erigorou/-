@@ -13,6 +13,7 @@
 #include "Libraries/MyLib/Math.h"
 #include "Game/Sound/Sound.h"
 #include "Libraries/MyLib/KeyboardChacker.h"
+#include "Game/GameResources.h"
 #include "Game/Player/Player.h"
 #include "Game/Weapon/Sword/Sword.h"
 #include "../Data/HPSystem.h"
@@ -129,11 +130,8 @@ void Player::InitializeRender()
 	auto device = resources->GetDeviceResources()->GetD3DDevice();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 
-	// モデルを読み込む準備
-	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
-	fx->SetDirectory(L"Resources/Models");
-	// モデルを読み込む
-	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Player/Body/player.cmo", *fx);
+	// モデルの取得
+	m_model = GameResources::GetInstance()->GetModel("player");
 
 	// ベーシックエフェクトを作成する
 	m_basicEffect = std::make_unique<DirectX::BasicEffect>(device);

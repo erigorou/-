@@ -154,7 +154,8 @@ private:
 	std::unique_ptr<BehaviorTree> m_pBT;
 
 	// モデル
-	std::unique_ptr<DirectX::Model> m_model;
+	DirectX::Model* m_model;
+
 	//　エフェクト
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;

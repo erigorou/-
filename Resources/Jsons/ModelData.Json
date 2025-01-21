@@ -1,5 +1,11 @@
 {
-    "player": "Resources/Models/Player/Body/player.cmo",
-    "goblin": "Resources/Models/Goblin/goblin.cmo"
-
+  "player": "Player/Body/player.cmo",
+  "boss": "Oni/Body/oni.cmo",
+  "bossIdlingFace": "Oni/Face/IdlingFace.cmo",
+  "bossAttackingFace": "Oni/Face/AttackingFace.cmo",
+  "goblin": "Goblin/goblin.cmo",
+  "wall": "Stage/Wall/wall.cmo",
+  "titleOni": "Title/oni.cmo",
+  "sword": "Weapon/Sword/sword.cmo",
+  "cudgel": "Weapon/Cudgel/cudgel.cmo"
 }
