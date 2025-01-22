@@ -14,6 +14,7 @@ class Operation
 private:
 	static const wchar_t* TEXT_PATH; 
 
+
 	static const wchar_t* X_PATH;
 	static const wchar_t* SHIFT_PATH;
 	static const wchar_t* UP_PATH;
@@ -21,9 +22,6 @@ private:
 	static const wchar_t* LEFT_PATH;
 	static const wchar_t* RIGHT_PATH;
 
-	static const wchar_t* VS_PATH;
-	static const wchar_t* PS_PATH;
-	static const wchar_t* GS_PATH;
 
 	static constexpr int LOW_HP = 2;
 

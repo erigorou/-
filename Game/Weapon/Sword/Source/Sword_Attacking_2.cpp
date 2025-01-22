@@ -69,7 +69,7 @@ void Sword_Attacking_2::PreUpdate()
 	m_tipPos	.clear();	// 先端の座標配列をクリア
 
 	if (!m_sword->GetPlayScene()->GetEnemy()) return;
-	m_sword->GetPlayScene()->GetEnemy()->CanHit(true); // 衝突可能にする
+	//m_sword->GetPlayScene()->GetEnemy()->CanHit(true); // 衝突可能にする
 }
 
 
@@ -120,8 +120,8 @@ void Sword_Attacking_2::UpdateAnimation()
 			// 敵がいる場合
 			if (m_sword->GetPlayScene()->GetEnemy())
 			{
-				// 当たり判定を無効にする
-				m_sword->GetPlayScene()->GetEnemy()->CanHit(false);
+				//// 当たり判定を無効にする
+				//m_sword->GetPlayScene()->GetEnemy()->CanHit(false);
 			}
 			m_sword->SetAttackFlag(false);
 		}

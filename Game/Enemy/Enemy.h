@@ -38,6 +38,12 @@ public:
 
 
 public:
+	// 刀のダメージを受ける許可を出す
+	void CanHitSword() { m_canHit = true; }
+	// 刀のダメージを受ける許可を取り消す
+	void CanNotHitSword() { m_canHit = false; }
+
+public:
 	// /////////////////敵の基礎情報を渡す関数/////////////////////////////////////////////////////////////////////
 	PlayScene*						GetPlayScene	()	const	{ return m_playScene;	}	// PlaySceneの取得 
 	HPSystem*						GetEnemyHP		()	const	{ return m_hp.get();	}	// HPの取得	
@@ -70,9 +76,6 @@ public:
 
 	void SetTargetLockOn(bool flag) { m_isTargetLockOn = flag; }	// ロックオンするかどうか
 
-	// 衝突を許可する
-	void CanHit(bool flag) { m_canHit = flag; }
-
 	// 現在のステートを返す
 	IState* GetCurrentState() const { return m_currentState; }
 
@@ -92,11 +95,9 @@ public:
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection);
 	// 終了処理
 	void Finalize();
-
 	// 死亡処理を行う
 	void DeadAction();
 
-private:
 	// ステートの作成処理
 	void CreateState();
 	// 顔の作成処理

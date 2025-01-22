@@ -211,6 +211,7 @@
     <ClInclude Include="Game\Goblin\State\Header\GoblinDead.h" />
     <ClInclude Include="Game\Goblin\State\Header\GoblinTutorial.h" />
     <ClInclude Include="Game\HitStop\HitStop.h" />
+    <ClInclude Include="Game\Messenger\EventMessenger.h" />
     <ClInclude Include="Game\Player\State\Header\Player_NockBacking.h" />
     <ClInclude Include="Game\Quest\QuestList\QuestPlayerAttack.h" />
     <ClInclude Include="Game\Quest\QuestList\QuestPlayerAvoid.h" />
@@ -305,7 +306,7 @@
     <ClInclude Include="Libraries\MyLib\Math.h" />
     <ClInclude Include="Libraries\MyLib\MemoryLeakDetector.h" />
     <ClInclude Include="Libraries\MyLib\SkySphere.h" />
-    <ClInclude Include="Game\Observer\Messenger.h" />
+    <ClInclude Include="Game\Messenger\KeyboardMessenger.h" />
     <ClInclude Include="Libraries\MyLib\Texture.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="StepTimer.h" />
@@ -335,6 +336,7 @@
     <ClCompile Include="Game\Goblin\State\Score\GoblinDead.cpp" />
     <ClCompile Include="Game\Goblin\State\Score\GoblinTutorial.cpp" />
     <ClCompile Include="Game\HitStop\HitStop.cpp" />
+    <ClCompile Include="Game\Messenger\EventMessenger.cpp" />
     <ClCompile Include="Game\Player\State\Source\Player_NockBacking.cpp" />
     <ClCompile Include="Game\Quest\QuestManager.cpp" />
     <ClCompile Include="Game\Quest\QuestRenderer\QuestRenderer.cpp" />
@@ -402,7 +404,7 @@
     <ClCompile Include="Libraries\MyLib\SkySphere.cpp" />
     <ClCompile Include="Libraries\MyLib\Texture.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Game\Observer\Messenger.cpp" />
+    <ClCompile Include="Game\Messenger\KeyboardMessenger.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

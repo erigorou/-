@@ -22,6 +22,7 @@ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\GameResources.cpp
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Goblin\State\Score\GoblinDead.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\GoblinDead.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Goblin\State\Score\GoblinTutorial.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\GoblinTutorial.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\HitStop\HitStop.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\HitStop.obj
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Messenger\EventMessenger.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\EventMessenger.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Player\State\Source\Player_NockBacking.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\Player_NockBacking.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Quest\QuestManager.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\QuestManager.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Quest\QuestRenderer\QuestRenderer.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\QuestRenderer.obj
@@ -89,5 +90,5 @@ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Libraries\MyLib\Invinc
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Libraries\MyLib\SkySphere.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\SkySphere.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Libraries\MyLib\Texture.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\Texture.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Main.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\Main.obj
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Observer\Messenger.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\Messenger.obj
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Messenger\KeyboardMessenger.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\KeyboardMessenger.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\pch.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\pch.obj

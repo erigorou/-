@@ -68,8 +68,8 @@ void Sword_Attacking_4::PreUpdate()
 	// 経過時間のリセット
 	m_totalSeconds = 0.0f;
 
-	// 当たれるようにする
-	m_sword->GetPlayScene()->GetEnemy()->CanHit(true);
+	//// 当たれるようにする
+	//m_sword->GetPlayScene()->GetEnemy()->CanHit(true);
 
 	m_rootPos.clear();
 	m_tipPos.clear();
@@ -104,8 +104,8 @@ void Sword_Attacking_4::Update(float elapsedTime)
 	}
 	else
 	{
-		// 攻撃時間を過ぎたら当たり判定を無効にする
-		m_sword->GetPlayScene()->GetEnemy()->CanHit(false);
+		//// 攻撃時間を過ぎたら当たり判定を無効にする
+		//m_sword->GetPlayScene()->GetEnemy()->CanHit(false);
 	}
 
 	// ワールド行列を更新する

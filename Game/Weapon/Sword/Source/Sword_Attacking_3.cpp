@@ -65,7 +65,7 @@ void Sword_Attacking_3::PreUpdate()
 	m_sword->SetAttackFlag(true);
 
 	m_totalSeconds = 0.0f;								// 経過時間のリセット
-	m_sword->GetPlayScene()->GetEnemy()->CanHit(true);	// 衝突可能フラグを有効に
+	//m_sword->GetPlayScene()->GetEnemy()->CanHit(true);	// 衝突可能フラグを有効に
 
 	m_rootPos.clear();	// 根本の座標をクリア
 	m_tipPos.clear();	// 先端の座標をクリア
@@ -100,8 +100,8 @@ void Sword_Attacking_3::Update(float elapsedTime)
 	}
 	else
 	{
-		// 攻撃時間を過ぎたら当たり判定を無効にする
-		m_sword->GetPlayScene()->GetEnemy()->CanHit(false);
+		//// 攻撃時間を過ぎたら当たり判定を無効にする
+		//m_sword->GetPlayScene()->GetEnemy()->CanHit(false);
 	}
 
 	// ワールド行列を更新する

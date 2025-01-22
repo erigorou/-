@@ -15,6 +15,7 @@
 #include "Game/Scene/PlayScene.h"
 #include "../HitStop/HitStop.h"
 #include "Game/GameResources.h"
+#include "Game/Messenger/EventMessenger.h"
 
 #include "Game/Enemy/Enemy.h"
 #include "Game/EnemyManager/EnemyManager.h"
@@ -122,13 +123,13 @@ void Enemy::CreateState()
 	m_dead			= std::make_unique<EnemyDead>			(this);	// Ž€–S
 
 	// === ó‘Ô‚Ì‰Šú‰» ===
-	m_starting		->Initialize(); // ŠJŽn
-	m_idling		-> Initialize(); // ‘Ò‹@
-	m_attacking		-> Initialize(); // UŒ‚
-	m_sweeping		-> Initialize(); // “ã‚¬•¥‚¢
-	m_dashAttacking	-> Initialize(); // “ËŒ‚
-	m_approaching	-> Initialize(); // ’Ç”ö
-	m_dead			->Initialize(); // Ž€–S
+	m_starting		->Initialize();		// ŠJŽn
+	m_idling		-> Initialize();	// ‘Ò‹@
+	m_attacking		-> Initialize();	// UŒ‚
+	m_sweeping		-> Initialize();	// “ã‚¬•¥‚¢
+	m_dashAttacking	-> Initialize();	// “ËŒ‚
+	m_approaching	-> Initialize();	// ’Ç”ö
+	m_dead			->Initialize();		// Ž€–S
 
 	// ‰Šú‚ÌƒXƒe[ƒg‚ð‘Ò‹@ó‘Ô‚ÉŠ„‚è“–‚Ä‚é
 	m_currentState = m_starting.get();
@@ -368,7 +369,4 @@ void Enemy::DeadAction()
 {
 	// Õ“Ë”»’è‚Ì‰ðœ
 	GetPlayScene()->GetCollisionManager()->DeleteCollision(CollisionType::Sphere, this);
-
-	//// ƒQ[ƒ€I—¹
-	//GetPlayScene()->GameEnd();
 }

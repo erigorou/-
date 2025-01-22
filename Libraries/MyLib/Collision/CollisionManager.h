@@ -50,11 +50,7 @@ public:
 
 	void Initialize();		// ‰Šú‰»ŠÖ”
 	void Update();			// XVŠÖ”
-	void Render				// •`‰æŠÖ”
-	(
-		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection
-	);
+	void Render(const DirectX::SimpleMath::Matrix& view,const DirectX::SimpleMath::Matrix& projection); // •`‰æ
 
 	// ’Ç‰ÁŠÖ”
 	template<typename T>

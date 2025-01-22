@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Factory.h"
-#include "../Observer/Messenger.h"
+#include "../Messenger/KeyboardMessenger.h"		// キー入力メッセンジャー
+#include "../Messenger/EventMessenger.h"		// イベントメッセンジャー
 
 #include "../Scene/PlayScene.h"										// プレイシーン
 #include "Interface/IObserver.h"									// オブザーバー
@@ -133,14 +134,13 @@ std::unique_ptr<Player> Factory::CreatePlayer(PlayScene* playScene)
 	// 初期化処理
 	player->Initialize();
 	// キーを登録
-	Messenger::Attach(DirectX::Keyboard::X			, player.get(), Messenger::KeyPressType::PRESSED);
-	Messenger::Attach(DirectX::Keyboard::LeftShift	, player.get(), Messenger::KeyPressType::PRESSED);
-	Messenger::Attach(DirectX::Keyboard::Left		, player.get(), Messenger::KeyPressType::DOWN);
-	Messenger::Attach(DirectX::Keyboard::Right		, player.get(), Messenger::KeyPressType::DOWN);
-	Messenger::Attach(DirectX::Keyboard::Up			, player.get(), Messenger::KeyPressType::DOWN);
-	Messenger::Attach(DirectX::Keyboard::Down		, player.get(), Messenger::KeyPressType::DOWN);
-
-	Messenger::Attach(DirectX::Keyboard::L, player.get(), Messenger::KeyPressType::PRESSED);
+	KeyboardMessenger::Attach(DirectX::Keyboard::X			, player.get(), KeyboardMessenger::KeyPressType::PRESSED);
+	KeyboardMessenger::Attach(DirectX::Keyboard::LeftShift	, player.get(), KeyboardMessenger::KeyPressType::PRESSED);
+	KeyboardMessenger::Attach(DirectX::Keyboard::Left		, player.get(), KeyboardMessenger::KeyPressType::DOWN);
+	KeyboardMessenger::Attach(DirectX::Keyboard::Right		, player.get(), KeyboardMessenger::KeyPressType::DOWN);
+	KeyboardMessenger::Attach(DirectX::Keyboard::Up			, player.get(), KeyboardMessenger::KeyPressType::DOWN);
+	KeyboardMessenger::Attach(DirectX::Keyboard::Down		, player.get(), KeyboardMessenger::KeyPressType::DOWN);
+	KeyboardMessenger::Attach(DirectX::Keyboard::L			, player.get(), KeyboardMessenger::KeyPressType::PRESSED);
 	return player;
 }
 
@@ -156,6 +156,11 @@ std::unique_ptr<Enemy> Factory::CreateEnemy(PlayScene* playScene)
 	enemy = std::make_unique<Enemy>(playScene);
 	// 初期化処理
 	enemy->Initialize();
+
+	// イベントの登録
+	EventMessenger::Attach("canHit",std::bind(&Enemy::CanHitSword,enemy.get()));
+	EventMessenger::Attach("canNotHit",std::bind(&Enemy::CanNotHitSword, enemy.get()));
+
 	// 鬼（敵）の設定
 	return enemy;
 }

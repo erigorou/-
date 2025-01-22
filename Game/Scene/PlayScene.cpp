@@ -20,7 +20,8 @@
 #include "Libraries/MyLib/Collision/CollisionManager.h"	// 当たり判定
 #include "Game/Data/GameData.h"							// ゲームデータ
 #include"Interface/IObserver.h"							// オブザーバー
-#include "Game/Observer/Messenger.h"					// メッセンジャー
+#include "Game/Messenger/KeyboardMessenger.h"			// メッセンジャー
+#include "Game/Messenger/EventMessenger.h"				// イベントメッセンジャー
 #include "Game/Quest/QuestManager.h"					// クエストマネージャー
 // オブジェクト関連　=========================================
 #include "Game/EnemyManager/EnemyManager.h"	// 敵マネージャー
@@ -87,7 +88,7 @@ void PlayScene::Initialize()
 // ----------------
 void PlayScene::CreateObjects()
 {
-	Messenger::Clear();	// メッセンジャーのクリア
+	KeyboardMessenger::Clear();	// メッセンジャーのクリア
 
 	m_hitStop = HitStop::GetInstance();
 
@@ -110,9 +111,9 @@ void PlayScene::CreateObjects()
 
 	m_uiManager->CreateUI();	// UIの生成
 	// 観察者リストをソートする
-	Messenger::SortObserverList();
+	KeyboardMessenger::SortObserverList();
 	// キー範囲リストを生成する
-	Messenger::CreateKeyRangeList();
+	KeyboardMessenger::CreateKeyRangeList();
 	// カメラをプレイシーンで設定
 	m_camera->ChangeState(m_camera->GetPlayState());
 	// BGM変更
@@ -163,6 +164,8 @@ inline bool IsKeyDown(DirectX::Keyboard::State& state)
 // --------------------------------
 void PlayScene::Update(float elapsedTime)
 {
+	EventMessenger::Execute("canHit");
+
 	// キーボードの更新処理
 	UpdateKeyboard();
 	// オブジェクトの更新処理
@@ -181,8 +184,8 @@ void PlayScene::UpdateKeyboard()
 	m_keyboardStateTracker.Update(m_keyboardState);
 
 	// キーボードが押下げられたかどうかを判定する
-	if (IsKeyDown(m_keyboardState))	Messenger::Notify(m_keyboardState);
-	if (IsKeyPress(m_keyboardStateTracker))	Messenger::Notify(m_keyboardStateTracker);
+	if (IsKeyDown(m_keyboardState))			KeyboardMessenger::Notify(m_keyboardState);
+	if (IsKeyPress(m_keyboardStateTracker))	KeyboardMessenger::Notify(m_keyboardStateTracker);
 
 	if (m_keyboardStateTracker.IsKeyPressed(DirectX::Keyboard::Keys::Space)) m_enemyManager->ChangeCameraTarget();
 }
