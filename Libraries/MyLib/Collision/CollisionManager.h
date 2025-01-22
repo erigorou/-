@@ -20,10 +20,10 @@ struct CollisionData
 	ObjectType		objType;
 	CollisionType	colType;
 	IObject*		object;
-	const T*		collision;
+	T*				collision;
 
 	// コンストラクタ
-	CollisionData(ObjectType objType,CollisionType collType, IObject* obj, const T* collision)
+	CollisionData(ObjectType objType,CollisionType collType, IObject* obj, T* collision)
 		: objType(objType)
 		, colType(collType)
 		, object(obj)
@@ -35,9 +35,9 @@ struct CollisionData
 // 衝突したときに相手に渡すデータの構造体
 struct InterSectData
 {
-	ObjectType		objType;
-	CollisionType	colType;
-	IObject*		object;
+	ObjectType					objType;
+	CollisionType				colType;
+	DirectX::BoundingSphere*	collision;
 };
 
 // 衝突判定を管理するクラス
@@ -70,7 +70,7 @@ public:
 private:
 	inline void DrawCollision(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection);
 
-	inline DirectX::BoundingSphere CreateProxySphere(const DirectX::BoundingOrientedBox* collision);
+	inline std::unique_ptr<DirectX::BoundingSphere> CreateProxySphere(const DirectX::BoundingOrientedBox* collision);
 
 
 // メンバ変数
@@ -78,7 +78,7 @@ private:
 	std::vector<CollisionData<DirectX::BoundingOrientedBox>>	m_obbs;			// 四角の当たり判定を格納
 	std::vector<CollisionData<DirectX::BoundingSphere>>			m_spheres;		// 球体の当たり判定を格納
 
-	std::vector<DirectX::BoundingSphere> m_obbProxies;	// OBB衝突判定のプロキシ用球体判定を格納
+	std::vector<std::unique_ptr<DirectX::BoundingSphere>> m_obbProxies;	// OBB衝突判定のプロキシ用球体判定を格納
 
 
 	// ベーシックエフェクト

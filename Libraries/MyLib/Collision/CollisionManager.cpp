@@ -82,13 +82,13 @@ void CollisionManager::Update()
 		for (size_t j = 0; j < m_spheres.size(); j++)
 		{
 			// プロキシと衝突していなければ次の球に移る
-			if (!m_obbProxies[i].Intersects(*m_spheres[j].collision))	continue;
+			if (!m_obbProxies[i]->Intersects(*m_spheres[j].collision))	continue;
 
 			// OBBと球の当たり判定
 			if (m_obbs[i].collision->Intersects(*m_spheres[j].collision))
 			{
-				InterSectData obbData = { m_obbs[i].objType, m_obbs[i].colType,	m_obbs[i].object };
-				InterSectData sphereData = { m_spheres[j].objType, m_spheres[i].colType,	m_spheres[j].object };
+				InterSectData obbData		= { m_obbs[i]	.objType, m_obbs[i].colType,	m_obbProxies[i].get()};
+				InterSectData sphereData	= { m_spheres[j].objType, m_spheres[i].colType, m_spheres[j].collision };
 
 				m_obbs[i].object->HitAction(sphereData);
 				m_spheres[j].object->HitAction(obbData);
@@ -105,8 +105,8 @@ void CollisionManager::Update()
 			/////////////////衝突した場合の当たり判定を比較する/////////////////////
 			if (m_spheres[i].collision->Intersects(*m_spheres[j].collision))
 			{
-				InterSectData sphereData1 = { m_spheres[i].objType, m_spheres[i].colType, m_spheres[i].object};
-				InterSectData sphereData2 = { m_spheres[j].objType, m_spheres[j].colType, m_spheres[j].object};
+				InterSectData sphereData1 = { m_spheres[i].objType, m_spheres[i].colType, m_spheres[i].collision};
+				InterSectData sphereData2 = { m_spheres[j].objType, m_spheres[j].colType, m_spheres[j].collision};
 
 				m_spheres[i].object->HitAction(sphereData2);
 				m_spheres[j].object->HitAction(sphereData1);
@@ -179,7 +179,7 @@ void CollisionManager::AddCollision<DirectX::BoundingSphere*>(ObjectType objType
 // -------------------------------------------------------
 // OBBのプロキシ球を生成する
 // -------------------------------------------------------
-inline DirectX::BoundingSphere CollisionManager::CreateProxySphere(const DirectX::BoundingOrientedBox* collision)
+inline std::unique_ptr<DirectX::BoundingSphere> CollisionManager::CreateProxySphere(const DirectX::BoundingOrientedBox* collision)
 {
 	// BoundingSphereをOBBの中心と最大半径で作成
 	float radius = sqrtf(
@@ -188,7 +188,9 @@ inline DirectX::BoundingSphere CollisionManager::CreateProxySphere(const DirectX
 		collision->Extents.z * collision->Extents.z
 	);
 
-	return DirectX::BoundingSphere(collision->Center, radius);
+	std::unique_ptr<DirectX::BoundingSphere> proxy = std::make_unique<DirectX::BoundingSphere>(collision->Center, radius);
+
+	return std::move(proxy);
 }
 
 // -------------------------------------------------------
@@ -255,9 +257,9 @@ inline void CollisionManager::DrawCollision(DirectX::SimpleMath::Matrix view, Di
 		DX::Draw( m_primitiveBatch.get(), *sphere.collision, DirectX::Colors::Blue);
 	}
 
-	for (auto sphere : m_obbProxies)
+	for (auto& sphere : m_obbProxies)
 	{
-		DX::Draw(m_primitiveBatch.get(),sphere,DirectX::Colors::LimeGreen);
+		DX::Draw(m_primitiveBatch.get(), *sphere, DirectX::Colors::LimeGreen);
 	}
 	// 秒が終了
 	m_primitiveBatch->End();

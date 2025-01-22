@@ -337,12 +337,8 @@ void Enemy::HitStage(InterSectData data)
 	{
 		m_pushBackValue = DirectX::SimpleMath::Vector3::Zero;
 
-		// 衝突したオブジェクトの情報を取得
-		auto wall = dynamic_cast<Wall*>(data.object);
-		DirectX::BoundingSphere* stageCollision = wall->GetCollision();
-
 		// 押し戻し量を計算
-		m_pushBackValue += Math::pushFront_BoundingSphere(*m_bodyCollision.get(), *stageCollision);
+		m_pushBackValue += Math::pushFront_BoundingSphere(*m_bodyCollision.get(), *data.collision);
 		// y座標には反映無しに設定
 		m_pushBackValue.y = 0.0f;
 		// 敵の位置を押し戻す

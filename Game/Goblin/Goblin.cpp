@@ -210,11 +210,9 @@ void Goblin::HitPlayer(InterSectData data)
 // --------------------------------
 void Goblin::HitGoblin(InterSectData data)
 {
-	auto goblin = static_cast<Goblin*>(data.object);
-
 	// 衝突したオブジェクトの情報を取得
 	auto goblinCollision = *m_bodyCollision.get();
-	auto goblinCollision2 = goblin->GetCollision();
+	auto goblinCollision2 = *data.collision;
 
 	// 押し戻し量を計算
 	m_pushBackValue = Math::pushBack_BoundingSphere(goblinCollision, goblinCollision2);
@@ -230,13 +228,11 @@ void Goblin::HitGoblin(InterSectData data)
 // --------------------------------
 void Goblin::HitEnemy(InterSectData data)
 {
-	auto enemy = static_cast<Enemy*>(data.object);
-
 	m_pushBackValue = DirectX::SimpleMath::Vector3::Zero;
 
 	// 衝突したオブジェクトの情報を取得
 	auto goblinCollision = *m_bodyCollision.get();
-	auto enemyCollision = enemy->GetBodyCollision();
+	auto enemyCollision = *data.collision;
 
 	// 押し戻し量を計算
 	m_pushBackValue += Math::pushBack_BoundingSphere(goblinCollision, enemyCollision);
@@ -261,13 +257,7 @@ void Goblin::HitStage(InterSectData data)
 // --------------------------------
 void Goblin::HitSword(InterSectData data)
 {
-	auto sword = static_cast<Sword*>(data.object);
-	// 剣が待機中でない場合
-	if (sword->GetAttackFlag())
-	{
-		// ダメージを受ける
-		Damaged(1);
-	}
+	Damaged(1);
 }
 
 

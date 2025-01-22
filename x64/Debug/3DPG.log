@@ -1,2 +1,4 @@
-﻿  SkySphere.cpp
+﻿  Goblin.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Goblin\Goblin.cpp(62,7): warning C4189: 'device': ローカル変数が初期化されましたが、参照されていません
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Goblin\Goblin.cpp(258,37): warning C4100: 'data': 引数は関数の本体部で 1 度も参照されません。
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exe

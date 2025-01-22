@@ -478,19 +478,21 @@ void Player::HitEnemyBody(InterSectData data)
 {
 	if (data.objType == ObjectType::Enemy && data.colType == CollisionType::Sphere)
 	{
-		auto enemy = dynamic_cast<Enemy*>(data.object);
-
 		// 敵のステートがダッシュ攻撃の場合で相手が攻撃中の場合
 		if (!m_isHit &&
-			m_canHit &&
-			enemy->GetCurrentState() == enemy->GetEnemyDashAttacking())
+			m_canHit)
 		{
 			Damage(1);
 		}
+		// Messenger
+		//	enemy->GetCurrentState() == enemy->GetEnemyDashAttacking())
+		//{
+		//	Damage(1);
+		//}
 
 		// 衝突したオブジェクトの情報を取得
 		DirectX::BoundingSphere playerCollision = *m_bodyCollision.get();
-		DirectX::BoundingSphere enemyCollision = enemy->GetBodyCollision();
+		DirectX::BoundingSphere enemyCollision = *data.collision;
 
 		// 押し戻し量を計算
 		m_pushBackValue += Math::pushBack_BoundingSphere(playerCollision, enemyCollision);
@@ -510,19 +512,22 @@ void Player::HitGoblin(InterSectData data)
 {
 	if (data.objType == ObjectType::Goblin && data.colType == CollisionType::Sphere)
 	{
-		Goblin* goblin = dynamic_cast<Goblin*>(data.object);
-
 		// 敵のステートがダッシュ攻撃の場合で相手が攻撃中の場合
 		if (!m_isHit &&
-			m_canHit &&
-			goblin->IsAttacking())
+			m_canHit)
 		{
 			Damage(1);
 		}
 
+		// Messenger
+		//	goblin->IsAttacking())
+		//{
+		//	Damage(1);
+		//}
+
 		// 衝突したオブジェクトの情報を取得
 		DirectX::BoundingSphere playerCollision = *m_bodyCollision.get();
-		DirectX::BoundingSphere goblinCollision = goblin->GetCollision();
+		DirectX::BoundingSphere goblinCollision = *data.collision;
 
 		// 押し戻し量を計算
 		m_pushBackValue += Math::pushBack_BoundingSphere(playerCollision, goblinCollision);
@@ -564,11 +569,10 @@ void Player::HitStage(InterSectData data)
 	if (data.objType == ObjectType::Stage && data.colType == CollisionType::Sphere)
 	{
 		// 衝突したオブジェクトの情報を取得
-		auto wall = dynamic_cast<Wall*>(data.object);
-		DirectX::BoundingSphere* stageCollision = wall->GetCollision();
+		DirectX::BoundingSphere stageCollision = *data.collision;
 
 		// 押し戻し量を計算
-		m_pushBackValue += Math::pushFront_BoundingSphere(*m_bodyCollision.get(), *stageCollision);
+		m_pushBackValue += Math::pushFront_BoundingSphere(*m_bodyCollision.get(), stageCollision);
 		// y座標には反映無しに設定
 		m_pushBackValue.y = 0;
 		// プレイヤーの位置を押し戻す
