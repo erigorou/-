@@ -13,6 +13,12 @@
       <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\DamageEffect\DamageEffectPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\DeadEffect\DeadEffectPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\DeadEffect\DeadEffectVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\Dust\DustGS.cso</FullPath>
     </ContentFile>
     <ContentFile>

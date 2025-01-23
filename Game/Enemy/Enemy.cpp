@@ -312,7 +312,7 @@ void Enemy::HitSword(InterSectData data)
 {
 	if (
 		!m_isHit &&
-		m_canHit &&
+		/*m_canHit &&*/
 		data.objType == ObjectType::Sword &&
 		data.colType == CollisionType::OBB)
 	{

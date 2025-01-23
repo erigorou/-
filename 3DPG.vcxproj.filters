@@ -250,6 +250,7 @@
     <ClInclude Include="Game\Quest\TutorialList\TutorialDodgStart.h" />
     <ClInclude Include="Game\GameResources.h" />
     <ClInclude Include="Game\Messenger\EventMessenger.h" />
+    <ClInclude Include="Effects\EnemyDeadEffect\EnemyDeadEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -386,6 +387,7 @@
     <ClCompile Include="Game\Goblin\State\Score\GoblinTutorial.cpp" />
     <ClCompile Include="Game\GameResources.cpp" />
     <ClCompile Include="Game\Messenger\EventMessenger.cpp" />
+    <ClCompile Include="Effects\EnemyDeadEffect\EnemyDeadEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -416,6 +418,7 @@
     <None Include="Resources\Shaders\DamageEffect\Common.hlsli" />
     <None Include="Resources\Shaders\Mask\Particle.hlsli" />
     <None Include="Resources\Shaders\Quest\Quest.hlsli" />
+    <None Include="Resources\Shaders\DeadEffect\Common.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Sword\SwordTrailPS.hlsl" />
@@ -446,5 +449,7 @@
     <FxCompile Include="Resources\Shaders\Quest\Quest_PS.hlsl" />
     <FxCompile Include="Resources\Shaders\Quest\Quest_GS.hlsl" />
     <FxCompile Include="Resources\Shaders\DamageEffect\DamageEffectVS.hlsl" />
+    <FxCompile Include="Resources\Shaders\DeadEffect\DeadEffectPS.hlsl" />
+    <FxCompile Include="Resources\Shaders\DeadEffect\DeadEffectVS.hlsl" />
   </ItemGroup>
 </Project>

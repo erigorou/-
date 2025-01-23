@@ -8,7 +8,7 @@ class EnemyDamageEffect
 // ** 固定値 **
 private:
 	// モデルにエフェクトを掛けておく時間
-	static constexpr float TOTAL_TIME = 2.5f;
+	static constexpr float TOTAL_TIME = 0.5f;
 
 	// シェーダーのファイルパス
 	static const wchar_t* PS_PATH;
