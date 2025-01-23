@@ -1,2 +1,6 @@
-﻿  Factory.cpp
+﻿  Enemy.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Enemy\Enemy.cpp(89,7): warning C4189: 'device': ローカル変数が初期化されましたが、参照されていません
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Enemy\Enemy.cpp(315,7): warning C4189: 'i': ローカル変数が初期化されましたが、参照されていません
+  CollisionManager.cpp
+  コードを生成中...
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exe

@@ -445,5 +445,6 @@
     <FxCompile Include="Resources\Shaders\Quest\Quest_VS.hlsl" />
     <FxCompile Include="Resources\Shaders\Quest\Quest_PS.hlsl" />
     <FxCompile Include="Resources\Shaders\Quest\Quest_GS.hlsl" />
+    <FxCompile Include="Resources\Shaders\DamageEffect\DamageEffectVS.hlsl" />
   </ItemGroup>
 </Project>

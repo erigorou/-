@@ -164,8 +164,6 @@ inline bool IsKeyDown(DirectX::Keyboard::State& state)
 // --------------------------------
 void PlayScene::Update(float elapsedTime)
 {
-	EventMessenger::Execute("canHit");
-
 	// キーボードの更新処理
 	UpdateKeyboard();
 	// オブジェクトの更新処理

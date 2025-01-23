@@ -1,5 +1,6 @@
 {
     "logo"  : "LOGO.png",
     "floor" : "Floor.png",
-    "dust"  : "dust/png" 
+    "dust"  : "dust/png", 
+    "noize" : "noizePattern.png"
 }

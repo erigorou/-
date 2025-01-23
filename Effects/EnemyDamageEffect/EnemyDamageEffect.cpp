@@ -9,6 +9,7 @@
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "Libraries/MyLib/EasingFunctions.h"
 #include "Game/CommonResources.h"
+#include "Game/GameResources.h"
 #include "DeviceResources.h"
 
 
@@ -91,12 +92,18 @@ void EnemyDamageEffect::DrawWithDamageEffect(
 			{
 				basicEffect->SetLightingEnabled		(true);		// ライト有効化
 				basicEffect->SetPerPixelLighting	(true);		// ピクセル単位のライティング有効化
-				basicEffect->SetTextureEnabled		(false);	// テクスチャの有効化
-				basicEffect->SetVertexColorEnabled	(false);	// 頂点カラーの有効化
-				basicEffect->SetFogEnabled			(false);	// フォグの有効化
+				basicEffect->SetTextureEnabled		(false);	// テクスチャの無効化
+				basicEffect->SetVertexColorEnabled	(false);	// 頂点カラーの無効化
+				basicEffect->SetFogEnabled			(false);	// フォグの無効化
 			}
 		}
 	);
+
+
+	ID3D11SamplerState* sampler[1] = { };
+	context->PSSetSamplers(0, 1, sampler);
+
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture = GameResources::GetInstance()->GetTexture("noize");
 
 	// モデルの描画
 	model->Draw(context, *states, world, view, proj, false, [&]
@@ -108,14 +115,19 @@ void EnemyDamageEffect::DrawWithDamageEffect(
 				ID3D11Buffer* cbuff = { m_buffer.Get() };
 				// シェーダーにバッファを渡す
 				context->PSSetConstantBuffers(1, 1, &cbuff);
+				//	ピクセルシェーダにテクスチャを登録する。
+				context->PSSetShaderResources(0, 1, texture.GetAddressOf());
+
+				// ブレンドステートを設定
+				context->OMSetBlendState(states->AlphaBlend(), nullptr, 0xFFFFFFFF);
 
 				// シェーダーの設定
 				m_damageShader->BeginSharder(context);
 			}
 		}
 	);
-	// シェーダーの登録を解除
-	m_damageShader->EndSharder(context);
+	//// シェーダーの登録を解除
+	//m_damageShader->EndSharder(context);
 }
 
 
@@ -131,7 +143,7 @@ void EnemyDamageEffect::CreateShader()
 	m_damageShader = std::make_unique<CustomShader>
 		(
 			device,			// デバイス
-			nullptr,		// 頂点シェーダー(使用無し)
+			VS_PATH,		// 頂点シェーダー
 			PS_PATH,		// ピクセルシェーダー
 			nullptr,		// ジオメトリシェーダー(使用無し)
 			INPUT_LAYOUT	// 入力レイアウト

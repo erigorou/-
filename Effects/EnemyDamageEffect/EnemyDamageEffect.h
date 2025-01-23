@@ -8,10 +8,12 @@ class EnemyDamageEffect
 // ** 固定値 **
 private:
 	// モデルにエフェクトを掛けておく時間
-	static constexpr float TOTAL_TIME = 0.25f;
+	static constexpr float TOTAL_TIME = 2.5f;
 
 	// シェーダーのファイルパス
 	static const wchar_t* PS_PATH;
+	static constexpr wchar_t VS_PATH[] = L"Resources/Shaders/DamageEffect/DamageEffectVS.cso";
+
 
 	// 頂点入力レイアウト
 	std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT;
@@ -21,6 +23,7 @@ private:
 		float Time; // 時間
 		DirectX::SimpleMath::Vector3 Padding;
 	};
+
 
 
 // ** 公開関数 **
