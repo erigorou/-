@@ -50,7 +50,7 @@ void Operation::Initialize()
 {
 
 	// 操作キーのパスを格納した配列
-	const std::vector<const wchar_t*> keyPaths = 
+	const std::vector<const wchar_t*> keyPaths =
 	{
 		X_PATH, SHIFT_PATH, UP_PATH, DOWN_PATH, LEFT_PATH, RIGHT_PATH
 	};

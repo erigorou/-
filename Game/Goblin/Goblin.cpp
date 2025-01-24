@@ -13,6 +13,7 @@
 #include "Game/GameResources.h"
 #include "../Enemy/Enemy.h"
 #include "Effects/EnemyDamageEffect/EnemyDamageEffect.h"
+#include "Effects/EnemyDeadEffect/EnemyDeadEffect.h"
 #include "Game/HitStop/HitStop.h"
 #include "Game/EnemyManager/EnemyManager.h"
 
@@ -72,6 +73,8 @@ void Goblin::Initialize()
 	m_hp = std::make_unique<HPSystem>(GOBLIN_HP);
 	// ダメージエフェクトの生成
 	m_damageEffect = std::make_unique<EnemyDamageEffect>();
+	// 死亡エフェクトの生成
+	m_deadEffect = std::make_unique<EnemyDeadEffect>();
 
 }
 
@@ -121,6 +124,9 @@ void Goblin::Update(const float elapsedTime)
 	CalcWorldMatrix();
 	// ダメージエフェクトの更新
 	m_damageEffect->Update(elapsedTime);
+	// 死亡エフェクトの更新
+	m_deadEffect->Update(elapsedTime);
+
 	// 衝突判定の移動
 	MoveCollision();
 	// クールタイムのカウント
@@ -162,8 +168,16 @@ void Goblin::MoveCollision()
 // --------------------------------
 void Goblin::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection)
 {
-	// ダメージエフェクト付きでモデルを描画する
-	m_damageEffect->DrawWithDamageEffect(m_model, m_worldMatrix, view, projection);
+	if (m_currentState == m_dead.get())
+	{
+		// 死亡エフェクト付きでモデルを描画する
+		m_deadEffect->DrawWithDeadEffect(m_model, m_worldMatrix, view, projection);
+	}
+	else
+	{
+		// ダメージエフェクト付きでモデルを描画する
+		m_damageEffect->DrawWithDamageEffect(m_model, m_worldMatrix, view, projection);
+	}
 }
 
 
@@ -325,6 +339,8 @@ void Goblin::CheckAlive()
 	{
 		// ステートを変更
 		ChangeState(m_dead.get());
+		// 死亡エフェクトに死亡したことを通知
+		m_deadEffect->IsDead();
 	}
 }
 

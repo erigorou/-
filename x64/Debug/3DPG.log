@@ -1,2 +1,4 @@
-﻿  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Resources\Shaders\DamageEffect\DamageEffectPS.cso
+﻿  Enemy.cpp
+C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\Game\Enemy\Enemy.cpp(90,7): warning C4189: 'device': ローカル変数が初期化されましたが、参照されていません
+     ライブラリ C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.lib とオブジェクト C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exp を作成中
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exe

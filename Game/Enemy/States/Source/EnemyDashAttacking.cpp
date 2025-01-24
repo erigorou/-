@@ -12,7 +12,9 @@
 #include "../../States/Header/EnemyDashAttacking.h"
 
 
+// --------------------
 // コンストラクタ
+// --------------------
 EnemyDashAttacking::EnemyDashAttacking(Enemy* enemy)
 	: m_angle(0.0f)
 	, m_bodyTilt(0.0f)
@@ -22,27 +24,29 @@ EnemyDashAttacking::EnemyDashAttacking(Enemy* enemy)
 }
 
 
+// --------------------
 // デストラクタ
+// --------------------
 EnemyDashAttacking::~EnemyDashAttacking()
 {
 }
 
 
+// --------------------
 // 初期化処理
+// --------------------
 void EnemyDashAttacking::Initialize()
 {
 }
 
 
+// --------------------
 // 事前更新処理
+// --------------------
 void EnemyDashAttacking::PreUpdate()
 {
 	// 経過時間を初期化
 	m_totalSeconds = 0.0f;
-
-	//// 武器のステートを変更
-	//auto cudgel = m_enemy->GetPlayScene()->GetCudgel();
-	//cudgel->ChangeState(cudgel->GetAttacking());
 
 	// 顔のステートを変更
 	m_enemy->SetFace(m_enemy->GetFaceAttacking());
@@ -52,7 +56,9 @@ void EnemyDashAttacking::PreUpdate()
 }
 
 
+// --------------------
 // 更新処理
+// --------------------
 void EnemyDashAttacking::Update(const float& elapsedTime)
 {
 	// 経過時間を更新
@@ -67,13 +73,14 @@ void EnemyDashAttacking::Update(const float& elapsedTime)
 		m_enemy->ChangeState(m_enemy->GetEnemyIdling());
 }
 
+
 // --------------------
 // 敵の挙動更新処理
 // --------------------
 void EnemyDashAttacking::UpdateAction()
 {
 	// ためモーションの時
-	if (m_totalSeconds <= CHARGE_TIME)		ChargeAction();	// 貯め
+	if (m_totalSeconds		<= CHARGE_TIME)	ChargeAction();	// 貯め
 	else if (m_totalSeconds <= DASH_TIME)	DashAction();	// ダッシュ
 	else if (m_totalSeconds <= WAIT_TIME)	WaitAction();	// 待機
 	else if (m_totalSeconds <= RETURN_TIME)	ReturnAction();	// 元に戻る
@@ -191,6 +198,10 @@ void EnemyDashAttacking::PostUpdate()
 	m_enemy->SetFace(m_enemy->GetFaceIdling());
 }
 
+
+// --------------------
+// 終了処理
+// --------------------
 void EnemyDashAttacking::Finalize()
 {
 }

@@ -6,6 +6,10 @@
 
 class PlayScene;
 class BehaviorTree;
+class EnemyDamageEffect;
+class EnemyDeadEffect;
+class HPSystem;
+
 
 #include "Face/Header/EnemyFaceIdling.h"
 #include "Face/Header/EnemyFaceAttacking.h"
@@ -19,9 +23,7 @@ class BehaviorTree;
 #include "States/Header/EnemyApproaching.h"		// 追尾状態
 #include "States/Header/EnemyDead.h"			// 死亡状態
 
-#include "../Data/HPSystem.h"
 
-class EnemyDamageEffect;
 
 class Enemy : public IEnemy
 {
@@ -125,7 +127,6 @@ private:
 	// 体の傾き
 	float m_bodyTilt;
 
-
 	// 敵用のワールド行列
 	DirectX::SimpleMath::Matrix m_worldMatrix;
 	// HP
@@ -150,6 +151,8 @@ private:
 
 	// 敵のダメージエフェクト
 	std::unique_ptr<EnemyDamageEffect> m_damageEffect;
+	// 敵の死亡エフェクト
+	std::unique_ptr<EnemyDeadEffect> m_deadEffect;
 
 	// ビヘイビアツリー
 	std::unique_ptr<BehaviorTree> m_pBT;

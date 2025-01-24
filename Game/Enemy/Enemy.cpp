@@ -36,8 +36,9 @@
 #include "Face/Header/EnemyFaceIdling.h"
 #include "Face/Header/EnemyFaceAttacking.h"
 
-// ダメージエフェクト
+// エフェクト
 #include "Effects/EnemyDamageEffect/EnemyDamageEffect.h"
+#include "Effects/EnemyDeadEffect/EnemyDeadEffect.h"
 
 
 
@@ -102,6 +103,8 @@ void Enemy::Initialize()
 	CreateFace();
 	// ダメージエフェクトの生成
 	m_damageEffect = std::make_unique<EnemyDamageEffect>();
+	// 死亡エフェクトの生成
+	m_deadEffect = std::make_unique<EnemyDeadEffect>();
 	// 当たり判定の作成
 	CreateCollision();
 }
@@ -276,12 +279,10 @@ void Enemy::Render(
 	// 深度値を参照して書き込む
 	context->OMSetDepthStencilState(states->DepthDefault(), 0);
 	// 顔の描画
-	m_currentFace->DrawFace(m_worldMatrix, view, projection);			// 顔の描画
+	m_currentFace->DrawFace(m_worldMatrix, view, projection);
 
-	m_damageEffect->DrawWithDamageEffect(m_model, m_worldMatrix, view, projection);	// ダメージエフェクトの描画
-
-#ifdef _DEBUG
-#endif // _DEBUG
+	// ダメージのエフェクトを付与
+	m_damageEffect->DrawWithDamageEffect(m_model, m_worldMatrix, view, projection);
 }
 
 

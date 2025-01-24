@@ -36,15 +36,14 @@ public:
 	void Update(float elapsedTime);
 
 	// 体パーツの描画
-	void DrawWithDamageEffect(
+	void DrawWithDeadEffect(
 		DirectX::Model* model,
 		const DirectX::SimpleMath::Matrix world,
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& proj
 	);
 
-	//ダメージを受けたことを通達する関数
-	void IsDamaged();
+	void IsDead();
 
 // ** 非公開関数 **
 private:
@@ -58,13 +57,10 @@ private:
 private:
 	// 経過時間
 	float m_totalTime;
-	// ダメージエフェクトを付与するのか
-	bool m_isDamaged;
-
-	// デバイスリソース
-	ID3D11Device1* m_device;
 	// シェーダー
-	std::unique_ptr<CustomShader> m_damageShader;
+	std::unique_ptr<CustomShader> m_deadShader;
 	// 定数バッファ
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_buffer;
+	// 死亡フラグ
+	bool m_isDead;
 };

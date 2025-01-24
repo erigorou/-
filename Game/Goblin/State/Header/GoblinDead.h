@@ -13,7 +13,7 @@ class GoblinDead : public IState
 // ŒÅ’è’l
 // -------------
 public:
-	static constexpr float DEAD_TIME = 2.0f;
+	static constexpr float DEAD_TIME = 2.5f;
 
 
 

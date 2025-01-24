@@ -14,7 +14,7 @@
 
 
 // 固定値
-const wchar_t* EnemyDeadEffect::PS_PATH = L"Resources/Shaders/DamageEffect/DamageEffectPS.cso";
+const wchar_t* EnemyDeadEffect::PS_PATH = L"Resources/Shaders/DeadEffect/DeadEffectPS.cso";
 
 
 // ----------------------------
@@ -23,9 +23,9 @@ const wchar_t* EnemyDeadEffect::PS_PATH = L"Resources/Shaders/DamageEffect/Damag
 EnemyDeadEffect::EnemyDeadEffect()
 	:
 	m_totalTime(0.0f),
-	m_damageShader(nullptr),
+	m_deadShader(nullptr),
 	m_buffer(nullptr),
-	m_isDamaged(false)
+	m_isDead(false)
 {
 	// シェーダーの生成
 	CreateShader();
@@ -50,20 +50,17 @@ EnemyDeadEffect::~EnemyDeadEffect()
 void EnemyDeadEffect::Update(float elapsedTime)
 {
 	// ダメージを受けてない場合は処理なし
-	if (!m_isDamaged)	return;
+	if (!m_isDead)	return;
 
 	// 経過時間の記録
 	m_totalTime = std::max(0.0f, (m_totalTime - elapsedTime));
-
-	// ダメージエフェクトの表示を終了させるかどうか
-	m_isDamaged = (m_totalTime > 0.0f);
 }
 
 
 // ----------------------------
 /// 体パーツの描画
 // ----------------------------
-void EnemyDeadEffect::DrawWithDamageEffect(
+void EnemyDeadEffect::DrawWithDeadEffect(
 	DirectX::Model* model, 
 	const DirectX::SimpleMath::Matrix world, 
 	const DirectX::SimpleMath::Matrix& view, 
@@ -108,22 +105,18 @@ void EnemyDeadEffect::DrawWithDamageEffect(
 	// モデルの描画
 	model->Draw(context, *states, world, view, proj, false, [&]
 		{
-			// ダメージを受けている場合はシェーダーを適用
-			if (m_isDamaged)
-			{
-				// 定数バッファを設定
-				ID3D11Buffer* cbuff = { m_buffer.Get() };
-				// シェーダーにバッファを渡す
-				context->PSSetConstantBuffers(1, 1, &cbuff);
-				//	ピクセルシェーダにテクスチャを登録する。
-				context->PSSetShaderResources(0, 1, texture.GetAddressOf());
+			// 定数バッファを設定
+			ID3D11Buffer* cbuff = { m_buffer.Get() };
+			// シェーダーにバッファを渡す
+			context->PSSetConstantBuffers(1, 1, &cbuff);
+			//	ピクセルシェーダにテクスチャを登録する。
+			context->PSSetShaderResources(0, 1, texture.GetAddressOf());
 
-				// ブレンドステートを設定
-				context->OMSetBlendState(states->AlphaBlend(), nullptr, 0xFFFFFFFF);
+			// ブレンドステートを設定
+			context->OMSetBlendState(states->AlphaBlend(), nullptr, 0xFFFFFFFF);
 
-				// シェーダーの設定
-				m_damageShader->BeginSharder(context);
-			}
+			// シェーダーの設定
+			m_deadShader->BeginSharder(context);
 		}
 	);
 }
@@ -138,7 +131,7 @@ void EnemyDeadEffect::CreateShader()
 	auto device = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
 
 	// シェーダーの作成
-	m_damageShader = std::make_unique<CustomShader>
+	m_deadShader = std::make_unique<CustomShader>
 		(
 			device,			// デバイス
 			VS_PATH,		// 頂点シェーダー
@@ -171,12 +164,14 @@ void EnemyDeadEffect::CreateConstBuffer()
 
 
 // --------------------------------------
-/// ダメージを受けたことを通達する関数
+/// 死亡したことを通達する関数
 // --------------------------------------
-void EnemyDeadEffect::IsDamaged()
+void EnemyDeadEffect::IsDead()
 {
+	if (m_isDead) return;
+
 	// 残り時間をリセット
 	m_totalTime = TOTAL_TIME;
-	// ダメージフラグを有効化
-	m_isDamaged = true;
+	// 死亡フラグを有効化
+	m_isDead = true;
 }
