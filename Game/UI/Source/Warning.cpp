@@ -2,17 +2,10 @@
 
 #include "../Header/Warning.h"
 #include "Game/CommonResources.h"
+#include "Game/GameResources.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "Game/Data/HPSystem.h"
 #include "CommonStates.h"
-
-
-// 固定値
-const wchar_t* Warning::TEXTURE_PATH = L"Resources/Textures/Warning.png";
-const wchar_t* Warning::VS_PATH = L"Resources/Shaders/Warning/WarningVS.cso";
-const wchar_t* Warning::PS_PATH = L"Resources/Shaders/Warning/WarningPS.cso";
-const wchar_t* Warning::GS_PATH = L"Resources/Shaders/Warning/WarningGS.cso";
-
 
 // コンストラクタ
 Warning::Warning(HPSystem* hp)
@@ -61,8 +54,8 @@ void Warning::Initialize()
 	// コモンステートの生成
 	m_states = std::make_unique<DirectX::CommonStates>(device);
 
-	// テクスチャの読み込み
-	CustomShader::LoadTexture(device, TEXTURE_PATH, m_texture);
+	// テクスチャを取得
+	m_texture = GameResources::GetInstance()->GetTexture("warning");
 
 	//	シェーダーにデータを渡すためのコンスタントバッファ生成
 	D3D11_BUFFER_DESC bd;
@@ -132,10 +125,7 @@ void Warning::Render()
 	context->RSSetState(m_states->CullNone());
 
 	// テクスチャの設定
-	for (int i = 0; i < m_texture.size(); i++)
-	{
-		context->PSSetShaderResources(i, 1, m_texture[i].GetAddressOf());
-	}
+	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
 
 	// 入力レイアウトの設定
 	context->IASetInputLayout(m_customShader->GetInputLayout());

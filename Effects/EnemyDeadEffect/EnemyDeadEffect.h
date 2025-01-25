@@ -11,8 +11,8 @@ private:
 	static constexpr float TOTAL_TIME = 2.5f;
 
 	// シェーダーのファイルパス
-	static const wchar_t* PS_PATH;
-	static constexpr wchar_t VS_PATH[] = L"Resources/Shaders/DeadEffect/DeadEffectVS.cso";
+	static constexpr wchar_t PS_PATH[] = L"Resources/cso/DeadEffectPS.cso";
+	static constexpr wchar_t VS_PATH[] = L"Resources/cso/DeadEffectVS.cso";
 
 
 	// 頂点入力レイアウト

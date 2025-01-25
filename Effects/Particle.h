@@ -40,12 +40,13 @@ private:
 	// ŒÅ’è’l
 	static constexpr const wchar_t* TEXTURE_PATH = L"Resources/Textures/dust.png";
 
-	static constexpr const wchar_t* SWORD_VS = L"Resources/Shaders/Sword/SwordTrailVS.cso";
-	static constexpr const wchar_t* SWORD_PS = L"Resources/Shaders/Sword/SwordTrailPS.cso";
+	static constexpr const wchar_t* SWORD_VS = L"Resources/cso/SwordTrailVS.cso";
+	static constexpr const wchar_t* SWORD_PS = L"Resources/cso/SwordTrailPS.cso";
 
-	static constexpr const wchar_t* DUST_VS = L"Resources/Shaders/Dust/DustVS.cso";
-	static constexpr const wchar_t* DUST_PS = L"Resources/Shaders/Dust/DustPS.cso";
-	static constexpr const wchar_t* DUST_GS = L"Resources/Shaders/Dust/DustGS.cso";
+	static constexpr const wchar_t* DUST_VS = L"Resources/cso/DustVS.cso";
+	static constexpr const wchar_t* DUST_PS = L"Resources/cso/DustPS.cso";
+	static constexpr const wchar_t* DUST_GS = L"Resources/cso/DustGS.cso";
+
 
 	static constexpr int	MAX_SMASH_ATTACK_DUST = 25;
 	static constexpr float	MIN_SMASH_DUST_SPEED_Y = 1.0f;

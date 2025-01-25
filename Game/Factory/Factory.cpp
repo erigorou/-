@@ -25,8 +25,6 @@
 #include "../EnemyManager/EnemyManager.h"							// 敵マネージャー
 #include "../Quest/QuestManager.h"									// クエストマネージャー
 
-using namespace DirectX;
-
 // ---------------------------------------------
 // 当たり判定統括の生成関数
 // ---------------------------------------------
@@ -157,9 +155,10 @@ std::unique_ptr<Enemy> Factory::CreateEnemy(PlayScene* playScene)
 	// 初期化処理
 	enemy->Initialize();
 
-	// イベントの登録
-	EventMessenger::Attach("canHit",std::bind(&Enemy::CanHitSword,enemy.get()));
+
+	EventMessenger::Attach("canHit", std::bind(&Enemy::CanHitSword, enemy.get()));
 	EventMessenger::Attach("canNotHit",std::bind(&Enemy::CanNotHitSword, enemy.get()));
+
 
 	// 鬼（敵）の設定
 	return enemy;

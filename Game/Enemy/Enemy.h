@@ -24,14 +24,13 @@ class HPSystem;
 #include "States/Header/EnemyDead.h"			// éÄñSèÛë‘
 
 
-
 class Enemy : public IEnemy
 {
 public:
 	// å≈íËíl
-	static const float ENEMY_SPEED;
-	static const float ENEMY_SCALE;
-	static const float COOL_TIME;
+	static constexpr float ENEMY_SPEED = 0.1f;
+	static constexpr float ENEMY_SCALE= 0.6f;
+	static constexpr float COOL_TIME = 0.3f;
 
 	static constexpr float COLISION_POS_Y	= 10.0f;
 	static constexpr float HP				= 20.0f;

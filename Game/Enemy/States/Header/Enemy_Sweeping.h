@@ -12,12 +12,11 @@ class Enemy_Sweeping : public IState
 {
 public:
 
-	static const float CHARGE_TIME;	// 攻撃の貯めモーションの時間
-	static const float WINDUP_TIME;	// 攻撃する前の時間
-	static const float ATTACK_TIME;	// 攻撃する時間
-	static const float END_TIME;	// 攻撃（全体）が終了する時間
-
-	static const float ROTATE_ANGLE;	// 攻撃の貯めモーションの角度
+	static constexpr float CHARGE_TIME	= 0.5f;		// 攻撃の貯めモーションの時間
+	static constexpr float WINDUP_TIME	= 0.6f;		// 攻撃する前の時間
+	static constexpr float ATTACK_TIME	= 1.2f;		// 攻撃する時間
+	static constexpr float END_TIME		= 2.0f;		// 攻撃（全体）が終了する時間
+	static constexpr float ROTATE_ANGLE	= 20.0f;	// 攻撃の貯めモーションの角度
 
 	// コンストラクタ
 	Enemy_Sweeping(Enemy* enemy);

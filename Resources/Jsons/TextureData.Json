@@ -1,6 +1,9 @@
 {
     "logo"  : "LOGO.png",
     "floor" : "Floor.png",
-    "dust"  : "dust/png", 
-    "noize" : "noizePattern.png"
+    "dust"  : "dust/png",
+    "noize" : "noizePattern.png",
+    "fade"  : "Load.ong",
+  "mask": "mask.png",
+    "warning":  "Warning.png"
 }

@@ -32,20 +32,21 @@ public:
 		DirectX::SimpleMath::Vector4	time;
 	};
 
-	//	関数
+	// インプットレイアウト
 	static const std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT;
-	
-	static const wchar_t* TEXTURE_PATH;
-	static const wchar_t* VS_PATH;
-	static const wchar_t* GS_PATH;
-	static const wchar_t* PS_PATH;
 
-	static const wchar_t* STENCIL_TEX_PATH;
-	static const wchar_t* MASK_VS_PATH;
-	static const wchar_t* MASK_GS_PATH;
-	static const wchar_t* MASK_PS_PATH;
+	// フェードに使用するパス
+	static constexpr wchar_t VS_PATH[] = L"Resources/cso/FadeVS.cso";
+	static constexpr wchar_t GS_PATH[] = L"Resources/cso/FadeGS.cso";
+	static constexpr wchar_t PS_PATH[] = L"Resources/cso/FadePS.cso";
+
+	// マスクに使用するパス
+	static constexpr wchar_t MASK_VS_PATH[] = L"Resources/cso/MaskVS.cso";
+	static constexpr wchar_t MASK_GS_PATH[] = L"Resources/cso/MaskGS.cso";
+	static constexpr wchar_t MASK_PS_PATH[] = L"Resources/cso/MaskPS.cso";
 
 
+	// フェードの設定
 	static constexpr float CHANGE_SCENE_EDLAY = 1.0f;
 	static constexpr float FADE_TIME = 1.0f;
 
@@ -89,20 +90,21 @@ private:
 
 	float		m_easingValue;	// イージング値
 
-	DX::DeviceResources*						m_pDR;		// デバイスリソーシーズ
+
 	Microsoft::WRL::ComPtr<ID3D11Buffer>		m_CBuffer;	// コンスタントバッファ
 
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_batch;
 	std::unique_ptr<DirectX::CommonStates> m_states;
-	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> m_texture;
 
 	// カスタムシェーダー
 	std::unique_ptr<CustomShader> m_customShader;
-
+	// マスクシェーダー
 	std::unique_ptr<CustomShader> m_maskShader;
 
-	// 型抜き用画像
-	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> m_stencilImage;
+	// ロード画面として使用するテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
+	// マスク用のテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_stencilImage;
 
 	// 型抜き画像のみの描画結果を持つ画像
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_capture;

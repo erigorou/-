@@ -46,7 +46,7 @@ public:
 // ---------------------------
 public:
 	// Jsonデータを読み込む
-	static const wchar_t* ENEMY_JSON_PATH;
+	static constexpr wchar_t ENEMY_JSON_PATH[] = L"Resources/Jsons/EnemySpawnPoint.json";;
 
 	// ボスが死亡したことを伝える際の遅延
 	static constexpr float BOSS_DEAD_DELAY = 2.0f;

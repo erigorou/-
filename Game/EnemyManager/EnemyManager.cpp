@@ -22,13 +22,6 @@
 #include "nlohmann/json.hpp"
 
 // --------------------------------
-// 固定値
-// --------------------------------
-// Jsonデータのパス
-const wchar_t* EnemyManager::ENEMY_JSON_PATH = L"Resources/Jsons/EnemySpawnPoint.json";
-
-
-// --------------------------------
 // コンストラクタ
 // --------------------------------
 EnemyManager::EnemyManager(PlayScene* playScene)

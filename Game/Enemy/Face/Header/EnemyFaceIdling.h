@@ -9,7 +9,6 @@ class EnemyFaceIdling : public IFace
 
 // ŒÅ’è’l
 public:
-	const wchar_t* MODEL_PATH = L"Resources/Models/Oni/Face/IdlingFace.cmo";
 
 // ŒöŠJŠÖ”
 public:
@@ -22,11 +21,6 @@ public:
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& proj
 	)	override;
-
-
-// “à•”ŠÖ”
-private:
-	void CreateModel();	// ƒ‚ƒfƒ‹‚Ì¶¬
 
 
 // “à•”•Ï”

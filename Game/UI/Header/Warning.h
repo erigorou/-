@@ -12,10 +12,9 @@ class Warning
 {
 // 固定値
 private:
-	static const wchar_t* TEXTURE_PATH; 
-	static const wchar_t* VS_PATH;
-	static const wchar_t* PS_PATH;
-	static const wchar_t* GS_PATH;
+	static constexpr wchar_t VS_PATH[] = L"Resources/cso/WarningVS.cso";
+	static constexpr wchar_t PS_PATH[] = L"Resources/cso/WarningPS.cso";
+	static constexpr wchar_t GS_PATH[] = L"Resources/cso/WarningGS.cso";
 
 	static constexpr int LOW_HP = 2;
 
@@ -70,7 +69,7 @@ private:
 
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_batch;	// プリミティブバッチ
 	
-	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> m_texture;	// テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;	// テクスチャ
 
 	float m_elapsedTime;	// フレーム時間
 	float m_totalTime;		// 経過時間

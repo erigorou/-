@@ -41,12 +41,6 @@
 #include "Effects/EnemyDeadEffect/EnemyDeadEffect.h"
 
 
-
-// 固定値
-const float Enemy::ENEMY_SPEED	= 0.1f;
-const float Enemy::ENEMY_SCALE	= 0.6f;
-const float Enemy::COOL_TIME	= 0.3f;
-
 // --------------------------------
 //  コンストラクタ
 // --------------------------------
@@ -85,10 +79,6 @@ Enemy::~Enemy()
  // --------------------------------
 void Enemy::Initialize()
 {
-	CommonResources* resources = CommonResources::GetInstance();
-
-	auto device = resources->GetDeviceResources()->GetD3DDevice();
-
 	// モデルを取得
 	m_model = GameResources::GetInstance()->GetModel("boss");
 

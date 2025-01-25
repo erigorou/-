@@ -6,6 +6,7 @@
 #include "Game/Camera/Camera.h"
 #include "Game/Screen.h"
 #include "Libraries/MyLib/Math.h"
+#include "Game/Messenger/EventMessenger.h"
 
 #include "Interface/ICameraState.h"
 #include "State/TitleCameraState.h"
@@ -30,7 +31,10 @@ Camera::Camera(const DirectX::SimpleMath::Vector3& target)
 	, m_shakeTime{ SHAKE_TIME }
 	, m_shakePos{(0.0f, 0.0f, 0.0f)}
 {
+	// ステートを作成
 	CreateState();
+
+	// イベントにカメラのシェイクを登録
 }
 
 //-------------------------------------------------------------------

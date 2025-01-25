@@ -18,10 +18,6 @@
 #include "State/LoseResult.h"
 
 
-using namespace DirectX;
-using namespace DirectX::SimpleMath;
-
-
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
@@ -157,24 +153,24 @@ void ResultScene::Render()
 	auto states = m_commonResources->GetCommonStates();
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
-	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
+	m_spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, states->NonPremultiplied());
 
 	// TRIDENTロゴの描画位置を決める
 	RECT rect{ m_commonResources->GetDeviceResources()->GetOutputSize() };
 	// 画像の中心を計算する
-	Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
+	DirectX::SimpleMath::Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
 
 
 	m_spriteBatch->Draw(
-		m_texture.Get(),	// テクスチャ(SRV)
-		pos,				// スクリーンの表示位置(originの描画位置)
-		nullptr,			// 矩形(RECT)
-		Colors::White,		// 背景色
-		0.0f,				// 回転角(ラジアン)
-		m_texCenter,		// テクスチャの基準になる表示位置(描画中心)(origin)
-		1.0f,				// スケール(scale)
-		SpriteEffects_None,	// エフェクト(effects)
-		0.0f				// レイヤ深度(画像のソートで必要)(layerDepth)
+		m_texture.Get(),			// テクスチャ(SRV)
+		pos,						// スクリーンの表示位置(originの描画位置)
+		nullptr,					// 矩形(RECT)
+		DirectX::Colors::White,		// 背景色
+		0.0f,						// 回転角(ラジアン)
+		m_texCenter,				// テクスチャの基準になる表示位置(描画中心)(origin)
+		1.0f,						// スケール(scale)
+		DirectX::SpriteEffects_None,// エフェクト(effects)
+		0.0f						// レイヤ深度(画像のソートで必要)(layerDepth)
 	);
 
 	// スプライトバッチの終わり
@@ -183,10 +179,6 @@ void ResultScene::Render()
 
 	// 勝ち負けの描画
 	m_currentState->Render();
-
-#ifdef _DEBUG
-#endif // _DEBUG
-
 }
 
 

@@ -9,17 +9,19 @@ class Particle;
 // 敵の待機ステートを定義
 class EnemyApproaching : public IState
 {
+	// ---------------------------
+	// 固定値
+	// ---------------------------
 public:
-
-
-// 定数
-	// 最小値
-	static constexpr float MINIMAL = 0.01f;
-	// 速度の正規化
-	static constexpr float NORMALIZE_VELOCITY = 75.0f;
+	static constexpr float MINIMAL = 0.01f;				// 最小値
+	static constexpr float NORMALIZE_VELOCITY = 75.0f; 	// 速度の正規化
 
 
 
+	// ---------------------------
+	// 公開関数
+	// ---------------------------
+public:
 	// コンストラクタ
 	EnemyApproaching(Enemy* enemy);
 	// デストラクタ
@@ -36,6 +38,11 @@ public:
 	void Finalize() override;
 
 
+
+	// ---------------------------
+	// 内部関数
+	// ---------------------------
+private:
 	// 座標
 	DirectX::SimpleMath::Vector3 m_position;
 	// 移動速度

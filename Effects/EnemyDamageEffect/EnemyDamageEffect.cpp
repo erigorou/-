@@ -12,11 +12,6 @@
 #include "Game/GameResources.h"
 #include "DeviceResources.h"
 
-
-// 固定値
-const wchar_t* EnemyDamageEffect::PS_PATH = L"Resources/Shaders/DamageEffect/DamageEffectPS.cso";
-
-
 // ----------------------------
 /// コンストラクタ
 // ----------------------------

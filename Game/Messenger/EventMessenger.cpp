@@ -1,67 +1,60 @@
-
 #include "pch.h"
 #include "EventMessenger.h"
 
 // イベントリストの初期化
-std::unordered_map<std::string, std::function<void()>> EventMessenger::s_eventList;
-
+std::unordered_map<std::string, std::function<void(void*)>> EventMessenger::s_eventList;
 
 // -------------------------------------
 // イベントを登録する
 // -------------------------------------
-void EventMessenger::Attach(const std::string& eventName, std::function<void()> function)
+void EventMessenger::Attach(const std::string& eventName, std::function<void(void*)> function)
 {
-	// イベントリストにイベントを登録する
-	s_eventList[eventName] = function;
+    // イベントリストに新しいイベントを登録
+    s_eventList[eventName] = function;
 }
-
-
 
 // -------------------------------------
 // イベントを実行する
 // -------------------------------------
-void EventMessenger::Execute(const std::string& eventName)
+void EventMessenger::Execute(const std::string& eventName, void* args)
 {
-	// イベントが登録されていない場合は処理を行わない
-	if (s_eventList.empty()) MessageBox(nullptr, L"イベントが登録されていません", L"エラー", MB_OK);
+    // イベントリストが空の場合
+    if (s_eventList.empty()) {
+        MessageBox(nullptr, L"イベントが登録されていません", L"エラー", MB_OK);
+        return;
+    }
 
-	// イベントリストからイベントを取り出す
-	auto event = s_eventList.find(eventName);
+    // イベントリストから指定された名前のイベントを検索
+    auto event = s_eventList.find(eventName);
 
-	// イベントが見つかった場合
-	if (event != s_eventList.end())
-	{
-		// イベントを実行する
-		event->second();
-	}
-	else
-	{
-		// イベントが見つからなかった場合はエラーメッセージを表示する
-		MessageBox(nullptr, L"実行しようとしたイベントは存在しません", L"エラー", MB_OK);
-	}
+    if (event != s_eventList.end())
+    {
+        // void* を引数として関数を呼び出し
+        event->second(args);
+    }
+    else
+    {
+        MessageBox(nullptr, L"実行しようとしたイベントは存在しません", L"エラー", MB_OK);
+    }
 }
-
-
 
 // -------------------------------------
 // イベントを削除する
 // -------------------------------------
 void EventMessenger::Detach(const std::string& eventName)
 {
-	// イベントリストが空の場合は処理を行わない
-	if (s_eventList.empty()) MessageBox(nullptr, L"削除しようとしたイベントは存在しません", L"エラー", MB_OK);
+    if (s_eventList.empty()) {
+        MessageBox(nullptr, L"削除しようとしたイベントは存在しません", L"エラー", MB_OK);
+        return;
+    }
 
-	// イベントリストからイベントを削除する
-	s_eventList.erase(eventName);
+    s_eventList.erase(eventName);
 }
-
-
 
 // -------------------------------------
 // イベントリストをクリアする
 // -------------------------------------
 void EventMessenger::ClearEventList()
 {
-	// イベントリストをクリアする
-	s_eventList.clear();
+    s_eventList.clear();
 }

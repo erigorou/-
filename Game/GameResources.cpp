@@ -135,9 +135,6 @@ void GameResources::LoadTexture()
 }
 
 
-//---------------------------------------------------------
-// モデルを取得する
-//---------------------------------------------------------
 DirectX::Model* GameResources::GetModel(std::string key) const
 {
 	// キーを検索
@@ -146,6 +143,12 @@ DirectX::Model* GameResources::GetModel(std::string key) const
 	{
 		// モデルを返す
 		return it->second.get();
+	}
+	else
+	{
+		// エラーメッセージを表示
+		MessageBoxA(nullptr, "モデルが見つかりません", "エラー", MB_OK);
+		return nullptr;
 	}
 }
 
@@ -161,5 +164,11 @@ ID3D11ShaderResourceView* GameResources::GetTexture(std::string key) const
 	{
 		// テクスチャを返す
 		return it->second.Get();
+	}
+	else
+	{
+		// エラーメッセージを表示
+		MessageBoxA(nullptr, "テクスチャが見つかりません", "エラー", MB_OK);
+		return nullptr;
 	}
 }

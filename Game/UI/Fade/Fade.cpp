@@ -10,6 +10,7 @@
 #include "Libraries/MyLib/BinaryFile.h"
 #include "Game/Scene/SceneManager.h"
 #include "Libraries/MyLib/EasingFunctions.h"
+#include "Game/GameResources.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "Game/Data/GameData.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
@@ -23,18 +24,6 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> Fade::INPUT_LAYOUT =
 	{ "COLOR",	0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3), D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	{ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3) + sizeof(DirectX::SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
-
-// ゲーム画面に表示するフェード関連処理
-const wchar_t* Fade::TEXTURE_PATH	= L"Resources/Textures/Load.png";
-const wchar_t* Fade::VS_PATH		= L"Resources/Shaders/Fade/FadeVS.cso";
-const wchar_t* Fade::GS_PATH		= L"Resources/Shaders/Fade/FadeGS.cso";
-const wchar_t* Fade::PS_PATH		= L"Resources/Shaders/Fade/FadePS.cso";
-
-// マスク画像に関する処理
-const wchar_t* Fade::STENCIL_TEX_PATH = L"Resources/Textures/mask.png";
-const wchar_t* Fade::MASK_VS_PATH = L"Resources/Shaders/Mask/MaskVS.cso";
-const wchar_t* Fade::MASK_GS_PATH = L"Resources/Shaders/Mask/MaskGS.cso";
-const wchar_t* Fade::MASK_PS_PATH = L"Resources/Shaders/Mask/MaskPS.cso";
 
 
 /// <summary>
@@ -68,18 +57,20 @@ void Fade::Initialize()
 	// コモンリソースの取得（インスタンス）
 	CommonResources* commonResources = CommonResources::GetInstance();
 	// デバイスリソースの取得
-	m_pDR = commonResources->GetDeviceResources();
-	auto device = m_pDR->GetD3DDevice();
+	auto deviceResources = commonResources->GetDeviceResources();
 
-	m_customShader->LoadTexture(device, TEXTURE_PATH, m_texture);
+	// フェードテクスチャの取得
+	m_texture = GameResources::GetInstance()->GetTexture("fade");
+	// 型抜きテクスチャの取得
+	m_stencilImage = GameResources::GetInstance()->GetTexture("mask");
+
+
 	// シェーダーの生成
 	CreateShader();
 	// プリミティブバッチの生成
-	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(m_pDR->GetD3DDeviceContext());
+	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(deviceResources->GetD3DDeviceContext());
 	// コモンステートの生成
-	m_states = std::make_unique<DirectX::CommonStates>(m_pDR->GetD3DDevice());
-	// 型抜き画像の読み込み
-	m_customShader->LoadTexture(device, STENCIL_TEX_PATH, m_stencilImage);
+	m_states = std::make_unique<DirectX::CommonStates>(deviceResources->GetD3DDevice());
 }
 
 
@@ -89,7 +80,7 @@ void Fade::Initialize()
 void Fade::CreateShader()
 {
 	// デバイスの取得
-	ID3D11Device* device = m_pDR->GetD3DDevice();
+	ID3D11Device* device = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
 
 	// カスタムシェーダーの初期化
 	m_customShader = std::make_unique<CustomShader>
@@ -233,14 +224,17 @@ void Fade::FadeEnd()
 // 切り抜き用の画像を取得する
 void Fade::DrawStencilImage()
 {
-	ID3D11DeviceContext* context = m_pDR->GetD3DDeviceContext();
+	// デバイスリソースの取得
+	auto deviceResources = CommonResources::GetInstance()->GetDeviceResources();
+
+	ID3D11DeviceContext* context = deviceResources->GetD3DDeviceContext();
 
 	//	描画についての設定を行う
 	D3D11_TEXTURE2D_DESC texDesc;
-	m_pDR->GetRenderTarget()->GetDesc(&texDesc);
+	deviceResources->GetRenderTarget()->GetDesc(&texDesc);
 	texDesc.Format = DXGI_FORMAT_R8G8B8A8_TYPELESS;
 	texDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-	m_pDR->GetD3DDevice()->CreateTexture2D(&texDesc, NULL, m_capture.ReleaseAndGetAddressOf());
+	deviceResources->GetD3DDevice()->CreateTexture2D(&texDesc, NULL, m_capture.ReleaseAndGetAddressOf());
 
 	//	レンダーターゲットビューの設定
 	D3D11_RENDER_TARGET_VIEW_DESC rtvDesc;
@@ -248,7 +242,7 @@ void Fade::DrawStencilImage()
 	rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 	//	レンダーターゲットビューの生成
-	m_pDR->GetD3DDevice()->CreateRenderTargetView(m_capture.Get(), &rtvDesc, &m_captureRTV);
+	deviceResources->GetD3DDevice()->CreateRenderTargetView(m_capture.Get(), &rtvDesc, &m_captureRTV);
 
 	//	シェーダリソースビューの設定
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
@@ -259,8 +253,8 @@ void Fade::DrawStencilImage()
 	srvDesc.Texture2D.MipLevels = texDesc.MipLevels;
 
 	//	レンダーターゲットビューと深度ビューを取得（後で元に戻すため）
-	ID3D11RenderTargetView* defaultRTV = m_pDR->GetRenderTargetView();
-	ID3D11DepthStencilView* pDSV = m_pDR->GetDepthStencilView();
+	ID3D11RenderTargetView* defaultRTV = deviceResources->GetRenderTargetView();
+	ID3D11DepthStencilView* pDSV = deviceResources->GetDepthStencilView();
 
 	// 背景色の取得(透明)
 	float backColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
@@ -313,8 +307,7 @@ void Fade::DrawStencilImage()
 	};
 
 	//	ピクセルシェーダにテクスチャを登録する。
-	for (int i = 0; i < m_texture.size(); i++)
-		context->PSSetShaderResources(i, 1, m_stencilImage[i].GetAddressOf());
+	context->PSSetShaderResources(0, 1, m_stencilImage.GetAddressOf());
 
 	// (実際には表示しないが) 描画を行う
 	m_batch->Begin();
@@ -323,7 +316,7 @@ void Fade::DrawStencilImage()
 
 
 	//	描画した画面をcaptureSRVに保存する
-	m_pDR->GetD3DDevice()->CreateShaderResourceView
+	deviceResources->GetD3DDevice()->CreateShaderResourceView
 	(
 		m_capture.Get(), &srvDesc, m_captureSRV.ReleaseAndGetAddressOf()
 	);
@@ -341,6 +334,9 @@ void Fade::DrawStencilImage()
 
 void Fade::Render()
 {
+	// デバイスリソースの取得
+	auto deviceResources = CommonResources::GetInstance()->GetDeviceResources();
+
 	using namespace DirectX;
 
 	// 型抜き画像の描画
@@ -351,7 +347,7 @@ void Fade::Render()
 	t = std::max(0.0001f, Easing::easeInCubic(t));
 	GameData::GetInstance()->SetFadeValue(1 - t);
 
-	ID3D11DeviceContext1* context = m_pDR->GetD3DDeviceContext();
+	ID3D11DeviceContext1* context = deviceResources->GetD3DDeviceContext();
 
 	VertexPositionColorTexture vertex[4] =
 	{
@@ -394,12 +390,9 @@ void Fade::Render()
 	context->RSSetState(m_states->CullCounterClockwise());
 
 	//	ピクセルシェーダにテクスチャを登録する。
-	for (size_t i = 0; i < m_texture.size(); i++)
-	{
-		context->PSSetShaderResources(static_cast<UINT>(i), 1, m_texture[i].GetAddressOf());
-	}
+	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
 	// マスク画像をピクセルシェーダに登録する
-	context->PSSetShaderResources(static_cast<UINT>(m_texture.size()), 1, m_captureSRV.GetAddressOf());
+	context->PSSetShaderResources(1, 1, m_captureSRV.GetAddressOf());
 
 	// 板ポリゴンで描画
 	m_batch->Begin();

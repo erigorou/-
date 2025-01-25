@@ -13,9 +13,9 @@
 // ŒÅ’è’l
 // --------------------
 
-const wchar_t* QuestRenderer::VS_PATH = L"Resources/Shaders/Quest/Quest_VS.cso";
-const wchar_t* QuestRenderer::PS_PATH = L"Resources/Shaders/Quest/Quest_PS.cso";
-const wchar_t* QuestRenderer::GS_PATH = L"Resources/Shaders/Quest/Quest_GS.cso";
+const wchar_t* QuestRenderer::VS_PATH = L"Resources/cso/Quest_VS.cso";
+const wchar_t* QuestRenderer::PS_PATH = L"Resources/cso/Quest_PS.cso";
+const wchar_t* QuestRenderer::GS_PATH = L"Resources/cso/Quest_GS.cso";
 
 
 // --------------------

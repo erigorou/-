@@ -13,9 +13,7 @@ public:
 	static constexpr float TOTAL_TIME = 4.0f;
 	static constexpr float DELAY_TIME = 0.5f;
 	static constexpr float MOVE_TIME  = 2.5f;
-
 	static constexpr float START_HEIGHT = 100.0f;
-
 	static constexpr float PLAY_EFFECT_HEIGHT = 5.0f;
 
 public:

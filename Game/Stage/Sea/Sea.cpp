@@ -9,16 +9,6 @@
 #include "DeviceResources.h"
 #include "../../Data/GameData.h"
 
-// ----------------
-// 固定値
-// ----------------
-
-const wchar_t* Sea::VS_PATH = L"Resources/Shaders/Voronoi/VoronoiVS.cso";
-const wchar_t* Sea::PS_PATH = L"Resources/Shaders/Voronoi/VoronoiPS.cso";
-const wchar_t* Sea::GS_PATH = L"Resources/Shaders/Voronoi/VoronoiGS.cso";
-
-
-
 
 // -----------------
 // コンストラクタ

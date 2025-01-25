@@ -34,9 +34,9 @@ public:
 	};
 
 	// シェーダーのファイルパス
-	static const wchar_t* VS_PATH;
-	static const wchar_t* PS_PATH;
-	static const wchar_t* GS_PATH;
+	static constexpr wchar_t VS_PATH[] = L"Resources/cso/VoronoiVS.cso";
+	static constexpr wchar_t PS_PATH[] = L"Resources/cso/VoronoiPS.cso";
+	static constexpr wchar_t GS_PATH[] = L"Resources/cso/VoronoiGS.cso";
 
 
 // 公開関数 =============

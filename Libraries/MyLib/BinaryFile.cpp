@@ -14,8 +14,11 @@ BinaryFile BinaryFile::LoadFile(const wchar_t * fileName)
 	// ファイルオープン
 	ifs.open(fileName, std::ios::in | std::ios::binary);
 
-	// 読み込み失敗時、強制終了
-	assert(ifs);
+	if (!ifs) {
+		MessageBox(nullptr,(std::wstring(L"ファイルを開けませんでした: ") + fileName).c_str(),L"エラー",MB_OK | MB_ICONERROR);
+		assert(false && "ファイルを開けませんでした");
+	}
+
 
 	// ファイルサイズを取得
 	ifs.seekg(0, std::fstream::end);

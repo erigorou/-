@@ -33,12 +33,6 @@ Wall::~Wall()
 // ‰Šú‰»ˆ—
 void Wall::Initialize()
 {
-	using namespace DirectX;
-	CommonResources* resources = CommonResources::GetInstance();
-
-	auto device = resources->GetDeviceResources()->GetD3DDevice();
-	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
-
 	// ƒ‚ƒfƒ‹‚ðŽæ“¾‚·‚é
 	m_model = GameResources::GetInstance()->GetModel("wall");
 

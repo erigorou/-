@@ -13,10 +13,6 @@
 #include "DeviceResources.h"
 
 
-// 固定値
-const wchar_t* EnemyDeadEffect::PS_PATH = L"Resources/Shaders/DeadEffect/DeadEffectPS.cso";
-
-
 // ----------------------------
 /// コンストラクタ
 // ----------------------------

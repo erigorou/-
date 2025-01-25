@@ -53,6 +53,7 @@ void GoblinTutorial::PreUpdate()
 // -------------------
 void GoblinTutorial::Update(const float& elapsedTime)
 {
+	UNREFERENCED_PARAMETER(elapsedTime);
 }
 
 

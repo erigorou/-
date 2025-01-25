@@ -9,7 +9,6 @@ class EnemyFaceAttacking : public IFace
 
 // ŒÅ’è’l
 public:
-	const wchar_t* MODEL_PATH = L"Resources/Models/Oni/Face/IdlingFace.cmo";
 
 // ŒöŠJŠÖ”
 public:

@@ -11,8 +11,8 @@ private:
 	static constexpr float TOTAL_TIME = 0.5f;
 
 	// シェーダーのファイルパス
-	static const wchar_t* PS_PATH;
-	static constexpr wchar_t VS_PATH[] = L"Resources/Shaders/DamageEffect/DamageEffectVS.cso";
+	static constexpr wchar_t PS_PATH[] = L"Resources/cso/DamageEffectPS.cso";
+	static constexpr wchar_t VS_PATH[] = L"Resources/cso/DamageEffectVS.cso";
 
 
 	// 頂点入力レイアウト

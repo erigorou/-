@@ -58,10 +58,6 @@ Goblin::~Goblin()
 // --------------------------------
 void Goblin::Initialize()
 {
-	// リソースの取得
-	CommonResources* resources = CommonResources::GetInstance();
-	auto device = resources->GetDeviceResources()->GetD3DDevice();
-
 	// モデルの読み込み
 	m_model = GameResources::GetInstance()->GetModel("goblin");
 
@@ -271,6 +267,7 @@ void Goblin::HitStage(InterSectData data)
 // --------------------------------
 void Goblin::HitSword(InterSectData data)
 {
+	UNREFERENCED_PARAMETER(data);
 	Damaged(1);
 }
 

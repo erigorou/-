@@ -19,7 +19,8 @@
 EnemyFaceIdling::EnemyFaceIdling(Enemy* enemy)
 	: m_enemy(enemy)
 {
-	CreateModel();
+	// モデル取得
+	m_model = GameResources::GetInstance()->GetModel("bossIdlingFace");
 }
 
 // --------------------
@@ -27,20 +28,6 @@ EnemyFaceIdling::EnemyFaceIdling(Enemy* enemy)
 // --------------------
 EnemyFaceIdling::~EnemyFaceIdling()
 {
-}
-
-
-// --------------------
-// モデルの生成処理
-// --------------------
-void EnemyFaceIdling::CreateModel()
-{
-	// リソースの取得
-	CommonResources* resources = CommonResources::GetInstance();
-	auto device = resources->GetDeviceResources()->GetD3DDevice();
-
-	// モデル取得
-	m_model = GameResources::GetInstance()->GetModel("bossIdlingFace");
 }
 
 

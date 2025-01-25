@@ -27,9 +27,6 @@
 
 #include <cassert>
 
-using namespace DirectX;
-using namespace DirectX::SimpleMath;
-
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
@@ -92,7 +89,7 @@ void QuestSelectScene::LoadTextures()
 
 	// 画像をロードする
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(
+		DirectX::CreateWICTextureFromFile(
 			device,
 			L"Resources/Textures/LOGO.png",
 			nullptr,
@@ -101,7 +98,7 @@ void QuestSelectScene::LoadTextures()
 	);
 
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(
+		DirectX::CreateWICTextureFromFile(
 			device,
 			L"Resources/Textures/SPACEでスタート.png",
 			nullptr,
@@ -110,7 +107,7 @@ void QuestSelectScene::LoadTextures()
 	);
 
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(
+		DirectX::CreateWICTextureFromFile(
 			device,
 			L"Resources/Textures/Quest/TitleTutorial.png",
 			nullptr,
@@ -122,7 +119,7 @@ void QuestSelectScene::LoadTextures()
 
 
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(
+		DirectX::CreateWICTextureFromFile(
 			device,
 			L"Resources/Textures/Quest/TitleBossFight.png",
 			nullptr,
@@ -149,8 +146,8 @@ void QuestSelectScene::CalculateTextureCenters()
 	RECT rect{ m_commonResources->GetDeviceResources()->GetOutputSize() };
 
 	// 射影行列を作成する
-	m_projection = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
-		XMConvertToRadians(40.0f),
+	m_projection = DirectX::SimpleMath::Matrix::CreatePerspectiveFieldOfView(
+		DirectX::XMConvertToRadians(40.0f),
 		static_cast<float>(rect.right) / static_cast<float>(rect.bottom),
 		0.1f, 100000.0f
 	);
@@ -267,7 +264,7 @@ void QuestSelectScene::Render()
 	m_skySphere->	DrawSkySphere(view, m_projection);
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
-	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
+	m_spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, states->NonPremultiplied());
 
 	// テクスチャの描画
 	DrawTexture();
@@ -313,15 +310,15 @@ void QuestSelectScene::DrawTexture()
 	};
 
 	m_spriteBatch->Draw(
-		m_texture.Get(),	// テクスチャ(SRV)
-		logoPos,			// スクリーンの表示位置(originの描画位置)
-		nullptr,			// 矩形(RECT)
-		Colors::White,		// 背景色
-		0.0f,				// 回転角(ラジアン)
-		m_texCenter1,		// テクスチャの基準になる表示位置(描画中心)(origin)
-		1.0f,				// スケール(scale)
-		SpriteEffects_None,	// エフェクト(effects)
-		0.0f				// レイヤ深度(画像のソートで必要)(layerDepth)
+		m_texture.Get(),			// テクスチャ(SRV)
+		logoPos,					// スクリーンの表示位置(originの描画位置)
+		nullptr,					// 矩形(RECT)
+		DirectX::Colors::White,		// 背景色
+		0.0f,						// 回転角(ラジアン)
+		m_texCenter1,				// テクスチャの基準になる表示位置(描画中心)(origin)
+		1.0f,						// スケール(scale)
+		DirectX::SpriteEffects_None,// エフェクト(effects)
+		0.0f						// レイヤ深度(画像のソートで必要)(layerDepth)
 	);
 
 	// SPACEでスタート.png の描画位置を調整
@@ -329,15 +326,15 @@ void QuestSelectScene::DrawTexture()
 
 	// SPACEでスタート.png を中央に描画する
 	m_spriteBatch->Draw(
-		m_texture2.Get(),   // テクスチャ(SRV)
-		pos2,               // スクリーンの表示位置(originの描画位置)
-		nullptr,            // 矩形(RECT)
-		Colors::White,      // 背景色
-		0.0f,               // 回転角(ラジアン)
-		m_texCenter2,       // テクスチャの基準になる表示位置(描画中心)(origin)
-		1.0f,               // スケール(scale)
-		SpriteEffects_None, // エフェクト(effects)
-		0.0f                // レイヤ深度(画像のソートで必要)(layerDepth)
+		m_texture2.Get(),			// テクスチャ(SRV)
+		pos2,						// スクリーンの表示位置(originの描画位置)
+		nullptr,					// 矩形(RECT)
+		DirectX::Colors::White,		// 背景色
+		0.0f,						// 回転角(ラジアン)
+		m_texCenter2,				// テクスチャの基準になる表示位置(描画中心)(origin)
+		1.0f,						// スケール(scale)
+		DirectX::SpriteEffects_None, // エフェクト(effects)
+		0.0f						// レイヤ深度(画像のソートで必要)(layerDepth)
 	);
 }
 
@@ -374,15 +371,15 @@ void QuestSelectScene::DrawStageSelect()
 
 	// チュートリアルを描画
 	m_spriteBatch->Draw(
-		m_textureList[0].Get(),	// テクスチャ(SRV)
-		tutorialPos,			// スクリーンの表示位置(originの描画位置)
-		nullptr,				// 矩形(RECT)
-		color1,					// 背景色
-		0.0f,					// 回転角(ラジアン)
-		m_texCenter3,			// テクスチャの基準になる表示位置(描画中心)(origin)
-		1.0f,					// スケール(scale)
-		SpriteEffects_None,		// エフェクト(effects)
-		0.0f					// レイヤ深度(画像のソートで必要)(layerDepth)
+		m_textureList[0].Get(),		// テクスチャ(SRV)
+		tutorialPos,				// スクリーンの表示位置(originの描画位置)
+		nullptr,					// 矩形(RECT)
+		color1,						// 背景色
+		0.0f,						// 回転角(ラジアン)
+		m_texCenter3,				// テクスチャの基準になる表示位置(描画中心)(origin)
+		1.0f,						// スケール(scale)
+		DirectX::SpriteEffects_None,// エフェクト(effects)
+		0.0f						// レイヤ深度(画像のソートで必要)(layerDepth)
 	);
 
 
@@ -399,15 +396,15 @@ void QuestSelectScene::DrawStageSelect()
 
 	// SPACEでスタート.png を中央に描画する
 	m_spriteBatch->Draw(
-		m_textureList[1].Get(), // テクスチャ(SRV)
-		BossFightPos,			// スクリーンの表示位置(originの描画位置)
-		nullptr,				// 矩形(RECT)
-		color2,				// 背景色
-		0.0f,					// 回転角(ラジアン)
-		m_texCenter4,			// テクスチャの基準になる表示位置(描画中心)(origin)
-		1.0f,					// スケール(scale)
-		SpriteEffects_None,		// エフェクト(effects)
-		0.0f					// レイヤ深度(画像のソートで必要)(layerDepth)
+		m_textureList[1].Get(),		// テクスチャ(SRV)
+		BossFightPos,				// スクリーンの表示位置(originの描画位置)
+		nullptr,					// 矩形(RECT)
+		color2,						// 背景色
+		0.0f,						// 回転角(ラジアン)
+		m_texCenter4,				// テクスチャの基準になる表示位置(描画中心)(origin)
+		1.0f,						// スケール(scale)
+		DirectX::SpriteEffects_None,// エフェクト(effects)
+		0.0f						// レイヤ深度(画像のソートで必要)(layerDepth)
 	);
 }
 
@@ -418,7 +415,6 @@ void QuestSelectScene::DrawStageSelect()
 //---------------------------------------------------------
 void QuestSelectScene::Finalize()
 {
-	// do nothing.
 }
 
 
