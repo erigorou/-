@@ -6,11 +6,6 @@
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "CommonStates.h"
 
-// ŒÅ’è’l
-const wchar_t* UI::VS_PATH = L"Resources/Shaders/Operation/OperationVS.cso";
-const wchar_t* UI::PS_PATH = L"Resources/Shaders/Operation/OperationPS.cso";
-const wchar_t* UI::GS_PATH = L"Resources/Shaders/Operation/OperationGS.cso";
-
 
 UI::UI(const wchar_t* texturePath)
 	: m_texturePath(texturePath)

@@ -8,9 +8,9 @@ class UI
 {
 	// ŒÅ’è’l
 private:
-	static const wchar_t* VS_PATH;
-	static const wchar_t* PS_PATH;
-	static const wchar_t* GS_PATH;
+	static constexpr wchar_t VS_PATH[] = L"Resources/cso/OperationVS.cso";
+	static constexpr wchar_t PS_PATH[] = L"Resources/cso/OperationPS.cso";
+	static constexpr wchar_t GS_PATH[] = L"Resources/cso/OperationGS.cso";
 
 
 	std::vector<D3D11_INPUT_ELEMENT_DESC> InputElements =

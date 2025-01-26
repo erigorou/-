@@ -5,12 +5,10 @@
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "CommonStates.h"
 
-// 固定値
-const wchar_t* OperateUI::VS_PATH = L"Resources/Shaders/Operation/OperationVS.cso";
-const wchar_t* OperateUI::PS_PATH = L"Resources/Shaders/Operation/OperationPS.cso";
-const wchar_t* OperateUI::GS_PATH = L"Resources/Shaders/Operation/OperationGS.cso";
 
-
+// -----------------------------------
+// コンストラクタ
+// -----------------------------------
 OperateUI::OperateUI(const wchar_t* texturePath)
 	: m_texturePath(texturePath)
 	, m_pDR(nullptr)
@@ -27,11 +25,17 @@ OperateUI::OperateUI(const wchar_t* texturePath)
 }
 
 
+// -----------------------------------
+// デストラクタ
+// -----------------------------------
 OperateUI::~OperateUI()
 {
 }
 
 
+// -----------------------------------
+// 初期化処理
+// -----------------------------------
 void OperateUI::Initialize()
 {
 	ID3D11Device* device = m_pDR->GetD3DDevice();
