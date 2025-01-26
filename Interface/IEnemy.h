@@ -33,4 +33,7 @@ public:
 
 	// HPSystemを渡す
 	virtual HPSystem* GetHPSystem() = 0;
+
+	// ヒットのフラグを設定する
+	virtual void CanHit(bool flag) = 0;
 };

@@ -53,7 +53,6 @@ Enemy::Enemy(PlayScene* playScene)
 	, m_pushBackValue{ 0.0f, 0.0f, 0.0f }
 	, m_isHit(false)
 	, m_canHit(false)
-	, m_isTargetLockOn(true)
 	, m_shakePower{0.25f}
 {
 }
@@ -77,10 +76,8 @@ void Enemy::Initialize()
 {
 	// モデルを取得
 	m_model = GameResources::GetInstance()->GetModel("boss");
-
 	// HPを設定
 	m_hp = std::make_unique<HPSystem>(HP);
-
 	// ビヘイビアツリーを取得
 	m_pBT = std::make_unique<BehaviorTree>();
 	// ステートの作成
@@ -188,7 +185,6 @@ void Enemy::Update(float elapsedTime)
 	m_bodyCollision->Center = DirectX::SimpleMath::Vector3(m_position.x, m_position.y + COLISION_POS_Y, m_position.z);
 	// 衝突のクールタイムの計測
 	CheckHitCoolTime(elapsedTime);
-
 	// 生存確認
 	CheckAlive();
 
@@ -297,7 +293,7 @@ void Enemy::HitSword(InterSectData data)
 {
 	if (
 		!m_isHit &&
-		/*m_canHit &&*/
+		m_canHit &&
 		data.objType == ObjectType::Sword &&
 		data.colType == CollisionType::OBB)
 	{

@@ -10,6 +10,7 @@
 #include "Game/Data/GameData.h"
 #include "Game/UI/!PlaySceneUIManager/PlaySceneUIManager.h"
 #include "EnemyManager.h"
+#include "Game/Messenger/EventMessenger.h"
 #include "../Enemy/Enemy.h"
 #include "../Goblin/Goblin.h"
 #include "../Factory/Factory.h"
@@ -53,6 +54,9 @@ EnemyManager::~EnemyManager()
 void EnemyManager::Initialize(PlayScene* playScene)
 {
 	m_playScene = playScene;
+
+	// イベントメッセンジャーに登録
+	EventMessenger::Attach("EnemyCanHit", std::bind(&EnemyManager::AllEnemyCanHit, this, std::placeholders::_1));
 }
 
 
@@ -272,6 +276,21 @@ bool EnemyManager::IsEnemysAlive()
 	// 生存中
 	return true;
 }
+
+
+// --------------------------------
+// 全ての敵に被ダメ可能を通達
+// --------------------------------
+void EnemyManager::AllEnemyCanHit(void* flag)
+{
+
+	// 全敵を探索
+	for (auto& enemy : m_enemies)
+	{
+		enemy.data->CanHit(*static_cast<bool*>(flag));
+	}
+}
+
 
 
 // --------------------------------

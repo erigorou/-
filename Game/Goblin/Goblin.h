@@ -85,11 +85,12 @@ public:
 
 	// 終了処理
 	void Finalize();
+	// 衝突可能
+	void CanHit(bool flag) override { m_canHit = flag; }
 	// 衝突処理
 	void HitAction(InterSectData data) override;
 	// ステートの変更
 	void ChangeState(IState* state);
-
 	// ゴブリンを消す
 	void DeleteGoblin();
 
@@ -151,8 +152,9 @@ private:
 	// 体の当たり判定
 	std::unique_ptr<DirectX::BoundingSphere> m_bodyCollision;
 
-	bool m_nowAttacking;	// 攻撃中かどうか
-	bool m_isHit;			// 攻撃を受けたかどうか
+	bool m_nowAttacking;	// 攻撃中フラグ
+	bool m_isHit;			// 攻撃を受けたフラグ
+	bool m_canHit;			// 衝突可能フラグ
 	float m_coolTime;		// クールタイム
 };
 

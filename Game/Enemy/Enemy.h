@@ -44,41 +44,44 @@ public:
 	// 刀のダメージを受ける許可を取り消す
 	void CanNotHitSword() { m_canHit = false; }
 
+
+// --------------------------------
+//  アクセサ関数
+// --------------------------------
 public:
-	// /////////////////敵の基礎情報を渡す関数/////////////////////////////////////////////////////////////////////
-	PlayScene*						GetPlayScene	()	const	{ return m_playScene;	}	// PlaySceneの取得 
-	HPSystem*						GetEnemyHP		()	const	{ return m_hp.get();	}	// HPの取得	
-	DirectX::SimpleMath::Vector3	GetPosition		()	override{ return m_position;	}	// 鬼の座標を取得する
-	float							GetAngle		()	const	{ return m_angle;		}	// 鬼の回転角を取得する
-	float							GetBodyTilt		()	const	{ return m_bodyTilt;	}	// 体の傾きを取得する
-	DirectX::SimpleMath::Matrix		GetWorldMatrix	()	const	{ return m_worldMatrix; }	// 敵のワールド座標を取得する
-	HPSystem*						GetHPSystem		()	override{ return m_hp.get();	}	// HPの取得
+	// 取得
+	PlayScene*						GetPlayScene	()	const	{ return m_playScene;	}	// PlayScene
+	HPSystem*						GetEnemyHP		()	const	{ return m_hp.get();	}	// HP
+	DirectX::SimpleMath::Vector3	GetPosition		()	override{ return m_position;	}	// 鬼の座標
+	float							GetAngle		()	const	{ return m_angle;		}	// 鬼の回転角
+	float							GetBodyTilt		()	const	{ return m_bodyTilt;	}	// 体の傾き
+	DirectX::SimpleMath::Matrix		GetWorldMatrix	()	const	{ return m_worldMatrix; }	// 敵のワールド座標
+	HPSystem*						GetHPSystem		()	override{ return m_hp.get();	}	// HP
+	DirectX::BoundingSphere			GetBodyCollision()	const	{ return *m_bodyCollision.get(); }	// 体の当たり判定
 
-	void SetPosition	(const DirectX::SimpleMath::Vector3 pos)	{ m_position = pos;		}	// 鬼の座標を設定する
-	void SetAngle		(const float angle)							{ m_angle = angle;		}	// 鬼の回転角を設定する
-	void SetBodyTilt	(const float tilt)							{ m_bodyTilt = tilt;	}	// 体の傾きを設定する
-	void SetWorldMatrix	(DirectX::SimpleMath::Matrix mat)			{ m_worldMatrix = mat;	}	// 敵のワールド座標を設定する
 
-	////////////////////敵の当たり判定を渡す関数/////////////////////////////////////////////////////////////////////
-	DirectX::BoundingSphere GetBodyCollision() const { return *m_bodyCollision.get(); }	// 体の当たり判定を取得する
+	// 状態設定
+	IState*				GetCurrentState			() const { return m_currentState;		}	// 現在
+	EnemyIdling*		GetEnemyIdling			() const { return m_idling.get();		}	// 待機
+	Enemy_Attacking*	GetEnemyAttacking		() const { return m_attacking.get();	}	// 攻撃
+	Enemy_Sweeping*		GetEnemySweeping		() const { return m_sweeping.get();		}	// 薙ぎ払い
+	EnemyDashAttacking* GetEnemyDashAttacking	() const { return m_dashAttacking.get();}	// 突撃
+	EnemyApproaching*	GetEnemyApproaching		() const { return m_approaching.get();	}	// 追尾
+	EnemyDead*			GetEnemyDead			() const { return m_dead.get();			}	// 死亡
 
-	////////////////////敵のステートを渡す関数/////////////////////////////////////////////////////////////////////
-	EnemyIdling*		GetEnemyIdling		() const { return m_idling		.get();	}	// 待機状態
-	Enemy_Attacking*	GetEnemyAttacking	() const { return m_attacking	.get();	}	// 攻撃状態
-	Enemy_Sweeping*		GetEnemySweeping	() const { return m_sweeping	.get();	}	// 薙ぎ払い状態
-	EnemyDashAttacking* GetEnemyDashAttacking()const { return m_dashAttacking.get();}	// 突撃状態
-	EnemyApproaching*	GetEnemyApproaching	() const { return m_approaching	.get();	}	// 追尾状態
-	EnemyDead*			GetEnemyDead		() const { return m_dead		.get(); }	// 死亡状態
 
-	////////////////////　顔　/////////////////////////////////////////////////////////////////////////////////////
+	// 設定
+	void SetPosition	(const DirectX::SimpleMath::Vector3 pos)	{ m_position = pos;		}	// 鬼の座標
+	void SetAngle		(const float angle)							{ m_angle = angle;		}	// 鬼の回転角
+	void SetBodyTilt	(const float tilt)							{ m_bodyTilt = tilt;	}	// 体の傾き
+	void SetWorldMatrix	(DirectX::SimpleMath::Matrix mat)			{ m_worldMatrix = mat;	}	// 敵のワールド座標
+
+
+	// 顔のパーツ
 	void SetFace(IFace* face) { m_currentFace = face; }	// 顔の設定
 	EnemyFaceIdling*	GetFaceIdling	() const { return m_faceIdling		.get();	}	// 待機顔
 	EnemyFaceAttacking* GetFaceAttacking() const { return m_faceAttacking	.get();	}	// 攻撃顔
 
-	void SetTargetLockOn(bool flag) { m_isTargetLockOn = flag; }	// ロックオンするかどうか
-
-	// 現在のステートを返す
-	IState* GetCurrentState() const { return m_currentState; }
 
 public:
 	// コンストラクタ
@@ -91,6 +94,7 @@ public:
 	void ChangeState(IState* newState);
 	// 更新処理
 	void Update(float elapsedTime);
+	// ワールド行列の計算
 	void CalcrationWorldMatrix();
 	// 描画処理
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection);
@@ -98,14 +102,14 @@ public:
 	void Finalize();
 	// 死亡処理を行う
 	void DeadAction();
-
 	// ステートの作成処理
 	void CreateState();
 	// 顔の作成処理
 	void CreateFace();
-
 	// 当たり判定の生成処理
 	void CreateCollision();
+	// 衝突可能
+	void CanHit(bool flag) override { m_canHit = flag; }
 	// 当たったときの処理
 	void HitAction(InterSectData data)override;
 	// 衝突クールタイムを計測
@@ -173,14 +177,15 @@ private:
 
 	// 体の当たり判定
 	std::unique_ptr<DirectX::BoundingSphere> m_bodyCollision;
+
+	// 衝突しているか
 	bool m_isHit;
+
+	// 衝突クールタイム
 	float m_coolTime;
 
-	// 衝突可能かどうか
+	// 衝突可能か
 	bool m_canHit;
-
-	// ロックオンするかどうか
-	bool m_isTargetLockOn;
 
 	// カメラの揺らすちから
 	float m_shakePower;

@@ -1,21 +1,2 @@
-﻿  Action.cpp
-  EnemyStarting.cpp
-  CommonResources.cpp
-  Enemy.cpp
-  Goblin.cpp
-  GoblinAttacking.cpp
-  Wall.cpp
-  TitleEnemy.cpp
-  Sword_Idling.cpp
-  IEnemy.h
-  KeyboardMessenger.cpp
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\utility(270,61): warning C4267: '初期化中': 'size_t' から '_Ty2' に変換しました。データが失われているかもしれません。
-          with
-          [
-              _Ty2=int
-          ]
-C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Messenger\KeyboardMessenger.cpp(138,57): message : コンパイル対象の関数 テンプレート インスタンス化 'std::pair<int,int>::pair<int,unsigned __int64,0>(std::pair<int,unsigned __int64> &&) noexcept' のリファレンスを確認してください
-C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Messenger\KeyboardMessenger.cpp(138,42): message : 'KeyboardMessenger::CreateKeyRangeList' の 'std::pair<int,int>::pair' への最初の参照を参照してください
-  コードを生成中...
-     ライブラリ C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\3DPG.lib とオブジェクト C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\3DPG.exp を作成中
+﻿  EnemyManager.cpp
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\3DPG.exe

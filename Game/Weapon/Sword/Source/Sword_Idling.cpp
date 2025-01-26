@@ -11,6 +11,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/Collision.h"
+#include "Game/Messenger/EventMessenger.h"
 
 #include "Game/Player/Player.h"
 #include "Game/Weapon/Sword/Header/Sword_Idling.h"
@@ -53,6 +54,12 @@ void Sword_Idling::Initialize()
 void Sword_Idling::PreUpdate()
 {
 	m_sword->SetAttackFlag(false);
+
+	// 敵全体を衝突不可にする
+	bool canHit = false;
+
+	// 衝突可能フラグを敵全体に付与
+	EventMessenger::Execute("EnemyCanHit", &canHit);
 }
 
 
@@ -81,7 +88,7 @@ void Sword_Idling::Update(float elapsedTime)
 		*= SimpleMath::Matrix::CreateTranslation(m_position);					// プレイヤの位置に設定する
 
 
-	m_sword->SetWorldMatrix(m_worldMatrix);		// ワールド行列を設定
+	m_sword->SetWorldMatrix(m_worldMatrix);			// ワールド行列を設定
 	m_sword->SetCollisionPosition(m_worldMatrix);	// 当たり判定の位置を設定
 }
 

@@ -12,6 +12,7 @@
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/Collision.h"
 #include "Libraries/MyLib/EasingFunctions.h"
+#include "Game/Messenger/EventMessenger.h"
 
 #include "Game/Player/Player.h"
 #include "Game/Enemy/Enemy.h"
@@ -69,9 +70,10 @@ void Sword_Attacking_1::PreUpdate()
 	m_rootPos.clear();	// 根本の座標をクリア
 	m_tipPos.clear();	// 先端の座標をクリア
 
-	if (!m_sword->GetPlayScene()->GetEnemy()) return;
+	bool canHit = true;
 
-	//m_sword->GetPlayScene()->GetEnemy()->CanHit(true);	// 衝突可能フラグを有効に
+	// 衝突可能フラグを敵全体に付与
+	EventMessenger::Execute("EnemyCanHit",&canHit);
 }
 
 
@@ -191,6 +193,10 @@ void Sword_Attacking_1::CreateSwordParticle()
 // --------------------------------
 void Sword_Attacking_1::PostUpdate()
 {
+	bool canHit = false;
+
+	// 衝突可能フラグを敵全体に付与
+	EventMessenger::Execute("EnemyCanHit", &canHit);
 }
 
 

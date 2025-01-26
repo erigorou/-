@@ -94,6 +94,9 @@ public:
 	// 敵が生きているかのフラグ
 	bool IsEnemysAlive();
 
+	// 全ての敵に被ダメ可能を通達
+	void AllEnemyCanHit(void* flag);
+
 
 // ---------------------------
 // 内部関数

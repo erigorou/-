@@ -43,6 +43,7 @@ Goblin::Goblin(PlayScene* playScene)
 	, m_nowAttacking(false)
 	, m_pushBackValue{}
 	, m_isHit(false)
+	, m_canHit(false)
 	, m_coolTime(0.0f)
 {
 }
@@ -268,6 +269,10 @@ void Goblin::HitStage(InterSectData data)
 // --------------------------------
 void Goblin::HitSword(InterSectData data)
 {
+	// Õ“Ë‰Â”\‚Å‚È‚¢ê‡‚Íˆ—‚ğs‚í‚È‚¢
+	if (!m_canHit) return;
+	m_canHit = false;
+
 	UNREFERENCED_PARAMETER(data);
 	Damaged(1);
 }

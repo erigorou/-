@@ -12,7 +12,7 @@
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/Collision.h"
 #include "Libraries/MyLib/EasingFunctions.h"
-#include "GeometricPrimitive.h"
+#include "Game/Messenger/EventMessenger.h"
 
 #include "Game/Player/Player.h"
 #include "Game/Enemy/Enemy.h"
@@ -68,8 +68,10 @@ void Sword_Attacking_2::PreUpdate()
 	m_rootPos	.clear();	// 根本の座標配列をクリア
 	m_tipPos	.clear();	// 先端の座標配列をクリア
 
-	if (!m_sword->GetPlayScene()->GetEnemy()) return;
-	//m_sword->GetPlayScene()->GetEnemy()->CanHit(true); // 衝突可能にする
+	bool canHit = true;
+
+	// 衝突可能フラグを敵全体に付与
+	EventMessenger::Execute("EnemyCanHit", &canHit);
 }
 
 
@@ -194,6 +196,10 @@ void Sword_Attacking_2::CreateSwordParticle()
 // --------------------------------
 void Sword_Attacking_2::PostUpdate()
 {
+	bool canHit = false;
+
+	// 衝突可能フラグを敵全体に付与
+	EventMessenger::Execute("EnemyCanHit", &canHit);
 }
 
 
