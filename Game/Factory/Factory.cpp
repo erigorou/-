@@ -46,6 +46,7 @@ std::unique_ptr<Camera> Factory::CreateCamera()
 	// ƒJƒƒ‰‚ğéŒ¾‚·‚é
 	std::unique_ptr<Camera> camera;
 	camera = std::make_unique<Camera>();
+
 	// ƒJƒƒ‰‚Ìİ’è
 	return camera;
 }

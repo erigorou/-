@@ -37,7 +37,8 @@ QuestSelectScene::QuestSelectScene()
 	m_texture{},
 	m_texCenter{},
 	m_isChangeScene{},
-	m_selectIndex{}
+	m_selectIndex{},
+	m_shakePower{1.0f}
 {
 	m_commonResources = CommonResources::GetInstance();
 }
@@ -431,15 +432,6 @@ IScene::SceneID QuestSelectScene::GetNextSceneID() const
 
 	// シーン変更がない場合
 	return IScene::SceneID::NONE;
-}
-
-
-//---------------------------------------------------------
-// カメラを揺らす
-//---------------------------------------------------------
-void QuestSelectScene::SetShakeCamera()
-{
- 	m_camera->SetShake(1.0f);
 }
 
 

@@ -5,6 +5,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/EasingFunctions.h"
+#include "Game/Messenger/EventMessenger.h"
 #include "Game/Sound/Sound.h"
 // 関数を使用するのに必要な引数
 #include "Game/Enemy/Enemy.h"
@@ -129,8 +130,11 @@ void EnemyStarting::PlayEffect()
 
 	// エフェクトを発動
 	m_enemy->GetPlayScene()->GetParticle()->CreateSlamDust(m_position);
-	// 画面の揺れ
-	m_enemy->GetPlayScene()->SetShakeCamera(2.0f);
+
+	float shakePower = 2.0f;
+	EventMessenger::Execute("CameraShake", &shakePower);
+
+
 	// 音声を再生
 	Sound::PlaySE(Sound::SE_TYPE::ENEMY_MOVE);
 

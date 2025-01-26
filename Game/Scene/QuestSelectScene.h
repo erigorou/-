@@ -80,8 +80,6 @@ public:
 	// ステート変更処理
 	SceneID GetNextSceneID() const;
 
-	void SetShakeCamera();			// カメラを揺らす
-
 private:
 
 	// シェーダーの生成
@@ -133,8 +131,6 @@ private:
 	DirectX::SimpleMath::Vector2 m_texCenter3;
 	DirectX::SimpleMath::Vector2 m_texCenter4;
 
-
-
 	std::vector<std::unique_ptr<CustomShader>> m_shaderList;	// シェーダーリスト
 	std::vector<std::unique_ptr<Microsoft::WRL::ComPtr<ID3D10ShaderResourceView>>> m_texList;
 	Microsoft::WRL::ComPtr<ID3D11Buffer>	m_CBuffer;
@@ -155,5 +151,8 @@ private:
 	std::unique_ptr<Particle> m_particle;		// パーティクル
 
 	int m_selectIndex;	// 選択中のステージ番号
+
+	// カメラを揺らす力
+	float m_shakePower;
 };
 

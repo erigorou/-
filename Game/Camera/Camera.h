@@ -49,7 +49,7 @@ public:
 		const float elapsedTime
 	);
 
-	void SetShake(float power);	// カメラを揺らす
+	void SetShake(void* power);			// カメラを揺らす // 引数にはフロート型のポインタを渡す
 
 	void CalculateViewMatrix();			// ビュー行列を計算する
 	void CalculateCameraAngle();		// カメラのアングルを計算する

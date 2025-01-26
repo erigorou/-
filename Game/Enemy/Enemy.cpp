@@ -16,14 +16,11 @@
 #include "../HitStop/HitStop.h"
 #include "Game/GameResources.h"
 #include "Game/Messenger/EventMessenger.h"
-
 #include "Game/Enemy/Enemy.h"
 #include "Game/EnemyManager/EnemyManager.h"
 #include "Game/Stage/Wall/Wall.h"
-
 #include "Interface/IState.h"
 #include "BehaviourTree/Header/BehaviorTree.h"	// ビヘイビアツリー
-
 // ステートパターン用
 #include "States/Header/EnemyIdling.h"			// 待機状態
 #include "States/Header/Enemy_Attacking.h"		// たたきつけ攻撃
@@ -31,11 +28,9 @@
 #include "States/Header/EnemyDashAttacking.h"	// 突撃攻撃
 #include "States/Header/EnemyApproaching.h"		// 追尾状態
 #include "States/Header/EnemyDead.h"			// 死亡状態
-
 // 顔のパーツ用
 #include "Face/Header/EnemyFaceIdling.h"
 #include "Face/Header/EnemyFaceAttacking.h"
-
 // エフェクト
 #include "Effects/EnemyDamageEffect/EnemyDamageEffect.h"
 #include "Effects/EnemyDeadEffect/EnemyDeadEffect.h"
@@ -59,6 +54,7 @@ Enemy::Enemy(PlayScene* playScene)
 	, m_isHit(false)
 	, m_canHit(false)
 	, m_isTargetLockOn(true)
+	, m_shakePower{0.25f}
 {
 }
 
@@ -182,8 +178,6 @@ void Enemy::ChangeState(IState* newState)
 // --------------------------------
 void Enemy::Update(float elapsedTime)
 {
-	if (debug) return;
-
 	// ステータスの更新処理
 	m_currentState->Update(elapsedTime);
 	// ダメージ情報の更新処理
@@ -315,8 +309,9 @@ void Enemy::HitSword(InterSectData data)
 		HitStop::GetInstance()->SetActive();
 		// 体のエフェクトを再生
 		m_damageEffect->IsDamaged();
+
 		// 画面を揺らす
-		m_playScene->SetShakeCamera(0.25f);
+		EventMessenger::Execute("CameraShake", &m_shakePower);
 	}
 }
 

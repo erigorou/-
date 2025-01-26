@@ -34,7 +34,8 @@ Camera::Camera(const DirectX::SimpleMath::Vector3& target)
 	// ステートを作成
 	CreateState();
 
-	// イベントにカメラのシェイクを登録
+	// カメラのシェイクをイベントに登録
+	EventMessenger::Attach("CameraShake", std::bind(&Camera::SetShake, this, std::placeholders::_1));
 }
 
 //-------------------------------------------------------------------
@@ -71,6 +72,7 @@ void Camera::CalculateViewMatrix()
 {
 	m_view = DirectX::SimpleMath::Matrix::CreateLookAt(m_position, m_target, m_up);
 }
+
 
 //-------------------------------------------------------------------
 /// <summary>
@@ -171,9 +173,9 @@ void Camera::CreateState()
 //-------------------------------------------------------------------
 // カメラの振動を開始
 //-------------------------------------------------------------------
-void Camera::SetShake(float power)
+void Camera::SetShake(void* power)
 {
 	m_isShake = true;
 	m_shakeTime = SHAKE_TIME;
-	m_shakePower = power;
+	m_shakePower = *static_cast<float*>(power);
 }

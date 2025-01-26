@@ -11,6 +11,7 @@
 #include "Game/Player/Player.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
 #include "Game/EnemyManager/EnemyManager.h"
+#include "Game/Messenger/EventMessenger.h"
 
 // ヘッダーファイル
 #include "Game/Enemy/States/Header/EnemyDead.h"
@@ -109,8 +110,9 @@ void EnemyDead::UpdateAnimation()
 	// カメラを揺らすタイミングを図る
 	if (m_tiltAngle <= CAMERA_SHAKE_TIMING)
 	{
-		// カメラを揺らす
-		m_enemy->GetPlayScene()->SetShakeCamera(CAMERA_SHAKE_POWER);
+		float shakePower = CAMERA_SHAKE_POWER;
+		EventMessenger::Execute("CameraShake", &shakePower);
+
 
 		// パーティクルの生成
 		auto particle = m_enemy->GetPlayScene()->GetParticle();

@@ -65,6 +65,8 @@ private:
 	float m_amplitude;
 	// ƒTƒCƒ“”g‚Ìü”g”
 	float m_frequency;
+	// ƒJƒƒ‰‚Ì—h‚ê‚Ì‹­‚³
+	float m_shakePower;
 
 };
 

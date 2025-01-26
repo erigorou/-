@@ -16,6 +16,7 @@
 #include "Effects/EnemyDeadEffect/EnemyDeadEffect.h"
 #include "Game/HitStop/HitStop.h"
 #include "Game/EnemyManager/EnemyManager.h"
+#include "Game/Messenger/EventMessenger.h"
 
 #include "State/Header/GoblinIdling.h"
 #include "State/Header/GoblinAttacking.h"
@@ -301,8 +302,11 @@ void Goblin::Damaged(float damage)
 	HitStop::GetInstance()->SetActive();
 	// ダメージエフェクトを再生
 	m_damageEffect->IsDamaged();
+
 	// 画面を揺らす
-	m_playScene->SetShakeCamera(0.25f);
+	float shakePower = 0.25f;
+	EventMessenger::Execute("CameraShake", &shakePower);
+
 	// クールタイムを有効にする
 	m_isHit = true;
 }

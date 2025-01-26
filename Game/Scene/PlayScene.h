@@ -82,8 +82,6 @@ public:
 	void Render()					override;
 	void Finalize()					override;
 
-	void SetShakeCamera(float power);			// ƒJƒƒ‰‚ğ—h‚ç‚·
-
 	void GameEnd();								// ƒQ[ƒ€I—¹ˆ—
 
 

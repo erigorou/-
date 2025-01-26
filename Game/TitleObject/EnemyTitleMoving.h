@@ -9,6 +9,8 @@ class Particle;
 // 敵の待機ステートを定義
 class EnemyTitleMoving : public IState
 {
+
+
 public:
 
 	// コンストラクタ
@@ -57,6 +59,8 @@ private:
 	bool m_isJump;
 	// シェイクできるか
 	bool m_canShake;
+	// シェイクパワー
+	float m_shakePower;
 
 };
 

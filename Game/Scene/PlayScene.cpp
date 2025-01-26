@@ -266,14 +266,6 @@ void PlayScene::Finalize()
 }
 
 // --------------------------------
-// カメラを揺らす関数
-// --------------------------------
-void PlayScene::SetShakeCamera(float power)
-{
-	m_camera->SetShake(power);
-}
-
-// --------------------------------
 // カメラの更新
 // --------------------------------
 void PlayScene::UpdateCamera(float elapsedTime)

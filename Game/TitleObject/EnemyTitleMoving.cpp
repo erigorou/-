@@ -1,6 +1,7 @@
 #include "pch.h"
 #include <cassert>
 #include "Game/CommonResources.h"
+#include "Game/Messenger/EventMessenger.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
@@ -23,6 +24,7 @@ EnemyTitleMoving::EnemyTitleMoving(TitleEnemy* enemy)
 	, m_frequency(1.0f)
 	, m_isJump(false)
 	, m_canShake(false)
+	, m_shakePower(1.0f)
 {
 }
 
@@ -68,7 +70,9 @@ void EnemyTitleMoving::Update(const float& elapsedTime)
 	// ˆÚ“®‚ÅƒJƒƒ‰‚ğ—h‚ç‚·
 	if (m_position.y <= MINIMAL)
 	{
-		//m_enemy->GetTitleScene()->SetShakeCamera();
+		// ƒJƒƒ‰‚ğ—h‚ç‚·
+		EventMessenger::Execute("CameraShake",&m_shakePower);
+
 		m_enemy->ChangeState(m_enemy->GetTitleEnemyIdling());
 	}
 

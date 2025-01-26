@@ -182,13 +182,6 @@ private:
 	// ロックオンするかどうか
 	bool m_isTargetLockOn;
 
-
-
-
-
-
-
-
-
-	bool debug = false;
+	// カメラの揺らすちから
+	float m_shakePower;
 };

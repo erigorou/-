@@ -11,6 +11,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/Collision.h"
+#include "Game/Messenger/EventMessenger.h"
 
 #include "Game/Player/Player.h"
 #include "Game/Enemy/Enemy.h"
@@ -192,8 +193,10 @@ void Cudgel_Attacking::HandleSlamParticles()
 		m_canGenerateSlamParticles = false;
 		m_cudgel->GetPlayScene()->GetParticle()->CreateSlamDust(m_tipPos[m_tipPos.size() - 1]);
 
+		float m_shakePower = 1.5f;
+
 		// ƒJƒƒ‰‚ÌU“®‚ðÝ’è
-		m_cudgel->GetPlayScene()->SetShakeCamera(1.5f);
+		EventMessenger::Execute("CameraShake", &m_shakePower);
 	}
 }
 

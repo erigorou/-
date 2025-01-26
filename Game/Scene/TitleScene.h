@@ -55,8 +55,6 @@ public:
 	// ステート変更処理
 	SceneID GetNextSceneID() const;
 
-	void SetShakeCamera();			// カメラを揺らす
-
 private:
 	// 画像のロード処理
 	void LoadTextures();

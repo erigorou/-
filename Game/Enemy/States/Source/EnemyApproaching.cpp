@@ -5,6 +5,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 #include "Game/Sound/Sound.h"
+#include "Game/Messenger/EventMessenger.h"
 
 #include "Game/Player/Player.h"
 #include "Game/Enemy/Enemy.h"
@@ -23,7 +24,8 @@ EnemyApproaching::EnemyApproaching(Enemy* enemy)
 	m_totalSeconds(0.0f),
 	m_amplitude(1.0f),
 	m_finishTime(1.0f),
-	m_frequency(1.0f)
+	m_frequency(1.0f),
+	m_shakePower(1.0f)
 {
 	m_particles = m_enemy->GetPlayScene()->GetParticle();
 }
@@ -76,14 +78,19 @@ void EnemyApproaching::Update(const float& elapsedTime)
 	// 移動でカメラを揺らす
 	if (m_position.y <= MINIMAL)
 	{
-		m_enemy->GetPlayScene()->SetShakeCamera(1.0f);
+		// カメラを揺らす
+		EventMessenger::Execute("CameraShake", &m_shakePower);
+		// サウンドを再生
 		Sound::PlaySE(Sound::SE_TYPE::ENEMY_MOVE);
 
 
 		// プレイヤーとの距離が近い場合
 		if (DirectX::SimpleMath::Vector3::Distance(m_position, playerPos) <= 20.0f)
 		{
-			m_enemy->GetPlayScene()->SetShakeCamera(0.1f);
+			// カメラを揺らす
+			EventMessenger::Execute("CameraShake", &m_shakePower);
+
+			// 効果音を鳴らす
 			Sound::PlaySE(Sound::SE_TYPE::ENEMY_MOVE);
 
 			int random = Math::RandomInt(0, 4);

@@ -9,6 +9,7 @@
 #include "DeviceResources.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 #include "Libraries/MyLib/InputManager.h"
+#include "Game/Messenger/EventMessenger.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "../Factory/Factory.h"
 #include "../Sound/Sound.h"
@@ -317,14 +318,6 @@ IScene::SceneID TitleScene::GetNextSceneID() const
 	return IScene::SceneID::NONE;
 }
 
-
-//---------------------------------------------------------
-// ƒJƒƒ‰‚ð—h‚ç‚·
-//---------------------------------------------------------
-void TitleScene::SetShakeCamera()
-{
- 	m_camera->SetShake(1.0f);
-}
 
 
 void TitleScene::CleateSpamDust(DirectX::SimpleMath::Vector3 pos)
