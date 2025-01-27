@@ -278,7 +278,11 @@ void Enemy::Render(
 // --------------------------------
 void Enemy::Finalize()
 {
-	GetPlayScene()->GetCollisionManager()->DeleteCollision(CollisionType::Sphere, this);
+	// 削除用衝突判定のデータを作成
+	DeleteCollisionData data = { CollisionType::Sphere, this };
+
+	// 削除イベントを実行
+	EventMessenger::Execute("DeleteCollision", &data);
 }
 
 
@@ -356,6 +360,4 @@ void Enemy::CheckAlive()
 // --------------------------------
 void Enemy::DeadAction()
 {
-	// 衝突判定の解除
-	GetPlayScene()->GetCollisionManager()->DeleteCollision(CollisionType::Sphere, this);
 }

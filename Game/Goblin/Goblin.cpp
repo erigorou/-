@@ -192,8 +192,11 @@ void Goblin::Finalize()
 	m_attacking->Finalize();
 	m_dead->Finalize();
 
-	// 当たり判定の削除
-	m_playScene->GetCollisionManager()->DeleteCollision(CollisionType::Sphere, this);
+	// 削除用衝突判定のデータを作成
+	DeleteCollisionData data = { CollisionType::Sphere, this };
+
+	// 削除イベントを実行
+	EventMessenger::Execute("DeleteCollision", &data);
 }
 
 

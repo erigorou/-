@@ -9,9 +9,11 @@ class IObject;
 enum class ObjectType : UINT
 { Player, Enemy, Goblin, Sword, Cudgel, Stage };
 
+
 // 衝突判定の形状
 enum class CollisionType : UINT
 { OBB, Sphere };
+
 
 // 衝突判定を格納する構造体
 template<typename T>
@@ -32,6 +34,14 @@ struct CollisionData
 };
 
 
+// 衝突判定を削除する構造体
+struct DeleteCollisionData
+{
+	CollisionType collType;
+	IObject* object;
+};
+
+
 // 衝突したときに相手に渡すデータの構造体
 struct InterSectData
 {
@@ -39,6 +49,7 @@ struct InterSectData
 	CollisionType				colType;
 	DirectX::BoundingSphere*	collision;
 };
+
 
 // 衝突判定を管理するクラス
 class CollisionManager
@@ -56,12 +67,11 @@ public:
 	template<typename T>
 	void AddCollision(void* args);
 
-	// template<typename T>
-	//void AddCollision(ObjectType objType, CollisionType colType, IObject* obj, T collision);
-
 
 	// 削除関数
-	void DeleteCollision(CollisionType collType, IObject* object);
+	void DeleteCollision(void* args);
+
+	//void DeleteCollision(CollisionType collType, IObject* object);
 
 	// 初期化関数
 	void Clear();

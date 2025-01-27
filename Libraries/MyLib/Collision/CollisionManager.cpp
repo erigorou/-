@@ -75,8 +75,9 @@ void CollisionManager::Initialize()
 // -------------------------------------------------------
 void CollisionManager::AddEventMessenger()
 {
-	EventMessenger::Attach("AddOrientedCollision", std::bind(&CollisionManager::AddCollision<DirectX::BoundingOrientedBox>, this, std::placeholders::_1));
-	EventMessenger::Attach("AddSphereCollision"	, std::bind(&CollisionManager::AddCollision<DirectX::BoundingSphere>, this, std::placeholders::_1));
+	EventMessenger::Attach("AddOrientedCollision"	, std::bind(&CollisionManager::AddCollision<DirectX::BoundingOrientedBox>,	this, std::placeholders::_1));
+	EventMessenger::Attach("AddSphereCollision"		, std::bind(&CollisionManager::AddCollision<DirectX::BoundingSphere>,		this, std::placeholders::_1));
+	EventMessenger::Attach("DeleteCollision"		, std::bind(&CollisionManager::DeleteCollision,								this, std::placeholders::_1));
 }
 
 
@@ -218,32 +219,75 @@ inline std::unique_ptr<DirectX::BoundingSphere> CollisionManager::CreateProxySph
 // -------------------------------------------------------
 /// 当たり判定を削除する
 // -------------------------------------------------------
-void CollisionManager::DeleteCollision(CollisionType collType, IObject* object)
+void CollisionManager::DeleteCollision(void* args)
 {
-	// 不正なCollisionTypeの場合は処理を終了
-	if (collType != CollisionType::OBB && collType != CollisionType::Sphere)	return;
+	// argsはDeleteCollisionData構造体へのポインタ
+	auto* deleteData = static_cast<DeleteCollisionData*>(args);
 
-	// オブジェクト削除処理を補助関数として共通化
-	auto EraseMatchingObject = [object](auto& container) {
-		container.erase(std::remove_if(container.begin(), container.end(),[object](const auto& collision)
-			{
-				return collision.object == object;
-			}),
-			container.end());
-		};
+	// 不正な引数の場合は終了
+	if (!deleteData) return;
 
-	// CollisionTypeに応じて適切なコンテナから削除
-	switch (collType)
+	// OBBの場合はOBBとプロキシ球の両方を削除
+	if (deleteData->collType == CollisionType::OBB)
 	{
-	case CollisionType::OBB:
-		EraseMatchingObject(m_obbs);
-		break;
+		// 対応するオブジェクトを削除するラムダ式
+		auto EraseMatchingObject = [object = deleteData->object](auto& container) 
+			{
+			container.erase(std::remove_if(container.begin(), container.end(), [object](const auto& collision)
+				{
+					return collision.object == object;	// オブジェクトが一致するか判定
+				}),
+				container.end());
+			};
 
-	case CollisionType::Sphere:
+		// OBBのコンテナから削除
+		EraseMatchingObject(m_obbs);
+	}
+
+	// Sphereの場合はSphereのみ削除
+	else if (deleteData->collType == CollisionType::Sphere)
+	{
+		// 対応するオブジェクトを削除するラムダ式
+		auto EraseMatchingObject = [object = deleteData->object](auto& container) 
+			{
+			container.erase(std::remove_if(container.begin(), container.end(), [object](const auto& collision)
+				{
+					return collision.object == object;
+				}),
+				container.end());
+			};
+
+		// Sphereのコンテナから削除
 		EraseMatchingObject(m_spheres);
-		break;
 	}
 }
+
+//void CollisionManager::DeleteCollision(CollisionType collType, IObject* object)
+//{
+//	// 不正なCollisionTypeの場合は処理を終了
+//	if (collType != CollisionType::OBB && collType != CollisionType::Sphere)	return;
+//
+//	// オブジェクト削除処理を補助関数として共通化
+//	auto EraseMatchingObject = [object](auto& container) {
+//		container.erase(std::remove_if(container.begin(), container.end(),[object](const auto& collision)
+//			{
+//				return collision.object == object;
+//			}),
+//			container.end());
+//		};
+//
+//	// CollisionTypeに応じて適切なコンテナから削除
+//	switch (collType)
+//	{
+//	case CollisionType::OBB:
+//		EraseMatchingObject(m_obbs);
+//		break;
+//
+//	case CollisionType::Sphere:
+//		EraseMatchingObject(m_spheres);
+//		break;
+//	}
+//}
 
 
 
