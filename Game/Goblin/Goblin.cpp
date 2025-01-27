@@ -103,13 +103,17 @@ void Goblin::CreateCollision()
 	// 当たり判定の生成
 	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, GOBLIN_SCALE * COLLISION_RADIUS);
 
-	// 当たり判定をCollisionManagerに登録する
-	m_playScene->GetCollisionManager()->AddCollision(
-		ObjectType::Goblin,
-		CollisionType::Sphere,
-		this,
-		m_bodyCollision.get()
-	);
+	// 衝突データの作成
+	CollisionData<DirectX::BoundingSphere> data =
+	{
+		ObjectType::Goblin,		// オブジェクトの種類
+		CollisionType::Sphere,	// 当たり判定の種類
+		this,					// このクラスのポインタ
+		m_bodyCollision.get()	// 当たり判定のポインタ
+	};
+
+	// 衝突判定をManagerに登録
+	EventMessenger::Execute("AddSphereCollision", &data);
 }
 
 

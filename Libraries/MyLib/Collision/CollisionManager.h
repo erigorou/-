@@ -54,7 +54,11 @@ public:
 
 	// 追加関数
 	template<typename T>
-	void AddCollision(ObjectType objType, CollisionType colType, IObject* obj, T collision);
+	void AddCollision(void* args);
+
+	// template<typename T>
+	//void AddCollision(ObjectType objType, CollisionType colType, IObject* obj, T collision);
+
 
 	// 削除関数
 	void DeleteCollision(CollisionType collType, IObject* object);
@@ -64,6 +68,9 @@ public:
 
 // メンバ関数
 private:
+	// イベントの登録
+	inline void AddEventMessenger();
+
 	inline void DrawCollision(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection);
 
 	inline std::unique_ptr<DirectX::BoundingSphere> CreateProxySphere(const DirectX::BoundingOrientedBox* collision);

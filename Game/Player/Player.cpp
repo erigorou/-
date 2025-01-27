@@ -11,6 +11,7 @@
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
+#include "Game/Messenger/EventMessenger.h"
 #include "Game/Sound/Sound.h"
 #include "Libraries/MyLib/KeyboardChacker.h"
 #include "Game/GameResources.h"
@@ -84,18 +85,19 @@ void Player::Initialize()
 void Player::CreateCollision()
 {
 	// 体の当たり判定を作成
-	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>
-		(
-			m_position, PLAYER_SCALE * COLLISION_RADIUS
-		);
+	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, PLAYER_SCALE * COLLISION_RADIUS);
 	
-	// 当たり判定を記録する
-	m_playScene->GetCollisionManager()->AddCollision(
+	// 衝突データの作成
+	CollisionData<DirectX::BoundingSphere> data =
+	{
 		ObjectType::Player,		// オブジェクトの種類
 		CollisionType::Sphere,	// 当たり判定形状の種類
 		this,					// オブジェクトのアドレス
 		m_bodyCollision.get()	// 当たり判定のアドレス
-	);
+	};
+
+	// 当たり判定を記録する
+	EventMessenger::Execute("AddSphereCollision", &data);
 }
 
 

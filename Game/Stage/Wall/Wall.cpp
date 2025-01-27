@@ -13,6 +13,7 @@
 #include "Game/GameResources.h"
 #include "Wall.h"
 #include "Game/Scene/PlayScene.h"
+#include "Game/Messenger/EventMessenger.h"
 
 // 固定値
 const float Wall::WALL_SCALE = 2.0f;
@@ -43,24 +44,33 @@ void Wall::Initialize()
 // 当たり判定の生成
 void Wall::CreateCollision()
 {
-	m_collision = std::make_unique<DirectX::BoundingSphere>(DirectX::SimpleMath::Vector3::Zero, COLLISION_RADIUS);
+	m_collision		= std::make_unique<DirectX::BoundingSphere>(DirectX::SimpleMath::Vector3::Zero, COLLISION_RADIUS);
 	m_overCollision = std::make_unique<DirectX::BoundingSphere>(DirectX::SimpleMath::Vector3::Zero, COLLISION_RADIUS * COLLISION_SCALE);
 
-	// 当たり判定を記録する
-	m_playScene->GetCollisionManager()->AddCollision(
-		ObjectType::Stage,
-		CollisionType::Sphere,
-		this,
-		m_collision.get()
-	);
 
-	// 当たり判定を記録する
-	m_playScene->GetCollisionManager()->AddCollision(
-		ObjectType::Stage,
-		CollisionType::Sphere,
-		this,
-		m_overCollision.get()
-	);
+	// 衝突データの作成
+	CollisionData<DirectX::BoundingSphere>data =
+	{
+		ObjectType::Stage,		// オブジェクトの種類
+		CollisionType::Sphere,	// 当たり判定の種類
+		this,					// このクラスのポインタ
+		m_collision.get()		// 当たり判定のポインタ
+	};
+
+
+	// 衝突データの作成
+	CollisionData<DirectX::BoundingSphere>overData =
+	{
+		ObjectType::Stage,		// オブジェクトの種類
+		CollisionType::Sphere,	// 当たり判定の種類
+		this,					// このクラスのポインタ
+		m_overCollision.get()	// 当たり判定のポインタ
+	};
+
+
+	// 衝突判定をManagerに登録
+	EventMessenger::Execute("AddSphereCollision", &data);
+	EventMessenger::Execute("AddSphereCollision", &overData);
 }
 
 

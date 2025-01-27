@@ -1,6 +1,6 @@
 #pragma once
-#ifndef MESSENGER_H
-#define MESSENGER_H
+#ifndef EVENT_MESSENGER_H
+#define EVENT_MESSENGER_H
 
 #include "pch.h"
 #include <unordered_map>

@@ -5,12 +5,11 @@
 #include "Interface/IObject.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
+#include "Game/Messenger/EventMessenger.h"
 #include "Libraries/Mylib/DebugDraw.h"
 
 // -------------------------------------------------------
-/// <summary>
-/// コンストラクタ
-/// </summary>
+// コンストラクタ
 // -------------------------------------------------------
 CollisionManager::CollisionManager()
 	: m_basicEffect(nullptr)
@@ -21,15 +20,14 @@ CollisionManager::CollisionManager()
 	, m_drawFlag(false)
 
 {
+	// 生成と同時に初期化を行う
 	Initialize();
 }
 
 
 
 // -------------------------------------------------------
-/// <summary>
-/// デストラクタ
-/// </summary>
+// デストラクタ
 // -------------------------------------------------------
 CollisionManager::~CollisionManager()
 {
@@ -38,6 +36,9 @@ CollisionManager::~CollisionManager()
 
 
 
+// -------------------------------------------------------
+// 初期化処理
+// -------------------------------------------------------
 void CollisionManager::Initialize()
 {
 	CommonResources* resources = CommonResources::GetInstance();
@@ -49,6 +50,7 @@ void CollisionManager::Initialize()
 	m_basicEffect = std::make_unique<DirectX::BasicEffect>(device);
 	m_basicEffect->SetVertexColorEnabled(true);
 
+	// 入力レイアウトを作成する
 	DX::ThrowIfFailed(
 		DirectX::CreateInputLayoutFromEffect<DirectX::VertexPositionColor>(
 			device,
@@ -61,19 +63,30 @@ void CollisionManager::Initialize()
 
 	// キーボードを作成する
 	m_keyboardState = DirectX::Keyboard::Get().GetState();
+
+	// イベントの登録
+	AddEventMessenger();
 }
 
 
 
+// -------------------------------------------------------
+// イベントの登録
+// -------------------------------------------------------
+void CollisionManager::AddEventMessenger()
+{
+	EventMessenger::Attach("AddOrientedCollision", std::bind(&CollisionManager::AddCollision<DirectX::BoundingOrientedBox>, this, std::placeholders::_1));
+	EventMessenger::Attach("AddSphereCollision"	, std::bind(&CollisionManager::AddCollision<DirectX::BoundingSphere>, this, std::placeholders::_1));
+}
+
+
 
 // -------------------------------------------------------
-/// <summary>
-/// 更新関数
-/// </summary>
+// 更新関数
 // -------------------------------------------------------
 void CollisionManager::Update()
 {
-	// OBBのプロキシと球の当たり判定 *
+	// OBBのプロキシと球の当たり判定
 	for (size_t i = 0; i < m_obbs.size(); i++)
 	{
 		// OBBのプロキシ球の中心をOBBの中心に設定
@@ -87,9 +100,11 @@ void CollisionManager::Update()
 			// OBBと球の当たり判定
 			if (m_obbs[i].collision->Intersects(*m_spheres[j].collision))
 			{
+				// 衝突したときに相手に渡すデータを作成
 				InterSectData obbData		= { m_obbs[i]	.objType, m_obbs[i].colType,	m_obbProxies[i].get()};
 				InterSectData sphereData	= { m_spheres[j].objType, m_spheres[i].colType, m_spheres[j].collision };
 
+				// 衝突したときの処理を呼び出す
 				m_obbs[i].object->HitAction(sphereData);
 				m_spheres[j].object->HitAction(obbData);
 			}
@@ -102,12 +117,14 @@ void CollisionManager::Update()
 	{
 		for (size_t j = i + 1; j < m_spheres.size(); j++)
 		{
-			/////////////////衝突した場合の当たり判定を比較する/////////////////////
+			// 球同士の当たり判定
 			if (m_spheres[i].collision->Intersects(*m_spheres[j].collision))
 			{
+				// 衝突したときに相手に渡すデータを作成
 				InterSectData sphereData1 = { m_spheres[i].objType, m_spheres[i].colType, m_spheres[i].collision};
 				InterSectData sphereData2 = { m_spheres[j].objType, m_spheres[j].colType, m_spheres[j].collision};
 
+				// 衝突したときの処理を呼び出す
 				m_spheres[i].object->HitAction(sphereData2);
 				m_spheres[j].object->HitAction(sphereData1);
 			}
@@ -120,7 +137,7 @@ void CollisionManager::Update()
 	m_keyboardStateTracker.Update(m_keyboardState);
 
 
-	// F7キーが押されたら、描画フラグを切り替える
+	// F5キーが押されたら、描画フラグを切り替える
 	if (m_keyboardStateTracker.IsKeyPressed(DirectX::Keyboard::F5))
 	{
 		m_drawFlag = !m_drawFlag;
@@ -128,6 +145,9 @@ void CollisionManager::Update()
 }
 
 
+// -------------------------------------------------------
+// 描画関数
+// -------------------------------------------------------
 void CollisionManager::Render
 	(
 	const DirectX::SimpleMath::Matrix& view,
@@ -141,12 +161,8 @@ void CollisionManager::Render
 }
 
 
-
-
 // -------------------------------------------------------
-/// <summary>
-/// 当たり判定をクリア
-/// </summary>
+// 当たり判定をクリア
 // -------------------------------------------------------
 void CollisionManager::Clear()
 {
@@ -158,23 +174,29 @@ void CollisionManager::Clear()
 // -------------------------------------------------------
 // 衝突判定を追加する
 // -------------------------------------------------------
-template</* OBB */>
-void CollisionManager::AddCollision<DirectX::BoundingOrientedBox*>(ObjectType objType, CollisionType colType, IObject* obj, DirectX::BoundingOrientedBox* collision)
+template<typename T>
+void CollisionManager::AddCollision(void* args)
 {
-	// CollisionDataを生成してコンテナに追加
-	m_obbs.emplace_back(objType, colType, obj, collision);
+    // 引数を期待する型にキャスト
+    auto* collisionData = static_cast<CollisionData<T>*>(args);
 
-	// OBBのプロキシ球を生成してコンテナに追加
-	m_obbProxies.push_back(CreateProxySphere(collision));
+    if (!collisionData) return; // 不正な引数の場合は終了
+
+    // 衝突判定データを対応するコンテナに追加
+    if constexpr (std::is_same_v<T, DirectX::BoundingOrientedBox>)
+    {
+        // OBBを保存
+        m_obbs.push_back(*collisionData);
+        // OBBのプロキシ球を生成
+        m_obbProxies.push_back(CreateProxySphere(static_cast<const DirectX::BoundingOrientedBox*>(collisionData->collision)));
+    }
+    else if constexpr (std::is_same_v<T, DirectX::BoundingSphere>)
+    {
+        // Sphereを保存
+        m_spheres.push_back(*collisionData);
+    }
 }
 
-
-template</* Sphere */>
-void CollisionManager::AddCollision<DirectX::BoundingSphere*>(ObjectType objType, CollisionType colType, IObject* obj, DirectX::BoundingSphere* collision)
-{
-	// CollisionDataを生成してコンテナに追加
-	m_spheres.emplace_back(objType, colType, obj, collision);
-}
 
 // -------------------------------------------------------
 // OBBのプロキシ球を生成する

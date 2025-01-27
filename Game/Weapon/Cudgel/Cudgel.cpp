@@ -15,6 +15,7 @@
 #include "Game/GameResources.h"
 #include "Game/GameResources.h"
 #include "Libraries/MyLib/Collision.h"
+#include "Game/Messenger/EventMessenger.h"
 
 #include "Game/Enemy/Enemy.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
@@ -105,13 +106,17 @@ void Cudgel::CreateCollision()
 	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model);
 	m_collision = std::make_unique<DirectX::BoundingOrientedBox>(m_originalBox);
 
-	// 当たり判定を記録する
-	m_playScene->GetCollisionManager()->AddCollision(
+	// 衝突データの作成
+	CollisionData<DirectX::BoundingOrientedBox> data =
+	{
 		ObjectType::Cudgel,		// オブジェクトの種類
 		CollisionType::OBB,		// 当たり判定の種類
 		this,					// このクラスのポインタ
 		m_collision.get()		// 当たり判定
-	);
+	};
+
+	// 当たり判定を記録する
+	EventMessenger::Execute("AddOrientedCollision", &data);
 }
 
 

@@ -3,27 +3,27 @@
 #include "../Messenger/KeyboardMessenger.h"		// キー入力メッセンジャー
 #include "../Messenger/EventMessenger.h"		// イベントメッセンジャー
 
-#include "../Scene/PlayScene.h"										// プレイシーン
-#include "Interface/IObserver.h"									// オブザーバー
-#include "../Camera/Camera.h"										// カメラ
-#include "Effects/Particle.h"										// パーティクル
-#include "Game/Sound/Sound.h"										// 音
+#include "../Scene/PlayScene.h"								// プレイシーン
+#include "Interface/IObserver.h"							// オブザーバー
+#include "../Camera/Camera.h"								// カメラ
+#include "Effects/Particle.h"								// パーティクル
+#include "Game/Sound/Sound.h"								// 音
 
-#include "Libraries/MyLib/SkySphere.h"								// 天球
-#include "../Stage/Floor/Floor.h"									// 床
-#include "../Stage/Sea/Sea.h"										// 海
-#include "../Stage/Wall/Wall.h"										// 壁
-#include "../Player/Player.h"										// プレイヤー
-#include "../Enemy/Enemy.h"											// 鬼（敵）
-#include "../Goblin/Goblin.h"										// ゴブリン
-#include "../Weapon/Sword/Sword.h"									// プレイヤーの武器
-#include "../Weapon/Cudgel/Cudgel.h"								// 鬼（敵）の武器
+#include "Libraries/MyLib/SkySphere.h"						// 天球
+#include "../Stage/Floor/Floor.h"							// 床
+#include "../Stage/Sea/Sea.h"								// 海
+#include "../Stage/Wall/Wall.h"								// 壁
+#include "../Player/Player.h"								// プレイヤー
+#include "../Enemy/Enemy.h"									// 鬼（敵）
+#include "../Goblin/Goblin.h"								// ゴブリン
+#include "../Weapon/Sword/Sword.h"							// プレイヤーの武器
+#include "../Weapon/Cudgel/Cudgel.h"						// 鬼（敵）の武器
 
-#include "Libraries/MyLib/Collision/CollisionManager.h"				// 当たり判定統括
-#include "../UI/!PlaySceneUIManager/PlaySceneUIManager.h"			// プレイシーンのUI
-#include "Game/UI/Header/Warning.h"									// HP減ったときの警告UI
-#include "../EnemyManager/EnemyManager.h"							// 敵マネージャー
-#include "../Quest/QuestManager.h"									// クエストマネージャー
+#include "Libraries/MyLib/Collision/CollisionManager.h"		// 当たり判定統括
+#include "../UI/!PlaySceneUIManager/PlaySceneUIManager.h"	// プレイシーンのUI
+#include "Game/UI/Header/Warning.h"							// HP減ったときの警告UI
+#include "../EnemyManager/EnemyManager.h"					// 敵マネージャー
+#include "../Quest/QuestManager.h"							// クエストマネージャー
 
 // ---------------------------------------------
 // 当たり判定統括の生成関数

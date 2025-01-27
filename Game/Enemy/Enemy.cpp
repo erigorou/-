@@ -145,12 +145,19 @@ void Enemy::CreateCollision()
 	// 当たり判定の生成
 	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, ENEMY_SCALE * COLLISION_RADIUS);
 
-	// 衝突判定をMessengerに登録
-	m_playScene->GetCollisionManager()->AddCollision(
-		ObjectType::Enemy,
-		CollisionType::Sphere,
-		this,
-		m_bodyCollision.get());
+
+	// 衝突データの作成
+	CollisionData<DirectX::BoundingSphere> data =
+	{
+		ObjectType::Enemy,		// オブジェクトの種類
+		CollisionType::Sphere,	// 当たり判定の種類
+		this,					// このクラスのポインタ
+		m_bodyCollision.get()	// 当たり判定のポインタ
+	};
+
+
+	// 衝突判定をManagerに登録
+	EventMessenger::Execute("AddSphereCollision", &data);
 }
 
 

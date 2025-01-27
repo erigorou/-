@@ -14,6 +14,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/Collision.h"
+#include "Game/Messenger/EventMessenger.h"
 #include "Sword.h"
 #include "Game/Player/Player.h"
 
@@ -108,13 +109,17 @@ void Sword::CreateCollision()
 	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model);
 	m_collision = std::make_unique<DirectX::BoundingOrientedBox>(m_originalBox);
 
-	// 当たり判定を記録する
-	m_playScene->GetCollisionManager()->AddCollision(
+	// 衝突データの作成
+	CollisionData<DirectX::BoundingOrientedBox> data =
+	{
 		ObjectType::Sword,		// オブジェクトの種類
 		CollisionType::OBB,		// 当たり判定の種類
 		this,					// このクラスのポインタ
 		m_collision.get()		// 当たり判定
-	);
+	};
+
+	// 衝突判定をManagerに登録
+	EventMessenger::Execute("AddOrientedCollision", &data);
 }
 
 
