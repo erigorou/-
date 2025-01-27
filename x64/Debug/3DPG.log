@@ -1,11 +1,4 @@
-﻿  EnemyManager.cpp
-  EnemyFaceAttacking.cpp
-  Enemy.cpp
+﻿  Factory.cpp
   Goblin.cpp
-  GoblinAttacking.cpp
-  Player_Attacking_2.cpp
-  Sword_Idling.cpp
-  IEnemy.h
-  CollisionManager.cpp
   コードを生成中...
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\3DPG.exe

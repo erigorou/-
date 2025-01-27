@@ -88,6 +88,9 @@ private:
 	// コンスタントバッファの作成
 	void CreateConstantBuffer();
 
+	// オブジェクト更新処理
+	void UpdateObject(const float elapsedTime);
+
 	// 定数バッファの更新処理
 	void UpdateConstantBuffer();
 

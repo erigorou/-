@@ -206,7 +206,20 @@ void QuestSelectScene::Update(float elapsedTime)
 
 	// キーボードステートトラッカーを取得する
 	const auto& kbTracker = m_commonResources->GetInputManager()->GetKeyboardTracker();
+	// オブジェクトの更新
+	UpdateObject(elapsedTime);
+	// パーティクルの更新
+	m_particle->Update(elapsedTime, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero);
+	// ステージ選択
+	SelectStage(kbTracker.get());
+}
 
+
+//---------------------------------------------------------
+// オブジェクトの更新
+//---------------------------------------------------------
+void QuestSelectScene::UpdateObject(const float elapsedTime)
+{
 	DirectX::SimpleMath::Vector3 zeroV = DirectX::SimpleMath::Vector3::Zero;
 	DirectX::SimpleMath::Matrix zeroM = DirectX::SimpleMath::Matrix::Identity;
 
@@ -214,18 +227,15 @@ void QuestSelectScene::Update(float elapsedTime)
 	m_camera->Shake(elapsedTime);
 	m_camera->Update(zeroV, zeroV, zeroM, elapsedTime);
 	m_enemy->Update(elapsedTime);
-
-	// パーティクルの更新
-	m_particle->Update(elapsedTime, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero);
-
-	// ステージ選択
-	SelectStage(kbTracker.get());
 }
 
 
-
+//---------------------------------------------------------
+// ステージ選択
+//---------------------------------------------------------
 void QuestSelectScene::SelectStage(DirectX::Keyboard::KeyboardStateTracker* keyboard)
 {
+	// シーン変更中は処理しない
 	if (m_isChangeScene) return;
 
 	// スペースキーが押されたら
@@ -278,9 +288,6 @@ void QuestSelectScene::Render()
 
 	// スプライトバッチの終わり
 	m_spriteBatch->End();
-
-#ifdef _DEBUG
-#endif // _DEBUG
 }
 
 
@@ -477,7 +484,6 @@ void QuestSelectScene::CreateConstantBuffer()
 		device->CreateBuffer(&cbDesc, nullptr, m_CBuffer.GetAddressOf())
 	);
 }
-
 
 // --------------------
 // レンダーステートの設定

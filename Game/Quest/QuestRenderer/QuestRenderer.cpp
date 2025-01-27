@@ -210,6 +210,7 @@ void QuestRenderer::UpdateConstantBuffer()
 // --------------------
 void QuestRenderer::SetRenderState()
 {
+	// コンテキストの取得
 	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 
 	//	画像用サンプラーの登録
@@ -266,13 +267,10 @@ void QuestRenderer::SlideOutTexture()
 {
 	// 経過時間の更新
 	m_currentTime += m_elapsedTime;
-
 	// 正規化した時間の取得
 	float t = m_currentTime / ANIMATION_TIME;
-
 	// 透明度の設定
 	m_alpha = MAX_ALPHA - t;
-
 	// スライドイン処理
 	m_position.x = FINAL_POSITION_WIDTH + WIDTH * Easing::easeInExpo(t);
 
@@ -281,11 +279,10 @@ void QuestRenderer::SlideOutTexture()
 	{
 		// スライドアウト終了
 		m_currentTime = 0.0f;
+		// スライドアクションの変更
 		m_currentAction = m_slideActions[SLIDE_ACTION::COOL_TIME];
-
 		// クリアフラグを折る
 		m_clearFlag = false;
-
 		// クエストを１つ進める
 		m_questManager->ChangeNextQuest();
 	}
@@ -317,16 +314,12 @@ void QuestRenderer::SlideInTexture()
 {
 	// 経過時間の更新
 	m_currentTime += m_elapsedTime;
-
 	// 正規化した時間の取得
 	float t = m_currentTime / ANIMATION_TIME;
-
 	// alpha値の設定
 	m_alpha = t;
-
 	// スライド処理
 	m_position.x = WINDOW_WIDTH - WIDTH * Easing::easeOutExpo(t);
-
 	// アニメーション時間を経過した場合、終了
 	if (m_currentTime > ANIMATION_TIME)
 	{

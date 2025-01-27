@@ -156,10 +156,8 @@ std::unique_ptr<Enemy> Factory::CreateEnemy(PlayScene* playScene)
 	// ‰Šú‰»ˆ—
 	enemy->Initialize();
 
-
 	EventMessenger::Attach("canHit", std::bind(&Enemy::CanHitSword, enemy.get()));
 	EventMessenger::Attach("canNotHit",std::bind(&Enemy::CanNotHitSword, enemy.get()));
-
 
 	// ‹Si“Gj‚Ìİ’è
 	return enemy;
