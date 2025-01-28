@@ -251,6 +251,11 @@
     <ClInclude Include="Game\GameResources.h" />
     <ClInclude Include="Game\Messenger\EventMessenger.h" />
     <ClInclude Include="Effects\EnemyDeadEffect\EnemyDeadEffect.h" />
+    <ClInclude Include="Game\UI\Action\NormalAction.h" />
+    <ClInclude Include="Interface\IAction.h" />
+    <ClInclude Include="Game\UI\SceneUIManager\QuestSelectSceneUIManager.h" />
+    <ClInclude Include="Game\UI\UserInterface.h" />
+    <ClInclude Include="Game\UI\Action\TitleLogoAction.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -388,6 +393,8 @@
     <ClCompile Include="Game\GameResources.cpp" />
     <ClCompile Include="Game\Messenger\EventMessenger.cpp" />
     <ClCompile Include="Effects\EnemyDeadEffect\EnemyDeadEffect.cpp" />
+    <ClCompile Include="Game\UI\SceneUIManager\QuestSelectSceneUIManager.cpp" />
+    <ClCompile Include="Game\UI\UserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

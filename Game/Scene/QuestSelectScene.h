@@ -17,6 +17,10 @@ class SkySphere;
 class Particle;
 class CustomShader;
 
+class IconUI;
+class QuestSelectSceneUIManager;
+class UIAnchor;
+
 namespace mylib
 {
 	class DebugCamera;
@@ -91,12 +95,11 @@ private:
 	// オブジェクト更新処理
 	void UpdateObject(const float elapsedTime);
 
-	// 定数バッファの更新処理
-	void UpdateConstantBuffer();
+	//// 定数バッファの更新処理
+	//void UpdateConstantBuffer();
 
 	// 描画設定
 	void SetRenderState();
-
 	// 画像のロード処理
 	void LoadTextures();
 	// 画像の中心：大きさを取得
@@ -157,5 +160,6 @@ private:
 
 	// カメラを揺らす力
 	float m_shakePower;
-};
 
+	std::unique_ptr<QuestSelectSceneUIManager> m_uiManager;
+};

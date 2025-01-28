@@ -9,22 +9,7 @@
 #include "Effects.h"
 #include "SimpleMath.h"
 #include "StepTimer.h"
-
-//UIのアンカーポイントの列挙数
-enum ANCHOR
-{
-	TOP_LEFT = 0,
-	TOP_CENTER,
-	TOP_RIGHT,
-
-	MIDDLE_LEFT,
-	MIDDLE_CENTER,
-	MIDDLE_RIGHT,
-
-	BOTTOM_LEFT,
-	BOTTOM_CENTER,
-	BOTTOM_RIGHT
-};
+#include "Game/UI/UIAnchor.h"
 
 // アイコンクラス
 class IconUI

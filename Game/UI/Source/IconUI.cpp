@@ -131,9 +131,9 @@ void IconUI::CreateShader()
 	auto device = m_pDR->GetD3DDevice();
 
 	//	コンパイルされたシェーダファイルを読み込み
-	BinaryFile VSData = BinaryFile::LoadFile(L"Resources/Shaders/UI/UIVS.cso");
-	BinaryFile GSData = BinaryFile::LoadFile(L"Resources/Shaders/UI/UIGS.cso");
-	BinaryFile PSData = BinaryFile::LoadFile(L"Resources/Shaders/UI/UIPS.cso");
+	BinaryFile VSData = BinaryFile::LoadFile(L"Resources/cso/UIVS.cso");
+	BinaryFile GSData = BinaryFile::LoadFile(L"Resources/cso/UIGS.cso");
+	BinaryFile PSData = BinaryFile::LoadFile(L"Resources/cso/UIPS.cso");
 
 	//	インプットレイアウトの作成
 	device->CreateInputLayout(&INPUT_LAYOUT[0],

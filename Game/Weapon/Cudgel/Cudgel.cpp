@@ -134,11 +134,15 @@ void Cudgel::Update(float elapsedTime)
 // --------------------------------
 void Cudgel::Render(
 	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection)
+	const DirectX::SimpleMath::Matrix& projection
+)
 {
 	CommonResources* resources = CommonResources::GetInstance();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
+
+	// “G‚ª‚¢‚È‚¢ê‡‚Í•`‰æ‚µ‚È‚¢
+	if (! GetPlayScene()->GetEnemy()) return;
 
 	// ƒ‚ƒfƒ‹‚ð•`‰æ
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);

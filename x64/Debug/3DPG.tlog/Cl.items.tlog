@@ -61,6 +61,7 @@ C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Stage\Wall\Wall.cp
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\TitleObject\TitleEnemy.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\TitleEnemy.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\UI\Fade\Fade.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\Fade.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\UI\!PlaySceneUIManager\PlaySceneUIManager.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\PlaySceneUIManager.obj
+C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\UI\SceneUIManager\QuestSelectSceneUIManager.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\QuestSelectSceneUIManager.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\UI\Source\EnemyHPUI.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\EnemyHPUI.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\UI\Source\Gauge.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\Gauge.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\UI\Source\IconUI.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\IconUI.obj
@@ -69,6 +70,7 @@ C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\UI\Source\Operatio
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\UI\Source\PlayerHPUI.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\PlayerHPUI.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\UI\Source\Warning.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\Warning.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\UI\UI.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\UI.obj
+C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\UI\UserInterface.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\UserInterface.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Weapon\Cudgel\Cudgel.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\Cudgel.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Weapon\Cudgel\Source\Cudgel_Attacking.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\Cudgel_Attacking.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Weapon\Cudgel\Source\Cudgel_Idling.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\Cudgel_Idling.obj

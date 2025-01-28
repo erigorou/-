@@ -17,6 +17,7 @@
 #include "Libraries/MyLib/Math.h"
 #include "Effects/Particle.h"
 #include "Game/UI/UIAnchor.h"
+#include "Game/UI/SceneUIManager/QuestSelectSceneUIManager.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 
 #include "../Camera/Camera.h"
@@ -24,6 +25,8 @@
 #include "../Stage/Sea/Sea.h"
 #include "../TitleObject/TitleEnemy.h"
 #include "Libraries/MyLib/SkySphere.h"
+
+#include "Game/UI/Header/IconUI.h"
 
 #include <cassert>
 
@@ -75,6 +78,9 @@ void QuestSelectScene::Initialize()
 
 	// 音楽の変更
 	Sound::ChangeBGM(Sound::BGM_TYPE::TITLE);
+
+	m_uiManager = std::make_unique<QuestSelectSceneUIManager>();
+	m_uiManager->Initialize();
 }
 
 
@@ -227,6 +233,9 @@ void QuestSelectScene::UpdateObject(const float elapsedTime)
 	m_camera->Shake(elapsedTime);
 	m_camera->Update(zeroV, zeroV, zeroM, elapsedTime);
 	m_enemy->Update(elapsedTime);
+
+	// UIの更新
+	m_uiManager->Update(elapsedTime);
 }
 
 
@@ -259,7 +268,6 @@ void QuestSelectScene::SelectStage(DirectX::Keyboard::KeyboardStateTracker* keyb
 }
 
 
-
 //---------------------------------------------------------
 // 描画する
 //---------------------------------------------------------
@@ -288,6 +296,9 @@ void QuestSelectScene::Render()
 
 	// スプライトバッチの終わり
 	m_spriteBatch->End();
+
+	// UIの描画
+	m_uiManager->Render();
 }
 
 
@@ -317,17 +328,17 @@ void QuestSelectScene::DrawTexture()
 		TITLE_LOGO_CENTER_Y + moveValue * Easing::easeOutElastic(t)
 	};
 
-	m_spriteBatch->Draw(
-		m_texture.Get(),			// テクスチャ(SRV)
-		logoPos,					// スクリーンの表示位置(originの描画位置)
-		nullptr,					// 矩形(RECT)
-		DirectX::Colors::White,		// 背景色
-		0.0f,						// 回転角(ラジアン)
-		m_texCenter1,				// テクスチャの基準になる表示位置(描画中心)(origin)
-		1.0f,						// スケール(scale)
-		DirectX::SpriteEffects_None,// エフェクト(effects)
-		0.0f						// レイヤ深度(画像のソートで必要)(layerDepth)
-	);
+	//m_spriteBatch->Draw(
+	//	m_texture.Get(),			// テクスチャ(SRV)
+	//	logoPos,					// スクリーンの表示位置(originの描画位置)
+	//	nullptr,					// 矩形(RECT)
+	//	DirectX::Colors::White,		// 背景色
+	//	0.0f,						// 回転角(ラジアン)
+	//	m_texCenter1,				// テクスチャの基準になる表示位置(描画中心)(origin)
+	//	1.0f,						// スケール(scale)
+	//	DirectX::SpriteEffects_None,// エフェクト(effects)
+	//	0.0f						// レイヤ深度(画像のソートで必要)(layerDepth)
+	//);
 
 	// SPACEでスタート.png の描画位置を調整
 	DirectX::SimpleMath::Vector2 pos2 = DirectX::SimpleMath::Vector2(pos.x , pos.y + 325.0f);

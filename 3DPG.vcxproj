@@ -260,6 +260,8 @@
     <ClInclude Include="Game\Stage\Floor\Floor.h" />
     <ClInclude Include="Game\Stage\Wall\Wall.h" />
     <ClInclude Include="Game\TitleObject\TitleEnemy.h" />
+    <ClInclude Include="Game\UI\Action\NormalAction.h" />
+    <ClInclude Include="Game\UI\Action\TitleLogoAction.h" />
     <ClInclude Include="Game\UI\Fade\Fade.h" />
     <ClInclude Include="Game\UI\Header\EnemyHPUI.h" />
     <ClInclude Include="Game\UI\Header\Gauge.h" />
@@ -269,8 +271,10 @@
     <ClInclude Include="Game\UI\Header\PlayerHPUI.h" />
     <ClInclude Include="Game\UI\Header\Warning.h" />
     <ClInclude Include="Game\UI\!PlaySceneUIManager\PlaySceneUIManager.h" />
+    <ClInclude Include="Game\UI\SceneUIManager\QuestSelectSceneUIManager.h" />
     <ClInclude Include="Game\UI\UI.h" />
     <ClInclude Include="Game\UI\UIAnchor.h" />
+    <ClInclude Include="Game\UI\UserInterface.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Cudgel.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Attacking.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Idling.h" />
@@ -279,6 +283,7 @@
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_2.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_3.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\Sword_Attacking_4.h" />
+    <ClInclude Include="Interface\IAction.h" />
     <ClInclude Include="Interface\ICameraState.h" />
     <ClInclude Include="Interface\IFace.h" />
     <ClInclude Include="Interface\IHitPoint.h" />
@@ -376,6 +381,7 @@
     <ClCompile Include="Game\TitleObject\TitleEnemy.cpp" />
     <ClCompile Include="Game\UI\Fade\Fade.cpp" />
     <ClCompile Include="Game\UI\!PlaySceneUIManager\PlaySceneUIManager.cpp" />
+    <ClCompile Include="Game\UI\SceneUIManager\QuestSelectSceneUIManager.cpp" />
     <ClCompile Include="Game\UI\Source\EnemyHPUI.cpp" />
     <ClCompile Include="Game\UI\Source\Gauge.cpp" />
     <ClCompile Include="Game\UI\Source\IconUI.cpp" />
@@ -384,6 +390,7 @@
     <ClCompile Include="Game\UI\Source\PlayerHPUI.cpp" />
     <ClCompile Include="Game\UI\Source\Warning.cpp" />
     <ClCompile Include="Game\UI\UI.cpp" />
+    <ClCompile Include="Game\UI\UserInterface.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Cudgel.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Attacking.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Idling.cpp" />

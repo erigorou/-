@@ -2,7 +2,7 @@
 
 static const unsigned int vnum = 4;
 
-//	wが0だと行列計算がおかしくなるので1に変更
+
 static const float4 offset_array[vnum] =
 {
 	float4( 0.0f,  1.0f, 0.0f, 1.0f),	//	左上
@@ -13,10 +13,7 @@ static const float4 offset_array[vnum] =
 };
 
 [maxvertexcount(vnum)]
-void main(
-	point PS_INPUT input[1],
-	inout TriangleStream< PS_INPUT > output
-)
+void main(point PS_INPUT input[1], inout TriangleStream<PS_INPUT> output)
 {
 
 	for (uint i = 0; i < vnum; i++)
@@ -46,8 +43,6 @@ void main(
 		element.pos.z = 0.0f;
 		element.pos.w = 1.0f;
 
-		//	サイズ変更等のUI化-----------------------------------
-		//	-----------------------------------------------------
 
 		//	色情報（貰った情報は使えないのでとりあえず白）。
 		element.color = float4(1.0f , 1.0f, 1.0f, 1.0f);

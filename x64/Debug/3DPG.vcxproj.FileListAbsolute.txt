@@ -1,13 +1,3 @@
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.vcxproj.CopyComplete
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\3DPG.exe
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\xapobaseredist.pdb
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\xaudio2_9redist.pdb
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\鬼退治\x64\Debug\xaudio2_9redist.dll
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.vcxproj.CopyComplete
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\3DPG.exe
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\xapobaseredist.pdb
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\xaudio2_9redist.pdb
-C:\Users\it232012\Desktop\就職作品\鬼退治\GitHub\-\x64\Debug\xaudio2_9redist.dll
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\3DPG.vcxproj.CopyComplete
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\3DPG.exe
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\xapobaseredist.pdb
