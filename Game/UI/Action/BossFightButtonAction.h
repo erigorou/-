@@ -3,6 +3,7 @@
 #include "Interface/IAction.h"
 #include "Libraries/MyLib/EasingFunctions.h"
 #include "Libraries/MyLib/Math.h"
+#include "Game/Data/GameData.h"
 
 // ボス戦ボタンのアクション
 class BossFightButtonAction final : public IAction
@@ -29,6 +30,9 @@ public:
 	ActionParam Execute(ActionParam param, const float time) override
 	{
 		ActionParam result = param;
+
+		if (GameData::GetInstance()->GetSelectStage() != 1)
+			result.alpha = 0.5f;
 
 		// 遅延内ならば計算無し
 		if (time < DELAY) return result;

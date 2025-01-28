@@ -1,4 +1,5 @@
-//--------------------------------------------------------------------------------------
+//----------------
+// ----------------------------------------------------------------------
 // File: UserInterface.h
 //
 // ユーザーインターフェースクラス
@@ -35,6 +36,7 @@ UserInterface::UserInterface()
 	m_texture{},
 	m_scale(DirectX::SimpleMath::Vector2::One),
 	m_position(),
+	m_alpha(1.0f),
 	m_anchor(ANCHOR::TOP_LEFT)
 {
 }
@@ -125,6 +127,7 @@ void UserInterface::Update(const float time)
 		ActionParam param;
 		param.position = m_position;
 		param.scale = m_scale;
+		param.alpha = 1.0f;
 
 		// アクションを実行する
 		param = m_action->Execute(param, m_totalTime);
@@ -132,6 +135,7 @@ void UserInterface::Update(const float time)
 		// アクションの結果を反映する
 		m_position = param.position;
 		m_scale = param.scale;
+		m_alpha = param.alpha;
 	}
 }
 
@@ -193,7 +197,9 @@ void UserInterface::Render()
 
 	//	シェーダーに渡す追加のバッファを作成する。(ConstBuffer）
 	ConstBuffer cbuff;
-	cbuff.windowSize = DirectX::SimpleMath::Vector4(m_windowSize.x, m_windowSize.y, 1, 1);
+	cbuff.windowSize = DirectX::SimpleMath::Vector2(m_windowSize.x, m_windowSize.y);
+	cbuff.alpha = m_alpha;
+	cbuff.padding = 0.0f;
 
 	//	受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）
  	context->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);

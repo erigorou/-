@@ -25,7 +25,6 @@
 #include "../Stage/Sea/Sea.h"
 #include "../TitleObject/TitleEnemy.h"
 #include "Libraries/MyLib/SkySphere.h"
-
 #include "Game/UI/Header/IconUI.h"
 
 #include <cassert>
@@ -158,21 +157,18 @@ void QuestSelectScene::SelectStage(DirectX::Keyboard::KeyboardStateTracker* keyb
 	// スペースキーが押されたら
 	if (keyboard->pressed.Space)
 	{
-		if (!m_isChangeScene)
-		{
-			// ゲームデータにステージを設定
-			auto gameData = GameData::GetInstance();
-			gameData->SetSelectStage(m_selectIndex);
-
-			// シーン変更フラグを立てるのと音楽を鳴らす
-			m_isChangeScene = true;
-			Sound::PlaySE(Sound::SE_TYPE::SYSTEM_OK);
-		}
+		// シーン変更フラグを立てるのと音楽を鳴らす
+		m_isChangeScene = true;
+		Sound::PlaySE(Sound::SE_TYPE::SYSTEM_OK);
 	}
 
 	// ステージ選択
 	if (keyboard->pressed.Up	)	m_selectIndex = Math::Clamp(m_selectIndex - 1, MIN_STAGE_INDEX, MAX_STAGE_INDEX);
 	if (keyboard->pressed.Down	)	m_selectIndex = Math::Clamp(m_selectIndex + 1, MIN_STAGE_INDEX, MAX_STAGE_INDEX);
+
+	// ゲームデータにステージを設定
+	auto gameData = GameData::GetInstance();
+	gameData->SetSelectStage(m_selectIndex);
 }
 
 

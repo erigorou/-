@@ -6,6 +6,7 @@ struct ActionParam
 {
 	DirectX::SimpleMath::Vector2 position;
 	DirectX::SimpleMath::Vector2 scale;
+	float alpha;
 };
 
 class IAction

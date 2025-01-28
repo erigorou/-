@@ -80,32 +80,24 @@ public:
 	void Render() override;
 	// 終了処理
 	void Finalize() override;
-
 	// ステート変更処理
 	SceneID GetNextSceneID() const;
 
 private:
 	// 射影行列の生成
 	void CreateProjection();
-
 	// オブジェクト更新処理
 	void UpdateObject(const float elapsedTime);
-
-
 	// オブジェクトを生成
 	void CreateObjects();
-
 	// ステージ選択
 	void SelectStage(DirectX::Keyboard::KeyboardStateTracker* keyboard);
-
 	// 共通リソース
 	CommonResources* m_commonResources;
-
-	DirectX::SimpleMath::Matrix				m_projection;	// プロジェクション行列
-
+	// プロジェクション行列
+	DirectX::SimpleMath::Matrix m_projection;
 	// シーンチェンジフラグ
 	bool m_isChangeScene;
-
 	// 経過時間を取得
 	float m_totalSeconds;
 

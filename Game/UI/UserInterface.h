@@ -23,7 +23,9 @@ public:
 	//データ受け渡し用コンスタントバッファ(送信側)
 	struct ConstBuffer
 	{
-		DirectX::SimpleMath::Vector4	windowSize;
+		DirectX::SimpleMath::Vector2 windowSize;
+		float alpha;
+		float padding;
 	};
 	// インプットレイアウト
 	static const std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT;
@@ -83,6 +85,8 @@ private:
 	DirectX::SimpleMath::Vector2 m_scale;
 	// 座標
 	DirectX::SimpleMath::Vector2 m_position;
+	// アルファ値
+	float m_alpha;
 	// シェーダー
 	std::unique_ptr<CustomShader> m_shader;
 	// アンカー

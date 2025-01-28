@@ -1,7 +1,8 @@
 cbuffer ConstBuffer	: register(b0)
 {
 	float2 windowSize;
-    float2 drawRatio;
+    float alpha;
+    float padding;
 };
 
 struct VS_INPUT

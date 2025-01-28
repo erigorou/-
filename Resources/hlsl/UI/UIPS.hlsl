@@ -12,8 +12,8 @@ float4 main(PS_INPUT input) : SV_TARGET
 	//	真っ白な板ポリゴン
 	float4 outputw = float4(1, 1, 1, 1);
 
-	
-    output.a *= lerp(1.0f, 0.0f, smoothstep(drawRatio.x, drawRatio.x + 0.5f, input.tex.x));
+	// 画像のアルファ値を取得
+    output.a *= alpha;
 	
 	return output;
 }
