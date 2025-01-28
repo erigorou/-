@@ -7,6 +7,8 @@
 
 #include "Game/UI/Action/NormalAction.h"
 #include "Game/UI/Action/TitleLogoAction.h"
+#include "Game/UI/Action/TutorialButtonAction.h"
+#include "Game/UI/Action/BossFightButtonAction.h"
 
 // --------------------------------------------------------
 // コンストラクタ
@@ -37,6 +39,33 @@ void QuestSelectSceneUIManager::Initialize()
 		DirectX::SimpleMath::Vector2(1.0f, 1.0f),
 		ANCHOR::TOP_LEFT,
 		new TitleLogoAction()
+	);
+
+	// ボタンの追加
+	AddUserInterface(
+		"startButton",
+		DirectX::SimpleMath::Vector2(360.0f, 700.0f),
+		DirectX::SimpleMath::Vector2(1.0f, 1.0f),
+		ANCHOR::BOTTOM_LEFT,
+		new NormalAction()
+	);
+
+	// チュートリアルボタンの追加
+	AddUserInterface(
+		"tutorial",
+		DirectX::SimpleMath::Vector2(1580.0f, 500.0f),
+		DirectX::SimpleMath::Vector2(1.0f, 1.0f),
+		ANCHOR::BOTTOM_RIGHT,
+		new TutorialButtonAction()
+	);
+
+	// ボス戦ボタンの追加
+	AddUserInterface(
+		"bossfight",
+		DirectX::SimpleMath::Vector2(1880.0f, 625.0f),
+		DirectX::SimpleMath::Vector2(1.0f, 1.0f),
+		ANCHOR::BOTTOM_RIGHT,
+		new BossFightButtonAction()
 	);
 }
 

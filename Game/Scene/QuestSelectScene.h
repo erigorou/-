@@ -85,36 +85,15 @@ public:
 	SceneID GetNextSceneID() const;
 
 private:
-
-	// シェーダーの生成
-	void CreateShader(const wchar_t* VS, const wchar_t* PS, const wchar_t* GS);
-
-	// コンスタントバッファの作成
-	void CreateConstantBuffer();
+	// 射影行列の生成
+	void CreateProjection();
 
 	// オブジェクト更新処理
 	void UpdateObject(const float elapsedTime);
 
-	//// 定数バッファの更新処理
-	//void UpdateConstantBuffer();
-
-	// 描画設定
-	void SetRenderState();
-	// 画像のロード処理
-	void LoadTextures();
-	// 画像の中心：大きさを取得
-	void CalculateTextureCenters();
-
-	void CalculateTextureCenter(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture, DirectX::SimpleMath::Vector2& texCenter);
-
 
 	// オブジェクトを生成
 	void CreateObjects();
-	// 画像の描画処理
-	void DrawTexture();
-
-	// ステージの描画
-	void DrawStageSelect();
 
 	// ステージ選択
 	void SelectStage(DirectX::Keyboard::KeyboardStateTracker* keyboard);
@@ -122,25 +101,7 @@ private:
 	// 共通リソース
 	CommonResources* m_commonResources;
 
-	std::unique_ptr<DirectX::SpriteBatch>	m_spriteBatch;	// スプライトバッチ
 	DirectX::SimpleMath::Matrix				m_projection;	// プロジェクション行列
-
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	m_texture;		// テクスチャ１
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	m_texture2;		// テクスチャ２
-
-	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> m_textureList; // テクスチャリスト
-
-	DirectX::SimpleMath::Vector2 m_texCenter;	// テクスチャの中心座標
-
-	DirectX::SimpleMath::Vector2 m_texCenter1;
-	DirectX::SimpleMath::Vector2 m_texCenter2;
-	DirectX::SimpleMath::Vector2 m_texCenter3;
-	DirectX::SimpleMath::Vector2 m_texCenter4;
-
-	std::vector<std::unique_ptr<CustomShader>> m_shaderList;	// シェーダーリスト
-	std::vector<std::unique_ptr<Microsoft::WRL::ComPtr<ID3D10ShaderResourceView>>> m_texList;
-	Microsoft::WRL::ComPtr<ID3D11Buffer>	m_CBuffer;
-	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_batch;
 
 	// シーンチェンジフラグ
 	bool m_isChangeScene;

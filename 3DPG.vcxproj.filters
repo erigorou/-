@@ -256,6 +256,8 @@
     <ClInclude Include="Game\UI\SceneUIManager\QuestSelectSceneUIManager.h" />
     <ClInclude Include="Game\UI\UserInterface.h" />
     <ClInclude Include="Game\UI\Action\TitleLogoAction.h" />
+    <ClInclude Include="Game\UI\Action\TutorialButtonAction.h" />
+    <ClInclude Include="Game\UI\Action\BossFightButtonAction.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
