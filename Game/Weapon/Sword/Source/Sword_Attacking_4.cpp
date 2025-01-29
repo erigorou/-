@@ -11,6 +11,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/Collision.h"
+#include "Game/Messenger/EventMessenger.h"
 #include "Libraries/MyLib/EasingFunctions.h"
 
 #include "Game/Player/Player.h"
@@ -161,7 +162,7 @@ void Sword_Attacking_4::CreateSwordParticle()
 			DirectX::VertexPositionTexture(m_rootPos[max - 1]	,Vector2(1, 1)),	// 右下
 			DirectX::VertexPositionTexture(m_rootPos[max]		,Vector2(0, 1)),	// 左下
 		};
-		m_particles->CreateSwordTrail(ver);
+		EventMessenger::Execute("CreateSwordTrail", &ver);	// パーティクルの生成
 	}
 }
 

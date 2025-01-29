@@ -22,13 +22,14 @@
 // インプットレイアウト
 const std::vector<D3D11_INPUT_ELEMENT_DESC> Particle::INPUT_LAYOUT =
 {
-	{ "POSITION",	0, DXGI_FORMAT_R32G32B32_FLOAT, 0,							 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "COLOR",	0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0,	sizeof(DirectX::SimpleMath::Vector3), D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT,	0, sizeof(DirectX::SimpleMath::Vector3) + sizeof(DirectX::SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "POSITION",	0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "COLOR",	0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3), D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3) + sizeof(DirectX::SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
 
-
+// ---------------------------
 // コンストラクタ
+// ---------------------------
 Particle::Particle()
 	:
 	m_pDR(nullptr),
@@ -36,20 +37,22 @@ Particle::Particle()
 {
 	// イベントを登録
 	EventMessenger::Attach("CreateTrailDust", std::bind(&Particle::CreateTrailDust, this));
-	EventMessenger::Attach("CreateSlamDust", std::bind(&Particle::CreateSlamDust, this, std::placeholders::_1));
+	EventMessenger::Attach("CreateBashDust", std::bind(&Particle::CreateBashDust, this, std::placeholders::_1));
+	EventMessenger::Attach("CreateSwordTrail", std::bind(&Particle::CreateSwordTrail, this, std::placeholders::_1));
 }
 
 
+// ---------------------------
 // デストラクタ
+// ---------------------------
 Particle::~Particle()
 {
 }
 
 
-/// <summary>
-/// テクスチャリソースの読み込み関数
-/// </summary>
-/// <param name="path">ファイルパス</param>
+// ---------------------------
+// テクスチャリソースの読み込み関数
+// ---------------------------
 void Particle::LoadTexture(const wchar_t* path)
 {
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture;
@@ -59,9 +62,9 @@ void Particle::LoadTexture(const wchar_t* path)
 }
 
 
-/// <summary>
-/// 生成関数
-/// </summary>
+// ---------------------------
+// 生成関数
+// ---------------------------
 void Particle::Create()
 {
 	// ComonResourcesを取得
@@ -83,12 +86,9 @@ void Particle::Create()
 	m_states = std::make_unique<DirectX::CommonStates>(device);
 }
 
-/// <summary>
-/// 更新処理
-/// </summary>
-/// <param name="elapsedTimer">フレーム間の秒数</param>
-/// <param name="playerPosition">プレイヤーの座標</param>
-/// <param name="playerVelocity">プレイヤーの速度</param>
+// ---------------------------
+// 更新処理
+// ---------------------------
 void Particle::Update(float elapsedTimer, const DirectX::SimpleMath::Vector3 playerPosition, DirectX::SimpleMath::Vector3 playerVelocity)
 {
 	// 位置と速度を記録する
@@ -113,9 +113,9 @@ void Particle::Update(float elapsedTimer, const DirectX::SimpleMath::Vector3 pla
 }
 
 
-/// <summary>
-/// 軌跡をたどる土埃の生成を行う
-/// </summary>
+// ---------------------------
+// 軌跡をたどる土埃の生成を行う
+// ---------------------------
 void Particle::CreateTrailDust()
 {
 	// パーティクル(１つ)を生成
@@ -136,11 +136,10 @@ void Particle::CreateTrailDust()
 
 
 
-/// <summary>
-/// たたきつけの時に出る土埃を生成する
-/// </summary>
-/// <param name="center">たたきつけの位置</param>
-void Particle::CreateSlamDust(void* center)
+// ---------------------------
+// たたきつけの時に出る土埃を生成する
+// ---------------------------
+void Particle::CreateBashDust(void* center)
 {
 	// 中心座標を取得
 	DirectX::SimpleMath::Vector3 centerPos = *static_cast<DirectX::SimpleMath::Vector3*>(center);
@@ -160,11 +159,12 @@ void Particle::CreateSlamDust(void* center)
 
 		// 速度のランダム生成
 		std::uniform_real_distribution<> dist2(MIN_SMASH_DUST_SPEED_Y, MAX_SMASH_DUST_SPEED_Y);
-		float Yspeed = static_cast<float>(dist2(engine) / 1.5f);
+		float Yspeed = static_cast<float>(dist2(engine) / 2.5f);
 		float XZspeed = static_cast<float>(dist2(engine));
 
 		// 中心からのベクトルを生成
-		DirectX::SimpleMath::Vector3 vectorFromCenter = centerPos + DirectX::SimpleMath::Vector3(
+		DirectX::SimpleMath::Vector3 vectorFromCenter = centerPos + DirectX::SimpleMath::Vector3
+		(
 			SMASH_DUST_RADIUS * cosf(randAngle), 
 			0.0f, 
 			SMASH_DUST_RADIUS * sinf(randAngle)
@@ -181,7 +181,8 @@ void Particle::CreateSlamDust(void* center)
 		DirectX::SimpleMath::Vector3 velocity = -adjustedVelocity;
 
 		// 生成したダストの座標を取得する
-		DirectX::SimpleMath::Vector3 dustPosition = centerPos + DirectX::SimpleMath::Vector3(
+		DirectX::SimpleMath::Vector3 dustPosition = centerPos + DirectX::SimpleMath::Vector3
+		(
 			SMASH_DUST_RADIUS * cosf(randAngle), 
 			0.0f, 
 			SMASH_DUST_RADIUS * sinf(randAngle)
@@ -204,20 +205,20 @@ void Particle::CreateSlamDust(void* center)
 
 
 
-/// <summary>
-/// 剣を降ったときの残像を出す
-/// </summary>
-/// <param name="ver"></param>
-void Particle::CreateSwordTrail(DirectX::VertexPositionTexture ver[4])
+// ---------------------------
+// 剣を降ったときの残像を出す
+// ---------------------------
+void Particle::CreateSwordTrail(void* ver)
 {
-	using namespace DirectX;
-	using namespace DirectX::SimpleMath;
+	// void* を適切な型にキャスト
+	DirectX::VertexPositionTexture* vertices = static_cast<DirectX::VertexPositionTexture*>(ver);
 
 	// SwordTrailParticleを生成
 	SwordTrailParticle sTP(
-		ver,															//	頂点情報
-		0.2f,															//	生存時間(s)
-		Color(1.0f, 1.0f, 1.0f, 1.0f), Color(1.0f, 1.0f, 1.0f, 0.0f)	//	初期カラー、最終カラー
+		vertices,//	頂点情報
+		0.2f,//	生存時間(s)
+		DirectX::SimpleMath::Color(1.0f, 1.0f, 1.0f, 1.0f),	// 初期カラー
+		DirectX::SimpleMath::Color(1.0f, 1.0f, 1.0f, 0.0f)	// 最終カラー
 	);
 
 	// 配列に追加
@@ -228,9 +229,9 @@ void Particle::CreateSwordTrail(DirectX::VertexPositionTexture ver[4])
 
 
 
-/// <summary>
-/// シェーダーを生成する
-/// </summary>
+// ---------------------------
+// シェーダーを生成する
+// ---------------------------
 void Particle::CreateShader()
 {
 	ID3D11Device1* device = m_pDR->GetD3DDevice();
@@ -264,12 +265,9 @@ void Particle::CreateShader()
 }
 
 
-/// <summary>
-/// Render共通処理およびSwordTrailParticleとDustParticleの描画呼び出し
-/// </summary>
-/// <param name="states"></param>
-/// <param name="view"></param>
-/// <param name="proj"></param>
+// -------------------------------------------------------------------
+// Render共通処理およびSwordTrailParticleとDustParticleの描画呼び出し
+// -------------------------------------------------------------------
 void Particle::Render(
 	DirectX::SimpleMath::Matrix view,
 	DirectX::SimpleMath::Matrix proj
@@ -303,12 +301,9 @@ void Particle::Render(
 
 
 
-/// <summary>
-/// 剣の残像パーティクルの描画
-/// ジオメトリシェーダーやビルボードを使用せずに4頂点を使用してQuadを描画します。
-/// </summary>
-/// <param name="view"></param>
-/// <param name="proj"></param>
+// -----------------------------------
+// 剣の残像パーティクルの描画
+// -----------------------------------
 void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj)
 {
 
@@ -367,14 +362,14 @@ void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::Simp
 
 
 
-/// <summary>
+// ----------------------------------------
 /// 土埃パーティクルの描画
-/// ジオメトリシェーダーとビルボードを適用して描画します。
-/// </summary>
-/// <param name="view"></param>
-/// <param name="proj"></param>
-/// <param name="cameraDir"></param>
-void Particle::DrawDustParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj, DirectX::SimpleMath::Vector3 cameraDir)
+// ----------------------------------------
+void Particle::DrawDustParticle(
+	DirectX::SimpleMath::Matrix view,
+	DirectX::SimpleMath::Matrix proj,
+	DirectX::SimpleMath::Vector3 cameraDir
+)
 {
 	// 土埃パーティクルのためのコンスタントバッファの作成と更新
 	ConstBuffer cbuff;
@@ -435,12 +430,9 @@ void Particle::DrawDustParticle(DirectX::SimpleMath::Matrix view, DirectX::Simpl
 
 
 
-/// <summary>
-/// ビルボード作成関数
-/// </summary>
-/// <param name="target">カメラターゲット（注視点）</param>
-/// <param name="eye">カメラアイ（カメラ座標）</param>
-/// <param name="up">上向きベクトル（基本はYのみ１のベクトル）</param>
+// -------------------------------------
+// ビルボード作成関数
+// -------------------------------------
 void Particle::CreateBillboard(DirectX::SimpleMath::Vector3 target, DirectX::SimpleMath::Vector3 eye, DirectX::SimpleMath::Vector3 up)
 {
 	using namespace DirectX;

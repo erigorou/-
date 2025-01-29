@@ -191,11 +191,12 @@ void Cudgel_Attacking::HandleSlamParticles()
 	if (m_canGenerateSlamParticles)
 	{
 		m_canGenerateSlamParticles = false;
-		m_cudgel->GetPlayScene()->GetParticle()->CreateSlamDust(&(m_tipPos[m_tipPos.size() - 1]));
 
-		float m_shakePower = 1.5f;
+		// パーティクルの生成
+		EventMessenger::Execute("CreateBashDust", (&m_tipPos[m_tipPos.size() - 1]));
 
 		// カメラの振動を設定
+		float m_shakePower = 1.5f;
 		EventMessenger::Execute("CameraShake", &m_shakePower);
 	}
 }
@@ -288,7 +289,7 @@ void Cudgel_Attacking::GetCudgelBothEnds(float _totalTime)
 			VertexPositionTexture(m_rootPos[max]		,Vector2(0, 1)),	// 左下
 		};
 
-		m_particles->CreateSwordTrail(ver);	// パーティクルの生成
+		EventMessenger::Execute("CreateSwordTrail", &ver);	// パーティクルの生成
 	}
 }
 

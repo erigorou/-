@@ -186,7 +186,7 @@ void Sword_Attacking_2::CreateSwordParticle()
 			DirectX::VertexPositionTexture(m_rootPos[max - 1]	,Vector2(1, 1)),	// 右下
 			DirectX::VertexPositionTexture(m_rootPos[max]		,Vector2(0, 1)),	// 左下
 		};
-		m_particles->CreateSwordTrail(ver);
+		EventMessenger::Execute("CreateSwordTrail", &ver);	// パーティクルの生成
 	}
 }
 

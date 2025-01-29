@@ -355,7 +355,7 @@ void Player::MovePlayer()
 		m_particleTime += m_elapsedTime;
 		if (m_particleTime >= 0.15f)
 		{
-			m_playScene->GetParticle()->CreateTrailDust();
+			EventMessenger::Execute("CreateTrailDust", nullptr);
 			m_particleTime = 0.0f;
 		}
 	}

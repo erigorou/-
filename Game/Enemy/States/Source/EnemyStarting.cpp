@@ -128,12 +128,11 @@ void EnemyStarting::PlayEffect()
 	// 一度だけ実行する
 	if (m_isEndDelay) return;
 
-	// エフェクトを発動
-	m_enemy->GetPlayScene()->GetParticle()->CreateSlamDust(&m_position);
-
+	// エフェクトを再生
+	EventMessenger::Execute("CreateBashDust", &m_position);
+	// カメラを揺らす
 	float shakePower = 2.0f;
 	EventMessenger::Execute("CameraShake", &shakePower);
-
 
 	// 音声を再生
 	Sound::PlaySE(Sound::SE_TYPE::ENEMY_MOVE);

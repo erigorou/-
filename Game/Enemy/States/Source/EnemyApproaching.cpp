@@ -140,7 +140,7 @@ void EnemyApproaching::PostUpdate()
 	m_enemy->SetPosition(m_position);
 
 	EventMessenger::Execute("CameraShake", &m_shakePower);
-	EventMessenger::Execute("CreateSlamDust", &m_position);
+	EventMessenger::Execute("CreateBashDust", &m_position);
 }
 
 

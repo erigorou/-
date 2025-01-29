@@ -115,7 +115,7 @@ void EnemyDead::UpdateAnimation()
 
 		DirectX::SimpleMath::Vector3 enemyPos = m_enemy->GetPosition();
 
-		EventMessenger::Execute("CreateSpamDust", &enemyPos);
+		EventMessenger::Execute("CreateBashDust", &enemyPos);
 	}
 }
 

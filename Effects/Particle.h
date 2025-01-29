@@ -81,9 +81,9 @@ public:
 	// 軌跡の土埃を生成する処理
 	void CreateTrailDust();
 	// 剣の軌跡を生成する処理
-	void CreateSwordTrail(DirectX::VertexPositionTexture ver[4]);
+	void CreateSwordTrail(void* ver);
 	// たたきつけの煙パーティクルの生成
-	void CreateSlamDust(void* center);
+	void CreateBashDust(void* center);
 
 private:
 	// 剣パーティクルの描画設定

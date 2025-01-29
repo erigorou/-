@@ -11,6 +11,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/Collision.h"
+#include "Game/Messenger/EventMessenger.h"
 #include "Game/Sound/Sound.h"
 
 #include "Game/Player/Player.h"
@@ -204,7 +205,7 @@ void Cudgel_Sweeping::GetCudgelBothEnds()
 			VertexPositionTexture(m_rootPos[max]		,Vector2(0, 1)),	// 左下
 		};
 
-		m_particles->CreateSwordTrail(ver);	// パーティクルの生成
+		EventMessenger::Execute("CreateSwordTrail", &ver);	// パーティクルの生成
 	}
 }
 

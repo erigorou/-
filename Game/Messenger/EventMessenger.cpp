@@ -36,7 +36,11 @@ void EventMessenger::Execute(const std::string& eventName, void* args)
     }
     else
     {
-        MessageBox(nullptr, L"実行しようとしたイベントは存在しません", L"エラー", MB_OK);
+        // std::string を std::wstring に変換
+        std::wstring wideEventName(eventName.begin(), eventName.end());
+
+        // MessageBox に渡す
+        MessageBox(nullptr, L"実行しようとしたイベントは存在しません", wideEventName.c_str(), MB_OK);
     }
 }
 
