@@ -317,10 +317,3 @@ IScene::SceneID TitleScene::GetNextSceneID() const
 	// ƒV[ƒ“•ÏX‚ª‚È‚¢ê‡
 	return IScene::SceneID::NONE;
 }
-
-
-
-void TitleScene::CleateSpamDust(DirectX::SimpleMath::Vector3 pos)
-{
-	m_particle->CreateSlamDust(pos);
-}

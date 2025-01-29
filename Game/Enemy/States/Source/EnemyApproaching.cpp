@@ -87,9 +87,6 @@ void EnemyApproaching::Update(const float& elapsedTime)
 		// プレイヤーとの距離が近い場合
 		if (DirectX::SimpleMath::Vector3::Distance(m_position, playerPos) <= 20.0f)
 		{
-			// カメラを揺らす
-			EventMessenger::Execute("CameraShake", &m_shakePower);
-
 			// 効果音を鳴らす
 			Sound::PlaySE(Sound::SE_TYPE::ENEMY_MOVE);
 
@@ -141,8 +138,9 @@ void EnemyApproaching::PostUpdate()
 	// 敵の位置を0で固定する
 	m_position.y = 0.f;
 	m_enemy->SetPosition(m_position);
-	// パーティクルを生成する
-	m_particles->CreateSlamDust(m_position);
+
+	EventMessenger::Execute("CameraShake", &m_shakePower);
+	EventMessenger::Execute("CreateSlamDust", &m_position);
 }
 
 

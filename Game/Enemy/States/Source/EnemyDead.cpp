@@ -113,10 +113,9 @@ void EnemyDead::UpdateAnimation()
 		float shakePower = CAMERA_SHAKE_POWER;
 		EventMessenger::Execute("CameraShake", &shakePower);
 
+		DirectX::SimpleMath::Vector3 enemyPos = m_enemy->GetPosition();
 
-		// パーティクルの生成
-		auto particle = m_enemy->GetPlayScene()->GetParticle();
-		particle->CreateSlamDust(m_enemy->GetPosition());
+		EventMessenger::Execute("CreateSpamDust", &enemyPos);
 	}
 }
 

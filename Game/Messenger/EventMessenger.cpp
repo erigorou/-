@@ -4,6 +4,7 @@
 // イベントリストの初期化
 std::unordered_map<std::string, std::function<void(void*)>> EventMessenger::s_eventList;
 
+
 // -------------------------------------
 // イベントを登録する
 // -------------------------------------
@@ -12,6 +13,7 @@ void EventMessenger::Attach(const std::string& eventName, std::function<void(voi
     // イベントリストに新しいイベントを登録
     s_eventList[eventName] = function;
 }
+
 
 // -------------------------------------
 // イベントを実行する
@@ -38,6 +40,7 @@ void EventMessenger::Execute(const std::string& eventName, void* args)
     }
 }
 
+
 // -------------------------------------
 // イベントを削除する
 // -------------------------------------
@@ -50,6 +53,7 @@ void EventMessenger::Detach(const std::string& eventName)
 
     s_eventList.erase(eventName);
 }
+
 
 // -------------------------------------
 // イベントリストをクリアする

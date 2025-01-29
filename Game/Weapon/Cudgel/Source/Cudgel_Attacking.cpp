@@ -191,7 +191,7 @@ void Cudgel_Attacking::HandleSlamParticles()
 	if (m_canGenerateSlamParticles)
 	{
 		m_canGenerateSlamParticles = false;
-		m_cudgel->GetPlayScene()->GetParticle()->CreateSlamDust(m_tipPos[m_tipPos.size() - 1]);
+		m_cudgel->GetPlayScene()->GetParticle()->CreateSlamDust(&(m_tipPos[m_tipPos.size() - 1]));
 
 		float m_shakePower = 1.5f;
 

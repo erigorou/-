@@ -63,9 +63,6 @@ public:
 	};
 
 public:
-	void CleateSpamDust(DirectX::SimpleMath::Vector3 pos);
-
-public:
 
 	// コンストラクタ
 	QuestSelectScene();

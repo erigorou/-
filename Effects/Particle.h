@@ -83,7 +83,7 @@ public:
 	// 剣の軌跡を生成する処理
 	void CreateSwordTrail(DirectX::VertexPositionTexture ver[4]);
 	// たたきつけの煙パーティクルの生成
-	void CreateSlamDust(DirectX::SimpleMath::Vector3 center);
+	void CreateSlamDust(void* center);
 
 private:
 	// 剣パーティクルの描画設定

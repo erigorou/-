@@ -13,7 +13,7 @@ float4 main(PS_INPUT input) : SV_TARGET
 	float4 outputw = float4(1, 1, 1, 1);
 
 	// 画像のアルファ値を取得
-    output.a *= alpha;
+    output.rgb *= alpha;
 	
 	return output;
 }

@@ -31,6 +31,7 @@ public:
 	{
 		ActionParam result = param;
 
+		// チュートリアルボタンの透明度を設定
 		if (GameData::GetInstance()->GetSelectStage() != 0)
 			result.alpha = 0.5f;
 

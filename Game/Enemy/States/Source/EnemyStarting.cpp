@@ -129,7 +129,7 @@ void EnemyStarting::PlayEffect()
 	if (m_isEndDelay) return;
 
 	// エフェクトを発動
-	m_enemy->GetPlayScene()->GetParticle()->CreateSlamDust(m_position);
+	m_enemy->GetPlayScene()->GetParticle()->CreateSlamDust(&m_position);
 
 	float shakePower = 2.0f;
 	EventMessenger::Execute("CameraShake", &shakePower);

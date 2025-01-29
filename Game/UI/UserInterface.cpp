@@ -47,6 +47,9 @@ UserInterface::UserInterface()
 /// </summary>
 UserInterface::~UserInterface()
 {
+	// ƒAƒNƒVƒ‡ƒ“‚Ìíœ
+	delete m_action;
+	m_action = nullptr;
 }
 
 

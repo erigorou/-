@@ -65,7 +65,7 @@ void Camera::Update(
 
 //-------------------------------------------------------------------
 /// <summary>
-/// カメラのビュー行列を
+/// カメラのビュー行列を計算する
 /// </summary>
 //-------------------------------------------------------------------
 void Camera::CalculateViewMatrix()
@@ -154,7 +154,6 @@ void Camera::ChangeState(ICameraState* state)
 	m_currentState = state;
 	m_currentState->PreUpdate();
 }
-
 
 
 //-------------------------------------------------------------------

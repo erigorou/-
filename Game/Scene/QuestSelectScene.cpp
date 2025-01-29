@@ -193,8 +193,6 @@ void QuestSelectScene::Render()
 
 	// UI‚Ì•`‰æ
 	m_uiManager->Render();
-
-	CleateSpamDust(DirectX::SimpleMath::Vector3::Zero);
 }
 
 
@@ -219,11 +217,4 @@ IScene::SceneID QuestSelectScene::GetNextSceneID() const
 
 	// ƒV[ƒ“•ÏX‚ª‚È‚¢ê‡
 	return IScene::SceneID::NONE;
-}
-
-
-
-void QuestSelectScene::CleateSpamDust(DirectX::SimpleMath::Vector3 pos)
-{
-	m_particle->CreateSlamDust(pos);
 }

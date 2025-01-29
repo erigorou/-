@@ -10,6 +10,7 @@
 #include "Libraries/MyLib/BinaryFile.h"
 #include "Effects/Particle.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
+#include "Game/Messenger/EventMessenger.h"
 
 #include "Effects/Header/DustTrailParticle.h"
 #include "Effects/Header/SwordTrailParticle.h"
@@ -29,9 +30,13 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> Particle::INPUT_LAYOUT =
 
 // コンストラクタ
 Particle::Particle()
-	:m_pDR(nullptr)
-	,m_timerDustTrail(0.0f)
+	:
+	m_pDR(nullptr),
+	m_timerDustTrail(0.0f)
 {
+	// イベントを登録
+	EventMessenger::Attach("CreateTrailDust", std::bind(&Particle::CreateTrailDust, this));
+	EventMessenger::Attach("CreateSlamDust", std::bind(&Particle::CreateSlamDust, this, std::placeholders::_1));
 }
 
 
@@ -113,17 +118,14 @@ void Particle::Update(float elapsedTimer, const DirectX::SimpleMath::Vector3 pla
 /// </summary>
 void Particle::CreateTrailDust()
 {
-	using namespace DirectX;
-	using namespace DirectX::SimpleMath;
-
 	// パーティクル(１つ)を生成
 	DustTrailParticle dTP(
-		0.5f,																		//	生存時間(s)
-		Vector3(m_playerPosition.x, m_playerPosition.y, m_playerPosition.z),		//	基準座標
-		Vector3(-m_playerVelocity.x, 0.75f, -m_playerVelocity.z),					//	速度
-		Vector3(1.0f, 0.1f, 1.0f),													//	加速度
-		Vector3(4.0f, 4.0f, 4.0f), SimpleMath::Vector3(0.0f, 0.0f, 0.0f),			//	初期スケール、最終スケール
-		Color(1.0f, 1.0f, 1.0f, 1.0f), SimpleMath::Color(1.0f, 1.0f, 1.0f, 0.0f)	//	初期カラー、最終カラー
+		0.5f,																									//	生存時間(s)
+		DirectX::SimpleMath::Vector3(m_playerPosition.x, m_playerPosition.y, m_playerPosition.z),				//	基準座標
+		DirectX::SimpleMath::Vector3(-m_playerVelocity.x, 0.75f, -m_playerVelocity.z),							//	速度
+		DirectX::SimpleMath::Vector3(1.0f, 0.1f, 1.0f),															//	加速度
+		DirectX::SimpleMath::Vector3(4.0f, 4.0f, 4.0f), DirectX::SimpleMath::Vector3(0.0f, 0.0f, 0.0f),			//	初期スケール、最終スケール
+		DirectX::SimpleMath::Color(1.0f, 1.0f, 1.0f, 1.0f), DirectX::SimpleMath::Color(1.0f, 1.0f, 1.0f, 0.0f)	//	初期カラー、最終カラー
 	);
 
 	// 配列に追加
@@ -138,9 +140,10 @@ void Particle::CreateTrailDust()
 /// たたきつけの時に出る土埃を生成する
 /// </summary>
 /// <param name="center">たたきつけの位置</param>
-void Particle::CreateSlamDust(DirectX::SimpleMath::Vector3 center)
+void Particle::CreateSlamDust(void* center)
 {
-	using namespace DirectX;
+	// 中心座標を取得
+	DirectX::SimpleMath::Vector3 centerPos = *static_cast<DirectX::SimpleMath::Vector3*>(center);
 
 	// 25個生成
 	for (int i = 0; i < MAX_SMASH_ATTACK_DUST; i++)
@@ -151,7 +154,7 @@ void Particle::CreateSlamDust(DirectX::SimpleMath::Vector3 center)
 		// ※「default_random_engine」はusingで「mt19937」となっている
 		std::default_random_engine engine(seed());
 		// とばして欲しいランダムの範囲をDistributionに任せる。今回は0～2PI
-		std::uniform_real_distribution<> dist(0, XM_2PI);
+		std::uniform_real_distribution<> dist(0, DirectX::XM_2PI);
 		// ランダムな角度を生成する
 		float randAngle = static_cast<float>(dist(engine));
 
@@ -161,24 +164,24 @@ void Particle::CreateSlamDust(DirectX::SimpleMath::Vector3 center)
 		float XZspeed = static_cast<float>(dist2(engine));
 
 		// 中心からのベクトルを生成
-		SimpleMath::Vector3 vectorFromCenter = center + SimpleMath::Vector3(
+		DirectX::SimpleMath::Vector3 vectorFromCenter = centerPos + DirectX::SimpleMath::Vector3(
 			SMASH_DUST_RADIUS * cosf(randAngle), 
 			0.0f, 
 			SMASH_DUST_RADIUS * sinf(randAngle)
-		) - center;
+		) - centerPos;
 
 		// ベクトルの長さを取得（距離）
 		float distanceFromCenter = vectorFromCenter.Length();
 		// 中心からのベクトルを正規化して方向を保持
-		SimpleMath::Vector3 normalizedVectorFromCenter = vectorFromCenter / distanceFromCenter;
+		DirectX::SimpleMath::Vector3 normalizedVectorFromCenter = vectorFromCenter / distanceFromCenter;
 		// ベクトルを外側に広げるためのスケールを適用
 		float scaleFactor = 2.0f + (distanceFromCenter / SMASH_DUST_RADIUS);
-		SimpleMath::Vector3 adjustedVelocity = normalizedVectorFromCenter * scaleFactor;
+		DirectX::SimpleMath::Vector3 adjustedVelocity = normalizedVectorFromCenter * scaleFactor;
 		// 速度ベクトルを生成
-		SimpleMath::Vector3 velocity = -adjustedVelocity;
+		DirectX::SimpleMath::Vector3 velocity = -adjustedVelocity;
 
 		// 生成したダストの座標を取得する
-		SimpleMath::Vector3 dustPosition = center + SimpleMath::Vector3(
+		DirectX::SimpleMath::Vector3 dustPosition = centerPos + DirectX::SimpleMath::Vector3(
 			SMASH_DUST_RADIUS * cosf(randAngle), 
 			0.0f, 
 			SMASH_DUST_RADIUS * sinf(randAngle)
@@ -188,11 +191,11 @@ void Particle::CreateSlamDust(DirectX::SimpleMath::Vector3 center)
 		DustTrailParticle pB(
 			0.9f,																						// 生存時間(s)
 			dustPosition,																				// 基準座標
-			SimpleMath::Vector3{ -velocity.x * XZspeed, Yspeed , -velocity.z * XZspeed } * 2,	// 速度
-			SimpleMath::Vector3(0.1f, 0.1f, 0.1f),												// 加速度
-			SimpleMath::Vector3::One, SimpleMath::Vector3{ 10.0f, 25.0f, 10.0f },				// 初期スケール、最終スケール
-			SimpleMath::Color(1.f, 1.f, 1.f, 1.f),												// 初期カラー
-			SimpleMath::Color(1.f, 1.f, 1.f, -1.f)												// 最終カラー
+			DirectX::SimpleMath::Vector3{ -velocity.x * XZspeed, Yspeed , -velocity.z * XZspeed } *2,	// 速度
+			DirectX::SimpleMath::Vector3(0.1f, 0.1f, 0.1f),												// 加速度
+			DirectX::SimpleMath::Vector3::One, DirectX::SimpleMath::Vector3{ 10.0f, 25.0f, 10.0f },				// 初期スケール、最終スケール
+			DirectX::SimpleMath::Color(1.f, 1.f, 1.f, 1.f),												// 初期カラー
+			DirectX::SimpleMath::Color(1.f, 1.f, 1.f, -1.f)												// 最終カラー
 		);
 
 		m_dustTrail.push_back(pB);
@@ -269,7 +272,8 @@ void Particle::CreateShader()
 /// <param name="proj"></param>
 void Particle::Render(
 	DirectX::SimpleMath::Matrix view,
-	DirectX::SimpleMath::Matrix proj)
+	DirectX::SimpleMath::Matrix proj
+)
 {
 	using namespace DirectX;
 	CommonResources* resources = CommonResources::GetInstance();

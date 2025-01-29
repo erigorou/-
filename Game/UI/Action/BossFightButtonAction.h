@@ -31,12 +31,12 @@ public:
 	{
 		ActionParam result = param;
 
+		// ボス戦ボタンの透明度を設定
 		if (GameData::GetInstance()->GetSelectStage() != 1)
 			result.alpha = 0.5f;
 
 		// 遅延内ならば計算無し
 		if (time < DELAY) return result;
-
 		// 秒数を正規化する
 		float t = Math::Clamp(time - DELAY, 0.0f, MOVE_TIME) / MOVE_TIME;
 		// 上下にアニメーションさせる

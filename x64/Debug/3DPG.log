@@ -1,6 +1,2 @@
-﻿  QuestSelectScene.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Scene\QuestSelectScene.cpp(58,7): warning C4189: 'context': ローカル変数が初期化されましたが、参照されていません
-C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Scene\QuestSelectScene.cpp(180,7): warning C4189: 'states': ローカル変数が初期化されましたが、参照されていません
-  QuestSelectSceneUIManager.cpp
-  コードを生成中...
+﻿  compilation object save succeeded; see C:\Users\it232012\Desktop\就職作品\鬼退治\project\Resources\cso\UIPS.cso
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\3DPG.exe
