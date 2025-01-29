@@ -31,7 +31,7 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> UserInterface::INPUT_LAYOUT =
 UserInterface::UserInterface()
 	:
 	m_totalTime{},
-	m_windowSize{ 1280.0f, 720.0f },
+	m_windowSize{WINDOW_SIZE},
 	m_textureSize{},
 	m_texture{},
 	m_scale(DirectX::SimpleMath::Vector2::One),

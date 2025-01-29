@@ -34,5 +34,4 @@ private:
 	float m_maxHP;
 	float m_hp;
 };
-
 #endif

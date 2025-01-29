@@ -38,7 +38,7 @@ public:
 
 private:
 	// 固定値
-	static constexpr const wchar_t* TEXTURE_PATH = L"Resources/Textures/dust.png";
+	static constexpr const wchar_t* TEXTURE_NAME = L"dust.png";
 
 	static constexpr const wchar_t* SWORD_VS = L"Resources/cso/SwordTrailVS.cso";
 	static constexpr const wchar_t* SWORD_PS = L"Resources/cso/SwordTrailPS.cso";
@@ -60,8 +60,6 @@ public:
 	Particle();
 	~Particle();
 
-	// テクスチャの読み込み
-	void LoadTexture(const wchar_t* path);
 	// パーティクルの生成を行う
 	void Create();
 	// パーティクルの更新処理
@@ -97,8 +95,6 @@ private:
 
 
 private:
-	// 変数
-	DX::DeviceResources* m_pDR;
 	// バッファー
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_CBuffer;
 	// 入力レイアウト
@@ -108,9 +104,7 @@ private:
 	//	コモンステート
 	std::unique_ptr<DirectX::CommonStates> m_states;
 	//	テクスチャハンドル
-	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> m_texture;
-	//	テクスチャハンドル
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture2;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
 
 	// シェーダー
 	std::unique_ptr<CustomShader> m_swordShader;

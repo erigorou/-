@@ -11,6 +11,22 @@ class UserInterface;
 class QuestSelectSceneUIManager
 {
 // ------------------------------
+// 	定数
+// ------------------------------
+public:
+	// デフォルトの大きさ
+	static constexpr DirectX::SimpleMath::Vector2 DEFAULT_SIZE = DirectX::SimpleMath::Vector2(1.0f, 1.0f);
+	// ロゴの初期値
+	static constexpr DirectX::SimpleMath::Vector2 LOGO_POSITION = DirectX::SimpleMath::Vector2(640.0f, -300.0f);
+	// ボタンの初期値
+	static constexpr DirectX::SimpleMath::Vector2 BUTTON_POSITION = DirectX::SimpleMath::Vector2(640.0f, 700.0f);
+	// チュートリアルボタンの初期値
+	static constexpr DirectX::SimpleMath::Vector2 TUTORIAL_BUTTON_POSITION = DirectX::SimpleMath::Vector2(1580.0f, 500.0f);
+	// ボス戦ボタンの初期値
+	static constexpr DirectX::SimpleMath::Vector2 BOSS_FIGHT_BUTTON_POSITION = DirectX::SimpleMath::Vector2(1880.0f, 625.0f);
+
+
+// ------------------------------
 // 公開関数
 // ------------------------------
 public:
@@ -40,7 +56,7 @@ private:
 	);
 
 // ------------------------------
-// 内部変数
+// メンバ変数
 // ------------------------------
 private:
 	// ユーザーインターフェースリスト

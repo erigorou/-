@@ -30,6 +30,9 @@ public:
 	// インプットレイアウト
 	static const std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT;
 
+	// ウィンドウサイズ
+	static constexpr DirectX::SimpleMath::Vector2 WINDOW_SIZE = DirectX::SimpleMath::Vector2(1280.0f, 720.0f);
+
 
 // ------------------------------
 // 公開関数

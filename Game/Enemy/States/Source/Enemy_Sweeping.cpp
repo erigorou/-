@@ -75,7 +75,7 @@ void Enemy_Sweeping::Update(const float& elapsedTime)
 	if (m_totalSeconds <= CHARGE_TIME)	// 開始からためモーション中なら
 	{
 		t = m_totalSeconds / CHARGE_TIME;
-		targetAngle = m_angle - ROTATE_ANGLE * Easing::easeOutCirc(t);					// ためモーションを行う
+		targetAngle = m_angle - ROTATE_ANGLE * Easing::easeOutCirc(t);	// ためモーションを行う
 	}
 
 	else if (

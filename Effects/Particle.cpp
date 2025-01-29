@@ -8,15 +8,14 @@
 
 #include "pch.h"
 #include "Libraries/MyLib/BinaryFile.h"
+#include "Game/CommonResources.h"
+#include "Game/GameResources.h"
 #include "Effects/Particle.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "Game/Messenger/EventMessenger.h"
-
 #include "Effects/Header/DustTrailParticle.h"
 #include "Effects/Header/SwordTrailParticle.h"
-
 #include <random>
-
 
 
 // インプットレイアウト
@@ -32,8 +31,7 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> Particle::INPUT_LAYOUT =
 // ---------------------------
 Particle::Particle()
 	:
-	m_pDR(nullptr),
-	m_timerDustTrail(0.0f)
+	m_timerDustTrail{}
 {
 	// イベントを登録
 	EventMessenger::Attach("CreateTrailDust", std::bind(&Particle::CreateTrailDust, this));
@@ -51,37 +49,22 @@ Particle::~Particle()
 
 
 // ---------------------------
-// テクスチャリソースの読み込み関数
-// ---------------------------
-void Particle::LoadTexture(const wchar_t* path)
-{
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture;
-	DirectX::CreateWICTextureFromFile(m_pDR->GetD3DDevice(), path, nullptr, texture.ReleaseAndGetAddressOf());
-
-	m_texture.push_back(texture);
-}
-
-
-// ---------------------------
 // 生成関数
 // ---------------------------
 void Particle::Create()
 {
-	// ComonResourcesを取得
-	CommonResources* resources = CommonResources::GetInstance();
-	// DeviceResourcesを取得
-	m_pDR = resources->GetDeviceResources();
-	// 1D3D11Deviceを取得
-	ID3D11Device1* device = m_pDR->GetD3DDevice();
+	// リソースの取得
+	auto device = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
+	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 
 	//	シェーダーの作成
 	CreateShader();
 
-	//	画像の読み込み（２枚ともデフォルトは読み込み失敗でnullptr)
-	LoadTexture(TEXTURE_PATH);
+	// 画像を取得
+	m_texture = GameResources::GetInstance()->GetTexture("dust");
 
 	//	プリミティブバッチの作成
-	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(resources->GetDeviceResources()->GetD3DDeviceContext());
+	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(context);
 	//  スタッツの作成
 	m_states = std::make_unique<DirectX::CommonStates>(device);
 }
@@ -190,13 +173,14 @@ void Particle::CreateBashDust(void* center)
 
 		// パーティクル生成
 		DustTrailParticle pB(
-			0.9f,																						// 生存時間(s)
-			dustPosition,																				// 基準座標
+			0.9f, // 生存時間(s)
+			dustPosition, // 基準座標
 			DirectX::SimpleMath::Vector3{ -velocity.x * XZspeed, Yspeed , -velocity.z * XZspeed } *2,	// 速度
-			DirectX::SimpleMath::Vector3(0.1f, 0.1f, 0.1f),												// 加速度
-			DirectX::SimpleMath::Vector3::One, DirectX::SimpleMath::Vector3{ 10.0f, 25.0f, 10.0f },				// 初期スケール、最終スケール
-			DirectX::SimpleMath::Color(1.f, 1.f, 1.f, 1.f),												// 初期カラー
-			DirectX::SimpleMath::Color(1.f, 1.f, 1.f, -1.f)												// 最終カラー
+			DirectX::SimpleMath::Vector3(0.1f, 0.1f, 0.1f),	// 加速度
+			DirectX::SimpleMath::Vector3::One, // 初期スケール
+			DirectX::SimpleMath::Vector3{ 10.0f, 25.0f, 10.0f }, // 最終スケール
+			DirectX::SimpleMath::Color(1.f, 1.f, 1.f, 1.f), // 初期カラー
+			DirectX::SimpleMath::Color(1.f, 1.f, 1.f, -1.f) // 最終カラー
 		);
 
 		m_dustTrail.push_back(pB);
@@ -234,8 +218,9 @@ void Particle::CreateSwordTrail(void* ver)
 // ---------------------------
 void Particle::CreateShader()
 {
-	ID3D11Device1* device = m_pDR->GetD3DDevice();
+	auto device = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
 
+	// 斬撃用のシェーダーを生成
 	m_swordShader = std::make_unique<CustomShader>
 		(
 			device, 
@@ -245,6 +230,7 @@ void Particle::CreateShader()
 			InputElements
 		);
 
+	// 土煙用のシェーダーを生成
 	m_dustShader = std::make_unique<CustomShader>
 		(
 			device,
@@ -276,21 +262,21 @@ void Particle::Render(
 	using namespace DirectX;
 	CommonResources* resources = CommonResources::GetInstance();
 	auto states = resources->GetCommonStates();
+	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 
-	ID3D11DeviceContext1* context = m_pDR->GetD3DDeviceContext();
 	SimpleMath::Vector3 cameraDir = m_cameraTarget - m_cameraPosition;
-	cameraDir.Normalize();											// カメラの方向を正規化
+	cameraDir.Normalize(); // カメラの方向を正規化
 
-	ID3D11SamplerState* sampler[1] = { states->LinearWrap() };		//	サンプラーステートの設定
+	ID3D11SamplerState* sampler[1] = { states->LinearWrap() };// サンプラーステートの設定
 	context->PSSetSamplers(0, 1, sampler);
 
-	ID3D11BlendState* blendstate = m_states->NonPremultiplied();	//  半透明描画指定
-	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);		//	透明判定処理
-	context->OMSetDepthStencilState(m_states->DepthDefault(), 0);	//	深度バッファはなし
-	context->RSSetState(m_states->CullNone());						//	カリングなし
+	ID3D11BlendState* blendstate = m_states->NonPremultiplied();// 半透明描画指定
+	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);// 透明判定処理
+	context->OMSetDepthStencilState(m_states->DepthDefault(), 0);// 深度バッファはなし
+	context->RSSetState(m_states->CullNone());// カリングなし
 
 	//	ピクセルシェーダにテクスチャを登録する。
-	for (int i = 0; i < m_texture.size(); i++)	{ context->PSSetShaderResources(i, 1, m_texture[i].GetAddressOf()); }
+	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
 
 	//	インプットレイアウトの登録
 	context->IASetInputLayout(m_inputLayout.Get());
@@ -306,26 +292,29 @@ void Particle::Render(
 // -----------------------------------
 void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj)
 {
+	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 
-	// 剣のパーティクルのためのコンスタントバッファの作成と更新
+	// 剣のパーティクルのためのコンスタントバッファの作成
 	ConstBuffer cbuff;
 	cbuff.matView = view.Transpose();
 	cbuff.matProj = proj.Transpose();
-	cbuff.matWorld = DirectX::SimpleMath::Matrix::Identity;		// 剣のパーティクルではビルボードを適用しない
+	cbuff.matWorld = DirectX::SimpleMath::Matrix::Identity; // ビルボードは適用しない
 	cbuff.Diffuse = DirectX::SimpleMath::Vector4(1, 1, 1, 1);
 
-	ID3D11DeviceContext1* context = m_pDR->GetD3DDeviceContext();
+	// コンスタントバッファの更新
 	context->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);
 	ID3D11Buffer* cb[1] = { m_CBuffer.Get() };
 	context->VSSetConstantBuffers(0, 1, cb);
 	context->PSSetConstantBuffers(0, 1, cb);
 
+	// シェーダーの開始
 	m_swordShader->BeginSharder(context);
 
-	ID3D11BlendState* blendstate = m_states->NonPremultiplied();	//  半透明描画指定
-	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);		//	透明判定処理
-	context->OMSetDepthStencilState(m_states->DepthRead(), 0);		//	深度バッファはなし
-	context->RSSetState(m_states->CullNone());						//	カリングなし
+	// ブレンドステートの設定
+	ID3D11BlendState* blendstate = m_states->NonPremultiplied(); //  半透明描画指定
+	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF); // 透明判定処理
+	context->OMSetDepthStencilState(m_states->DepthRead(), 0);// 深度バッファはなし
+	context->RSSetState(m_states->CullNone());// カリングなし
 
 	//	画像用サンプラーの登録
 	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
@@ -344,7 +333,7 @@ void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::Simp
 
 		float value1 = 1 - static_cast<float>(pow(1 - t, 2));	// イージング1
 		t += 1.0f / m_swordTrail.size();
-		float value2 = 1 - static_cast<float>(pow(1 - t, 2));	// イージング2	// t が 1に近づくほど色が薄くなる
+		float value2 = 1 - static_cast<float>(pow(1 - t, 2));	// イージング2
 
 		ver[1].color = DirectX::SimpleMath::Color(1, 1, 1, value1);		// 右上
 		ver[2].color = DirectX::SimpleMath::Color(1, 0.8, 0.8, 0);		// 右下
@@ -371,20 +360,22 @@ void Particle::DrawDustParticle(
 	DirectX::SimpleMath::Vector3 cameraDir
 )
 {
-	// 土埃パーティクルのためのコンスタントバッファの作成と更新
+	// 土埃パーティクルのためのコンスタントバッファの作成
 	ConstBuffer cbuff;
 	cbuff.matView = view.Transpose();
 	cbuff.matProj = proj.Transpose();
 	cbuff.matWorld = m_billboard.Transpose(); // 土埃パーティクルではビルボードを適用する
 	cbuff.Diffuse = DirectX::SimpleMath::Vector4(1, 1, 1, 1);
 
-	ID3D11DeviceContext1* context = m_pDR->GetD3DDeviceContext();
+	// コンスタントバッファの更新
+	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 	context->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);
 	ID3D11Buffer* cb[1] = { m_CBuffer.Get() };
 	context->VSSetConstantBuffers(0, 1, cb);
 	context->GSSetConstantBuffers(0, 1, cb);
 	context->PSSetConstantBuffers(0, 1, cb);
 
+	// シェーダーの開始
 	m_dustShader->BeginSharder(context);
 
 	//	画像用サンプラーの登録
@@ -424,6 +415,7 @@ void Particle::DrawDustParticle(
 		m_batch->End();
 	}
 
+	// シェーダーの終了
 	m_dustShader->EndSharder(context);
 }
 
@@ -435,15 +427,13 @@ void Particle::DrawDustParticle(
 // -------------------------------------
 void Particle::CreateBillboard(DirectX::SimpleMath::Vector3 target, DirectX::SimpleMath::Vector3 eye, DirectX::SimpleMath::Vector3 up)
 {
-	using namespace DirectX;
-
 	// パーティクルがカメラに向くようにビルボード行列を作成する
 	m_billboard =
-		SimpleMath::Matrix::CreateBillboard
-		(SimpleMath::Vector3::Zero, eye - target, up);
+		DirectX::SimpleMath::Matrix::CreateBillboard
+		(DirectX::SimpleMath::Vector3::Zero, eye - target, up);
 
 	// ビルボードを水平および垂直に反転させる回転行列を作成する
-	SimpleMath::Matrix rot = SimpleMath::Matrix::Identity;
+	DirectX::SimpleMath::Matrix rot = DirectX::SimpleMath::Matrix::Identity;
 	rot._11 = -1; // x軸を反転
 	rot._33 = -1; // z軸を反転
 

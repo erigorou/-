@@ -35,18 +35,18 @@ void QuestSelectSceneUIManager::Initialize()
 	// ÉçÉSÇÃí«â¡
 	AddUserInterface(
 		"logo",
-		DirectX::SimpleMath::Vector2(360.0f, -300.0f),
-		DirectX::SimpleMath::Vector2(1.0f, 1.0f),
-		ANCHOR::TOP_LEFT,
+		DirectX::SimpleMath::Vector2(640.0f, -300.0f),
+		DirectX::SimpleMath::Vector2(DEFAULT_SIZE),
+		ANCHOR::TOP_CENTER,
 		new TitleLogoAction()
 	);
 
 	// É{É^ÉìÇÃí«â¡
 	AddUserInterface(
 		"startButton",
-		DirectX::SimpleMath::Vector2(360.0f, 700.0f),
-		DirectX::SimpleMath::Vector2(1.0f, 1.0f),
-		ANCHOR::BOTTOM_LEFT,
+		DirectX::SimpleMath::Vector2(640.0f, 700.0f),
+		DirectX::SimpleMath::Vector2(DEFAULT_SIZE),
+		ANCHOR::BOTTOM_CENTER,
 		new NormalAction()
 	);
 
@@ -54,7 +54,7 @@ void QuestSelectSceneUIManager::Initialize()
 	AddUserInterface(
 		"tutorial",
 		DirectX::SimpleMath::Vector2(1580.0f, 500.0f),
-		DirectX::SimpleMath::Vector2(1.0f, 1.0f),
+		DirectX::SimpleMath::Vector2(DEFAULT_SIZE),
 		ANCHOR::BOTTOM_RIGHT,
 		new TutorialButtonAction()
 	);
@@ -63,7 +63,7 @@ void QuestSelectSceneUIManager::Initialize()
 	AddUserInterface(
 		"bossfight",
 		DirectX::SimpleMath::Vector2(1880.0f, 625.0f),
-		DirectX::SimpleMath::Vector2(1.0f, 1.0f),
+		DirectX::SimpleMath::Vector2(DEFAULT_SIZE),
 		ANCHOR::BOTTOM_RIGHT,
 		new BossFightButtonAction()
 	);
