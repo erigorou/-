@@ -11,11 +11,16 @@ class Camera;
 
 class PlayCameraState : public ICameraState
 {
-// 固定値
+// ----------------------------
+// 定数
+// ----------------------------
 public:
+	// ステージの長さ
 	static constexpr float STAGE_LENGTH = 100;
 
-// 公開関数
+// ----------------------------
+// メンバ関数
+// ----------------------------
 public:
 	// コンストラクタ
 	PlayCameraState(Camera* camera);
@@ -27,15 +32,16 @@ public:
 	void Update(
 		const DirectX::SimpleMath::Vector3& playerPos,
 		const DirectX::SimpleMath::Vector3& enemyPos,
-		const DirectX::SimpleMath::Matrix& rotate,
 		float elapsedTime
 	)override;
 	// ステート変更（out）
 	void PostUpdate()override;
 
+// ----------------------------
+// メンバ変数
+// ----------------------------
 private:
 	Camera* m_camera;
-
 };
 
 

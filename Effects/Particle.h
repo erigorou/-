@@ -66,14 +66,13 @@ private:
 	static constexpr float  SMASH_DUST_RADIUS = 1.0f;
 
 // ----------------------------
-// 公開関数
+// メンバ関数（公開）
 // ----------------------------
 public:
 	// コンストラクタ
 	Particle();
 	// デストラクタ
 	~Particle();
-
 	// パーティクルの生成を行う
 	void Create();
 	// パーティクルの更新処理
@@ -82,13 +81,11 @@ public:
 	void Render(
 		DirectX::SimpleMath::Matrix view,
 		DirectX::SimpleMath::Matrix proj);
-
 	// ビルボード行列の作成
 	void CreateBillboard(
 		DirectX::SimpleMath::Vector3 target,
 		DirectX::SimpleMath::Vector3 eye,
 		DirectX::SimpleMath::Vector3 up);
-
 	// 軌跡の土埃を生成する処理
 	void CreateTrailDust();
 	// 剣の軌跡を生成する処理
@@ -98,7 +95,7 @@ public:
 
 
 // ----------------------------
-// 内部関数
+// メンバ関数（非公開）
 // ----------------------------
 private:
 	// 剣パーティクルの描画設定

@@ -9,38 +9,60 @@ class PlayCameraState;
 
 class Camera
 {
-
+// ----------------------------
+// 定数
+// ----------------------------
 public:
-	// 固定値
-	static constexpr float CAMERA_POSITION_Y	= 10.0f;	// カメラのY座標
-	static constexpr float CAMERA_DIRECTION		= 30.0f;	// カメラの距離
-	static constexpr float TARGET_HEIGHT		= 8.0f;		// 注視点の高さ
+	// カメラの初期位置
+	static constexpr float CAMERA_POSITION_Y	= 10.0f;
+	// カメラの初期角度
+	static constexpr float CAMERA_DIRECTION		= 30.0f;
+	// ターゲットの高さ
+	static constexpr float TARGET_HEIGHT		= 8.0f;
 
-	static constexpr float SHAKE_TIME	= 0.5f;		// カメラを揺らす時間
-	static constexpr float SHAKE_POWER	= 0.5f;		// カメラのやれる強さ
-	static constexpr float MINIMAL		= 0.01f;	// 極小値
+	// カメラの振動
+	static constexpr float SHAKE_TIME	= 0.5f;
+	// カメラの振動の強さ
+	static constexpr float SHAKE_POWER	= 0.5f;
+	// 極小値
+	static constexpr float MINIMAL		= 0.01f;
 
-	static constexpr float CAMERA_EYE_RATE		= 0.5f;	// カメラの追従係数
-	static constexpr float CAMERA_TARGET_RATE	= 0.1f;	// ターゲットの追従係数
+	// カメラの追従係数
+	static constexpr float CAMERA_EYE_RATE		= 0.5f;
+	// ターゲットの追従係数
+	static constexpr float CAMERA_TARGET_RATE	= 0.05f;
 
-	// ステート
-	TitleCameraState*	GetTitleState()	{ return m_titleState.get();	}
-	PlayCameraState*	GetPlayState()	{ return m_playState.get();		}
+	
+// ----------------------------
+// アクセサ
+// ----------------------------
+public:
+	// タイトルステート
+	TitleCameraState* GetTitleState() { return m_titleState.get(); }
+	// プレイステート
+	PlayCameraState* GetPlayState() { return m_playState.get(); }
 
+	// ビュー行列
+	DirectX::SimpleMath::Matrix GetViewMatrix() const { return m_view; }
+	// プロジェクション行列
+	DirectX::SimpleMath::Matrix GetProjectionMatrix() const { return m_projection; }
+	// カメラ座標
+	DirectX::SimpleMath::Vector3 GetEyePosition() const { return m_position; }
+	// 注視点
+	DirectX::SimpleMath::Vector3 GetTargetPosition() const { return m_target; }
+	// カメラの頭の方向
+	DirectX::SimpleMath::Vector3 GetUpVector() const { return m_up; }
+	// アングル
+	float GetCameraAngle() const { return m_angle; }
 
-	const DirectX::SimpleMath::Matrix&	GetViewMatrix			() const { return m_view;		}	// ビュー行列
-	const DirectX::SimpleMath::Matrix&	GetProjectionMatrix		() const { return m_projection; }	// プロジェクション行列
-	const DirectX::SimpleMath::Vector3& GetEyePosition			() const { return m_position;	}	// カメラ座標
-	const DirectX::SimpleMath::Vector3& GetTargetPosition		() const { return m_target;		}	// 注視点
-	const DirectX::SimpleMath::Vector3& GetUpVector				() const { return m_up;			}	// カメラの頭の方向
-	const float&						GetCameraAngle			() const { return m_angle;		}	// アングル
-
-
-
-	Camera(const DirectX::SimpleMath::Vector3& target = DirectX::SimpleMath::Vector3::Zero);	// コンストラクタ
-	~Camera() = default;																		// デストラクタ	
-
-
+// ----------------------------
+// メンバ関数(公開)
+// ----------------------------
+public:
+	// コンストラクタ
+	Camera(const DirectX::SimpleMath::Vector3& target = DirectX::SimpleMath::Vector3::Zero);
+	// デストラクタ
+	~Camera() = default;
 	// 更新処理
 	void Update(
 		const DirectX::SimpleMath::Vector3& playerPos,
@@ -48,43 +70,58 @@ public:
 		const DirectX::SimpleMath::Matrix& rotate,
 		const float elapsedTime
 	);
+	// カメラを揺らす
+	void SetShake(void* power);
+	// ビュー行列の計算
+	void CalculateViewMatrix();
+	// カメラのアングルを計算
+	void CalculateCameraAngle();
+	// カメラを揺らす
+	void Shake(float elapsedTime);
+	// ステートの変更
+	void ChangeState(ICameraState* state);
 
-	void SetShake(void* power);			// カメラを揺らす // 引数にはフロート型のポインタを渡す
 
-	void CalculateViewMatrix();			// ビュー行列を計算する
-	void CalculateCameraAngle();		// カメラのアングルを計算する
-
-	void Shake(float elapsedTime);						// カメラを揺らす
-
-	void ChangeState(ICameraState* state);	// ステートの変更
-
-	DirectX::SimpleMath::Vector3	m_position;		// カメラ位置
-	DirectX::SimpleMath::Matrix		m_view;			// ビュー行列
-	DirectX::SimpleMath::Matrix		m_projection;	// プロジェクション行列
-	DirectX::SimpleMath::Vector3	m_eye;			// カメラ座標
-	DirectX::SimpleMath::Vector3	m_target;		// 注視点
-	DirectX::SimpleMath::Vector3	m_up;			// カメラの頭の方向
-	
-	float m_currentAngle;			// 現在のアングル
-	float m_angle;					// アングル
-	float m_targetHeight;			// 注視点の高さ
-
-	bool m_isShake;					// カメラを揺らすかどうか
-	float m_shakeTime;				// 揺れる時間
-
-	DirectX::SimpleMath::Vector3 m_shakePos;	// 揺れる座標
-	float m_shakePower;							// 揺れる強さ
-
+// ----------------------------
+// メンバ関数(非公開)
+// ----------------------------
 private:
-
-	void CreateState();	// ステートの生成
-
-	// ステート用 ///////////
-	ICameraState* m_currentState;	// 現在のステート
-
-	std::unique_ptr<TitleCameraState>	m_titleState;
-	std::unique_ptr<PlayCameraState>	m_playState;
+	// ステートの作成
+	void CreateState();
 
 
-
+// ----------------------------
+// メンバ変数
+// ----------------------------
+public:
+	// カメラの位置
+	DirectX::SimpleMath::Vector3 m_position;
+	// ビュー行列
+	DirectX::SimpleMath::Matrix	 m_view;
+	// プロジェクション行列
+	DirectX::SimpleMath::Matrix m_projection;
+	// カメラの注視点
+	DirectX::SimpleMath::Vector3 m_target;
+	// カメラの頭の方向
+	DirectX::SimpleMath::Vector3 m_up;
+	// カメラのアングル
+	float m_currentAngle;
+	// カメラのアングル
+	float m_angle;
+	// ターゲットの高さ
+	float m_targetHeight;
+	// カメラの振動
+	bool m_isShake;
+	// 振動時間
+	float m_shakeTime;
+	// カメラの振動位置
+	DirectX::SimpleMath::Vector3 m_shakePos;
+	// カメラの振動の強さ
+	float m_shakePower;
+	// 現在のステート
+	ICameraState* m_currentState;
+	// タイトルステート
+	std::unique_ptr<TitleCameraState> m_titleState;
+	// プレイステート
+	std::unique_ptr<PlayCameraState> m_playState;
 };

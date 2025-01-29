@@ -27,7 +27,7 @@ public:
 	DirectX::SimpleMath::Color GetEndColor () { return m_endColor; } // 終了時色
 
 // ----------------------------
-// 公開関数
+// メンバ関数（公開）
 // ----------------------------
 public:
 

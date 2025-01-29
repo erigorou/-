@@ -13,7 +13,6 @@ public:
     virtual void Update(
         const DirectX::SimpleMath::Vector3& playerPos,
         const DirectX::SimpleMath::Vector3& enemyPos,
-        const DirectX::SimpleMath::Matrix& rotate,
         float elapsedTime
     
     ) = 0;

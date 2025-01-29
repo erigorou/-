@@ -8,11 +8,9 @@
 #include "Effects/Header/SwordTrailParticle.h"
 
 
-/// <summary>
-/// コンストラクタ
-/// 引数は初期設定用の数値
-/// </summary>
-
+// ----------------------------
+// コンストラクタ
+// ----------------------------
 SwordTrailParticle::SwordTrailParticle(
 	DirectX::VertexPositionTexture vertex[],
 	float life,
@@ -33,20 +31,18 @@ SwordTrailParticle::SwordTrailParticle(
 
 
 
-/// <summary>
-/// デストラクタ
-/// </summary>
+// ----------------------------
+// デストラクタ
+// ----------------------------
 SwordTrailParticle::~SwordTrailParticle()
 {
 }
 
 
 
-/// <summary>
-/// 更新関数
-/// </summary>
-/// <param name="elapsedTimer">Game等から受け取る</param>
-/// <returns>生存時間(life)がある間はtrue</returns>
+// ----------------------------
+// 更新処理
+// ----------------------------
 bool SwordTrailParticle::Update(float elapsedTime)
 {
 	using namespace DirectX;

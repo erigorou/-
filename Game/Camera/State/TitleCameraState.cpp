@@ -1,38 +1,42 @@
 #include "pch.h"
-
 #include "TitleCameraState.h"
 #include "../Camera.h"
 
+
+// ----------------------------
 // コンストラクタ
+// ----------------------------
 TitleCameraState::TitleCameraState(Camera* camera)
 	: m_camera(camera)
 	, m_angle(0.0f)
 {
 }
 
+// ----------------------------
 // デストラクタ
+// ----------------------------
 TitleCameraState::~TitleCameraState()
 {
 }
 
-
+// ----------------------------
 // ステート変更（in）
+// ----------------------------
 void TitleCameraState::PreUpdate()
 {
 }
 
-
+// ----------------------------
 // 更新処理
+// ----------------------------
 void TitleCameraState::Update(
     const DirectX::SimpleMath::Vector3& playerPos,
     const DirectX::SimpleMath::Vector3& enemyPos,
-    const DirectX::SimpleMath::Matrix& rotate,
     float elapsedTime
 )
 {
     UNREFERENCED_PARAMETER(playerPos);
     UNREFERENCED_PARAMETER(enemyPos);
-    UNREFERENCED_PARAMETER(rotate);
 
     // 回転
     m_angle += ROTATE_SPEED * elapsedTime; // 時間に応じて角度を更新
@@ -48,8 +52,9 @@ void TitleCameraState::Update(
     m_camera->CalculateCameraAngle();
 }
 
-
+// ----------------------------
 // ステート変更（out)
+// ----------------------------
 void TitleCameraState::PostUpdate()
 {
 }

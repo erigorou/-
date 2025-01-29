@@ -13,15 +13,11 @@
 #include "State/PlayCameraState.h"
 
 //-------------------------------------------------------------------
-/// <summary>
-/// コンストラクタ
-/// </summary>
-/// <param name="target">注視点</param>
+// コンストラクタ
 //-------------------------------------------------------------------
 Camera::Camera(const DirectX::SimpleMath::Vector3& target)
 	:m_view{}
 	,m_projection{}
-	,m_eye{}
 	,m_target{ target }
 	,m_up{ DirectX::SimpleMath::Vector3::UnitY }
 	,m_position{}
@@ -29,7 +25,7 @@ Camera::Camera(const DirectX::SimpleMath::Vector3& target)
 	,m_targetHeight{TARGET_HEIGHT}
 	, m_isShake{ false }
 	, m_shakeTime{ SHAKE_TIME }
-	, m_shakePos{(0.0f, 0.0f, 0.0f)}
+	, m_shakePos{}
 {
 	// ステートを作成
 	CreateState();
@@ -39,13 +35,7 @@ Camera::Camera(const DirectX::SimpleMath::Vector3& target)
 }
 
 //-------------------------------------------------------------------
-/// <summary>
-/// カメラの更新処理
-/// </summary>
-/// <param name="playerPos">プレイヤーの座標</param>
-/// <param name="enemyPos">注視する座標</param>
-/// <param name="rotate">プレイヤーの回転量/param>
-/// <param name="elapsedTime">経過時間</param>
+// カメラの更新処理
 //-------------------------------------------------------------------
 void Camera::Update(
 	const DirectX::SimpleMath::Vector3& playerPos,
@@ -58,15 +48,12 @@ void Camera::Update(
 	m_currentState->Update(
 		playerPos,
 		enemyPos,
-		rotate,
 		elapsedTime
 	);
 }
 
 //-------------------------------------------------------------------
-/// <summary>
-/// カメラのビュー行列を計算する
-/// </summary>
+// カメラのビュー行列を計算する
 //-------------------------------------------------------------------
 void Camera::CalculateViewMatrix()
 {
@@ -75,20 +62,16 @@ void Camera::CalculateViewMatrix()
 
 
 //-------------------------------------------------------------------
-/// <summary>
-/// カメラのアングルを計算する
-/// </summary>
+// カメラのアングルを計算する
 //-------------------------------------------------------------------
 void Camera::CalculateCameraAngle()
 {
-	using namespace DirectX::SimpleMath;
-
 	// カメラの前方向ベクトル
-	Vector3 forward = m_target - m_position;
+	DirectX::SimpleMath::Vector3 forward = m_target - m_position;
 	forward.Normalize();
 
 	// 世界座標系の前方向ベクトル
-	Vector3 worldForward = Vector3::Forward;
+	DirectX::SimpleMath::Vector3 worldForward = DirectX::SimpleMath::Vector3::Forward;
 
 	// 内積を計算
 	float dotProduct = forward.Dot(worldForward);
@@ -97,7 +80,7 @@ void Camera::CalculateCameraAngle()
 	float targetAngle = acosf(dotProduct);
 
 	// カメラの前方向ベクトルが右方向に向いているかどうかで符号を決定
-	Vector3 crossProduct = forward.Cross(worldForward);
+	DirectX::SimpleMath::Vector3 crossProduct = forward.Cross(worldForward);
 	if (crossProduct.y < 0)
 	{
 		targetAngle = -targetAngle;
@@ -116,8 +99,6 @@ void Camera::CalculateCameraAngle()
 // -----------------------------
 void Camera::Shake(float elapsedTime)
 {
-	using namespace DirectX;
-
 	if ( ! m_isShake ) return;
 
 	m_shakeTime -= elapsedTime;
@@ -132,8 +113,8 @@ void Camera::Shake(float elapsedTime)
 	// shakeTimeに応じて振動の強さを決定
 	float power = (m_shakeTime / SHAKE_TIME) * m_shakePower;
 
-	SimpleMath::Vector3 max = SimpleMath::Vector3(power	, power	, power	);
-	SimpleMath::Vector3 min = SimpleMath::Vector3(-power, -power, -power);
+	DirectX::SimpleMath::Vector3 max = DirectX::SimpleMath::Vector3(power	, power	, power	);
+	DirectX::SimpleMath::Vector3 min = DirectX::SimpleMath::Vector3(-power, -power, -power);
 
 	// カメラの位置を揺らす
 	m_shakePos	=	Math::RandomVector3(min, max);

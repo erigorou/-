@@ -18,9 +18,9 @@
 // ----------------------------
 EnemyDeadEffect::EnemyDeadEffect()
 	:
-	m_totalTime(0.0f),
-	m_deadShader(nullptr),
-	m_buffer(nullptr),
+	m_totalTime{},
+	m_deadShader{},
+	m_buffer{},
 	m_isDead(false)
 {
 	// シェーダーの生成
