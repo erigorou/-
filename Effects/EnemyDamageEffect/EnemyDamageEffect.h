@@ -5,7 +5,9 @@ class CustomShader;
 
 class EnemyDamageEffect
 {
-// ** 固定値 **
+//--------------------
+// 固定値と構造体
+// --------------------
 private:
 	// モデルにエフェクトを掛けておく時間
 	static constexpr float TOTAL_TIME = 0.5f;
@@ -26,15 +28,16 @@ private:
 
 
 
-// ** 公開関数 **
+// --------------------
+// 公開関数
+// --------------------
 public:
 	// コンストラクタ
 	EnemyDamageEffect();
 	// デストラクタ
 	~EnemyDamageEffect();
-
+	// 更新処理
 	void Update(float elapsedTime);
-
 	// 体パーツの描画
 	void DrawWithDamageEffect(
 		DirectX::Model* model,
@@ -42,11 +45,12 @@ public:
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& proj
 	);
-
 	//ダメージを受けたことを通達する関数
 	void IsDamaged();
 
-// ** 非公開関数 **
+// --------------------
+// 内部関数
+// --------------------
 private:
 	// シェーダーの生成
 	void CreateShader();
@@ -54,17 +58,19 @@ private:
 	void CreateConstBuffer();
 
 
-// ** メンバ変数 **
+
+// --------------------
+// メンバ変数
+// --------------------
 private:
 	// 経過時間
 	float m_totalTime;
 	// ダメージエフェクトを付与するのか
 	bool m_isDamaged;
-
-	// デバイスリソース
-	ID3D11Device1* m_device;
 	// シェーダー
 	std::unique_ptr<CustomShader> m_damageShader;
 	// 定数バッファ
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_buffer;
+	// テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
 };

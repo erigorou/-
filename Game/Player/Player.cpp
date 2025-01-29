@@ -37,8 +37,8 @@ Player::Player(PlayScene* playScene)
 	m_playScene(playScene),
 	m_model{},
 	m_position{ 0, 0, 40 },
-	m_angle{ 0.f },
-	m_inputVector{ 0.0f, 0.0f },
+	m_angle{},
+	m_inputVector{},
 	m_acceleration{},
 	m_pushBackValue{},
 	m_worldMatrix{},
@@ -151,10 +151,9 @@ void Player::InitializeRender()
 }
 
 
-/// <summary>
-/// ステートを変更する
-/// </summary>
-/// <param name="newState">変更したいステート</param>
+// -----------------------------------------------------
+// ステートを変更する
+// -----------------------------------------------------
 void Player::ChangeState(IPlayer* newState)
 {
 	// 同じステートで更新しようとすると早期リターン
@@ -167,13 +166,7 @@ void Player::ChangeState(IPlayer* newState)
 
 
 // ---------------------------------------------------------
-/// <summary>
-/// 行動に対する時間を計算する関数
-/// </summary>
-/// <param name="nowTime">現在の時間</param>
-/// <param name="totalTime">ステートを変更する時間</param>
-/// <param name="newState">変更する時間</param>
-/// <param name="elapsedTime">経過時間</param>
+// 行動に対する時間を計算する関数
 // ---------------------------------------------------------
 void Player::TimeComparison(float& nowTime, const float totalTime, IPlayer* newState, const float elapsedTime)
 {
@@ -190,10 +183,7 @@ void Player::TimeComparison(float& nowTime, const float totalTime, IPlayer* newS
 
 
 // ----------------------------------------------
-/// <summary>
-/// プレイヤーの更新処理
-/// </summary>
-/// <param name="elapsedTime">経過時間</param>
+// プレイヤーの更新処理
 // ---------------------------------------------
 void Player::Update(const float elapsedTime)
 {
@@ -260,8 +250,6 @@ void Player::OnKeyDown(const DirectX::Keyboard::Keys& key)
 //　---------------------------------------------
 float Player::CalucratePlayerRotation(DirectX::SimpleMath::Vector3 const enemyPos)
 {
-	using namespace DirectX::SimpleMath;
-
 	// 入力がない場合は0を返す
 	if (m_inputVector.LengthSquared() < FLT_EPSILON) 
 	{
@@ -282,10 +270,13 @@ float Player::CalucratePlayerRotation(DirectX::SimpleMath::Vector3 const enemyPo
 	float resultAngle = lookEnemy + inputAngle;
 
 	// 必要なら角度を0～2πの範囲に正規化
-	while (resultAngle < 0) {
+	while (resultAngle < 0) 
+	{
 		resultAngle += DirectX::XM_2PI; // 2πを加えて正の範囲に
 	}
-	while (resultAngle > DirectX::XM_2PI) {
+	
+	while (resultAngle > DirectX::XM_2PI) 
+	{
 		resultAngle -= DirectX::XM_2PI; // 2πを引いて範囲内に
 	}
 
@@ -303,25 +294,25 @@ void Player::MovePlayer()
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
-	Vector3 moveVelocity  = Vector3::Zero;	// 加速用速度
+	Vector3 moveVelocity = Vector3::Zero; // 加速用速度
 
 	///////////////////// 移動キーの入力がない場合の処理 /////////////////
 	if (m_isInputMoveKey == false)
 	{
-		float accelerationLength = m_acceleration.Length();				// 速度の長さを取得する
+		float accelerationLength = m_acceleration.Length(); // 速度の長さを取得する
 		// 0の近似値より大きい場合
 		if (accelerationLength >= FLT_EPSILON)
 		{
-			Vector3 accelerationNormal = m_acceleration / accelerationLength;// 保持する加速度の正規化ベクトルを取得する
+			Vector3 accelerationNormal = m_acceleration / accelerationLength; // 保持する加速度の正規化ベクトルを取得する
 
-			float friction = 0.05f;			// 摩擦量
+			float friction = 0.0f; // 摩擦量
 			accelerationLength -= friction;	// 摩擦を計算
 
 			// 加速度が（ー）になるときにリセットする
 			if (accelerationLength < 0.0f)	accelerationLength = 0.0f;
 
 			m_acceleration = accelerationNormal * accelerationLength;
-			moveVelocity += m_acceleration;								// 基本速度に加速度を上書きする
+			moveVelocity += m_acceleration;	// 基本速度に加速度を上書きする
 		}
 	}
 
@@ -331,8 +322,8 @@ void Player::MovePlayer()
 		// 基本移動量を計算する
 		moveVelocity += Vector3::Forward * PLAYER_SPEED;
 
-		float acceleration = 0.05f;				// 加速度
-		m_acceleration += Vector3::Forward * acceleration;		// 加速度の計算を行う
+		float acceleration = 0.05f; // 加速度
+		m_acceleration += Vector3::Forward * acceleration; // 加速度の計算を行う
 
 		// 2乗にすることで符号を外す
 		if (m_acceleration.LengthSquared() > 1.0f)
@@ -340,8 +331,8 @@ void Player::MovePlayer()
 			m_acceleration.Normalize(); // 上限を1に設定する
 		}
 
-		moveVelocity += m_acceleration;		// 基本移動に加速度を上乗せする
-		m_velocity = moveVelocity;			// 速度を保存する
+		moveVelocity += m_acceleration; // 基本移動に加速度を上乗せする
+		m_velocity = moveVelocity; // 速度を保存する
 	}
 
 	moveVelocity *= PLAYER_SPEED;
@@ -460,6 +451,9 @@ void Player::HitAction(InterSectData data)
 }
 
 
+// --------------------------------
+// ダメージ処理
+// --------------------------------
 void Player::Damage(float damage)
 {
 	// HPを減らす
@@ -486,11 +480,6 @@ void Player::HitEnemyBody(InterSectData data)
 		{
 			Damage(1);
 		}
-		// Messenger
-		//	enemy->GetCurrentState() == enemy->GetEnemyDashAttacking())
-		//{
-		//	Damage(1);
-		//}
 
 		// 衝突したオブジェクトの情報を取得
 		DirectX::BoundingSphere playerCollision = *m_bodyCollision.get();
@@ -521,12 +510,6 @@ void Player::HitGoblin(InterSectData data)
 			Damage(1);
 		}
 
-		// Messenger
-		//	goblin->IsAttacking())
-		//{
-		//	Damage(1);
-		//}
-
 		// 衝突したオブジェクトの情報を取得
 		DirectX::BoundingSphere playerCollision = *m_bodyCollision.get();
 		DirectX::BoundingSphere goblinCollision = *data.collision;
@@ -540,8 +523,6 @@ void Player::HitGoblin(InterSectData data)
 		m_bodyCollision->Center = m_position;
 	}
 }
-
-
 
 
 // --------------------------------
@@ -559,8 +540,6 @@ void Player::HitCudgel(InterSectData data)
 		Damage(1);
 	}
 }
-
-
 
 
 // --------------------------------

@@ -5,8 +5,12 @@ class CustomShader;
 
 class EnemyDeadEffect
 {
-// ** 固定値 **
+
+// ----------------------------
+// 定数や構造体
+// ----------------------------
 private:
+
 	// モデルにエフェクトを掛けておく時間
 	static constexpr float TOTAL_TIME = 2.5f;
 
@@ -26,15 +30,16 @@ private:
 
 
 
-// ** 公開関数 **
+// ----------------------------
+// 公開関数
+// ----------------------------
 public:
 	// コンストラクタ
 	EnemyDeadEffect();
 	// デストラクタ
 	~EnemyDeadEffect();
-
+	// 更新処理
 	void Update(float elapsedTime);
-
 	// 体パーツの描画
 	void DrawWithDeadEffect(
 		DirectX::Model* model,
@@ -42,10 +47,13 @@ public:
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& proj
 	);
-
+	// 死亡処理
 	void IsDead();
 
-// ** 非公開関数 **
+
+// ----------------------------
+// 内部関数
+// ----------------------------
 private:
 	// シェーダーの生成
 	void CreateShader();
@@ -53,7 +61,9 @@ private:
 	void CreateConstBuffer();
 
 
-// ** メンバ変数 **
+// ----------------------------
+// メンバ変数
+// ----------------------------
 private:
 	// 経過時間
 	float m_totalTime;

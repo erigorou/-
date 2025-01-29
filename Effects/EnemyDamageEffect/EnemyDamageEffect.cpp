@@ -17,16 +17,17 @@
 // ----------------------------
 EnemyDamageEffect::EnemyDamageEffect()
 	:
-	m_totalTime(0.0f),
-	m_damageShader(nullptr),
-	m_buffer(nullptr),
+	m_totalTime{},
+	m_damageShader{},
+	m_buffer{},
 	m_isDamaged(false)
 {
 	// シェーダーの生成
 	CreateShader();
-
 	// 定数バッファの作成
 	CreateConstBuffer();
+	// テクスチャの取得
+	m_texture = GameResources::GetInstance()->GetTexture("noize");
 }
 
 
@@ -82,6 +83,7 @@ void EnemyDamageEffect::DrawWithDamageEffect(
 	// エフェクトの設定
 	model->UpdateEffects([&](DirectX::IEffect* effect)
 		{
+			// ベーシックエフェクトの設定
 			auto basicEffect = dynamic_cast<DirectX::BasicEffect*>(effect);
 			if (basicEffect)
 			{
@@ -94,11 +96,9 @@ void EnemyDamageEffect::DrawWithDamageEffect(
 		}
 	);
 
-
+	// サンプラーステートの設定
 	ID3D11SamplerState* sampler[1] = { };
 	context->PSSetSamplers(0, 1, sampler);
-
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture = GameResources::GetInstance()->GetTexture("noize");
 
 	// モデルの描画
 	model->Draw(context, *states, world, view, proj, false, [&]
@@ -111,7 +111,7 @@ void EnemyDamageEffect::DrawWithDamageEffect(
 				// シェーダーにバッファを渡す
 				context->PSSetConstantBuffers(1, 1, &cbuff);
 				//	ピクセルシェーダにテクスチャを登録する。
-				context->PSSetShaderResources(0, 1, texture.GetAddressOf());
+				context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
 
 				// ブレンドステートを設定
 				context->OMSetBlendState(states->AlphaBlend(), nullptr, 0xFFFFFFFF);
@@ -161,6 +161,7 @@ void EnemyDamageEffect::CreateConstBuffer()
 	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
+	// バッファの作成
 	DX::ThrowIfFailed(
 		device->CreateBuffer(&desc, nullptr, m_buffer.GetAddressOf())
 	);

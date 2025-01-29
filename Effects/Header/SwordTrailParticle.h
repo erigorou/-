@@ -17,8 +17,10 @@
 
 class SwordTrailParticle : public IParticle
 {
+// ----------------------------
+// アクセサ
+// ----------------------------
 public:
-	// ゲッター************************************
 	const float GetLife									() { return m_life; }			// 表示時間
 	const float GetStartLife							() { return m_startLife; }		// 開始時間
 	const DirectX::SimpleMath::Color GetNowColor		() { return m_nowColor; }		// 現在の色
@@ -36,24 +38,10 @@ public:
 	}
 
 
-private:
-	// 変数宣言
-	// *********************************
-
-	// 描画に必要な４頂点の座標
-	DirectX::VertexPositionTexture m_vertices[4];
-
-	//	生存時間
-	float m_life;
-	float m_startLife;
-	//	カラー
-	DirectX::SimpleMath::Color m_nowColor;
-	DirectX::SimpleMath::Color m_startColor;
-	DirectX::SimpleMath::Color m_endColor;
-	// *******************************************
+// ----------------------------
+// 公開関数
+// ----------------------------
 public:
-
-	// 関数宣言
 	// コンストラクタ
 	SwordTrailParticle(
 		DirectX::VertexPositionTexture vertex[],											// 頂点情報
@@ -66,5 +54,17 @@ public:
 	bool Update(float elapsedTime);
 
 
-	// 描画についてどこで行うべきなのか。
+// ----------------------------
+// メンバ変数
+// ----------------------------
+private:
+	// 描画に必要な４頂点の座標
+	DirectX::VertexPositionTexture m_vertices[4];
+	//	生存時間
+	float m_life;
+	float m_startLife;
+	//	カラー
+	DirectX::SimpleMath::Color m_nowColor;
+	DirectX::SimpleMath::Color m_startColor;
+	DirectX::SimpleMath::Color m_endColor;
 };
