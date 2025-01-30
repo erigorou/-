@@ -12,8 +12,7 @@
 #include "Game/Data/HPSystem.h"
 #include "Game/GameResources.h"
 #include "../Boss/Boss.h"
-#include "Effects/EnemyDamageEffect/EnemyDamageEffect.h"
-#include "Effects/EnemyDeadEffect/EnemyDeadEffect.h"
+#include "Effects/EnemyEffect/EnemyEffect.h"
 #include "Game/HitStop/HitStop.h"
 #include "Game/EnemyManager/EnemyManager.h"
 #include "Game/Messenger/EventMessenger.h"
@@ -69,10 +68,8 @@ void Goblin::Initialize()
 	CreateCollision();
 	// HPの生成
 	m_hp = std::make_unique<HPSystem>(GOBLIN_HP);
-	// ダメージエフェクトの生成
-	m_damageEffect = std::make_unique<EnemyDamageEffect>();
-	// 死亡エフェクトの生成
-	m_deadEffect = std::make_unique<EnemyDeadEffect>();
+	// エフェクトの生成
+	m_enemyEffect = std::make_unique<EnemyEffect>();
 
 }
 
@@ -124,11 +121,8 @@ void Goblin::Update(const float elapsedTime)
 {
 	// ワールド行列の初期化
 	CalcWorldMatrix();
-	// ダメージエフェクトの更新
-	m_damageEffect->Update(elapsedTime);
-	// 死亡エフェクトの更新
-	m_deadEffect->Update(elapsedTime);
-
+	// エフェクトの更新
+	m_enemyEffect->Update(elapsedTime);
 	// 衝突判定の移動
 	MoveCollision();
 	// クールタイムのカウント
@@ -170,16 +164,7 @@ void Goblin::MoveCollision()
 // --------------------------------
 void Goblin::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection)
 {
-	if (m_currentState == m_dead.get())
-	{
-		// 死亡エフェクト付きでモデルを描画する
-		m_deadEffect->DrawWithDeadEffect(m_model, m_worldMatrix, view, projection);
-	}
-	else
-	{
-		// ダメージエフェクト付きでモデルを描画する
-		m_damageEffect->DrawWithDamageEffect(m_model, m_worldMatrix, view, projection);
-	}
+	m_enemyEffect->DrawWithEffect(m_model, m_worldMatrix, view, projection);
 }
 
 
@@ -312,8 +297,8 @@ void Goblin::Damaged(float damage)
 	m_hp->Damage(damage);
 	// ヒットストップを有効にする
 	HitStop::GetInstance()->SetActive();
-	// ダメージエフェクトを再生
-	m_damageEffect->IsDamaged();
+	// エフェクトを再生
+	m_enemyEffect->SetEffect(EnemyEffect::ENEMY_EFFECT::DAMAGE);
 
 	// 画面を揺らす
 	float shakePower = 0.25f;
@@ -348,12 +333,15 @@ void Goblin::CountCoolTime(float elapsedTime)
 // --------------------------------
 void Goblin::CheckAlive()
 {
+	// 死亡している場合は処理を行わない
+	if (m_currentState == m_dead.get()) return;
+
 	if (m_hp->GetHP() <= 0)
 	{
 		// ステートを変更
 		ChangeState(m_dead.get());
-		// 死亡エフェクトに死亡したことを通知
-		m_deadEffect->IsDead();
+		// 死亡エフェクトを再生
+		m_enemyEffect->SetEffect(EnemyEffect::ENEMY_EFFECT::DEAD);
 	}
 }
 

@@ -6,8 +6,7 @@
 
 class PlayScene;
 class BehaviorTree;
-class EnemyDamageEffect;
-class EnemyDeadEffect;
+class EnemyEffect;
 class HPSystem;
 
 
@@ -153,9 +152,7 @@ private:
 	std::unique_ptr<BossFaceAttacking>	m_faceAttacking;	// 攻撃顔
 
 	// 敵のダメージエフェクト
-	std::unique_ptr<EnemyDamageEffect> m_damageEffect;
-	// 敵の死亡エフェクト
-	std::unique_ptr<EnemyDeadEffect> m_deadEffect;
+	std::unique_ptr<EnemyEffect> m_effect;
 
 	// ビヘイビアツリー
 	std::unique_ptr<BehaviorTree> m_pBT;

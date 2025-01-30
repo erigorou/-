@@ -16,8 +16,8 @@
 class Player;
 class PlayScene;
 class HPSystem;
-class EnemyDamageEffect;
-class EnemyDeadEffect;
+class EnemyEffect;
+
 #include "State/Header/GoblinIdling.h"
 #include "State/Header/GoblinAttacking.h"
 #include "State/Header/GoblinDead.h"
@@ -143,8 +143,7 @@ private:
 
 	// システム **
 	std::unique_ptr<HPSystem>			m_hp;			// HP
-	std::unique_ptr<EnemyDamageEffect>	m_damageEffect;	// ダメージエフェクト
-	std::unique_ptr<EnemyDeadEffect>	m_deadEffect;	// 死亡エフェクト
+	std::unique_ptr<EnemyEffect> m_enemyEffect;	// 敵エフェクト
 
 	// プレイシーン(当たり判定の処理に使用)
 	PlayScene* m_playScene;

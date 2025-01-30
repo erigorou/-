@@ -7,6 +7,7 @@
 #include "pch.h"
 #include "PlaySceneUIManager.h"
 #include "Game/Screen.h"
+#include "Game/Data/GameData.h"
 #include "Game/Scene/PlayScene.h"
 #include "Game/Player/Player.h"
 #include "Game/Boss/Boss.h"
@@ -95,6 +96,9 @@ void PlaySceneUIManager::Render()
 	{
 		m_enemyHP->Render();
 	}
+
+	// チュートリアルでは描画しない
+	if (GameData::GetInstance()->GetSelectStage() <= 0) return;
 
 	m_operation	->	Render();
 }

@@ -242,8 +242,7 @@ void PlayScene::Render()
 	DrawParticle(view, m_projection);	// パーティクル
 
 	m_questManager->DrawQuest();	// クエスト
-	m_uiManager->	Render();		// UI
-
+	m_uiManager->Render();			// UI
 }
 
 // --------------------------------

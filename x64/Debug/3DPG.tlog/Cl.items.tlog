@@ -4,7 +4,7 @@ C:\Users\it232012\Desktop\就職作品\鬼退治\project\BehaviourTree\Source\If
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\BehaviourTree\Source\Selector.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\Selector.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\BehaviourTree\Source\Sequence.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\Sequence.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\DeviceResources.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\DeviceResources.obj
-C:\Users\it232012\Desktop\就職作品\鬼退治\project\Effects\EnemyDeadEffect\EnemyDeadEffect.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\EnemyDeadEffect.obj
+C:\Users\it232012\Desktop\就職作品\鬼退治\project\Effects\EnemyEffect\EnemyEffect.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\EnemyEffect.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Effects\Particle.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\Particle.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Effects\Source\DustTrailParticle.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\DustTrailParticle.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Effects\Source\SwordTrialParticle.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\SwordTrialParticle.obj
@@ -12,7 +12,6 @@ C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Camera\State\PlayC
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Camera\State\TitleCameraState.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\TitleCameraState.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Data\GameData.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\GameData.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Data\HPSystem.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\HPSystem.obj
-C:\Users\it232012\Desktop\就職作品\鬼退治\project\Effects\EnemyDamageEffect\EnemyDamageEffect.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\EnemyDamageEffect.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\EnemyManager\EnemyManager.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\EnemyManager.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Boss\Face\Source\BossFaceAttacking.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\BossFaceAttacking.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Boss\Face\Source\BossFaceIdling.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\BossFaceIdling.obj

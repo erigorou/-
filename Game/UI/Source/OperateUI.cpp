@@ -125,6 +125,7 @@ void OperateUI::Render()
 	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
 	context->PSSetSamplers(0, 1, sampler);
 
+	// ステートの設定
 	ID3D11BlendState* blendstate = m_states->NonPremultiplied();
 	context->OMSetDepthStencilState(m_states->DepthDefault(), 0);
 	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);

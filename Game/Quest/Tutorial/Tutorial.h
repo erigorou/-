@@ -23,7 +23,7 @@ public:
 
 	// テクスチャの初期座標
 	static constexpr float INIT_POSITION_X = (WINDOW_WIDTH - WIDTH) / 2;
-	static constexpr float INIT_POSITION_Y = 50.0f;
+	static constexpr float INIT_POSITION_Y = 600.0f;
 
 	// アニメーション時間
 	static constexpr float ANIMATION_TIME = 2.0f;

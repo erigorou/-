@@ -225,7 +225,6 @@
     <ClInclude Include="Game\Boss\States\Header\BossDashAttacking.h" />
     <ClInclude Include="Game\Player\State\Header\Player_NockBacking.h" />
     <ClInclude Include="Libraries\MyLib\KeyboardChacker.h" />
-    <ClInclude Include="Effects\EnemyDamageEffect\EnemyDamageEffect.h" />
     <ClInclude Include="Game\EnemyManager\EnemyManager.h" />
     <ClInclude Include="Libraries\MyLib\Invincibility\InvincibilityFrames.h" />
     <ClInclude Include="Game\Boss\States\Header\BossStarting.h" />
@@ -250,7 +249,6 @@
     <ClInclude Include="Game\Quest\TutorialList\TutorialDodgStart.h" />
     <ClInclude Include="Game\GameResources.h" />
     <ClInclude Include="Game\Messenger\EventMessenger.h" />
-    <ClInclude Include="Effects\EnemyDeadEffect\EnemyDeadEffect.h" />
     <ClInclude Include="Game\UI\Action\NormalAction.h" />
     <ClInclude Include="Interface\IAction.h" />
     <ClInclude Include="Game\UI\SceneUIManager\QuestSelectSceneUIManager.h" />
@@ -258,6 +256,7 @@
     <ClInclude Include="Game\UI\Action\TitleLogoAction.h" />
     <ClInclude Include="Game\UI\Action\TutorialButtonAction.h" />
     <ClInclude Include="Game\UI\Action\BossFightButtonAction.h" />
+    <ClInclude Include="Effects\EnemyEffect\EnemyEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -380,7 +379,6 @@
     <ClCompile Include="Game\HitStop\HitStop.cpp" />
     <ClCompile Include="Game\Boss\States\Source\BossDashAttacking.cpp" />
     <ClCompile Include="Game\Player\State\Source\Player_NockBacking.cpp" />
-    <ClCompile Include="Effects\EnemyDamageEffect\EnemyDamageEffect.cpp" />
     <ClCompile Include="Game\EnemyManager\EnemyManager.cpp" />
     <ClCompile Include="Interface\IEnemy.h" />
     <ClCompile Include="Libraries\MyLib\Invincibility\InvincibilityFrames.cpp" />
@@ -394,9 +392,9 @@
     <ClCompile Include="Game\Goblin\State\Score\GoblinTutorial.cpp" />
     <ClCompile Include="Game\GameResources.cpp" />
     <ClCompile Include="Game\Messenger\EventMessenger.cpp" />
-    <ClCompile Include="Effects\EnemyDeadEffect\EnemyDeadEffect.cpp" />
     <ClCompile Include="Game\UI\SceneUIManager\QuestSelectSceneUIManager.cpp" />
     <ClCompile Include="Game\UI\UserInterface.cpp" />
+    <ClCompile Include="Effects\EnemyEffect\EnemyEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

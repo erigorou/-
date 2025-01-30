@@ -32,8 +32,7 @@
 #include "Face/Header/BossFaceIdling.h"
 #include "Face/Header/BossFaceAttacking.h"
 // エフェクト
-#include "Effects/EnemyDamageEffect/EnemyDamageEffect.h"
-#include "Effects/EnemyDeadEffect/EnemyDeadEffect.h"
+#include "Effects/EnemyEffect/EnemyEffect.h"
 
 
 // --------------------------------
@@ -84,10 +83,8 @@ void Boss::Initialize()
 	CreateState();
 	// 顔パーツの生成
 	CreateFace();
-	// ダメージエフェクトの生成
-	m_damageEffect = std::make_unique<EnemyDamageEffect>();
-	// 死亡エフェクトの生成
-	m_deadEffect = std::make_unique<EnemyDeadEffect>();
+	// エフェクトの生成
+	m_effect = std::make_unique<EnemyEffect>();
 	// 当たり判定の作成
 	CreateCollision();
 }
@@ -180,8 +177,8 @@ void Boss::Update(float elapsedTime)
 {
 	// ステータスの更新処理
 	m_currentState->Update(elapsedTime);
-	// ダメージ情報の更新処理
-	m_damageEffect->Update(elapsedTime);
+	// エフェクトの更新
+	m_effect->Update(elapsedTime);
 	// ワールド行列の計算
 	CalcrationWorldMatrix();
 	// 当たり判定の更新
@@ -265,7 +262,7 @@ void Boss::Render(
 	m_currentFace->DrawFace(m_worldMatrix, view, projection);
 
 	// ダメージのエフェクトを付与
-	m_damageEffect->DrawWithDamageEffect(m_model, m_worldMatrix, view, projection);
+	m_effect->DrawWithEffect(m_model, m_worldMatrix, view, projection);
 }
 
 
@@ -310,8 +307,8 @@ void Boss::HitSword(InterSectData data)
 
 		// ヒットストップを有効にする
 		HitStop::GetInstance()->SetActive();
-		// 体のエフェクトを再生
-		m_damageEffect->IsDamaged();
+		// エフェクトを再生
+		m_effect->SetEffect(EnemyEffect::ENEMY_EFFECT::DAMAGE);
 
 		// 画面を揺らす
 		EventMessenger::Execute("CameraShake", &m_shakePower);

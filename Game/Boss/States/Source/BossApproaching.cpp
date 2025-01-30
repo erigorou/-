@@ -93,9 +93,8 @@ void BossApproaching::UpdateAnimation(float elapsedTime)
 	m_angle = Math::CalculationAngle(m_position, playerPos);
 	// 回転行列の作成
 	Matrix angleMat = Matrix::CreateScale(Boss::BOSS_SCALE) * Matrix::CreateRotationY(-m_angle);
-	// 前方に移動
+	// 向いている方向の前方に移動
 	m_position += Vector3::Transform(m_velocity * elapsedTime * NORMALIZE_VELOCITY, angleMat);
-
 	// 回転角を設定する
 	m_boss->SetAngle(m_angle);
 	// 座標を設定する
