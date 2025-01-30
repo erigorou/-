@@ -23,11 +23,6 @@
 #include "Game/Stage/Wall/Wall.h"
 
 
-// ここで静的メンバー変数を定義する
-const DirectX::SimpleMath::Vector3 Player::HOME_POSITION(0.0f);
-const float Player::PLAYER_SPEED = 0.4f;
-const float Player::PLAYER_SCALE = 0.1f;
-
 
 // --------------------------------
 //  コンストラクタ
@@ -49,7 +44,6 @@ Player::Player(PlayScene* playScene)
 	m_canHit{false},
 	m_animationRotate{},
 	m_isInputMoveKey{ false }
-
 {
 }
 

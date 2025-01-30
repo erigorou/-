@@ -109,9 +109,9 @@ void BossStarting::UpdateDelay()
 void BossStarting::UpdateMove()
 {
 	// •b”‚ð³‹K‰»
-	float t = (m_totalSeconds - DELAY_TIME) / (MOVE_TIME - DELAY_TIME);
+	float easing = (m_totalSeconds - DELAY_TIME) / (MOVE_TIME - DELAY_TIME);
 	// ‚‚¢‚Æ‚±‚ë‚É‰ŠúˆÊ’u‚ðÝ’è‚µA™X‚É‰º‚É~‚ë‚·
-	m_position.y = std::fabsf(START_HEIGHT - (START_HEIGHT * Easing::easeInOutBack(t)));
+	m_position.y = std::fabsf(START_HEIGHT - (START_HEIGHT * Easing::easeInOutBack(easing)));
 	// ˆÊ’u‚ðÝ’è
 	m_boss->SetPosition(m_position);
 

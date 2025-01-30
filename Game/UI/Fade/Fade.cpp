@@ -54,23 +54,23 @@ Fade::~Fade()
 /// </summary>
 void Fade::Initialize()
 {
-	// コモンリソースの取得（インスタンス）
-	CommonResources* commonResources = CommonResources::GetInstance();
-	// デバイスリソースの取得
-	auto deviceResources = commonResources->GetDeviceResources();
+	// リソースの取得
+	auto resources = CommonResources::GetInstance();
+	// デバイスの取得
+	auto device = resources->GetDeviceResources()->GetD3DDevice();
+	// コンテキストの取得
+	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 
 	// フェードテクスチャの取得
 	m_texture = GameResources::GetInstance()->GetTexture("fade");
 	// 型抜きテクスチャの取得
 	m_stencilImage = GameResources::GetInstance()->GetTexture("mask");
-
-
 	// シェーダーの生成
 	CreateShader();
 	// プリミティブバッチの生成
-	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(deviceResources->GetD3DDeviceContext());
+	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(context);
 	// コモンステートの生成
-	m_states = std::make_unique<DirectX::CommonStates>(deviceResources->GetD3DDevice());
+	m_states = std::make_unique<DirectX::CommonStates>(device);
 }
 
 

@@ -17,6 +17,8 @@ class PlayCameraState : public ICameraState
 public:
 	// ステージの長さ
 	static constexpr float STAGE_LENGTH = 100;
+	// カメラの補間量
+	static constexpr float LERP_RATE = 0.075f;
 
 // ----------------------------
 // メンバ関数

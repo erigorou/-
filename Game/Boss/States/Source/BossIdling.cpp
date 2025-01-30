@@ -54,7 +54,7 @@ void BossIdling::PreUpdate()
 
 	// Šç‚ÌƒXƒe[ƒg‚ð•ÏX
 	m_boss->SetFace(m_boss->GetFaceIdling());
-
+	// ‰ñ“]‚ðŽæ“¾
 	m_angle = m_boss->GetAngle();
 }
 
@@ -96,9 +96,8 @@ void BossIdling::UpdateAnimation()
 	{
 		angleDiff += DirectX::XM_2PI;
 	}
-
 	// üŒ`•âŠÔ‚ÅÅ’Z‹——£‚Å‰ñ“]
-	m_angle += angleDiff * 0.1f;
+	m_angle += angleDiff * LERP_RATE;
 	// Šp“x‚ðÝ’è
 	m_boss->SetAngle(m_angle);
 }

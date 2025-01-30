@@ -120,10 +120,10 @@ void BossDashAttacking::DashAction()
 	m_isAttacking = true;
 
 	// 現在の時間に基づいてサイン波で加速度を計算
-	float t = (m_totalSeconds - CHARGE_TIME) / (DASH_TIME - CHARGE_TIME);
+	float easing = (m_totalSeconds - CHARGE_TIME) / (DASH_TIME - CHARGE_TIME);
 	
 	// 座標の更新 *
-	float accelerationFactor = sin(static_cast<float>(t * M_PI)); // サイン波で速度を変化
+	float accelerationFactor = sin(static_cast<float>(easing * M_PI)); // サイン波で速度を変化
 
 	// 敵の向きに基づいて前方向を計算
 	Vector3 position = m_boss->GetPosition();
@@ -131,14 +131,14 @@ void BossDashAttacking::DashAction()
 	position += Vector3::Transform(m_velocity, m_rotMatrix) * m_elapsedTime;
 
 	// サイン波で上下運動
-	float y = fabsf(sin(t * SIN_SPEED)) * accelerationFactor;
+	float y = fabsf(sin(easing * SIN_SPEED)) * accelerationFactor;
 	position.y = y;
 
 	// 計算した座標を本体に設定する
 	m_boss->SetPosition(position);
 
 	// プレイヤーを傾ける
-	m_bodyTilt = DirectX::XMConvertToRadians(-TILT_ANGLE + TILT_ANGLE_DASH * Easing::easeOutBack(t));
+	m_bodyTilt = DirectX::XMConvertToRadians(-TILT_ANGLE + TILT_ANGLE_DASH * Easing::easeOutBack(easing));
 	m_boss->SetBodyTilt(m_bodyTilt);
 }
 
@@ -152,10 +152,10 @@ void BossDashAttacking::WaitAction()
 	m_isAttacking = false;
 
 	// イージングに使用する秒数を計算（秒数のNormalize)
-	float t = (m_totalSeconds - DASH_TIME) / (WAIT_TIME - DASH_TIME);
+	float easing = (m_totalSeconds - DASH_TIME) / (WAIT_TIME - DASH_TIME);
 
 	// プレイヤーを傾ける
-	m_bodyTilt = DirectX::XMConvertToRadians(TILT_ANGLE - TILT_ANGLE * Easing::easeOutBounce(t));
+	m_bodyTilt = DirectX::XMConvertToRadians(TILT_ANGLE - TILT_ANGLE * Easing::easeOutBounce(easing));
 	m_boss->SetBodyTilt(m_bodyTilt);
 }
 
@@ -166,7 +166,7 @@ void BossDashAttacking::WaitAction()
 void BossDashAttacking::ReturnAction()
 {
 	// 時間の正規化
-	float t = (m_totalSeconds - WAIT_TIME) / (RETURN_TIME - WAIT_TIME);
+	float easing = (m_totalSeconds - WAIT_TIME) / (RETURN_TIME - WAIT_TIME);
 
 	// プレイヤーの座標を取得
 	Vector3 playerPos = m_boss->GetPlayScene()->GetPlayer()->GetPosition();
@@ -175,7 +175,7 @@ void BossDashAttacking::ReturnAction()
 	// 敵から見たプレイヤーの位置を設定する
 	float angle = Math::CalculationAngle(parentPos, playerPos);
 
-	m_angle = Math::LerpFloat(m_angle, angle, t);
+	m_angle = Math::LerpFloat(m_angle, angle, easing);
 
 	m_rotMatrix = DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle);
 	m_boss->SetAngle(m_angle);

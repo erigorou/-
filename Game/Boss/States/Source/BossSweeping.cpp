@@ -98,9 +98,9 @@ void BossSweeping::UpdateAnimation()
 void BossSweeping::UpdateChargeMotion()
 {
 	// ためる時間に対する経過時間の割合
-	float t = m_totalSeconds / CHARGE_TIME;
+	float easing = m_totalSeconds / CHARGE_TIME;
 	// イージングを用いた角度の計算
-	m_targetAngle = m_angle - ROTATE_ANGLE * Easing::easeOutCirc(t);
+	m_targetAngle = m_angle - ROTATE_ANGLE * Easing::easeOutCirc(easing);
 }
 
 
@@ -111,9 +111,9 @@ void BossSweeping::UpdateChargeMotion()
 void BossSweeping::UpdateSweepMotion()
 {
 	// 薙ぎ払いモーションの経過時間に対する割合
-	float t = (m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME);
+	float easing = (m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME);
 	// イージングを用いた角度の計算
-	m_targetAngle = m_angle - ROTATE_ANGLE + ROTATE_ANGLE * Easing::easeOutBack(t);
+	m_targetAngle = m_angle - ROTATE_ANGLE + ROTATE_ANGLE * Easing::easeOutBack(easing);
 }
 
 

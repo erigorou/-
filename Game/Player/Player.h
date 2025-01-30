@@ -28,11 +28,11 @@ class Player :  public IObserver
 // -----------------
 public:
 	// ‰ŠúÀ•W
-	static const DirectX::SimpleMath::Vector3 HOME_POSITION;
+	static constexpr DirectX::SimpleMath::Vector3 HOME_POSITION = { 0.0f, 0.0f, 0.0f };
 	// ‘¬‚³
-	static const float PLAYER_SPEED;
+	static constexpr float PLAYER_SPEED = 0.4f;
 	// ‘å‚«‚³
-	static const float PLAYER_SCALE;
+	static constexpr float PLAYER_SCALE = 0.1f;
 	// “–‚½‚è”»’è‚Ì‘å‚«‚³
 	static constexpr float COLLISION_RADIUS = 12.0f;
 

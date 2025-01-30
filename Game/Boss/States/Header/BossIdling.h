@@ -27,6 +27,8 @@ public:
 	static constexpr int DASH_ATTACK_RATE = 8;
 	// ‰½‚à‚µ‚È‚¢Š„‡
 	static constexpr int IDLING_RATE = 10;
+	// ƒvƒŒƒCƒ„[‚Ì•ûŒü‚É’Ç]‚·‚éŠ„‡
+	static constexpr float LERP_RATE = 0.1f;
 
 
 // ---------------------------

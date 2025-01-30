@@ -49,7 +49,7 @@ void PlayCameraState::Update(
     // 高さを距離依存に変更
     targetCameraPos.y = Camera::CAMERA_POSITION_Y * normalizedDistance;
     // カメラ位置を補間して追従
-    float followSpeed = 0.2f; // 追従速度 (0.0f ～ 1.0f)
+    float followSpeed = LERP_RATE;
 	// カメラの位置を補間して追従
     m_camera->m_position = Math::LerpVector(m_camera->m_position, targetCameraPos, followSpeed);
     // 注視点の目標位置を計算
