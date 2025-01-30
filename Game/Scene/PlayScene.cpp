@@ -26,7 +26,7 @@
 // オブジェクト関連　=========================================
 #include "Game/EnemyManager/EnemyManager.h"	// 敵マネージャー
 #include "Game/Player/Player.h"				// プレイヤー
-#include "Game/Enemy/Enemy.h"				// 鬼
+#include "Game/Boss/Boss.h"					// 鬼
 #include "Game/Weapon/Sword/Sword.h"		// 刀
 #include "Game/Weapon/Cudgel/Cudgel.h"		// 金棒
 #include "Game/Goblin/Goblin.h"				// ゴブリン
@@ -270,16 +270,14 @@ void PlayScene::Finalize()
 // --------------------------------
 void PlayScene::UpdateCamera(float elapsedTime)
 {
-	// カメラの回転行列の作成	引数にはプレイヤーの回転角を入れる
-	DirectX::SimpleMath::Matrix matrix = DirectX::SimpleMath::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_player->GetAngle()));
 	// カメラの更新
-	m_camera->Update(m_player->GetPosition(), m_enemyManager->GetPicupEnemyPosition(), matrix, elapsedTime);
+	m_camera->Update(m_player->GetPosition(), m_enemyManager->GetPicupEnemyPosition(), elapsedTime);
 }
 
 // --------------------------------
 // ボスのポインタを取得
 // --------------------------------
-Enemy* PlayScene::GetEnemy()
+Boss* PlayScene::GetBoss()
 {
 	return m_enemyManager->GetBossEnemy();
 }

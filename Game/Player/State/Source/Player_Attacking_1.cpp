@@ -14,7 +14,7 @@
 #include "Libraries/MyLib/EasingFunctions.h"
 
 #include "Game/Player/Player.h"
-#include "Game/Enemy/Enemy.h"
+#include "Game/Boss/Boss.h"
 #include "Game/Player/State/Header/Player_Attacking_1.h"
 
 

@@ -9,7 +9,7 @@
 #include "Game/Screen.h"
 #include "Game/Scene/PlayScene.h"
 #include "Game/Player/Player.h"
-#include "Game/Enemy/Enemy.h"
+#include "Game/Boss/Boss.h"
 #include "../Header/PlayerHPUI.h"
 #include "../Header/EnemyHPUI.h"
 #include "../Header/Warning.h"
@@ -138,7 +138,7 @@ void PlaySceneUIManager::CreatePlayerHPUI()
 void PlaySceneUIManager::CreateEnemyHPUI()
 {
 	// エネミーのHPを取得
-	auto enemyHP = m_playScene->GetEnemy() ? m_playScene->GetEnemy()->GetEnemyHP() : nullptr;
+	auto enemyHP = m_playScene->GetBoss() ? m_playScene->GetBoss()->GetBossHP() : nullptr;
 
 	// nullチェック
 	if (enemyHP != nullptr)

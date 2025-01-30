@@ -17,7 +17,7 @@ class Floor;
 class Sea;
 class Wall;
 class Player;
-class Enemy;
+class Boss;
 class Goblin;
 class Sword;
 class Cudgel;
@@ -40,7 +40,7 @@ public:
 	static std::unique_ptr<Wall>				CreateWall				(PlayScene* playScene);
 
 	static std::unique_ptr<Player>				CreatePlayer			(PlayScene* playScene);
-	static std::unique_ptr<Enemy>				CreateEnemy				(PlayScene* playScene);
+	static std::unique_ptr<Boss>				CreateBoss				(PlayScene* playScene);
 	static std::unique_ptr<Goblin>				CreateGoblin			(PlayScene* playScene);
 	static std::unique_ptr<Sword>				CreateSword				(PlayScene* playScene);
 	static std::unique_ptr<Cudgel>				CreateCudgel			(PlayScene* playScene);

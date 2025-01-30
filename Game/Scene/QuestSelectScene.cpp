@@ -55,8 +55,6 @@ QuestSelectScene::~QuestSelectScene()
 //---------------------------------------------------------
 void QuestSelectScene::Initialize()
 {
-	auto context = m_commonResources->GetDeviceResources()->GetD3DDeviceContext();
-
 	// オブジェクトを生成する
 	CreateObjects();
 	// 射影行列を生成する
@@ -134,11 +132,10 @@ void QuestSelectScene::Update(float elapsedTime)
 void QuestSelectScene::UpdateObject(const float elapsedTime)
 {
 	DirectX::SimpleMath::Vector3 zeroV = DirectX::SimpleMath::Vector3::Zero;
-	DirectX::SimpleMath::Matrix zeroM = DirectX::SimpleMath::Matrix::Identity;
 
 	// オブジェクトの更新
 	m_camera->Shake(elapsedTime);
-	m_camera->Update(zeroV, zeroV, zeroM, elapsedTime);
+	m_camera->Update(zeroV, zeroV, elapsedTime);
 	m_enemy->Update(elapsedTime);
 
 	// UIの更新
@@ -177,20 +174,19 @@ void QuestSelectScene::SelectStage(DirectX::Keyboard::KeyboardStateTracker* keyb
 //---------------------------------------------------------
 void QuestSelectScene::Render()
 {
-	auto states		= m_commonResources	->	GetCommonStates		();
-	auto view		= m_camera			->	GetViewMatrix		();
-
-	// オブジェクトの描画
-	m_floor->		Render(view, m_projection);
-	m_sea->			Render(view, m_projection);
-	m_enemy->		Render(view, m_projection);
-	m_skySphere->	DrawSkySphere(view, m_projection);
-
-
+	// ビュー行列を取得する
+	auto view = m_camera -> GetViewMatrix();
+	// 床の描画
+	m_floor->Render(view, m_projection);
+	// 海の描画
+	m_sea->Render(view, m_projection);
+	// 敵の描画
+	m_enemy->Render(view, m_projection);
+	// 天球の描画
+	m_skySphere->DrawSkySphere(view, m_projection);
 	// パーティクルの描画
 	m_particle->CreateBillboard(m_camera->GetEyePosition(),DirectX::SimpleMath::Vector3::Zero,m_camera->GetUpVector());
 	m_particle->Render(view, m_projection);
-
 	// UIの描画
 	m_uiManager->Render();
 }

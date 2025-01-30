@@ -6,7 +6,7 @@
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/EasingFunctions.h"
 
-#include "Game/Enemy/Enemy.h"
+#include "Game/Boss/Boss.h"
 #include "Game/Player/Player.h"
 #include "Game/Player/State/Header/Player_Dodging.h"
 

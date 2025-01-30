@@ -14,7 +14,7 @@
 #include "../Stage/Sea/Sea.h"								// ŠC
 #include "../Stage/Wall/Wall.h"								// •Ç
 #include "../Player/Player.h"								// ƒvƒŒƒCƒ„[
-#include "../Enemy/Enemy.h"									// ‹Si“Gj
+#include "../Boss/Boss.h"									// ‹Si“Gj
 #include "../Goblin/Goblin.h"								// ƒSƒuƒŠƒ“
 #include "../Weapon/Sword/Sword.h"							// ƒvƒŒƒCƒ„[‚Ì•Ší
 #include "../Weapon/Cudgel/Cudgel.h"						// ‹Si“Gj‚Ì•Ší
@@ -148,16 +148,16 @@ std::unique_ptr<Player> Factory::CreatePlayer(PlayScene* playScene)
 // ---------------------------------------------
 // ‹Si“Gj‚Ì¶¬ŠÖ”
 // ---------------------------------------------
-std::unique_ptr<Enemy> Factory::CreateEnemy(PlayScene* playScene)
+std::unique_ptr<Boss> Factory::CreateBoss(PlayScene* playScene)
 {
 	// ‹Si“Gj‚ğéŒ¾‚·‚é
-	std::unique_ptr<Enemy> enemy;
-	enemy = std::make_unique<Enemy>(playScene);
+	std::unique_ptr<Boss> enemy;
+	enemy = std::make_unique<Boss>(playScene);
 	// ‰Šú‰»ˆ—
 	enemy->Initialize();
 
-	EventMessenger::Attach("canHit", std::bind(&Enemy::CanHitSword, enemy.get()));
-	EventMessenger::Attach("canNotHit",std::bind(&Enemy::CanNotHitSword, enemy.get()));
+	EventMessenger::Attach("canHit", std::bind(&Boss::CanHitSword, enemy.get()));
+	EventMessenger::Attach("canNotHit",std::bind(&Boss::CanNotHitSword, enemy.get()));
 
 	// ‹Si“Gj‚Ìİ’è
 	return enemy;

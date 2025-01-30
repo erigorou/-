@@ -15,7 +15,7 @@
 #include "Game/Sound/Sound.h"
 
 #include "Game/Player/Player.h"
-#include "Game/Enemy/Enemy.h"
+#include "Game/Boss/Boss.h"
 #include "Libraries/MyLib/EasingFunctions.h"
 #include "Game/Weapon/Cudgel/Header/Cudgel_Sweeping.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
@@ -69,7 +69,7 @@ void Cudgel_Sweeping::PreUpdate()
 	m_totalSeconds = 0.0f;												// 経過時間の初期化
 	m_angleUD = DirectX::XMConvertToRadians(93.0f);						// 金棒を横にする
 	m_angleRL = 0.0f;													// 横回転の初期化
-	m_parentAngleRL = m_cudgel->GetPlayScene()->GetEnemy()->GetAngle();	// 敵の角度を取得（親の角度）
+	m_parentAngleRL = m_cudgel->GetPlayScene()->GetBoss()->GetAngle();	// 敵の角度を取得（親の角度）
 	m_rootPos.clear();
 	m_tipPos.clear();
 
@@ -88,7 +88,7 @@ void Cudgel_Sweeping::Update(float elapsedTime)
 	// 合計時間を計測
 	m_totalSeconds += elapsedTime;
 
-	auto enemy = m_cudgel->GetPlayScene()->GetEnemy();
+	auto enemy = m_cudgel->GetPlayScene()->GetBoss();
 	m_position = enemy->GetPosition();	// 敵の座標を取得
 
 	UpdateCudgelRotation();		// 回転を計算する
@@ -126,7 +126,7 @@ void Cudgel_Sweeping::UpdateCudgelRotation()
 		// SEの再生
 		if (m_playSound == false)
 		{
-			Sound::PlaySE(Sound::SE_TYPE::ENEMY_SWEEP);
+			Sound::PlaySE(Sound::SE_TYPE::BOSS_SWEEP);
 			m_playSound = true;
 		}
 	}

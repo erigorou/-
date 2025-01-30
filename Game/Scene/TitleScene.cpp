@@ -184,10 +184,9 @@ void TitleScene::Update(float elapsedTime)
 	const auto& kbTracker = m_commonResources->GetInputManager()->GetKeyboardTracker();
 
 	DirectX::SimpleMath::Vector3 zeroV = DirectX::SimpleMath::Vector3::Zero;
-	DirectX::SimpleMath::Matrix zeroM = DirectX::SimpleMath::Matrix::Identity;
 
 	m_camera->Shake(elapsedTime);
-	m_camera->Update(zeroV, zeroV, zeroM, elapsedTime);
+	m_camera->Update(zeroV, zeroV, elapsedTime);
 
 	m_enemy->Update(elapsedTime);
 

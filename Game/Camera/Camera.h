@@ -67,7 +67,6 @@ public:
 	void Update(
 		const DirectX::SimpleMath::Vector3& playerPos,
 		const DirectX::SimpleMath::Vector3& enemyPos,
-		const DirectX::SimpleMath::Matrix& rotate,
 		const float elapsedTime
 	);
 	// ƒJƒƒ‰‚ğ—h‚ç‚·

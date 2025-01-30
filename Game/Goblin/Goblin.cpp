@@ -11,7 +11,7 @@
 #include "Interface/IState.h"
 #include "Game/Data/HPSystem.h"
 #include "Game/GameResources.h"
-#include "../Enemy/Enemy.h"
+#include "../Boss/Boss.h"
 #include "Effects/EnemyDamageEffect/EnemyDamageEffect.h"
 #include "Effects/EnemyDeadEffect/EnemyDeadEffect.h"
 #include "Game/HitStop/HitStop.h"
@@ -25,8 +25,8 @@
 // ---------------
 // 固定値
 // ---------------
-const float Goblin::GOBLIN_SPEED = Enemy::ENEMY_SPEED / 2.0f;	// 移動速
-const float Goblin::GOBLIN_SCALE = Enemy::ENEMY_SCALE / 4.0f;	// サイズ
+const float Goblin::GOBLIN_SPEED = Boss::BOSS_SPEED / 2.0f;	// 移動速
+const float Goblin::GOBLIN_SCALE = Boss::BOSS_SCALE / 4.0f;	// サイズ
 
 
 // -------------------------------
@@ -209,7 +209,7 @@ void Goblin::HitAction(InterSectData data)
 	{
 	case ObjectType::Player:	HitPlayer(data);	break;
 	case ObjectType::Goblin:	HitGoblin(data);	break;
-	case ObjectType::Enemy:		HitEnemy(data);		break;
+	case ObjectType::Boss:		HitBoss(data);		break;
 	case ObjectType::Stage:		HitStage(data);		break;
 	case ObjectType::Sword:		HitSword(data);		break;
 	}
@@ -245,7 +245,7 @@ void Goblin::HitGoblin(InterSectData data)
 // --------------------------------
 // 敵に当たったときの処理
 // --------------------------------
-void Goblin::HitEnemy(InterSectData data)
+void Goblin::HitBoss(InterSectData data)
 {
 	m_pushBackValue = DirectX::SimpleMath::Vector3::Zero;
 

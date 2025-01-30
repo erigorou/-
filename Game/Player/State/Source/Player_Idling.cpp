@@ -5,7 +5,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 
-#include "Game/Enemy/Enemy.h"
+#include "Game/Boss/Boss.h"
 #include "Game/Player/Player.h"
 #include "Game/Weapon/Sword/Sword.h"
 

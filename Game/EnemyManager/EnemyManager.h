@@ -57,7 +57,7 @@ public:
 // ---------------------------
 public:
 	// ボスのポインタを取得
-	Enemy* GetBossEnemy();
+	Boss* GetBossEnemy();
 	// ボスの座標を取得
 	DirectX::SimpleMath::Vector3 GetBossPosition();
 	// ターゲットとしている敵の座標を取得

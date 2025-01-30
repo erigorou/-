@@ -40,8 +40,7 @@ Camera::Camera(const DirectX::SimpleMath::Vector3& target)
 void Camera::Update(
 	const DirectX::SimpleMath::Vector3& playerPos,
 	const DirectX::SimpleMath::Vector3& enemyPos,
-	const DirectX::SimpleMath::Matrix&	rotate,
-	const float							elapsedTime
+	const float	elapsedTime
 )
 {
 	// ステートを更新

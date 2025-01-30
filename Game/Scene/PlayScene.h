@@ -18,7 +18,7 @@ class HitStop;
 // === プレイヤー関連 ============
 class Player;
 class Sword;
-class Enemy;
+class Boss;
 class Cudgel;
 class Goblin;
 // === ステージ関連 =============
@@ -54,7 +54,7 @@ public:
 // --------------------------
 public:
 	Player*		GetPlayer()		{ return m_player.get();}
-	Enemy*		GetEnemy();
+	Boss*		GetBoss();
 	Sword*		GetSword()		{ return m_sword.get(); }
 	Cudgel*		GetCudgel()		{ return m_cudgel.get();}
 	Particle*	GetParticle()	{ return m_particles.get(); }

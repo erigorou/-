@@ -17,11 +17,11 @@
 #include "Libraries/MyLib/Collision.h"
 #include "Game/Messenger/EventMessenger.h"
 
-#include "Game/Enemy/Enemy.h"
+#include "Game/Boss/Boss.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
 
 
-const float Cudgel::CUDGEL_SCALE = Enemy::ENEMY_SCALE * 1.2f;						// ‹à–_‚ÌŠg‘å—¦
+const float Cudgel::CUDGEL_SCALE = Boss::BOSS_SCALE * 1.2f;						// ‹à–_‚ÌŠg‘å—¦
 const DirectX::SimpleMath::Vector3 Cudgel::DIRECTION_ENEMY = { 8.0f, 5.0f, 0.0f };	// Ž‚¿Žè‚Ì‹——£i“G‚Æ”äŠrj
 const DirectX::SimpleMath::Vector3 Cudgel::CUDGEL_LENGTH =	{ 0.0f, 35.0f, 0.0f };	// ‹à–_‚Ì’·‚³iˆê”Ô‰º‚©‚çj
 const DirectX::SimpleMath::Vector3 Cudgel::CUDGEL_HADLE_POS = { 0.0f, 10.0f, 0.0f };	// ‹à–_‚ÌŽæ‚ÁŽè‚Ì•”•ªiˆê”Ôãj
@@ -142,7 +142,7 @@ void Cudgel::Render(
 	auto states = resources->GetCommonStates();
 
 	// “G‚ª‚¢‚È‚¢ê‡‚Í•`‰æ‚µ‚È‚¢
-	if (! GetPlayScene()->GetEnemy()) return;
+	if (! GetPlayScene()->GetBoss()) return;
 
 	// ƒ‚ƒfƒ‹‚ð•`‰æ
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);

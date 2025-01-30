@@ -126,7 +126,7 @@ private:
 	// •`‰æŠÖ˜A‚Ì‰Šú‰»İ’è
 	void InitializeRender();
 	// “G‚Ì‘Ì‚Æ‚ÌÕ“Ë”»’è
-	void HitEnemyBody(InterSectData data);
+	void HitBossBody(InterSectData data);
 	// “G‚ÌƒuƒL‚Æ‚ÌÕ“Ë”»’è
 	void HitCudgel(InterSectData data);
 	// ƒSƒuƒŠƒ“‚ÆÕ“Ë

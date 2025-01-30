@@ -109,7 +109,7 @@ private:
 
 	void HitPlayer(InterSectData data);	// プレイヤーに当たったときの処理
 	void HitGoblin(InterSectData data);	// 小鬼に当たったときの処理
-	void HitEnemy(InterSectData data);	// 敵に当たったときの処理
+	void HitBoss(InterSectData data);	// 敵に当たったときの処理
 	void HitStage(InterSectData data);	// ステージに当たったときの処理
 	void HitSword(InterSectData data);	// 剣に当たったときの処理
 

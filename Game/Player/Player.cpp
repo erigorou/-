@@ -18,7 +18,7 @@
 #include "Game/Player/Player.h"
 #include "Game/Weapon/Sword/Sword.h"
 #include "../Data/HPSystem.h"
-#include "Game/Enemy/Enemy.h"
+#include "Game/Boss/Boss.h"
 #include "Game/Goblin/Goblin.h"
 #include "Game/Stage/Wall/Wall.h"
 
@@ -438,7 +438,7 @@ void Player::Finalize()
 void Player::HitAction(InterSectData data)
 {
 	// 体との当たり判定
-	HitEnemyBody(data);
+	HitBossBody(data);
 
 	// 武器との当たり判定
 	HitCudgel(data);
@@ -470,9 +470,9 @@ void Player::Damage(float damage)
 // --------------------------------
 //  敵の体との衝突判定
 // --------------------------------
-void Player::HitEnemyBody(InterSectData data)
+void Player::HitBossBody(InterSectData data)
 {
-	if (data.objType == ObjectType::Enemy && data.colType == CollisionType::Sphere)
+	if (data.objType == ObjectType::Boss && data.colType == CollisionType::Sphere)
 	{
 		// 敵のステートがダッシュ攻撃の場合で相手が攻撃中の場合
 		if (!m_isHit &&

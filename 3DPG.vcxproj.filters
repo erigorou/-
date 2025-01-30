@@ -120,7 +120,7 @@
     <ClInclude Include="Game\Camera\Camera.h">
       <Filter>Game\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Enemy\Enemy.h">
+    <ClInclude Include="Game\Boss\Boss.h">
       <Filter>Game\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Game\Player\Player.h">
@@ -158,8 +158,8 @@
     <ClInclude Include="Libraries\MyLib\BinaryFile.h" />
     <ClInclude Include="Libraries\MyLib\Math.h" />
     <ClInclude Include="Game\Player\State\Header\Player_Attacking_1.h" />
-    <ClInclude Include="Game\Enemy\States\Header\EnemyIdling.h" />
-    <ClInclude Include="Game\Enemy\States\Header\EnemyApproaching.h" />
+    <ClInclude Include="Game\Boss\States\Header\BossIdling.h" />
+    <ClInclude Include="Game\Boss\States\Header\BossApproaching.h" />
     <ClInclude Include="Game\Player\State\Header\Player_Attacking_2.h" />
     <ClInclude Include="Game\Weapon\Sword\Sword.h" />
     <ClInclude Include="Interface\IWeapon.h" />
@@ -170,7 +170,7 @@
     <ClInclude Include="Game\Weapon\Cudgel\Cudgel.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Idling.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Attacking.h" />
-    <ClInclude Include="Game\Enemy\States\Header\Enemy_Attacking.h" />
+    <ClInclude Include="Game\Boss\States\Header\BossAttacking.h" />
     <ClInclude Include="Game\Stage\Floor\Floor.h" />
     <ClInclude Include="Game\Stage\Wall\Wall.h" />
     <ClInclude Include="Libraries\MyLib\Collision.h" />
@@ -179,7 +179,7 @@
     <ClInclude Include="Game\UI\!PlaySceneUIManager\PlaySceneUIManager.h" />
     <ClInclude Include="Game\UI\Header\Gauge.h" />
     <ClInclude Include="Effects\Source\SwordTrialParticle.h" />
-    <ClInclude Include="Game\Enemy\States\Header\Enemy_Sweeping.h" />
+    <ClInclude Include="Game\Boss\States\Header\BossSweeping.h" />
     <ClInclude Include="Libraries\MyLib\EasingFunctions.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Sweeping.h" />
     <ClInclude Include="Game\UI\Header\PlayerHPUI.h" />
@@ -217,18 +217,18 @@
     <ClInclude Include="Game\UI\Header\OperateUI.h" />
     <ClInclude Include="Game\UI\UI.h" />
     <ClInclude Include="Interface\IFace.h" />
-    <ClInclude Include="Game\Enemy\Face\Header\EnemyFaceIdling.h" />
-    <ClInclude Include="Game\Enemy\Face\Header\EnemyFaceAttacking.h" />
+    <ClInclude Include="Game\Boss\Face\Header\BossFaceIdling.h" />
+    <ClInclude Include="Game\Boss\Face\Header\BossFaceAttacking.h" />
     <ClInclude Include="Game\Data\HPSystem.h" />
     <ClInclude Include="Game\Stage\Sea\Sea.h" />
     <ClInclude Include="Game\HitStop\HitStop.h" />
-    <ClInclude Include="Game\Enemy\States\Header\EnemyDashAttacking.h" />
+    <ClInclude Include="Game\Boss\States\Header\BossDashAttacking.h" />
     <ClInclude Include="Game\Player\State\Header\Player_NockBacking.h" />
     <ClInclude Include="Libraries\MyLib\KeyboardChacker.h" />
     <ClInclude Include="Effects\EnemyDamageEffect\EnemyDamageEffect.h" />
     <ClInclude Include="Game\EnemyManager\EnemyManager.h" />
     <ClInclude Include="Libraries\MyLib\Invincibility\InvincibilityFrames.h" />
-    <ClInclude Include="Game\Enemy\States\Header\EnemyStarting.h" />
+    <ClInclude Include="Game\Boss\States\Header\BossStarting.h" />
     <ClInclude Include="Game\Quest\QuestManager.h" />
     <ClInclude Include="Interface\IQuestChecker.h" />
     <ClInclude Include="Game\Quest\QuestList\QuestPlayerMove.h" />
@@ -241,7 +241,7 @@
     <ClInclude Include="Game\Quest\TutorialList\TutorialEnd.h" />
     <ClInclude Include="Game\UI\UIAnchor.h" />
     <ClInclude Include="Game\Goblin\State\Header\GoblinDead.h" />
-    <ClInclude Include="Game\Enemy\States\Header\EnemyDead.h" />
+    <ClInclude Include="Game\Boss\States\Header\BossDead.h" />
     <ClInclude Include="Game\Scene\QuestSelectScene.h" />
     <ClInclude Include="Game\Quest\QuestList\TutorialClear.h" />
     <ClInclude Include="Game\Goblin\State\Header\GoblinTutorial.h" />
@@ -293,7 +293,7 @@
     <ClCompile Include="Game\Camera\Camera.cpp">
       <Filter>Game\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Enemy\Enemy.cpp">
+    <ClCompile Include="Game\Boss\Boss.cpp">
       <Filter>Game\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Game\Player\Player.cpp">
@@ -327,8 +327,8 @@
     <ClCompile Include="Effects\Particle.cpp" />
     <ClCompile Include="Libraries\MyLib\BinaryFile.cpp" />
     <ClCompile Include="Game\Player\State\Source\Player_Attacking_1.cpp" />
-    <ClCompile Include="Game\Enemy\States\Source\EnemyIdling.cpp" />
-    <ClCompile Include="Game\Enemy\States\Source\EnemyApproaching.cpp" />
+    <ClCompile Include="Game\Boss\States\Source\BossIdling.cpp" />
+    <ClCompile Include="Game\Boss\States\Source\BossApproaching.cpp" />
     <ClCompile Include="Game\Player\State\Source\Player_Attacking_2.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Sword.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Source\Sword_Idling.cpp" />
@@ -338,13 +338,13 @@
     <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Idling.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Cudgel.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Attacking.cpp" />
-    <ClCompile Include="Game\Enemy\States\Source\Enemy_Attacking.cpp" />
+    <ClCompile Include="Game\Boss\States\Source\BossAttacking.cpp" />
     <ClCompile Include="Game\Stage\Floor\Floor.cpp" />
     <ClCompile Include="Game\Stage\Wall\Wall.cpp" />
     <ClCompile Include="Game\UI\!PlaySceneUIManager\PlaySceneUIManager.cpp" />
     <ClCompile Include="Game\UI\Source\Gauge.cpp" />
     <ClCompile Include="Effects\Source\SwordTrialParticle.cpp" />
-    <ClCompile Include="Game\Enemy\States\Source\Enemy_Sweeping.cpp" />
+    <ClCompile Include="Game\Boss\States\Source\BossSweeping.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp" />
     <ClCompile Include="Game\UI\Source\PlayerHPUI.cpp" />
     <ClCompile Include="Game\UI\Source\IconUI.cpp" />
@@ -373,23 +373,23 @@
     <ClCompile Include="Game\UI\Source\Operation.cpp" />
     <ClCompile Include="Game\UI\Source\OperateUI.cpp" />
     <ClCompile Include="Game\UI\UI.cpp" />
-    <ClCompile Include="Game\Enemy\Face\Source\EnemyFaceIdling.cpp" />
-    <ClCompile Include="Game\Enemy\Face\Source\EnemyFaceAttacking.cpp" />
+    <ClCompile Include="Game\Boss\Face\Source\BossFaceIdling.cpp" />
+    <ClCompile Include="Game\Boss\Face\Source\BossFaceAttacking.cpp" />
     <ClCompile Include="Game\Data\HPSystem.cpp" />
     <ClCompile Include="Game\Stage\Sea\Sea.cpp" />
     <ClCompile Include="Game\HitStop\HitStop.cpp" />
-    <ClCompile Include="Game\Enemy\States\Source\EnemyDashAttacking.cpp" />
+    <ClCompile Include="Game\Boss\States\Source\BossDashAttacking.cpp" />
     <ClCompile Include="Game\Player\State\Source\Player_NockBacking.cpp" />
     <ClCompile Include="Effects\EnemyDamageEffect\EnemyDamageEffect.cpp" />
     <ClCompile Include="Game\EnemyManager\EnemyManager.cpp" />
     <ClCompile Include="Interface\IEnemy.h" />
     <ClCompile Include="Libraries\MyLib\Invincibility\InvincibilityFrames.cpp" />
-    <ClCompile Include="Game\Enemy\States\Source\EnemyStarting.cpp" />
+    <ClCompile Include="Game\Boss\States\Source\BossStarting.cpp" />
     <ClCompile Include="Game\Quest\QuestManager.cpp" />
     <ClCompile Include="Game\Quest\QuestRenderer\QuestRenderer.cpp" />
     <ClCompile Include="Game\Quest\Tutorial\Tutorial.cpp" />
     <ClCompile Include="Game\Goblin\State\Score\GoblinDead.cpp" />
-    <ClCompile Include="Game\Enemy\States\Source\EnemyDead.cpp" />
+    <ClCompile Include="Game\Boss\States\Source\BossDead.cpp" />
     <ClCompile Include="Game\Scene\QuestSelectScene.cpp" />
     <ClCompile Include="Game\Goblin\State\Score\GoblinTutorial.cpp" />
     <ClCompile Include="Game\GameResources.cpp" />

@@ -6,7 +6,7 @@
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/EasingFunctions.h"
 
-#include "Game/Enemy/Enemy.h"
+#include "Game/Boss/Boss.h"
 #include "Game/Player/Player.h"
 #include "Game/Player/State/Header/Player_NockBacking.h"
 
@@ -59,7 +59,7 @@ void PlayerNockBacking::Update(const float& elapsedTime)
 
 	m_position = m_player->GetPosition();
 
-	DirectX::SimpleMath::Vector3 enemyPos = m_player->GetPlayScene()->GetEnemy()->GetPosition();
+	DirectX::SimpleMath::Vector3 enemyPos = m_player->GetPlayScene()->GetBoss()->GetPosition();
 
 	m_player->SetAngle(Math::CalculationAngle(m_position, enemyPos));
 
@@ -101,7 +101,7 @@ void PlayerNockBacking::NockBackAnimation()
 	float t = std::min(1.0f, m_totalSeconds / NOCKBACKING_TIME);
 
 	// 必要情報の取得
-	Vector3 playerPos = m_player->GetPlayScene()->GetEnemy()->GetPosition();
+	Vector3 playerPos = m_player->GetPlayScene()->GetBoss()->GetPosition();
 	Vector3 enemyPos = m_player->GetPosition();
 
 	// どっちの方向にノックバックするのか

@@ -15,7 +15,7 @@
 #include "Game/Messenger/EventMessenger.h"
 
 #include "Game/Player/Player.h"
-#include "Game/Enemy/Enemy.h"
+#include "Game/Boss/Boss.h"
 #include "Game/Weapon/Sword/Header/Sword_Attacking_2.h"
 
 
@@ -120,7 +120,7 @@ void Sword_Attacking_2::UpdateAnimation()
 		if (m_rot.y > MAX_SIDE_ANGLE)
 		{
 			// “G‚ª‚¢‚éê‡
-			if (m_sword->GetPlayScene()->GetEnemy())
+			if (m_sword->GetPlayScene()->GetBoss())
 			{
 				//// “–‚½‚è”»’è‚ð–³Œø‚É‚·‚é
 				//m_sword->GetPlayScene()->GetEnemy()->CanHit(false);

@@ -15,7 +15,7 @@
 
 #include "Game/Player/Player.h"
 #include "Game/Weapon/Sword/Sword.h"
-#include "Game/Enemy/Enemy.h"
+#include "Game/Boss/Boss.h"
 #include "Game/Player/State/Header/Player_Attacking_2.h"
 
 

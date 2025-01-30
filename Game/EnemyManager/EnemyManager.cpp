@@ -11,7 +11,7 @@
 #include "Game/UI/!PlaySceneUIManager/PlaySceneUIManager.h"
 #include "EnemyManager.h"
 #include "Game/Messenger/EventMessenger.h"
-#include "../Enemy/Enemy.h"
+#include "../Boss/Boss.h"
 #include "../Goblin/Goblin.h"
 #include "../Factory/Factory.h"
 #include "../Scene/PlayScene.h"
@@ -125,14 +125,14 @@ void EnemyManager::GenerateEnemy(const DirectX::SimpleMath::Vector3& position, E
 // --------------------------------
 // ボスのポインタを取得
 // --------------------------------
-Enemy* EnemyManager::GetBossEnemy()
+Boss* EnemyManager::GetBossEnemy()
 {
 	// ボスを探索
 	for (auto& enemy : m_enemies)
 	{
 		if (enemy.type == EnemyType::Boss)
 		{
-			return dynamic_cast<Enemy*>(enemy.data.get());
+			return dynamic_cast<Boss*>(enemy.data.get());
 		}
 	}
 
@@ -313,7 +313,7 @@ void EnemyManager::GenerateGoblin(const DirectX::SimpleMath::Vector3& position)
 void EnemyManager::GenerateBoss(const DirectX::SimpleMath::Vector3& position)
 {
 	// ボスの生成
-	auto boss = Factory::CreateEnemy(m_playScene);
+	auto boss = Factory::CreateBoss(m_playScene);
 	// 位置の設定
 	boss->SetPosition(position);
 	// 配列に格納

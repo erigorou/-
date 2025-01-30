@@ -14,7 +14,7 @@
 #include "Game/Messenger/EventMessenger.h"
 
 #include "Game/Player/Player.h"
-#include "Game/Enemy/Enemy.h"
+#include "Game/Boss/Boss.h"
 #include "Game/Weapon/Cudgel/Header/Cudgel_Attacking.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
 #include "Libraries/MyLib/EasingFunctions.h"
@@ -86,16 +86,13 @@ void Cudgel_Attacking::PreUpdate()
 // XVˆ—
 void Cudgel_Attacking::Update(float elapsedTime)
 {
-	using namespace DirectX::SimpleMath;
-	using namespace DirectX;
-
 	// ‡ŒvŽžŠÔ‚ðŒv‘ª
 	m_totalSeconds		+= elapsedTime;
 	m_recordPointTimer	+= elapsedTime;
 
-	auto enemy = m_cudgel->GetPlayScene()->GetEnemy();
-	m_position = enemy->GetPosition();	// “G‚ÌÀ•W‚ðŽæ“¾
-	m_enemyAngle = enemy->GetAngle();	// “G‚Ì‰ñ“]‚ðŽæ“¾
+	auto boss = m_cudgel->GetPlayScene()->GetBoss();
+	m_position = boss->GetPosition();	// “G‚ÌÀ•W‚ðŽæ“¾
+	m_enemyAngle = boss->GetAngle();	// “G‚Ì‰ñ“]‚ðŽæ“¾
 	m_angleRL = m_enemyAngle;			// “G‚Ì‰ñ“]‚ðÝ’è
 
 	UpdateCudgelRotation();				// ‰ñ“]‚ðŒvŽZ‚·‚é
@@ -151,7 +148,7 @@ void Cudgel_Attacking::HandleAttackPhase(float t)
 
 	if (t > 0.9f && m_playSound == false)
 	{
-		Sound::PlaySE(Sound::SE_TYPE::ENEMY_ATTACK);
+		Sound::PlaySE(Sound::SE_TYPE::BOSS_ATTACK);
 		m_playSound = true;
 	}
 }
