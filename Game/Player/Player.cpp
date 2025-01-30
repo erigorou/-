@@ -305,7 +305,7 @@ void Player::MovePlayer()
 		{
 			Vector3 accelerationNormal = m_acceleration / accelerationLength; // 保持する加速度の正規化ベクトルを取得する
 
-			float friction = 0.0f; // 摩擦量
+			float friction = 0.05f; // 摩擦量
 			accelerationLength -= friction;	// 摩擦を計算
 
 			// 加速度が（ー）になるときにリセットする

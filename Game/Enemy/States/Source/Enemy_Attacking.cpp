@@ -10,29 +10,36 @@
 #include "Game/Weapon/Cudgel/Cudgel.h"
 #include "Game/Enemy/States/Header/Enemy_Attacking.h"
 
-
+// --------------------------------------
 // コンストラクタ
+// --------------------------------------
 Enemy_Attacking::Enemy_Attacking(Enemy* enemy)
-	:m_angle(0.f)
-	,m_enemy(enemy)
-	,m_totalSeconds()
+	:
+	m_angle{},
+	m_enemy(enemy),
+	m_totalSeconds{}
 {
 }
 
-
+// --------------------------------------
 // デストラクタ
+// --------------------------------------
 Enemy_Attacking::~Enemy_Attacking()
 {
 }
 
 
+// --------------------------------------
 // 初期化処理
+// --------------------------------------
 void Enemy_Attacking::Initialize()
 {
 }
 
 
-// 事前更新処理
+// --------------------------------------
+// ステート更新処理（in）
+// --------------------------------------
 void Enemy_Attacking::PreUpdate()
 {
 	// 経過時間を初期化
@@ -46,16 +53,18 @@ void Enemy_Attacking::PreUpdate()
 }
 
 
+// --------------------------------------
 // 更新処理
+// --------------------------------------
 void Enemy_Attacking::Update(const float& elapsedTime)
 {
-	using namespace DirectX::SimpleMath;
+	// 経過時間を加算
 	m_totalSeconds += elapsedTime;
 
 	// プレイヤーの座標を取得
-	Vector3 playerPos = m_enemy->GetPlayScene()->GetPlayer()->GetPosition();
+	DirectX::SimpleMath::Vector3 playerPos = m_enemy->GetPlayScene()->GetPlayer()->GetPosition();
 	// 敵の座標を取得
-	Vector3 parentPos = m_enemy->GetPosition();
+	DirectX::SimpleMath::Vector3 parentPos = m_enemy->GetPosition();
 	// 敵から見たプレイヤーの位置を計算する
 	m_angle = Math::CalculationAngle(parentPos, playerPos);
 
@@ -66,12 +75,16 @@ void Enemy_Attacking::Update(const float& elapsedTime)
 		m_enemy->SetAngle(m_angle);
 	}
 
-	if (m_totalSeconds >= 5.0f)
+	if (m_totalSeconds >= TOTAL_TIME)
+	{
 		m_enemy->ChangeState(m_enemy->GetEnemyIdling());	// 待機状態に遷移
+	}
 }
 
 
-// 事後更新処理
+// --------------------------------------
+// ステート変更処理(out)
+// --------------------------------------
 void Enemy_Attacking::PostUpdate()
 {
 	// 武器のステートを変更する
@@ -82,6 +95,10 @@ void Enemy_Attacking::PostUpdate()
 	m_enemy->SetFace(m_enemy->GetFaceIdling());
 }
 
+
+// --------------------------------------
+// 終了処理
+// --------------------------------------
 void Enemy_Attacking::Finalize()
 {
 }

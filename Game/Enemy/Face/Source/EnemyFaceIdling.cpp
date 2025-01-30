@@ -12,7 +12,6 @@
 #include "../Header/EnemyFaceIdling.h"
 
 
-
 // --------------------
 // コンストラクタ
 // --------------------
@@ -32,7 +31,7 @@ EnemyFaceIdling::~EnemyFaceIdling()
 
 
 // --------------------
-// デストラクタ
+// 顔の描画
 // --------------------
 void EnemyFaceIdling::DrawFace(
 	const DirectX::SimpleMath::Matrix mat,

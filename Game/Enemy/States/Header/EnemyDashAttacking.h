@@ -12,18 +12,27 @@ class Player;
 // 敵の待機ステートを定義
 class EnemyDashAttacking : public IState
 {
-// 固定値 *
+// ---------------------------
+// 固定値
+// ---------------------------
 public:
-	static constexpr float CHARGE_TIME	= 1.0f;	// 攻撃の貯めモーションの時間
-	static constexpr float DASH_TIME	= 2.0f;	// ダッシュする時間
-	static constexpr float WAIT_TIME	= 3.5f;	// 待機
-	static constexpr float RETURN_TIME	= 5.0f;	// 攻撃が終わってから元に戻る時間
-	static constexpr float TOTAL_TIME	= 5.0f;	// 総時間
+	// 攻撃の貯めモーションの時間
+	static constexpr float CHARGE_TIME	= 1.0f;
+	// ダッシュする時間
+	static constexpr float DASH_TIME	= 2.0f;
+	// 待機
+	static constexpr float WAIT_TIME	= 3.5f;
+	// 攻撃が終わってから元に戻る時間
+	static constexpr float RETURN_TIME	= 5.0f;
+	// 総時間
+	static constexpr float TOTAL_TIME	= 5.0f;
+	// 最大速度
+	static constexpr float MAX_SPEED = 100.0f;
 
-	static constexpr float MAX_SPEED = 100.0f; // 最大速度
 
-
-// 公開関数 *
+// -----------------------------------
+// メンバ関数（公開）
+// -----------------------------------
 public:
 	// コンストラクタ
 	EnemyDashAttacking(Enemy* enemy);
@@ -31,21 +40,22 @@ public:
 	~EnemyDashAttacking() override;
 	// 初期化する
 	void Initialize() override;
-	// 事前更新する
+	// ステート変更処理(in)
 	void PreUpdate() override;
 	// 更新処理する
 	void Update(const float& elapsedTime) override;
-	// 事後更新する
+	// ステート更新処理(out)
 	void PostUpdate() override;
 	// 終了処理
 	void Finalize() override;
 
-// 内部関数　*
+
+// -----------------------------------
+// メンバ関数（非公開）
+// -----------------------------------
 private:
+	// アクションの更新処理
 	void UpdateAction();
-
-	////// 行動系
-
 	// 攻撃の貯めモーション
 	void ChargeAction();
 	// ダッシュする
@@ -54,9 +64,11 @@ private:
 	void WaitAction();
 	// 元に戻る
 	void ReturnAction();
+	
 
-
-// 内部変数　*
+// -----------------------------------
+// メンバ変数
+// -----------------------------------
 private:
 	// 回転
 	float m_angle;
@@ -64,10 +76,10 @@ private:
 	float m_bodyTilt;
 	// 攻撃中
 	bool m_isAttacking;
-
+	// 回転用行列
 	DirectX::SimpleMath::Matrix m_rotMatrix;
+	// 移動速度
 	DirectX::SimpleMath::Vector3 m_velocity;
-
 	// フレーム時間
 	float m_elapsedTime;
 	// 総時間

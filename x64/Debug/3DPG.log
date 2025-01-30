@@ -1,33 +1,22 @@
-﻿  PlayCameraState.cpp
-  TitleCameraState.cpp
-  EnemyManager.cpp
-  QuestManager.cpp
-  QuestSelectScene.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Scene\QuestSelectScene.cpp(58,7): warning C4189: 'context': ローカル変数が初期化されましたが、参照されていません
-C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Scene\QuestSelectScene.cpp(180,7): warning C4189: 'states': ローカル変数が初期化されましたが、参照されていません
-  Factory.cpp
-  Camera.cpp
-C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Camera\Camera.cpp(43,37): warning C4100: 'rotate': 引数は関数の本体部で 1 度も参照されません。
+﻿  EnemyManager.cpp
   Enemy.cpp
+  EnemyFaceAttacking.cpp
+  EnemyFaceIdling.cpp
   EnemyApproaching.cpp
+  Enemy_Attacking.cpp
+  Enemy_Sweeping.cpp
+  Factory.cpp
   Player.cpp
   Player_Attacking_1.cpp
   Player_Attacking_2.cpp
   PlayScene.cpp
-  SceneManager.cpp
-  TitleScene.cpp
-  Wall.cpp
   PlaySceneUIManager.cpp
   Cudgel_Attacking.cpp
   Cudgel_Idling.cpp
   Cudgel_Sweeping.cpp
-  コードを生成中...
-  コンパイル中...
   Sword_Attacking_1.cpp
   Sword_Attacking_2.cpp
   Sword_Attacking_3.cpp
   Sword_Attacking_4.cpp
-  Sword_Idling.cpp
-  Sword.cpp
   コードを生成中...
   3DPG.vcxproj -> C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\3DPG.exe

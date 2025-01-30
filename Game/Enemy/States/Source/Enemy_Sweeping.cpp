@@ -17,9 +17,10 @@
 // コンストラクタ
 // ----------------------------------
 Enemy_Sweeping::Enemy_Sweeping(Enemy* enemy)
-	: m_angle(0.f)
-	, m_enemy(enemy)
-	, m_totalSeconds()
+	: 
+	m_angle{},
+	m_enemy(enemy),
+	m_totalSeconds{}
 {
 }
 
@@ -103,14 +104,6 @@ void Enemy_Sweeping::PostUpdate()
 	m_enemy->SetFace(m_enemy->GetFaceIdling());
 }
 
-
-// ----------------------------------
-// 描画処理
-// ----------------------------------
-void Enemy_Sweeping::CheckHitPlayerBody()
-{
-
-}
 
 
 // ----------------------------------

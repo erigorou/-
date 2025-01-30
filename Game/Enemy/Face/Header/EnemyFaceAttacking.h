@@ -6,30 +6,27 @@ class Enemy;
 
 class EnemyFaceAttacking : public IFace
 {
-
-// 固定値
+// ---------------------------
+// メンバ関数（公開）
+// ---------------------------
 public:
-
-// 公開関数
-public:
-	EnemyFaceAttacking(Enemy* enemy);	// コンストラクタ
-	~EnemyFaceAttacking() override;	// デストラクタ
-
-
-	void DrawFace(								// かおの描画
+	// コンストラクタ
+	EnemyFaceAttacking(Enemy* enemy);
+	// デストラクタ
+	~EnemyFaceAttacking() override;
+	// 顔の描画
+	void DrawFace(
 		const DirectX::SimpleMath::Matrix mat,
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& proj
 	)	override;
 
-
-// 内部関数
+// ---------------------------
+// メンバ変数
+// ---------------------------
 private:
-	void CreateModel();	// モデルの生成
-
-
-// 内部変数
-private:
-	Enemy* m_enemy;				// 敵の大元クラス
-	DirectX::Model* m_model;	// モデル
+	// 敵の大元クラス
+	Enemy* m_enemy;
+	// モデル
+	DirectX::Model* m_model;
 };

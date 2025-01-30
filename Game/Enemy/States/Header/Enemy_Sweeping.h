@@ -10,14 +10,26 @@ class Easing;
 // 敵の薙ぎ払いステートを定義
 class Enemy_Sweeping : public IState
 {
+	// ---------------------------
+	// 固定値
+	// ---------------------------
 public:
+	// 攻撃の貯めモーションの時間
+	static constexpr float CHARGE_TIME = 0.5f;
+	// 攻撃する前の時間
+	static constexpr float WINDUP_TIME = 0.6f;
+	// 攻撃する時間
+	static constexpr float ATTACK_TIME = 1.2f;
+	// 攻撃（全体）が終了する時間
+	static constexpr float END_TIME = 2.0f;
+	// 攻撃の貯めモーションの角度
+	static constexpr float ROTATE_ANGLE = 20.0f;
 
-	static constexpr float CHARGE_TIME	= 0.5f;		// 攻撃の貯めモーションの時間
-	static constexpr float WINDUP_TIME	= 0.6f;		// 攻撃する前の時間
-	static constexpr float ATTACK_TIME	= 1.2f;		// 攻撃する時間
-	static constexpr float END_TIME		= 2.0f;		// 攻撃（全体）が終了する時間
-	static constexpr float ROTATE_ANGLE	= 20.0f;	// 攻撃の貯めモーションの角度
 
+// ---------------------------
+// メンバ関数（公開）
+// ---------------------------
+public:
 	// コンストラクタ
 	Enemy_Sweeping(Enemy* enemy);
 	// デストラクタ
@@ -33,13 +45,16 @@ public:
 	// 終了処理
 	void Finalize() override;
 
-	// プレイヤーのボディとの当たり判定
-	void CheckHitPlayerBody();
-
+// ---------------------------
+// メンバ変数
+// ---------------------------
 private:
-	float m_angle;				// 角度	
-	float m_totalSeconds;		// 総時間
-	Enemy* m_enemy;				// 敵（ステートの元）	
+	// 角度
+	float m_angle;
+	// 総時間
+	float m_totalSeconds;
+	// 敵
+	Enemy* m_enemy;
 
 };
 

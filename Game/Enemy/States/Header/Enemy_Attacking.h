@@ -9,6 +9,17 @@ class Player;
 // 敵の待機ステートを定義
 class Enemy_Attacking : public IState
 {
+// ---------------------------
+// 固定値
+// ---------------------------
+public:
+	// 総時間
+	static constexpr float TOTAL_TIME = 5.0f;
+
+
+// ---------------------------
+// メンバ関数（公開）
+// ---------------------------
 public:
 	// コンストラクタ
 	Enemy_Attacking(Enemy* enemy);
@@ -26,16 +37,16 @@ public:
 	void Finalize() override;
 
 
-
+// ---------------------------
+// メンバ変数
+// ---------------------------
 private:
 	// 回転
 	float m_angle;
-
 	// 総時間
 	float m_totalSeconds;
 	// 敵
 	Enemy* m_enemy;
-
 };
 
 #endif		// ENEMY_ATTACKING_DEFINED

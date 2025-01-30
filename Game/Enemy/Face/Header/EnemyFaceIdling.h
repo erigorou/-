@@ -6,25 +6,29 @@ class Enemy;
 
 class EnemyFaceIdling : public IFace
 {
-
-// 固定値
+// ---------------------------
+// メンバ関数（公開）
+// ---------------------------
 public:
+	// コンストラクタ
+	EnemyFaceIdling(Enemy* enemy);
+	// デストラクタ
+	~EnemyFaceIdling() override;
 
-// 公開関数
-public:
-	EnemyFaceIdling(Enemy* enemy);	// コンストラクタ
-	~EnemyFaceIdling() override;	// デストラクタ
-
-
-	void DrawFace(								// かおの描画
+	// 顔の描画
+	void DrawFace(
 		const DirectX::SimpleMath::Matrix mat,
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& proj
 	)	override;
 
-
-// 内部変数
+	
+// ---------------------------
+// メンバ変数
+// ---------------------------
 private:
-	Enemy* m_enemy;				// 敵の大元クラス
-	DirectX::Model* m_model;	// モデル
+	// 敵の大元クラス
+	Enemy* m_enemy;
+	// モデル
+	DirectX::Model* m_model;
 };

@@ -3,9 +3,6 @@
 // 敵の顔差分 : 待機
 //
 // -------------------------------------- //
-
-
-
 #include "pch.h"
 #include "Game/CommonResources.h"
 #include "Game/GameResources.h"
@@ -20,7 +17,8 @@
 EnemyFaceAttacking::EnemyFaceAttacking(Enemy* enemy)
 	: m_enemy(enemy)
 {
-	m_model = GameResources::GetInstance()->GetModel("bossIdlingFace");
+	// モデル取得
+	m_model = GameResources::GetInstance()->GetModel("bossAttackingFace");
 }
 
 // --------------------
@@ -31,10 +29,8 @@ EnemyFaceAttacking::~EnemyFaceAttacking()
 }
 
 
-
-
 // --------------------
-// デストラクタ
+// 描画処理
 // --------------------
 void EnemyFaceAttacking::DrawFace(
 	const DirectX::SimpleMath::Matrix mat,

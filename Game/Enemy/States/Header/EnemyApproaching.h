@@ -13,9 +13,20 @@ class EnemyApproaching : public IState
 	// 固定値
 	// ---------------------------
 public:
-	static constexpr float MINIMAL = 0.01f;				// 最小値
-	static constexpr float NORMALIZE_VELOCITY = 75.0f; 	// 速度の正規化
-
+	// 総秒数
+	static constexpr float TOTAL_TIME = 2.0f;
+	// 最小値
+	static constexpr float MINIMAL = 0.01f;
+	// 速度の正規化用
+	static constexpr float NORMALIZE_VELOCITY = 75.0f;
+	// サイン波の振幅
+	static constexpr float AMPLITUDE = 1.0f;
+	// サイン波の周波数
+	static constexpr float FREQUENCY = 1.0f;
+	// カメラの揺れの強さ
+	static constexpr float SHAKE_POWER = 1.0f;
+	// プレイヤーとの最小距離
+	static constexpr float MIN_DISTANCE = 20.0f;
 
 
 	// ---------------------------
@@ -51,7 +62,6 @@ private:
 	float m_angle;
 	// ワールド行列
 	DirectX::SimpleMath::Matrix m_worldMat;
-
 	// 総時間
 	float m_totalSeconds;
 	// 終了時間
@@ -60,13 +70,6 @@ private:
 	Enemy* m_enemy;
 	// パーティクル
 	Particle* m_particles;
-
-	// サイン波の振幅
-	float m_amplitude;
-	// サイン波の周波数
-	float m_frequency;
-	// カメラの揺れの強さ
-	float m_shakePower;
 
 };
 
