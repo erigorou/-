@@ -47,11 +47,10 @@ void BossStarting::Initialize()
 void BossStarting::PreUpdate()
 {
 	// 経過時間を初期化
-	m_totalSeconds = 0;
+	m_totalSeconds = 0.0f;
 	// 武器のステートを変更
 	auto cudgel = m_boss->GetPlayScene()->GetCudgel();
 	cudgel->ChangeState(cudgel->GetIdling());
-
 	// 顔のステートを変更
 	m_boss->SetFace(m_boss->GetFaceIdling());
 }
@@ -62,8 +61,6 @@ void BossStarting::PreUpdate()
 // --------------------------
 void BossStarting::Update(const float& elapsedTime)
 {
-
-	using namespace DirectX::SimpleMath;
 	m_totalSeconds += elapsedTime;
 
 	Vector3 playerPos = m_boss->GetPlayScene()->GetPlayer()->GetPosition();
@@ -73,27 +70,14 @@ void BossStarting::Update(const float& elapsedTime)
 	m_angle = Math::CalculationAngle(parentPos, playerPos);
 	m_boss->SetAngle(m_angle);
 
+	// アニメーション更新処理
 	UpdateAnimation();
 
 	// １秒で行動を変更する
 	if (m_totalSeconds >= TOTAL_TIME)
 	{
-		int random = Math::RandomInt(0, 10);
-		float distance = Vector3::Distance(parentPos, playerPos);
-		// 遠い距離の場合
-		if (distance > 20.0f)
-		{
-			if (random % 2 == 0)	m_boss->ChangeState(m_boss->GetBossApproaching());	// 追従
-			else					m_boss->ChangeState(m_boss->GetBossDashAttacking());	// ダッシュ攻撃
-		}
-
-		// 近い距離の場合
-		else
-		{
-			if (random <= 3)		m_boss->ChangeState(m_boss->GetBossSweeping());		// 掃討
-			else if(random <= 7)	m_boss->ChangeState(m_boss->GetBossAttacking());		// 攻撃
-			else if (random == 10)	m_boss->ChangeState(m_boss->GetBossDashAttacking());	// ダッシュ攻撃
-		}
+		// 敵をさせる
+		m_boss->ChangeState(m_boss->GetBossIdling());
 	}
 }
 

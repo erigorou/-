@@ -10,7 +10,27 @@ class Player;
 class BossIdling : public IState
 {
 // ---------------------------
-// 公開関数
+// 固定値
+// ---------------------------
+public:
+	// 総時間
+	static constexpr float TOTAL_TIME = 1.0f;
+	// 距離
+	static constexpr float FAR_DISTANCE = 20.0f;
+	// 全体の割合
+	static constexpr int TOTAL_RATE = 10;
+	// 薙ぎ払いを行う割合
+	static constexpr int SWEEPING_RATE = 3;
+	// たたきつけを行う割合
+	static constexpr int ATTACKING_RATE = 7;
+	// ダッシュ攻撃を行う割合
+	static constexpr int DASH_ATTACK_RATE = 8;
+	// 何もしない割合
+	static constexpr int IDLING_RATE = 10;
+
+
+// ---------------------------
+// メンバ関数（公開）
 // ---------------------------
 public:
 	// コンストラクタ
@@ -28,9 +48,17 @@ public:
 	// 終了処理
 	void Finalize() override;
 
+// ---------------------------
+// メンバ関数(非公開)
+// ---------------------------
+private:
+	// アニメーションの更新
+	void UpdateAnimation();
+	// 次のステートに移行するかを検知
+	void CheckNextState();
 
 // ---------------------------
-// 内部関数
+// メンバ変数
 // ---------------------------
 private:
 	// 回転

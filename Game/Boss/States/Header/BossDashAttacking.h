@@ -28,6 +28,12 @@ public:
 	static constexpr float TOTAL_TIME	= 5.0f;
 	// 最大速度
 	static constexpr float MAX_SPEED = 100.0f;
+	// sin波の速度
+	static constexpr float SIN_SPEED = 15.0f;
+	// 傾き(ため)
+	static constexpr float TILT_ANGLE = 20.0f;
+	// 傾き(ダッシュ)
+	static constexpr float TILT_ANGLE_DASH = 40.0f;
 
 
 // -----------------------------------

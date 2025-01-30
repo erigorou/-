@@ -14,10 +14,14 @@ class BossDead : public IState
 // ---------------------------
 private:
 
-	static constexpr float TOTAL_TIME			= 3.0f;		// 総時間
-	static constexpr float MAX_TILT_ANGLE		= -90.0f;	// 傾ける量
-	static constexpr float CAMERA_SHAKE_POWER	= 1.0f;		// カメラを揺らす強さ
-	static constexpr float CAMERA_SHAKE_TIMING	= -89.0f;	// カメラを揺らすタイミング
+	// 総時間
+	static constexpr float TOTAL_TIME = 3.0f;
+	// 傾ける量
+	static constexpr float MAX_TILT_ANGLE = -90.0f;
+	// カメラを揺らす強さ
+	static constexpr float CAMERA_SHAKE_POWER = 1.0f;
+	// カメラを揺らすタイミング
+	static constexpr float CAMERA_SHAKE_TIMING = -89.0f;
 
 // ---------------------------
 // 公開関数

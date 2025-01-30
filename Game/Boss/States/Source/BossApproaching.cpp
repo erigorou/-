@@ -69,13 +69,49 @@ void BossApproaching::Update(const float& elapsedTime)
 {
 	// 合計の時間を計算する
 	m_totalSeconds += elapsedTime;
+	// アニメーションの更新
+	UpdateAnimation(elapsedTime);
+	// 次のステートに移行するかを検知
+	CheckNextState();
+}
 
+
+
+// --------------------------------------
+// アニメーションの更新
+// --------------------------------------
+void BossApproaching::UpdateAnimation(float elapsedTime)
+{
 	// サイン波の計算(上下移動)
 	m_position.y = Math::CalculatingSinWave(m_totalSeconds, AMPLITUDE, FREQUENCY);
 	// 絶対値を取ることでジャンプしているような挙動をする　※
 	m_position.y = fabsf(m_position.y);
 	// プレイヤーの座標を取得
 	Vector3 playerPos = m_boss->GetPlayScene()->GetPlayer()->GetPosition();
+
+	// 敵から見たプレイヤーの位置を計算する
+	m_angle = Math::CalculationAngle(m_position, playerPos);
+	// 回転行列の作成
+	Matrix angleMat = Matrix::CreateScale(Boss::BOSS_SCALE) * Matrix::CreateRotationY(-m_angle);
+	// 前方に移動
+	m_position += Vector3::Transform(m_velocity * elapsedTime * NORMALIZE_VELOCITY, angleMat);
+
+	// 回転角を設定する
+	m_boss->SetAngle(m_angle);
+	// 座標を設定する
+	m_boss->SetPosition(m_position);
+}
+
+
+
+// --------------------------------------
+// いつ次のステートに移行するかを検知
+// --------------------------------------
+void BossApproaching::CheckNextState()
+{	
+	// プレイヤーの座標を取得
+	Vector3 playerPos = m_boss->GetPlayScene()->GetPlayer()->GetPosition();
+
 	// 移動でカメラを揺らす
 	if (m_position.y <= MINIMAL)
 	{
@@ -100,25 +136,12 @@ void BossApproaching::Update(const float& elapsedTime)
 		}
 	}
 
-	// 敵から見たプレイヤーの位置を計算する
-	m_angle = Math::CalculationAngle(m_position, playerPos);
-	// 回転行列の作成
-	Matrix angleMat = Matrix::CreateScale(Boss::BOSS_SCALE) * Matrix::CreateRotationY(-m_angle);
-	// 前方に移動
-	m_position += Vector3::Transform(m_velocity * elapsedTime * NORMALIZE_VELOCITY, angleMat);
 	// 一定秒数経過で待機モーションに変更
 	if (m_totalSeconds >= TOTAL_TIME)
 	{
 		m_boss->ChangeState(m_boss->GetBossIdling());
 	}
-
-	// 回転角を設定する
-	m_boss->SetAngle(m_angle);
-	// 座標を設定する
-	m_boss->SetPosition(m_position);
 }
-
-
 
 
 // --------------------------------------

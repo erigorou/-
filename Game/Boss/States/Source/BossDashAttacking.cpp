@@ -17,10 +17,10 @@
 // --------------------
 BossDashAttacking::BossDashAttacking(Boss* boss)
 	:
-	m_angle(0.0f),
-	m_bodyTilt(0.0f),
 	m_boss(boss),
-	m_totalSeconds()
+	m_angle{},
+	m_bodyTilt{},
+	m_totalSeconds{}
 {
 }
 
@@ -48,10 +48,8 @@ void BossDashAttacking::PreUpdate()
 {
 	// 経過時間を初期化
 	m_totalSeconds = 0.0f;
-
 	// 顔のステートを変更
 	m_boss->SetFace(m_boss->GetFaceAttacking());
-
 	// 最初は攻撃中ではない
 	m_isAttacking = false;
 }
@@ -65,13 +63,13 @@ void BossDashAttacking::Update(const float& elapsedTime)
 	// 経過時間を更新
 	m_elapsedTime = elapsedTime;
 	m_totalSeconds += m_elapsedTime;
-
 	// 敵の挙動を更新する
 	UpdateAction();
-
 	// 待機状態に遷移
 	if (m_totalSeconds >= TOTAL_TIME)
+	{
 		m_boss->ChangeState(m_boss->GetBossIdling());
+	}
 }
 
 
@@ -108,7 +106,7 @@ void BossDashAttacking::ChargeAction()
 	// イージング用の変数
 	float t = m_totalSeconds / CHARGE_TIME;
 	// 体の傾きの角度設定
-	m_bodyTilt = DirectX::XMConvertToRadians(-20 * Easing::easeOutBack(t));
+	m_bodyTilt = DirectX::XMConvertToRadians(-TILT_ANGLE * Easing::easeOutBack(t));
 	m_boss->SetBodyTilt(m_bodyTilt);
 }
 
@@ -133,15 +131,14 @@ void BossDashAttacking::DashAction()
 	position += Vector3::Transform(m_velocity, m_rotMatrix) * m_elapsedTime;
 
 	// サイン波で上下運動
-	float y = fabsf(sin(t * 15.0f)) * accelerationFactor;
+	float y = fabsf(sin(t * SIN_SPEED)) * accelerationFactor;
 	position.y = y;
 
 	// 計算した座標を本体に設定する
 	m_boss->SetPosition(position);
 
-	// 傾きの更新 *
 	// プレイヤーを傾ける
-	m_bodyTilt = DirectX::XMConvertToRadians(-20 + 40 * Easing::easeOutBack(t));
+	m_bodyTilt = DirectX::XMConvertToRadians(-TILT_ANGLE + TILT_ANGLE_DASH * Easing::easeOutBack(t));
 	m_boss->SetBodyTilt(m_bodyTilt);
 }
 
@@ -157,8 +154,8 @@ void BossDashAttacking::WaitAction()
 	// イージングに使用する秒数を計算（秒数のNormalize)
 	float t = (m_totalSeconds - DASH_TIME) / (WAIT_TIME - DASH_TIME);
 
-	// プレイヤーを傾ける *
-	m_bodyTilt = DirectX::XMConvertToRadians(20 - 20 * Easing::easeOutBounce(t));
+	// プレイヤーを傾ける
+	m_bodyTilt = DirectX::XMConvertToRadians(TILT_ANGLE - TILT_ANGLE * Easing::easeOutBounce(t));
 	m_boss->SetBodyTilt(m_bodyTilt);
 }
 

@@ -15,6 +15,8 @@ class BossAttacking : public IState
 public:
 	// ‘ŠÔ
 	static constexpr float TOTAL_TIME = 5.0f;
+	// “G‚ğ’Ç‚¢‚©‚¯‚éŠÔ
+	static constexpr float CHASE_TIME = 1.4f;
 
 
 // ---------------------------

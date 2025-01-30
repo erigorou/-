@@ -15,13 +15,13 @@ class BossSweeping : public IState
 	// ---------------------------
 public:
 	// 攻撃の貯めモーションの時間
-	static constexpr float CHARGE_TIME = 0.5f;
+	static constexpr float CHARGE_TIME = 0.8f;
 	// 攻撃する前の時間
-	static constexpr float WINDUP_TIME = 0.6f;
+	static constexpr float WINDUP_TIME = 0.9f;
 	// 攻撃する時間
-	static constexpr float ATTACK_TIME = 1.2f;
+	static constexpr float ATTACK_TIME = 1.5f;
 	// 攻撃（全体）が終了する時間
-	static constexpr float END_TIME = 2.0f;
+	static constexpr float END_TIME = 2.3f;
 	// 攻撃の貯めモーションの角度
 	static constexpr float ROTATE_ANGLE = 20.0f;
 
@@ -45,12 +45,28 @@ public:
 	// 終了処理
 	void Finalize() override;
 
+
+// ---------------------------
+// メンバ関数（非公開）
+// ---------------------------
+private:
+	// アニメーションの更新
+	void UpdateAnimation();
+	// ためモーションの更新
+	void UpdateChargeMotion();
+	// 薙ぎ払いモーションの更新
+	void UpdateSweepMotion();
+
+
+
 // ---------------------------
 // メンバ変数
 // ---------------------------
 private:
 	// 角度
 	float m_angle;
+	// 目標の角度
+	float m_targetAngle;
 	// 総時間
 	float m_totalSeconds;
 	// 敵

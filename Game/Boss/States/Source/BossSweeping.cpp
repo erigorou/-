@@ -64,35 +64,58 @@ void BossSweeping::PreUpdate()
 // ----------------------------------
 void BossSweeping::Update(const float& elapsedTime)
 {
-	using namespace DirectX::SimpleMath;
-
-
-	// 経過時間の計算
+	// 経過時間の加算
 	m_totalSeconds += elapsedTime;
-
-	float t = 0.0f;						// イージングに使用する変数
-	static float targetAngle = 0.0f;	// 目標の角度
-
-	if (m_totalSeconds <= CHARGE_TIME)	// 開始からためモーション中なら
-	{
-		t = m_totalSeconds / CHARGE_TIME;
-		targetAngle = m_angle - ROTATE_ANGLE * Easing::easeOutCirc(t);	// ためモーションを行う
-	}
-
-	else if (
-		m_totalSeconds >= WINDUP_TIME &&	// 待機時間を過ぎた　かつ
-		m_totalSeconds <= ATTACK_TIME)		// 攻撃時間中なら
-	{
-		t = (m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME);
-		targetAngle = m_angle - ROTATE_ANGLE + ROTATE_ANGLE * Easing::easeOutBack(t);	// 薙ぎ払いモーションを行う
-	}
-
-
-	if(m_totalSeconds > END_TIME)	m_boss->ChangeState(m_boss->GetBossIdling());		// 待機状態に遷移
-
-
-	m_boss->SetAngle(DirectX::XMConvertToRadians(targetAngle));							// 角度を設定
+	// アニメーションの更新
+	UpdateAnimation();
+	// 角度の更新
+	m_boss->SetAngle(DirectX::XMConvertToRadians(m_targetAngle));
 }
+
+
+// ----------------------------------
+// アニメーションの更新
+// ----------------------------------
+void BossSweeping::UpdateAnimation()
+{
+	// ためモーションを実行
+	if (Math::InTime(0.0f, m_totalSeconds, CHARGE_TIME))
+		UpdateChargeMotion();
+
+	// 時間内にいるなら薙ぎ払いモーションを実行
+	else if (Math::InTime(WINDUP_TIME, m_totalSeconds, ATTACK_TIME))
+		UpdateSweepMotion();
+
+	// 待機状態への遷移
+	if (m_totalSeconds > END_TIME)
+		m_boss->ChangeState(m_boss->GetBossIdling());
+
+}
+
+// ----------------------------------
+// ためモーションの更新
+// ----------------------------------
+void BossSweeping::UpdateChargeMotion()
+{
+	// ためる時間に対する経過時間の割合
+	float t = m_totalSeconds / CHARGE_TIME;
+	// イージングを用いた角度の計算
+	m_targetAngle = m_angle - ROTATE_ANGLE * Easing::easeOutCirc(t);
+}
+
+
+
+// ----------------------------------
+// 薙ぎ払いモーションの更新
+// ----------------------------------
+void BossSweeping::UpdateSweepMotion()
+{
+	// 薙ぎ払いモーションの経過時間に対する割合
+	float t = (m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME);
+	// イージングを用いた角度の計算
+	m_targetAngle = m_angle - ROTATE_ANGLE + ROTATE_ANGLE * Easing::easeOutBack(t);
+}
+
 
 
 // ----------------------------------

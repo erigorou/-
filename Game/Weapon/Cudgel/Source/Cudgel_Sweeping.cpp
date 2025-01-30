@@ -189,20 +189,17 @@ void Cudgel_Sweeping::GetCudgelBothEnds()
 		m_rootPos.push_back(root);							// 根本座標リストの先端に記録
 		m_tipPos .push_back(tip);							// 頂点座標リストの先端に記録
 
-	using namespace DirectX;
-
-
 
 	// 2個以上ない場合は処理を抜ける
 	int max = static_cast<int>(m_rootPos.size() - 1);
 	if (max >= 1)
 	{
-		VertexPositionTexture ver[4] =	// 頂点情報の生成（パーティクルの生成に必要）
+		DirectX::VertexPositionTexture ver[4] =	// 頂点情報の生成（パーティクルの生成に必要）
 		{
-			VertexPositionTexture(m_tipPos [max]		,Vector2(0, 0)),	// 左上
-			VertexPositionTexture(m_tipPos [max - 1]	,Vector2(1, 0)),	// 右上
-			VertexPositionTexture(m_rootPos[max - 1]	,Vector2(1, 1)),	// 右下
-			VertexPositionTexture(m_rootPos[max]		,Vector2(0, 1)),	// 左下
+			DirectX::VertexPositionTexture(m_tipPos [max]		,DirectX::SimpleMath::Vector2(0, 0)),	// 左上
+			DirectX::VertexPositionTexture(m_tipPos [max - 1]	,DirectX::SimpleMath::Vector2(1, 0)),	// 右上
+			DirectX::VertexPositionTexture(m_rootPos[max - 1]	,DirectX::SimpleMath::Vector2(1, 1)),	// 右下
+			DirectX::VertexPositionTexture(m_rootPos[max]		,DirectX::SimpleMath::Vector2(0, 1)),	// 左下
 		};
 
 		EventMessenger::Execute("CreateSwordTrail", &ver);	// パーティクルの生成

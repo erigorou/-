@@ -47,7 +47,6 @@ void BossAttacking::PreUpdate()
 	// 武器のステートを変更
 	auto cudgel = m_boss->GetPlayScene()->GetCudgel();
 	cudgel->ChangeState(cudgel->GetAttacking());
-
 	// 顔のステートを変更
 	m_boss->SetFace(m_boss->GetFaceAttacking());
 }
@@ -67,19 +66,22 @@ void BossAttacking::Update(const float& elapsedTime)
 	DirectX::SimpleMath::Vector3 parentPos = m_boss->GetPosition();
 	// 敵から見たプレイヤーの位置を計算する
 	m_angle = Math::CalculationAngle(parentPos, playerPos);
-
 	// 攻撃中まではプレイヤーを追尾するようにする
-	if (m_totalSeconds <= Cudgel_Attacking::ATTACK_TIME)
+	if (Math::InTime(0.0f, m_totalSeconds, CHASE_TIME))
 	{
 		// プレイヤーを追尾
 		m_boss->SetAngle(m_angle);
 	}
 
+	// 状態遷移
 	if (m_totalSeconds >= TOTAL_TIME)
 	{
-		m_boss->ChangeState(m_boss->GetBossIdling());	// 待機状態に遷移
+		// ステートを変更（待機状態）
+		m_boss->ChangeState(m_boss->GetBossIdling());
 	}
 }
+
+
 
 
 // --------------------------------------
@@ -90,7 +92,6 @@ void BossAttacking::PostUpdate()
 	// 武器のステートを変更する
 	auto cudgel = m_boss->GetPlayScene()->GetCudgel();
 	cudgel->ChangeState(cudgel->GetIdling());
-
 	// 顔のステートを変更
 	m_boss->SetFace(m_boss->GetFaceIdling());
 }

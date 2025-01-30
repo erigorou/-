@@ -21,11 +21,11 @@
 // コンストラクタ
 // ---------------------------
 BossDead::BossDead(Boss* boss)
-	:
-	m_angle(0.0f),
+	: 
 	m_boss(boss),
-	m_totalSeconds(),
-	m_tiltAngle(0.0f)
+	m_angle{},
+	m_totalSeconds{},
+	m_tiltAngle{}
 {
 }
 
