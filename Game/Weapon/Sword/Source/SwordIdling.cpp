@@ -6,6 +6,7 @@
 
 #include "pch.h"
 #include <cassert>
+#include "Game/Weapon/Sword/Sword.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
@@ -14,12 +15,12 @@
 #include "Game/Messenger/EventMessenger.h"
 
 #include "Game/Player/Player.h"
-#include "Game/Weapon/Sword/Header/Sword_Idling.h"
+#include "Game/Weapon/Sword/Header/SwordIdling.h"
 
 // -----------------------
 // コンストラクタ
 // -----------------------
-Sword_Idling::Sword_Idling(Sword* sword)
+SwordIdling::SwordIdling(Sword* sword)
 	:
 	m_sword(sword),
 	m_position(0.0f, 0.0f, 0.0f),
@@ -33,7 +34,7 @@ Sword_Idling::Sword_Idling(Sword* sword)
 // -----------------------
 // デストラクタ
 // -----------------------
-Sword_Idling::~Sword_Idling()
+SwordIdling::~SwordIdling()
 {
 }
 
@@ -41,7 +42,7 @@ Sword_Idling::~Sword_Idling()
 // -----------------------
 // 初期化処理
 // -----------------------
-void Sword_Idling::Initialize()
+void SwordIdling::Initialize()
 {
 	// ワールド行列を初期化
 	m_worldMatrix = DirectX::SimpleMath::Matrix::Identity;
@@ -51,7 +52,7 @@ void Sword_Idling::Initialize()
 // -----------------------
 // 事前処理
 // -----------------------
-void Sword_Idling::PreUpdate()
+void SwordIdling::PreUpdate()
 {
 	m_sword->SetAttackFlag(false);
 
@@ -66,7 +67,7 @@ void Sword_Idling::PreUpdate()
 // -----------------------
 // 更新処理
 // -----------------------
-void Sword_Idling::Update(float elapsedTime)
+void SwordIdling::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
@@ -96,7 +97,7 @@ void Sword_Idling::Update(float elapsedTime)
 // -----------------------
 // 事後処理
 // -----------------------
-void Sword_Idling::PostUpdate()
+void SwordIdling::PostUpdate()
 {
 }
 
@@ -104,7 +105,7 @@ void Sword_Idling::PostUpdate()
 // -----------------------
 // 終了処理
 // -----------------------
-void Sword_Idling::Finalize()
+void SwordIdling::Finalize()
 {
 }
 
@@ -112,7 +113,7 @@ void Sword_Idling::Finalize()
 // -----------------------
 // 当たり判定処理
 // -----------------------
-void Sword_Idling::HitAction(InterSectData data)
+void SwordIdling::HitAction(InterSectData data)
 {
 	UNREFERENCED_PARAMETER(data);
 }

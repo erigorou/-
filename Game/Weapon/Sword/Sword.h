@@ -6,15 +6,9 @@
 #include "Interface/IObject.h"
 #include "Game/Weapon/WeaponState.h"
 
-// 剣の状態 ===============================================================
-#include "Game/Weapon/Sword/Header/Sword_Idling.h"
-#include "Game/Weapon/Sword/Header/Sword_Attacking_1.h"
-#include "Game/Weapon/Sword/Header/Sword_Attacking_2.h"
-
-class Sword_Idling;
-class Sword_Attacking_1;
-class Sword_Attacking_2;
-
+class SwordIdling;
+class SwordAttacking1;
+class SwordAttacking2;
 class Player;
 
 class Sword : public IObject
@@ -88,14 +82,10 @@ private:
 
 	// 現在のステート
 	IWeapon* m_currentState;
-	// 待機モーション
-	//std::unique_ptr<Sword_Idling> m_swordIdling;
-	//std::unique_ptr<Sword_Attacking_1> m_swordAttacking_1;
-	//std::unique_ptr<Sword_Attacking_2> m_swordAttacking_2;
 
-	std::unique_ptr<Sword_Idling> m_swordIdling;
-	std::unique_ptr<Sword_Attacking_1> m_swordAttacking_1;
-	std::unique_ptr<Sword_Attacking_2> m_swordAttacking_2;
+	std::unique_ptr<SwordIdling> m_swordIdling;
+	std::unique_ptr<SwordAttacking1> m_swordAttacking_1;
+	std::unique_ptr<SwordAttacking2> m_swordAttacking_2;
 	// 待機モーションを格納する配列
 	std::vector<IWeapon*> m_states;
 

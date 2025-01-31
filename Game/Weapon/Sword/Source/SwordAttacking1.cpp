@@ -6,6 +6,7 @@
 
 #include "pch.h"
 #include <cassert>
+#include "Game/Weapon/Sword/Sword.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
@@ -16,19 +17,19 @@
 
 #include "Game/Player/Player.h"
 #include "Game/Boss/Boss.h"
-#include "Game/Weapon/Sword/Header/Sword_Attacking_1.h"
+#include "Game/Weapon/Sword/Header/SwordAttacking1.h"
 
 
 // --------------------------------
 //  固定値
 // --------------------------------
-const float Sword_Attacking_1::RADIAN_90 = DirectX::XMConvertToRadians(90);
+const float SwordAttacking1::RADIAN_90 = DirectX::XMConvertToRadians(90);
 
 
 // --------------------------------
 //  コンストラクタ
 // --------------------------------
-Sword_Attacking_1::Sword_Attacking_1(Sword* sword)
+SwordAttacking1::SwordAttacking1(Sword* sword)
 	: m_sword(sword)
 	, m_position(5.0f, 0.0f, 5.0f)
 	, m_velocity(0.0f, 0.0f, 0.0f)
@@ -43,7 +44,7 @@ Sword_Attacking_1::Sword_Attacking_1(Sword* sword)
 // --------------------------------
 //  デストラクタ
 // --------------------------------
-Sword_Attacking_1::~Sword_Attacking_1()
+SwordAttacking1::~SwordAttacking1()
 {
 }
 
@@ -51,7 +52,7 @@ Sword_Attacking_1::~Sword_Attacking_1()
 // --------------------------------
 //  初期化処理
 // --------------------------------
-void Sword_Attacking_1::Initialize()
+void SwordAttacking1::Initialize()
 {
 }
 
@@ -59,7 +60,7 @@ void Sword_Attacking_1::Initialize()
 // --------------------------------
 //  状態開始処理
 // --------------------------------
-void Sword_Attacking_1::PreUpdate()
+void SwordAttacking1::PreUpdate()
 {
 	// 攻撃フラグを立てる
 	m_sword->SetAttackFlag(true);
@@ -79,7 +80,7 @@ void Sword_Attacking_1::PreUpdate()
 // --------------------------------
 //  更新処理
 // --------------------------------
-void Sword_Attacking_1::Update(float elapsedTime)
+void SwordAttacking1::Update(float elapsedTime)
 {
 	// 経過時間を計測
 	m_totalSeconds += elapsedTime;
@@ -105,7 +106,7 @@ void Sword_Attacking_1::Update(float elapsedTime)
 // --------------------------------
 //  アニメーション更新処理
 // --------------------------------
-void Sword_Attacking_1::UpdateAnimation()
+void SwordAttacking1::UpdateAnimation()
 {
 	// イージング関数を使って回転を計算
 	float t = 0.0f;
@@ -133,7 +134,7 @@ void Sword_Attacking_1::UpdateAnimation()
 // --------------------------------
 // ワールド行列の更新処理
 // --------------------------------
-void Sword_Attacking_1::UpdateWorldMatrix()
+void SwordAttacking1::UpdateWorldMatrix()
 {	// ワールド行列を更新する
 	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE);	// 剣のサイズの設定
 
@@ -154,7 +155,7 @@ void Sword_Attacking_1::UpdateWorldMatrix()
 // --------------------------------
 //  量頂点の取得
 // --------------------------------
-void Sword_Attacking_1::GetCudgelBothEnds()
+void SwordAttacking1::GetCudgelBothEnds()
 {
 	// 根本と頂点のワールド座標をそれぞれ取得
 	m_rootPos.push_back(Vector3::Transform(Vector3(0.0f, Sword::MODEL_ROOT_HEIGHT, 0.0f), m_worldMatrix));
@@ -168,7 +169,7 @@ void Sword_Attacking_1::GetCudgelBothEnds()
 // --------------------------------
 //  斬撃エフェクトの生成処理
 // --------------------------------
-void Sword_Attacking_1::CreateSwordParticle()
+void SwordAttacking1::CreateSwordParticle()
 {
 	int max = static_cast<int>(m_rootPos.size()) - 1;
 	if (max > 1)
@@ -188,7 +189,7 @@ void Sword_Attacking_1::CreateSwordParticle()
 // --------------------------------
 //  状態終了処理
 // --------------------------------
-void Sword_Attacking_1::PostUpdate()
+void SwordAttacking1::PostUpdate()
 {
 	bool canHit = false;
 
@@ -201,7 +202,7 @@ void Sword_Attacking_1::PostUpdate()
 // --------------------------------
 //  終了処理
 // --------------------------------
-void Sword_Attacking_1::Finalize()
+void SwordAttacking1::Finalize()
 {
 }
 
@@ -209,7 +210,7 @@ void Sword_Attacking_1::Finalize()
 // --------------------------------
 //  衝突処理イベント
 // --------------------------------
-void Sword_Attacking_1::HitAction(InterSectData data)
+void SwordAttacking1::HitAction(InterSectData data)
 {
 	UNREFERENCED_PARAMETER(data);
 }

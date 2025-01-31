@@ -1,6 +1,5 @@
 #pragma once
 #include "pch.h"
-#include "Game/Weapon/Sword/Sword.h"
 #include "Interface/IWeapon.h"
 
 class Sword;
@@ -8,7 +7,7 @@ class Sword;
 /// <summary>
 /// 桃太郎が持つ刀の待機状態
 /// </summary>
-class Sword_Idling : public IWeapon
+class SwordIdling : public IWeapon
 {
 public:
 	// 固定値
@@ -16,9 +15,9 @@ public:
 	static const float ROTY;
 
 	// コンストラクタ
-	Sword_Idling(Sword* sword);
+	SwordIdling(Sword* sword);
 	// デストラクタ
-	~Sword_Idling();
+	~SwordIdling();
 
 	// 初期化処理
 	void Initialize()override;

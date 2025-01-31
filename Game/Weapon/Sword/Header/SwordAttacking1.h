@@ -1,6 +1,6 @@
 #pragma once
 #include "pch.h"
-#include "Game/Weapon/Sword/Sword.h"
+#include "Interface/IWeapon.h"
 
 class Sword;
 class Easying;
@@ -8,7 +8,7 @@ class Easying;
 /// <summary>
 /// 桃太郎が持つ刀の攻撃
 /// </summary>
-class Sword_Attacking_2 : public IWeapon
+class SwordAttacking1 : public IWeapon
 {
 // 固定値 **
 public:
@@ -20,18 +20,21 @@ public:
 	static constexpr DirectX::SimpleMath::Vector3 MATRIX_DIRECTION = DirectX::SimpleMath::Vector3(1.0f, 2.0f, 0.0f);
 
 	// 横の貯め角度
-	static constexpr float MAX_SIDE_ANGLE = 250.0f;
+	static constexpr float MAX_SIDE_ANGLE = -250.0f;
+
 	// 初期角度
 	static constexpr float INIT_ANGLE = 10.0f;
+
 	// 縦の最大
-	static constexpr float MAX_VERTICAL_ANGLE = 30.0f;
+	static constexpr float MAX_VERTICAL_ANGLE = 40.0f;
+
 
 // 公開関数 **
 public:
 	// コンストラクタ
-	Sword_Attacking_2(Sword* sword);
+	SwordAttacking1(Sword* sword);
 	// デストラクタ
-	~Sword_Attacking_2();
+	~SwordAttacking1();
 
 	// 初期化処理
 	void Initialize()override;
@@ -39,6 +42,7 @@ public:
 	void PreUpdate()override;
 	// 更新処理
 	void Update(float elapsedTime)override;
+	void CreateSwordParticle();
 	// 事後処理
 	void PostUpdate()override;
 	// 終了処理
@@ -46,10 +50,7 @@ public:
 	// 衝突処理
 	void HitAction(InterSectData data)override;
 
-
-// ---------------------
-// 非公開関数
-// ---------------------
+// 非公開関数 **
 private:
 	// アニメーション更新処理
 	void UpdateAnimation();
@@ -58,10 +59,9 @@ private:
 	// 根本と頂点の座標を取得する ※ both ends = 両端
 	void GetCudgelBothEnds();
 
-	// ソードのパーティクルを生成
-	void CreateSwordParticle();
 
-
+// 内部変数 **
+private:
 	// ソードの元を取得
 	Sword* m_sword;
 

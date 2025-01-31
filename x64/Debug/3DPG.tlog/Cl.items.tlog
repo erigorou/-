@@ -74,9 +74,9 @@ C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Weapon\Cudgel\Cudg
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Weapon\Cudgel\Source\Cudgel_Attacking.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\Cudgel_Attacking.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Weapon\Cudgel\Source\Cudgel_Idling.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\Cudgel_Idling.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\Cudgel_Sweeping.obj
-C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Weapon\Sword\Source\Sword_Attacking_1.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\Sword_Attacking_1.obj
-C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Weapon\Sword\Source\Sword_Attacking_2.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\Sword_Attacking_2.obj
-C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Weapon\Sword\Source\Sword_Idling.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\Sword_Idling.obj
+C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Weapon\Sword\Source\SwordAttacking1.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\SwordAttacking1.obj
+C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Weapon\Sword\Source\SwordAttacking2.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\SwordAttacking2.obj
+C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Weapon\Sword\Source\SwordIdling.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\SwordIdling.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Game\Weapon\Sword\Sword.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\Sword.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Interface\IEnemy.h;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\IEnemy.obj
 C:\Users\it232012\Desktop\就職作品\鬼退治\project\Libraries\MyLib\DebugDraw.cpp;C:\Users\it232012\Desktop\就職作品\鬼退治\project\x64\Debug\DebugDraw.obj
