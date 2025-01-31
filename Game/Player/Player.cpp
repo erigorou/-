@@ -154,8 +154,10 @@ void Player::InitializeRender()
 // --------------------------------
 void Player::AttachEvent()
 {
-	// イベントの登録
+	// IObject* 型のオブジェクトを取得する
 	EventMessenger::AttachGetter("GetPlayerObject", std::bind(&Player::GetObject, this));
+	// 衝突可能かを設定
+	EventMessenger::Attach("PlayerCanHit", std::bind(&Player::CanHit, this, std::placeholders::_1));
 }
 
 
@@ -568,4 +570,13 @@ void Player::HitStage(InterSectData data)
 		m_position += m_pushBackValue;
 		m_bodyCollision->Center = m_position;
 	}
+}
+
+
+// --------------------------------
+//  衝突可能か
+// --------------------------------
+void Player::CanHit(void* flag)
+{
+	m_canHit = *(bool*)flag;
 }

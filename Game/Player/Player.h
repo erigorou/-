@@ -79,8 +79,6 @@ public:
 
 	PlayScene* GetPlayScene()const { return m_playScene; }
 
-	void CanHit(bool flag) { m_canHit = flag; }
-
 // -------------------
 // 公開関数
 // -------------------
@@ -115,6 +113,8 @@ public:
 	void OnKeyPressed(const DirectX::Keyboard::Keys& key) override;
 	// キーボードの入力を取得する
 	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
+	// プレイヤーの攻撃判定
+	void CanHit(void* flag);
 
 // -------------------
 // 内部関数
@@ -136,6 +136,7 @@ private:
 	void HitGoblin(InterSectData data);
 	// ステージとの衝突判定
 	void HitStage(InterSectData data);
+
 	// ダメージ
 	void Damage(float damage);
 

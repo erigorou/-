@@ -5,6 +5,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 #include "Game/Messenger/EventMessenger.h"
+#include "Game/Weapon/WeaponState.h"
 
 // 関数を使用するのに必要な引数
 #include "Game/Boss/Boss.h"
@@ -52,9 +53,10 @@ void BossIdling::PreUpdate()
 {
 	// 経過時間を初期化
 	m_totalSeconds = 0.0f;
+
 	// 武器のステートを変更
-	auto cudgel = m_boss->GetPlayScene()->GetCudgel();
-	cudgel->ChangeState(cudgel->GetIdling());
+	CudgelState state = CudgelState::Idle;
+	EventMessenger::Execute("ChangeCudgelState", &state);
 
 	// 顔のステートを変更
 	m_boss->SetFace(m_boss->GetFaceIdling());
@@ -163,7 +165,6 @@ void BossIdling::CheckNextState()
 // --------------------------
 void BossIdling::PostUpdate()
 {
-	// 修正点があればここに記載
 }
 
 

@@ -6,6 +6,7 @@
 #include "Libraries/MyLib/Math.h"
 #include "Libraries//MyLib/EasingFunctions.h"
 #include "Game/Messenger/EventMessenger.h"
+#include "Game/Weapon/WeaponState.h"
 
 #include "Game/Boss/Boss.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
@@ -59,6 +60,9 @@ void BossDashAttacking::PreUpdate()
 	m_boss->SetFace(m_boss->GetFaceAttacking());
 	// 最初は攻撃中ではない
 	m_isAttacking = false;
+	// ステートを変更
+	CudgelState state = CudgelState::Idle;
+	EventMessenger::Execute("ChangeCudgelState", &state);
 }
 
 
@@ -195,8 +199,9 @@ void BossDashAttacking::ReturnAction()
 // --------------------
 void BossDashAttacking::PostUpdate()
 {
-	// 金棒のステートを変更
-	m_cudgel->ChangeState(m_cudgel->GetIdling());
+	// ステートを変更
+	CudgelState state = CudgelState::Idle;
+	EventMessenger::Execute("ChangeCudgelState", &state);
 
 	// 顔のステートを変更
 	m_boss->SetFace(m_boss->GetFaceIdling());

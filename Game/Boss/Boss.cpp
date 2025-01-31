@@ -17,6 +17,7 @@
 #include "Game/GameResources.h"
 #include "Game/Messenger/EventMessenger.h"
 #include "Game/Boss/Boss.h"
+#include "Game/Weapon/Cudgel/Cudgel.h"
 #include "Game/EnemyManager/EnemyManager.h"
 #include "Game/Stage/Wall/Wall.h"
 #include "Interface/IState.h"
@@ -74,10 +75,11 @@ Boss::~Boss()
  // --------------------------------
 void Boss::Initialize()
 {
+	// 武器の生成
+	m_cudgel = Factory::CreateCudgel(this);
+
 	// モデルを取得
 	m_model = GameResources::GetInstance()->GetModel("boss");
-	// 武器の生成
-	m_cudgel = Factory::CreateCudgel(nullptr);
 	// HPを設定
 	m_hp = std::make_unique<HPSystem>(HP);
 	// ビヘイビアツリーを取得
@@ -190,6 +192,8 @@ void Boss::Update(float elapsedTime)
 	CheckHitCoolTime(elapsedTime);
 	// 生存確認
 	CheckAlive();
+	// 武器の更新
+	m_cudgel->Update(elapsedTime);
 
 #ifdef _DEBUG
 
@@ -266,6 +270,9 @@ void Boss::Render(
 
 	// ダメージのエフェクトを付与
 	m_effect->DrawWithEffect(m_model, m_worldMatrix, view, projection);
+
+	// 金棒の描画
+	m_cudgel->Render(view, projection);
 }
 
 

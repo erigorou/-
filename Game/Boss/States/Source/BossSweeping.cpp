@@ -5,7 +5,8 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 #include "Game/Sound/Sound.h"
-
+#include "Game/Weapon/WeaponState.h"
+#include "Game/Messenger/EventMessenger.h"
 #include "Game/Boss/Boss.h"
 #include "Game/Player/Player.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
@@ -51,8 +52,9 @@ void BossSweeping::PreUpdate()
 	m_totalSeconds = 0.0f;
 	m_angle = DirectX::XMConvertToDegrees(m_boss->GetAngle());
 
-	auto cudgel = m_boss->GetPlayScene()->GetCudgel();
-	cudgel->ChangeState(cudgel->GetSweeping());			// 金棒のステートを変更
+	// 武器のステートを変更
+	CudgelState state = CudgelState::Sweep;
+	EventMessenger::Execute("ChangeCudgelState", &state);
 
 	// 顔
 	m_boss->SetFace(m_boss->GetFaceAttacking());
@@ -125,6 +127,10 @@ void BossSweeping::PostUpdate()
 {
 	// 顔のステートを変更
 	m_boss->SetFace(m_boss->GetFaceIdling());
+
+	// 武器のステートを変更
+	CudgelState state = CudgelState::Idle;
+	EventMessenger::Execute("ChangeCudgelState", &state);
 }
 
 

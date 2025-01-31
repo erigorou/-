@@ -19,7 +19,7 @@
 
 #include "Game/Boss/Boss.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
-
+#include "Game/Boss/Boss.h"
 
 const float Cudgel::CUDGEL_SCALE = Boss::BOSS_SCALE * 1.2f;						// 金棒の拡大率
 const DirectX::SimpleMath::Vector3 Cudgel::DIRECTION_ENEMY = { 8.0f, 5.0f, 0.0f };	// 持ち手の距離（敵と比較）
@@ -30,11 +30,11 @@ const DirectX::SimpleMath::Vector3 Cudgel::CUDGEL_HADLE_POS = { 0.0f, 10.0f, 0.0
 // --------------------------------
 // コンストラクタ
 // --------------------------------
-Cudgel::Cudgel(PlayScene* playScene)
+Cudgel::Cudgel(Boss* boss)
 	:
-	m_playScene(playScene)
-	,m_currentState()
-	,m_worldMatrix(DirectX::SimpleMath::Matrix::Identity)
+	m_boss(boss),
+	m_currentState(),
+	m_worldMatrix(DirectX::SimpleMath::Matrix::Identity)
 {
 }
 
@@ -70,14 +70,16 @@ void Cudgel::Initialize()
 	// プリミティブバッチの作成
 	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
 
+	// 金棒のポインタを取得
+	EventMessenger::AttachGetter("GetCudgelObject", std::bind(&Cudgel::GetCudgelObject, this));
+	// 金棒のステートを変更
+	EventMessenger::Attach("ChangeCudgelState", std::bind(&Cudgel::ChangeState, this, std::placeholders::_1));
+
 	// モデルを取得する
 	m_model = GameResources::GetInstance()->GetModel("cudgel");
 
 	CreateState();			// ステートの作成
 	CreateCollision();		// 当たり判定の生成
-
-	// イベントを登録
-	EventMessenger::AttachGetter("GetCudgelObject", std::bind(&Cudgel::GetCudgelObject, this));
 }
 
 
@@ -98,6 +100,11 @@ void Cudgel::CreateState()
 
 	// 初期状態を指定
 	m_currentState = m_idling.get();
+
+	// ステートのリストに追加
+	m_states.push_back(m_idling.get());
+	m_states.push_back(m_attacking.get());
+	m_states.push_back(m_sweeping.get());
 }
 
 
@@ -144,9 +151,6 @@ void Cudgel::Render(
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
 
-	// 敵がいない場合は描画しない
-	if (! GetPlayScene()->GetBoss()) return;
-
 	// モデルを描画
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 
@@ -166,14 +170,17 @@ void Cudgel::Finalize()
 // --------------------------------
 // ステートの変更
 // --------------------------------
-void Cudgel::ChangeState(IWeapon* state)
+void Cudgel::ChangeState(void* state)
 {
-	// 同じステートに変更しようとしたら早期リターン
-	if (m_currentState == state)return;
+	int index = *static_cast<int*>(state);
+
+	// ステートの変更
+	if (m_currentState == m_states[index]) return;
+
 	// ステートの事後処理
 	m_currentState->PostUpdate();
 	// 新しいステートに切り替える
-	m_currentState = state;
+	m_currentState = m_states[index];
 	// 新しいステートの事前処理を行う
 	m_currentState->PreUpdate();
 }

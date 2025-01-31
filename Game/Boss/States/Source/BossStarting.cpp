@@ -42,6 +42,8 @@ void BossStarting::Initialize()
 	// プレイヤーの取得
 	void* object = EventMessenger::ExecuteGetter("GetPlayerObject");
 	m_player = object ? static_cast<IObject*>(object) : nullptr;
+
+
 }
 
 
@@ -53,8 +55,8 @@ void BossStarting::PreUpdate()
 	// 経過時間を初期化
 	m_totalSeconds = 0.0f;
 	// 武器のステートを変更
-	auto cudgel = m_boss->GetPlayScene()->GetCudgel();
-	cudgel->ChangeState(cudgel->GetIdling());
+	
+
 	// 顔のステートを変更
 	m_boss->SetFace(m_boss->GetFaceIdling());
 }

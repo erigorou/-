@@ -13,6 +13,7 @@
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/Collision.h"
 
+
 #include "Game/Player/Player.h"
 #include "Game/Boss/Boss.h"
 #include "Game/Weapon/Cudgel/Header/Cudgel_Idling.h"
@@ -65,11 +66,9 @@ void Cudgel_Idling::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	if (!m_cudgel->GetPlayScene()->GetBoss()) return;
 
-	auto enemy = m_cudgel->GetPlayScene()->GetBoss();
-	m_position = enemy->GetPosition();	// 敵の座標を取得
-	m_angle	= enemy->GetAngle();		// 敵の回転を取得
+	m_position = m_cudgel->GetBoss()->GetPosition();	// 敵の座標を取得
+	m_angle	= m_cudgel->GetBoss()->GetAngle();		// 敵の回転を取得
 
 	// ワールド行列を計算する
 	m_worldMatrix = DirectX::SimpleMath::Matrix::CreateScale(Cudgel::CUDGEL_SCALE)		// 大きさの設定　＆　リセット

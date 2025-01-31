@@ -2,8 +2,9 @@
 
 #pragma once
 #include "Interface/IWeapon.h"
-#include "Game/Scene/PlayScene.h"
 #include "Interface/IObject.h"
+
+class Boss;
 
 // 金棒の状態 ========================================================
 #include "header/Cudgel_Idling.h"		// 待機
@@ -16,6 +17,9 @@ public:
 	// このオブジェクトのポインタを渡す
 	void* GetCudgelObject() { return this; }
 
+	// ボスのポインタを渡す
+	Boss* GetBoss() { return m_boss; }
+
 	// 固定値
 	static const float CUDGEL_SCALE;							// 大きさ
 	static const DirectX::SimpleMath::Vector3 DIRECTION_ENEMY;	// 敵との離れている距離
@@ -25,7 +29,6 @@ public:
 
 	DirectX::SimpleMath::Vector3	GetPosition()	override{ return m_position;	}	// 位置の取得
 	DirectX::Model*					GetModel()		const	{ return m_model;		}	// モデルの取得
-	PlayScene*						GetPlayScene()	const	{ return m_playScene;	}	// プレイシーンの取
 
 	Cudgel_Idling*		GetIdling()		const { return m_idling.get();		}	// 待機
 	Cudgel_Attacking*	GetAttacking()	const { return m_attacking.get();	}	// 攻撃
@@ -39,7 +42,7 @@ public:
 
 public:
 	// コンストラクタ
-	Cudgel(PlayScene* playScene);
+	Cudgel(Boss* boss);
 	// デストラクタ
 	~Cudgel();
 
@@ -58,8 +61,8 @@ public:
 	void Finalize();
 	// 当たったときの処理
 	void HitAction(InterSectData) override;
-	// ステートを更新する
-	void ChangeState(IWeapon* state);
+	// ステートを変更する
+	void ChangeState(void* state);
 
 private:
 
@@ -67,6 +70,8 @@ private:
 	void CreateState();
 	// 当たり判定の生成
 	void CreateCollision();
+
+private:
 
 	DirectX::SimpleMath::Vector3 m_position;	// 位置
 	DirectX::SimpleMath::Vector3 m_velocity;	// 速度
@@ -79,7 +84,6 @@ private:
 	// オリジナルの当たり判定 (オリジナルは生成をするだけのもの)
 	DirectX::BoundingOrientedBox m_originalBox;
 
-private:
 	// 現在のステート
 	IWeapon* m_currentState;
 
@@ -87,7 +91,8 @@ private:
 	std::unique_ptr<Cudgel_Attacking>	m_attacking;	// たたきつけ
 	std::unique_ptr<Cudgel_Sweeping>	m_sweeping;		// 薙ぎ払い
 
-private:
+	std::vector<IWeapon*> m_states;	// ステートのリスト
+
 	// ベーシックエフェクト
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
@@ -95,4 +100,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
 	// プレイシーン（当たり判定の処理に使用）
 	PlayScene* m_playScene;
+
+	// 敵
+	Boss* m_boss;
 };

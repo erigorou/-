@@ -5,6 +5,7 @@
 
 class Boss;
 class Player;
+class Cudgel;
 
 // 敵の待機ステートを定義
 class BossDead : public IState
@@ -56,6 +57,8 @@ private:
 private:
 	// 敵
 	Boss* m_boss;
+	// 金棒
+	Cudgel* m_cudgel;
 	// 回転
 	float m_angle;
 	// 総時間

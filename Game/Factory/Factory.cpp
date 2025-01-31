@@ -152,7 +152,7 @@ std::unique_ptr<Boss> Factory::CreateBoss(PlayScene* playScene)
 {
 	// ‹Si“Gj‚ğéŒ¾‚·‚é
 	std::unique_ptr<Boss> enemy;
-	enemy = std::make_unique<Boss>(playScene);
+	enemy = std::make_unique<Boss>();
 	// ‰Šú‰»ˆ—
 	enemy->Initialize();
 
@@ -198,11 +198,12 @@ std::unique_ptr<Sword> Factory::CreateSword(PlayScene* playScene)
 // ---------------------------------------------
 // ‹Si“Gj‚Ì•Ší‚Ì¶¬ŠÖ”
 // ---------------------------------------------
-std::unique_ptr<Cudgel> Factory::CreateCudgel(PlayScene* playScene)
+std::unique_ptr<Cudgel> Factory::CreateCudgel(Boss* boss)
 {
 	// ‹Si“Gj‚Ì•Ší‚ğéŒ¾‚·‚é
 	std::unique_ptr<Cudgel> cudgel;
-	cudgel = std::make_unique<Cudgel>(playScene);
+
+	cudgel = std::make_unique<Cudgel>(boss);
 	// ‰Šú‰»ˆ—
 	cudgel->Initialize();
 	// ‹Si“Gj‚Ì•Ší‚Ìİ’è

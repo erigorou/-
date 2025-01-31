@@ -35,18 +35,17 @@ const Vector3 Cudgel_Attacking::ZERO_DIREC = Vector3(8.0f, 1.0f, 0.0f);
 
 // コンストラクタ
 Cudgel_Attacking::Cudgel_Attacking(Cudgel* cudgel)
-	:m_cudgel(cudgel)
-	, m_position(0.0f, 0.0f, 0.0f)
-	, m_velocity(0.0f, 0.0f, 0.0f)
-	, m_angleRL(0.0f)
-	, m_angleUD(0.0f)
-	, m_totalSeconds(0.0f)
-	, m_recordPointTimer(0.0f)
-	, m_worldMatrix(DirectX::SimpleMath::Matrix::Identity)
-	, m_canGenerateSlamParticles(true)
+	:
+	m_cudgel(cudgel),
+	m_position{},
+	m_velocity{},
+	m_angleRL{},
+	m_angleUD{},
+	m_totalSeconds{},
+	m_recordPointTimer{},
+	m_worldMatrix(DirectX::SimpleMath::Matrix::Identity),
+	m_canGenerateSlamParticles(true)
 {
-	// パーティクルの取得
-	m_particles = cudgel->GetPlayScene()->GetParticle();
 }
 
 // デストラクタ
@@ -90,7 +89,7 @@ void Cudgel_Attacking::Update(float elapsedTime)
 	m_totalSeconds		+= elapsedTime;
 	m_recordPointTimer	+= elapsedTime;
 
-	auto boss = m_cudgel->GetPlayScene()->GetBoss();
+	auto boss = m_cudgel->GetBoss();
 	m_position = boss->GetPosition();	// 敵の座標を取得
 	m_enemyAngle = boss->GetAngle();	// 敵の回転を取得
 	m_angleRL = m_enemyAngle;			// 敵の回転を設定
@@ -211,8 +210,8 @@ void Cudgel_Attacking::UpdateAttackState()
 	else if (m_totalSeconds > ATTACK_TIME && m_totalSeconds <= STOP_TIME)	KeepStampPhase();
 	else if (m_totalSeconds > STOP_TIME && m_totalSeconds <= RETURN_TIME)	ReturnToOriginalPhase((m_totalSeconds - STOP_TIME) / (RETURN_TIME - STOP_TIME));
 
-	// プレイヤーに攻撃可能状態を通知
-	m_cudgel->GetPlayScene()->GetPlayer()->CanHit(m_canHit);
+	//// プレイヤーに攻撃可能状態を通知
+	//m_cudgel->GetPlayScene()->GetPlayer()->CanHit(m_canHit);
 }
 
 

@@ -5,6 +5,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 #include "Libraries//MyLib/EasingFunctions.h"
+#include "Game/Weapon/WeaponState.h"
 
 // 関数を使用するのに必要な引数
 #include "Game/Boss/Boss.h"
@@ -44,6 +45,8 @@ BossDead::~BossDead()
 // ---------------------------
 void BossDead::Initialize()
 {
+	auto object = EventMessenger::ExecuteGetter("GetCudgelObject");
+	m_cudgel = object ? static_cast<Cudgel*>(object) : nullptr;
 }
 
 
@@ -58,9 +61,9 @@ void BossDead::PreUpdate()
 	m_angle = m_boss->GetAngle();
 	// 状態開始時の傾きを取得
 	m_startTilt = m_boss->GetBodyTilt();
-	// 武器のステートを変更
-	auto cudgel = m_boss->GetPlayScene()->GetCudgel();
-	cudgel->ChangeState(cudgel->GetIdling());
+	// ステートを変更
+	CudgelState state = CudgelState::Idle;
+	EventMessenger::Execute("ChangeCudgelState", &state);
 	// 顔のステートを変更
 	m_boss->SetFace(m_boss->GetFaceIdling());
 

@@ -10,6 +10,7 @@
 #include "Game/Player/Player.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
 #include "Game/Boss/States/Header/BossAttacking.h"
+#include "Game/Weapon/WeaponState.h"
 
 // --------------------------------------
 // コンストラクタ
@@ -49,8 +50,8 @@ void BossAttacking::PreUpdate()
 	// 経過時間を初期化
 	m_totalSeconds = 0.0f;
 	// 武器のステートを変更
-	auto cudgel = m_boss->GetPlayScene()->GetCudgel();
-	cudgel->ChangeState(cudgel->GetAttacking());
+	CudgelState state = CudgelState::Attack;
+	EventMessenger::Execute("ChangeCudgelState", &state);
 	// 顔のステートを変更
 	m_boss->SetFace(m_boss->GetFaceAttacking());
 }
@@ -93,9 +94,9 @@ void BossAttacking::Update(const float& elapsedTime)
 // --------------------------------------
 void BossAttacking::PostUpdate()
 {
-	// 武器のステートを変更する
-	auto cudgel = m_boss->GetPlayScene()->GetCudgel();
-	cudgel->ChangeState(cudgel->GetIdling());
+	// 武器のステートを変更
+	CudgelState state = CudgelState::Idle;
+	EventMessenger::Execute("ChangeCudgelState", &state);
 	// 顔のステートを変更
 	m_boss->SetFace(m_boss->GetFaceIdling());
 }

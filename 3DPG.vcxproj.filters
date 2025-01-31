@@ -257,6 +257,7 @@
     <ClInclude Include="Game\UI\Action\TutorialButtonAction.h" />
     <ClInclude Include="Game\UI\Action\BossFightButtonAction.h" />
     <ClInclude Include="Effects\EnemyEffect\EnemyEffect.h" />
+    <ClInclude Include="Game\Weapon\WeaponState.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />

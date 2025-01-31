@@ -102,7 +102,6 @@ void PlayScene::CreateObjects()
 	m_wall				= Factory::CreateWall				(this);	// 壁
 	m_player			= Factory::CreatePlayer				(this);	// プレイヤ
 	m_sword				= Factory::CreateSword				(this);	// 刀
-	m_cudgel			= Factory::CreateCudgel				(this);	// 金棒
 
 	m_uiManager		= Factory::CreateUIManager				(this);	// UIマネージャー
 	m_enemyManager	= Factory::CreateEnemyManager			(this);	// 敵マネージャー
@@ -203,7 +202,6 @@ void PlayScene::UpdateObjects(float elapsedTime)
 	m_uiManager		->Update(elapsedTime);
 	m_player		->Update(smoothDeltaTime);
 	m_sword			->Update(smoothDeltaTime);
-	m_cudgel		->Update(smoothDeltaTime);
 	m_enemyManager	->Update(smoothDeltaTime);
 	m_questManager	->Update(elapsedTime);
 	UpdateCamera(elapsedTime);
@@ -234,7 +232,6 @@ void PlayScene::Render()
 	m_sea->			Render			(view, m_projection);	// 海
 	m_wall->		Render			(view, m_projection);	// 壁
 
-	m_cudgel->		Render(view, m_projection);	// 金棒
 	m_player->		Render(view, m_projection);	// プレイヤー
 	m_sword->		Render(view, m_projection); // 刀
 	m_enemyManager->Render(view, m_projection); // 敵（複数）
