@@ -13,12 +13,14 @@
 class Cudgel : public IObject
 {
 public:
+	// このオブジェクトのポインタを渡す
+	void* GetCudgelObject() { return this; }
+
 	// 固定値
 	static const float CUDGEL_SCALE;							// 大きさ
 	static const DirectX::SimpleMath::Vector3 DIRECTION_ENEMY;	// 敵との離れている距離
 	static const DirectX::SimpleMath::Vector3 CUDGEL_LENGTH;	// 金棒の長さ
 	static const DirectX::SimpleMath::Vector3 CUDGEL_HADLE_POS;	// 金棒の取っ手の位置
-
 
 
 	DirectX::SimpleMath::Vector3	GetPosition()	override{ return m_position;	}	// 位置の取得

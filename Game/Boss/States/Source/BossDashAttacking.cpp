@@ -5,9 +5,9 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 #include "Libraries//MyLib/EasingFunctions.h"
+#include "Game/Messenger/EventMessenger.h"
 
 #include "Game/Boss/Boss.h"
-#include "Game/Player/Player.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
 #include "../../States/Header/BossDashAttacking.h"
 
@@ -38,6 +38,13 @@ BossDashAttacking::~BossDashAttacking()
 // --------------------
 void BossDashAttacking::Initialize()
 {
+	// プレイヤーの取得
+	void* player = EventMessenger::ExecuteGetter("GetPlayerObject");
+	m_player = player ? static_cast<IObject*>(player) : nullptr;
+
+	// 金棒
+	void* cudgel = EventMessenger::ExecuteGetter("GetCudgelObject");
+	m_cudgel = cudgel ? static_cast<Cudgel*>(cudgel) : nullptr;
 }
 
 
@@ -84,8 +91,8 @@ void BossDashAttacking::UpdateAction()
 	else if (m_totalSeconds <= WAIT_TIME)	WaitAction();	// 待機
 	else if (m_totalSeconds <= RETURN_TIME)	ReturnAction();	// 元に戻る
 
-	// 衝突可能かどうか
-	m_boss->GetPlayScene()->GetPlayer()->CanHit(m_isAttacking);
+	//// 衝突可能かどうか
+	//m_boss->GetPlayScene()->GetPlayer()->CanHit(m_isAttacking);
 }
 
 
@@ -95,7 +102,7 @@ void BossDashAttacking::UpdateAction()
 void BossDashAttacking::ChargeAction()
 {
 	// プレイヤーの座標を取得
-	Vector3 playerPos = m_boss->GetPlayScene()->GetPlayer()->GetPosition();
+	Vector3 playerPos = m_player->GetPosition();
 	// 敵の座標を取得
 	Vector3 parentPos = m_boss->GetPosition();
 	// 敵から見たプレイヤーの位置を設定する
@@ -169,7 +176,7 @@ void BossDashAttacking::ReturnAction()
 	float easing = (m_totalSeconds - WAIT_TIME) / (RETURN_TIME - WAIT_TIME);
 
 	// プレイヤーの座標を取得
-	Vector3 playerPos = m_boss->GetPlayScene()->GetPlayer()->GetPosition();
+	Vector3 playerPos = m_player->GetPosition();
 	// 敵の座標を取得
 	Vector3 parentPos = m_boss->GetPosition();
 	// 敵から見たプレイヤーの位置を設定する
@@ -188,9 +195,8 @@ void BossDashAttacking::ReturnAction()
 // --------------------
 void BossDashAttacking::PostUpdate()
 {
-	// 武器のステートを変更する
-	auto cudgel = m_boss->GetPlayScene()->GetCudgel();
-	cudgel->ChangeState(cudgel->GetIdling());
+	// 金棒のステートを変更
+	m_cudgel->ChangeState(m_cudgel->GetIdling());
 
 	// 顔のステートを変更
 	m_boss->SetFace(m_boss->GetFaceIdling());

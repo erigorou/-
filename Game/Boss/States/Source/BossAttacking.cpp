@@ -4,6 +4,7 @@
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
+#include "Game/Messenger/EventMessenger.h"
 
 #include "Game/Boss/Boss.h"
 #include "Game/Player/Player.h"
@@ -34,6 +35,9 @@ BossAttacking::~BossAttacking()
 // --------------------------------------
 void BossAttacking::Initialize()
 {
+	// プレイヤーの取得
+	void* object = EventMessenger::ExecuteGetter("GetPlayerObject");
+	m_player = object ? static_cast<IObject*>(object) : nullptr;
 }
 
 
@@ -61,7 +65,7 @@ void BossAttacking::Update(const float& elapsedTime)
 	m_totalSeconds += elapsedTime;
 
 	// プレイヤーの座標を取得
-	DirectX::SimpleMath::Vector3 playerPos = m_boss->GetPlayScene()->GetPlayer()->GetPosition();
+	DirectX::SimpleMath::Vector3 playerPos = m_player->GetPosition();
 	// 敵の座標を取得
 	DirectX::SimpleMath::Vector3 parentPos = m_boss->GetPosition();
 	// 敵から見たプレイヤーの位置を計算する

@@ -53,6 +53,9 @@ public:
 // アクセサ
 // -----------------
 public:
+
+	IObject* GetObject() { return this; }
+
 	DirectX::SimpleMath::Vector3 GetPosition		()override	{ return m_position;			}	// 座標
 	DirectX::SimpleMath::Vector3 GetVelocity		()	const	{ return m_velocity;			}	// 速度
 	DirectX::SimpleMath::Vector3 GetDirection		()	const	{ return m_direction;			}	// 向き
@@ -94,12 +97,10 @@ public:
 	void TimeComparison(float& nowTime, const float totalTime, IPlayer* newState, const float elapsedTime);
 	// 更新処理
 	void Update(const float elapsedTime);
-
 	// 描画処理
 	void Render(
 		const DirectX::SimpleMath::Matrix&	view,
 		const DirectX::SimpleMath::Matrix&	projection);
-
 	// 終了処理
 	void Finalize();
 	// 回転角の計算
@@ -125,6 +126,8 @@ private:
 	void CreateState();
 	// 描画関連の初期化設定
 	void InitializeRender();
+	// イベントの登録
+	void AttachEvent();
 	// 敵の体との衝突判定
 	void HitBossBody(InterSectData data);
 	// 敵のブキとの衝突判定

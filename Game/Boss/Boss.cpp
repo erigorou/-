@@ -21,6 +21,7 @@
 #include "Game/Stage/Wall/Wall.h"
 #include "Interface/IState.h"
 #include "BehaviourTree/Header/BehaviorTree.h"	// ビヘイビアツリー
+#include "Game/Factory/Factory.h"
 // ステートパターン用
 #include "States/Header/BossIdling.h"// 待機状態
 #include "States/Header/BossAttacking.h"// たたきつけ攻撃
@@ -38,10 +39,10 @@
 // --------------------------------
 //  コンストラクタ
 // --------------------------------
-Boss::Boss(PlayScene* playScene)
-	: m_playScene(playScene)
-	, m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
-	, m_currentState()
+Boss::Boss()
+	:
+	m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity },
+	m_currentState()
 	, m_idling()
 	, m_attacking()
 	, m_approaching()
@@ -75,6 +76,8 @@ void Boss::Initialize()
 {
 	// モデルを取得
 	m_model = GameResources::GetInstance()->GetModel("boss");
+	// 武器の生成
+	m_cudgel = Factory::CreateCudgel(nullptr);
 	// HPを設定
 	m_hp = std::make_unique<HPSystem>(HP);
 	// ビヘイビアツリーを取得

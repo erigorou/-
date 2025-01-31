@@ -88,11 +88,11 @@ void EnemyEffect::DrawWithEffect(
 			auto basicEffect = dynamic_cast<DirectX::BasicEffect*>(effect);
 			if (basicEffect)
 			{
-				basicEffect->SetLightingEnabled(true);		// ライト有効化
-				basicEffect->SetPerPixelLighting(true);		// ピクセル単位のライティング有効化
-				basicEffect->SetTextureEnabled(false);	// テクスチャの無効化
-				basicEffect->SetVertexColorEnabled(false);	// 頂点カラーの無効化
-				basicEffect->SetFogEnabled(false);	// フォグの無効化
+				basicEffect->SetLightingEnabled(true); // ライト有効化
+				basicEffect->SetPerPixelLighting(true); // ピクセル単位のライティング有効化
+				basicEffect->SetTextureEnabled(false); // テクスチャの無効化
+				basicEffect->SetVertexColorEnabled(false); // 頂点カラーの無効化
+				basicEffect->SetFogEnabled(false); // フォグの無効化
 			}
 		}
 	);

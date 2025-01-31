@@ -167,7 +167,7 @@ void Particle::CreateBashDust(void* center)
 		DustTrailParticle pB(
 			0.9f, // 生存時間(s)
 			dustPosition, // 基準座標
-			DirectX::SimpleMath::Vector3{ -velocity.x * XZspeed, Yspeed , -velocity.z * XZspeed } *2,	// 速度
+			DirectX::SimpleMath::Vector3{ -velocity.x * XZspeed, Yspeed , -velocity.z * XZspeed } *2, // 速度
 			DirectX::SimpleMath::Vector3(0.1f, 0.1f, 0.1f),	// 加速度
 			DirectX::SimpleMath::Vector3::One, // 初期スケール
 			DirectX::SimpleMath::Vector3{ 10.0f, 25.0f, 10.0f }, // 最終スケール

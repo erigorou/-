@@ -5,6 +5,7 @@
 
 class Boss;
 class Player;
+class IObject;
 
 // 敵の待機ステートを定義
 class BossStarting : public IState
@@ -75,6 +76,8 @@ private:
 	float m_totalSeconds;
 	// 敵
 	Boss* m_boss;
+	// プレイヤー
+	IObject* m_player;
 };
 
 #endif		// Boss_IDLING_DEFINED

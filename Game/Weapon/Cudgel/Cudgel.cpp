@@ -75,6 +75,9 @@ void Cudgel::Initialize()
 
 	CreateState();			// ステートの作成
 	CreateCollision();		// 当たり判定の生成
+
+	// イベントを登録
+	EventMessenger::AttachGetter("GetCudgelObject", std::bind(&Cudgel::GetCudgelObject, this));
 }
 
 

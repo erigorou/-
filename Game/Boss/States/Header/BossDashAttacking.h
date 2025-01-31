@@ -7,6 +7,7 @@
 
 
 class Enemy;
+class Cudgel;
 class Player;
 
 // 敵の待機ステートを定義
@@ -92,6 +93,10 @@ private:
 	float m_totalSeconds;
 	// 敵
 	Boss* m_boss;
+	// プレイヤー
+	IObject* m_player;
+	// 金棒
+	Cudgel* m_cudgel;
 };
 
 #endif		// ENEMY_DASH_ATTACKING_DEFINED

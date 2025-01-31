@@ -57,6 +57,7 @@ void EnemyManager::Initialize(PlayScene* playScene)
 
 	// イベントメッセンジャーに登録
 	EventMessenger::Attach("EnemyCanHit", std::bind(&EnemyManager::AllEnemyCanHit, this, std::placeholders::_1));
+	EventMessenger::Attach("DeleteAllGoblin", std::bind(&EnemyManager::DeleteAllGoblin, this));
 }
 
 
@@ -107,6 +108,7 @@ void EnemyManager::Finalize()
 	}
 	m_enemies.clear();
 }
+
 
 // --------------------------------
 // 敵の生成処理

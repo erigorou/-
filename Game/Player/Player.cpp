@@ -23,7 +23,6 @@
 #include "Game/Stage/Wall/Wall.h"
 
 
-
 // --------------------------------
 //  コンストラクタ
 // --------------------------------
@@ -70,6 +69,9 @@ void Player::Initialize()
 	CreateState();
 	// HPを管理するクラスの生成
 	m_hp = std::make_unique<HPSystem>(PLAYER_HP);
+	// イベントを登録
+	AttachEvent();
+	
 }
 
 
@@ -119,6 +121,9 @@ void Player::CreateState()
 }
 
 
+// --------------------------------
+//  レンダリングの初期化
+// --------------------------------
 void Player::InitializeRender()
 {
 	CommonResources* resources = CommonResources::GetInstance();
@@ -128,7 +133,6 @@ void Player::InitializeRender()
 
 	// モデルの取得
 	m_model = GameResources::GetInstance()->GetModel("player");
-
 	// ベーシックエフェクトを作成する
 	m_basicEffect = std::make_unique<DirectX::BasicEffect>(device);
 	m_basicEffect->SetVertexColorEnabled(true);
@@ -142,6 +146,16 @@ void Player::InitializeRender()
 	// プリミティブバッチの作成
 	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
 
+}
+
+
+// --------------------------------
+// イベントの登録
+// --------------------------------
+void Player::AttachEvent()
+{
+	// イベントの登録
+	EventMessenger::AttachGetter("GetPlayerObject", std::bind(&Player::GetObject, this));
 }
 
 

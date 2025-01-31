@@ -23,7 +23,6 @@ QuestSelectSceneUIManager::QuestSelectSceneUIManager()
 // --------------------------------------------------------
 QuestSelectSceneUIManager::~QuestSelectSceneUIManager()
 {
-
 }
 
 
@@ -87,6 +86,7 @@ void QuestSelectSceneUIManager::AddUserInterface(
 	// ユーザーインターフェースの作成
 	ui->Create(texture, position, scale, anchor, action);
 
+	// ユーザーインターフェースの追加
 	m_userInterfaceList.push_back(std::move(ui));
 }
 

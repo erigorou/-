@@ -1,5 +1,6 @@
 #include "pch.h"
 #include <cassert>
+#include "Interface/IObject.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
@@ -17,9 +18,9 @@
 // --------------------------
 // コンストラクタ
 // --------------------------
-BossStarting::BossStarting(Boss* Boss)
+BossStarting::BossStarting(Boss* boss)
 	:
-	m_boss(Boss),
+	m_boss(boss),
 	m_angle{},
 	m_totalSeconds{},
 	m_isEndDelay(false)
@@ -38,6 +39,9 @@ BossStarting::~BossStarting()
 // --------------------------
 void BossStarting::Initialize()
 {
+	// プレイヤーの取得
+	void* object = EventMessenger::ExecuteGetter("GetPlayerObject");
+	m_player = object ? static_cast<IObject*>(object) : nullptr;
 }
 
 
@@ -63,7 +67,7 @@ void BossStarting::Update(const float& elapsedTime)
 {
 	m_totalSeconds += elapsedTime;
 
-	Vector3 playerPos = m_boss->GetPlayScene()->GetPlayer()->GetPosition();
+	Vector3 playerPos = m_player->GetPosition();
 	Vector3 parentPos = m_boss->GetPosition();
 
 	// 敵から見たプレイヤーの位置を計算する

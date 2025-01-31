@@ -42,7 +42,11 @@ BossApproaching::~BossApproaching()
 void BossApproaching::Initialize()
 {
 	// 速度を設定（前にしか動かない）
-	m_velocity = DirectX::SimpleMath::Vector3::Forward;
+	m_velocity = DirectX::SimpleMath::Vector3::Forward;	
+
+	// プレイヤーの取得
+	void* player = EventMessenger::ExecuteGetter("GetPlayerObject");
+	m_player = player ? static_cast<IObject*>(player) : nullptr;
 }
 
 
@@ -86,8 +90,9 @@ void BossApproaching::UpdateAnimation(float elapsedTime)
 	m_position.y = Math::CalculatingSinWave(m_totalSeconds, AMPLITUDE, FREQUENCY);
 	// 絶対値を取ることでジャンプしているような挙動をする　※
 	m_position.y = fabsf(m_position.y);
+
 	// プレイヤーの座標を取得
-	Vector3 playerPos = m_boss->GetPlayScene()->GetPlayer()->GetPosition();
+	Vector3 playerPos = m_player->GetPosition();
 
 	// 敵から見たプレイヤーの位置を計算する
 	m_angle = Math::CalculationAngle(m_position, playerPos);
@@ -109,7 +114,7 @@ void BossApproaching::UpdateAnimation(float elapsedTime)
 void BossApproaching::CheckNextState()
 {	
 	// プレイヤーの座標を取得
-	Vector3 playerPos = m_boss->GetPlayScene()->GetPlayer()->GetPosition();
+	Vector3 playerPos = m_player->GetPosition();
 
 	// 移動でカメラを揺らす
 	if (m_position.y <= MINIMAL)

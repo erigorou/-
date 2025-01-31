@@ -32,7 +32,8 @@ void EventMessenger::AttachGetter(const std::string& eventName, std::function<vo
 void EventMessenger::Execute(const std::string& eventName, void* args)
 {
     // イベントリストが空の場合
-    if (s_eventList.empty()) {
+    if (s_eventList.empty())
+    {
         MessageBox(nullptr, L"イベントが1つも登録されていません", L"エラー", MB_OK);
         return;
     }
@@ -76,9 +77,6 @@ void* EventMessenger::ExecuteGetter(const std::string& eventName)
 
     return nullptr;
 }
-
-
-
 
 
 // -------------------------------------

@@ -4,6 +4,7 @@
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
+#include "Game/Messenger/EventMessenger.h"
 
 // 関数を使用するのに必要な引数
 #include "Game/Boss/Boss.h"
@@ -38,6 +39,9 @@ BossIdling::~BossIdling()
 // --------------------------
 void BossIdling::Initialize()
 {
+	// プレイヤーの取得
+	void* object = EventMessenger::ExecuteGetter("GetPlayerObject");
+	m_player = object ? static_cast<IObject*>(object) : nullptr;
 }
 
 
@@ -79,7 +83,7 @@ void BossIdling::Update(const float& elapsedTime)
 void BossIdling::UpdateAnimation()
 {
 	// プレイヤーの座標を取得
-	Vector3 playerPos = m_boss->GetPlayScene()->GetPlayer()->GetPosition();
+	Vector3 playerPos = m_player->GetPosition();
 	Vector3 parentPos = m_boss->GetPosition();
 
 	// アングルを計算
@@ -110,7 +114,7 @@ void BossIdling::UpdateAnimation()
 void BossIdling::CheckNextState()
 {
 	// プレイヤーの座標を取得
-	Vector3 playerPos = m_boss->GetPlayScene()->GetPlayer()->GetPosition();
+	Vector3 playerPos = m_player->GetPosition();
 	Vector3 parentPos = m_boss->GetPosition();
 
 	// １秒で行動を変更する

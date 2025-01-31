@@ -49,6 +49,8 @@ private:
 	float m_totalSeconds;
 	// “G
 	Boss* m_boss;
+	// ƒvƒŒƒCƒ„[
+	IObject* m_player;
 };
 
 #endif		// BossATTACKING_DEFINED

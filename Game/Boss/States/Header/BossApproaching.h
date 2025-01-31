@@ -78,7 +78,8 @@ private:
 	float m_finishTime;
 	// “G
 	Boss* m_boss;
-
+	// ƒvƒŒƒCƒ„[
+	IObject* m_player;
 };
 
 #endif		// Boss_IDLING_DEFINED

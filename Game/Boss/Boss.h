@@ -8,6 +8,7 @@ class PlayScene;
 class BehaviorTree;
 class EnemyEffect;
 class HPSystem;
+class Cudgel;
 
 
 #include "Face/Header/BossFaceIdling.h"
@@ -49,7 +50,6 @@ public:
 // --------------------------------
 public:
 	// 取得
-	PlayScene*						GetPlayScene	()	const	{ return m_playScene;	}	// PlayScene
 	HPSystem*						GetBossHP		()	const	{ return m_hp.get();	}	// HP
 	DirectX::SimpleMath::Vector3	GetPosition		()	override{ return m_position;	}	// 鬼の座標
 	float							GetAngle		()	const	{ return m_angle;		}	// 鬼の回転角
@@ -57,7 +57,6 @@ public:
 	DirectX::SimpleMath::Matrix		GetWorldMatrix	()	const	{ return m_worldMatrix; }	// 敵のワールド座標
 	HPSystem*						GetHPSystem		()	override{ return m_hp.get();	}	// HP
 	DirectX::BoundingSphere			GetBodyCollision()	const	{ return *m_bodyCollision.get(); }	// 体の当たり判定
-
 
 	// 状態設定
 	IState*			GetCurrentState			() const { return m_currentState;		}	// 現在
@@ -68,13 +67,11 @@ public:
 	BossApproaching*	GetBossApproaching		() const { return m_approaching.get();	}	// 追尾
 	BossDead*			GetBossDead			() const { return m_dead.get();			}	// 死亡
 
-
 	// 設定
 	void SetPosition	(const DirectX::SimpleMath::Vector3 pos)	{ m_position = pos;		}	// 鬼の座標
 	void SetAngle		(const float angle)							{ m_angle = angle;		}	// 鬼の回転角
 	void SetBodyTilt	(const float tilt)							{ m_bodyTilt = tilt;	}	// 体の傾き
 	void SetWorldMatrix	(DirectX::SimpleMath::Matrix mat)			{ m_worldMatrix = mat;	}	// 敵のワールド座標
-
 
 	// 顔のパーツ
 	void SetFace(IFace* face) { m_currentFace = face; }	// 顔の設定
@@ -84,7 +81,7 @@ public:
 
 public:
 	// コンストラクタ
-	Boss(PlayScene* playScene);
+	Boss();
 	// デストラクタ
 	~Boss();
 	// 初期化処理
@@ -113,13 +110,16 @@ public:
 	void HitAction(InterSectData data)override;
 	// 衝突クールタイムを計測
 	void CheckHitCoolTime(float elapsedTime);
-
+	// 刀の衝突判定
 	void HitSword(InterSectData data);
+	// ステージの衝突判定
 	void HitStage(InterSectData data);
-
+	// 死亡処理
 	void CheckAlive();
 
 private:
+	// 武器
+	std::unique_ptr<Cudgel> m_cudgel;
 	// 位置
 	DirectX::SimpleMath::Vector3 m_position;
 	// 速度
@@ -128,14 +128,11 @@ private:
 	float m_angle;
 	// 体の傾き
 	float m_bodyTilt;
-
 	// 敵用のワールド行列
 	DirectX::SimpleMath::Matrix m_worldMatrix;
 	// HP
 	std::unique_ptr<HPSystem> m_hp;
 
-
-	// ==== ステートパターンに使用 =============================================　
 	IState* m_currentState;			// 現在のステート（ステートパターン）
 	std::unique_ptr<BossStarting>		m_starting;		// 開始状態
 	std::unique_ptr<BossIdling>		m_idling;		// 待機状態
@@ -145,45 +142,30 @@ private:
 	std::unique_ptr<BossApproaching>	m_approaching;	// 追尾状態
 	std::unique_ptr<BossDead>			m_dead;			// 死亡状態
 
-
-	// ==== 顔パーツ ============================================================
 	IFace* m_currentFace;			// 現在の顔
 	std::unique_ptr<BossFaceIdling>	m_faceIdling;		// 待機顔
 	std::unique_ptr<BossFaceAttacking>	m_faceAttacking;	// 攻撃顔
-
 	// 敵のダメージエフェクト
 	std::unique_ptr<EnemyEffect> m_effect;
-
 	// ビヘイビアツリー
 	std::unique_ptr<BehaviorTree> m_pBT;
-
 	// モデル
 	DirectX::Model* m_model;
-
 	//　エフェクト
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
 	// 入力レイアウト
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
-
 	// 押し戻し量の計算
 	DirectX::SimpleMath::Vector3 m_pushBackValue;
-
-	// プレイシーン(当たり判定の処理に使用)
-	PlayScene* m_playScene;
-
 	// 体の当たり判定
 	std::unique_ptr<DirectX::BoundingSphere> m_bodyCollision;
-
 	// 衝突しているか
 	bool m_isHit;
-
 	// 衝突クールタイム
 	float m_coolTime;
-
 	// 衝突可能か
 	bool m_canHit;
-
 	// カメラの揺らすちから
 	float m_shakePower;
 };

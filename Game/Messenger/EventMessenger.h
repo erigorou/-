@@ -14,7 +14,7 @@ public:
     static void Attach(const std::string& eventName, std::function<void(void*)> function);
 
     // ゲッターを登録
-    static void AttachGetter(const std::string& eventName, std::function<void* ()> function);
+    static void AttachGetter(const std::string& eventName, std::function<void*()> function);
 
     // イベントを実行する
     static void Execute(const std::string& eventName, void* args);

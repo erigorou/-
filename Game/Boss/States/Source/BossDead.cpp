@@ -63,8 +63,10 @@ void BossDead::PreUpdate()
 	cudgel->ChangeState(cudgel->GetIdling());
 	// 顔のステートを変更
 	m_boss->SetFace(m_boss->GetFaceIdling());
+
+
 	// 全ての敵のHPを0にする
-	m_boss->GetPlayScene()->GetEnemyManager()->AllGoblinHPZero();
+	EventMessenger::Execute("DeleteAllGoblin", nullptr);
 }
 
 
