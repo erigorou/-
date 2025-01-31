@@ -53,7 +53,6 @@ Sword_Attacking_2::~Sword_Attacking_2()
 // --------------------------------
 void Sword_Attacking_2::Initialize()
 {
-	m_particles = m_sword->GetPlayScene()->GetParticle();	// パーティクルの取得
 }
 
 
@@ -79,15 +78,16 @@ void Sword_Attacking_2::PreUpdate()
 //  更新処理
 // --------------------------------
 void Sword_Attacking_2::Update(float elapsedTime)
-{
-	using namespace DirectX;
-
+{	
 	// 経過時間を計測
 	m_totalSeconds += elapsedTime;
 
-
-	m_position = m_sword->GetPlayScene()->GetPlayer()->GetPosition();	// プレイヤーの座標を取得
-	m_angle = m_sword->GetPlayScene()->GetPlayer()->GetAngle();		// プレイヤーの回転を取得
+	// プレイヤーを取得
+	auto player = m_sword->GetPlayer();
+	// プレイヤーの位置を取得
+	m_position = player->GetPosition();
+	// プレイヤーの角度を取得
+	m_angle = player->GetAngle();
 
 	// アニメーションの更新
 	UpdateAnimation();
@@ -119,12 +119,6 @@ void Sword_Attacking_2::UpdateAnimation()
 
 		if (m_rot.y > MAX_SIDE_ANGLE)
 		{
-			// 敵がいる場合
-			if (m_sword->GetPlayScene()->GetBoss())
-			{
-				//// 当たり判定を無効にする
-				//m_sword->GetPlayScene()->GetEnemy()->CanHit(false);
-			}
 			m_sword->SetAttackFlag(false);
 		}
 

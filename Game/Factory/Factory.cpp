@@ -151,16 +151,16 @@ std::unique_ptr<Player> Factory::CreatePlayer(PlayScene* playScene)
 std::unique_ptr<Boss> Factory::CreateBoss(PlayScene* playScene)
 {
 	// 鬼（敵）を宣言する
-	std::unique_ptr<Boss> enemy;
-	enemy = std::make_unique<Boss>();
+	std::unique_ptr<Boss> boss;
+	boss = std::make_unique<Boss>();
 	// 初期化処理
-	enemy->Initialize();
+	boss->Initialize();
 
-	EventMessenger::Attach("canHit", std::bind(&Boss::CanHitSword, enemy.get()));
-	EventMessenger::Attach("canNotHit",std::bind(&Boss::CanNotHitSword, enemy.get()));
+	EventMessenger::Attach("canHit", std::bind(&Boss::CanHitSword, boss.get()));
+	EventMessenger::Attach("canNotHit",std::bind(&Boss::CanNotHitSword, boss.get()));
 
 	// 鬼（敵）の設定
-	return enemy;
+	return boss;
 }
 
 
@@ -183,13 +183,17 @@ std::unique_ptr<Goblin> Factory::CreateGoblin(PlayScene* playScene)
 // ---------------------------------------------
 // プレイヤーの武器の生成関数
 // ---------------------------------------------
-std::unique_ptr<Sword> Factory::CreateSword(PlayScene* playScene)
+std::unique_ptr<Sword> Factory::CreateSword(Player* player)
 {
 	// プレイヤーの武器を宣言する
 	std::unique_ptr<Sword> sword;
-	sword = std::make_unique<Sword>(playScene);
+	sword = std::make_unique<Sword>(player);
 	// 初期化処理
 	sword->Initialize();
+
+	// プレイヤーの武器のステートを変更
+	EventMessenger::Attach("ChangeSwordState", std::bind(&Sword::ChangeState, sword.get(), std::placeholders::_1));
+
 	// プレイヤーの武器の設定
 	return sword;
 }

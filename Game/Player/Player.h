@@ -7,8 +7,8 @@
 #include "Interface/IObserver.h"
 
 // プレイヤーに付与されるもの ===========================================
-#include "Game/Weapon/Sword/Sword.h"// 武器
-class HPSystem;						// HP
+class Sword;	// 武器
+class HPSystem;	// HP
 
 // プレイヤーの状態 =====================================================
 #include "Game/Player/State/Header/Player_Idling.h"			// 待機状態
@@ -54,7 +54,7 @@ public:
 // -----------------
 public:
 
-	IObject* GetObject() { return this; }
+	Player* GetObject() { return this; }
 
 	DirectX::SimpleMath::Vector3 GetPosition		()override	{ return m_position;			}	// 座標
 	DirectX::SimpleMath::Vector3 GetVelocity		()	const	{ return m_velocity;			}	// 速度
@@ -145,18 +145,27 @@ private:
 // 内部変数
 // -------------------
 private:
-	DirectX::SimpleMath::Vector3	m_position;			// 位置
-	DirectX::SimpleMath::Vector3	m_velocity;			// 速度
-	DirectX::SimpleMath::Vector2	m_inputVector;		// 入力保持用変数
-	DirectX::SimpleMath::Vector3	m_direction;		// 向き
-	DirectX::SimpleMath::Vector3	m_acceleration;		// 加速度
-	float							m_angle;			// 回転	
-	float							m_tilt;				// 傾き
-	DirectX::SimpleMath::Vector3	m_pushBackValue;	// プッシュバック値
+	// 武器
+	std::unique_ptr<Sword> m_sword;
 
-	bool m_isInputMoveKey;		// 移動キーが押されているか
-
-
+	// 位置
+	DirectX::SimpleMath::Vector3	m_position;
+	// 速度
+	DirectX::SimpleMath::Vector3	m_velocity;
+	// 入力保持用変数
+	DirectX::SimpleMath::Vector2	m_inputVector;
+	// 向き
+	DirectX::SimpleMath::Vector3	m_direction;
+	// 加速度
+	DirectX::SimpleMath::Vector3	m_acceleration;
+	// 回転角
+	float m_angle;
+	// 前後の傾角
+	float m_tilt;
+	// 押し戻し量
+	DirectX::SimpleMath::Vector3	m_pushBackValue;
+	// 移動キーが押されているか
+	bool m_isInputMoveKey;
 	// プレイヤー用のワールド行列
 	DirectX::SimpleMath::Matrix m_worldMatrix;
 
@@ -168,11 +177,9 @@ private:
 	std::unique_ptr<PlayerAttacking_2> m_playerAttacking_2;		// 攻撃状態２
 	std::unique_ptr<PlayerNockBacking> m_playerNockBacking;		// やられ状態
 
-	// プレイヤーに付与されるもの ============
-	std::unique_ptr<Sword> m_sword;
+	// HPシステム
 	std::unique_ptr<HPSystem> m_hp;
 
-	// シェーダーに使用するもの ==============
 	// ベーシックエフェクト
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;

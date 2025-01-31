@@ -12,6 +12,8 @@
 #include "Libraries/MyLib/Math.h"
 #include "Game/Sound/Sound.h"
 #include "Libraries/MyLib/EasingFunctions.h"
+#include "Game/Messenger/EventMessenger.h"
+#include "Game/Weapon/WeaponState.h"
 
 #include "Game/Player/Player.h"
 #include "Game/Boss/Boss.h"
@@ -52,13 +54,13 @@ void PlayerAttacking_1::Initialize()
 void PlayerAttacking_1::PreUpdate()
 {
 	// 経過時間の初期化
-	m_totalSeconds = 0.f;
+	m_totalSeconds = 0.0f;
 
-	// 剣の攻撃状態に変更
-	m_player->GetPlayScene()->GetSword()->ChangeState(
-		m_player->GetPlayScene()->GetSword()->GetAttacking_1State()
-	);
+	// 武器を攻撃状態に変更
+	SwordState state = SwordState::Attack1;
+	EventMessenger::Execute("ChangeSwordState", &state);
 
+	// 効果音の再生
 	Sound::PlaySE(Sound::SE_TYPE::PLAYER_ATTACK);
 }
 
@@ -131,12 +133,12 @@ void PlayerAttacking_1::OnKeyDown(const DirectX::Keyboard::Keys& key)
 // -----------------------
 void PlayerAttacking_1::PostUpdate()
 {
+	// アニメーションの更新
 	m_player->SetAnimationRotate(DirectX::SimpleMath::Vector3::Zero);
 
-	// 武器を攻撃状態に変更
-	m_player->GetPlayScene()->GetSword()->ChangeState(
-		m_player->GetPlayScene()->GetSword()->GetIdlingState()
-	);
+	// 武器を待機状態に変更
+	SwordState state = SwordState::Idle;
+	EventMessenger::Execute("ChangeSwordState", &state);
 }
 
 

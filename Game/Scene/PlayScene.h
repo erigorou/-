@@ -55,7 +55,6 @@ public:
 public:
 	Player*		GetPlayer()		{ return m_player.get();}
 	Boss*		GetBoss();
-	Sword*		GetSword()		{ return m_sword.get(); }
 	Particle*	GetParticle()	{ return m_particles.get(); }
 	EnemyManager* GetEnemyManager() { return m_enemyManager.get(); }
 	PlaySceneUIManager* GetUIManager() { return m_uiManager.get(); }
@@ -124,7 +123,6 @@ private:
 	std::unique_ptr<SkySphere>	m_skySphere;	// 天球
 	std::unique_ptr<Particle>	m_particles;	// パーティクル
 	std::unique_ptr<Player>		m_player;		// プレイヤー
-	std::unique_ptr<Sword>		m_sword;		// 刀
 
 	// ステージ関連の変数
 	std::unique_ptr<Floor>	m_floor;			// 床

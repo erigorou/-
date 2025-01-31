@@ -4,15 +4,18 @@
 #include "Interface/IWeapon.h"
 #include "Game/Scene/PlayScene.h"
 #include "Interface/IObject.h"
+#include "Game/Weapon/WeaponState.h"
 
 // 剣の状態 ===============================================================
-#include "Game/Weapon/Sword/Header/Sword_Idling.h"			// 待機状態
-#include "Game/Weapon/Sword/Header/Sword_Attacking_1.h"		// 攻撃状態１
-#include "Game/Weapon/Sword/Header/Sword_Attacking_2.h"		// 攻撃状態２
-#include "Game/Weapon/Sword/Header/Sword_Attacking_3.h"		// 攻撃状態３
-#include "Game/Weapon/Sword/Header/Sword_Attacking_4.h"		// 攻撃状態４
+#include "Game/Weapon/Sword/Header/Sword_Idling.h"
+#include "Game/Weapon/Sword/Header/Sword_Attacking_1.h"
+#include "Game/Weapon/Sword/Header/Sword_Attacking_2.h"
 
+class Sword_Idling;
+class Sword_Attacking_1;
+class Sword_Attacking_2;
 
+class Player;
 
 class Sword : public IObject
 {
@@ -26,16 +29,9 @@ public:
 	static constexpr float MODEL_ROOT_HEIGHT = 50.0f;
 
 // 公開関数**
-	PlayScene*	GetPlayScene()		const { return m_playScene;		}	// プレイシーンのゲッター
 	DirectX::BoundingOrientedBox GetCollision() const { return *m_collision.get(); }	// 当たり判定の取得
 
-	// 状態のゲッター
-	IWeapon* GetIdlingState()		const { return m_swordIdling.get();		}	// 待機状態
-	IWeapon* GetAttacking_1State()	const { return m_swordAttacking_1.get();}	// 攻撃状態１
-	IWeapon* GetAttacking_2State()	const { return m_swordAttacking_2.get();}	// 攻撃状態２
-	IWeapon* GetAttacking_3State()	const { return m_swordAttacking_3.get();}	// 攻撃状態３
-	IWeapon* GetAttacking_4State()	const { return m_swordAttacking_4.get();}	// 攻撃状態４
-	IWeapon* GetCurrentState()		const { return m_currentState;			}	// 現在のステートの取得
+	Player* GetPlayer() { return m_player; }	// プレイヤーの取得
 
 	void SetWorldMatrix(DirectX::SimpleMath::Matrix mat) { m_worldMatrix = mat; }	// ワールド行列の設定
 
@@ -49,7 +45,7 @@ public:
 	void SetCollisionPosition(DirectX::SimpleMath::Matrix mat) { m_originalBox.Transform(*m_collision.get(), mat); }
 
 	// コンストラクタ
-	Sword(PlayScene* playScene);
+	Sword(Player* player);
 	// デストラクタ
 	~Sword();
 	// 初期化
@@ -59,12 +55,14 @@ public:
 	// 描画処理
 	void Render(
 		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection);
+		const DirectX::SimpleMath::Matrix& projection
+	);
 	// 終了処理
 	void Finalize();
 
 	// ステートを更新する
-	void ChangeState(IWeapon* state);
+	void ChangeState(void* state);
+
 	// 当たったときの処理
 	void HitAction(InterSectData data)  override;
 
@@ -91,11 +89,15 @@ private:
 	// 現在のステート
 	IWeapon* m_currentState;
 	// 待機モーション
+	//std::unique_ptr<Sword_Idling> m_swordIdling;
+	//std::unique_ptr<Sword_Attacking_1> m_swordAttacking_1;
+	//std::unique_ptr<Sword_Attacking_2> m_swordAttacking_2;
+
 	std::unique_ptr<Sword_Idling> m_swordIdling;
 	std::unique_ptr<Sword_Attacking_1> m_swordAttacking_1;
 	std::unique_ptr<Sword_Attacking_2> m_swordAttacking_2;
-	std::unique_ptr<Sword_Attacking_3> m_swordAttacking_3;
-	std::unique_ptr<Sword_Attacking_4> m_swordAttacking_4;
+	// 待機モーションを格納する配列
+	std::vector<IWeapon*> m_states;
 
 
 	// ベーシックエフェクト
@@ -103,7 +105,8 @@ private:
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
 	// 入力レイアウト
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
-	// プレイシーン（当たり判定の処理に使用）
-	PlayScene* m_playScene;
+
+	// プレイヤー
+	Player* m_player;
 
 };

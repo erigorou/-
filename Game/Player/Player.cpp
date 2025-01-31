@@ -17,6 +17,7 @@
 #include "Game/GameResources.h"
 #include "Game/Player/Player.h"
 #include "Game/Weapon/Sword/Sword.h"
+#include "Game/Factory/Factory.h"
 #include "../Data/HPSystem.h"
 #include "Game/Boss/Boss.h"
 #include "Game/Goblin/Goblin.h"
@@ -71,7 +72,8 @@ void Player::Initialize()
 	m_hp = std::make_unique<HPSystem>(PLAYER_HP);
 	// イベントを登録
 	AttachEvent();
-	
+	// 武器の生成
+	m_sword = Factory::CreateSword(this);
 }
 
 
@@ -210,6 +212,9 @@ void Player::Update(const float elapsedTime)
 	// 当たり判定の更新
 	m_bodyCollision->Center = m_position;
 	m_bodyCollision->Center.y = 0;
+
+	// 武器の更新処理
+	m_sword->Update(elapsedTime);
 
 	// クールタイムを計測中
 	if (m_isHit && m_coolTime < COOL_TIME)	{ m_coolTime += elapsedTime;		 }
@@ -395,8 +400,6 @@ void Player::Render(
 	const DirectX::SimpleMath::Matrix& view,
 	const DirectX::SimpleMath::Matrix& projection)
 {
-	using namespace DirectX;
-	
 	CommonResources* resources = CommonResources::GetInstance();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
@@ -405,29 +408,31 @@ void Player::Render(
 	m_model->UpdateEffects([](DirectX::IEffect* effect)
 		{
 			// ベーシックエフェクトを設定する
-			BasicEffect* basicEffect = dynamic_cast<BasicEffect*>(effect);
+			DirectX::BasicEffect* basicEffect = dynamic_cast<DirectX::BasicEffect*>(effect);
 			if (basicEffect)
 			{
 				// ライトを有効化する
 				basicEffect->SetLightingEnabled(true);
 				// アンビエントライトの設定
-				basicEffect->SetAmbientLightColor(Colors::Gray); // 適切なアンビエント色を設定
+				basicEffect->SetAmbientLightColor(DirectX::Colors::Gray); // 適切なアンビエント色を設定
 				// 必要に応じてライトの設定を行う
 				basicEffect->SetLightEnabled(0, true);
-				basicEffect->SetLightDiffuseColor(0, Colors::White);  // ディフューズ色を設定
-				basicEffect->SetLightSpecularColor(0, Colors::White); // スペキュラー色を設定
+				basicEffect->SetLightDiffuseColor(0, DirectX::Colors::White);  // ディフューズ色を設定
+				basicEffect->SetLightSpecularColor(0, DirectX::Colors::White); // スペキュラー色を設定
 
 				basicEffect->SetLightEnabled(1, false); // 追加のライトが不要なら無効化
 				basicEffect->SetLightEnabled(2, false); // 追加のライトが不要なら無効化
 				// モデルの自発光色を黒に設定して無効化
-				basicEffect->SetEmissiveColor(Colors::Black);
+				basicEffect->SetEmissiveColor(DirectX::Colors::Black);
 			}
 		}
 	);
 
 	// モデルを描画する
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
-
+	
+	// 武器を描画する
+	m_sword->Render(view, projection);
 #ifdef _DEBUG
 #endif // !_DEBUG
 

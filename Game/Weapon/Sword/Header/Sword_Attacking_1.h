@@ -70,7 +70,6 @@ private:
 	float							m_angle;		// 剣の回転
 	DirectX::SimpleMath::Vector3	m_rot;			// 3方向の剣の回転
 	DirectX::SimpleMath::Matrix		m_worldMatrix;	// ワールド行列
-	Particle* m_particles;			// パーティクル
 	float m_totalSeconds;
 
 	std::vector<DirectX::SimpleMath::Vector3>	m_rootPos;	// 根本の座標

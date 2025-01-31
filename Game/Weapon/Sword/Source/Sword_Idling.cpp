@@ -68,25 +68,25 @@ void Sword_Idling::PreUpdate()
 // -----------------------
 void Sword_Idling::Update(float elapsedTime)
 {
-	using namespace DirectX;
 	UNREFERENCED_PARAMETER(elapsedTime);
 
+	// プレイヤーを取得
+	auto player = m_sword->GetPlayer();
 	// プレイヤーの座標を取得
-	m_position = m_sword->GetPlayScene()->GetPlayer()->GetPosition();
+	m_position = player->GetPosition();
 	// プレイヤーの回転を取得
-	m_angle = m_sword->GetPlayScene()->GetPlayer()->GetAngle();
+	m_angle = player->GetAngle();
 
 	// ワールド行列を更新する
 	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE);								// サイズの設定
 	
 	m_worldMatrix
 		// 傾ける
-		*= SimpleMath::Matrix::CreateRotationY(XMConvertToRadians(-90.0f))			// 回転
-		*= SimpleMath::Matrix::CreateRotationX(XMConvertToRadians(90.0f))			// 回転
-		*= SimpleMath::Matrix::CreateTranslation(Sword::SWORD_DIR_FOR_PLAYER)	// プレイヤの位置に設定する
-		*= SimpleMath::Matrix::CreateRotationY(-m_angle)						// プレイヤの回転を付与
-		*= SimpleMath::Matrix::CreateTranslation(m_position);					// プレイヤの位置に設定する
-
+		*= DirectX::SimpleMath::Matrix::CreateRotationY(DirectX::XMConvertToRadians(-90.0f))// 回転
+		*= DirectX::SimpleMath::Matrix::CreateRotationX(DirectX::XMConvertToRadians(90.0f))	// 回転
+		*= DirectX::SimpleMath::Matrix::CreateTranslation(Sword::SWORD_DIR_FOR_PLAYER)	// プレイヤの位置に設定する
+		*= DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle)						// プレイヤの回転を付与
+		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);					// プレイヤの位置に設定する
 
 	m_sword->SetWorldMatrix(m_worldMatrix);			// ワールド行列を設定
 	m_sword->SetCollisionPosition(m_worldMatrix);	// 当たり判定の位置を設定

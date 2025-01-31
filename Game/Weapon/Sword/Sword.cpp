@@ -24,12 +24,13 @@ const float Sword::SWORD_SCALE = Player::PLAYER_SCALE * 1.5f;
 
 
 // コンストラクタ
-Sword::Sword(PlayScene* playScene)
-	: m_playScene(playScene)
-	, m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
-	, m_collision()
-	, m_originalBox()
-	, m_canAttack(false)
+Sword::Sword(Player* player)
+	:
+	m_player(player),
+	m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity },
+	m_collision{},
+	m_originalBox{},
+	m_canAttack{false}
 {
 }
 
@@ -51,8 +52,6 @@ void Sword::Initialize()
 
 	// モデルの読み込み
 	m_model = GameResources::GetInstance()->GetModel("sword");
-
-
 
 	// ベーシックエフェクトを作成する
 	m_basicEffect = std::make_unique<DirectX::BasicEffect>(device);
@@ -82,21 +81,24 @@ void Sword::Initialize()
 void Sword::CreateState()
 {
 	// ステートを生成する
-	m_swordIdling		= std::make_unique<Sword_Idling>		(this);
-	m_swordAttacking_1	= std::make_unique<Sword_Attacking_1>	(this);
-	m_swordAttacking_2	= std::make_unique<Sword_Attacking_2>	(this);
-	m_swordAttacking_3	= std::make_unique<Sword_Attacking_3>	(this);
-	m_swordAttacking_4	= std::make_unique<Sword_Attacking_4>	(this);
+	m_swordIdling		= std::make_unique<Sword_Idling>(this);
+	m_swordAttacking_1	= std::make_unique<Sword_Attacking_1>(this);
+	m_swordAttacking_2	= std::make_unique<Sword_Attacking_2>(this);
 
 	// ステートを初期化する
 	m_swordIdling->Initialize();
 	m_swordAttacking_1->Initialize();
 	m_swordAttacking_2->Initialize();
-	m_swordAttacking_3->Initialize();
-	m_swordAttacking_4->Initialize();
 
 	// 現在のステートを設定
 	m_currentState = m_swordIdling.get();
+
+	// 待機ステートを格納
+	m_states.push_back(m_swordIdling.get());
+	// 攻撃ステートを格納
+	m_states.push_back(m_swordAttacking_1.get());
+	// 攻撃ステートを格納
+	m_states.push_back(m_swordAttacking_2.get());
 }
 
 
@@ -138,7 +140,8 @@ void Sword::Update(float elapsedTime)
 // --------------------------------------------
 void Sword::Render(
 	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection)
+	const DirectX::SimpleMath::Matrix& projection
+)
 {
 	CommonResources* resources = CommonResources::GetInstance();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
@@ -146,12 +149,6 @@ void Sword::Render(
 
 	// モデルを描画する
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
-
-
-#ifdef _DEBUG
-	auto debugString = resources->GetDebugString();
-	debugString->AddString("");
-#endif // _DEBUG
 }
 
 
@@ -164,16 +161,18 @@ void Sword::Finalize()
 
 
 // --------------------------------------------
-// シーン変更処理
+// ステートの変更
 // --------------------------------------------
-void Sword::ChangeState(IWeapon* state)
+void Sword::ChangeState(void* state)
 {
-	// 同じステートに変更しようとしたら早期リターン
-	if (m_currentState == state)return;
+	// indexを取得
+	int index = *static_cast<int*>(state);
+	// 現在と同じステートには変更しない
+	if (m_currentState == m_states[index])return;
 	// ステートの事後処理
 	m_currentState->PostUpdate();
 	// 新しいステートに切り替える
-	m_currentState = state;
+	m_currentState = m_states[index];
 	// 新しいステートの事前処理を行う
 	m_currentState->PreUpdate();
 }

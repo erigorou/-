@@ -42,7 +42,7 @@ public:
 	static std::unique_ptr<Player>				CreatePlayer			(PlayScene* playScene);
 	static std::unique_ptr<Boss>				CreateBoss				(PlayScene* playScene);
 	static std::unique_ptr<Goblin>				CreateGoblin			(PlayScene* playScene);
-	static std::unique_ptr<Sword>				CreateSword				(PlayScene* playScene);
+	static std::unique_ptr<Sword>				CreateSword				(Player* player);
 	static std::unique_ptr<Cudgel>				CreateCudgel			(Boss* boss);
 	
 	

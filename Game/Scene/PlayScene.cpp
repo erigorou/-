@@ -101,7 +101,6 @@ void PlayScene::CreateObjects()
 	m_sea				= Factory::CreateSea				();		// 海
 	m_wall				= Factory::CreateWall				(this);	// 壁
 	m_player			= Factory::CreatePlayer				(this);	// プレイヤ
-	m_sword				= Factory::CreateSword				(this);	// 刀
 
 	m_uiManager		= Factory::CreateUIManager				(this);	// UIマネージャー
 	m_enemyManager	= Factory::CreateEnemyManager			(this);	// 敵マネージャー
@@ -201,7 +200,6 @@ void PlayScene::UpdateObjects(float elapsedTime)
 	// オブジェクトの更新
 	m_uiManager		->Update(elapsedTime);
 	m_player		->Update(smoothDeltaTime);
-	m_sword			->Update(smoothDeltaTime);
 	m_enemyManager	->Update(smoothDeltaTime);
 	m_questManager	->Update(elapsedTime);
 	UpdateCamera(elapsedTime);
@@ -233,7 +231,6 @@ void PlayScene::Render()
 	m_wall->		Render			(view, m_projection);	// 壁
 
 	m_player->		Render(view, m_projection);	// プレイヤー
-	m_sword->		Render(view, m_projection); // 刀
 	m_enemyManager->Render(view, m_projection); // 敵（複数）
 	
 	DrawParticle(view, m_projection);	// パーティクル
@@ -310,35 +307,6 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 void PlayScene::CheckResult()
 {
 	m_isChangeScene = true;
-
-	//auto data = GameData::GetInstance();
-
-//	// ボスのポインタを取得
-//	auto enemy = m_enemyManager->GetBossEnemy();
-//
-//	// 敵が死亡
-//	if (enemy->GetEnemyHP()->GetHP() <= 0)
-//	{
-//		m_isChangeScene = true;
-//		data->SetBattleResult(GameData::BATTLE_RESULT::WIN);
-//	}
-//
-//	// プレイヤーが死亡
-//	else if (m_player->GetPlayerHP()->GetHP() <= 0)
-//	{
-//		m_isChangeScene = true;
-//		data->SetBattleResult(GameData::BATTLE_RESULT::LOSE);
-//	}
-//
-//
-//#ifdef _DEBUG
-//	if (m_keyboardStateTracker.IsKeyPressed(DirectX::Keyboard::Keys::F7))
-//	{
-//		m_isChangeScene = true;
-//		data->SetBattleResult(GameData::BATTLE_RESULT::WIN);
-//	}
-//#endif // !_DEBUG
-
 }
 
 

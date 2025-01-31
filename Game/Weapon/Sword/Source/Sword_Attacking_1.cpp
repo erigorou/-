@@ -53,7 +53,6 @@ Sword_Attacking_1::~Sword_Attacking_1()
 // --------------------------------
 void Sword_Attacking_1::Initialize()
 {
-	m_particles = m_sword->GetPlayScene()->GetParticle();	// パーティクルの取得
 }
 
 
@@ -85,8 +84,12 @@ void Sword_Attacking_1::Update(float elapsedTime)
 	// 経過時間を計測
 	m_totalSeconds += elapsedTime;
 
-	m_position	= m_sword->GetPlayScene()->GetPlayer()->GetPosition();	// プレイヤーの座標を取得
-	m_angle		= m_sword->GetPlayScene()->GetPlayer()->GetAngle();		// プレイヤーの回転を取得
+	// プレイヤーを取得
+	auto player = m_sword->GetPlayer();
+	// プレイヤーの座標を取得
+	m_position = player->GetPosition();
+	// プレイヤーの回転を取得
+	m_angle = player->GetAngle();
 
 	// アニメーションの更新
 	UpdateAnimation();
@@ -117,12 +120,6 @@ void Sword_Attacking_1::UpdateAnimation()
 
 		if (m_rot.y < MAX_SIDE_ANGLE)
 		{
-			// ボスが存在する場合
-			if (m_sword->GetPlayScene()->GetBoss())
-			{
-				//// 当たり判定を無効にする
-				//m_sword->GetPlayScene()->GetEnemy()->CanHit(false);
-			}
 			m_sword->SetAttackFlag(false);
 		}
 
