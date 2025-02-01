@@ -13,31 +13,39 @@ class Player;
 
 class Sword : public IObject
 {
-// 固定値**
+// ------------------------------------
+// 固定値
+// ------------------------------------
 public:
+	// 刀の大きさ
 	static const float SWORD_SCALE;
-
-	static constexpr DirectX::SimpleMath::Vector3 SWORD_DIR_FOR_PLAYER = { -1.5f, 1.0f, -2.0f };	// プレイヤーの刀の位置
-
+	// 刀の位置
+	static constexpr DirectX::SimpleMath::Vector3 SWORD_DIR_FOR_PLAYER = { -1.5f, 1.0f, -2.0f };
+	// モデルの先端の高さ
 	static constexpr float MODEL_TOP_HEIGHT  = 55.0f;
-	static constexpr float MODEL_ROOT_HEIGHT = 50.0f;
+	// モデルの根本の高さ
+	static constexpr float MODEL_ROOT_HEIGHT = 20.0f;
 
-// 公開関数**
-	DirectX::BoundingOrientedBox GetCollision() const { return *m_collision.get(); }	// 当たり判定の取得
-
-	Player* GetPlayer() { return m_player; }	// プレイヤーの取得
-
-	void SetWorldMatrix(DirectX::SimpleMath::Matrix mat) { m_worldMatrix = mat; }	// ワールド行列の設定
-
-	void SetAttackFlag	(bool flag) { m_canAttack = flag; }	// 攻撃可能かどうかの設定
-	bool GetAttackFlag	()			{ return m_canAttack; }	// 攻撃可能かどうか
-
+// ------------------------------------
+// アクセサ
+// ------------------------------------
+	// プレイヤーの取得
+	Player* GetPlayer() { return m_player; }
+	// ワールド行列の設定
+	void SetWorldMatrix(DirectX::SimpleMath::Matrix mat) { m_worldMatrix = mat; }
+	// 攻撃可能かどうかの設定
+	void SetAttackFlag(bool flag) { m_canAttack = flag; }
+	// 攻撃可能かどうか
+	bool GetAttackFlag() { return m_canAttack; }
 	// 位置のゲッター
 	DirectX::SimpleMath::Vector3 GetPosition() override { return m_position; }
-
 	// 当たり判定の位置の設定
 	void SetCollisionPosition(DirectX::SimpleMath::Matrix mat) { m_originalBox.Transform(*m_collision.get(), mat); }
 
+
+// ------------------------------------
+// メンバ関数(公開)
+// ------------------------------------
 	// コンストラクタ
 	Sword(Player* player);
 	// デストラクタ
@@ -60,19 +68,28 @@ public:
 	// 当たったときの処理
 	void HitAction(InterSectData data)  override;
 
-// 内部関数**
+// ------------------------------------
+// メンバ関数(非公開)
+// ------------------------------------
 private:
 	// ステートを生成
 	void CreateState();
 	void CreateCollision();
 
 
-	DirectX::SimpleMath::Vector3 m_position;	// 位置
-	DirectX::SimpleMath::Vector3 m_velocity;	// 速度
-	DirectX::SimpleMath::Vector3 m_angle;		// 角度
-	DirectX::SimpleMath::Matrix m_worldMatrix;	// ワールド行列
-	DirectX::Model*				m_model;		// モデル
 
+// ------------------------------------
+// メンバ変数
+// ------------------------------------
+private:
+	// プレイヤー
+	Player* m_player;
+	// 位置
+	DirectX::SimpleMath::Vector3 m_position;
+	// ワールド行列
+	DirectX::SimpleMath::Matrix m_worldMatrix;
+	// モデル
+	DirectX::Model* m_model;
 	// 剣の当たり判定１（実際の当たり判定）
 	std::unique_ptr<DirectX::BoundingOrientedBox> m_collision;
 	// オリジナルの当たり判定（オリジナルは生成をするだけのもの）
@@ -82,21 +99,12 @@ private:
 
 	// 現在のステート
 	IWeapon* m_currentState;
-
-	std::unique_ptr<SwordIdling> m_swordIdling;
-	std::unique_ptr<SwordAttacking1> m_swordAttacking_1;
-	std::unique_ptr<SwordAttacking2> m_swordAttacking_2;
+	// 待機状態
+	std::unique_ptr<SwordIdling> m_idling;
+	// 攻撃状態
+	std::unique_ptr<SwordAttacking1> m_attacking1;
+	// 攻撃状態
+	std::unique_ptr<SwordAttacking2> m_attacking2;
 	// 待機モーションを格納する配列
 	std::vector<IWeapon*> m_states;
-
-
-	// ベーシックエフェクト
-	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
-	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
-	// 入力レイアウト
-	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
-
-	// プレイヤー
-	Player* m_player;
-
 };

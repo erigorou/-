@@ -39,6 +39,7 @@ Cudgel_Sweeping::Cudgel_Sweeping(Cudgel* cudgel)
 {
 }
 
+
 // ----------------------------
 // デストラクタ
 // ----------------------------

@@ -23,13 +23,12 @@
 SwordIdling::SwordIdling(Sword* sword)
 	:
 	m_sword(sword),
-	m_position(0.0f, 0.0f, 0.0f),
-	m_velocity(0.0f, 0.0f, 0.0f),
-	m_angle(0.0f),
+	m_position{},
+	m_velocity{},
+	m_angle{},
 	m_worldMatrix(DirectX::SimpleMath::Matrix::Identity)
 {
 }
-
 
 // -----------------------
 // デストラクタ
@@ -37,7 +36,6 @@ SwordIdling::SwordIdling(Sword* sword)
 SwordIdling::~SwordIdling()
 {
 }
-
 
 // -----------------------
 // 初期化処理
@@ -47,7 +45,6 @@ void SwordIdling::Initialize()
 	// ワールド行列を初期化
 	m_worldMatrix = DirectX::SimpleMath::Matrix::Identity;
 }
-
 
 // -----------------------
 // 事前処理
@@ -63,7 +60,6 @@ void SwordIdling::PreUpdate()
 	EventMessenger::Execute("EnemyCanHit", &canHit);
 }
 
-
 // -----------------------
 // 更新処理
 // -----------------------
@@ -78,21 +74,29 @@ void SwordIdling::Update(float elapsedTime)
 	// プレイヤーの回転を取得
 	m_angle = player->GetAngle();
 
+	// クオータニオンによる回転計算
+	DirectX::SimpleMath::Quaternion baseRotation =
+		DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::UnitY, DirectX::XMConvertToRadians(-90.0f)) *
+		DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::UnitX, DirectX::XMConvertToRadians(90.0f));
+
+	DirectX::SimpleMath::Quaternion playerRotation =
+		DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::UnitY, DirectX::XMConvertToRadians(m_angle));
+
+	// 回転行列に変換
+	DirectX::SimpleMath::Matrix baseRotationMatrix = DirectX::SimpleMath::Matrix::CreateFromQuaternion(baseRotation);
+
+	DirectX::SimpleMath::Matrix playerRotationMatrix = DirectX::SimpleMath::Matrix::CreateFromQuaternion(playerRotation);
+
 	// ワールド行列を更新する
-	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE);								// サイズの設定
-	
-	m_worldMatrix
-		// 傾ける
-		*= DirectX::SimpleMath::Matrix::CreateRotationY(DirectX::XMConvertToRadians(-90.0f))// 回転
-		*= DirectX::SimpleMath::Matrix::CreateRotationX(DirectX::XMConvertToRadians(90.0f))	// 回転
-		*= DirectX::SimpleMath::Matrix::CreateTranslation(Sword::SWORD_DIR_FOR_PLAYER)	// プレイヤの位置に設定する
-		*= DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle)						// プレイヤの回転を付与
-		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);					// プレイヤの位置に設定する
+	m_worldMatrix = DirectX::SimpleMath::Matrix::CreateScale(Sword::SWORD_SCALE)
+		* baseRotationMatrix // まずXY軸の回転を適用
+		* DirectX::SimpleMath::Matrix::CreateTranslation(Sword::SWORD_DIR_FOR_PLAYER) // 持ち手位置を適用
+		* playerRotationMatrix // 最後にm_angleを適用
+		* DirectX::SimpleMath::Matrix::CreateTranslation(m_position); // 最後にプレイヤーの位置を適用
 
-	m_sword->SetWorldMatrix(m_worldMatrix);			// ワールド行列を設定
-	m_sword->SetCollisionPosition(m_worldMatrix);	// 当たり判定の位置を設定
+	m_sword->SetWorldMatrix(m_worldMatrix); // ワールド行列を設定
+	m_sword->SetCollisionPosition(m_worldMatrix); // 当たり判定の位置を設定
 }
-
 
 // -----------------------
 // 事後処理
@@ -101,14 +105,12 @@ void SwordIdling::PostUpdate()
 {
 }
 
-
 // -----------------------
 // 終了処理
 // -----------------------
 void SwordIdling::Finalize()
 {
 }
-
 
 // -----------------------
 // 当たり判定処理

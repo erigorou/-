@@ -18,14 +18,22 @@
 #include "Sword.h"
 #include "Game/Player/Player.h"
 
+#include "Game/Weapon/Sword/Header/SwordIdling.h"
+#include "Game/Weapon/Sword/Header/SwordAttacking1.h"
+#include "Game/Weapon/Sword/Header/SwordAttacking2.h"
 
 
 
+// --------------------------------------------
 // 固定値
+// --------------------------------------------
+// 刀の大きさ
 const float Sword::SWORD_SCALE = Player::PLAYER_SCALE * 1.5f;
 
 
+// --------------------------------------------
 // コンストラクタ
+// --------------------------------------------
 Sword::Sword(Player* player)
 	:
 	m_player(player),
@@ -37,70 +45,56 @@ Sword::Sword(Player* player)
 }
 
 
+// --------------------------------------------
 // デストラクタ
+// --------------------------------------------
 Sword::~Sword()
 {
 }
 
 
+// --------------------------------------------
 // 初期化処理
+// --------------------------------------------
 void Sword::Initialize()
 {
-	CommonResources* resources = CommonResources::GetInstance();
-
-	auto device = resources->GetDeviceResources()->GetD3DDevice();
-	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
-
-
 	// モデルの読み込み
 	m_model = GameResources::GetInstance()->GetModel("sword");
-
-	// ベーシックエフェクトを作成する
-	m_basicEffect = std::make_unique<DirectX::BasicEffect>(device);
-	m_basicEffect->SetVertexColorEnabled(true);
-	// 入力レイアウトを作成する
-	DX::ThrowIfFailed(
-		DirectX::CreateInputLayoutFromEffect<DirectX::VertexPositionColor>(
-			device,
-			m_basicEffect.get(),
-			m_inputLayout.ReleaseAndGetAddressOf())
-	);
-	// プリミティブバッチの作成
-	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
-
 	// ステートを作成
 	CreateState();
 	// 当たり判定を作成
 	CreateCollision();
-
-	// ワールド座標の初期化
-	m_worldMatrix *= DirectX::SimpleMath::Matrix::CreateScale(SWORD_SCALE);
-
 }
 
 
+// --------------------------------------------
 // シーンを生成する
+// --------------------------------------------
 void Sword::CreateState()
 {
-	// ステートを生成する
-	m_swordIdling		= std::make_unique<SwordIdling>(this);
-	m_swordAttacking_1	= std::make_unique<SwordAttacking1>(this);
-	m_swordAttacking_2	= std::make_unique<SwordAttacking2>(this);
+	// 待機ステートを生成
+	m_idling = std::make_unique<SwordIdling>(this);
+	// 初期化処理
+	m_idling->Initialize();
+	// 待機ステートを格納
+	m_states.push_back(m_idling.get());
 
-	// ステートを初期化する
-	m_swordIdling->Initialize();
-	m_swordAttacking_1->Initialize();
-	m_swordAttacking_2->Initialize();
+	// 攻撃ステートを生成
+	m_attacking1 = std::make_unique<SwordAttacking1>(this);
+	// 初期化処理
+	m_attacking1->Initialize();
+	// 攻撃ステートを格納
+	m_states.push_back(m_attacking1.get());
+
+	// 攻撃ステートを生成
+	m_attacking2 = std::make_unique<SwordAttacking2>(this);
+	// 初期化処理
+	m_attacking2->Initialize();
+	// 攻撃ステートを格納
+	m_states.push_back(m_attacking2.get());
 
 	// 現在のステートを設定
-	m_currentState = m_swordIdling.get();
-
-	// 待機ステートを格納
-	m_states.push_back(m_swordIdling.get());
-	// 攻撃ステートを格納
-	m_states.push_back(m_swordAttacking_1.get());
-	// 攻撃ステートを格納
-	m_states.push_back(m_swordAttacking_2.get());
+	m_currentState = m_idling.get();
 }
 
 
@@ -145,6 +139,7 @@ void Sword::Render(
 	const DirectX::SimpleMath::Matrix& projection
 )
 {
+	// リソースの取得
 	CommonResources* resources = CommonResources::GetInstance();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();

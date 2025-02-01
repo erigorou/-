@@ -9,16 +9,21 @@ class Sword;
 /// </summary>
 class SwordIdling : public IWeapon
 {
+// -----------------------
+// 固定値
+// -----------------------
 public:
-	// 固定値
-	static const float ROTX;
-	static const float ROTY;
 
+
+
+// -----------------------
+// メンバ関数(公開)
+// -----------------------
+public:
 	// コンストラクタ
 	SwordIdling(Sword* sword);
 	// デストラクタ
 	~SwordIdling();
-
 	// 初期化処理
 	void Initialize()override;
 	// 事前処理
@@ -29,11 +34,16 @@ public:
 	void PostUpdate()override;
 	// 終了処理
 	void Finalize()override;
-
+	// 衝突処理
 	void HitAction(InterSectData data)override;
 
 
+// -----------------------
+// メンバ変数
+// -----------------------
 private:
+	// ソードの元を取得
+	Sword* m_sword;
 	// 座標
 	DirectX::SimpleMath::Vector3 m_position;
 	// 速度
@@ -42,8 +52,4 @@ private:
 	float m_angle;
 	// ワールド行列
 	DirectX::SimpleMath::Matrix m_worldMatrix;
-
-private:
-	// ソードの元を取得
-	Sword* m_sword;
 };
