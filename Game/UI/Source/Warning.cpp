@@ -9,15 +9,16 @@
 
 // コンストラクタ
 Warning::Warning(HPSystem* hp)
-	: m_hp(hp)
-	, m_pDR(nullptr)
-	, m_customShader(nullptr)
-	, m_CBuffer(nullptr)
-	, m_states(nullptr)
-	, m_batch(nullptr)
-	, m_texture()
-	, m_elapsedTime(0.0f)
-	, m_totalTime(0.0f)
+	:
+	m_hp(hp),
+	m_pDR{},
+	m_customShader{},
+	m_CBuffer{},
+	m_states{},
+	m_batch{},
+	m_texture{},
+	m_elapsedTime{},
+	m_totalTime{}
 {
 	// デバイスリソースの取得
 	m_pDR = CommonResources::GetInstance()->GetDeviceResources();
@@ -126,9 +127,6 @@ void Warning::Render()
 
 	// テクスチャの設定
 	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
-
-	// 入力レイアウトの設定
-	context->IASetInputLayout(m_customShader->GetInputLayout());
 
 	// 描画
 	m_batch->Begin();

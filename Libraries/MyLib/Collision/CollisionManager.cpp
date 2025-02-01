@@ -88,12 +88,12 @@ void CollisionManager::AddEventMessenger()
 void CollisionManager::Update()
 {
 	// OBBのプロキシと球の当たり判定
-	for (size_t i = 0; i < m_obbs.size(); i++)
+	for (int i = 0; i < static_cast<int>(m_obbs.size()); i++)
 	{
 		// OBBのプロキシ球の中心をOBBの中心に設定
 		m_obbProxies[i] = CreateProxySphere(m_obbs[i].collision);
 
-		for (size_t j = 0; j < m_spheres.size(); j++)
+		for (int j = 0; j < static_cast<int>(m_spheres.size()); j++)
 		{
 			// プロキシと衝突していなければ次の球に移る
 			if (!m_obbProxies[i]->Intersects(*m_spheres[j].collision))	continue;
@@ -114,9 +114,9 @@ void CollisionManager::Update()
 
 
 	// 球同士による当たり判定
-	for (size_t i = 0; i < m_spheres.size() - 1; i++)
+	for (int i = 0; i < static_cast<int>(m_spheres.size() - 1); i++)
 	{
-		for (size_t j = i + 1; j < m_spheres.size(); j++)
+		for (int j = i + 1;j < static_cast<int>(m_spheres.size()); j++)
 		{
 			// 球同士の当たり判定
 			if (m_spheres[i].collision->Intersects(*m_spheres[j].collision))
@@ -216,6 +216,7 @@ inline std::unique_ptr<DirectX::BoundingSphere> CollisionManager::CreateProxySph
 	return std::move(proxy);
 }
 
+
 // -------------------------------------------------------
 /// 当たり判定を削除する
 // -------------------------------------------------------
@@ -262,33 +263,6 @@ void CollisionManager::DeleteCollision(void* args)
 	}
 }
 
-//void CollisionManager::DeleteCollision(CollisionType collType, IObject* object)
-//{
-//	// 不正なCollisionTypeの場合は処理を終了
-//	if (collType != CollisionType::OBB && collType != CollisionType::Sphere)	return;
-//
-//	// オブジェクト削除処理を補助関数として共通化
-//	auto EraseMatchingObject = [object](auto& container) {
-//		container.erase(std::remove_if(container.begin(), container.end(),[object](const auto& collision)
-//			{
-//				return collision.object == object;
-//			}),
-//			container.end());
-//		};
-//
-//	// CollisionTypeに応じて適切なコンテナから削除
-//	switch (collType)
-//	{
-//	case CollisionType::OBB:
-//		EraseMatchingObject(m_obbs);
-//		break;
-//
-//	case CollisionType::Sphere:
-//		EraseMatchingObject(m_spheres);
-//		break;
-//	}
-//}
-
 
 
 // -------------------------------------------------------
@@ -313,12 +287,12 @@ inline void CollisionManager::DrawCollision(DirectX::SimpleMath::Matrix view, Di
 	
 	// Collision毎に判定を描画
 
-	for (auto obb : m_obbs)
+	for (const auto& obb : m_obbs)
 	{
 		DX::Draw(m_primitiveBatch.get(), *obb.collision, DirectX::Colors::Red);
 	}
 
-	for (auto sphere : m_spheres)
+	for (const auto& sphere : m_spheres)
 	{
 		DX::Draw( m_primitiveBatch.get(), *sphere.collision, DirectX::Colors::Blue);
 	}

@@ -30,8 +30,10 @@
 Player::Player(PlayScene* playScene)
 	:
 	m_playScene(playScene),
+	m_elapsedTime{},
+	m_tilt{},
 	m_model{},
-	m_position{ 0, 0, 40 },
+	m_position{ HOME_POSITION },
 	m_angle{},
 	m_inputVector{},
 	m_acceleration{},

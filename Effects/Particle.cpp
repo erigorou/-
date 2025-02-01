@@ -23,7 +23,8 @@
 // ---------------------------
 Particle::Particle()
 	:
-	m_timerDustTrail{}
+	m_timerDustTrail{},
+	m_timerSwordTrail{}
 {
 	// ƒCƒxƒ“ƒg‚ð“o˜^
 	EventMessenger::Attach("CreateTrailDust", std::bind(&Particle::CreateTrailDust, this));

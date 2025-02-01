@@ -29,11 +29,11 @@ CommonResources* const CommonResources::GetInstance()
 //---------------------------------------------------------
 CommonResources::CommonResources()
 	:
-	m_stepTimer{ nullptr },
-	m_deviceResources{ nullptr },
-	m_commonStates{ nullptr },
-	m_debugString{ nullptr },
-	m_inputManager{ nullptr }
+	m_stepTimer{},
+	m_deviceResources{},
+	m_commonStates{},
+	m_debugString{},
+	m_inputManager{}
 {
 }
 

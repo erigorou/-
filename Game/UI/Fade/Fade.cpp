@@ -30,13 +30,15 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> Fade::INPUT_LAYOUT =
 /// コンストラクタ
 /// </summary>
 Fade::Fade(SceneManager* scene)
-	: m_scene(scene)
-	, m_elapsedTime(0.0f)
-	, m_totalTime(0.0f)
-	, m_delayTime(0.0f)
-	, m_isFade(false)
-	, m_endFade(false)
-	, m_fadeType(FadeType::FADE_NONE)
+	: 
+	m_scene(scene),
+	m_easingValue{},
+	m_elapsedTime{},
+	m_totalTime{},
+	m_delayTime{},
+	m_isFade(false),
+	m_endFade(false),
+	m_fadeType(FadeType::FADE_NONE)
 {
 }
 

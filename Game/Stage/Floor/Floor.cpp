@@ -37,7 +37,7 @@ Floor::Floor()
 	device->CreateInputLayout(
 		DirectX::VertexPositionTexture::InputElements,
 		DirectX::VertexPositionTexture::InputElementCount,
-		shaderByteCode, byteCodeLength, m_inputLayout.GetAddressOf()
+		shaderByteCode, static_cast<int>(byteCodeLength), m_inputLayout.GetAddressOf()
 	);
 
 	// 共通ステートの作成
@@ -90,7 +90,8 @@ void Floor::GenerateCircleVertices(DirectX::VertexPositionTexture* vertices, flo
 // ---------------------------------------------
 void Floor::Render(
 	DirectX::SimpleMath::Matrix view,
-	DirectX::SimpleMath::Matrix proj)
+	DirectX::SimpleMath::Matrix proj
+)
 {
 	CommonResources* resources = CommonResources::GetInstance();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();

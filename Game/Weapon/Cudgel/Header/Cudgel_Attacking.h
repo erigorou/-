@@ -38,6 +38,7 @@ public:
 	void PreUpdate()override;
 	// XVˆ—
 	void Update(float elapsedTime)override;
+	void UpdateAnimation();
 	// –Œãˆ—
 	void PostUpdate()override;
 	// I—¹ˆ—

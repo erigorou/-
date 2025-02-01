@@ -94,14 +94,26 @@ void Cudgel_Attacking::Update(float elapsedTime)
 	m_enemyAngle = boss->GetAngle();	// 敵の回転を取得
 	m_angleRL = m_enemyAngle;			// 敵の回転を設定
 
-	UpdateCudgelRotation();				// 回転を計算する
-	CalculateModelMatrix();				// ワールド行列を計算
-	GetCudgelBothEnds(m_totalSeconds);	// 両端を取得する
-
-	m_cudgel->SetWorldMatrix(m_worldMatrix);		// ワールド行列を設定する
-	m_cudgel->SetCollisionPosition(m_worldMatrix);	// 当たり判定の位置を設定する
+	UpdateAnimation();	// アニメーションの更新
 }
 
+
+void Cudgel_Attacking::UpdateAnimation()
+{
+	// 金棒の回転を更新
+	UpdateCudgelRotation();
+	// 金棒のワールド行列を計算
+	CalculateModelMatrix();
+	// 金棒の根本と先端の座標を取得
+	GetCudgelBothEnds(m_totalSeconds);
+
+	// 計算したワールド行列を設定
+	m_cudgel->SetWorldMatrix(m_worldMatrix);
+	m_cudgel->SetCollisionPosition(m_worldMatrix);
+
+	// プレイヤーに攻撃可能かを通知
+	EventMessenger::Execute("PlayerCanHit", &m_canHit);
+}
 
 /// <summary>
 /// Cudgelの縦軸の回転の更新関数

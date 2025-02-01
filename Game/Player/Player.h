@@ -28,7 +28,7 @@ class Player :  public IObserver
 // -----------------
 public:
 	// ‰ŠúÀ•W
-	static constexpr DirectX::SimpleMath::Vector3 HOME_POSITION = { 0.0f, 0.0f, 0.0f };
+	static constexpr DirectX::SimpleMath::Vector3 HOME_POSITION = { 0.0f, 0.0f, 40.0f };
 	// ‘¬‚³
 	static constexpr float PLAYER_SPEED = 0.4f;
 	// ‘å‚«‚³
