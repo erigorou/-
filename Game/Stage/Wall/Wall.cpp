@@ -12,17 +12,16 @@
 #include "Game/CommonResources.h"
 #include "Game/GameResources.h"
 #include "Wall.h"
-#include "Game/Scene/PlayScene.h"
 #include "Game/Messenger/EventMessenger.h"
 
 // 固定値
 const float Wall::WALL_SCALE = 2.0f;
 
 // コンストラクタ
-Wall::Wall(PlayScene* playScene)
-	: m_playScene(playScene)
-	, m_worldMatrix()
-	, m_model()
+Wall::Wall()
+	:
+	m_worldMatrix{},
+	m_model{}
 {
 }
 

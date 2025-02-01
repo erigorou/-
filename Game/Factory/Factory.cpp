@@ -108,11 +108,11 @@ std::unique_ptr<Sea> Factory::CreateSea()
 // ---------------------------------------------
 // •Ç‚Ì¶¬ŠÖ”
 // ---------------------------------------------
-std::unique_ptr<Wall> Factory::CreateWall(PlayScene* playScene)
+std::unique_ptr<Wall> Factory::CreateWall()
 {
 	// •Ç‚ğéŒ¾‚·‚é
 	std::unique_ptr<Wall> wall;
-	wall = std::make_unique<Wall>(playScene);
+	wall = std::make_unique<Wall>();
 	// ‰Šú‰»ˆ—
 	wall->Initialize();
 	// •Ç‚Ìİ’è
@@ -148,7 +148,7 @@ std::unique_ptr<Player> Factory::CreatePlayer(PlayScene* playScene)
 // ---------------------------------------------
 // ‹Si“Gj‚Ì¶¬ŠÖ”
 // ---------------------------------------------
-std::unique_ptr<Boss> Factory::CreateBoss(PlayScene* playScene)
+std::unique_ptr<Boss> Factory::CreateBoss()
 {
 	// ‹Si“Gj‚ğéŒ¾‚·‚é
 	std::unique_ptr<Boss> boss;

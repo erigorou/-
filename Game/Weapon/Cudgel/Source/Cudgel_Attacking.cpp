@@ -274,7 +274,7 @@ void Cudgel_Attacking::GetCudgelBothEnds(float _totalTime)
 	using namespace DirectX;
 
 	// 2個以上ない場合は処理を抜ける
-	size_t max = m_rootPos.size() - 1;
+	int max = static_cast<int>(m_rootPos.size()) - 1;
 	if (max >= 1)
 	{
 		VertexPositionTexture ver[4] =	// 頂点情報の生成（パーティクルの生成に必要）

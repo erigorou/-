@@ -37,10 +37,10 @@ public:
 	static std::unique_ptr<SkySphere>			CreateSkySphere			();
 	static std::unique_ptr<Floor>				CreateFloor				();
 	static std::unique_ptr<Sea>					CreateSea				();
-	static std::unique_ptr<Wall>				CreateWall				(PlayScene* playScene);
+	static std::unique_ptr<Wall>				CreateWall				();
 
 	static std::unique_ptr<Player>				CreatePlayer			(PlayScene* playScene);
-	static std::unique_ptr<Boss>				CreateBoss				(PlayScene* playScene);
+	static std::unique_ptr<Boss>				CreateBoss				();
 	static std::unique_ptr<Goblin>				CreateGoblin			(PlayScene* playScene);
 	static std::unique_ptr<Sword>				CreateSword				(Player* player);
 	static std::unique_ptr<Cudgel>				CreateCudgel			(Boss* boss);

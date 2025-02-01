@@ -3,7 +3,6 @@
 
 #include "Interface/IObject.h"
 
-class PlayScene;
 
 class Wall : public IObject
 {
@@ -28,7 +27,7 @@ public:
 	DirectX::SimpleMath::Vector3 GetPosition() override	{ return DirectX::SimpleMath::Vector3::Zero; }
 
 	// コンストラクタ
-	Wall(PlayScene* playScene);
+	Wall();
 	// デストラクタ
 	~Wall();
 	// 初期化
@@ -58,6 +57,4 @@ private:
 	DirectX::Model* m_model;	// モデル
 	std::unique_ptr<DirectX::BoundingSphere> m_collision;	// 当たり判定
 	std::unique_ptr<DirectX::BoundingSphere> m_overCollision; // 外の当たり判定に見立てたもの
-
-	PlayScene* m_playScene;	// プレイシーン
 };

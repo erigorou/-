@@ -92,14 +92,14 @@ void PlayScene::CreateObjects()
 
 	m_hitStop = HitStop::GetInstance();
 
-	m_collisionManager	= Factory::CreateCollisionManager	();		// パーティクル
-	m_camera			= Factory::CreateCamera				();		// カメラ
-	m_particles			= Factory::CreateParticle			();		// パーティクル
+	m_collisionManager	= Factory::CreateCollisionManager	();	// パーティクル
+	m_camera			= Factory::CreateCamera				();	// カメラ
+	m_particles			= Factory::CreateParticle			();	// パーティクル
 
-	m_skySphere			= Factory::CreateSkySphere			();		// 天球	
-	m_floor				= Factory::CreateFloor				();		// フロア
-	m_sea				= Factory::CreateSea				();		// 海
-	m_wall				= Factory::CreateWall				(this);	// 壁
+	m_skySphere			= Factory::CreateSkySphere			();	// 天球	
+	m_floor				= Factory::CreateFloor				();	// フロア
+	m_sea				= Factory::CreateSea				();	// 海
+	m_wall				= Factory::CreateWall				();	// 壁
 	m_player			= Factory::CreatePlayer				(this);	// プレイヤ
 
 	m_uiManager		= Factory::CreateUIManager				(this);	// UIマネージャー

@@ -13,7 +13,8 @@ class SwordIdling : public IWeapon
 // 固定値
 // -----------------------
 public:
-
+	static constexpr float INIT_Y_ROT = DirectX::XMConvertToRadians(-90.0f);
+	static constexpr float INIT_Z_ROT = DirectX::XMConvertToRadians(90.0f);
 
 
 // -----------------------
@@ -38,18 +39,20 @@ public:
 	void HitAction(InterSectData data)override;
 
 
+// -------------------------
+// メンバ関数(非公開)
+// -------------------------
+private:
+	// ワールド行列の更新処理
+	void UpdateWorldMatrix();
+
+
 // -----------------------
 // メンバ変数
 // -----------------------
 private:
 	// ソードの元を取得
 	Sword* m_sword;
-	// 座標
-	DirectX::SimpleMath::Vector3 m_position;
-	// 速度
-	DirectX::SimpleMath::Vector3 m_velocity;
-	// 角度
-	float m_angle;
 	// ワールド行列
 	DirectX::SimpleMath::Matrix m_worldMatrix;
 };

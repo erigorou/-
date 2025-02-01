@@ -315,7 +315,7 @@ void EnemyManager::GenerateGoblin(const DirectX::SimpleMath::Vector3& position)
 void EnemyManager::GenerateBoss(const DirectX::SimpleMath::Vector3& position)
 {
 	// ƒ{ƒX‚Ì¶¬
-	auto boss = Factory::CreateBoss(m_playScene);
+	auto boss = Factory::CreateBoss();
 	// ˆÊ’u‚ÌÝ’è
 	boss->SetPosition(position);
 	// ”z—ñ‚ÉŠi”[
