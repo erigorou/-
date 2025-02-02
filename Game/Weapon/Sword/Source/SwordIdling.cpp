@@ -79,7 +79,7 @@ void SwordIdling::UpdateWorldMatrix()
 	// プレイヤーを取得
 	auto player = m_sword->GetPlayer();
 	// プレイヤーの向きを取得
-	float rotation = DirectX::XMConvertToRadians(player->GetAngle());
+	float rotation = player->GetAngle();
 
 	// 剣の基礎回転（初期角度）
 	Quaternion baseRotation =
@@ -87,7 +87,7 @@ void SwordIdling::UpdateWorldMatrix()
 		Quaternion::CreateFromAxisAngle(Vector3::UnitX, INIT_Z_ROT);
 
 	// プレイヤーの回転を適用
-	Quaternion playerRotation = Quaternion::CreateFromAxisAngle(Vector3::UnitY, rotation);
+	Quaternion playerRotation = Quaternion::CreateFromAxisAngle(Vector3::UnitY, -rotation);
 
 	// ワールド行列を更新
 	m_worldMatrix = 
