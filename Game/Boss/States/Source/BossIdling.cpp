@@ -58,8 +58,10 @@ void BossIdling::PreUpdate()
 	CudgelState state = CudgelState::Idle;
 	EventMessenger::Execute("ChangeCudgelState", &state);
 
-	// 顔のステートを変更
-	m_boss->SetFace(m_boss->GetFaceIdling());
+	// 顔を変更
+	FaceState face = FaceState::Idling;
+	EventMessenger::Execute("ChangeBossFace", &face);
+
 	// 回転を取得
 	m_angle = m_boss->GetAngle();
 }
@@ -122,39 +124,36 @@ void BossIdling::CheckNextState()
 	// １秒で行動を変更する
 	if (m_totalSeconds >= TOTAL_TIME)
 	{
+		// ランダムで行動を変更する
 		int random = Math::RandomInt(0, TOTAL_RATE);
+		// プレイヤーとの距離を計算
 		float distance = Vector3::Distance(parentPos, playerPos);
+		// 次のボスのステート
+		BossState state = BossState::Idling;
+
 		// 遠い距離の場合
 		if (distance > FAR_DISTANCE)
 		{
-			if (random % 2 == 0)	m_boss->ChangeState(m_boss->GetBossApproaching());	// 追従
-			else					m_boss->ChangeState(m_boss->GetBossDashAttacking());	// ダッシュ攻撃
+			// 追従
+			if (random % 2 == 0) state = BossState::Approaching;
+			// ダッシュ攻撃
+			else state = BossState::DashAttacking;
 		}
 		// 近い距離の場合
 		else
 		{
-			// ランダムで行動を変更する
-			if (random <= SWEEPING_RATE)
-			{
-				// 薙ぎ払い
-				m_boss->ChangeState(m_boss->GetBossSweeping());
-			}
-			else if (random <= ATTACKING_RATE)
-			{
-				// 攻撃
-				m_boss->ChangeState(m_boss->GetBossAttacking());
-			}
-			else if (random <= DASH_ATTACK_RATE)
-			{
-				// ダッシュ攻撃
-				m_boss->ChangeState(m_boss->GetBossDashAttacking());
-			}
-			else if (random == IDLING_RATE)
-			{
-				// 何もしない
-				m_boss->ChangeState(m_boss->GetBossIdling());
-			}
+			// 薙ぎ払い
+			if (random <= SWEEPING_RATE) state = BossState::Sweeping;
+			// 攻撃
+			else if (random <= ATTACKING_RATE) state = BossState::Attacking;
+			// ダッシュ攻撃
+			else if (random <= DASH_ATTACK_RATE) state = BossState::DashAttacking;
+			// 何もしない
+			else if (random <= IDLING_RATE) state = BossState::Idling;
 		}
+
+		// ボスのステートを変更
+		EventMessenger::Execute("ChangeBossState", &state);
 	}
 }
 

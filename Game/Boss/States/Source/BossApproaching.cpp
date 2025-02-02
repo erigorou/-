@@ -22,7 +22,6 @@ BossApproaching::BossApproaching(Boss* boss)
 	m_position{},
 	m_velocity{},
 	m_angle{},
-	m_worldMat(DirectX::SimpleMath::Matrix::Identity),
 	m_totalSeconds{}
 {
 }
@@ -61,8 +60,6 @@ void BossApproaching::PreUpdate()
 	m_position	= m_boss->GetPosition();
 	// 回転行列の取得
 	m_angle		= m_boss->GetAngle();
-	// ワールド行列の取得
-	m_worldMat	= m_boss->GetWorldMatrix();
 }
 
 
@@ -130,11 +127,18 @@ void BossApproaching::CheckNextState()
 		// プレイヤーとの距離が近い場合
 		if (DirectX::SimpleMath::Vector3::Distance(m_position, playerPos) <= MIN_DISTANCE)
 		{
+			// ボスの状態を保存する変数
+			BossState state = BossState::Idling;
+
 			// ランダムに次は度の挙動をするか決める
 			int random = Math::RandomInt(0, 4);
-			if (random <= 1)		m_boss->ChangeState(m_boss->GetBossSweeping());	// 掃討
-			else if (random == 2)	m_boss->ChangeState(m_boss->GetBossAttacking());	// 攻撃
-			else if (random == 3)	m_boss->ChangeState(m_boss->GetBossIdling());	// 何もしない
+			if (random <= 1)		state = BossState::Sweeping;	// 薙ぎ払い
+			else if (random == 2)	state = BossState::Attacking;	// 攻撃
+			else if (random == 3)	state = BossState::Idling;		// 何もしない
+
+			// 状態を変更
+			EventMessenger::Execute("ChangeBossState", &state);
+
 			// 以降の処理は行わない
 			return;
 		}
@@ -143,7 +147,9 @@ void BossApproaching::CheckNextState()
 	// 一定秒数経過で待機モーションに変更
 	if (m_totalSeconds >= TOTAL_TIME)
 	{
-		m_boss->ChangeState(m_boss->GetBossIdling());
+		// 待機状態に変更
+		BossState state = BossState::Idling;
+		EventMessenger::Execute("ChangeBossState", &state);
 	}
 }
 
@@ -153,8 +159,6 @@ void BossApproaching::CheckNextState()
 // --------------------------------------
 void BossApproaching::PostUpdate()
 {
-	// ワールド行列を全体に設定する
-	m_boss->SetWorldMatrix(m_worldMat);
 	// 敵の位置を0で固定する
 	m_position.y = 0.0f;
 	// 敵の位置を設定する

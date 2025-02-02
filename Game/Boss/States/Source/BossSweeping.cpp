@@ -56,8 +56,9 @@ void BossSweeping::PreUpdate()
 	CudgelState state = CudgelState::Sweep;
 	EventMessenger::Execute("ChangeCudgelState", &state);
 
-	// 顔
-	m_boss->SetFace(m_boss->GetFaceAttacking());
+	// 顔のステートを変更
+	FaceState face = FaceState::Attacking;
+	EventMessenger::Execute("ChangeBossFace", &face);
 }
 
 
@@ -88,9 +89,14 @@ void BossSweeping::UpdateAnimation()
 	else if (Math::InTime(WINDUP_TIME, m_totalSeconds, ATTACK_TIME))
 		UpdateSweepMotion();
 
-	// 待機状態への遷移
+	
 	if (m_totalSeconds > END_TIME)
-		m_boss->ChangeState(m_boss->GetBossIdling());
+	{
+		// ステートを変更（待機状態）
+		BossState state = BossState::Idling;
+		EventMessenger::Execute("ChangeBossState", &state);
+
+	}
 
 }
 
@@ -125,12 +131,13 @@ void BossSweeping::UpdateSweepMotion()
 // ----------------------------------
 void BossSweeping::PostUpdate()
 {
-	// 顔のステートを変更
-	m_boss->SetFace(m_boss->GetFaceIdling());
-
 	// 武器のステートを変更
 	CudgelState state = CudgelState::Idle;
 	EventMessenger::Execute("ChangeCudgelState", &state);
+
+	// 顔のステートを変更
+	FaceState face = FaceState::Idling;
+	EventMessenger::Execute("ChangeBossFace", &face);
 }
 
 

@@ -56,11 +56,15 @@ void BossDashAttacking::PreUpdate()
 {
 	// 経過時間を初期化
 	m_totalSeconds = 0.0f;
+
 	// 顔のステートを変更
-	m_boss->SetFace(m_boss->GetFaceAttacking());
+	FaceState face = FaceState::Attacking;
+	EventMessenger::Execute("ChangeBossFace", &face);
+
 	// 最初は攻撃中ではない
 	m_isAttacking = false;
-	// ステートを変更
+
+	// 武器のステートを変更
 	CudgelState state = CudgelState::Idle;
 	EventMessenger::Execute("ChangeCudgelState", &state);
 }
@@ -74,12 +78,16 @@ void BossDashAttacking::Update(const float& elapsedTime)
 	// 経過時間を更新
 	m_elapsedTime = elapsedTime;
 	m_totalSeconds += m_elapsedTime;
+
 	// 敵の挙動を更新する
 	UpdateAction();
+
 	// 待機状態に遷移
 	if (m_totalSeconds >= TOTAL_TIME)
 	{
-		m_boss->ChangeState(m_boss->GetBossIdling());
+		// ステートを変更（待機状態）
+		BossState state = BossState::Idling;
+		EventMessenger::Execute("ChangeBossState", &state);
 	}
 }
 
@@ -95,8 +103,6 @@ void BossDashAttacking::UpdateAction()
 	else if (m_totalSeconds <= WAIT_TIME)	WaitAction();	// 待機
 	else if (m_totalSeconds <= RETURN_TIME)	ReturnAction();	// 元に戻る
 
-	//// 衝突可能かどうか
-	//m_boss->GetPlayScene()->GetPlayer()->CanHit(m_isAttacking);
 }
 
 
@@ -105,6 +111,9 @@ void BossDashAttacking::UpdateAction()
 // --------------------
 void BossDashAttacking::ChargeAction()
 {
+	// プレイヤーに攻撃を受けられるフラグを無効化
+	EventMessenger::Execute("PlayerCanHit", &m_isAttacking);
+
 	// プレイヤーの座標を取得
 	Vector3 playerPos = m_player->GetPosition();
 	// 敵の座標を取得
@@ -129,6 +138,9 @@ void BossDashAttacking::DashAction()
 {
 	// アタック中
 	m_isAttacking = true;
+
+	// プレイヤーに攻撃を受けられるフラグを有効化
+	EventMessenger::Execute("PlayerCanHit", &m_isAttacking);
 
 	// 現在の時間に基づいてサイン波で加速度を計算
 	float easing = (m_totalSeconds - CHARGE_TIME) / (DASH_TIME - CHARGE_TIME);
@@ -161,6 +173,9 @@ void BossDashAttacking::WaitAction()
 {
 	// アタック終わり
 	m_isAttacking = false;
+
+	// プレイヤーに攻撃を受けられるフラグを有効化
+	EventMessenger::Execute("PlayerCanHit", &m_isAttacking);
 
 	// イージングに使用する秒数を計算（秒数のNormalize)
 	float easing = (m_totalSeconds - DASH_TIME) / (WAIT_TIME - DASH_TIME);
@@ -199,12 +214,13 @@ void BossDashAttacking::ReturnAction()
 // --------------------
 void BossDashAttacking::PostUpdate()
 {
-	// ステートを変更
+	// 武器のステートを変更
 	CudgelState state = CudgelState::Idle;
 	EventMessenger::Execute("ChangeCudgelState", &state);
 
 	// 顔のステートを変更
-	m_boss->SetFace(m_boss->GetFaceIdling());
+	FaceState face = FaceState::Idling;
+	EventMessenger::Execute("ChangeBossFace", &face);
 }
 
 

@@ -24,6 +24,7 @@
 #include "BehaviourTree/Header/BehaviorTree.h"	// ビヘイビアツリー
 #include "Game/Factory/Factory.h"
 // ステートパターン用
+#include "States/Header/BossStarting.h"// 開始状態
 #include "States/Header/BossIdling.h"// 待機状態
 #include "States/Header/BossAttacking.h"// たたきつけ攻撃
 #include "States/Header/BossSweeping.h"// 薙ぎ払い攻撃
@@ -43,20 +44,21 @@
 Boss::Boss()
 	:
 	m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity },
-	m_currentState()
-	, m_idling()
-	, m_attacking()
-	, m_approaching()
-	, m_coolTime()
-	, m_position{ 0.0f, 0.0f, 0.0f }
-	, m_angle{ 0.0f }
-	, m_bodyTilt{ 0.0f }
-	, m_pushBackValue{ 0.0f, 0.0f, 0.0f }
+	m_currentState{}
+	, m_idling{}
+	, m_attacking{}
+	, m_approaching{}
+	, m_coolTime{}
+	, m_position{}
+	, m_angle{}
+	, m_bodyTilt{}
+	, m_pushBackValue{}
 	, m_isHit(false)
 	, m_canHit(false)
-	, m_shakePower{0.25f}
+	, m_shakePower{SHAKE_POWER}
 {
 }
+
 
 // --------------------------------
 //  デストラクタ
@@ -69,6 +71,7 @@ Boss::~Boss()
 	m_dead->Finalize();
 	m_dashAttacking->Finalize();
 }
+
 
 // --------------------------------
 //  イニシャライズ
@@ -92,6 +95,8 @@ void Boss::Initialize()
 	m_effect = std::make_unique<EnemyEffect>();
 	// 当たり判定の作成
 	CreateCollision();
+	// イベントの登録
+	AttachEvent();
 }
 
 
@@ -101,23 +106,40 @@ void Boss::Initialize()
 // --------------------------------
 void Boss::CreateState()
 {
-	// === 状態の生成 ====
-	m_starting		= std::make_unique<BossStarting>(this); // 開始
-	m_idling		= std::make_unique<BossIdling>(this); // 待機
-	m_attacking		= std::make_unique<BossAttacking>(this); // 攻撃
-	m_sweeping		= std::make_unique<BossSweeping>(this); // 薙ぎ払い
-	m_dashAttacking = std::make_unique<BossDashAttacking>(this); // 突撃
-	m_approaching	= std::make_unique<BossApproaching>(this); // 追尾
-	m_dead			= std::make_unique<BossDead>(this); // 死亡
+	// 開始
+	m_starting = std::make_unique<BossStarting>(this);
+	m_starting->Initialize();
+	m_states.push_back(m_starting.get());
 
-	// === 状態の初期化 ===
-	m_starting		->Initialize();		// 開始
-	m_idling		-> Initialize();	// 待機
-	m_attacking		-> Initialize();	// 攻撃
-	m_sweeping		-> Initialize();	// 薙ぎ払い
-	m_dashAttacking	-> Initialize();	// 突撃
-	m_approaching	-> Initialize();	// 追尾
-	m_dead			->Initialize();		// 死亡
+	// 待機
+	m_idling = std::make_unique<BossIdling>(this);
+	m_idling->Initialize();
+	m_states.push_back(m_idling.get());
+
+	// 攻撃
+	m_attacking = std::make_unique<BossAttacking>(this);
+	m_attacking->Initialize();
+	m_states.push_back(m_attacking.get());
+
+	// 薙ぎ払い
+	m_sweeping = std::make_unique<BossSweeping>(this);
+	m_sweeping->Initialize();
+	m_states.push_back(m_sweeping.get());
+
+	// 突撃
+	m_dashAttacking = std::make_unique<BossDashAttacking>(this);
+	m_dashAttacking->Initialize();
+	m_states.push_back(m_dashAttacking.get());
+
+	// 追尾
+	m_approaching = std::make_unique<BossApproaching>(this);
+	m_approaching->Initialize();
+	m_states.push_back(m_approaching.get());
+
+	// 死亡
+	m_dead = std::make_unique<BossDead>(this);
+	m_dead->Initialize();
+	m_states.push_back(m_dead.get());
 
 	// 初期のステートを待機状態に割り当てる
 	m_currentState = m_starting.get();
@@ -129,9 +151,12 @@ void Boss::CreateState()
 // --------------------------------
 void Boss::CreateFace()
 {
-	// 顔パーツの生成
-	m_faceIdling	= std::make_unique<BossFaceIdling>(this);
+	// 通常状態
+	m_faceIdling = std::make_unique<BossFaceIdling>(this);
+	m_faces.push_back(m_faceIdling.get());
+	// 攻撃状態
 	m_faceAttacking = std::make_unique<BossFaceAttacking>(this);
+	m_faces.push_back(m_faceAttacking.get());
 	// 初期の顔を待機顔に割り当てる
 	m_currentFace = m_faceIdling.get();
 }
@@ -160,19 +185,47 @@ void Boss::CreateCollision()
 
 
 // --------------------------------
-//  状態の生成処理
+//  状態の変更処理
 // --------------------------------
-void Boss::ChangeState(IState* newState)
+void Boss::ChangeState(void* state)
 {
-	// おんなじステートを更新しようとしたら戻る
-	if (m_currentState == newState) return;
+	// int型に変換
+	int index = *static_cast<int*>(state);
+
+	// ステートの変更
+	if (m_currentState == m_states[index]) return;
+
 	// 新規の状態遷移前に事後更新を行う
 	m_currentState->PostUpdate();
 	// 新規の状態を現在の状態に設定する
-	m_currentState = newState;
+	m_currentState = m_states[index];
 	// 新規の状態遷移後に事前更新を行う
 	m_currentState->PreUpdate();
 }
+
+
+// --------------------------------
+//  顔の変更処理
+// --------------------------------
+void Boss::ChangeFace(void* face)
+{
+	// int型に変換
+	int index = *static_cast<int*>(face);
+	// 新規の状態を現在の状態に設定する
+	m_currentFace = m_faces[index];
+}
+
+// --------------------------------
+// イベントの登録
+// --------------------------------
+void Boss::AttachEvent()
+{
+	// 状態変更のイベント
+	EventMessenger::Attach("ChangeBossState", std::bind(&Boss::ChangeState, this, std::placeholders::_1));
+	// 顔変更のイベント
+	EventMessenger::Attach("ChangeBossFace", std::bind(&Boss::ChangeFace, this, std::placeholders::_1));
+}
+
 
 
 // --------------------------------
@@ -200,9 +253,18 @@ void Boss::Update(float elapsedTime)
 	// キー入力を受け付ける。
 	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
 
-	if (keyboardState.F1)	ChangeState(m_attacking.get());
-	if (keyboardState.F2)	ChangeState(m_sweeping.get());
-	if (keyboardState.F3)	ChangeState(m_dashAttacking.get());
+	if (keyboardState.F1) {
+		BossState state = BossState::Attacking;
+		ChangeState(&state);
+	}
+	if (keyboardState.F2) {
+		BossState state = BossState::Sweeping;
+		ChangeState(&state);
+	}
+	if (keyboardState.F3) {
+		BossState state = BossState::DashAttacking;
+		ChangeState(&state);
+	}
 
 #endif // _DEBUG
 }

@@ -197,6 +197,7 @@
     <ClInclude Include="Effects\Header\SwordTrailParticle.h" />
     <ClInclude Include="Effects\Source\SwordTrialParticle.h" />
     <ClInclude Include="Effects\Particle.h" />
+    <ClInclude Include="Game\Boss\BossState.h" />
     <ClInclude Include="Game\Camera\State\PlayCameraState.h" />
     <ClInclude Include="Game\Camera\State\TitleCameraState.h" />
     <ClInclude Include="Game\Data\GameData.h" />

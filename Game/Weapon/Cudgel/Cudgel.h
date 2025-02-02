@@ -7,9 +7,9 @@
 class Boss;
 
 // ‹à–_‚Ìó‘Ô ========================================================
-#include "header/Cudgel_Idling.h"		// ‘Ò‹@
-#include "header/Cudgel_Attacking.h"	// UŒ‚
-#include "header/Cudgel_Sweeping.h"		// “ã‚¬•¥‚¢
+class Cudgel_Idling;
+class Cudgel_Attacking;
+class Cudgel_Sweeping;
 
 class Cudgel : public IObject
 {

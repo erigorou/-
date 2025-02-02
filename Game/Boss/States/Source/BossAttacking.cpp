@@ -52,8 +52,10 @@ void BossAttacking::PreUpdate()
 	// 武器のステートを変更
 	CudgelState state = CudgelState::Attack;
 	EventMessenger::Execute("ChangeCudgelState", &state);
+
 	// 顔のステートを変更
-	m_boss->SetFace(m_boss->GetFaceAttacking());
+	FaceState face = FaceState::Attacking;
+	EventMessenger::Execute("ChangeBossFace", &face);
 }
 
 
@@ -82,7 +84,8 @@ void BossAttacking::Update(const float& elapsedTime)
 	if (m_totalSeconds >= TOTAL_TIME)
 	{
 		// ステートを変更（待機状態）
-		m_boss->ChangeState(m_boss->GetBossIdling());
+		BossState state = BossState::Idling;
+		EventMessenger::Execute("ChangeBossState", &state);
 	}
 }
 
@@ -98,7 +101,8 @@ void BossAttacking::PostUpdate()
 	CudgelState state = CudgelState::Idle;
 	EventMessenger::Execute("ChangeCudgelState", &state);
 	// 顔のステートを変更
-	m_boss->SetFace(m_boss->GetFaceIdling());
+	FaceState face = FaceState::Idling;
+	EventMessenger::Execute("ChangeBossFace", &face);
 }
 
 

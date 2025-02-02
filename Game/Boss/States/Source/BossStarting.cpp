@@ -9,6 +9,7 @@
 #include "Game/Messenger/EventMessenger.h"
 #include "Game/Sound/Sound.h"
 #include "Game/Boss/States/Header/BossStarting.h"
+#include "Game/Weapon/WeaponState.h"
 // 関数を使用するのに必要な引数
 #include "Game/Boss/Boss.h"
 #include "Game/Player/Player.h"
@@ -55,10 +56,13 @@ void BossStarting::PreUpdate()
 	// 経過時間を初期化
 	m_totalSeconds = 0.0f;
 	// 武器のステートを変更
-	
+	CudgelState state = CudgelState::Idle;
+	EventMessenger::Execute("ChangeCudgelState", &state);
 
 	// 顔のステートを変更
-	m_boss->SetFace(m_boss->GetFaceIdling());
+	FaceState face = FaceState::Idling;
+	EventMessenger::Execute("ChangeBossFace", &face);
+
 }
 
 
@@ -82,8 +86,9 @@ void BossStarting::Update(const float& elapsedTime)
 	// １秒で行動を変更する
 	if (m_totalSeconds >= TOTAL_TIME)
 	{
-		// 敵をさせる
-		m_boss->ChangeState(m_boss->GetBossIdling());
+		// ステートを変更（待機状態）
+		BossState state = BossState::Idling;
+		EventMessenger::Execute("ChangeBossState", &state);
 	}
 }
 
