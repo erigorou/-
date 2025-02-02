@@ -140,11 +140,21 @@ void Goblin::Update(const float elapsedTime)
 // --------------------------------
 void Goblin::CalcWorldMatrix()
 {
-	m_worldMatrix =
-		DirectX::SimpleMath::Matrix::CreateRotationY(m_angle) *				// 回転
-		DirectX::SimpleMath::Matrix::CreateScale(GOBLIN_SCALE * m_scale) *	// 大きさ
-		DirectX::SimpleMath::Matrix::CreateTranslation(m_position);			// 座標
+	// 回転の作成
+	Quaternion rotation = Quaternion::CreateFromYawPitchRoll(
+		m_angle,
+		0.0f,
+		0.0f
+	);
+
+	// 回転行列の作成
+	m_worldMatrix = Matrix::CreateFromQuaternion(rotation);
+
+	// スケールと平行移動を適用
+	m_worldMatrix *= Matrix::CreateScale(GOBLIN_SCALE * m_scale);	// スケール適用
+	m_worldMatrix *= Matrix::CreateTranslation(m_position);		// 位置適用
 }
+
 
 
 // --------------------------------

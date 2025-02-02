@@ -371,27 +371,39 @@ void Player::MovePlayer()
 	m_isInputMoveKey = false;	// 移動キーの入力をリセットする
 }
 
-
 // --------------------------------
 //  ワールド行列の計算
 // --------------------------------
 void Player::CalculationMatrix()
 {
 	using namespace DirectX::SimpleMath;
-	using namespace DirectX;
-	// 行列の計算を行う
-	m_worldMatrix = Matrix::Identity;	// 更新ごとに初期化を行う
-	m_worldMatrix
-		*= Matrix::CreateTranslation(Vector3::Zero)							// 原点に移動
-		*= Matrix::CreateScale		(PLAYER_SCALE)							// プレイヤーのサイズ変更
 
-		*= Matrix::CreateRotationZ(m_animationRotate.z)
-		*= Matrix::CreateRotationX(m_animationRotate.x)
-		*= Matrix::CreateRotationY(m_animationRotate.y)
+	// ワールド行列を初期化
+	m_worldMatrix = Matrix::Identity;
 
-		*= Matrix::CreateRotationY	(-m_angle + XMConvertToRadians(180.f))	// 敵の方向を見るように設定する
-		*= Matrix::CreateTranslation(m_position);							// 座標を移動させる
+	// スケールの適用
+	m_worldMatrix *= Matrix::CreateScale(PLAYER_SCALE);
 
+	// アニメーション回転の適用（ヨー・ピッチ・ロール）
+	Quaternion animationRotation = Quaternion::CreateFromYawPitchRoll(
+		m_animationRotate.y,
+		m_animationRotate.x,
+		m_animationRotate.z
+	);
+
+	// プレイヤーの方向調整（敵の方向を見る回転）
+	Quaternion directionRotation = Quaternion::CreateFromYawPitchRoll(
+		-m_angle + DirectX::XMConvertToRadians(180.f),
+		0.0f,
+		0.0f
+	);
+
+	// 回転を適用
+	Quaternion totalRotation = animationRotation * directionRotation;
+	m_worldMatrix *= Matrix::CreateFromQuaternion(totalRotation);
+
+	// 位置を適用（最後に平行移動）
+	m_worldMatrix *= Matrix::CreateTranslation(m_position);
 }
 
 

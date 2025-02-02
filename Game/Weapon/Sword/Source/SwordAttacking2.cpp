@@ -130,23 +130,37 @@ void SwordAttacking2::UpdateAnimation()
 }
 
 
+
 // --------------------------------
 // ワールド行列の更新処理
 // --------------------------------
 void SwordAttacking2::UpdateWorldMatrix()
 {
 	// ワールド行列を更新する
-	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE); // 剣のサイズの設定
+	m_worldMatrix = Matrix::CreateScale(Sword::SWORD_SCALE);
 
-	m_worldMatrix
-		*= DirectX::SimpleMath::Matrix::CreateRotationX(RADIAN_90 / 2)		// 剣を90度横に向ける
-		*= DirectX::SimpleMath::Matrix::CreateTranslation(MATRIX_DIRECTION)	// 少しだけずらす
-		*= DirectX::SimpleMath::Matrix::CreateRotationX(m_rot.x)			// 薙ぎ払いの回転を反映
-		*= DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle)			// プレイヤーの横に回転させる
-		*= DirectX::SimpleMath::Matrix::CreateRotationY(m_rot.y)			// 薙ぎ払いの回転を反映
-		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);		// プレイヤーの位置に設定
+	// 剣を90度横に向ける
+	Quaternion initialRotation = Quaternion::CreateFromAxisAngle(Vector3::UnitX, RADIAN_90 / 2);
 
-	//　ワールド行列を設定
+	// 薙ぎ払いの回転
+	Quaternion attackRotation = Quaternion::CreateFromYawPitchRoll(
+		m_rot.y,
+		m_rot.x,
+		0.0f
+	);
+
+	// プレイヤーの回転
+	Quaternion playerRotation = Quaternion::CreateFromAxisAngle(Vector3::UnitY, -m_angle);
+
+	// 回転の合成
+	Quaternion totalRotation = initialRotation * attackRotation * playerRotation;
+
+	// ワールド行列に回転と平行移動を適用
+	m_worldMatrix *= Matrix::CreateTranslation(MATRIX_DIRECTION); // 少しだけずらす
+	m_worldMatrix *= Matrix::CreateFromQuaternion(totalRotation); // 合成した回転を反映
+	m_worldMatrix *= Matrix::CreateTranslation(m_position); // プレイヤーの位置に移動
+
+	// ワールド行列を設定
 	m_sword->SetWorldMatrix(m_worldMatrix);
 }
 

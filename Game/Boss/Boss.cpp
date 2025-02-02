@@ -213,19 +213,25 @@ void Boss::Update(float elapsedTime)
 // --------------------------------
 void Boss::CalcrationWorldMatrix()
 {
-	// 回転方向の設定
-	m_worldMatrix
-		= DirectX::SimpleMath::Matrix::CreateRotationX(m_bodyTilt)	// 回転の設定
-		*= DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle + DirectX::XMConvertToRadians(180));
+	using namespace DirectX::SimpleMath;
 
-	// 移動を行う
+	// ボスの回転（X軸の傾き + Y軸回転）
+	Quaternion bodyTiltRotation = Quaternion::CreateFromYawPitchRoll(
+		-m_angle + DirectX::XMConvertToRadians(180.f),
+		m_bodyTilt,
+		0.0f
+	);
+
+	// 回転行列の適用
+	m_worldMatrix = Matrix::CreateFromQuaternion(bodyTiltRotation);
+
+	// 移動を適用（速度を回転後の方向に変換）
 	m_velocity *= Boss::BOSS_SPEED;
-	m_position += DirectX::SimpleMath::Vector3::Transform(m_velocity, m_worldMatrix);
+	m_position += Vector3::Transform(m_velocity, m_worldMatrix);
 
-	// ワールド行列の計算
-	m_worldMatrix
-		*= DirectX::SimpleMath::Matrix::CreateScale(BOSS_SCALE)			// サイズ計算
-		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);		// 位置の設定
+	// スケールと平行移動を適用
+	m_worldMatrix *= Matrix::CreateScale(BOSS_SCALE);	// サイズ調整
+	m_worldMatrix *= Matrix::CreateTranslation(m_position);	// 位置設定
 }
 
 
