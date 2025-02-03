@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "Game/UI/UIAnchor.h"
 
-struct ActionParam
+struct ActionParams
 {
 	DirectX::SimpleMath::Vector2 position;
 	DirectX::SimpleMath::Vector2 scale;
@@ -13,5 +13,5 @@ class IAction
 {
 public:
 
-	virtual ActionParam Execute(ActionParam param, const float time) = 0;
+	virtual ActionParams Execute(ActionParams param, const float time) = 0;
 };

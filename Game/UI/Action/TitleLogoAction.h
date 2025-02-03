@@ -26,9 +26,9 @@ private:
 // ------------------------------
 public:
 	// é¿çsì‡óe
-	ActionParam Execute(ActionParam param, const float time) override
+	ActionParams Execute(ActionParams param, const float time) override
 	{
-		ActionParam result = param;
+		ActionParams result = param;
 
 		// íxâÑì‡Ç»ÇÁÇŒåvéZñ≥Çµ
 		if (time < DELAY) return result;

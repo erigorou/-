@@ -124,7 +124,7 @@ void UserInterface::Update(const float time)
 	if (m_action)
 	{
 		// アクションのパラメータを作成する
-		ActionParam param;
+		ActionParams param;
 		param.position = m_position;
 		param.scale = m_scale;
 		param.alpha = 1.0f;

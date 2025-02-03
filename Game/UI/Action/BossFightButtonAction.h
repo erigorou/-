@@ -27,9 +27,9 @@ private:
 	// ------------------------------
 public:
 	// 実行内容
-	ActionParam Execute(ActionParam param, const float time) override
+	ActionParams Execute(ActionParams param, const float time) override
 	{
-		ActionParam result = param;
+		ActionParams result = param;
 
 		// ボス戦ボタンの透明度を設定
 		if (GameData::GetInstance()->GetSelectStage() != 1)

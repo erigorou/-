@@ -7,7 +7,7 @@ class NormalAction final : public IAction
 public:
 
 	// é¿çsì‡óe
-	ActionParam Execute(ActionParam param, const float time) override
+	ActionParams Execute(ActionParams param, const float time) override
 	{
 		UNREFERENCED_PARAMETER(time);
 
