@@ -127,7 +127,7 @@ void KeyboardMessenger::CreateKeyRangeList()
         if (key != currentKey)
         {
             // キー、開始インデックスと終了インデックスをキー範囲リストに追加する
-            s_keysRangeList[currentKey].push_back(std::make_pair(startIndex, index - 1));
+            s_keysRangeList[currentKey].push_back(std::make_pair(startIndex, static_cast<int>(s_observerList.size() - 1)));
             // 現在のインデックスを開始インデックスに設定する
             startIndex = index;
             // 現在の観察者のキーを現在のキーに設定する
@@ -135,7 +135,7 @@ void KeyboardMessenger::CreateKeyRangeList()
         }
     }
     // キー、開始インデックスと最後のインデックスをキー範囲リストに追加する
-    s_keysRangeList[currentKey].push_back(std::make_pair(startIndex, s_observerList.size() - 1));
+    s_keysRangeList[currentKey].push_back(std::make_pair(startIndex, static_cast<int>(s_observerList.size() - 1)));
 }
 
 
