@@ -13,7 +13,8 @@
 // コンストラクタ
 // -----------------
 Sea::Sea()
-	: m_totalTime(0.0f)
+	:
+	m_totalTime{}
 {
 	Create();
 }

@@ -122,7 +122,7 @@ void PlaySceneUIManager::CreatePlayerHPUI()
 
 	// ƒvƒŒƒCƒ„[HP‚Ì¶¬‚Æ‰Šú‰»
 	m_playerHP = std::make_unique<PlayerHPUI>(playerHP);
-	m_playerHP->Initialize(m_pDR);
+	m_playerHP->Initialize();
 }
 
 // ----------------------------

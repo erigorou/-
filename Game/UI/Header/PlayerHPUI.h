@@ -7,39 +7,44 @@
 #include "DeviceResources.h"
 
 class HPSystem;
+class CustomShader;
 
 class PlayerHPUI
 {
 private:
-	const wchar_t* ENEMY_HP_TEXTURE = L"Resources/Textures/UI/1px.png";	// 1pxのテクスチャのパス（画像として一応ね？）
+    static constexpr int MAX_WIDTH = 300;
 
-	static constexpr int MAX_WIDTH = 300;
+    // 上から参照
+    static constexpr int TOP_POSITION = 50;
+    static constexpr int BOTTOM_POSITION = 80;
 
-	// 上から参照
-	static constexpr int TOP_POSITION = 50;
-	static constexpr int BOTTOM_POSITION = 80;
+    static constexpr int LEFT_POSITION = 50;
 
-	static constexpr int LEFT_POSITION = 50;
+    static constexpr int FRALE_WIDTH = 4;
 
 public:
-	PlayerHPUI(HPSystem* HPSystem);	// コンストラクタ
-	~PlayerHPUI();					// デストラクタ
-
-	void Initialize(DX::DeviceResources* pDR);	// 初期化関数
-	void LoadTexture(const wchar_t* path);		// テクスチャの読み込み
-
-	void Update();		// 更新処理
-	void Render();		// 描画処理
-	void Finalize();	// 終了処理
+    // コンストラクタ
+    PlayerHPUI(HPSystem* HPSystem);
+    // デストラクタ
+    ~PlayerHPUI();
+    // 初期化関数
+    void Initialize();
+    // 更新処理
+    void Update();
+    // 描画処理
+    void Render();
+    // 終了処理
+    void Finalize();
 
 private:
+    std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;          // スプライトバッチ
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;    // テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_backTexture;    // テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_frameTexture;    // テクスチャ
+    DX::DeviceResources* m_pDR;                                    // デバイスリソース
 
-	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;		// スプライトバッチ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;	// テクスチャ
-	DX::DeviceResources* m_pDR;									// デバイスリソース
-
-	HPSystem* m_playerHPclass;	// プレイヤーのHPクラス
-	float m_playerHP;				// プレイヤーのHP
+    HPSystem* m_playerHPclass;  // プレイヤーのHPクラス
+    float m_playerHP;           // プレイヤーのHP
 };
 
 #endif

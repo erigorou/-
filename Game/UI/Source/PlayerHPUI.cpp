@@ -1,24 +1,21 @@
-// --------------
-//
-// PlayerHPUI.cpp
-//
-// --------------
-
 #include "pch.h"
 #include "Game/UI/Header/PlayerHPUI.h"
 #include "Game/Data/HPSystem.h"
 #include "Game/Screen.h"
+#include "Game/GameResources.h"
+#include "Game/CommonResources.h"
+#include "Libraries/MyLib/CustomShader/CustomShader.h"
 
 // ----------------------------
 /// <summary>
 /// コンストラクタ
 /// </summary>
-/// <param name="enemyHp">敵のHPを所持するクラスのポインタ</param>
+/// <param name="hpSystem">プレイヤーHPシステムのポインタ</param>
 // ----------------------------
 PlayerHPUI::PlayerHPUI(HPSystem* hpSystem)
-	: m_playerHPclass(hpSystem)
-	, m_spriteBatch()
-	, m_playerHP(0)
+    : m_playerHPclass(hpSystem),
+    m_spriteBatch{},
+    m_playerHP{}
 {
 }
 
@@ -31,77 +28,79 @@ PlayerHPUI::~PlayerHPUI()
 {
 }
 
-void PlayerHPUI::Initialize(DX::DeviceResources* pDR)
-{
-	m_pDR = pDR;
-	m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(pDR->GetD3DDeviceContext());	// スプライトバッチの設定
-
-	LoadTexture(ENEMY_HP_TEXTURE);				// テクスチャの読み込み
-	m_playerHP = m_playerHPclass->GetMaxHP();	// プレイヤーのHPを取得
-}
-
+// ----------------------------
 /// <summary>
-/// テクスチャの読み込み関数
+/// 初期化関数
 /// </summary>
-/// <param name="path">ファイルパス</param>
-void PlayerHPUI::LoadTexture(const wchar_t* path)
+// ----------------------------
+void PlayerHPUI::Initialize()
 {
-	HRESULT hr = DirectX::CreateWICTextureFromFile(m_pDR->GetD3DDevice(), path, nullptr, m_texture.ReleaseAndGetAddressOf());
-	if (FAILED(hr))
-	{
-		MessageBox(0, L"テクスチャのロード処理に失敗しました。.", NULL, MB_OK);
-	}
+    // スプライトバッチの設定
+    auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
+    m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
+
+    // プレイヤーのHPを取得
+    m_playerHP = m_playerHPclass->GetMaxHP();
+
+    // テクスチャの読み込み
+    m_texture = GameResources::GetInstance()->GetTexture("playerHP");
+	m_backTexture = GameResources::GetInstance()->GetTexture("playerHPBack");
+	m_frameTexture = GameResources::GetInstance()->GetTexture("playerHPFrame");
 }
 
 // ----------------------------
 /// <summary>
-/// 更新関数
+/// 更新処理
 /// </summary>
 // ----------------------------
 void PlayerHPUI::Update()
 {
+    // プレイヤーのHPを取得
+    m_playerHP = m_playerHPclass->GetHP();
 }
 
 // ----------------------------
 /// <summary>
-/// 描画関数
+/// 描画処理
 /// </summary>
 // ----------------------------
 void PlayerHPUI::Render()
 {
-	m_playerHP = m_playerHPclass->GetHP();							// 敵のHPを取得
-	float MAXHP = static_cast<float>(m_playerHPclass->GetMaxHP());	// 最大HPを取得
+    float MAXHP = static_cast<float>(m_playerHPclass->GetMaxHP());  // 最大HPを取得
 
-	// 描画位置のオフセット値や緑ゲージの幅を計算する
-	LONG offset = static_cast<LONG>(LEFT_POSITION);
-	LONG width = static_cast<LONG>(offset + MAX_WIDTH * (m_playerHP / MAXHP));
+    // 描画位置のオフセット値や緑ゲージの幅を計算する
+    LONG offset = static_cast<LONG>(LEFT_POSITION);
+    LONG width = static_cast<LONG>(offset + MAX_WIDTH * (m_playerHP / MAXHP));
 
-	// ゲージの範囲の設定
-	RECT outline{ offset - 2,	TOP_POSITION - 2,	offset + MAX_WIDTH + 2, BOTTOM_POSITION + 2 };
-	RECT back{ offset,		TOP_POSITION,		offset + MAX_WIDTH,		BOTTOM_POSITION };
-	RECT gauge{ offset,		TOP_POSITION,		width,					BOTTOM_POSITION };
+    // ゲージの範囲の設定
+    RECT outline{ offset - FRALE_WIDTH, TOP_POSITION - FRALE_WIDTH, offset + MAX_WIDTH + FRALE_WIDTH, BOTTOM_POSITION + FRALE_WIDTH };
+    RECT back{ offset, TOP_POSITION, offset + MAX_WIDTH, BOTTOM_POSITION };
+    RECT gauge{ offset, TOP_POSITION, width, BOTTOM_POSITION };
 
-	// スプライトバッチを開始する
-	m_spriteBatch->Begin();
 
-	// ゲージの描画
-	m_spriteBatch->Draw(m_texture.Get(), outline, DirectX::Colors::Black);		// ゲージの枠
-	m_spriteBatch->Draw(m_texture.Get(), back, DirectX::Colors::BlanchedAlmond);		// 背面の描画
-	m_spriteBatch->Draw(m_texture.Get(), gauge, DirectX::Colors::LimeGreen);		// ゲージ部分
+    // ゲージの枠
+    m_spriteBatch->Begin();
+    m_spriteBatch->Draw(m_frameTexture.Get(), outline);
+    // 背面の描画
+    m_spriteBatch->Draw(m_backTexture.Get(), back);
+    // ゲージ部分
+    m_spriteBatch->Draw(m_texture.Get(), gauge);
 
-	// スプライトバッチを終了する
-	m_spriteBatch->End();
+    // スプライトバッチを終了する
+    m_spriteBatch->End();
+
 }
 
 // ----------------------------
-/// <summary>a
-/// 終了関数
+/// <summary>
+/// 終了処理
 /// </summary>
 // ----------------------------
 void PlayerHPUI::Finalize()
 {
-	m_spriteBatch.reset();
-	m_texture.Reset();
-	m_pDR = nullptr;
-	m_playerHPclass = nullptr;
+    // リソースの解放
+    m_spriteBatch.reset();
+    m_texture.Reset();
+    m_pDR = nullptr;
+    m_playerHPclass = nullptr;
 }
