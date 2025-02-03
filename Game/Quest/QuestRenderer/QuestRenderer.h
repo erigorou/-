@@ -39,6 +39,7 @@ public:
 
 	// アニメーション時間
 	static constexpr float ANIMATION_TIME = 1.0f;
+	static constexpr float FIER_TIME = 2.0f;
 	static constexpr float INITIAL_TIME = -0.5f;
 	static constexpr float ANIMATION_WAIT = 1.0f;
 
@@ -63,7 +64,8 @@ public:
 	{
 		DirectX::SimpleMath::Vector4	windowSize;	// ウィンドウサイズ
 		float							alpha;		// 透明度
-		DirectX::SimpleMath::Vector3	padding;	// 空白
+		float 							dissolve;   // ディゾルブ
+		DirectX::SimpleMath::Vector2	padding;	// 空白
 	};
 
 	// --------------------
@@ -122,12 +124,19 @@ private:
 	// --------------------
 private:
 
-	QuestManager* m_questManager;	// クエストマネージャー
+	// クエストマネージャー
+	QuestManager* m_questManager;
 
-	DirectX::SimpleMath::Vector3	m_position;	// 座標
-	float							m_angle;	// 回転角
-	DirectX::SimpleMath::Vector2	m_scale;	// 拡大率
-	float							m_alpha;	// 透明度
+	// 座標
+	DirectX::SimpleMath::Vector3 m_position;
+	// 回転角
+	float m_angle;
+	// 拡大率
+	DirectX::SimpleMath::Vector2 m_scale;
+	// 透明度
+	float m_alpha;
+	// ディゾルブ
+	float m_dissolve;
 
 	float	m_currentTime;	// 経過時間
 	float	m_elapsedTime;	// 経過時間
@@ -142,6 +151,8 @@ private:
 	std::unique_ptr<CustomShader> m_shader;
 	// テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
+	// ディゾルブパターン画像
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_dissolveTexture;
 	// ステート
 	std::unique_ptr<DirectX::CommonStates>	m_states;
 	// プリミティブバッチ

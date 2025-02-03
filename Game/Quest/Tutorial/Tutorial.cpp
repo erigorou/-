@@ -12,9 +12,9 @@
 // 固定値
 // --------------------
 
-const wchar_t* Tutorial::VS_PATH = L"Resources/cso/Quest_VS.cso";
-const wchar_t* Tutorial::PS_PATH = L"Resources/cso/Quest_PS.cso";
-const wchar_t* Tutorial::GS_PATH = L"Resources/cso/Quest_GS.cso";
+const wchar_t* Tutorial::VS_PATH = L"Resources/cso/TutorialVS.cso";
+const wchar_t* Tutorial::PS_PATH = L"Resources/cso/TutorialPS.cso";
+const wchar_t* Tutorial::GS_PATH = L"Resources/cso/TutorialGS.cso";
 
 // --------------------
 // コンストラクタ

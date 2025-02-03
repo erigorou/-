@@ -2,7 +2,8 @@ cbuffer ConstBuffer : register(b0)
 {
     float4  windowSize;
     float   alpha;
-    float3  padding;
+    float   dissolve;
+    float2  padding;
 };
 
 struct VS_INPUT

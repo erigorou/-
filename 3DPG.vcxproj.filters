@@ -425,6 +425,7 @@
     <None Include="Resources\hlsl\Mask\Particle.hlsli" />
     <None Include="Resources\hlsl\Quest\Quest.hlsli" />
     <None Include="Resources\hlsl\DeadEffect\Common.hlsli" />
+    <None Include="Resources\hlsl\Tutorial\Tutorial.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\hlsl\Sword\SwordTrailPS.hlsl" />
@@ -457,5 +458,8 @@
     <FxCompile Include="Resources\hlsl\DamageEffect\DamageEffectVS.hlsl" />
     <FxCompile Include="Resources\hlsl\DeadEffect\DeadEffectPS.hlsl" />
     <FxCompile Include="Resources\hlsl\DeadEffect\DeadEffectVS.hlsl" />
+    <FxCompile Include="Resources\hlsl\Tutorial\TutorialGS.hlsl" />
+    <FxCompile Include="Resources\hlsl\Tutorial\TutorialPS.hlsl" />
+    <FxCompile Include="Resources\hlsl\Tutorial\TutorialVS.hlsl" />
   </ItemGroup>
 </Project>

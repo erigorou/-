@@ -7,6 +7,7 @@
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "CommonStates.h"
+#include "Game/GameResources.h"
 
 // --------------------
 // 固定値
@@ -22,10 +23,11 @@ const wchar_t* QuestRenderer::GS_PATH = L"Resources/cso/Quest_GS.cso";
 QuestRenderer::QuestRenderer(QuestManager* manager)
 	: m_questManager(manager)
 	, m_position(INIT_POSITION_X, INIT_POSITION_Y, 0)
-	, m_angle()
+	, m_angle{}
 	, m_scale(1.0f, 1.0f)
-	, m_alpha(0.0f)
-	, m_currentTime()
+	, m_alpha{}
+	, m_dissolve{}
+	, m_currentTime{}
 	, m_canChanegQuest(false)
 	, m_clearFlag(false)
 {
@@ -53,6 +55,8 @@ void QuestRenderer::Initialize(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> 
 	ConstantBuffer();
 
 	m_texture = texture;
+
+	m_dissolveTexture = GameResources::GetInstance()->GetTexture("noize");
 
 	// コモンステートの生成
 	m_states = std::make_unique<DirectX::CommonStates>(device);
@@ -109,6 +113,8 @@ void QuestRenderer::Draw()
 
 	// テクスチャの設定
 	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
+	context->PSSetShaderResources(1, 1, m_dissolveTexture.GetAddressOf());
+
 
 	//	板ポリゴンを描画
 	m_batch->Begin();
@@ -179,7 +185,8 @@ void QuestRenderer::UpdateConstantBuffer()
 	CBuffer cbuff;
 	cbuff.windowSize = DirectX::SimpleMath::Vector4(WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0.0f);
 	cbuff.alpha = m_alpha;
-	cbuff.padding = DirectX::SimpleMath::Vector3(0.0f, 0.0f, 0.0f);
+	cbuff.dissolve = m_dissolve;
+	cbuff.padding = DirectX::SimpleMath::Vector2(0.0f, 0.0f);
 
 	// 受け渡し用バッファの内容更新
 	context->UpdateSubresource(m_CBuffer.Get(), 0, nullptr, &cbuff, 0, 0);
@@ -247,14 +254,12 @@ void QuestRenderer::SlideOutTexture()
 	// 経過時間の更新
 	m_currentTime += m_elapsedTime;
 	// 正規化した時間の取得
-	float t = m_currentTime / ANIMATION_TIME;
-	// 透明度の設定
-	m_alpha = MAX_ALPHA - t;
-	// スライドイン処理
-	m_position.x = FINAL_POSITION_WIDTH + WIDTH * Easing::easeInExpo(t);
+	float easing = Easing::easeInOutQuad(m_currentTime / FIER_TIME);
+	// ディゾルブの設定
+	m_dissolve = easing;
 
 	// アニメーション時間を経過した場合、終了
-	if (m_currentTime > ANIMATION_TIME)
+	if (m_currentTime > FIER_TIME)
 	{
 		// スライドアウト終了
 		m_currentTime = 0.0f;
@@ -288,6 +293,8 @@ void QuestRenderer::SlideCoolTime()
 // --------------------------------
 void QuestRenderer::SlideInTexture()
 {
+	// ディゾルブの初期化
+	m_dissolve = 0.0f;
 	// 経過時間の更新
 	m_currentTime += m_elapsedTime;
 	// 正規化した時間の取得
