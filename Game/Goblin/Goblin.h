@@ -54,26 +54,31 @@ public:
 	// アクセサ
 	// ---------------
 public:
-	DirectX::SimpleMath::Vector3	GetPosition		()	override{ return m_position;			}	// 鬼の座標を取得する
-	DirectX::SimpleMath::Vector3	GetVelocity		()	const	{ return m_velocity;			}	// 速度の取得
-	float							GetAngle		()	const	{ return m_angle;				}	// 回転角の取得
-	DirectX::SimpleMath::Matrix		GetWorldMatrix	()	const	{ return m_worldMatrix;			}	// ワールド座標の取得
-	DirectX::BoundingSphere 		GetCollision	()	const	{ return *m_bodyCollision.get();}	// 体の当たり判定の取得
-	PlayScene*						GetPlayScene	()	const	{ return m_playScene;			}	// PlaySceneの取得
-	bool							IsAttacking		()	const	{ return m_nowAttacking;		}	// 攻撃中かどうかの取得
-	HPSystem*						GetHPSystem		()	override{ return m_hp.get();			}	// HPの取得
+	// 座標を取得  
+	DirectX::SimpleMath::Vector3 GetPosition() override { return m_position; }
+	// 座標を設定  
+	void SetPosition(const DirectX::SimpleMath::Vector3& position) { m_position = position; }
+	// 速度を取得  
+	DirectX::SimpleMath::Vector3 GetVelocity() const { return m_velocity; }
+	// 速度を設定  
+	void SetVelocity(const DirectX::SimpleMath::Vector3& velocity) { m_velocity = velocity; }
+	// 回転角を取得  
+	float GetAngle() const { return m_angle; }
+	// 回転角を設定  
+	void SetAngle(const float angle) { m_angle = angle; }
+	// ワールド座標を取得  
+	DirectX::SimpleMath::Matrix GetWorldMatrix() const { return m_worldMatrix; }
+	// スケールを設定  
+	void SetScale(const DirectX::SimpleMath::Vector3& scale) { m_scale = scale; }
+	// 体の当たり判定を取得  
+	DirectX::BoundingSphere GetCollision() const { return *m_bodyCollision.get(); }
+	// 攻撃中かどうかを取得  
+	bool IsAttacking() const { return m_nowAttacking; }
+	// HPを取得  
+	HPSystem* GetHPSystem() override { return m_hp.get(); }
+	// 攻撃中かどうかを設定  
+	void SetIsAttacking(bool isAttacking) { m_nowAttacking = isAttacking; }
 
-	void SetPosition(const DirectX::SimpleMath::Vector3& position)	{ m_position = position; }		// 鬼の座標を設定する
-	void SetVelocity(const DirectX::SimpleMath::Vector3& velocity)	{ m_velocity = velocity; }		// 速度の設定
-	void SetAngle	(const float angle)								{ m_angle = angle; }			// 回転角の設定
-	void SetScale	(const DirectX::SimpleMath::Vector3& scale)		{ m_scale = scale; }			// スケールの設定
-	void SetIsAttacking(bool isAttacking)							{ m_nowAttacking = isAttacking; }// 攻撃中かどうかの設定
-
-	GoblinIdling*	 GetIdling		()	const { return m_idling.get(); }	// 待機状態の取得
-	GoblinAttacking* GetAttacking	()	const { return m_attacking.get(); }	// 攻撃状態の取得
-	GoblinDead*		 GetDead		()	const { return m_dead.get(); }		// 死亡状態の取得
-	GoblinTutorial*	 GetTutorial	()	const { return m_tutorial.get(); }	// チュートリアル状態の取得
-	IState*			GetCurrentState	()	const { return m_currentState; }	// 現在のステートの取得
 
 	// ---------------
 	// 公開関数

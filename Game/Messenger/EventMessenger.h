@@ -6,9 +6,11 @@
 #include <unordered_map>
 #include <functional>
 #include <string>
+#include "EventList.h"
 
 class EventMessenger
 {
+
 public:
     // イベントを登録する
     static void Attach(const std::string& eventName, std::function<void(void*)> function);
@@ -27,7 +29,6 @@ public:
 
     // イベントリストをクリアする
     static void ClearEventList();
-
 private:
     // 登録されたイベントを保存する変数
     static std::unordered_map<std::string, std::function<void(void*)>> s_eventList;

@@ -98,5 +98,8 @@ void EventMessenger::Detach(const std::string& eventName)
 // -------------------------------------
 void EventMessenger::ClearEventList()
 {
+    // 通常イベントをクリア
     s_eventList.clear();
+	// ゲッターイベントをクリア
+	s_getterList.clear();
 }

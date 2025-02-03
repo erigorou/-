@@ -2,6 +2,7 @@
 #include "../Header/GoblinAttacking.h"
 #include "../../Goblin.h"
 #include "Game/Player/Player.h"
+#include "Game/Messenger/EventMessenger.h"
 
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/EasingFunctions.h"
@@ -163,8 +164,12 @@ void GoblinAttacking::Finalize()
 // -------------------------------
 void GoblinAttacking::SearchPlayer()
 {
-	// プレイヤーと自身の位置を取得
-	DirectX::SimpleMath::Vector3 playerPos = m_goblin->GetPlayScene()->GetPlayer()->GetPosition();
+	// プレイヤーを取得
+	auto object = EventMessenger::ExecuteGetter("GetPlayerObject");
+	auto player = static_cast<IObject*>(object);
+	// プレイヤーの位置を取得
+	DirectX::SimpleMath::Vector3 playerPos = player->GetPosition();
+	// 小鬼の位置を取得
 	m_position = m_goblin->GetPosition();
 
 	// プレイヤーの位置を探索

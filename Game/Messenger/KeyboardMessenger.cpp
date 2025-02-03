@@ -9,7 +9,9 @@ std::vector<std::tuple<DirectX::Keyboard::Keys, IObserver*, KeyboardMessenger::K
 std::unordered_map<DirectX::Keyboard::Keys, std::vector<std::pair<int, int>>> KeyboardMessenger::s_keysRangeList;
 
 
+// -------------------------------------------------------
 // 観察者をアタッチする
+// -------------------------------------------------------
 void KeyboardMessenger::Attach(const DirectX::Keyboard::Keys& key, IObserver* observer, const KeyPressType type)
 {
     // 観察者リストに観察者を追加する
@@ -17,7 +19,9 @@ void KeyboardMessenger::Attach(const DirectX::Keyboard::Keys& key, IObserver* ob
 }
 
 
+// -------------------------------------------------------
 // 観察者をデタッチする
+// -------------------------------------------------------
 void KeyboardMessenger::Detach(const DirectX::Keyboard::Keys& key, IObserver* observer, const KeyPressType type)
 {
     // 観察者リストから観察者を検索する
@@ -38,6 +42,9 @@ void KeyboardMessenger::Detach(const DirectX::Keyboard::Keys& key, IObserver* ob
 
 
 
+// -------------------------------------------------------
+// キーボードの状態を通知する
+// -------------------------------------------------------
 void KeyboardMessenger::Notify(const DirectX::Keyboard::KeyboardStateTracker& keyboardTracker)
 {
 	auto keyboardState = keyboardTracker.GetLastState();
@@ -65,7 +72,9 @@ void KeyboardMessenger::Notify(const DirectX::Keyboard::KeyboardStateTracker& ke
 }
 
 
-
+// -------------------------------------------------------
+// キーボードの状態を通知する
+// -------------------------------------------------------
 void KeyboardMessenger::Notify(const DirectX::Keyboard::State& keyboardState)
 {
 	// 観察者リストから観察者を取り出す
@@ -91,7 +100,9 @@ void KeyboardMessenger::Notify(const DirectX::Keyboard::State& keyboardState)
 }
 
 
+// -------------------------------------------------------
 // 観察者リストをソートする
+// -------------------------------------------------------
 void KeyboardMessenger::SortObserverList()
 {
     // 観察者リストをキー（DirectX::Keyboard::Keys）でソートする
@@ -110,36 +121,45 @@ void KeyboardMessenger::SortObserverList()
 }
 
 
+// -------------------------------------------------------
 // キー範囲リストを生成する
+// -------------------------------------------------------
 void KeyboardMessenger::CreateKeyRangeList()
 {
     // キー範囲をクリアする
-	if (s_keysRangeList.size()) s_keysRangeList.clear();
-    // 開始インデックスを設定する
-	int startIndex = 0;
-    // 観察者リストの開始キーを現在のキーにする
-    DirectX::Keyboard::Keys currentKey = std::get<static_cast<int>(ArrayContentType::KEYBOARD)>(s_observerList[startIndex]);
+    if (!s_keysRangeList.empty()) s_keysRangeList.clear();
 
-    for (int index = 1; index < s_observerList.size(); index++)
+    // 観察者リストが空なら処理を終了する
+    if (s_observerList.empty()) return;
+
+    // 開始インデックスを設定する
+    int startIndex = 0;
+    DirectX::Keyboard::Keys currentKey = std::get<static_cast<int>(ArrayContentType::KEYBOARD)>(s_observerList[0]);
+
+    // 観察者リストをループし、キー範囲を作成する
+    for (int index = 1; index < s_observerList.size(); ++index)
     {
-        // 観察者リストの現在キーと現在のキーが等しくない場合
-		auto key = std::get<static_cast<int>(ArrayContentType::KEYBOARD)>(s_observerList[index]);
+        auto key = std::get<static_cast<int>(ArrayContentType::KEYBOARD)>(s_observerList[index]);
+
+        // 現在のキーと異なる場合、新しい範囲を追加する
         if (key != currentKey)
         {
-            // キー、開始インデックスと終了インデックスをキー範囲リストに追加する
-            s_keysRangeList[currentKey].push_back(std::make_pair(startIndex, static_cast<int>(s_observerList.size() - 1)));
-            // 現在のインデックスを開始インデックスに設定する
+            // キー範囲の終了インデックスを (index - 1) にする
+            s_keysRangeList[currentKey].push_back(std::make_pair(startIndex, index - 1));
+            // 次のキー範囲の開始インデックスを更新する
             startIndex = index;
-            // 現在の観察者のキーを現在のキーに設定する
-			currentKey = key;
+            currentKey = key;
         }
     }
-    // キー、開始インデックスと最後のインデックスをキー範囲リストに追加する
+
+    // 最後のキー範囲を追加する
     s_keysRangeList[currentKey].push_back(std::make_pair(startIndex, static_cast<int>(s_observerList.size() - 1)));
 }
 
 
+// -------------------------------------------------------
 // 観察者リストとキー範囲リストをクリアする
+// -------------------------------------------------------
 void KeyboardMessenger::Clear()
 {
 	// 観察者リストをクリアする
