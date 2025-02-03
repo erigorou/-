@@ -17,7 +17,6 @@
 #include "State/WinResult.h"
 #include "State/LoseResult.h"
 
-
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
@@ -33,7 +32,6 @@ ResultScene::ResultScene()
 	m_commonResources = CommonResources::GetInstance();
 }
 
-
 //---------------------------------------------------------
 // デストラクタ
 //---------------------------------------------------------
@@ -41,7 +39,6 @@ ResultScene::~ResultScene()
 {
 	// do nothing.
 }
-
 
 //---------------------------------------------------------
 // 初期化する
@@ -60,8 +57,6 @@ void ResultScene::Initialize()
 	m_isChangeScene = false;
 }
 
-
-
 //---------------------------------------------------------
 // テクスチャ関連
 //---------------------------------------------------------
@@ -79,7 +74,6 @@ void ResultScene::CreateTextures()
 
 	DirectX::SimpleMath::Vector2 texSize{};
 
-
 	// テクスチャのサイズと中心点を計算する
 	mylib::Texture::CalculateTextureCenter
 	(
@@ -89,19 +83,18 @@ void ResultScene::CreateTextures()
 	);
 }
 
-
 //---------------------------------------------------------
 // オブジェクトの生成
 //---------------------------------------------------------
 void ResultScene::CreateObjects()
 {
 	// 勝利リザルトの生成
-	m_winResult		= std::make_unique<WinResult>	();
-	m_loseResult	= std::make_unique<LoseResult>	();
+	m_winResult = std::make_unique<WinResult>();
+	m_loseResult = std::make_unique<LoseResult>();
 
 	// 初期化
-	m_winResult	->	Initialize();
-	m_loseResult->	Initialize();
+	m_winResult->Initialize();
+	m_loseResult->Initialize();
 
 	//// ゲームデータの取得
 	//m_gameData = GameData::GetInstance();
@@ -112,7 +105,7 @@ void ResultScene::CreateObjects()
 	case GameData::BATTLE_RESULT::WIN:
 		m_currentState = m_winResult.get();
 		Sound::ChangeBGM(Sound::BGM_TYPE::WIN);
-		
+
 		break;
 	case GameData::BATTLE_RESULT::LOSE:
 		m_currentState = m_loseResult.get();
@@ -124,7 +117,6 @@ void ResultScene::CreateObjects()
 		break;
 	}
 }
-
 
 //---------------------------------------------------------
 // 更新する
@@ -144,7 +136,6 @@ void ResultScene::Update(float elapsedTime)
 	}
 }
 
-
 //---------------------------------------------------------
 // 描画する
 //---------------------------------------------------------
@@ -159,7 +150,6 @@ void ResultScene::Render()
 	RECT rect{ m_commonResources->GetDeviceResources()->GetOutputSize() };
 	// 画像の中心を計算する
 	DirectX::SimpleMath::Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
-
 
 	m_spriteBatch->Draw(
 		m_texture.Get(),			// テクスチャ(SRV)
@@ -176,11 +166,9 @@ void ResultScene::Render()
 	// スプライトバッチの終わり
 	m_spriteBatch->End();
 
-
 	// 勝ち負けの描画
 	m_currentState->Render();
 }
-
 
 //---------------------------------------------------------
 // 後始末する
@@ -189,7 +177,6 @@ void ResultScene::Finalize()
 {
 	// do nothing.
 }
-
 
 //---------------------------------------------------------
 // 次のシーンIDを取得する

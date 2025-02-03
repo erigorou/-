@@ -12,7 +12,6 @@
 #include "Game/Weapon/Cudgel/Cudgel.h"
 #include "Game/Boss/States/Header/BossApproaching.h"
 
-
 // --------------------------------------
 // コンストラクタ
 // --------------------------------------
@@ -26,7 +25,6 @@ BossApproaching::BossApproaching(Boss* boss)
 {
 }
 
-
 // --------------------------------------
 // デストラクタ
 // --------------------------------------
@@ -34,20 +32,18 @@ BossApproaching::~BossApproaching()
 {
 }
 
-
 // --------------------------------------
 // 初期化処理
 // --------------------------------------
 void BossApproaching::Initialize()
 {
 	// 速度を設定（前にしか動かない）
-	m_velocity = DirectX::SimpleMath::Vector3::Forward;	
+	m_velocity = DirectX::SimpleMath::Vector3::Forward;
 
 	// プレイヤーの取得
 	void* player = EventMessenger::ExecuteGetter(GetterList::GetPlayer);
 	m_player = player ? static_cast<IObject*>(player) : nullptr;
 }
-
 
 // --------------------------------------
 // ステート変更処理(in)
@@ -55,13 +51,12 @@ void BossApproaching::Initialize()
 void BossApproaching::PreUpdate()
 {
 	// 経過時間を初期化
-	m_totalSeconds = 0.0f; 
+	m_totalSeconds = 0.0f;
 	// 座標の取得
-	m_position	= m_boss->GetPosition();
+	m_position = m_boss->GetPosition();
 	// 回転行列の取得
-	m_angle		= m_boss->GetAngle();
+	m_angle = m_boss->GetAngle();
 }
-
 
 // --------------------------------------
 // 更新処理
@@ -75,8 +70,6 @@ void BossApproaching::Update(const float& elapsedTime)
 	// 次のステートに移行するかを検知
 	CheckNextState();
 }
-
-
 
 // --------------------------------------
 // アニメーションの更新
@@ -103,13 +96,11 @@ void BossApproaching::UpdateAnimation(float elapsedTime)
 	m_boss->SetPosition(m_position);
 }
 
-
-
 // --------------------------------------
 // いつ次のステートに移行するかを検知
 // --------------------------------------
 void BossApproaching::CheckNextState()
-{	
+{
 	// プレイヤーの座標を取得
 	Vector3 playerPos = m_player->GetPosition();
 
@@ -153,7 +144,6 @@ void BossApproaching::CheckNextState()
 	}
 }
 
-
 // --------------------------------------
 // ステート変更処理(out)
 // --------------------------------------
@@ -169,7 +159,6 @@ void BossApproaching::PostUpdate()
 	// パーティクルを生成
 	EventMessenger::Execute(EventList::CreateBashDust, &m_position);
 }
-
 
 // --------------------------------------
 // 終了処理

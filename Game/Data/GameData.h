@@ -1,6 +1,5 @@
 #pragma once
 
-
 class GameData
 {
 	// 列挙型 -------------------
@@ -12,40 +11,35 @@ public:
 		NONE
 	};
 
-
-// アクセサ関数 ------------
+	// アクセサ関数 ------------
 public:
 
 	// 静的関数===========================================
 	// GameDataクラスのインスタンスを取得する
 	static GameData* const GetInstance();
 
-
 	// 戦闘結果
-	void			SetBattleResult(BATTLE_RESULT result)	{ m_battleResult = result;	}
-	BATTLE_RESULT	GetBattleResult() const					{ return m_battleResult;	}
+	void			SetBattleResult(BATTLE_RESULT result) { m_battleResult = result; }
+	BATTLE_RESULT	GetBattleResult() const { return m_battleResult; }
 
 	// 画面のフェード量
 	void	SetFadeValue(float value) { m_fadeValue = value; }
 	float	GetFadeValue()		const { return m_fadeValue; }
 
-
 	// 経過時間
 	void	SetElapsedTime(float time) { m_elapsedTime = time; }
 	float	GetElapsedTime()	const { return m_elapsedTime; }
-
 
 	// ステージ選択
 	void SetSelectStage(int stageIndex) { m_questIndex = stageIndex; }
 	int GetSelectStage() const { return m_questIndex; }
 
-
-// インスタンス化の為のprivate	(多重生成を防ぐため)
+	// インスタンス化の為のprivate	(多重生成を防ぐため)
 private:
 	// コンストラクタ
 	GameData();
 
-// 公開関数 -----------------
+	// 公開関数 -----------------
 public:
 	// デストラクタ
 	~GameData() = default;
@@ -53,8 +47,7 @@ public:
 	// 初期化処理
 	void Initialize();
 
-
-// メンバ変数 --------------
+	// メンバ変数 --------------
 private:
 
 	static std::unique_ptr<GameData> s_data;	// インスタンス
@@ -66,5 +59,4 @@ private:
 	float m_elapsedTime; // 経過時間
 
 	int m_questIndex;	// クエストのインデックス
-
 };

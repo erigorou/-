@@ -8,25 +8,22 @@
 #include "pch.h"
 #include "Interface/IParticle.h"
 
-
 //SimpleMath::Vector2(0.0f, 0.0f)), // 左上
 //SimpleMath::Vector2(1.0f, 0.0f)), // 右上
 //SimpleMath::Vector2(1.0f, 1.0f)), // 右下
 //SimpleMath::Vector2(0.0f, 1.0f)), // 左下
 
-
 class SwordTrailParticle : public IParticle
 {
-// ----------------------------
-// アクセサ
-// ----------------------------
+	// ----------------------------
+	// アクセサ
+	// ----------------------------
 public:
-	const float GetLife									() { return m_life; }			// 表示時間
-	const float GetStartLife							() { return m_startLife; }		// 開始時間
-	const DirectX::SimpleMath::Color GetNowColor		() { return m_nowColor; }		// 現在の色
-	const DirectX::SimpleMath::Color GetStartColor		() { return m_startColor; }		// 開始時色
-	const DirectX::SimpleMath::Color GetEndColor		() { return m_endColor; }		// 終了時色
-	
+	const float GetLife() { return m_life; }			// 表示時間
+	const float GetStartLife() { return m_startLife; }		// 開始時間
+	const DirectX::SimpleMath::Color GetNowColor() { return m_nowColor; }		// 現在の色
+	const DirectX::SimpleMath::Color GetStartColor() { return m_startColor; }		// 開始時色
+	const DirectX::SimpleMath::Color GetEndColor() { return m_endColor; }		// 終了時色
 
 	void GetVertices(DirectX::VertexPositionColorTexture* vertices)
 	{
@@ -37,10 +34,9 @@ public:
 		vertices[3] = DirectX::VertexPositionColorTexture(m_vertices[3].position, DirectX::SimpleMath::Vector4(1, 1, 1, 1), m_vertices[3].textureCoordinate);
 	}
 
-
-// ----------------------------
-// メンバ関数（公開）
-// ----------------------------
+	// ----------------------------
+	// メンバ関数（公開）
+	// ----------------------------
 public:
 	// コンストラクタ
 	SwordTrailParticle(
@@ -53,10 +49,9 @@ public:
 	// 更新処理
 	bool Update(float elapsedTime);
 
-
-// ----------------------------
-// メンバ変数
-// ----------------------------
+	// ----------------------------
+	// メンバ変数
+	// ----------------------------
 private:
 	// 描画に必要な４頂点の座標
 	DirectX::VertexPositionTexture m_vertices[4];

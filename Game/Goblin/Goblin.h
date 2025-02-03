@@ -2,7 +2,6 @@
 // 小鬼の親クラス
 // -------------------------------------------------------
 
-
 #pragma once
 
 #ifndef GOBLIN_OBJECT
@@ -23,7 +22,6 @@ class EnemyEffect;
 #include "State/Header/GoblinDead.h"
 #include "State/Header/GoblinTutorial.h"
 
-
 enum class GoblinState
 {
 	IDLING,
@@ -31,8 +29,6 @@ enum class GoblinState
 	DEAD,
 	TUTORIAL
 };
-
-
 
 class Goblin : public IEnemy
 {
@@ -47,38 +43,36 @@ public:
 	static constexpr float COLLISION_RADIUS = 16.0f;
 	static constexpr float COLLISION_POS_Y = 2.0f;
 
-	static constexpr float COOL_TIME = 0.4f;
-
+	static constexpr float COOL_TIME = 0.1f;
 
 	// ---------------
 	// アクセサ
 	// ---------------
 public:
-	// 座標を取得  
+	// 座標を取得
 	DirectX::SimpleMath::Vector3 GetPosition() override { return m_position; }
-	// 座標を設定  
+	// 座標を設定
 	void SetPosition(const DirectX::SimpleMath::Vector3& position) { m_position = position; }
-	// 速度を取得  
+	// 速度を取得
 	DirectX::SimpleMath::Vector3 GetVelocity() const { return m_velocity; }
-	// 速度を設定  
+	// 速度を設定
 	void SetVelocity(const DirectX::SimpleMath::Vector3& velocity) { m_velocity = velocity; }
-	// 回転角を取得  
+	// 回転角を取得
 	float GetAngle() const { return m_angle; }
-	// 回転角を設定  
+	// 回転角を設定
 	void SetAngle(const float angle) { m_angle = angle; }
-	// ワールド座標を取得  
+	// ワールド座標を取得
 	DirectX::SimpleMath::Matrix GetWorldMatrix() const { return m_worldMatrix; }
-	// スケールを設定  
+	// スケールを設定
 	void SetScale(const DirectX::SimpleMath::Vector3& scale) { m_scale = scale; }
-	// 体の当たり判定を取得  
+	// 体の当たり判定を取得
 	DirectX::BoundingSphere GetCollision() const { return *m_bodyCollision.get(); }
-	// 攻撃中かどうかを取得  
+	// 攻撃中かどうかを取得
 	bool IsAttacking() const { return m_nowAttacking; }
-	// HPを取得  
+	// HPを取得
 	HPSystem* GetHPSystem() override { return m_hp.get(); }
-	// 攻撃中かどうかを設定  
+	// 攻撃中かどうかを設定
 	void SetIsAttacking(bool isAttacking) { m_nowAttacking = isAttacking; }
-
 
 	// ---------------
 	// 公開関数
@@ -111,7 +105,6 @@ public:
 	// ゴブリンを消す
 	void DeleteGoblin();
 
-
 	// ---------------
 	// 内部関数
 	// ---------------
@@ -123,22 +116,20 @@ private:
 	// 生存確認
 	void CheckAlive();
 
-
 	void HitPlayer(InterSectData data);	// プレイヤーに当たったときの処理
 	void HitGoblin(InterSectData data);	// 小鬼に当たったときの処理
 	void HitBoss(InterSectData data);	// 敵に当たったときの処理
 	void HitStage(InterSectData data);	// ステージに当たったときの処理
 	void HitSword(InterSectData data);	// 剣に当たったときの処理
 
-	void Damaged		(float damage);			// ダメージを受けたときの処理
-	void CountCoolTime	(float elapsedTime);	// クールタイムのカウント
+	void Damaged(float damage);			// ダメージを受けたときの処理
+	void CountCoolTime(float elapsedTime);	// クールタイムのカウント
 
 	void CreateState();		// ステートの作成
 
-
-// ---------------
-// メンバ変数
-// ---------------
+	// ---------------
+	// メンバ変数
+	// ---------------
 private:
 	// 座標
 	DirectX::SimpleMath::Vector3 m_position;
@@ -154,7 +145,6 @@ private:
 	DirectX::Model* m_model;
 	// 押し戻し量
 	DirectX::SimpleMath::Vector3 m_pushBackValue;
-
 
 	// 現在のステート
 	IState* m_currentState;
@@ -189,6 +179,5 @@ private:
 	// クールタイム
 	float m_coolTime;
 };
-
 
 #endif // !GOBLIN_OBJECT

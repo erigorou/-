@@ -10,7 +10,6 @@
 #include "../../Boss.h"
 #include "../Header/BossFaceAttacking.h"
 
-
 // --------------------
 // コンストラクタ
 // --------------------
@@ -27,7 +26,6 @@ BossFaceAttacking::BossFaceAttacking(Boss* Boss)
 BossFaceAttacking::~BossFaceAttacking()
 {
 }
-
 
 // --------------------
 // 描画処理

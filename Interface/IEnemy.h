@@ -25,7 +25,6 @@ public:
 	// I—¹ˆ—
 	virtual void Finalize() = 0;
 
-
 	// “–‚½‚Á‚½‚Æ‚«‚Étrue‚ğİ’è‚·‚é
 	virtual void HitAction(InterSectData data) = 0;
 	// ˆÊ’u‚ğæ“¾‚·‚é

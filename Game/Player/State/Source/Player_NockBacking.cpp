@@ -10,7 +10,6 @@
 #include "Game/Player/Player.h"
 #include "Game/Player/State/Header/Player_NockBacking.h"
 
-
 // -------------------------------
 // コンストラクタ
 // -------------------------------
@@ -30,14 +29,12 @@ PlayerNockBacking::~PlayerNockBacking()
 {
 }
 
-
 // -------------------------------
 // 初期化処理
 // -------------------------------
 void PlayerNockBacking::Initialize()
 {
 }
-
 
 // -------------------------------
 // 事前更新処理
@@ -47,7 +44,6 @@ void PlayerNockBacking::PreUpdate()
 	// 経過時間の初期化
 	m_totalSeconds = 0.f;
 }
-
 
 // -------------------------------
 // 更新処理
@@ -70,7 +66,6 @@ void PlayerNockBacking::Update(const float& elapsedTime)
 	m_player->TimeComparison(m_totalSeconds, END_TIME, m_player->GetPlayerIdlingState(), elapsedTime);
 }
 
-
 // -------------------------------
 // アニメーション更新用処理
 // -------------------------------
@@ -84,13 +79,12 @@ void PlayerNockBacking::UpdateAnimation()
 	{
 		NockBackAnimation();
 	}
-	// 
+	//
 	else if (m_totalSeconds <= RETURN_TIME)
 	{
 		ReturnAnimation();
 	}
 }
-
 
 // -------------------------------
 // ノックバックアニメーション
@@ -122,7 +116,6 @@ void PlayerNockBacking::NockBackAnimation()
 	m_player->SetAnimationRotate(m_bodyTilt);
 }
 
-
 // -------------------------------
 // 復帰アニメーション
 // -------------------------------
@@ -145,8 +138,6 @@ void PlayerNockBacking::ReturnAnimation()
 	m_player->SetAnimationRotate(m_bodyTilt);
 }
 
-
-
 // -------------------------------
 // キー入力イベント
 // -------------------------------
@@ -165,7 +156,6 @@ void PlayerNockBacking::OnKeyDown(const DirectX::Keyboard::Keys& key)
 void PlayerNockBacking::PostUpdate()
 {
 }
-
 
 // -------------------------------
 // 終了処理

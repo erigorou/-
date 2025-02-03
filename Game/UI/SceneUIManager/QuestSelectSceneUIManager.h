@@ -7,12 +7,11 @@ class NormalAction;
 class TitleLogoAction;
 class UserInterface;
 
-
 class QuestSelectSceneUIManager
 {
-// ------------------------------
-// 	定数
-// ------------------------------
+	// ------------------------------
+	// 	定数
+	// ------------------------------
 public:
 	// デフォルトの大きさ
 	static constexpr DirectX::SimpleMath::Vector2 DEFAULT_SIZE = DirectX::SimpleMath::Vector2(1.0f, 1.0f);
@@ -25,10 +24,9 @@ public:
 	// ボス戦ボタンの初期値
 	static constexpr DirectX::SimpleMath::Vector2 BOSS_FIGHT_BUTTON_POSITION = DirectX::SimpleMath::Vector2(1880.0f, 625.0f);
 
-
-// ------------------------------
-// 公開関数
-// ------------------------------
+	// ------------------------------
+	// 公開関数
+	// ------------------------------
 public:
 	// コンストラクタ
 	QuestSelectSceneUIManager();
@@ -41,10 +39,9 @@ public:
 	// 描画
 	void Render();
 
-
-// ------------------------------
-// 内部関数
-// ------------------------------
+	// ------------------------------
+	// 内部関数
+	// ------------------------------
 private:
 	// ユーザーインターフェースの追加
 	void AddUserInterface(
@@ -55,12 +52,10 @@ private:
 		IAction* action
 	);
 
-// ------------------------------
-// メンバ変数
-// ------------------------------
+	// ------------------------------
+	// メンバ変数
+	// ------------------------------
 private:
 	// ユーザーインターフェースリスト
 	std::vector<std::unique_ptr<UserInterface>> m_userInterfaceList;
 };
-
-

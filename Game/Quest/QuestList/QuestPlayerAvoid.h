@@ -14,10 +14,8 @@ public:
 	// テクスチャパスを取得する
 	const wchar_t* GetTexturePath() override { return L"Resources/Textures/Quest/QuestUI_Dodg.png"; }
 
-
 	// チュートリアルのテクスチャパスを取得する
 	const wchar_t* GetTutorialTexturePath() override { return L"Resources/Textures/Quest/TutorialDodg.png"; }
-
 
 	// チェッカーを実行する
 	bool ExecuteChecker(PlayScene* playScene) override

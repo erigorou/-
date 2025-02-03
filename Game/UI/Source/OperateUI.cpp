@@ -1,10 +1,8 @@
-
 #include "pch.h"
 #include "../Header/OperateUI.h"
 #include "Game/CommonResources.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "CommonStates.h"
-
 
 // -----------------------------------
 // コンストラクタ
@@ -24,14 +22,12 @@ OperateUI::OperateUI(const wchar_t* texturePath)
 	m_pDR = CommonResources::GetInstance()->GetDeviceResources();
 }
 
-
 // -----------------------------------
 // デストラクタ
 // -----------------------------------
 OperateUI::~OperateUI()
 {
 }
-
 
 // -----------------------------------
 // 初期化処理
@@ -76,7 +72,6 @@ void OperateUI::Initialize()
 	}
 }
 
-
 void OperateUI::Render()
 {
 	using namespace DirectX;
@@ -89,7 +84,6 @@ void OperateUI::Render()
 		if (m_totalTime <= 0.0f)
 			m_downKey = false;
 	}
-
 
 	// 頂点情報
 	VertexPositionColorTexture vertex[4] =
@@ -147,7 +141,6 @@ void OperateUI::Render()
 	m_customShader->EndSharder(context);
 }
 
-
 void OperateUI::Finalize()
 {
 	m_customShader.reset();
@@ -157,13 +150,10 @@ void OperateUI::Finalize()
 	m_CBuffer.Reset();
 }
 
-
-
 void OperateUI::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 {
 	UNREFERENCED_PARAMETER(key);
 }
-
 
 void OperateUI::OnKeyDown(const DirectX::Keyboard::Keys& key)
 {
@@ -173,14 +163,10 @@ void OperateUI::OnKeyDown(const DirectX::Keyboard::Keys& key)
 	UNREFERENCED_PARAMETER(key);
 }
 
-
-
 void OperateUI::HitAction(InterSectData data)
 {
 	UNREFERENCED_PARAMETER(data);
 }
-
-
 
 DirectX::SimpleMath::Vector3 OperateUI::GetPosition()
 {

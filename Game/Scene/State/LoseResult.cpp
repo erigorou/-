@@ -15,9 +15,7 @@
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
-
 const wchar_t* LoseResult::TEXTURE_PATH = L"Resources/Textures/UI/Lose.png";
-
 
 //---------------------------------------------------------
 // コンストラクタ
@@ -45,7 +43,6 @@ LoseResult::~LoseResult()
 //---------------------------------------------------------
 void LoseResult::Initialize()
 {
-
 	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
 	auto context = m_commonResources->GetDeviceResources()->GetD3DDeviceContext();
 
@@ -96,7 +93,6 @@ void LoseResult::Render()
 
 	DirectX::SimpleMath::Vector2 texPos{ 0.0f, 200.0f };
 
-
 	// テクスチャを描画する
 	mylib::Texture::DrawTexture
 	(
@@ -108,10 +104,8 @@ void LoseResult::Render()
 		0.0f
 	);
 
-
 #ifdef _DEBUG
 #endif // _DEBUG
-
 
 	// スプライトバッチの終わり
 	m_spriteBatch->End();

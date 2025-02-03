@@ -10,16 +10,16 @@ class IObject;
 // 敵の待機ステートを定義
 class BossStarting : public IState
 {
-// ---------------------------
-// 固定値
-// ---------------------------
+	// ---------------------------
+	// 固定値
+	// ---------------------------
 public:
 	// 総時間
 	static constexpr float TOTAL_TIME = 4.0f;
 	// 遅延時間
 	static constexpr float DELAY_TIME = 0.5f;
 	// モーション時間
-	static constexpr float MOVE_TIME  = 2.5f;
+	static constexpr float MOVE_TIME = 2.5f;
 	// 開始時の高さ
 	static constexpr float START_HEIGHT = 100.0f;
 	// エフェクトの高さ
@@ -27,10 +27,9 @@ public:
 	// カメラを揺らす強さ
 	static constexpr float SHAKE_POWER = 2.0f;
 
-
-// ---------------------------
-// メンバ関数（公開）
-// ---------------------------
+	// ---------------------------
+	// メンバ関数（公開）
+	// ---------------------------
 public:
 	// コンストラクタ
 	BossStarting(Boss* boss);
@@ -47,10 +46,9 @@ public:
 	// 終了処理
 	void Finalize() override;
 
-
-// ---------------------------
-// メンバ関数（非公開）
-// ---------------------------
+	// ---------------------------
+	// メンバ関数（非公開）
+	// ---------------------------
 private:
 	// アニメーションの更新処理
 	void UpdateAnimation();
@@ -61,10 +59,9 @@ private:
 	// エフェクトを再生する
 	void PlayEffect();
 
-
-// ---------------------------
-// メンバ変数
-// ---------------------------
+	// ---------------------------
+	// メンバ変数
+	// ---------------------------
 private:
 	// 位置
 	DirectX::SimpleMath::Vector3 m_position;

@@ -8,7 +8,6 @@
 #include "Game/UI/Header/Gauge.h"
 #include "Interface/IUserInterface.h"
 
-
 // ----------------------------
 /// <summary>
 /// コンストラクタ
@@ -16,13 +15,11 @@
 // ---------------------------
 GaugeUI::GaugeUI()
 	:m_spriteBatch()
-	,m_texture()
-	,m_position()
-	,m_size()
+	, m_texture()
+	, m_position()
+	, m_size()
 {
 }
-
-
 
 // ----------------------------
 /// <summary>
@@ -31,8 +28,6 @@ GaugeUI::GaugeUI()
 // ----------------------------
 GaugeUI::~GaugeUI()
 {}
-
-
 
 // ----------------------------
 /// <summary>
@@ -43,11 +38,9 @@ GaugeUI::~GaugeUI()
 // ----------------------------
 void GaugeUI::Initialize(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 size)
 {
-	m_position	= position;
-	m_size		= size;
+	m_position = position;
+	m_size = size;
 }
-
-
 
 // ----------------------------
 
@@ -60,8 +53,6 @@ void GaugeUI::Update()
 {
 }
 
-
-
 // ----------------------------
 /// <summary>
 /// 描画関数
@@ -70,8 +61,6 @@ void GaugeUI::Update()
 void GaugeUI::Render()
 {
 }
-
-
 
 // ----------------------------
 /// <summary>

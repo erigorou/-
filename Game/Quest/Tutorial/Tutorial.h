@@ -6,15 +6,14 @@ class QuestManager;
 class CustomShader;
 class DeviceResources;
 
-
 class Tutorial
 {
-// --------------------
-// 固定値
-// --------------------
+	// --------------------
+	// 固定値
+	// --------------------
 public:
 	// テクスチャサイズの大きさ
-	static constexpr int WIDTH  = 1000;
+	static constexpr int WIDTH = 1000;
 	static constexpr int HEIGHT = 100;
 
 	// 画面サイズの大きさ
@@ -28,13 +27,10 @@ public:
 	// アニメーション時間
 	static constexpr float ANIMATION_TIME = 2.0f;
 
-
 	// シェーダーのファイルパス
 	static const wchar_t* VS_PATH;
 	static const wchar_t* PS_PATH;
 	static const wchar_t* GS_PATH;
-
-
 
 	// 入力レイアウト
 	std::vector<D3D11_INPUT_ELEMENT_DESC> InputElements =
@@ -44,7 +40,6 @@ public:
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3) + sizeof(DirectX::SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 
-
 	// 定数バッファ
 	struct CBuffer
 	{
@@ -53,16 +48,16 @@ public:
 		DirectX::SimpleMath::Vector3	padding;	// 空白
 	};
 
-// --------------------
-// アクセサ
-// --------------------
+	// --------------------
+	// アクセサ
+	// --------------------
 public:
 	void ChangeTexture(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture) { m_texture = texture; m_canUseTimer = true; }	// テクスチャの変更
-	bool GetTimerIsEnd() { return ! m_timerPlay; }	// タイマーフラグの取得
+	bool GetTimerIsEnd() { return !m_timerPlay; }	// タイマーフラグの取得
 
-// --------------------
-// 公開関数
-// --------------------
+	// --------------------
+	// 公開関数
+	// --------------------
 public:
 	// コンストラクタ
 	Tutorial(QuestManager* manager);
@@ -81,9 +76,9 @@ public:
 
 	void StartAlphaMinus();
 
-// --------------------
-// 内部関数
-// --------------------
+	// --------------------
+	// 内部関数
+	// --------------------
 private:
 	// シェーダーの生成
 	void CreateShader();
@@ -99,21 +94,17 @@ private:
 	// α値の更新処理
 	void UpdateAlpha(float elapsedTime);
 
-
-
-// --------------------
-// メンバー変数
-// --------------------
+	// --------------------
+	// メンバー変数
+	// --------------------
 private:
 
-	QuestManager*					m_questManager;	// クエストマネージャー
-
+	QuestManager* m_questManager;	// クエストマネージャー
 
 	DirectX::SimpleMath::Vector3	m_position;	// 座標
 	float							m_angle;	// 回転角
 	DirectX::SimpleMath::Vector2	m_scale;	// 拡大率
 	float							m_alpha;	// 透明度
-
 
 	float	m_currentTime;	// 経過時間
 	float	m_elapsedTime;	// 経過時間
@@ -121,7 +112,6 @@ private:
 	bool m_timerPlay;		// タイマーフラグ
 	bool m_canUseTimer;		// タイマーの使用フラグ
 	bool m_alphaFlag;		// α値を減らす
-
 
 	// シェーダー
 	std::unique_ptr<CustomShader> m_shader;

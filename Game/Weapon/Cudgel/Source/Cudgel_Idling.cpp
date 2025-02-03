@@ -1,8 +1,8 @@
 /// ---------------------------
-/// 
+///
 ///
 /// 鬼の金棒の待機状態
-/// 
+///
 /// ---------------------------
 
 #include "pch.h"
@@ -13,12 +13,10 @@
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/Collision.h"
 
-
 #include "Game/Player/Player.h"
 #include "Game/Boss/Boss.h"
 #include "Game/Weapon/Cudgel/Header/Cudgel_Idling.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
-
 
 // -----------------------------------------------
 // コンストラクタ
@@ -33,14 +31,12 @@ Cudgel_Idling::Cudgel_Idling(Cudgel* cudgel)
 {
 }
 
-
 // -----------------------------------------------
 // デストラクタ
 // -----------------------------------------------
 Cudgel_Idling::~Cudgel_Idling()
 {
 }
-
 
 // -----------------------------------------------
 // 初期化処理
@@ -50,14 +46,12 @@ void Cudgel_Idling::Initialize()
 	m_worldMatrix = DirectX::SimpleMath::Matrix::Identity;		// ワールド行列の初期化
 }
 
-
 // -----------------------------------------------
 // 事前処理
 // -----------------------------------------------
 void Cudgel_Idling::PreUpdate()
 {
 }
-
 
 // -----------------------------------------------
 // 更新処理
@@ -66,9 +60,8 @@ void Cudgel_Idling::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-
 	m_position = m_cudgel->GetBoss()->GetPosition();	// 敵の座標を取得
-	m_angle	= m_cudgel->GetBoss()->GetAngle();		// 敵の回転を取得
+	m_angle = m_cudgel->GetBoss()->GetAngle();		// 敵の回転を取得
 
 	// ワールド行列を計算する
 	m_worldMatrix = DirectX::SimpleMath::Matrix::CreateScale(Cudgel::CUDGEL_SCALE)		// 大きさの設定　＆　リセット
@@ -80,7 +73,6 @@ void Cudgel_Idling::Update(float elapsedTime)
 	m_cudgel->SetCollisionPosition(m_worldMatrix);		// 当たり判定の位置を設定する
 }
 
-
 // -----------------------------------------------
 // 事後処理
 // -----------------------------------------------
@@ -88,15 +80,12 @@ void Cudgel_Idling::PostUpdate()
 {
 }
 
-
 // -----------------------------------------------
 // 終了処理
 // -----------------------------------------------
 void Cudgel_Idling::Finalize()
 {
 }
-
-
 
 // -----------------------------------------------
 // 衝突判定

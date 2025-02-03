@@ -14,8 +14,6 @@ public:
 	// ƒL[‚ª‰Ÿ‰º‚°‚ç‚ê‚Ä‚½‚çŒÄ‚Ño‚³‚ê‚é
 	virtual void OnKeyDown(const DirectX::Keyboard::Keys& key) = 0;
 
-
-
 	// ˆÈ‰ºIObject‚ÌŠÖ”
 	virtual void HitAction(InterSectData data) = 0;
 

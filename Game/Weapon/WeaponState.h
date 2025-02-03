@@ -7,7 +7,6 @@ enum class SwordState
 	Attack2
 };
 
-
 enum class CudgelState
 {
 	Idle = 0,

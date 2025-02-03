@@ -1,7 +1,7 @@
 /// ---------------------------
 ///
 /// プレイヤーの剣の待機状態
-/// 
+///
 /// ---------------------------
 
 #include "pch.h"
@@ -90,7 +90,7 @@ void SwordIdling::UpdateWorldMatrix()
 	Quaternion playerRotation = Quaternion::CreateFromAxisAngle(Vector3::UnitY, -rotation);
 
 	// ワールド行列を更新
-	m_worldMatrix = 
+	m_worldMatrix =
 		// 剣のスケールを適用
 		Matrix::CreateScale(Sword::SWORD_SCALE) *
 		// 基本回転を適用

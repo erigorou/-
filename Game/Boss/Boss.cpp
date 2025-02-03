@@ -37,7 +37,6 @@
 // エフェクト
 #include "Effects/EnemyEffect/EnemyEffect.h"
 
-
 // --------------------------------
 //  コンストラクタ
 // --------------------------------
@@ -55,10 +54,9 @@ Boss::Boss()
 	, m_pushBackValue{}
 	, m_isHit(false)
 	, m_canHit(false)
-	, m_shakePower{SHAKE_POWER}
+	, m_shakePower{ SHAKE_POWER }
 {
 }
-
 
 // --------------------------------
 //  デストラクタ
@@ -71,7 +69,6 @@ Boss::~Boss()
 	m_dead->Finalize();
 	m_dashAttacking->Finalize();
 }
-
 
 // --------------------------------
 //  イニシャライズ
@@ -97,8 +94,6 @@ void Boss::Initialize()
 	// イベントの登録
 	AttachEvent();
 }
-
-
 
 // --------------------------------
 //  状態の生成処理
@@ -144,7 +139,6 @@ void Boss::CreateState()
 	m_currentState = m_starting.get();
 }
 
-
 // --------------------------------
 //  顔パーツの生成処理
 // --------------------------------
@@ -159,7 +153,6 @@ void Boss::CreateFace()
 	// 初期の顔を待機顔に割り当てる
 	m_currentFace = m_faceIdling.get();
 }
-
 
 // --------------------------------
 //  衝突判定の生成処理
@@ -182,7 +175,6 @@ void Boss::CreateCollision()
 	EventMessenger::Execute(EventList::AddSphereCollision, &data);
 }
 
-
 // --------------------------------
 //  状態の変更処理
 // --------------------------------
@@ -201,7 +193,6 @@ void Boss::ChangeState(void* state)
 	// 新規の状態遷移後に事前更新を行う
 	m_currentState->PreUpdate();
 }
-
 
 // --------------------------------
 //  顔の変更処理
@@ -224,8 +215,6 @@ void Boss::AttachEvent()
 	// 顔変更のイベント
 	EventMessenger::Attach(EventList::ChangeBossFace, std::bind(&Boss::ChangeFace, this, std::placeholders::_1));
 }
-
-
 
 // --------------------------------
 //  更新処理
@@ -268,7 +257,6 @@ void Boss::Update(float elapsedTime)
 #endif // _DEBUG
 }
 
-
 // --------------------------------
 //  ワールド行列の計算
 // --------------------------------
@@ -295,13 +283,11 @@ void Boss::CalcrationWorldMatrix()
 	m_worldMatrix *= Matrix::CreateTranslation(m_position);	// 位置設定
 }
 
-
-
 // --------------------------------
 //  衝突のクールタイムの計測を行う
 // --------------------------------
 void Boss::CheckHitCoolTime(float elapsedTime)
-{	
+{
 	// クールタイムの計測を行う
 	if (m_isHit && m_coolTime < COOL_TIME)
 	{
@@ -315,8 +301,6 @@ void Boss::CheckHitCoolTime(float elapsedTime)
 		m_coolTime = 0.0f;
 	}
 }
-
-
 
 // --------------------------------
 //  表示処理
@@ -340,7 +324,6 @@ void Boss::Render(
 	m_cudgel->Render(view, projection);
 }
 
-
 // --------------------------------
 //  終了処理
 // --------------------------------
@@ -353,7 +336,6 @@ void Boss::Finalize()
 	EventMessenger::Execute(EventList::DeleteCollision, &data);
 }
 
-
 // --------------------------------
 //  全体の衝突判定イベント
 // --------------------------------
@@ -362,8 +344,6 @@ void Boss::HitAction(InterSectData data)
 	HitSword(data);
 	HitStage(data);
 }
-
-
 
 // --------------------------------
 //  刀との衝突判定
@@ -422,8 +402,6 @@ void Boss::CheckAlive()
 		ChangeState(&state);
 	}
 }
-
-
 
 // --------------------------------
 // 死亡処理

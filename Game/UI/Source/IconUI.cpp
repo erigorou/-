@@ -31,7 +31,6 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> IconUI::INPUT_LAYOUT =
 	{ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(SimpleMath::Vector3) + sizeof(SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
 
-
 /// <summary>
 /// コンストラクタ
 /// </summary>
@@ -51,14 +50,12 @@ IconUI::IconUI()
 {
 }
 
-
 /// <summary>
 /// デストラクタ
 /// </summary>
 IconUI::~IconUI()
 {
 }
-
 
 /// <summary>
 /// テクスチャリソース読み込み関数
@@ -81,7 +78,6 @@ void IconUI::LoadTexture(const wchar_t* path)
 	m_textureWidth = desc.Width;
 	m_textureHeight = desc.Height;
 }
-
 
 /// <summary>
 /// 生成関数
@@ -110,18 +106,15 @@ void IconUI::Create(DX::DeviceResources* pDR
 	m_states = std::make_unique<CommonStates>(device);
 }
 
-
 void IconUI::SetScale(DirectX::SimpleMath::Vector2 scale)
 {
 	m_scale = scale;
 }
 
-
 void IconUI::SetPosition(DirectX::SimpleMath::Vector2 position)
 {
 	m_position = position;
 }
-
 
 /// <summary>
 /// Shader作成部分だけ分離した関数
@@ -171,8 +164,6 @@ void IconUI::CreateShader()
 	device->CreateBuffer(&bd, nullptr, &m_CBuffer);
 }
 
-
-
 /// <summary>
 /// 描画関数
 /// </summary>
@@ -212,7 +203,6 @@ void IconUI::Render()
 	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
 	context->PSSetSamplers(0, 1, sampler);
 
-
 	//	半透明描画指定
 	ID3D11BlendState* blendstate = m_states->NonPremultiplied();
 
@@ -245,10 +235,7 @@ void IconUI::Render()
 	context->VSSetShader(nullptr, nullptr, 0);
 	context->GSSetShader(nullptr, nullptr, 0);
 	context->PSSetShader(nullptr, nullptr, 0);
-
 }
-
-
 
 // -------------------------------------------------------
 /// <summary>

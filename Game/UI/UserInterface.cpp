@@ -13,7 +13,6 @@
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "Interface/IAction.h"
 
-
 /// <summary>
 /// インプットレイアウト
 /// </summary>
@@ -21,9 +20,8 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> UserInterface::INPUT_LAYOUT =
 {
 	{ "POSITION",	0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	{ "COLOR",	0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3), D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3)+ sizeof(DirectX::SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3) + sizeof(DirectX::SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
-
 
 /// <summary>
 /// コンストラクタ
@@ -31,7 +29,7 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> UserInterface::INPUT_LAYOUT =
 UserInterface::UserInterface()
 	:
 	m_totalTime{},
-	m_windowSize{WINDOW_SIZE},
+	m_windowSize{ WINDOW_SIZE },
 	m_textureSize{},
 	m_texture{},
 	m_scale(DirectX::SimpleMath::Vector2::One),
@@ -41,14 +39,12 @@ UserInterface::UserInterface()
 {
 }
 
-
 /// <summary>
 /// デストラクタ
 /// </summary>
 UserInterface::~UserInterface()
 {
 }
-
 
 void UserInterface::GetTextureSize(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv) {
 	// ID3D11Resourceを取得
@@ -67,13 +63,12 @@ void UserInterface::GetTextureSize(Microsoft::WRL::ComPtr<ID3D11ShaderResourceVi
 	texture->GetDesc(&desc);
 
 	// テクスチャのサイズを取得
-	m_textureSize = 
+	m_textureSize =
 		DirectX::SimpleMath::Vector2(
-		static_cast<float>(desc.Width), 
-		static_cast<float>(desc.Height)
-	);
+			static_cast<float>(desc.Width),
+			static_cast<float>(desc.Height)
+		);
 }
-
 
 /// <summary>
 /// 生成関数
@@ -104,7 +99,6 @@ void UserInterface::Create(
 	m_texture = texture;
 	// テクスチャの大きさを取得
 	GetTextureSize(texture);
-
 
 	//	プリミティブバッチの作成
 	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(context);
@@ -139,7 +133,6 @@ void UserInterface::Update(const float time)
 	}
 }
 
-
 /// <summary>
 /// Shader作成部分だけ分離した関数
 /// </summary>
@@ -166,12 +159,11 @@ void UserInterface::CreateShader()
 	bd.CPUAccessFlags = 0;
 	// デバイスにバッファを作成させる
 	HRESULT hr = device->CreateBuffer(&bd, nullptr, &m_CBuffer);
-	if (FAILED(hr)) 
+	if (FAILED(hr))
 	{
 		MessageBox(0, L"コンスタントバッファの生成に失敗しました.", NULL, MB_OK);
 	}
 }
-
 
 /// <summary>
 /// 描画関数
@@ -187,7 +179,7 @@ void UserInterface::Render()
 	// Color.xy　	:アンカー座標(ピクセル指定:1280 ×720)
 	// Color.zw		:画像サイズ
 	// Tex.xy		:ウィンドウサイズ（バッファも同じ。こちらは未使用）
-	DirectX::VertexPositionColorTexture vertex[1] = 
+	DirectX::VertexPositionColorTexture vertex[1] =
 	{
 		DirectX::VertexPositionColorTexture(
 			DirectX::SimpleMath::Vector3(m_scale.x, m_scale.y, static_cast<float>(m_anchor)),
@@ -202,7 +194,7 @@ void UserInterface::Render()
 	cbuff.padding = 0.0f;
 
 	//	受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）
- 	context->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);
+	context->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);
 
 	//	シェーダーにバッファを渡す
 	ID3D11Buffer* cb[1] = { m_CBuffer.Get() };

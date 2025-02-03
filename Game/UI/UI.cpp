@@ -1,11 +1,9 @@
-
 #include "pch.h"
 #include "UI.h"
 
 #include "Game/CommonResources.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "CommonStates.h"
-
 
 UI::UI(const wchar_t* texturePath)
 	: m_texturePath(texturePath)
@@ -19,11 +17,9 @@ UI::UI(const wchar_t* texturePath)
 	m_pDR = CommonResources::GetInstance()->GetDeviceResources();
 }
 
-
 UI::~UI()
 {
 }
-
 
 void UI::Initialize()
 {
@@ -64,7 +60,6 @@ void UI::Initialize()
 		MessageBox(0, L"コンスタントバッファの生成に失敗しました.", NULL, MB_OK);
 	}
 }
-
 
 void UI::Render()
 {
@@ -124,7 +119,6 @@ void UI::Render()
 
 	m_customShader->EndSharder(context);
 }
-
 
 void UI::Finalize()
 {

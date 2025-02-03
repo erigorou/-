@@ -10,7 +10,6 @@
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 
-
 const float SkySphere::SKYSPHERE_SCALE = 100.f;
 
 // -------------------------------
@@ -22,14 +21,12 @@ SkySphere::SkySphere()
 {
 }
 
-
 // -------------------------------
 //  デストラクタ
 // -------------------------------
 SkySphere::~SkySphere()
 {
 }
-
 
 // -------------------------------
 //  ロード処理
@@ -47,21 +44,19 @@ void SkySphere::LoadSkySphereModel()
 	m_skySphereModel = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Stage/SkySphere/skySphere.cmo", *fx);
 }
 
-
 // -------------------------------
 //  描画処理
 // -------------------------------
 void SkySphere::DrawSkySphere(
 	DirectX::SimpleMath::Matrix view,
 	DirectX::SimpleMath::Matrix projection
-	)
+)
 {
 	using namespace DirectX;
 
 	CommonResources* resources = CommonResources::GetInstance();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
-
 
 	// モデルのエフェクト情報を更新する処理
 	m_skySphereModel->UpdateEffects([](DirectX::IEffect* effect)
@@ -85,7 +80,6 @@ void SkySphere::DrawSkySphere(
 	SimpleMath::Matrix world = SimpleMath::Matrix::Identity;
 	// サイズを調整する
 	world *= SimpleMath::Matrix::CreateScale(SKYSPHERE_SCALE);
-
 
 	// 天球を描画する
 	m_skySphereModel->Draw(context, *states, world, view, projection);

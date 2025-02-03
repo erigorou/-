@@ -1,7 +1,7 @@
 #pragma once
 
-enum class 
-BossState
+enum class
+	BossState
 {
 	Starting,		// ŠJnó‘Ô
 	Idling,			// ‘Ò‹@ó‘Ô

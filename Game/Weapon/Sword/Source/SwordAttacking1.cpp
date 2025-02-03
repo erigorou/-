@@ -1,7 +1,7 @@
 /// ---------------------------
 ///
 /// プレイヤーの剣の攻撃（円切り）(反転)
-/// 
+///
 /// ---------------------------
 
 #include "pch.h"
@@ -19,12 +19,10 @@
 #include "Game/Boss/Boss.h"
 #include "Game/Weapon/Sword/Header/SwordAttacking1.h"
 
-
 // --------------------------------
 //  固定値
 // --------------------------------
 const float SwordAttacking1::RADIAN_90 = DirectX::XMConvertToRadians(90);
-
 
 // --------------------------------
 //  コンストラクタ
@@ -40,7 +38,6 @@ SwordAttacking1::SwordAttacking1(Sword* sword)
 {
 }
 
-
 // --------------------------------
 //  デストラクタ
 // --------------------------------
@@ -48,14 +45,12 @@ SwordAttacking1::~SwordAttacking1()
 {
 }
 
-
 // --------------------------------
 //  初期化処理
 // --------------------------------
 void SwordAttacking1::Initialize()
 {
 }
-
 
 // --------------------------------
 //  状態開始処理
@@ -73,9 +68,8 @@ void SwordAttacking1::PreUpdate()
 	bool canHit = true;
 
 	// 衝突可能フラグを敵全体に付与
-	EventMessenger::Execute(EventList::EnemyCanHit,&canHit);
+	EventMessenger::Execute(EventList::EnemyCanHit, &canHit);
 }
-
 
 // --------------------------------
 //  更新処理
@@ -102,7 +96,6 @@ void SwordAttacking1::Update(float elapsedTime)
 	GetCudgelBothEnds();
 }
 
-
 // --------------------------------
 //  アニメーション更新処理
 // --------------------------------
@@ -116,8 +109,8 @@ void SwordAttacking1::UpdateAnimation()
 		// 時間の正規化
 		t = m_totalSeconds / ATTACK_TIME;
 
-		m_rot.y = MAX_SIDE_ANGLE					* Easing::easeOutBack(t);
-		m_rot.x = INIT_ANGLE - MAX_VERTICAL_ANGLE	* Easing::easeOutBack(t);
+		m_rot.y = MAX_SIDE_ANGLE * Easing::easeOutBack(t);
+		m_rot.x = INIT_ANGLE - MAX_VERTICAL_ANGLE * Easing::easeOutBack(t);
 
 		if (m_rot.y < MAX_SIDE_ANGLE)
 		{
@@ -129,7 +122,6 @@ void SwordAttacking1::UpdateAnimation()
 		m_rot.y = DirectX::XMConvertToRadians(m_rot.y);
 	}
 }
-
 
 // --------------------------------
 // ワールド行列の更新処理
@@ -164,7 +156,6 @@ void SwordAttacking1::UpdateWorldMatrix()
 	m_sword->SetWorldMatrix(m_worldMatrix);
 }
 
-
 // --------------------------------
 //  量頂点の取得
 // --------------------------------
@@ -177,7 +168,6 @@ void SwordAttacking1::GetCudgelBothEnds()
 	// パーティクルを生成
 	CreateSwordParticle();
 }
-
 
 // --------------------------------
 //  斬撃エフェクトの生成処理
@@ -198,7 +188,6 @@ void SwordAttacking1::CreateSwordParticle()
 	}
 }
 
-
 // --------------------------------
 //  状態終了処理
 // --------------------------------
@@ -210,15 +199,12 @@ void SwordAttacking1::PostUpdate()
 	EventMessenger::Execute(EventList::EnemyCanHit, &canHit);
 }
 
-
-
 // --------------------------------
 //  終了処理
 // --------------------------------
 void SwordAttacking1::Finalize()
 {
 }
-
 
 // --------------------------------
 //  衝突処理イベント

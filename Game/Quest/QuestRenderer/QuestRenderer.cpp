@@ -8,7 +8,6 @@
 #include "DeviceResources.h"
 #include "CommonStates.h"
 
-
 // --------------------
 // 固定値
 // --------------------
@@ -16,7 +15,6 @@
 const wchar_t* QuestRenderer::VS_PATH = L"Resources/cso/Quest_VS.cso";
 const wchar_t* QuestRenderer::PS_PATH = L"Resources/cso/Quest_PS.cso";
 const wchar_t* QuestRenderer::GS_PATH = L"Resources/cso/Quest_GS.cso";
-
 
 // --------------------
 // コンストラクタ
@@ -33,14 +31,12 @@ QuestRenderer::QuestRenderer(QuestManager* manager)
 {
 }
 
-
 // --------------------
 // デストラクタ
 // --------------------
 QuestRenderer::~QuestRenderer()
 {
 }
-
 
 // --------------------
 // 初期化処理
@@ -55,7 +51,7 @@ void QuestRenderer::Initialize(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> 
 	CreateShader();
 	// コンスタントバッファの作成
 	ConstantBuffer();
-	
+
 	m_texture = texture;
 
 	// コモンステートの生成
@@ -63,11 +59,9 @@ void QuestRenderer::Initialize(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> 
 	// プリミティブバッチの生成
 	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(context);
 
-
 	// スライドアクションの追加
 	AddSlideAction();
 }
-
 
 // --------------------
 // 更新処理
@@ -81,7 +75,6 @@ void QuestRenderer::Update(float elapsedTime)
 	m_currentAction();
 }
 
-
 // --------------------
 // 描画処理
 // --------------------
@@ -91,7 +84,7 @@ void QuestRenderer::Draw()
 	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 
 	// 頂点情報の設定
-	DirectX::VertexPositionColorTexture vertex[1] = 
+	DirectX::VertexPositionColorTexture vertex[1] =
 	{
 		DirectX::VertexPositionColorTexture
 		(
@@ -117,7 +110,6 @@ void QuestRenderer::Draw()
 	// テクスチャの設定
 	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
 
-
 	//	板ポリゴンを描画
 	m_batch->Begin();
 	m_batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], 1);
@@ -127,15 +119,12 @@ void QuestRenderer::Draw()
 	m_shader->EndSharder(context);
 }
 
-
-
 // --------------------
 // 終了処理
 // --------------------
 void QuestRenderer::Finalize()
 {
 }
-
 
 // --------------------
 // シェーダーの生成
@@ -155,7 +144,6 @@ void QuestRenderer::CreateShader()
 			InputElements
 		);
 }
-
 
 // --------------------
 // コンスタントバッファの作成
@@ -178,7 +166,6 @@ void QuestRenderer::ConstantBuffer()
 		MessageBox(0, L"コンスタントバッファの生成に失敗しました.", NULL, MB_OK);
 	}
 }
-
 
 // --------------------
 // 定数バッファの更新処理
@@ -204,7 +191,6 @@ void QuestRenderer::UpdateConstantBuffer()
 	context->PSSetConstantBuffers(0, 1, cb);
 }
 
-
 // --------------------
 // レンダーステートの設定
 // --------------------
@@ -221,9 +207,6 @@ void QuestRenderer::SetRenderState()
 	context->OMSetDepthStencilState(m_states->DepthNone(), 0);		// 深度バッファに書き込み参照しない
 	context->RSSetState(m_states->CullClockwise());					// カリングは左回り
 }
-
-
-
 
 // --------------------------------
 // スライドアクションの追加
@@ -243,8 +226,6 @@ void QuestRenderer::AddSlideAction()
 	m_currentTime = INITIAL_TIME;
 }
 
-
-
 // --------------------------------
 // 画像をスライドさせない
 // --------------------------------
@@ -257,8 +238,6 @@ void QuestRenderer::NoSlideTexture()
 		m_currentAction = m_slideActions[SLIDE_ACTION::SLIDE_OUT];
 	}
 }
-
-
 
 // --------------------------------
 // テクスチャをサイドアウトする
@@ -286,9 +265,7 @@ void QuestRenderer::SlideOutTexture()
 		// クエストを１つ進める
 		m_questManager->ChangeNextQuest();
 	}
-
 }
-
 
 // --------------------------------
 // スライドのクールタイム
@@ -305,7 +282,6 @@ void QuestRenderer::SlideCoolTime()
 		m_currentAction = m_slideActions[SLIDE_ACTION::SLIDE_IN];
 	}
 }
-
 
 // --------------------------------
 // テクスチャをサイドインする

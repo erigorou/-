@@ -11,7 +11,6 @@
 #include "../../Boss.h"
 #include "../Header/BossFaceIdling.h"
 
-
 // --------------------
 // コンストラクタ
 // --------------------
@@ -28,7 +27,6 @@ BossFaceIdling::BossFaceIdling(Boss* Boss)
 BossFaceIdling::~BossFaceIdling()
 {
 }
-
 
 // --------------------
 // 顔の描画

@@ -10,25 +10,25 @@
 
 class DustTrailParticle : public IParticle
 {
-// ----------------------------
-// アクセサ
-// ----------------------------
+	// ----------------------------
+	// アクセサ
+	// ----------------------------
 public:
-	DirectX::SimpleMath::Vector3 GetPosition () { return m_position; } // 座標
-	DirectX::SimpleMath::Vector3 GetVelocity () { return m_velocity; } // 速度
-	DirectX::SimpleMath::Vector3 GetAccelerator () { return m_accelerator; } // 加速度
-	DirectX::SimpleMath::Vector3 GetNowScale () { return m_nowScale; } // 現在のサイズ
-	DirectX::SimpleMath::Vector3 GetStartScale () { return m_startScale; } // 開始時サイズ
-	DirectX::SimpleMath::Vector3 GetEndScale () { return m_endScale; } // 終了時サイズ
-	float GetLife () { return m_life; } // 表示時間
-	float GetStartLife () { return m_startLife; } // 開始時間
-	DirectX::SimpleMath::Color GetNowColor () { return m_nowColor; } // 現在の色
-	DirectX::SimpleMath::Color GetStartColor () { return m_startColor; } // 開始時色
-	DirectX::SimpleMath::Color GetEndColor () { return m_endColor; } // 終了時色
+	DirectX::SimpleMath::Vector3 GetPosition() { return m_position; } // 座標
+	DirectX::SimpleMath::Vector3 GetVelocity() { return m_velocity; } // 速度
+	DirectX::SimpleMath::Vector3 GetAccelerator() { return m_accelerator; } // 加速度
+	DirectX::SimpleMath::Vector3 GetNowScale() { return m_nowScale; } // 現在のサイズ
+	DirectX::SimpleMath::Vector3 GetStartScale() { return m_startScale; } // 開始時サイズ
+	DirectX::SimpleMath::Vector3 GetEndScale() { return m_endScale; } // 終了時サイズ
+	float GetLife() { return m_life; } // 表示時間
+	float GetStartLife() { return m_startLife; } // 開始時間
+	DirectX::SimpleMath::Color GetNowColor() { return m_nowColor; } // 現在の色
+	DirectX::SimpleMath::Color GetStartColor() { return m_startColor; } // 開始時色
+	DirectX::SimpleMath::Color GetEndColor() { return m_endColor; } // 終了時色
 
-// ----------------------------
-// メンバ関数（公開）
-// ----------------------------
+	// ----------------------------
+	// メンバ関数（公開）
+	// ----------------------------
 public:
 
 	// コンストラクタ
@@ -45,9 +45,9 @@ public:
 	// 更新処理
 	bool Update(float elapsedTime);
 
-// ----------------------------
-// メンバ変数
-// ----------------------------
+	// ----------------------------
+	// メンバ変数
+	// ----------------------------
 private:
 	// 座標
 	DirectX::SimpleMath::Vector3 m_position;

@@ -9,17 +9,16 @@ class Sword;
 /// </summary>
 class SwordIdling : public IWeapon
 {
-// -----------------------
-// 固定値
-// -----------------------
+	// -----------------------
+	// 固定値
+	// -----------------------
 public:
 	static constexpr float INIT_Y_ROT = DirectX::XMConvertToRadians(-90.0f);
 	static constexpr float INIT_Z_ROT = DirectX::XMConvertToRadians(90.0f);
 
-
-// -----------------------
-// メンバ関数(公開)
-// -----------------------
+	// -----------------------
+	// メンバ関数(公開)
+	// -----------------------
 public:
 	// コンストラクタ
 	SwordIdling(Sword* sword);
@@ -38,18 +37,16 @@ public:
 	// 衝突処理
 	void HitAction(InterSectData data)override;
 
-
-// -------------------------
-// メンバ関数(非公開)
-// -------------------------
+	// -------------------------
+	// メンバ関数(非公開)
+	// -------------------------
 private:
 	// ワールド行列の更新処理
 	void UpdateWorldMatrix();
 
-
-// -----------------------
-// メンバ変数
-// -----------------------
+	// -----------------------
+	// メンバ変数
+	// -----------------------
 private:
 	// ソードの元を取得
 	Sword* m_sword;

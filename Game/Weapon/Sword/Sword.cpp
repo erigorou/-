@@ -8,7 +8,7 @@
 #include <Model.h>
 #include <cassert>
 // ヘッダー
-#include "Game/CommonResources.h"	
+#include "Game/CommonResources.h"
 #include "Game/GameResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
@@ -22,14 +22,11 @@
 #include "Game/Weapon/Sword/Header/SwordAttacking1.h"
 #include "Game/Weapon/Sword/Header/SwordAttacking2.h"
 
-
-
 // --------------------------------------------
 // 固定値
 // --------------------------------------------
 // 刀の大きさ
 const float Sword::SWORD_SCALE = Player::PLAYER_SCALE * 1.5f;
-
 
 // --------------------------------------------
 // コンストラクタ
@@ -40,10 +37,9 @@ Sword::Sword(Player* player)
 	m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity },
 	m_collision{},
 	m_originalBox{},
-	m_canAttack{false}
+	m_canAttack{ false }
 {
 }
-
 
 // --------------------------------------------
 // デストラクタ
@@ -51,7 +47,6 @@ Sword::Sword(Player* player)
 Sword::~Sword()
 {
 }
-
 
 // --------------------------------------------
 // 初期化処理
@@ -65,7 +60,6 @@ void Sword::Initialize()
 	// 当たり判定を作成
 	CreateCollision();
 }
-
 
 // --------------------------------------------
 // シーンを生成する
@@ -97,7 +91,6 @@ void Sword::CreateState()
 	m_currentState = m_idling.get();
 }
 
-
 // --------------------------------------------
 // 衝突判定の生成
 // --------------------------------------------
@@ -120,7 +113,6 @@ void Sword::CreateCollision()
 	EventMessenger::Execute(EventList::AddOBBCollision, &data);
 }
 
-
 // --------------------------------------------
 // 更新処理
 // --------------------------------------------
@@ -129,7 +121,6 @@ void Sword::Update(float elapsedTime)
 	// 現在のステートの更新処理
 	m_currentState->Update(elapsedTime);
 }
-
 
 // --------------------------------------------
 // 描画処理
@@ -148,14 +139,12 @@ void Sword::Render(
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 }
 
-
 // --------------------------------------------
 // 終了処理
 // --------------------------------------------
 void Sword::Finalize()
 {
 }
-
 
 // --------------------------------------------
 // ステートの変更
@@ -173,7 +162,6 @@ void Sword::ChangeState(void* state)
 	// 新しいステートの事前処理を行う
 	m_currentState->PreUpdate();
 }
-
 
 // --------------------------------------------
 // 当たったときの処理

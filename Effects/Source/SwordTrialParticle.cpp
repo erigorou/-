@@ -7,7 +7,6 @@
 #include "Interface/IParticle.h"
 #include "Effects/Header/SwordTrailParticle.h"
 
-
 // ----------------------------
 // コンストラクタ
 // ----------------------------
@@ -15,12 +14,12 @@ SwordTrailParticle::SwordTrailParticle(
 	DirectX::VertexPositionTexture vertex[],
 	float life,
 	DirectX::SimpleMath::Color startColor, DirectX::SimpleMath::Color endColor
-	)
+)
 	:m_startLife(life)			// 生存時間
-	,m_life(life)				// 現在時間
-	,m_startColor(startColor)	// 最初の色
-	,m_nowColor(startColor)		// 現在の色
-	,m_endColor(endColor)		// 終了の色
+	, m_life(life)				// 現在時間
+	, m_startColor(startColor)	// 最初の色
+	, m_nowColor(startColor)		// 現在の色
+	, m_endColor(endColor)		// 終了の色
 {
 	// 配列の各要素を初期化
 	for (int i = 0; i < 4; i++)
@@ -29,16 +28,12 @@ SwordTrailParticle::SwordTrailParticle(
 	}
 }
 
-
-
 // ----------------------------
 // デストラクタ
 // ----------------------------
 SwordTrailParticle::~SwordTrailParticle()
 {
 }
-
-
 
 // ----------------------------
 // 更新処理

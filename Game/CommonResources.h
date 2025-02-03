@@ -4,7 +4,6 @@
 */
 #pragma once
 
-
 // 前方宣言
 namespace DX
 {
@@ -16,7 +15,6 @@ namespace mylib
 	class DebugString;
 	class InputManager;
 }
-
 
 // 共通リソース
 class CommonResources

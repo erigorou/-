@@ -19,7 +19,6 @@
 #include "Game/Boss/Boss.h"
 #include "Game/Player/State/Header/Player_Attacking_1.h"
 
-
 // -----------------------
 // コンストラクタ
 // -----------------------
@@ -31,7 +30,6 @@ PlayerAttacking_1::PlayerAttacking_1(Player* player)
 {
 }
 
-
 // -----------------------
 // デストラクタ
 // -----------------------
@@ -39,14 +37,12 @@ PlayerAttacking_1::~PlayerAttacking_1()
 {
 }
 
-
 // -----------------------
 // 初期化処理
 // -----------------------
 void PlayerAttacking_1::Initialize()
 {
 }
-
 
 // -----------------------
 // 事前更新処理
@@ -64,7 +60,6 @@ void PlayerAttacking_1::PreUpdate()
 	Sound::PlaySE(Sound::SE_TYPE::PLAYER_ATTACK);
 }
 
-
 // -----------------------
 // 更新処理
 // -----------------------
@@ -78,8 +73,6 @@ void PlayerAttacking_1::Update(const float& elapsedTime)
 	// 時間を計測し、一定時間経過でステートを遷移
 	m_player->TimeComparison(m_totalSeconds, Player::APPLIED_ATTACK_TIME, m_player->GetPlayerIdlingState(), elapsedTime);
 }
-
-
 
 // -----------------------
 // アニメーション更新
@@ -104,7 +97,6 @@ void PlayerAttacking_1::UpdateAnimation()
 	m_player->SetAnimationRotate(currentAnimPos);
 }
 
-
 // -----------------------
 // キー入力
 // -----------------------
@@ -127,7 +119,6 @@ void PlayerAttacking_1::OnKeyDown(const DirectX::Keyboard::Keys& key)
 	UNREFERENCED_PARAMETER(key);
 }
 
-
 // -----------------------
 // 事後更新
 // -----------------------
@@ -140,7 +131,6 @@ void PlayerAttacking_1::PostUpdate()
 	SwordState state = SwordState::Idle;
 	EventMessenger::Execute(EventList::ChangeSwordState, &state);
 }
-
 
 // -----------------------
 // 終了処理

@@ -24,8 +24,6 @@ CollisionManager::CollisionManager()
 	Initialize();
 }
 
-
-
 // -------------------------------------------------------
 // デストラクタ
 // -------------------------------------------------------
@@ -33,8 +31,6 @@ CollisionManager::~CollisionManager()
 {
 	Clear();
 }
-
-
 
 // -------------------------------------------------------
 // 初期化処理
@@ -68,22 +64,18 @@ void CollisionManager::Initialize()
 	AddEventMessenger();
 }
 
-
-
 // -------------------------------------------------------
 // イベントの登録
 // -------------------------------------------------------
 void CollisionManager::AddEventMessenger()
 {
 	// OBBの登録
-	EventMessenger::Attach(EventList::AddOBBCollision, std::bind(&CollisionManager::AddCollision<DirectX::BoundingOrientedBox>,	this, std::placeholders::_1));
+	EventMessenger::Attach(EventList::AddOBBCollision, std::bind(&CollisionManager::AddCollision<DirectX::BoundingOrientedBox>, this, std::placeholders::_1));
 	// Sphereの登録
 	EventMessenger::Attach(EventList::AddSphereCollision, std::bind(&CollisionManager::AddCollision<DirectX::BoundingSphere>, this, std::placeholders::_1));
 	// 衝突判定の削除
 	EventMessenger::Attach(EventList::DeleteCollision, std::bind(&CollisionManager::DeleteCollision, this, std::placeholders::_1));
 }
-
-
 
 // -------------------------------------------------------
 // 更新関数
@@ -105,8 +97,8 @@ void CollisionManager::Update()
 			if (m_obbs[i].collision->Intersects(*m_spheres[j].collision))
 			{
 				// 衝突したときに相手に渡すデータを作成
-				InterSectData obbData		= { m_obbs[i]	.objType, m_obbs[i].colType,	m_obbProxies[i].get()};
-				InterSectData sphereData	= { m_spheres[j].objType, m_spheres[i].colType, m_spheres[j].collision };
+				InterSectData obbData = { m_obbs[i].objType, m_obbs[i].colType,	m_obbProxies[i].get() };
+				InterSectData sphereData = { m_spheres[j].objType, m_spheres[i].colType, m_spheres[j].collision };
 
 				// 衝突したときの処理を呼び出す
 				m_obbs[i].object->HitAction(sphereData);
@@ -115,18 +107,17 @@ void CollisionManager::Update()
 		}
 	}
 
-
 	// 球同士による当たり判定
 	for (int i = 0; i < static_cast<int>(m_spheres.size() - 1); i++)
 	{
-		for (int j = i + 1;j < static_cast<int>(m_spheres.size()); j++)
+		for (int j = i + 1; j < static_cast<int>(m_spheres.size()); j++)
 		{
 			// 球同士の当たり判定
 			if (m_spheres[i].collision->Intersects(*m_spheres[j].collision))
 			{
 				// 衝突したときに相手に渡すデータを作成
-				InterSectData sphereData1 = { m_spheres[i].objType, m_spheres[i].colType, m_spheres[i].collision};
-				InterSectData sphereData2 = { m_spheres[j].objType, m_spheres[j].colType, m_spheres[j].collision};
+				InterSectData sphereData1 = { m_spheres[i].objType, m_spheres[i].colType, m_spheres[i].collision };
+				InterSectData sphereData2 = { m_spheres[j].objType, m_spheres[j].colType, m_spheres[j].collision };
 
 				// 衝突したときの処理を呼び出す
 				m_spheres[i].object->HitAction(sphereData2);
@@ -140,7 +131,6 @@ void CollisionManager::Update()
 	// キーボードステートトラッカーを更新する
 	m_keyboardStateTracker.Update(m_keyboardState);
 
-
 	// F5キーが押されたら、描画フラグを切り替える
 	if (m_keyboardStateTracker.IsKeyPressed(DirectX::Keyboard::F5))
 	{
@@ -148,22 +138,20 @@ void CollisionManager::Update()
 	}
 }
 
-
 // -------------------------------------------------------
 // 描画関数
 // -------------------------------------------------------
 void CollisionManager::Render
-	(
+(
 	const DirectX::SimpleMath::Matrix& view,
 	const DirectX::SimpleMath::Matrix& projection
-	)
+)
 {
-	if ( ! m_drawFlag) return;
+	if (!m_drawFlag) return;
 
 	// 衝突判定の描画
 	DrawCollision(view, projection);
 }
-
 
 // -------------------------------------------------------
 // 当たり判定をクリア
@@ -174,33 +162,31 @@ void CollisionManager::Clear()
 	m_spheres.clear();
 }
 
-
 // -------------------------------------------------------
 // 衝突判定を追加する
 // -------------------------------------------------------
 template<typename T>
 void CollisionManager::AddCollision(void* args)
 {
-    // 引数を期待する型にキャスト
-    auto* collisionData = static_cast<CollisionData<T>*>(args);
+	// 引数を期待する型にキャスト
+	auto* collisionData = static_cast<CollisionData<T>*>(args);
 
-    if (!collisionData) return; // 不正な引数の場合は終了
+	if (!collisionData) return; // 不正な引数の場合は終了
 
-    // 衝突判定データを対応するコンテナに追加
-    if constexpr (std::is_same_v<T, DirectX::BoundingOrientedBox>)
-    {
-        // OBBを保存
-        m_obbs.push_back(*collisionData);
-        // OBBのプロキシ球を生成
-        m_obbProxies.push_back(CreateProxySphere(static_cast<const DirectX::BoundingOrientedBox*>(collisionData->collision)));
-    }
-    else if constexpr (std::is_same_v<T, DirectX::BoundingSphere>)
-    {
-        // Sphereを保存
-        m_spheres.push_back(*collisionData);
-    }
+	// 衝突判定データを対応するコンテナに追加
+	if constexpr (std::is_same_v<T, DirectX::BoundingOrientedBox>)
+	{
+		// OBBを保存
+		m_obbs.push_back(*collisionData);
+		// OBBのプロキシ球を生成
+		m_obbProxies.push_back(CreateProxySphere(static_cast<const DirectX::BoundingOrientedBox*>(collisionData->collision)));
+	}
+	else if constexpr (std::is_same_v<T, DirectX::BoundingSphere>)
+	{
+		// Sphereを保存
+		m_spheres.push_back(*collisionData);
+	}
 }
-
 
 // -------------------------------------------------------
 // OBBのプロキシ球を生成する
@@ -219,7 +205,6 @@ inline std::unique_ptr<DirectX::BoundingSphere> CollisionManager::CreateProxySph
 	return std::move(proxy);
 }
 
-
 // -------------------------------------------------------
 /// 当たり判定を削除する
 // -------------------------------------------------------
@@ -235,13 +220,13 @@ void CollisionManager::DeleteCollision(void* args)
 	if (deleteData->collType == CollisionType::OBB)
 	{
 		// 対応するオブジェクトを削除するラムダ式
-		auto EraseMatchingObject = [object = deleteData->object](auto& container) 
+		auto EraseMatchingObject = [object = deleteData->object](auto& container)
 			{
-			container.erase(std::remove_if(container.begin(), container.end(), [object](const auto& collision)
-				{
-					return collision.object == object;	// オブジェクトが一致するか判定
-				}),
-				container.end());
+				container.erase(std::remove_if(container.begin(), container.end(), [object](const auto& collision)
+					{
+						return collision.object == object;	// オブジェクトが一致するか判定
+					}),
+					container.end());
 			};
 
 		// OBBのコンテナから削除
@@ -252,21 +237,19 @@ void CollisionManager::DeleteCollision(void* args)
 	else if (deleteData->collType == CollisionType::Sphere)
 	{
 		// 対応するオブジェクトを削除するラムダ式
-		auto EraseMatchingObject = [object = deleteData->object](auto& container) 
+		auto EraseMatchingObject = [object = deleteData->object](auto& container)
 			{
-			container.erase(std::remove_if(container.begin(), container.end(), [object](const auto& collision)
-				{
-					return collision.object == object;
-				}),
-				container.end());
+				container.erase(std::remove_if(container.begin(), container.end(), [object](const auto& collision)
+					{
+						return collision.object == object;
+					}),
+					container.end());
 			};
 
 		// Sphereのコンテナから削除
 		EraseMatchingObject(m_spheres);
 	}
 }
-
-
 
 // -------------------------------------------------------
 // 衝突判定の範囲の描画
@@ -287,7 +270,7 @@ inline void CollisionManager::DrawCollision(DirectX::SimpleMath::Matrix view, Di
 	m_basicEffect->Apply(context);
 	// 描画開始
 	m_primitiveBatch->Begin();
-	
+
 	// Collision毎に判定を描画
 
 	for (const auto& obb : m_obbs)
@@ -297,7 +280,7 @@ inline void CollisionManager::DrawCollision(DirectX::SimpleMath::Matrix view, Di
 
 	for (const auto& sphere : m_spheres)
 	{
-		DX::Draw( m_primitiveBatch.get(), *sphere.collision, DirectX::Colors::Blue);
+		DX::Draw(m_primitiveBatch.get(), *sphere.collision, DirectX::Colors::Blue);
 	}
 
 	for (auto& sphere : m_obbProxies)

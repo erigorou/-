@@ -38,15 +38,12 @@ EnemyManager::EnemyManager(PlayScene* playScene)
 	GenerateEnemyFromJson();
 }
 
-
-
 // --------------------------------
 // デストラクタ
 // --------------------------------
 EnemyManager::~EnemyManager()
 {
 }
-
 
 // --------------------------------
 // 初期化処理
@@ -59,7 +56,6 @@ void EnemyManager::Initialize(PlayScene* playScene)
 	EventMessenger::Attach(EventList::EnemyCanHit, std::bind(&EnemyManager::AllEnemyCanHit, this, std::placeholders::_1));
 	EventMessenger::Attach(EventList::DeleteAllGoblin, std::bind(&EnemyManager::AllGoblinHPZero, this));
 }
-
 
 // --------------------------------
 // 更新処理
@@ -75,7 +71,6 @@ void EnemyManager::Update(float elapsedTime)
 		enemy.data->Update(elapsedTime);
 	}
 }
-
 
 // --------------------------------
 // 描画処理
@@ -93,7 +88,6 @@ void EnemyManager::Render(
 	}
 }
 
-
 // --------------------------------
 // 終了処理
 // --------------------------------
@@ -109,7 +103,6 @@ void EnemyManager::Finalize()
 	m_enemies.clear();
 }
 
-
 // --------------------------------
 // 敵の生成処理
 // --------------------------------
@@ -122,7 +115,6 @@ void EnemyManager::GenerateEnemy(const DirectX::SimpleMath::Vector3& position, E
 	case EnemyType::Boss:	GenerateBoss(position);		break;	// ボスの生成
 	}
 }
-
 
 // --------------------------------
 // ボスのポインタを取得
@@ -158,13 +150,12 @@ DirectX::SimpleMath::Vector3 EnemyManager::GetBossPosition()
 	return DirectX::SimpleMath::Vector3::Zero;
 }
 
-
 // --------------------------------
 // ターゲット中の敵の座標を取得
 // --------------------------------
 DirectX::SimpleMath::Vector3 EnemyManager::GetPicupEnemyPosition()
 {
-	if (m_enemies.empty()) return DirectX::SimpleMath::Vector3::Zero;
+	if (m_enemies.empty()) return DirectX::SimpleMath::Vector3{ 0.0f, 0.0f, 200.0f };
 
 	// 敵がいない場合
 	if (m_enemies.size() - 1 < m_targetEnemyIndex) m_targetEnemyIndex = 0;
@@ -172,7 +163,6 @@ DirectX::SimpleMath::Vector3 EnemyManager::GetPicupEnemyPosition()
 	// ターゲットの敵の座標を取得
 	return m_enemies[m_targetEnemyIndex].data->GetPosition();
 }
-
 
 // --------------------------------
 // 全てのゴブリンのHPを0にする
@@ -189,7 +179,6 @@ void EnemyManager::AllGoblinHPZero()
 		}
 	}
 }
-
 
 // --------------------------------
 // 敵１体の削除
@@ -210,7 +199,6 @@ void EnemyManager::DeleteEnemy(IEnemy* enemy)
 	}
 }
 
-
 // --------------------------------
 // カメラのターゲットを変更
 // --------------------------------
@@ -226,7 +214,6 @@ void EnemyManager::ChangeCameraTarget()
 	}
 }
 
-
 // --------------------------------
 // 敵が生きているかのフラグ
 // --------------------------------
@@ -234,7 +221,6 @@ bool EnemyManager::IsEnemysAlive()
 {
 	// 敵がいない場合クリア
 	if (m_enemies.empty()) return false;
-
 
 	// ボスがいる場合
 	if (GetBossEnemy() != nullptr)
@@ -256,21 +242,17 @@ bool EnemyManager::IsEnemysAlive()
 	return true;
 }
 
-
 // --------------------------------
 // 全ての敵に被ダメ可能を通達
 // --------------------------------
 void EnemyManager::AllEnemyCanHit(void* flag)
 {
-
 	// 全敵を探索
 	for (auto& enemy : m_enemies)
 	{
 		enemy.data->CanHit(*static_cast<bool*>(flag));
 	}
 }
-
-
 
 // --------------------------------
 // ゴブリンの生成
@@ -282,9 +264,8 @@ void EnemyManager::GenerateGoblin(const DirectX::SimpleMath::Vector3& position)
 	// 位置の設定
 	goblin->SetPosition(position);
 	// 配列に格納
-	m_enemies.push_back(EnemyData{ EnemyType::Goblin, std::move(goblin)});
+	m_enemies.push_back(EnemyData{ EnemyType::Goblin, std::move(goblin) });
 }
-
 
 // --------------------------------
 // ボスの生成
@@ -296,10 +277,8 @@ void EnemyManager::GenerateBoss(const DirectX::SimpleMath::Vector3& position)
 	// 位置の設定
 	boss->SetPosition(position);
 	// 配列に格納
-	m_enemies.push_back(EnemyData{ EnemyType::Boss, std::move(boss)});
+	m_enemies.push_back(EnemyData{ EnemyType::Boss, std::move(boss) });
 }
-
-
 
 // --------------------------------
 // JSONデータから敵を生成する
@@ -321,7 +300,6 @@ void EnemyManager::GenerateEnemyFromJson()
 		MessageBoxA(nullptr, ("指定されたステージデータが見つかりません: " + stageKey).c_str(), "エラー", MB_OK);
 		return;
 	}
-
 
 	for (const auto& enemyData : jsonFile[stageKey])
 	{

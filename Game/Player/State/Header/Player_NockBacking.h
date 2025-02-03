@@ -8,7 +8,6 @@
 //
 // -----------------------------
 
-
 #pragma once
 #include "pch.h"
 #include "Interface/IPlayer.h"
@@ -18,20 +17,18 @@ class Enemy;
 
 class PlayerNockBacking : public IPlayer
 {
-
-// 固定値 *
+	// 固定値 *
 private:
 
 	static constexpr float NOCKBACKING_TIME = 1.0f;		// やられ全体の時間
-	static constexpr float RETURN_TIME		= 2.0f;		// やられから復帰する時間
-	static constexpr float END_TIME			= 2.3f;		// やられから復帰する時間
+	static constexpr float RETURN_TIME = 2.0f;		// やられから復帰する時間
+	static constexpr float END_TIME = 2.3f;		// やられから復帰する時間
 
-	static constexpr float MAX_UP_VALUE		= 2.0f;	// 上昇値
-	static constexpr float RETURN_UP_VALUE	= 1.0f;	// 上昇値
+	static constexpr float MAX_UP_VALUE = 2.0f;	// 上昇値
+	static constexpr float RETURN_UP_VALUE = 1.0f;	// 上昇値
 	static constexpr float SPEED = 50.0f;	// 速度
 
-
-// 公開関数 *
+	// 公開関数 *
 public:
 	// デストラクタ
 	~PlayerNockBacking() override;
@@ -54,8 +51,7 @@ public:
 	// キー入力
 	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
 
-
-// 内部関数 *
+	// 内部関数 *
 private:
 	void UpdateAnimation();
 
@@ -63,8 +59,7 @@ private:
 
 	void ReturnAnimation();
 
-
-// 内部変数 *
+	// 内部変数 *
 private:
 
 	// 経過時間
@@ -84,7 +79,6 @@ private:
 	Player* m_player;
 	// モデル
 	DirectX::Model* m_model;
-
 };
 
 #endif  // PLAYER_DODGING_DEFINED

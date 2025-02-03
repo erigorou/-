@@ -40,7 +40,6 @@ private:
 	// ƒ[ƒ‹ƒhs—ñ
 	DirectX::SimpleMath::Matrix m_worldMatrix;
 
-
 private:
 	// ‹à–_‚ÌŒ³
 	Cudgel* m_cudgel;

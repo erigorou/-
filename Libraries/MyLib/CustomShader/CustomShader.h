@@ -10,16 +10,15 @@ public:
 	//	入力要素配列
 	using InputElements = std::vector<D3D11_INPUT_ELEMENT_DESC>;
 
-
 	ID3D11InputLayout* GetInputLayout() { return m_inputLayout.Get(); }
 
 	// コンストラクタ
 	CustomShader
 	(
-		ID3D11Device*	device			,
-		const wchar_t*	vertexPath		,
-		const wchar_t*	pixelPath		,
-		const wchar_t*	geometryPath	,
+		ID3D11Device* device,
+		const wchar_t* vertexPath,
+		const wchar_t* pixelPath,
+		const wchar_t* geometryPath,
 		const std::vector<D3D11_INPUT_ELEMENT_DESC>& inputElements
 	);
 
@@ -30,7 +29,6 @@ public:
 		const wchar_t* path,
 		std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>>& textureArray
 	);
-
 
 	// デストラクタ
 	~CustomShader() = default;
@@ -48,12 +46,10 @@ private:
 	// ジオメトリシェーダーの読み込み
 	void LoadGeometryShader(ID3D11Device* device, const wchar_t* filePath);
 
-
 	Microsoft::WRL::ComPtr<ID3D11VertexShader>		m_vertexShader;		// 頂点シェーダ
 	Microsoft::WRL::ComPtr<ID3D11PixelShader>		m_pixelShader;		// ピクセルシェーダ
 	Microsoft::WRL::ComPtr<ID3D11GeometryShader>	m_geometryShader;	// ジオメトリシェーダ
 	Microsoft::WRL::ComPtr<ID3D11InputLayout>		m_inputLayout;		// 入力レイアウト
 };
-
 
 #endif // CUSTOMSHADER_DEFINED

@@ -24,16 +24,14 @@ GameData* const GameData::GetInstance()
 	return s_data.get();
 }
 
-
 // ------------------------------------------------
 // コンストラクタ
 // ------------------------------------------------
 GameData::GameData()
 	: m_battleResult{ BATTLE_RESULT::NONE }
-	, m_questIndex	{}
+	, m_questIndex{}
 {
 }
-
 
 //---------------------------------------------------------
 // 初期化する

@@ -19,6 +19,5 @@ public:
 	// I—¹ˆ—
 	virtual void Finalize() = 0;
 
-
 	virtual void HitAction(InterSectData data) = 0;
 };

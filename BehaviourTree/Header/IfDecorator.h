@@ -4,21 +4,20 @@
 // 条件デコレーターのクラス
 class IfDecorator : public Action {
 public:
-    // コンストラクタ
-    IfDecorator(Action* action, int threshold) 
-        :
-        action(action),
-        threshold(threshold) 
-    {
-    }
+	// コンストラクタ
+	IfDecorator(Action* action, int threshold)
+		:
+		action(action),
+		threshold(threshold)
+	{
+	}
 
-    // 処理
-    bool execute() override;
+	// 処理
+	bool execute() override;
 
-
-    std::string name() override { return "条件デコレーター"; }
+	std::string name() override { return "条件デコレーター"; }
 
 private:
-    Action* action;
-    int threshold;
+	Action* action;
+	int threshold;
 };

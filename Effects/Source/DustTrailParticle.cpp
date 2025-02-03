@@ -36,14 +36,12 @@ DustTrailParticle::DustTrailParticle(
 {
 }
 
-
 // ----------------------------
 // デストラクタ
 // ----------------------------
 DustTrailParticle::~DustTrailParticle()
 {
 }
-
 
 // ----------------------------
 // 更新処理

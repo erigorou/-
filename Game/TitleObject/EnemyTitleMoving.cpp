@@ -10,7 +10,6 @@
 #include "EnemyTitleMoving.h"
 #include "EnemyTitleIdling.h"
 
-
 // コンストラクタ
 EnemyTitleMoving::EnemyTitleMoving(TitleEnemy* enemy)
 	: m_enemy(enemy)
@@ -28,12 +27,10 @@ EnemyTitleMoving::EnemyTitleMoving(TitleEnemy* enemy)
 {
 }
 
-
 // デストラクタ
 EnemyTitleMoving::~EnemyTitleMoving()
 {
 }
-
 
 // 初期化処理
 void EnemyTitleMoving::Initialize()
@@ -42,22 +39,20 @@ void EnemyTitleMoving::Initialize()
 	m_velocity = DirectX::SimpleMath::Vector3::Forward;
 }
 
-
 // 事前更新処理
 void EnemyTitleMoving::PreUpdate()
 {
 	using namespace DirectX::SimpleMath;
 
 	// 経過時間を初期化
-	m_totalSeconds = 0.0f; 
+	m_totalSeconds = 0.0f;
 
 	m_position = Vector3::Zero;
 }
 
-
 // 更新処理
 void EnemyTitleMoving::Update(const float& elapsedTime)
-{	
+{
 	// 合計の時間を計算する
 	m_totalSeconds += elapsedTime;
 
@@ -71,7 +66,7 @@ void EnemyTitleMoving::Update(const float& elapsedTime)
 	if (m_position.y <= MINIMAL)
 	{
 		// カメラを揺らす
-		EventMessenger::Execute(EventList::ShakeCamera,&m_shakePower);
+		EventMessenger::Execute(EventList::ShakeCamera, &m_shakePower);
 
 		m_enemy->ChangeState(m_enemy->GetTitleEnemyIdling());
 	}
@@ -82,9 +77,6 @@ void EnemyTitleMoving::Update(const float& elapsedTime)
 	// 座標を設定する
 	m_enemy->SetPosition(m_position);
 }
-
-
-
 
 // 事後更新処理
 void EnemyTitleMoving::PostUpdate()
@@ -98,7 +90,6 @@ void EnemyTitleMoving::PostUpdate()
 	// スパン
 	//m_enemy->GetTitleScene()->CleateSpamDust(m_position);
 }
-
 
 void EnemyTitleMoving::Finalize()
 {

@@ -15,13 +15,13 @@ class Collision
 {
 public:
 
-    // -------------------------------------------------------------------------
-    /// <summary>
-    /// 指定されたモデルから向き付き境界ボックス（OBB）を取得
-    /// </summary>
-    /// <param name="model">境界ボックスを取得する対象のモデル</param>
-    /// <returns>大きさを獲得したOBB</returns>
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	/// <summary>
+	/// 指定されたモデルから向き付き境界ボックス（OBB）を取得
+	/// </summary>
+	/// <param name="model">境界ボックスを取得する対象のモデル</param>
+	/// <returns>大きさを獲得したOBB</returns>
+	// -------------------------------------------------------------------------
 	static DirectX::BoundingOrientedBox Get_BoundingOrientedBox_FromMODEL(DirectX::Model* model)
 	{
 		// モデルがnullの時に中断をする
@@ -30,27 +30,25 @@ public:
 		DirectX::BoundingBox initialAABB;
 		DirectX::BoundingOrientedBox initialOBB;
 
-        // モデルから境界ボックスを取得する
-        for (auto it = model->meshes.cbegin(); it != model->meshes.cend(); it++)
-        {
-            if (it == model->meshes.cbegin())
-            {
-                // 最初のメッシュの境界ボックスを設定する
-                initialAABB = (*it)->boundingBox;
-            }
-            else
-            {
-                // それ以降のメッシュの境界ボックスをマージする
-                DirectX::BoundingBox::CreateMerged(initialAABB, initialAABB, (*it)->boundingBox);
-            }
-        }
+		// モデルから境界ボックスを取得する
+		for (auto it = model->meshes.cbegin(); it != model->meshes.cend(); it++)
+		{
+			if (it == model->meshes.cbegin())
+			{
+				// 最初のメッシュの境界ボックスを設定する
+				initialAABB = (*it)->boundingBox;
+			}
+			else
+			{
+				// それ以降のメッシュの境界ボックスをマージする
+				DirectX::BoundingBox::CreateMerged(initialAABB, initialAABB, (*it)->boundingBox);
+			}
+		}
 
-        // AABBからOBBを生成する
-        DirectX::BoundingOrientedBox::CreateFromBoundingBox(initialOBB, initialAABB);
+		// AABBからOBBを生成する
+		DirectX::BoundingOrientedBox::CreateFromBoundingBox(initialOBB, initialAABB);
 
 		// obbを返す
 		return initialOBB;
 	}
-
-
 };

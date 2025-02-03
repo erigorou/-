@@ -1,7 +1,7 @@
 /*
 	@file	DebugString.h
 	@brief	デバッグ文字列の描画クラス
-	
+
 	@details	AddString(C言語の「printf」関数と同じフォーマット指定)
 */
 #pragma once
@@ -20,7 +20,6 @@ namespace mylib
 		std::vector<std::string> m_strings;
 		float m_fontHeight;
 		DirectX::SimpleMath::Color m_color;
-
 
 	public:
 		// コンストラクタ

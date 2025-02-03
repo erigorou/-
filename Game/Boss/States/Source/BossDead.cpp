@@ -17,19 +17,17 @@
 // ヘッダーファイル
 #include "Game/Boss/States/Header/BossDead.h"
 
-
 // ---------------------------
 // コンストラクタ
 // ---------------------------
 BossDead::BossDead(Boss* boss)
-	: 
+	:
 	m_boss(boss),
 	m_angle{},
 	m_totalSeconds{},
 	m_tiltAngle{}
 {
 }
-
 
 // ---------------------------
 // デストラクタ
@@ -39,7 +37,6 @@ BossDead::~BossDead()
 	Finalize();
 }
 
-
 // ---------------------------
 // 初期化処理
 // ---------------------------
@@ -48,7 +45,6 @@ void BossDead::Initialize()
 	auto object = EventMessenger::ExecuteGetter(GetterList::GetCudgel);
 	m_cudgel = object ? static_cast<Cudgel*>(object) : nullptr;
 }
-
 
 // ---------------------------
 // 変更処理(in)
@@ -69,7 +65,6 @@ void BossDead::PreUpdate()
 	EventMessenger::Execute(EventList::DeleteAllGoblin, nullptr);
 }
 
-
 // ---------------------------
 // 更新処理
 // ---------------------------
@@ -89,7 +84,6 @@ void BossDead::Update(const float& elapsedTime)
 	UpdateAnimation();
 }
 
-
 // ---------------------------
 // アニメーションの更新
 // ---------------------------
@@ -99,7 +93,7 @@ void BossDead::UpdateAnimation()
 	float t = m_totalSeconds / TOTAL_TIME;
 
 	// イージングアニメーションを用いて傾きを求める
-	m_tiltAngle = m_startTilt + ( MAX_TILT_ANGLE - m_startTilt) * Easing::easeOutBounce(t);
+	m_tiltAngle = m_startTilt + (MAX_TILT_ANGLE - m_startTilt) * Easing::easeOutBounce(t);
 
 	// 傾きを設定
 	m_boss->SetBodyTilt(DirectX::XMConvertToRadians(m_tiltAngle));
@@ -116,14 +110,12 @@ void BossDead::UpdateAnimation()
 	}
 }
 
-
 // ---------------------------
 // 変更処理(out)
 // ---------------------------
 void BossDead::PostUpdate()
 {
 }
-
 
 // ---------------------------
 // 終了処理

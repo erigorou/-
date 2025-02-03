@@ -17,7 +17,6 @@
 #include "Effects/Header/SwordTrailParticle.h"
 #include <random>
 
-
 // ---------------------------
 // コンストラクタ
 // ---------------------------
@@ -34,14 +33,12 @@ Particle::Particle()
 	EventMessenger::Attach(EventList::CreateWeaponTrail, std::bind(&Particle::CreateSwordTrail, this, std::placeholders::_1));
 }
 
-
 // ---------------------------
 // デストラクタ
 // ---------------------------
 Particle::~Particle()
 {
 }
-
 
 // ---------------------------
 // 生成関数
@@ -63,7 +60,6 @@ void Particle::Create()
 	//  スタッツの作成
 	m_states = std::make_unique<DirectX::CommonStates>(device);
 }
-
 
 // ---------------------------
 // 更新処理
@@ -91,7 +87,6 @@ void Particle::Update(float elapsedTimer, const DirectX::SimpleMath::Vector3 pla
 	);
 }
 
-
 // ---------------------------
 // 軌跡をたどる土埃の生成を行う
 // ---------------------------
@@ -112,7 +107,6 @@ void Particle::CreateTrailDust()
 	// タイマーをリセット
 	m_timerDustTrail = 0.0f;
 }
-
 
 // ---------------------------
 // たたきつけの時に出る土埃を生成する
@@ -143,8 +137,8 @@ void Particle::CreateBashDust(void* center)
 		// 中心からのベクトルを生成
 		DirectX::SimpleMath::Vector3 vectorFromCenter = centerPos + DirectX::SimpleMath::Vector3
 		(
-			SMASH_DUST_RADIUS * cosf(randAngle), 
-			0.0f, 
+			SMASH_DUST_RADIUS * cosf(randAngle),
+			0.0f,
 			SMASH_DUST_RADIUS * sinf(randAngle)
 		) - centerPos;
 
@@ -161,8 +155,8 @@ void Particle::CreateBashDust(void* center)
 		// 生成したダストの座標を取得する
 		DirectX::SimpleMath::Vector3 dustPosition = centerPos + DirectX::SimpleMath::Vector3
 		(
-			SMASH_DUST_RADIUS * cosf(randAngle), 
-			0.0f, 
+			SMASH_DUST_RADIUS * cosf(randAngle),
+			0.0f,
 			SMASH_DUST_RADIUS * sinf(randAngle)
 		);
 
@@ -181,7 +175,6 @@ void Particle::CreateBashDust(void* center)
 		m_dustTrail.push_back(pB);
 	}
 }
-
 
 // ---------------------------
 // 剣を降ったときの残像を出す
@@ -203,7 +196,6 @@ void Particle::CreateSwordTrail(void* ver)
 	m_swordTrail.push_back(sTP);
 }
 
-
 // ---------------------------
 // シェーダーを生成する
 // ---------------------------
@@ -214,7 +206,7 @@ void Particle::CreateShader()
 	// 斬撃用のシェーダーを生成
 	m_swordShader = std::make_unique<CustomShader>
 		(
-			device, 
+			device,
 			SWORD_VS,
 			SWORD_PS,
 			nullptr,
@@ -240,7 +232,6 @@ void Particle::CreateShader()
 	bd.CPUAccessFlags = 0;
 	device->CreateBuffer(&bd, nullptr, &m_CBuffer);
 }
-
 
 // -------------------------------------------------------------------
 // Render共通処理およびSwordTrailParticleとDustParticleの描画呼び出し
@@ -275,8 +266,6 @@ void Particle::Render(
 	DrawSwordParticle(view, proj);				// 剣の残像の描画
 	DrawDustParticle(view, proj, cameraDir);	// 土埃の描画
 }
-
-
 
 // -----------------------------------
 // 剣の残像パーティクルの描画
@@ -339,7 +328,6 @@ void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::Simp
 
 	m_swordShader->EndSharder(context);
 }
-
 
 // ----------------------------------------
 /// 土埃パーティクルの描画
@@ -408,7 +396,6 @@ void Particle::DrawDustParticle(
 	// シェーダーの終了
 	m_dustShader->EndSharder(context);
 }
-
 
 // -------------------------------------
 // ビルボード作成関数

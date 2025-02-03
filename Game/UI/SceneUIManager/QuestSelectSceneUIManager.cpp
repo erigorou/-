@@ -17,14 +17,12 @@ QuestSelectSceneUIManager::QuestSelectSceneUIManager()
 {
 }
 
-
 // --------------------------------------------------------
 // デストラクタ
 // --------------------------------------------------------
 QuestSelectSceneUIManager::~QuestSelectSceneUIManager()
 {
 }
-
 
 // --------------------------------------------------------
 // 初期化
@@ -68,7 +66,6 @@ void QuestSelectSceneUIManager::Initialize()
 	);
 }
 
-
 // --------------------------------------------------------
 // ユーザーインターフェースの追加
 // --------------------------------------------------------
@@ -89,7 +86,6 @@ void QuestSelectSceneUIManager::AddUserInterface(
 	// ユーザーインターフェースの追加
 	m_userInterfaceList.push_back(std::move(ui));
 }
-
 
 // --------------------------------------------------------
 // 更新

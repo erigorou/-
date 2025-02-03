@@ -76,7 +76,6 @@ namespace mylib
 			return m_up;
 		}
 
-
 	private:
 		// 変位を計測する
 		void Motion(int x, int y);

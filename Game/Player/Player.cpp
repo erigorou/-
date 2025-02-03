@@ -23,7 +23,6 @@
 #include "Game/Goblin/Goblin.h"
 #include "Game/Stage/Wall/Wall.h"
 
-
 // --------------------------------
 //  コンストラクタ
 // --------------------------------
@@ -43,12 +42,11 @@ Player::Player(PlayScene* playScene)
 	m_particleTime{},
 	m_isHit{},
 	m_coolTime{},
-	m_canHit{false},
+	m_canHit{ false },
 	m_animationRotate{},
 	m_isInputMoveKey{ false }
 {
 }
-
 
 // --------------------------------
 //  デストラクタ
@@ -56,8 +54,6 @@ Player::Player(PlayScene* playScene)
 Player::~Player()
 {
 }
-
-
 
 // --------------------------------
 //  イニシャライズ
@@ -78,7 +74,6 @@ void Player::Initialize()
 	m_sword = Factory::CreateSword(this);
 }
 
-
 // --------------------------------
 // 当たり判定の作成関数
 // --------------------------------
@@ -86,7 +81,7 @@ void Player::CreateCollision()
 {
 	// 体の当たり判定を作成
 	m_bodyCollision = std::make_unique<DirectX::BoundingSphere>(m_position, PLAYER_SCALE * COLLISION_RADIUS);
-	
+
 	// 衝突データの作成
 	CollisionData<DirectX::BoundingSphere> data =
 	{
@@ -100,30 +95,28 @@ void Player::CreateCollision()
 	EventMessenger::Execute(EventList::AddSphereCollision, &data);
 }
 
-
 // --------------------------------
 //  ステートを作成関数
 // --------------------------------
 void Player::CreateState()
 {
 	//////////////////////ステートの作成////////////////////////////
-	m_playerIdling		= std::make_unique<PlayerIdling>		(this);
-	m_playerDodging		= std::make_unique<PlayerDodging>		(this);
-	m_playerAttacking_1 = std::make_unique<PlayerAttacking_1>	(this);
-	m_playerAttacking_2 = std::make_unique<PlayerAttacking_2>	(this);
-	m_playerNockBacking = std::make_unique<PlayerNockBacking>	(this);
+	m_playerIdling = std::make_unique<PlayerIdling>(this);
+	m_playerDodging = std::make_unique<PlayerDodging>(this);
+	m_playerAttacking_1 = std::make_unique<PlayerAttacking_1>(this);
+	m_playerAttacking_2 = std::make_unique<PlayerAttacking_2>(this);
+	m_playerNockBacking = std::make_unique<PlayerNockBacking>(this);
 
 	//////////////////////ステートの初期化////////////////////////////
-	m_playerIdling		->Initialize();
-	m_playerDodging		->Initialize();
-	m_playerAttacking_1	->Initialize();
-	m_playerAttacking_2	->Initialize();
-	m_playerNockBacking	->Initialize();
+	m_playerIdling->Initialize();
+	m_playerDodging->Initialize();
+	m_playerAttacking_1->Initialize();
+	m_playerAttacking_2->Initialize();
+	m_playerNockBacking->Initialize();
 
 	// 最初のステートを設定
 	m_currentState = m_playerIdling.get();
 }
-
 
 // --------------------------------
 //  レンダリングの初期化
@@ -149,9 +142,7 @@ void Player::InitializeRender()
 	);
 	// プリミティブバッチの作成
 	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
-
 }
-
 
 // --------------------------------
 // イベントの登録
@@ -163,7 +154,6 @@ void Player::AttachEvent()
 	// 衝突可能かを設定
 	EventMessenger::Attach(EventList::PlayerCanHit, std::bind(&Player::CanHit, this, std::placeholders::_1));
 }
-
 
 // -----------------------------------------------------
 // ステートを変更する
@@ -177,7 +167,6 @@ void Player::ChangeState(IPlayer* newState)
 	m_currentState = newState;		// 現在のステートを変更する
 	m_currentState->PreUpdate();	// 新しいステートの事前更新を行う
 }
-
 
 // ---------------------------------------------------------
 // 行動に対する時間を計算する関数
@@ -194,7 +183,6 @@ void Player::TimeComparison(float& nowTime, const float totalTime, IPlayer* newS
 	// 時間の計測を行う
 	nowTime += elapsedTime;
 }
-
 
 // ----------------------------------------------
 // プレイヤーの更新処理
@@ -219,11 +207,10 @@ void Player::Update(const float elapsedTime)
 	m_sword->Update(elapsedTime);
 
 	// クールタイムを計測中
-	if (m_isHit && m_coolTime < COOL_TIME)	{ m_coolTime += elapsedTime;		 }
+	if (m_isHit && m_coolTime < COOL_TIME) { m_coolTime += elapsedTime; }
 	// クールタイム終わり
-	else if (m_coolTime >= COOL_TIME)		{ m_isHit = false;m_coolTime = 0.0f; }
+	else if (m_coolTime >= COOL_TIME) { m_isHit = false; m_coolTime = 0.0f; }
 }
-
 
 // ----------------------------------------------
 // キー入力を取得する
@@ -232,7 +219,6 @@ void Player::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 {
 	m_currentState->OnKeyPressed(key);
 }
-
 
 // ----------------------------------------------
 // キー入力を取得する
@@ -261,14 +247,13 @@ void Player::OnKeyDown(const DirectX::Keyboard::Keys& key)
 	m_currentState->OnKeyDown(key);
 }
 
-
 // ----------------------------------------------
 // 回転角の計算関数
 //　---------------------------------------------
 float Player::CalucratePlayerRotation(DirectX::SimpleMath::Vector3 const enemyPos)
 {
 	// 入力がない場合は0を返す
-	if (m_inputVector.LengthSquared() < FLT_EPSILON) 
+	if (m_inputVector.LengthSquared() < FLT_EPSILON)
 	{
 		return 0.0f;
 	}
@@ -287,21 +272,18 @@ float Player::CalucratePlayerRotation(DirectX::SimpleMath::Vector3 const enemyPo
 	float resultAngle = lookEnemy + inputAngle;
 
 	// 必要なら角度を0～2πの範囲に正規化
-	while (resultAngle < 0) 
+	while (resultAngle < 0)
 	{
 		resultAngle += DirectX::XM_2PI; // 2πを加えて正の範囲に
 	}
-	
-	while (resultAngle > DirectX::XM_2PI) 
+
+	while (resultAngle > DirectX::XM_2PI)
 	{
 		resultAngle -= DirectX::XM_2PI; // 2πを引いて範囲内に
 	}
 
 	return resultAngle; // 計算結果（ラジアン単位）を返す
 }
-
-
-
 
 // --------------------------------
 //  移動の管理
@@ -356,7 +338,6 @@ void Player::MovePlayer()
 	/////////////////////////// 移動処理 //////////////////////////////////
 	m_position += Vector3::Transform(moveVelocity, Matrix::CreateRotationY(-m_angle));
 
-
 	/////////////////////////// パーティクルの生成 //////////////////////////
 	if (moveVelocity != Vector3::Zero)
 	{
@@ -406,7 +387,6 @@ void Player::CalculationMatrix()
 	m_worldMatrix *= Matrix::CreateTranslation(m_position);
 }
 
-
 // --------------------------------
 //  表示処理
 // --------------------------------
@@ -444,14 +424,12 @@ void Player::Render(
 
 	// モデルを描画する
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
-	
+
 	// 武器を描画する
 	m_sword->Render(view, projection);
 #ifdef _DEBUG
 #endif // !_DEBUG
-
 }
-
 
 // --------------------------------
 //  終了処理
@@ -459,7 +437,6 @@ void Player::Render(
 void Player::Finalize()
 {
 }
-
 
 // --------------------------------
 //  衝突処理
@@ -479,7 +456,6 @@ void Player::HitAction(InterSectData data)
 	HitGoblin(data);
 }
 
-
 // --------------------------------
 // ダメージ処理
 // --------------------------------
@@ -494,7 +470,6 @@ void Player::Damage(float damage)
 	// 効果音を鳴らす
 	Sound::GetInstance()->PlaySE(Sound::SE_TYPE::PLAYER_DAMAGED);
 }
-
 
 // --------------------------------
 //  敵の体との衝突判定
@@ -524,7 +499,6 @@ void Player::HitBossBody(InterSectData data)
 	}
 }
 
-
 // ---------------------------------
 // ゴブリンとの衝突
 // ---------------------------------
@@ -553,7 +527,6 @@ void Player::HitGoblin(InterSectData data)
 	}
 }
 
-
 // --------------------------------
 // 敵の武器（金棒）との衝突判定
 // --------------------------------
@@ -569,7 +542,6 @@ void Player::HitCudgel(InterSectData data)
 		Damage(1);
 	}
 }
-
 
 // --------------------------------
 // ステージとの衝突判定
@@ -590,7 +562,6 @@ void Player::HitStage(InterSectData data)
 		m_bodyCollision->Center = m_position;
 	}
 }
-
 
 // --------------------------------
 //  衝突可能か

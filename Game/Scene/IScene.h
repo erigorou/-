@@ -12,7 +12,6 @@ namespace mylib
 	class DebugCamera;
 }
 
-
 class IScene
 {
 public:
@@ -25,7 +24,6 @@ public:
 		PLAY,
 		RESULT
 	};
-
 
 public:
 	virtual ~IScene() = default;

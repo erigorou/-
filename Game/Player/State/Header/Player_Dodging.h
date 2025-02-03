@@ -7,7 +7,6 @@
 //
 // -----------------------------
 
-
 #pragma once
 #include "pch.h"
 #include "Interface/IPlayer.h"
@@ -17,9 +16,9 @@ class Enemy;
 
 class PlayerDodging : public IPlayer
 {
-// 定数
+	// 定数
 private:
-	
+
 	static constexpr float SPIN_TIME = 1.0f;			// 回避中の回転時間
 	static constexpr float SPIN_REST_TIME = 1.5f;		// 回避後の回転時間
 
@@ -27,14 +26,14 @@ private:
 	static constexpr float DODGING_RECOVERY_TIME = 1.0f;	// 回避後の硬直時間
 	static constexpr float ANIMATION_END_TIME = 1.5f;			// ローリング終了時間
 
-	static constexpr float DODGE_FUNCTION	= 0.93f;	// 回避時の摩擦
+	static constexpr float DODGE_FUNCTION = 0.93f;	// 回避時の摩擦
 	static constexpr int   TRUNCATION_DIGIT = 4;		// 少数〇〇桁以下削除
 	static constexpr float DODGING_SPEED = 1.5f;		// 回避時の速度
 	static constexpr float UP_VALUE = 3.0f;				// 上昇量
 	static constexpr float ROLLING_ROT = 360.0f;		// 回転量
 	static constexpr float ROLLING_REST_ROT = 30.0f;	// ローリング後の回転角度
 
-// 公開関数
+	// 公開関数
 public:
 	// デストラクタ
 	~PlayerDodging() override;
@@ -57,7 +56,7 @@ public:
 	// キー入力
 	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
 
-// 内部関数
+	// 内部関数
 private:
 	// プレイヤーのアニメーション用更新処理
 	void UpdateAnimation(float totalTime);
@@ -66,8 +65,7 @@ private:
 	// プレイヤーの移動を適用
 	void ApplyPlayerMovement(DirectX::SimpleMath::Vector3& parentPos);
 
-
-// 内部変数
+	// 内部変数
 private:
 	// 総時間
 	float m_totalSeconds;
@@ -79,12 +77,11 @@ private:
 	// プレイヤーの移動速度
 	DirectX::SimpleMath::Vector3 m_velocity;
 	//
-	
+
 	// プレイヤー
 	Player* m_player;
 	// モデル
 	DirectX::Model* m_model;
-
 
 	float m_upValue;	// 上昇量
 	float m_downValue;	// 下降量

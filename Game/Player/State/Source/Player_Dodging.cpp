@@ -10,17 +10,16 @@
 #include "Game/Player/Player.h"
 #include "Game/Player/State/Header/Player_Dodging.h"
 
-
 // --------------------------------------
 // コンストラクタ
 // --------------------------------------
 PlayerDodging::PlayerDodging(Player* player)
 	:
-	 m_player(player)
-	,m_model(nullptr)
-	,m_totalSeconds(0.0f)
-	,m_finishTime(0.0f)
-	,m_rollingValue()
+	m_player(player)
+	, m_model(nullptr)
+	, m_totalSeconds(0.0f)
+	, m_finishTime(0.0f)
+	, m_rollingValue()
 
 {
 }
@@ -32,14 +31,12 @@ PlayerDodging::~PlayerDodging()
 {
 }
 
-
 // -------------------------------------
 // 初期化処理
 // --------------------------------------
 void PlayerDodging::Initialize()
 {
 }
-
 
 // -------------------------------------
 // プレイヤーの事前更新処理
@@ -52,13 +49,12 @@ void PlayerDodging::PreUpdate()
 	m_velocity = DirectX::SimpleMath::Vector3::Forward * DODGING_SPEED;
 }
 
-
 // -------------------------------------
 // プレイヤーの更新処理
 // --------------------------------------
 void PlayerDodging::Update(const float& elapsedTime)
 {
-	float t = elapsedTime;	
+	float t = elapsedTime;
 	// 経過時間を加算
 	m_totalSeconds += t;
 	// アニメーションの更新
@@ -66,7 +62,6 @@ void PlayerDodging::Update(const float& elapsedTime)
 	// ステート開始から時間を計測、一定時間で別のStateへ遷移させる
 	m_player->TimeComparison(m_totalSeconds, ANIMATION_END_TIME, m_player->GetPlayerIdlingState(), elapsedTime);
 }
-
 
 // -------------------------------------
 // プレイヤーのアニメーション用更新処理
@@ -81,7 +76,6 @@ void PlayerDodging::UpdateAnimation(float totalTime)
 	// キャラクターの移動を調整
 	AdjustCharacterTransition(totalTime);
 }
-
 
 // -------------------------------
 // ローリングアニメーション
@@ -114,7 +108,6 @@ void PlayerDodging::RollingAnimation(float totalTime)
 	m_player->SetAnimationRotate(m_rollingValue);
 }
 
-
 // -----------------------------------------
 // プレイヤーの移動を調整
 // -----------------------------------------
@@ -142,8 +135,6 @@ void PlayerDodging::AdjustCharacterTransition(float totalTime)
 	ApplyPlayerMovement(m_position);
 }
 
-
-
 // プレイヤーの移動を適用
 void PlayerDodging::ApplyPlayerMovement(DirectX::SimpleMath::Vector3& parentPos)
 {
@@ -159,9 +150,6 @@ void PlayerDodging::ApplyPlayerMovement(DirectX::SimpleMath::Vector3& parentPos)
 	m_player->SetPosition(parentPos);
 }
 
-
-
-
 // キー入力
 void PlayerDodging::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 {
@@ -173,7 +161,6 @@ void PlayerDodging::OnKeyDown(const DirectX::Keyboard::Keys& key)
 	UNREFERENCED_PARAMETER(key);
 }
 
-
 // 事後更新処理
 void PlayerDodging::PostUpdate()
 {
@@ -181,7 +168,6 @@ void PlayerDodging::PostUpdate()
 	// プレイヤーの座標を更新
 	m_player->SetPosition(m_position);
 }
-
 
 // 終了処理
 void PlayerDodging::Finalize()

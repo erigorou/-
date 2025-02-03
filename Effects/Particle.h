@@ -10,17 +10,15 @@
 #include <list>
 #include "Game/CommonResources.h"
 
-
 class CustomShader;
 class DustTrailParticle;
 class SwordTrailParticle;
 
-
 class Particle
 {
-// ----------------------------
-// 構造体
-// ----------------------------
+	// ----------------------------
+	// 構造体
+	// ----------------------------
 public:
 	//	データ受け渡し用コンスタントバッファ(送信側)
 	struct ConstBuffer
@@ -39,10 +37,9 @@ public:
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3) + sizeof(DirectX::SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 
-
-// ----------------------------
-// 定数
-// ----------------------------
+	// ----------------------------
+	// 定数
+	// ----------------------------
 private:
 	// テクスチャ名
 	static constexpr const wchar_t* TEXTURE_NAME = L"dust.png";
@@ -65,10 +62,9 @@ private:
 	// 土埃の最小半径
 	static constexpr float  SMASH_DUST_RADIUS = 1.0f;
 
-
-// ----------------------------
-// メンバ関数（公開）
-// ----------------------------
+	// ----------------------------
+	// メンバ関数（公開）
+	// ----------------------------
 public:
 	// コンストラクタ
 	Particle();
@@ -77,7 +73,7 @@ public:
 	// パーティクルの生成を行う
 	void Create();
 	// パーティクルの更新処理
-	void Update(float elapsedTimer,const DirectX::SimpleMath::Vector3 playerPosition, const DirectX::SimpleMath::Vector3 playerVelocity);
+	void Update(float elapsedTimer, const DirectX::SimpleMath::Vector3 playerPosition, const DirectX::SimpleMath::Vector3 playerVelocity);
 	// パーティクルの描画処理
 	void Render(
 		DirectX::SimpleMath::Matrix view,
@@ -94,10 +90,9 @@ public:
 	// たたきつけの煙パーティクルの生成
 	void CreateBashDust(void* center);
 
-
-// ----------------------------
-// メンバ関数（非公開）
-// ----------------------------
+	// ----------------------------
+	// メンバ関数（非公開）
+	// ----------------------------
 private:
 	// 剣パーティクルの描画設定
 	void DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj);
@@ -106,10 +101,9 @@ private:
 	// シェーダーの作成
 	inline void CreateShader();
 
-
-// ----------------------------
-// メンバ変数
-// ----------------------------
+	// ----------------------------
+	// メンバ変数
+	// ----------------------------
 private:
 	// バッファー
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_CBuffer;

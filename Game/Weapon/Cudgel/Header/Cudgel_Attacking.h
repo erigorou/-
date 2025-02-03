@@ -26,7 +26,6 @@ public:
 
 	static constexpr float ATTACK_ANGLE_UD = 20.0f;
 
-
 	// コンストラクタ
 	Cudgel_Attacking(Cudgel* cudgel);
 
@@ -43,7 +42,7 @@ public:
 	void PostUpdate()override;
 	// 終了処理
 	void Finalize()override;
-	
+
 	void HitAction(InterSectData data)override;
 
 	// Cudgelの回転を計算する関数
@@ -55,7 +54,6 @@ public:
 	// 根本と頂点の座標を取得する ※ both ends = 両端
 	void GetCudgelBothEnds(float _totalTime);
 
-
 private:
 	void HandleChargePhase(float t);	// ためモーション
 	void HandleWindoupPhase();	// 攻撃前のモーション
@@ -63,11 +61,9 @@ private:
 	void KeepStampPhase();				// 攻撃後のモーション
 	void ReturnToOriginalPhase(float t);	// 元に戻るモーション
 
-
 	void HandleSlamParticles();	// パーティクルを生成する
-	
-	void UpdateAttackState();
 
+	void UpdateAttackState();
 
 	DirectX::SimpleMath::Vector3 m_position;	// 座標
 	DirectX::SimpleMath::Vector3 m_velocity;	// 速度
@@ -80,11 +76,10 @@ private:
 
 	DirectX::SimpleMath::Matrix m_worldMatrix;	// ワールド行列
 	float m_totalSeconds;						// ステートの経過時間
-	float m_recordPointTimer;					// 座標を記録するインターバルの計測用変数 
+	float m_recordPointTimer;					// 座標を記録するインターバルの計測用変数
 
-
-	Cudgel*		m_cudgel;						// ステートを所有する親
-	Particle*	m_particles;					// パーティクル
+	Cudgel* m_cudgel;						// ステートを所有する親
+	Particle* m_particles;					// パーティクル
 
 	// 剣の軌跡のエフェクト
 	// 頂点を保存する用の双極配列

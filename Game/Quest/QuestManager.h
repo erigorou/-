@@ -10,12 +10,11 @@ class QuestRenderer;	// クエスト内容の描画
 class Tutorial;			// チュートリアル
 class IQuestChecker;	// クエストのチェッカー
 
-
 class QuestManager
 {
-// ---------------
-// 固定値
-// ---------------
+	// ---------------
+	// 固定値
+	// ---------------
 public:
 	// ステージの最大数
 	static constexpr int MAX_STAGE = 3;
@@ -30,13 +29,11 @@ public:
 	// 最初の遅延
 	static constexpr float DELAY_TIME = 1.0f;
 	// クリアの遅延
-	static constexpr float CLEAR_DELAY_TIME = 0.2f;
+	static constexpr float CLEAR_DELAY_TIME = 0.0f;
 
-
-
-// ---------------
-// アクセサ
-// ---------------
+	// ---------------
+	// アクセサ
+	// ---------------
 public:
 	// 現在のクエスト番号を取得
 	int GetCurrentQuestNo() const { return m_currentQuestNo; }
@@ -44,11 +41,9 @@ public:
 	// チュートリアルを取得
 	Tutorial* GetTutorial() { return m_tutorial.get(); }
 
-
-
-// ---------------
-// 公開関数
-// ---------------
+	// ---------------
+	// 公開関数
+	// ---------------
 public:
 	// コンストラクタ
 	QuestManager(PlayScene* playScene);
@@ -66,10 +61,9 @@ public:
 	// クエストを一つ更新する
 	void ChangeNextQuest();
 
-
-// ---------------
-// 内部関数
-// ---------------
+	// ---------------
+	// 内部関数
+	// ---------------
 private:
 	// クエストの更新
 	void UpdateQuest();
@@ -98,10 +92,9 @@ private:
 	// クエストのクリアを確認
 	void IsQuestClear();
 
-
-// ---------------
-// メンバ変数
-// ---------------
+	// ---------------
+	// メンバ変数
+	// ---------------
 private:
 
 	// 現在のクエスト番号
@@ -113,7 +106,6 @@ private:
 	std::vector<IQuestChecker*>										m_questList;	// クエストのリスト
 	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>>	m_textureList;	// テクスチャのリスト
 	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>>	m_tutorialTextureList;	// チュートリアルのリスト
-
 
 	// クエストの描画
 	std::unique_ptr<QuestRenderer> m_renderer;

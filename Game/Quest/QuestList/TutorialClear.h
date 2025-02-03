@@ -25,6 +25,6 @@ public:
 		auto enemyManager = playScene->GetEnemyManager();
 
 		// “G‚ª‘S–Å‚µ‚Ä‚¢‚é‚È‚çtrue‚ð•Ô‚·
-		return ! enemyManager->IsEnemysAlive();
+		return !enemyManager->IsEnemysAlive();
 	};
 };

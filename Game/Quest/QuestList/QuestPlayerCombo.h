@@ -2,7 +2,6 @@
 // プレイヤーがコンボ中かどうかをチェックするクラス		: チュートリアル
 // ---------------------------------------------------------------------------------------
 
-
 #pragma once
 #include "pch.h"
 #include "Interface/IQuestChecker.h"
@@ -18,7 +17,6 @@ public:
 
 	// チュートリアルのテクスチャパスを取得する
 	const wchar_t* GetTutorialTexturePath() override { return L"Resources/Textures/Quest/TutorialCombo.png"; }
-
 
 	// チェッカーを実行する
 	bool ExecuteChecker(PlayScene* playScene) override

@@ -7,12 +7,10 @@
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 
-
 // ------------------------------
 // íËêî
 // ------------------------------
 const wchar_t* Floor::TEXTURE_PATH = L"Resources/Textures/floor.png";
-
 
 // -------------------------------------------------------------------^
 /// <summary>

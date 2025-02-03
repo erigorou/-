@@ -13,18 +13,16 @@
 #include "Libraries/MyLib/EasingFunctions.h"
 #include "Game/Boss/States/Header/BossSweeping.h"
 
-
 // ----------------------------------
 // コンストラクタ
 // ----------------------------------
 BossSweeping::BossSweeping(Boss* Boss)
-	: 
+	:
 	m_angle{},
 	m_boss(Boss),
 	m_totalSeconds{}
 {
 }
-
 
 // ----------------------------------
 // デストラクタ
@@ -33,15 +31,12 @@ BossSweeping::~BossSweeping()
 {
 }
 
-
 // ----------------------------------
 // 初期化処理
 // ----------------------------------
 void BossSweeping::Initialize()
 {
 }
-
-
 
 // ----------------------------------
 // 事前更新処理
@@ -61,7 +56,6 @@ void BossSweeping::PreUpdate()
 	EventMessenger::Execute(EventList::ChangeBossFace, &face);
 }
 
-
 // ----------------------------------
 // 更新処理
 // ----------------------------------
@@ -74,7 +68,6 @@ void BossSweeping::Update(const float& elapsedTime)
 	// 角度の更新
 	m_boss->SetAngle(DirectX::XMConvertToRadians(m_targetAngle));
 }
-
 
 // ----------------------------------
 // アニメーションの更新
@@ -89,15 +82,12 @@ void BossSweeping::UpdateAnimation()
 	else if (Math::InTime(WINDUP_TIME, m_totalSeconds, ATTACK_TIME))
 		UpdateSweepMotion();
 
-	
 	if (m_totalSeconds > END_TIME)
 	{
 		// ステートを変更（待機状態）
 		BossState state = BossState::Idling;
 		EventMessenger::Execute(EventList::ChangeBossState, &state);
-
 	}
-
 }
 
 // ----------------------------------
@@ -111,8 +101,6 @@ void BossSweeping::UpdateChargeMotion()
 	m_targetAngle = m_angle - ROTATE_ANGLE * Easing::easeOutCirc(easing);
 }
 
-
-
 // ----------------------------------
 // 薙ぎ払いモーションの更新
 // ----------------------------------
@@ -123,8 +111,6 @@ void BossSweeping::UpdateSweepMotion()
 	// イージングを用いた角度の計算
 	m_targetAngle = m_angle - ROTATE_ANGLE + ROTATE_ANGLE * Easing::easeOutBack(easing);
 }
-
-
 
 // ----------------------------------
 // 事後更新処理
@@ -139,8 +125,6 @@ void BossSweeping::PostUpdate()
 	FaceState face = FaceState::Idling;
 	EventMessenger::Execute(EventList::ChangeBossFace, &face);
 }
-
-
 
 // ----------------------------------
 // 終了処理

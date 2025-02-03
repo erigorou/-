@@ -12,7 +12,6 @@
 #include "Game/GameResources.h"
 #include "DeviceResources.h"
 
-
 // ----------------------------
 /// コンストラクタ
 // ----------------------------
@@ -21,7 +20,7 @@ EnemyEffect::EnemyEffect()
 	m_totalTime{},
 	m_deadShader{},
 	m_buffer{},
-	m_currentEffect{ENEMY_EFFECT::NONE}
+	m_currentEffect{ ENEMY_EFFECT::NONE }
 {
 	// シェーダーの生成
 	CreateShader();
@@ -30,15 +29,12 @@ EnemyEffect::EnemyEffect()
 	CreateConstBuffer();
 }
 
-
-
 // ----------------------------
 /// デストラクタ
 // ----------------------------
 EnemyEffect::~EnemyEffect()
 {
 }
-
 
 // ----------------------------
 /// 更新処理
@@ -56,7 +52,6 @@ void EnemyEffect::Update(float elapsedTime)
 		m_totalTime = std::max(0.0f, (m_totalTime - elapsedTime));
 	}
 }
-
 
 // ----------------------------
 /// 体パーツの描画
@@ -97,7 +92,6 @@ void EnemyEffect::DrawWithEffect(
 		}
 	);
 
-
 	ID3D11SamplerState* sampler[1] = { };
 	context->PSSetSamplers(0, 1, sampler);
 
@@ -119,7 +113,6 @@ void EnemyEffect::DrawWithEffect(
 				context->OMSetBlendState(states->AlphaBlend(), nullptr, 0xFFFFFFFF);
 			}
 
-
 			// ダメージを食らった時のエフェクトを適用
 			if (m_currentEffect == ENEMY_EFFECT::DAMAGE)
 			{
@@ -135,7 +128,6 @@ void EnemyEffect::DrawWithEffect(
 		}
 	);
 }
-
 
 // ----------------------------
 /// シェーダーの作成
@@ -165,7 +157,6 @@ void EnemyEffect::CreateShader()
 			INPUT_LAYOUT	// 入力レイアウト
 		);
 }
-
 
 // ----------------------------
 /// 定数バッファの作成
@@ -207,7 +198,6 @@ void EnemyEffect::UpdateConstBuffer(ConstBuffer* cb)
 
 	cb->Padding = DirectX::SimpleMath::Vector3::Zero;
 }
-
 
 // ----------------------------
 /// どのエフェクトを適用するか

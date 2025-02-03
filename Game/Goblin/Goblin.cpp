@@ -20,13 +20,11 @@
 #include "State/Header/GoblinIdling.h"
 #include "State/Header/GoblinAttacking.h"
 
-
 // ---------------
 // 固定値
 // ---------------
 const float Goblin::GOBLIN_SPEED = Boss::BOSS_SPEED / 2.0f;	// 移動速
 const float Goblin::GOBLIN_SCALE = Boss::BOSS_SCALE / 4.0f;	// サイズ
-
 
 // -------------------------------
 // コンストラクタ
@@ -36,7 +34,7 @@ Goblin::Goblin(PlayScene* playScene)
 	, m_position{}
 	, m_velocity{}
 	, m_angle{}
-	, m_scale{1.0f, 1.0f, 1.0f}
+	, m_scale{ 1.0f, 1.0f, 1.0f }
 	, m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
 	, m_model(nullptr)
 	, m_nowAttacking(false)
@@ -70,7 +68,6 @@ void Goblin::Initialize()
 	m_hp = std::make_unique<HPSystem>(GOBLIN_HP);
 	// エフェクトの生成
 	m_enemyEffect = std::make_unique<EnemyEffect>();
-
 }
 
 // --------------------------------
@@ -102,7 +99,6 @@ void Goblin::CreateState()
 	m_currentState = m_idling.get();
 }
 
-
 // --------------------------------
 // 当たり判定の生成
 // --------------------------------
@@ -124,7 +120,6 @@ void Goblin::CreateCollision()
 	EventMessenger::Execute(EventList::AddSphereCollision, &data);
 }
 
-
 // --------------------------------
 // 更新処理
 // --------------------------------
@@ -144,7 +139,6 @@ void Goblin::Update(const float elapsedTime)
 	// ステートの更新処理
 	m_currentState->Update(elapsedTime);
 }
-
 
 // --------------------------------
 // ワールド行列の計算
@@ -166,8 +160,6 @@ void Goblin::CalcWorldMatrix()
 	m_worldMatrix *= Matrix::CreateTranslation(m_position);		// 位置適用
 }
 
-
-
 // --------------------------------
 // 衝突判定の移動
 // --------------------------------
@@ -179,7 +171,6 @@ void Goblin::MoveCollision()
 	m_bodyCollision->Center = pos;
 }
 
-
 // --------------------------------
 // 描画関数
 // --------------------------------
@@ -187,7 +178,6 @@ void Goblin::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::Simp
 {
 	m_enemyEffect->DrawWithEffect(m_model, m_worldMatrix, view, projection);
 }
-
 
 // --------------------------------
 // 終了関数
@@ -204,7 +194,6 @@ void Goblin::Finalize()
 	// 削除イベントを実行
 	EventMessenger::Execute(EventList::DeleteCollision, &data);
 }
-
 
 // --------------------------------
 // 当たったときの処理
@@ -229,7 +218,6 @@ void Goblin::HitPlayer(InterSectData data)
 	UNREFERENCED_PARAMETER(data);
 }
 
-
 // --------------------------------
 // 小鬼に当たったときの処理
 // --------------------------------
@@ -246,7 +234,6 @@ void Goblin::HitGoblin(InterSectData data)
 	m_position += m_pushBackValue;
 	m_bodyCollision->Center = m_position;
 }
-
 
 // --------------------------------
 // 敵に当たったときの処理
@@ -267,7 +254,6 @@ void Goblin::HitBoss(InterSectData data)
 	m_bodyCollision->Center = m_position;
 }
 
-
 // --------------------------------
 // ステージに当たったときの処理
 // --------------------------------
@@ -275,7 +261,6 @@ void Goblin::HitStage(InterSectData data)
 {
 	UNREFERENCED_PARAMETER(data);
 }
-
 
 // --------------------------------
 // 剣に当たったときの処理
@@ -289,7 +274,6 @@ void Goblin::HitSword(InterSectData data)
 	UNREFERENCED_PARAMETER(data);
 	Damaged(1);
 }
-
 
 // --------------------------------
 // ステートの変更
@@ -309,10 +293,6 @@ void Goblin::ChangeState(GoblinState state)
 	// ステートの初期化
 	m_currentState->PreUpdate();
 }
-
-
-
-
 
 // --------------------------------
 // ダメージを受けたときの処理
@@ -336,7 +316,6 @@ void Goblin::Damaged(float damage)
 	m_isHit = true;
 }
 
-
 // --------------------------------
 // クールタイムのカウント
 // --------------------------------
@@ -355,7 +334,6 @@ void Goblin::CountCoolTime(float elapsedTime)
 	}
 }
 
-
 // --------------------------------
 // 生存確認
 // --------------------------------
@@ -372,7 +350,6 @@ void Goblin::CheckAlive()
 		m_enemyEffect->SetEffect(EnemyEffect::ENEMY_EFFECT::DEAD);
 	}
 }
-
 
 // --------------------------------
 // ゴブリンを消す

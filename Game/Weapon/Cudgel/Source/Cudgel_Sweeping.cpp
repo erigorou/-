@@ -1,7 +1,7 @@
 /// ---------------------------
 ///
 /// 鬼の金棒の攻撃状態(薙ぎ払い)
-/// 
+///
 /// ---------------------------
 
 #include "pch.h"
@@ -19,7 +19,6 @@
 #include "Libraries/MyLib/EasingFunctions.h"
 #include "Game/Weapon/Cudgel/Header/Cudgel_Sweeping.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
-
 
 // -----------------------------
 // コンストラクタ
@@ -39,14 +38,12 @@ Cudgel_Sweeping::Cudgel_Sweeping(Cudgel* cudgel)
 {
 }
 
-
 // ----------------------------
 // デストラクタ
 // ----------------------------
 Cudgel_Sweeping::~Cudgel_Sweeping()
 {
 }
-
 
 // ----------------------------
 // 初期化処理
@@ -56,7 +53,6 @@ void Cudgel_Sweeping::Initialize()
 	// ボスの設定
 	m_boss = m_cudgel->GetBoss();
 }
-
 
 // -----------------------------
 // 事前処理
@@ -79,7 +75,6 @@ void Cudgel_Sweeping::PreUpdate()
 	m_playSound = false;
 }
 
-
 // --------------------------------
 // 更新処理
 // --------------------------------
@@ -96,7 +91,6 @@ void Cudgel_Sweeping::Update(float elapsedTime)
 	// 両端を取得する
 	GetCudgelBothEnds();
 
-
 	// ワールド行列を設定する
 	m_cudgel->SetWorldMatrix(m_worldMatrix);
 	// 当たり判定用の行列を取得
@@ -105,7 +99,6 @@ void Cudgel_Sweeping::Update(float elapsedTime)
 	m_collMatrix._42 = 0.0f;
 	m_cudgel->SetCollisionPosition(m_collMatrix);
 }
-
 
 // ------------------------------
 // Cudgelの縦軸の回転の更新関数
@@ -127,8 +120,6 @@ void Cudgel_Sweeping::UpdateCudgelRotation()
 	EventMessenger::Execute(EventList::PlayerCanHit, &m_playerCanHit);
 }
 
-
-
 // --------------------------------
 // ためモーション
 // --------------------------------
@@ -143,7 +134,6 @@ void Cudgel_Sweeping::ChargeAnimation()
 		m_angleRL = -CHARGE_ROTATE_ANGLE * Easing::easeOutCirc(easing);
 	}
 }
-
 
 // --------------------------------
 // 攻撃モーション
@@ -182,7 +172,6 @@ void Cudgel_Sweeping::EndAnimation()
 	}
 }
 
-
 // ----------------------------------
 // 描画用ワールド行列を計算する関数
 // ----------------------------------
@@ -194,19 +183,17 @@ void Cudgel_Sweeping::CalculateModelMatrix()
 		*= CalculateAttackMatrix();									// 攻撃モーション中の計算
 }
 
-
 // ----------------------------------------
 // Cudgelのワールド行列を計算する関数
 // ----------------------------------------
 DirectX::SimpleMath::Matrix Cudgel_Sweeping::CalculateAttackMatrix()
 {
-	return 
-			Matrix::CreateRotationX(-m_angleUD)																						// 縦回転を行う
-		*=  Matrix::CreateRotationY(DirectX::XMConvertToRadians(-m_angleRL) - m_parentAngleRL - DirectX::XMConvertToRadians(180))	// 横回転を行う
-		*=  Matrix::CreateTranslation(Cudgel_Sweeping::ARM_LENGTH)																	// 腕の長さ分移動
-		*=  Matrix::CreateTranslation(m_position);																					// 最後に敵の位置に設定
+	return
+		Matrix::CreateRotationX(-m_angleUD)																						// 縦回転を行う
+		*= Matrix::CreateRotationY(DirectX::XMConvertToRadians(-m_angleRL) - m_parentAngleRL - DirectX::XMConvertToRadians(180))	// 横回転を行う
+		*= Matrix::CreateTranslation(Cudgel_Sweeping::ARM_LENGTH)																	// 腕の長さ分移動
+		*= Matrix::CreateTranslation(m_position);																					// 最後に敵の位置に設定
 }
-
 
 // ----------------------------------------------------
 // 金棒の根本と頂点の座標を取得する関数
@@ -220,18 +207,16 @@ void Cudgel_Sweeping::GetCudgelBothEnds()
 	rootMat
 		*= Matrix::CreateTranslation(Cudgel::CUDGEL_HADLE_POS)
 		*= CalculateAttackMatrix();
-	root = Vector3::Transform(Vector3::Zero, rootMat);		// モデルの先端の位置を取得
+	root = Vector3::Transform(Vector3::Zero, rootMat); // モデルの先端の位置を取得
 
-	
 	Matrix tipMat = Matrix::CreateTranslation(Cudgel_Sweeping::ZERO_DIREC);
 	tipMat
 		*= Matrix::CreateTranslation(Cudgel::CUDGEL_LENGTH)
 		*= CalculateAttackMatrix();
-	tip = Vector3::Transform(Vector3::Zero, tipMat);		// モデルの先端の位置を取得
+	tip = Vector3::Transform(Vector3::Zero, tipMat); // モデルの先端の位置を取得
 
-		m_rootPos.push_back(root);							// 根本座標リストの先端に記録
-		m_tipPos .push_back(tip);							// 頂点座標リストの先端に記録
-
+	m_rootPos.push_back(root); // 根本座標リストの先端に記録
+	m_tipPos.push_back(tip); // 頂点座標リストの先端に記録
 
 	// 2個以上ない場合は処理を抜ける
 	int max = static_cast<int>(m_rootPos.size() - 1);
@@ -239,8 +224,8 @@ void Cudgel_Sweeping::GetCudgelBothEnds()
 	{
 		DirectX::VertexPositionTexture ver[4] =	// 頂点情報の生成（パーティクルの生成に必要）
 		{
-			DirectX::VertexPositionTexture(m_tipPos [max]		,DirectX::SimpleMath::Vector2(0, 0)),	// 左上
-			DirectX::VertexPositionTexture(m_tipPos [max - 1]	,DirectX::SimpleMath::Vector2(1, 0)),	// 右上
+			DirectX::VertexPositionTexture(m_tipPos[max]		,DirectX::SimpleMath::Vector2(0, 0)),	// 左上
+			DirectX::VertexPositionTexture(m_tipPos[max - 1]	,DirectX::SimpleMath::Vector2(1, 0)),	// 右上
 			DirectX::VertexPositionTexture(m_rootPos[max - 1]	,DirectX::SimpleMath::Vector2(1, 1)),	// 右下
 			DirectX::VertexPositionTexture(m_rootPos[max]		,DirectX::SimpleMath::Vector2(0, 1)),	// 左下
 		};
@@ -249,7 +234,6 @@ void Cudgel_Sweeping::GetCudgelBothEnds()
 	}
 }
 
-
 // ------------------------
 // 状態更新処理
 // ------------------------
@@ -257,14 +241,12 @@ void Cudgel_Sweeping::PostUpdate()
 {
 }
 
-
 // ------------------------
 // 終了処理
 // ------------------------
 void Cudgel_Sweeping::Finalize()
 {
 }
-
 
 // ------------------------
 // 衝突判定

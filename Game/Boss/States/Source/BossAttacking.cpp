@@ -30,7 +30,6 @@ BossAttacking::~BossAttacking()
 {
 }
 
-
 // --------------------------------------
 // 初期化処理
 // --------------------------------------
@@ -40,7 +39,6 @@ void BossAttacking::Initialize()
 	void* object = EventMessenger::ExecuteGetter(GetterList::GetPlayer);
 	m_player = object ? static_cast<IObject*>(object) : nullptr;
 }
-
 
 // --------------------------------------
 // ステート更新処理（in）
@@ -57,7 +55,6 @@ void BossAttacking::PreUpdate()
 	FaceState face = FaceState::Attacking;
 	EventMessenger::Execute(EventList::ChangeBossFace, &face);
 }
-
 
 // --------------------------------------
 // 更新処理
@@ -89,9 +86,6 @@ void BossAttacking::Update(const float& elapsedTime)
 	}
 }
 
-
-
-
 // --------------------------------------
 // ステート変更処理(out)
 // --------------------------------------
@@ -104,7 +98,6 @@ void BossAttacking::PostUpdate()
 	FaceState face = FaceState::Idling;
 	EventMessenger::Execute(EventList::ChangeBossFace, &face);
 }
-
 
 // --------------------------------------
 // 終了処理

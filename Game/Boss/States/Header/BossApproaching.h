@@ -27,7 +27,6 @@ public:
 	// プレイヤーとの最小距離
 	static constexpr float MIN_DISTANCE = 20.0f;
 
-
 	// ---------------------------
 	// メンバ関数(公開)
 	// ---------------------------
@@ -47,8 +46,6 @@ public:
 	// 終了処理
 	void Finalize() override;
 
-
-
 	// --------------------------
 	// メンバ関数(非公開)
 	// --------------------------
@@ -57,8 +54,6 @@ private:
 	void UpdateAnimation(float elapsedTime);
 	// いつ次のステートに移行するかを検知
 	void CheckNextState();
-
-
 
 	// ---------------------------
 	// メンバ変数

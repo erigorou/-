@@ -10,7 +10,7 @@ class Easying;
 /// </summary>
 class SwordAttacking2 : public IWeapon
 {
-// 固定値 **
+	// 固定値 **
 public:
 	// 90度のラジアン
 	static const float RADIAN_90;
@@ -26,7 +26,7 @@ public:
 	// 縦の最大
 	static constexpr float MAX_VERTICAL_ANGLE = 30.0f;
 
-// 公開関数 **
+	// 公開関数 **
 public:
 	// コンストラクタ
 	SwordAttacking2(Sword* sword);
@@ -46,10 +46,9 @@ public:
 	// 衝突処理
 	void HitAction(InterSectData data)override;
 
-
-// ---------------------
-// 非公開関数
-// ---------------------
+	// ---------------------
+	// 非公開関数
+	// ---------------------
 private:
 	// アニメーション更新処理
 	void UpdateAnimation();
@@ -60,7 +59,6 @@ private:
 
 	// ソードのパーティクルを生成
 	void CreateSwordParticle();
-
 
 	// ソードの元を取得
 	Sword* m_sword;
@@ -74,5 +72,4 @@ private:
 
 	std::vector<DirectX::SimpleMath::Vector3>	m_rootPos;	// 根本の座標
 	std::vector<DirectX::SimpleMath::Vector3>	m_tipPos;	// 先端の座標
-
 };

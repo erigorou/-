@@ -23,7 +23,6 @@ HitStop* const HitStop::GetInstance()
 	return s_hitStop.get();
 }
 
-
 // ----------------------------
 // コンストラクタ
 // ----------------------------
@@ -34,14 +33,12 @@ HitStop::HitStop()
 {
 }
 
-
 // ----------------------------
 // デストラクタ
 // ----------------------------
 HitStop::~HitStop()
 {
 }
-
 
 // ----------------------------
 // 更新処理
@@ -51,7 +48,7 @@ void HitStop::Update(float elapsedTime)
 	// 経過時間を登録
 	m_smoothDeltaTime = elapsedTime;
 	// 何もない場合終了
-	if ( ! m_isActive) return;
+	if (!m_isActive) return;
 	// ヒットストップ時の計算を行う
 	CalculateSmoothDeltaTime(elapsedTime);
 }

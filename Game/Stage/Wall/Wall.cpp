@@ -5,7 +5,7 @@
 #include <Model.h>
 #include <cassert>
 // ヘッダー
-#include "Game/CommonResources.h"	
+#include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "DeviceResources.h"
@@ -43,9 +43,8 @@ void Wall::Initialize()
 // 当たり判定の生成
 void Wall::CreateCollision()
 {
-	m_collision		= std::make_unique<DirectX::BoundingSphere>(DirectX::SimpleMath::Vector3::Zero, COLLISION_RADIUS);
+	m_collision = std::make_unique<DirectX::BoundingSphere>(DirectX::SimpleMath::Vector3::Zero, COLLISION_RADIUS);
 	m_overCollision = std::make_unique<DirectX::BoundingSphere>(DirectX::SimpleMath::Vector3::Zero, COLLISION_RADIUS * COLLISION_SCALE);
-
 
 	// 衝突データの作成
 	CollisionData<DirectX::BoundingSphere>data =
@@ -56,7 +55,6 @@ void Wall::CreateCollision()
 		m_collision.get()		// 当たり判定のポインタ
 	};
 
-
 	// 衝突データの作成
 	CollisionData<DirectX::BoundingSphere>overData =
 	{
@@ -66,12 +64,10 @@ void Wall::CreateCollision()
 		m_overCollision.get()	// 当たり判定のポインタ
 	};
 
-
 	// 衝突判定をManagerに登録
 	EventMessenger::Execute(EventList::AddSphereCollision, &data);
 	EventMessenger::Execute(EventList::AddSphereCollision, &overData);
 }
-
 
 // ワールド座標更新処理
 void Wall::UpdateWorldMatrix()
@@ -83,8 +79,6 @@ void Wall::UpdateWorldMatrix()
 	m_worldMatrix *= Matrix::CreateScale(WALL_SCALE);		// 拡大　縮小
 	m_worldMatrix *= Matrix::CreateTranslation(WALL_POS);	// 移動
 }
-
-
 
 // 描画
 void Wall::Render(
@@ -101,15 +95,12 @@ void Wall::Render(
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 }
 
-
 // 終了処理
 void Wall::Finalize()
 {
 }
 
-
-
-void Wall::HitAction(InterSectData data)			
+void Wall::HitAction(InterSectData data)
 {
 	UNREFERENCED_PARAMETER(data);
 }

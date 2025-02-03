@@ -19,13 +19,11 @@ class HPSystem;	// HP
 
 class Wall;
 
-
-class Player :  public IObserver
+class Player : public IObserver
 {
-
-// -----------------
-// 定数
-// -----------------
+	// -----------------
+	// 定数
+	// -----------------
 public:
 	// 初期座標
 	static constexpr DirectX::SimpleMath::Vector3 HOME_POSITION = { 40.0f, 0.0f, 40.0f };
@@ -36,52 +34,52 @@ public:
 	// 当たり判定の大きさ
 	static constexpr float COLLISION_RADIUS = 12.0f;
 
-	static constexpr float PLAYER_HP			= 5.0f;	// プレイヤーのHP
-	static constexpr float APPLIED_ATTACK_TIME	= 1.4f;	// ２段目以降の攻撃が許されるようになる時間
-	static constexpr float APPLIED_DODGE_TIME	= 0.7f;	// 回避ができるようになる時間
-	static constexpr float COOL_TIME			= 1.0f; // 攻撃のクールタイム
-	static constexpr float X_COOL_TIME			= 0.7f; // 次の攻撃ができるようになる時間
+	static constexpr float PLAYER_HP = 5.0f;	// プレイヤーのHP
+	static constexpr float APPLIED_ATTACK_TIME = 1.4f;	// ２段目以降の攻撃が許されるようになる時間
+	static constexpr float APPLIED_DODGE_TIME = 0.7f;	// 回避ができるようになる時間
+	static constexpr float COOL_TIME = 1.0f; // 攻撃のクールタイム
+	static constexpr float X_COOL_TIME = 0.7f; // 次の攻撃ができるようになる時間
 
-	static constexpr float NORMAL_ATTACK_TIME	= 0.5f; // 通常攻撃のアニメーション時間
+	static constexpr float NORMAL_ATTACK_TIME = 0.5f; // 通常攻撃のアニメーション時間
 
-	static constexpr DirectX::SimpleMath::Vector2 INPUT_FLONT	= { 0.0f	, 1.0f	};	// 前
-	static constexpr DirectX::SimpleMath::Vector2 INPUT_BACK	= { 0.0f	, -1.0f };	// 後
-	static constexpr DirectX::SimpleMath::Vector2 INPUT_LEFT	= { -1.0f	, 0.0f	};	// 左
-	static constexpr DirectX::SimpleMath::Vector2 INPUT_RIGHT	= { 1.0f	, 0.0f	};	// 右
+	static constexpr DirectX::SimpleMath::Vector2 INPUT_FLONT = { 0.0f	, 1.0f };	// 前
+	static constexpr DirectX::SimpleMath::Vector2 INPUT_BACK = { 0.0f	, -1.0f };	// 後
+	static constexpr DirectX::SimpleMath::Vector2 INPUT_LEFT = { -1.0f	, 0.0f };	// 左
+	static constexpr DirectX::SimpleMath::Vector2 INPUT_RIGHT = { 1.0f	, 0.0f };	// 右
 
-// -----------------
-// アクセサ
-// -----------------
+	// -----------------
+	// アクセサ
+	// -----------------
 public:
 
 	Player* GetObject() { return this; }
 
-	DirectX::SimpleMath::Vector3 GetPosition		()override	{ return m_position;			}	// 座標
-	DirectX::SimpleMath::Vector3 GetVelocity		()	const	{ return m_velocity;			}	// 速度
-	DirectX::SimpleMath::Vector3 GetDirection		()	const	{ return m_direction;			}	// 向き
-	DirectX::SimpleMath::Vector2 GetinputVector		()	const	{ return m_inputVector;			}	// 入力ベクトル
-	float						 GetAngle			()	const	{ return m_angle;				}	// 回転角
-	HPSystem*					 GetPlayerHP		()	const	{ return m_hp.get();			}	// HP
-	DirectX::BoundingSphere*	 GetBodyCollision	()			{ return m_bodyCollision.get(); }	// 当たり判定
-	PlayerIdling*		GetPlayerIdlingState	()	const { return m_playerIdling.		get();	}	// 待機状態
-	PlayerDodging*		GetPlayerDodgingState	()	const { return m_playerDodging.		get();	}	// 回避状態
-	PlayerAttacking_1*	GetPlayerAttackingState1()	const { return m_playerAttacking_1.	get();	}	// 攻撃状態１
-	PlayerAttacking_2*	GetPlayerAttackingState2()	const { return m_playerAttacking_2.	get();	}	// 攻撃状態２
-	PlayerNockBacking*	GetPlayerNockBackingState()	const { return m_playerNockBacking.	get();	}	// やられ状態
-	IPlayer*			GetCurrentState()			const { return m_currentState;				}	// 現在のステート
+	DirectX::SimpleMath::Vector3 GetPosition()override { return m_position; }	// 座標
+	DirectX::SimpleMath::Vector3 GetVelocity()	const { return m_velocity; }	// 速度
+	DirectX::SimpleMath::Vector3 GetDirection()	const { return m_direction; }	// 向き
+	DirectX::SimpleMath::Vector2 GetinputVector()	const { return m_inputVector; }	// 入力ベクトル
+	float						 GetAngle()	const { return m_angle; }	// 回転角
+	HPSystem* GetPlayerHP()	const { return m_hp.get(); }	// HP
+	DirectX::BoundingSphere* GetBodyCollision() { return m_bodyCollision.get(); }	// 当たり判定
+	PlayerIdling* GetPlayerIdlingState()	const { return m_playerIdling.get(); }	// 待機状態
+	PlayerDodging* GetPlayerDodgingState()	const { return m_playerDodging.get(); }	// 回避状態
+	PlayerAttacking_1* GetPlayerAttackingState1()	const { return m_playerAttacking_1.get(); }	// 攻撃状態１
+	PlayerAttacking_2* GetPlayerAttackingState2()	const { return m_playerAttacking_2.get(); }	// 攻撃状態２
+	PlayerNockBacking* GetPlayerNockBackingState()	const { return m_playerNockBacking.get(); }	// やられ状態
+	IPlayer* GetCurrentState()			const { return m_currentState; }	// 現在のステート
 
-	void SetPosition		(DirectX::SimpleMath::Vector3 position		) { m_position		= position;		}	// 座標
-	void SetAnimationRotate	(DirectX::SimpleMath::Vector3 rotate		) { m_animationRotate = rotate;		}	// アニメーション用回転
-	void SetInputVector		(DirectX::SimpleMath::Vector2 inputVector	) { m_inputVector	= inputVector;	}	// 入力ベクトル
-	void SetSpeed			(DirectX::SimpleMath::Vector3 velocity		) { m_velocity		= velocity;		}	// 速度
-	void SetAcceleration	(DirectX::SimpleMath::Vector3 acceleration	) { m_acceleration	= acceleration;	}	// 加速度
-	void SetAngle			(const float angle							) { m_angle			= angle;		}	// 回転角
+	void SetPosition(DirectX::SimpleMath::Vector3 position) { m_position = position; }	// 座標
+	void SetAnimationRotate(DirectX::SimpleMath::Vector3 rotate) { m_animationRotate = rotate; }	// アニメーション用回転
+	void SetInputVector(DirectX::SimpleMath::Vector2 inputVector) { m_inputVector = inputVector; }	// 入力ベクトル
+	void SetSpeed(DirectX::SimpleMath::Vector3 velocity) { m_velocity = velocity; }	// 速度
+	void SetAcceleration(DirectX::SimpleMath::Vector3 acceleration) { m_acceleration = acceleration; }	// 加速度
+	void SetAngle(const float angle) { m_angle = angle; }	// 回転角
 
 	PlayScene* GetPlayScene()const { return m_playScene; }
 
-// -------------------
-// 公開関数
-// -------------------
+	// -------------------
+	// 公開関数
+	// -------------------
 public:
 	// コンストラクタ
 	Player(PlayScene* playScene);
@@ -97,8 +95,8 @@ public:
 	void Update(const float elapsedTime);
 	// 描画処理
 	void Render(
-		const DirectX::SimpleMath::Matrix&	view,
-		const DirectX::SimpleMath::Matrix&	projection);
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& projection);
 	// 終了処理
 	void Finalize();
 	// 回転角の計算
@@ -116,9 +114,9 @@ public:
 	// プレイヤーの攻撃判定
 	void CanHit(void* flag);
 
-// -------------------
-// 内部関数
-// -------------------
+	// -------------------
+	// 内部関数
+	// -------------------
 private:
 	// 当たり判定の生成関数
 	void CreateCollision();
@@ -140,10 +138,9 @@ private:
 	// ダメージ
 	void Damage(float damage);
 
-
-// -------------------
-// 内部変数
-// -------------------
+	// -------------------
+	// 内部変数
+	// -------------------
 private:
 	// 武器
 	std::unique_ptr<Sword> m_sword;

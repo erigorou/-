@@ -26,19 +26,17 @@ public:
 	static const DirectX::SimpleMath::Vector3 CUDGEL_LENGTH;	// 金棒の長さ
 	static const DirectX::SimpleMath::Vector3 CUDGEL_HADLE_POS;	// 金棒の取っ手の位置
 
+	DirectX::SimpleMath::Vector3	GetPosition()	override { return m_position; }	// 位置の取得
+	DirectX::Model* GetModel()		const { return m_model; }	// モデルの取得
 
-	DirectX::SimpleMath::Vector3	GetPosition()	override{ return m_position;	}	// 位置の取得
-	DirectX::Model*					GetModel()		const	{ return m_model;		}	// モデルの取得
-
-	Cudgel_Idling*		GetIdling()		const { return m_idling.get();		}	// 待機
-	Cudgel_Attacking*	GetAttacking()	const { return m_attacking.get();	}	// 攻撃
-	Cudgel_Sweeping*	GetSweeping()	const { return m_sweeping.get();	}	// 薙ぎ払い	
+	Cudgel_Idling* GetIdling()		const { return m_idling.get(); }	// 待機
+	Cudgel_Attacking* GetAttacking()	const { return m_attacking.get(); }	// 攻撃
+	Cudgel_Sweeping* GetSweeping()	const { return m_sweeping.get(); }	// 薙ぎ払い
 
 	// 当たり判定の位置の設定
-	void SetCollisionPosition(DirectX::SimpleMath::Matrix mat)	{ m_originalBox.Transform(*m_collision.get(), mat); }
+	void SetCollisionPosition(DirectX::SimpleMath::Matrix mat) { m_originalBox.Transform(*m_collision.get(), mat); }
 	// ワールド行列の設定
-	void SetWorldMatrix(DirectX::SimpleMath::Matrix mat)		{ m_worldMatrix = mat; }
-
+	void SetWorldMatrix(DirectX::SimpleMath::Matrix mat) { m_worldMatrix = mat; }
 
 public:
 	// コンストラクタ
@@ -77,7 +75,7 @@ private:
 	DirectX::SimpleMath::Vector3 m_velocity;	// 速度
 	DirectX::SimpleMath::Vector3 m_angle;		// 角度
 	DirectX::SimpleMath::Matrix m_worldMatrix;	// ワールド行列
-	DirectX::Model*				m_model;		// モデル
+	DirectX::Model* m_model;		// モデル
 
 	// 金棒の当たり判定1(実際の当たり判定)　
 	std::unique_ptr<DirectX::BoundingOrientedBox>	m_collision;

@@ -8,8 +8,7 @@ class Goblin;
 
 class GoblinAttacking : public IState
 {
-
-// 固定値 **
+	// 固定値 **
 private:
 	static constexpr float STATE_TIME = 3.0f;	// 状態の時間
 
@@ -20,7 +19,7 @@ private:
 	static constexpr float MAX_MINUS_SIZE = 0.35f;
 	static constexpr float MAX_Y_POS = 20.0f;
 
-// 公開関数 **
+	// 公開関数 **
 public:
 	// コンストラクタ
 	GoblinAttacking(Goblin* goblin);
@@ -37,7 +36,7 @@ public:
 	// 後処理を行う
 	void Finalize() override;
 
-// 内部関数 **
+	// 内部関数 **
 private:
 	// プレイヤーの探索を行う。
 	void SearchPlayer();
@@ -58,7 +57,5 @@ private:
 	DirectX::SimpleMath::Vector3 m_moveValue;		// 移動量
 	DirectX::SimpleMath::Vector3 m_movePosition;	// 移動位置
 };
-
-
 
 #endif	// GOBLIN_ATTACKING

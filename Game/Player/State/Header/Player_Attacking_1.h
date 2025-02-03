@@ -1,4 +1,3 @@
-
 #pragma once
 #ifndef PLAYER_ATTACKING_1_DEFINED
 #define PLAYER_ATTACKING_1_DEFINED
@@ -7,7 +6,6 @@
 // ƒvƒŒƒCƒ„[‚ÌUŒ‚ó‘Ô
 //
 // -----------------------------
-
 
 #pragma once
 #include "pch.h"

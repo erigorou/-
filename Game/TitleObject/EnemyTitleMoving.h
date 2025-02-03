@@ -9,8 +9,6 @@ class Particle;
 // 敵の待機ステートを定義
 class EnemyTitleMoving : public IState
 {
-
-
 public:
 
 	// コンストラクタ
@@ -28,11 +26,9 @@ public:
 	// 終了処理
 	void Finalize() override;
 
-	
-
 private:
-	static constexpr float MINIMAL		= 0.01f;
-	static constexpr float COOL_TIME	= 0.5f;
+	static constexpr float MINIMAL = 0.01f;
+	static constexpr float COOL_TIME = 0.5f;
 
 	// 座標
 	DirectX::SimpleMath::Vector3 m_position;
@@ -50,7 +46,6 @@ private:
 	// 敵
 	TitleEnemy* m_enemy;
 
-
 	// サイン波の振幅
 	float m_amplitude;
 	// サイン波の周波数
@@ -61,7 +56,6 @@ private:
 	bool m_canShake;
 	// シェイクパワー
 	float m_shakePower;
-
 };
 
 #endif		// ENEMY_IDLING_DEFINED

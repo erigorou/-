@@ -10,7 +10,6 @@ class EnemyEffect;
 class HPSystem;
 class Cudgel;
 
-
 #include "Face/Header/BossFaceIdling.h"
 #include "Face/Header/BossFaceAttacking.h"
 
@@ -22,8 +21,6 @@ class BossSweeping;
 class BossDashAttacking;
 class BossApproaching;
 class BossDead;
-
-
 
 // 敵の状態
 enum class BossState
@@ -44,17 +41,16 @@ enum class FaceState
 	Attacking,	// 攻撃
 };
 
-
 class Boss : public IEnemy
 {
-// --------------------------------
-//  固定値
-// --------------------------------
+	// --------------------------------
+	//  固定値
+	// --------------------------------
 public:
 	// 速さ
 	static constexpr float BOSS_SPEED = 0.1f;
 	// 大きさ
-	static constexpr float BOSS_SCALE= 0.6f;
+	static constexpr float BOSS_SCALE = 0.6f;
 	// 攻撃のクールタイム
 	static constexpr float COOL_TIME = 0.3f;
 	// 衝突判定のY座標
@@ -69,10 +65,9 @@ public:
 	// カメラの揺れる強さ
 	static constexpr float SHAKE_POWER = 0.25f;
 
-
-// --------------------------------
-//  アクセサ関数
-// --------------------------------
+	// --------------------------------
+	//  アクセサ関数
+	// --------------------------------
 public:
 	// HPの取得・設定
 	HPSystem* GetBossHP() const { return m_hp.get(); }
@@ -93,16 +88,15 @@ public:
 	// 衝突可能
 	void CanHit(bool flag) override { m_canHit = flag; }
 
-
 public:
 	// 刀のダメージを受ける許可を出す
 	void CanHitSword() { m_canHit = true; }
 	// 刀のダメージを受ける許可を取り消す
 	void CanNotHitSword() { m_canHit = false; }
 
-// --------------------------------
-//  メンバ関数(公開)
-// --------------------------------
+	// --------------------------------
+	//  メンバ関数(公開)
+	// --------------------------------
 public:
 	// コンストラクタ
 	Boss();
@@ -125,9 +119,9 @@ public:
 	// 当たったときの処理
 	void HitAction(InterSectData data)override;
 
-// --------------------------------
-//  メンバ関数(非公開)
-// --------------------------------
+	// --------------------------------
+	//  メンバ関数(非公開)
+	// --------------------------------
 private:
 	// ワールド行列の計算
 	void CalcrationWorldMatrix();
@@ -148,9 +142,9 @@ private:
 	// 死亡処理
 	void CheckAlive();
 
-// --------------------------------
-//  メンバ変数
-// --------------------------------
+	// --------------------------------
+	//  メンバ変数
+	// --------------------------------
 private:
 	// 武器
 	std::unique_ptr<Cudgel> m_cudgel;

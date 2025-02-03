@@ -24,7 +24,6 @@
 
 #include "Libraries/MyLib/DebugString.h"
 
-
 // -----------------------------
 // コンストラクタ
 // -----------------------------
@@ -37,14 +36,12 @@ QuestManager::QuestManager(PlayScene* playScene)
 {
 }
 
-
 // -----------------------------
 // デストラクタ
 // -----------------------------
 QuestManager::~QuestManager()
 {
 }
-
 
 // -----------------------------
 // クエストの初期化
@@ -55,7 +52,7 @@ void QuestManager::InitializeQuest()
 	int questIndex = GameData::GetInstance()->GetSelectStage();
 
 	// クエストリストの作成
-		CreateQuest(questIndex);
+	CreateQuest(questIndex);
 
 	if (m_questList.size() <= 0) return;
 
@@ -87,20 +84,18 @@ void QuestManager::Update(float elapsedTime)
 	{
 		// クエスト描画の更新
 		m_renderer->Update(elapsedTime);
-
 	}
 
 	// クエストのクリア
 	IsQuestClear();
 }
 
-
 // -----------------------------
 // クエストの更新
 // -----------------------------
 void QuestManager::UpdateQuest()
 {
-	if (m_renderer == nullptr	) return;	// クエストがない場合は終了
+	if (m_renderer == nullptr) return;	// クエストがない場合は終了
 	if (m_totalTime < DELAY_TIME) return;	// 最初の遅延時間内なら終了
 
 	if ((m_currentQuestNo < m_questList.size()))
@@ -109,7 +104,6 @@ void QuestManager::UpdateQuest()
 		m_renderer->IsClear(m_questList[m_currentQuestNo]->ExecuteChecker(m_playScene));
 	}
 }
-
 
 // -----------------------------
 // クエストを一つ更新する
@@ -137,14 +131,11 @@ void QuestManager::ChangeNextQuest()
 	}
 }
 
-
-
 // -----------------------------
 // クエストの描画
 // -----------------------------
 void QuestManager::DrawQuest()
 {
-
 	if (m_renderer != nullptr)
 	{
 		// クエストの描画
@@ -158,14 +149,12 @@ void QuestManager::DrawQuest()
 	}
 }
 
-
 // -----------------------------
 // クエストマネージャーの終了
 // -----------------------------
 void QuestManager::Finalize()
 {
 }
-
 
 // -----------------------------
 // クエストの作成
@@ -185,13 +174,12 @@ void QuestManager::CreateQuest(int questIndex)
 	case 2:
 		CreateQuestList_3rd();
 		break;
-	
+
 	default:
 		MessageBox(nullptr, L"クエストの作成に失敗しました", L"エラー", MB_OK);
 		break;
 	}
 }
-
 
 // -----------------------------------
 // クエストリストの作成 ステージ１
@@ -211,8 +199,6 @@ void QuestManager::CreateQuestList_1st()
 	m_questList.push_back(new TutorialDodgStart());
 	m_questList.push_back(new QuestPlayerAvoid());
 	m_questList.push_back(new TutorialEnd());
-	m_questList.push_back(new TutorialClear());
-
 
 	// クエストの中のテクスチャを読み込む
 	AddQuestTexture();
@@ -220,7 +206,6 @@ void QuestManager::CreateQuestList_1st()
 	// チュートリアルの作成
 	CreateTutorial();
 }
-
 
 // -----------------------------------
 // クエストリストの作成 ステージ２
@@ -237,7 +222,6 @@ void QuestManager::CreateQuestList_2nd()
 	// クエストの中のテクスチャを読み込む
 	AddQuestTexture();
 }
-
 
 // -----------------------------------
 // クエストリストの作成 ステージ３
@@ -280,7 +264,6 @@ void QuestManager::AddQuestTexture()
 	}
 }
 
-
 // -----------------------------------
 // チュートリアルのテクスチャを読み込む
 // -----------------------------------
@@ -310,9 +293,7 @@ void QuestManager::AddTutorialTexture()
 		// テクスチャリストに追加
 		m_tutorialTextureList.push_back(texture);
 	}
-
 }
-
 
 // -----------------------------------
 // チュートリアルの作成
@@ -326,8 +307,6 @@ void QuestManager::CreateTutorial()
 	m_tutorial = std::make_unique<Tutorial>(this);
 	m_tutorial->Initialize(m_tutorialTextureList[0]);
 }
-
-
 
 // -----------------------------------
 // クエストデータの消去
@@ -350,7 +329,6 @@ void QuestManager::ClearQuestData()
 	m_questList.clear();
 	m_textureList.clear();
 }
-
 
 // -----------------------------------
 // クエストのクリア

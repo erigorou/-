@@ -8,7 +8,6 @@
 #include "DeviceResources.h"
 #include "CommonStates.h"
 
-
 // --------------------
 // 固定値
 // --------------------
@@ -16,7 +15,6 @@
 const wchar_t* Tutorial::VS_PATH = L"Resources/cso/Quest_VS.cso";
 const wchar_t* Tutorial::PS_PATH = L"Resources/cso/Quest_PS.cso";
 const wchar_t* Tutorial::GS_PATH = L"Resources/cso/Quest_GS.cso";
-
 
 // --------------------
 // コンストラクタ
@@ -34,14 +32,12 @@ Tutorial::Tutorial(QuestManager* manager)
 {
 }
 
-
 // --------------------
 // デストラクタ
 // --------------------
 Tutorial::~Tutorial()
 {
 }
-
 
 // --------------------
 // 初期化処理
@@ -56,7 +52,7 @@ void Tutorial::Initialize(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> textu
 	CreateShader();
 	// コンスタントバッファの作成
 	ConstantBuffer();
-	
+
 	m_texture = texture;
 
 	// コモンステートの生成
@@ -64,7 +60,6 @@ void Tutorial::Initialize(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> textu
 	// プリミティブバッチの生成
 	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(context);
 }
-
 
 // --------------------
 // 更新処理
@@ -77,7 +72,6 @@ void Tutorial::Update(float elapsedTime)
 	// α値の更新処理
 	UpdateAlpha(elapsedTime);
 }
-
 
 // --------------------
 // タイマーの更新処理
@@ -93,7 +87,6 @@ void Tutorial::UpdateTimer(float elapsedTime)
 	// タイマーが0以下になったらタイマーを止める
 	if (m_currentTime <= 0.0f)	m_timerPlay = false;
 }
-
 
 // --------------------
 // α値の更新処理
@@ -113,8 +106,6 @@ void Tutorial::UpdateAlpha(float elapsedTime)
 	m_alpha = Easing::easeOutQuint(t);
 }
 
-
-
 // --------------------
 // 描画処理
 // --------------------
@@ -124,7 +115,7 @@ void Tutorial::Draw()
 	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 
 	// 頂点情報の設定
-	DirectX::VertexPositionColorTexture vertex[1] = 
+	DirectX::VertexPositionColorTexture vertex[1] =
 	{
 		DirectX::VertexPositionColorTexture
 		(
@@ -159,8 +150,6 @@ void Tutorial::Draw()
 	m_shader->EndSharder(context);
 }
 
-
-
 // --------------------
 // 終了処理
 // --------------------
@@ -174,7 +163,7 @@ void Tutorial::Finalize()
 void Tutorial::StartTimer()
 {
 	// タイマーが使用可能でないと処理を行わない
-	if (! m_canUseTimer)	return;
+	if (!m_canUseTimer)	return;
 
 	// タイマー起動
 	m_timerPlay = true;
@@ -183,7 +172,6 @@ void Tutorial::StartTimer()
 	// タイマーを使用不可にする
 	m_canUseTimer = false;
 }
-
 
 // --------------------
 // α値減らし開始
@@ -194,10 +182,7 @@ void Tutorial::StartAlphaMinus()
 
 	m_alphaFlag = true;
 	m_currentTime = ANIMATION_TIME;
-
 }
-
-
 
 // --------------------
 // シェーダーの生成
@@ -217,7 +202,6 @@ void Tutorial::CreateShader()
 			InputElements
 		);
 }
-
 
 // --------------------
 // コンスタントバッファの作成
@@ -240,7 +224,6 @@ void Tutorial::ConstantBuffer()
 		MessageBox(0, L"コンスタントバッファの生成に失敗しました.", NULL, MB_OK);
 	}
 }
-
 
 // --------------------
 // 定数バッファの更新処理
@@ -265,7 +248,6 @@ void Tutorial::UpdateConstantBuffer()
 	context->GSSetConstantBuffers(0, 1, cb);
 	context->PSSetConstantBuffers(0, 1, cb);
 }
-
 
 // --------------------
 // レンダーステートの設定

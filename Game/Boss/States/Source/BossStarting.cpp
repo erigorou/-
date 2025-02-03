@@ -15,7 +15,6 @@
 #include "Game/Player/Player.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
 
-
 // --------------------------
 // コンストラクタ
 // --------------------------
@@ -43,10 +42,7 @@ void BossStarting::Initialize()
 	// プレイヤーの取得
 	void* object = EventMessenger::ExecuteGetter(GetterList::GetPlayer);
 	m_player = object ? static_cast<IObject*>(object) : nullptr;
-
-
 }
-
 
 // --------------------------
 // 事前更新処理
@@ -62,9 +58,7 @@ void BossStarting::PreUpdate()
 	// 顔のステートを変更
 	FaceState face = FaceState::Idling;
 	EventMessenger::Execute(EventList::ChangeBossFace, &face);
-
 }
-
 
 // --------------------------
 // 更新処理
@@ -92,8 +86,6 @@ void BossStarting::Update(const float& elapsedTime)
 	}
 }
 
-
-
 // --------------------------
 // アニメーション更新処理
 // --------------------------
@@ -103,7 +95,6 @@ void BossStarting::UpdateAnimation()
 	else if (m_totalSeconds < MOVE_TIME)	UpdateMove();
 }
 
-
 // --------------------------
 // アニメーションの遅延処理
 // --------------------------
@@ -112,7 +103,6 @@ void BossStarting::UpdateDelay()
 	m_position = m_boss->GetPosition();
 	m_boss->SetPosition(DirectX::SimpleMath::Vector3(m_position.x, START_HEIGHT, m_position.z));
 }
-
 
 // --------------------------
 // アニメーションの移動処理
@@ -133,7 +123,6 @@ void BossStarting::UpdateMove()
 	}
 }
 
-
 // --------------------------
 // エフェクトを再生する
 // --------------------------
@@ -153,14 +142,12 @@ void BossStarting::PlayEffect()
 	m_isEndDelay = true;
 }
 
-
 // --------------------------
 // 事後更新処理
 // --------------------------
 void BossStarting::PostUpdate()
 {
 }
-
 
 // --------------------------
 // 終了処理

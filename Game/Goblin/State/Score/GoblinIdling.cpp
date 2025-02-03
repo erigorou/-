@@ -3,7 +3,6 @@
 #include "../../Goblin.h"
 #include "Libraries/MyLib/Math.h"
 
-
 // -------------------
 // コンストラクタ
 // -------------------
@@ -13,14 +12,12 @@ GoblinIdling::GoblinIdling(Goblin* goblin)
 {
 }
 
-
 // -------------------
 // デストラクタ
 // -------------------
 GoblinIdling::~GoblinIdling()
 {
 }
-
 
 // -------------------
 // 初期化する
@@ -30,8 +27,6 @@ void GoblinIdling::Initialize()
 	// ランダムにクールタイムを設定する
 	m_coolTime = 5.0f;
 }
-
-
 
 // -------------------
 // 初期化(in)
@@ -43,10 +38,7 @@ void GoblinIdling::PreUpdate()
 
 	// ランダムにクールタイムを設定する
 	m_coolTime = Math::RandomFloat(MIN_COOLTIME, MAX_COOLTIME);
-
 }
-
-
 
 // -------------------
 // 更新する
@@ -63,14 +55,12 @@ void GoblinIdling::Update(const float& elapsedTime)
 	}
 }
 
-
 // -------------------
 // 初期化(out)
 // -------------------
 void GoblinIdling::PostUpdate()
 {
 }
-
 
 // -------------------
 // 後処理を行う

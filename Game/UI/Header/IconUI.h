@@ -1,5 +1,3 @@
-
-
 // プリコンパイルヘッダー
 #include "pch.h"
 #include "DeviceResources.h"
@@ -24,7 +22,6 @@ public:
 public:
 	static const std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT;
 
-
 	void SetWindowSize(const int& width, const int& height);	// ウィンドウサイズの設定
 
 	void SetScale(DirectX::SimpleMath::Vector2 scale);			// スケールの設定
@@ -37,8 +34,6 @@ public:
 
 	void SetAnchor(ANCHOR anchor);				// アンカーポイントの設定
 	ANCHOR GetAnchor() { return m_anchor; }		// アンカーポイントの取得
-
-
 
 	IconUI();		// コンストラクタ
 	~IconUI();		// デストラクタ
@@ -89,5 +84,4 @@ private:
 	DirectX::SimpleMath::Vector2 m_position;
 
 	ANCHOR m_anchor;
-
 };

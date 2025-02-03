@@ -16,21 +16,20 @@ public:
 
 	static const float COOL_TIME;
 
-
 public:
 
 	// /////////////////敵の基礎情報を渡す関数/////////////////////////////////////////////////////////////////////
-	DirectX::SimpleMath::Vector3	GetPosition()	const	{ return m_position; }		// 鬼の座標を取得する
-	float							GetAngle()		const	{ return m_angle; }			// 鬼の回転角を取得する	
-	DirectX::SimpleMath::Matrix		GetWorldMatrix()const	{ return m_worldMatrix; }	// 敵のワールド座標を取得する
+	DirectX::SimpleMath::Vector3	GetPosition()	const { return m_position; }		// 鬼の座標を取得する
+	float							GetAngle()		const { return m_angle; }			// 鬼の回転角を取得する
+	DirectX::SimpleMath::Matrix		GetWorldMatrix()const { return m_worldMatrix; }	// 敵のワールド座標を取得する
 
-	void SetPosition	(const DirectX::SimpleMath::Vector3 pos)	{ m_position = pos; }		// 鬼の座標を設定する
-	void SetAngle		(const float angle)							{ m_angle = angle; }		// 鬼の回転角を設定する	
-	void SetWorldMatrix	(DirectX::SimpleMath::Matrix mat)			{ m_worldMatrix = mat; }	// 敵のワールド座標を設定する
+	void SetPosition(const DirectX::SimpleMath::Vector3 pos) { m_position = pos; }		// 鬼の座標を設定する
+	void SetAngle(const float angle) { m_angle = angle; }		// 鬼の回転角を設定する
+	void SetWorldMatrix(DirectX::SimpleMath::Matrix mat) { m_worldMatrix = mat; }	// 敵のワールド座標を設定する
 
 	// /////////////////敵のステートを渡す関数/////////////////////////////////////////////////////////////////////
-	EnemyTitleMoving*	GetTitleEnemyTitleMoving() const { return m_titleMoving.get(); }	// タイトル画面の敵の移動状態
-	EnemyTitleIdling*	GetTitleEnemyIdling() const { return m_titleIdling.get(); }	// タイトル画面の敵の待機状態
+	EnemyTitleMoving* GetTitleEnemyTitleMoving() const { return m_titleMoving.get(); }	// タイトル画面の敵の移動状態
+	EnemyTitleIdling* GetTitleEnemyIdling() const { return m_titleIdling.get(); }	// タイトル画面の敵の待機状態
 
 	// 現在のステートを返す
 	IState* GetCurrentState() const { return m_currentState; }
@@ -51,7 +50,6 @@ public:
 	// 終了処理
 	void Finalize();
 
-
 private:
 	// ステートの作成処理
 	void CreateState();
@@ -66,7 +64,6 @@ private:
 	DirectX::SimpleMath::Matrix m_worldMatrix;
 	// モデル
 	std::unique_ptr<DirectX::Model> m_model;
-
 
 	// ==== ステートパターンに使用 =============================================　
 	IState* m_currentState;			// 現在のステート（ステートパターン）

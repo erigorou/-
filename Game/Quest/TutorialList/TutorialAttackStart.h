@@ -3,7 +3,6 @@
 #include "Interface/IQuestChecker.h"
 #include "../../Scene/PlayScene.h"
 
-
 class TutorialAttackStart : public IQuestChecker
 {
 public:
@@ -21,7 +20,7 @@ public:
 
 		// チュートリアルのタイマーをスタート
 		tutorial->StartTimer();
-		
+
 		// タイマーが終了しているかどうか
 		return tutorial->GetTimerIsEnd();
 	};

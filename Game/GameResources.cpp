@@ -19,7 +19,6 @@ const wchar_t* GameResources::MODEL_BASE_PATH = L"Resources/Models/";
 // テクスチャのベースパス
 const wchar_t* GameResources::TEXTURE_BASE_PATH = L"Resources/Textures/";
 
-
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
@@ -30,7 +29,6 @@ GameResources::GameResources()
 	// テクスチャを読み込む
 	LoadTexture();
 }
-
 
 //---------------------------------------------------------
 // インスタンスを取得
@@ -45,7 +43,6 @@ GameResources* const GameResources::GetInstance()
 	// GameResourcesクラスのインスタンスを返す
 	return m_resources.get();
 }
-
 
 // --------------------------------------------------------
 // Jsonファイルを読み込んでモデルを生成する
@@ -87,8 +84,6 @@ void GameResources::LoadModelFromJson()
 		m_modelList[key] = std::move(model);
 	}
 }
-
-
 
 // --------------------------------------------------------
 // Jsonファイルを読み込んでテクスチャを生成する
@@ -134,7 +129,6 @@ void GameResources::LoadTexture()
 	}
 }
 
-
 DirectX::Model* GameResources::GetModel(std::string key) const
 {
 	// キーを検索
@@ -151,7 +145,6 @@ DirectX::Model* GameResources::GetModel(std::string key) const
 		return nullptr;
 	}
 }
-
 
 //---------------------------------------------------------
 // テクスチャを取得する

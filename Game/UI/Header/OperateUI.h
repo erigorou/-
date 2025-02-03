@@ -13,7 +13,6 @@ public:
 	static constexpr wchar_t PS_PATH[] = L"Resources/cso/OperationPS.cso";
 	static constexpr wchar_t GS_PATH[] = L"Resources/cso/OperationGS.cso";
 
-
 	std::vector<D3D11_INPUT_ELEMENT_DESC> InputElements =
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -21,9 +20,7 @@ public:
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3) + sizeof(DirectX::SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 
-
 	static constexpr float FADE_TIME = 1.2f;
-
 
 	struct ConstBuffer
 	{
@@ -35,12 +32,10 @@ public:
 		DirectX::SimpleMath::Vector4	time;
 	};
 
-
 	// パブリック関数
 public:
 	OperateUI(const wchar_t* texturePath);
 	~OperateUI();
-
 
 	void Initialize();
 	void Render();
@@ -54,8 +49,6 @@ public:
 
 	// プライベート関数
 private:
-
-
 
 	// プライベート変数
 private:

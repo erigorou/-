@@ -7,7 +7,6 @@ class QuestManager;
 class CustomShader;
 class DeviceResources;
 
-
 //スライドアクションの列挙数
 enum SLIDE_ACTION : int
 {
@@ -17,15 +16,14 @@ enum SLIDE_ACTION : int
 	SLIDE_IN
 };
 
-
 class QuestRenderer
 {
-// --------------------
-// 固定値
-// --------------------
+	// --------------------
+	// 固定値
+	// --------------------
 public:
 	// テクスチャサイズの大きさ
-	static constexpr int WIDTH  = 400;
+	static constexpr int WIDTH = 400;
 	static constexpr int HEIGHT = 120;
 
 	// テクスチャの初期座標
@@ -40,9 +38,9 @@ public:
 	static constexpr float FINAL_POSITION_WIDTH = WINDOW_WIDTH - WIDTH;
 
 	// アニメーション時間
-	static constexpr float ANIMATION_TIME	= 1.0f;
-	static constexpr float INITIAL_TIME		= -0.5f;
-	static constexpr float ANIMATION_WAIT	= 1.0f;
+	static constexpr float ANIMATION_TIME = 1.0f;
+	static constexpr float INITIAL_TIME = -0.5f;
+	static constexpr float ANIMATION_WAIT = 1.0f;
 
 	// 透明度
 	static constexpr float MAX_ALPHA = 1.0f;
@@ -60,7 +58,6 @@ public:
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3) + sizeof(DirectX::SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 
-
 	// 定数バッファ
 	struct CBuffer
 	{
@@ -69,19 +66,18 @@ public:
 		DirectX::SimpleMath::Vector3	padding;	// 空白
 	};
 
-
-// --------------------
-// アクセサ
-// --------------------
+	// --------------------
+	// アクセサ
+	// --------------------
 public:
 	void ChangeTexture(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture) { m_texture = texture; }	// テクスチャの変更
 
-	void IsClear(bool flag) { m_clearFlag = flag;		}	// クリアフラグの変更
-	bool CanChangeQuest()	{ return m_canChanegQuest;	}	// クエストの変更が可能か
+	void IsClear(bool flag) { m_clearFlag = flag; }	// クリアフラグの変更
+	bool CanChangeQuest() { return m_canChanegQuest; }	// クエストの変更が可能か
 
-// --------------------
-// 公開関数
-// --------------------
+	// --------------------
+	// 公開関数
+	// --------------------
 public:
 	// コンストラクタ
 	QuestRenderer(QuestManager* manager);
@@ -96,10 +92,9 @@ public:
 	// 終了処理
 	void Finalize();
 
-
-// --------------------
-// 内部関数
-// --------------------
+	// --------------------
+	// 内部関数
+	// --------------------
 private:
 	// シェーダーの生成
 	void CreateShader();
@@ -109,7 +104,6 @@ private:
 	void UpdateConstantBuffer();
 	// 描画設定
 	void SetRenderState();
-
 
 	// 画像をスライドさせない
 	void NoSlideTexture();
@@ -123,31 +117,26 @@ private:
 	// スライドアクションの追加
 	void AddSlideAction();
 
-// --------------------
-// メンバー変数
-// --------------------
+	// --------------------
+	// メンバー変数
+	// --------------------
 private:
 
-	QuestManager*					m_questManager;	// クエストマネージャー
-
+	QuestManager* m_questManager;	// クエストマネージャー
 
 	DirectX::SimpleMath::Vector3	m_position;	// 座標
 	float							m_angle;	// 回転角
 	DirectX::SimpleMath::Vector2	m_scale;	// 拡大率
 	float							m_alpha;	// 透明度
 
-
 	float	m_currentTime;	// 経過時間
 	float	m_elapsedTime;	// 経過時間
-
 
 	bool m_clearFlag;		// クエストのクリアフラグ
 	bool m_canChanegQuest;	// クエストの変更が可能か
 
-
 	std::vector<std::function<void()>> m_slideActions;	// スライドアクション
 	std::function<void()> m_currentAction; // 現在のアクション
-
 
 	// シェーダー
 	std::unique_ptr<CustomShader> m_shader;

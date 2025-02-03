@@ -19,7 +19,6 @@ namespace mylib
 		std::unique_ptr<DirectX::Keyboard::KeyboardStateTracker> m_keyboardTracker;
 		DirectX::Keyboard::State m_keyboardState;
 
-
 	public:
 		InputManager(const HWND& window);
 		~InputManager() = default;

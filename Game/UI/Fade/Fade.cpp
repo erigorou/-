@@ -16,7 +16,6 @@
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "Libraries/MyLib/Math.h"
 
-
 // 固定値 **
 const std::vector<D3D11_INPUT_ELEMENT_DESC> Fade::INPUT_LAYOUT =
 {
@@ -25,12 +24,11 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> Fade::INPUT_LAYOUT =
 	{ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3) + sizeof(DirectX::SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
 
-
 /// <summary>
 /// コンストラクタ
 /// </summary>
 Fade::Fade(SceneManager* scene)
-	: 
+	:
 	m_scene(scene),
 	m_easingValue{},
 	m_elapsedTime{},
@@ -42,14 +40,12 @@ Fade::Fade(SceneManager* scene)
 {
 }
 
-
 /// <summary>
 /// デストラクタ
 /// </summary>
 Fade::~Fade()
 {
 }
-
 
 /// <summary>
 /// 初期化関数
@@ -74,7 +70,6 @@ void Fade::Initialize()
 	// コモンステートの生成
 	m_states = std::make_unique<DirectX::CommonStates>(device);
 }
-
 
 /// <summary>
 /// シェーダー作成部分用関数
@@ -107,10 +102,10 @@ void Fade::CreateShader()
 	// シェーダーにデータを渡すためのコンスタントバッファ生成
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
-	bd.Usage			= D3D11_USAGE_DEFAULT;
-	bd.ByteWidth		= sizeof(ConstBuffer);
-	bd.BindFlags		= D3D11_BIND_CONSTANT_BUFFER;
-	bd.CPUAccessFlags	= 0;
+	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.ByteWidth = sizeof(ConstBuffer);
+	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	bd.CPUAccessFlags = 0;
 	device->CreateBuffer(&bd, nullptr, &m_CBuffer);
 }
 
@@ -125,7 +120,6 @@ void Fade::StartFadeIn()
 	m_fadeType = FadeType::FADE_IN;
 }
 
-
 void Fade::StartFadeOut()
 {
 	m_isFade = true;
@@ -139,19 +133,16 @@ void Fade::FadeStop()
 	m_fadeType = FadeType::FADE_NONE;
 }
 
-
-
 void Fade::Update(float elapsedTime)
 {
 	m_elapsedTime = elapsedTime;
 
 	// フェード中でない場合は何もしない
-	if ( ! m_isFade) return;
+	if (!m_isFade) return;
 
 	// タイマーのカウント
 	CountTimer();
 }
-
 
 void Fade::CountTimer()
 {
@@ -160,12 +151,10 @@ void Fade::CountTimer()
 	case FadeType::FADE_IN:		FadeIn();	break;
 	case FadeType::FADE_OUT:	FadeOut();	break;
 	case FadeType::END_DELAY:	FadeEnd();	break;
-	
+
 	default:								break;
 	}
 }
-
-
 
 /// <summary>
 /// フェードインの処理
@@ -181,7 +170,6 @@ void Fade::FadeIn()
 		m_isFade = false;
 	}
 }
-
 
 /// <summary>
 /// フェードアウト処理
@@ -202,7 +190,6 @@ void Fade::FadeOut()
 	}
 }
 
-
 void Fade::FadeEnd()
 {
 	// 時間を減らす
@@ -221,7 +208,6 @@ void Fade::FadeEnd()
 		m_fadeType = FadeType::FADE_NONE;
 	}
 }
-
 
 // 切り抜き用の画像を取得する
 void Fade::DrawStencilImage()
@@ -284,7 +270,7 @@ void Fade::DrawStencilImage()
 
 	// 渡すデータを登録する
 	cbuff.matView = DirectX::SimpleMath::Matrix::Identity;						// スクリーン座標で描画するため不要
-	cbuff.matProj = DirectX::SimpleMath::Matrix::Identity;						// スクリーン座標で描画するため不要	
+	cbuff.matProj = DirectX::SimpleMath::Matrix::Identity;						// スクリーン座標で描画するため不要
 	cbuff.matWorld = world.Transpose();
 	cbuff.Diffuse = DirectX::SimpleMath::Vector4::One;							// テクスチャの色
 	cbuff.time = DirectX::SimpleMath::Vector4(0.0f, 0.0f, 0.0f, 0.0f);				// フェードの時間（第一要素のみ使用）
@@ -316,7 +302,6 @@ void Fade::DrawStencilImage()
 	m_batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], 4);
 	m_batch->End();
 
-
 	//	描画した画面をcaptureSRVに保存する
 	deviceResources->GetD3DDevice()->CreateShaderResourceView
 	(
@@ -331,8 +316,6 @@ void Fade::DrawStencilImage()
 	// 使用した物を解放
 	context->ClearDepthStencilView(pDSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 0.0f, 0);
 }
-
-
 
 void Fade::Render()
 {
@@ -361,8 +344,8 @@ void Fade::Render()
 
 	// 渡すデータを登録する
 	cbuff.matView = SimpleMath::Matrix::Identity;						// スクリーン座標で描画するため不要
-	cbuff.matProj = SimpleMath::Matrix::Identity;						// スクリーン座標で描画するため不要	
-	cbuff.matWorld = SimpleMath::Matrix::Identity;						// スクリーン座標で描画するため不要	
+	cbuff.matProj = SimpleMath::Matrix::Identity;						// スクリーン座標で描画するため不要
+	cbuff.matWorld = SimpleMath::Matrix::Identity;						// スクリーン座標で描画するため不要
 	cbuff.Diffuse = SimpleMath::Vector4::One;							// テクスチャの色
 	cbuff.time = SimpleMath::Vector4(t, 0.0f, 0.0f, 0.0f);				// フェードの時間（第一要素のみ使用）
 
@@ -410,7 +393,7 @@ void Fade::Render()
 // ----------------------------------
 float Fade::CalcrateFadeValue(float t)
 {
-	if		(FadeType::FADE_IN == m_fadeType)	return Easing::easeBetweenIn(t, FADE_THRESHOLD, FADE_FIRST_SIZE, FADE_MAX_SIZE);
+	if (FadeType::FADE_IN == m_fadeType)	return Easing::easeBetweenIn(t, FADE_THRESHOLD, FADE_FIRST_SIZE, FADE_MAX_SIZE);
 	else if (FadeType::FADE_OUT == m_fadeType)	return Easing::easeBetweenOut(t, FADE_THRESHOLD, FADE_FIRST_SIZE, FADE_MAX_SIZE);
 
 	else return 0;

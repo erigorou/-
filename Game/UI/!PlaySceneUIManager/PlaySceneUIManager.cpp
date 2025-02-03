@@ -16,14 +16,12 @@
 #include "../Header/Warning.h"
 #include "../Header/Operation.h"
 
-
 // ----------------------------
 // 固定値
 // ----------------------------
 
 // プレイヤーのHPの位置
 const DirectX::SimpleMath::Vector2 PlaySceneUIManager::PLAYER_HP_POSITION = DirectX::SimpleMath::Vector2(Screen::LEFT + 50.0f, 50.0f);
-
 
 // ----------------------------
 // コンストラクタ
@@ -36,7 +34,6 @@ PlaySceneUIManager::PlaySceneUIManager(PlayScene* playScene)
 	m_pDR = m_commonResources->GetDeviceResources();
 }
 
-
 // ----------------------------
 // デストラクタ
 // ----------------------------
@@ -44,14 +41,12 @@ PlaySceneUIManager::~PlaySceneUIManager()
 {
 }
 
-
 // ----------------------------
 // 初期化関数
 // ----------------------------
 void PlaySceneUIManager::Initialize()
 {
 }
-
 
 // ----------------------------
 // UIの生成関数
@@ -65,32 +60,29 @@ void PlaySceneUIManager::CreateUI()
 	CreateOperation();
 }
 
-
-
 // ----------------------------
 // 更新関数
 // ----------------------------
 void PlaySceneUIManager::Update(float elapsedTime)
 {
-	m_playerHP	->	Update();
+	m_playerHP->Update();
 
 	if (m_enemyHP)	// エネミーが存在する場合
 	{
 		m_enemyHP->Update();
 	}
 
-	m_warning	->	Update(elapsedTime);
-	m_operation	->	Update(elapsedTime);
+	m_warning->Update(elapsedTime);
+	m_operation->Update(elapsedTime);
 }
-
 
 // ----------------------------
 // 描画関数
 // ----------------------------
 void PlaySceneUIManager::Render()
 {
-	m_warning	->	Render();
-	m_playerHP	->	Render();
+	m_warning->Render();
+	m_playerHP->Render();
 
 	if (m_enemyHP)	// エネミーが存在する場合
 	{
@@ -100,26 +92,24 @@ void PlaySceneUIManager::Render()
 	// チュートリアルでは描画しない
 	if (GameData::GetInstance()->GetSelectStage() <= 0) return;
 
-	m_operation	->	Render();
+	m_operation->Render();
 }
-
 
 // ----------------------------
 // 終了関数
 // ----------------------------
 void PlaySceneUIManager::Finalize()
 {
-	m_playerHP	->	Finalize();
+	m_playerHP->Finalize();
 
 	if (m_enemyHP)	// エネミーが存在する場合
 	{
 		m_enemyHP->Finalize();
 	}
 
-	m_warning	->	Finalize();
-	m_operation	->	Finalize();
+	m_warning->Finalize();
+	m_operation->Finalize();
 }
-
 
 // ----------------------------
 // プレイヤーのHPUIの生成関数
@@ -134,7 +124,6 @@ void PlaySceneUIManager::CreatePlayerHPUI()
 	m_playerHP = std::make_unique<PlayerHPUI>(playerHP);
 	m_playerHP->Initialize(m_pDR);
 }
-
 
 // ----------------------------
 // エネミーのHPUIの生成関数
@@ -153,7 +142,6 @@ void PlaySceneUIManager::CreateEnemyHPUI()
 	}
 }
 
-
 // ----------------------------
 // 警告UIの生成関数
 // ----------------------------
@@ -169,8 +157,6 @@ void PlaySceneUIManager::CreateWarning()
 	m_warning = std::make_unique<Warning>(playerHP);
 	m_warning->Initialize();
 }
-
-
 
 // ----------------------------
 // 操作説明UIの生成関数

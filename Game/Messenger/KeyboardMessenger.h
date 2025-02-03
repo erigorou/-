@@ -15,7 +15,6 @@ public:
 		PRESSED
 	};
 
-
 	// 配列の内容
 	enum class ArrayContentType : int
 	{
@@ -34,7 +33,6 @@ public:
 	static void Notify(const DirectX::Keyboard::State& keyboardState);
 	static void Notify(const DirectX::Keyboard::KeyboardStateTracker& keyboardTracker);
 
-
 	// 観察者リストをソートする
 	static void SortObserverList();
 
@@ -52,4 +50,3 @@ private:
 };
 
 #endif // MESSENGER_DEFINED
-

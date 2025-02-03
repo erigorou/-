@@ -25,7 +25,6 @@
 
 #include <cassert>
 
-
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
@@ -82,7 +81,6 @@ void TitleScene::Initialize()
 	Sound::ChangeBGM(Sound::BGM_TYPE::TITLE);
 }
 
-
 //---------------------------------------------------------
 // ロードする
 //---------------------------------------------------------
@@ -109,7 +107,6 @@ void TitleScene::LoadTextures()
 		)
 	);
 }
-
 
 //---------------------------------------------------------
 // テクスチャの中心を取得する
@@ -151,14 +148,13 @@ void TitleScene::CalculateTextureCenter()
 	);
 }
 
-
 //---------------------------------------------------------
 // オブジェクトの生成
 //---------------------------------------------------------
 void TitleScene::CreateObjects()
 {
-	m_camera	= Factory::CreateCamera	();
-	m_floor		= Factory::CreateFloor	();
+	m_camera = Factory::CreateCamera();
+	m_floor = Factory::CreateFloor();
 	m_sea = Factory::CreateSea();
 	m_skySphere = Factory::CreateSkySphere();
 
@@ -171,7 +167,6 @@ void TitleScene::CreateObjects()
 
 	m_particle = Factory::CreateParticle();
 }
-
 
 //---------------------------------------------------------
 // 更新する
@@ -208,14 +203,14 @@ void TitleScene::Update(float elapsedTime)
 //---------------------------------------------------------
 void TitleScene::Render()
 {
-	auto states		= m_commonResources	->	GetCommonStates		();
-	auto view		= m_camera			->	GetViewMatrix		();
+	auto states = m_commonResources->GetCommonStates();
+	auto view = m_camera->GetViewMatrix();
 
 	// オブジェクトの描画
-	m_floor->		Render(view, m_projection);
-	m_sea->			Render(view, m_projection);
-	m_enemy->		Render(view, m_projection);
-	m_skySphere->	DrawSkySphere(view, m_projection);
+	m_floor->Render(view, m_projection);
+	m_sea->Render(view, m_projection);
+	m_enemy->Render(view, m_projection);
+	m_skySphere->DrawSkySphere(view, m_projection);
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
 	m_spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, states->NonPremultiplied());
@@ -224,7 +219,7 @@ void TitleScene::Render()
 	DrawTexture();
 
 	// パーティクルの描画
-	m_particle->CreateBillboard(m_camera->GetEyePosition(),DirectX::SimpleMath::Vector3::Zero,m_camera->GetUpVector());
+	m_particle->CreateBillboard(m_camera->GetEyePosition(), DirectX::SimpleMath::Vector3::Zero, m_camera->GetUpVector());
 	m_particle->Render(view, m_projection);
 
 	// スプライトバッチの終わり
@@ -233,7 +228,6 @@ void TitleScene::Render()
 #ifdef _DEBUG
 #endif // _DEBUG
 }
-
 
 //---------------------------------------------------------
 // テクスチャの描画
@@ -260,7 +254,6 @@ void TitleScene::DrawTexture()
 		titlePos.x ,
 		TITLE_LOGO_CENTER_Y + moveValue * Easing::easeOutElastic(t)
 	};
-
 
 	// LOGO.png を中央に描画する
 	m_spriteBatch->Draw(
@@ -291,8 +284,6 @@ void TitleScene::DrawTexture()
 		0.0f                // レイヤ深度(画像のソートで必要)(layerDepth)
 	);
 }
-
-
 
 //---------------------------------------------------------
 // 後始末する

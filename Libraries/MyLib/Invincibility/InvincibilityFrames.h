@@ -12,7 +12,6 @@
 
 class InvincibilityFrames
 {
-
 };
 
 #endif // !INVINCIBILITY_FRAMES_DEFINED

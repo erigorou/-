@@ -15,9 +15,7 @@
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
-
 const wchar_t* WinResult::TEXTURE_PATH = L"Resources/Textures/UI/Win.png";
-
 
 //---------------------------------------------------------
 // コンストラクタ
@@ -45,7 +43,6 @@ WinResult::~WinResult()
 //---------------------------------------------------------
 void WinResult::Initialize()
 {
-
 	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
 	auto context = m_commonResources->GetDeviceResources()->GetD3DDeviceContext();
 
@@ -70,7 +67,6 @@ void WinResult::Initialize()
 		texSize,
 		m_texCenter
 	);
-
 
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
@@ -97,7 +93,6 @@ void WinResult::Render()
 
 	DirectX::SimpleMath::Vector2 texPos{ 0.0f, 200.0f };
 
-
 	// テクスチャを描画する
 	mylib::Texture::DrawTexture
 	(
@@ -109,10 +104,8 @@ void WinResult::Render()
 		0.0f
 	);
 
-
 #ifdef _DEBUG
 #endif // _DEBUG
-
 
 	// スプライトバッチの終わり
 	m_spriteBatch->End();

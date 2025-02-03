@@ -20,8 +20,6 @@
 #include "Game/Boss/Boss.h"
 #include "Game/Player/State/Header/Player_Attacking_2.h"
 
-
-
 // コンストラクタ
 PlayerAttacking_2::PlayerAttacking_2(Player* player)
 	:
@@ -37,12 +35,9 @@ PlayerAttacking_2::~PlayerAttacking_2()
 {
 }
 
-
 // 初期化処理
 void PlayerAttacking_2::Initialize()
 {
-
-
 }
 
 // 事前更新処理
@@ -70,7 +65,6 @@ void PlayerAttacking_2::Update(const float& elapsedTime)
 	m_player->TimeComparison(m_totalSeconds, Player::APPLIED_ATTACK_TIME, m_player->GetPlayerIdlingState(), elapsedTime);
 }
 
-
 // アニメーションの更新
 void PlayerAttacking_2::UpdateAnimation()
 {
@@ -90,9 +84,7 @@ void PlayerAttacking_2::UpdateAnimation()
 
 	// 付与
 	m_player->SetAnimationRotate(currentAnimPos);
-
 }
-
 
 // キー入力
 void PlayerAttacking_2::OnKeyPressed(const DirectX::Keyboard::Keys& key)
@@ -100,13 +92,10 @@ void PlayerAttacking_2::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 	if (key == DirectX::Keyboard::LeftShift && m_totalSeconds >= Player::X_COOL_TIME)	m_player->ChangeState(m_player->GetPlayerDodgingState());
 }
 
-
 void PlayerAttacking_2::OnKeyDown(const DirectX::Keyboard::Keys& key)
 {
 	UNREFERENCED_PARAMETER(key);
 }
-
-
 
 // 事後更新処理
 void PlayerAttacking_2::PostUpdate()
@@ -118,8 +107,6 @@ void PlayerAttacking_2::PostUpdate()
 	SwordState state = SwordState::Idle;
 	EventMessenger::Execute(EventList::ChangeSwordState, &state);
 }
-
-
 
 // 終了処理
 void PlayerAttacking_2::Finalize()

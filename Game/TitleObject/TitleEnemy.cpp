@@ -20,17 +20,17 @@
 #include "Interface/IState.h"
 
 // 固定値
-const float TitleEnemy::TITLE_ENEMY_SPEED	= 0.1f;
-const float TitleEnemy::TITLE_ENEMY_SCALE	= 1.0f;
-const float TitleEnemy::COOL_TIME	= 0.4f;
+const float TitleEnemy::TITLE_ENEMY_SPEED = 0.1f;
+const float TitleEnemy::TITLE_ENEMY_SCALE = 1.0f;
+const float TitleEnemy::COOL_TIME = 0.4f;
 
 // --------------------------------
 //  コンストラクタ
 // --------------------------------
 TitleEnemy::TitleEnemy()
 	: m_currentState()
-	, m_position{0.0f, 0.0f, 0.0f}
-	, m_angle{0.f}
+	, m_position{ 0.0f, 0.0f, 0.0f }
+	, m_angle{ 0.f }
 	, m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
 {
 }
@@ -75,8 +75,6 @@ void TitleEnemy::Initialize()
 	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
 }
 
-
-
 // --------------------------------
 //  更新処理
 // --------------------------------
@@ -86,7 +84,6 @@ void TitleEnemy::CreateState()
 	m_titleIdling = std::make_unique<EnemyTitleIdling>(this);		// タイトル画面の敵の待機
 	m_titleMoving = std::make_unique<EnemyTitleMoving>(this);	// タイトル画面の敵の移動
 
-
 	// === 状態の初期化 ===
 	m_titleIdling->Initialize();	// タイトル画面の敵の待機
 	m_titleMoving->Initialize();	// タイトル画面の敵の移動
@@ -94,7 +91,6 @@ void TitleEnemy::CreateState()
 	// 初期のステートを待機状態に割り当てる
 	m_currentState = m_titleIdling.get();
 }
-
 
 // --------------------------------
 //  状態の生成処理
@@ -111,7 +107,6 @@ void TitleEnemy::ChangeState(IState* newState)
 	m_currentState->PreUpdate();
 }
 
-
 // --------------------------------
 //  更新処理
 // --------------------------------
@@ -124,7 +119,6 @@ void TitleEnemy::Update(float elapsedTime)
 	// ステータスを更新しまーす
 	m_currentState->Update(elapsedTime);
 
-
 	m_worldMatrix = DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle + DirectX::XMConvertToRadians(180));	// 回転角の設定
 
 	m_velocity *= TitleEnemy::TITLE_ENEMY_SPEED;
@@ -135,7 +129,6 @@ void TitleEnemy::Update(float elapsedTime)
 		*= DirectX::SimpleMath::Matrix::CreateScale(TITLE_ENEMY_SCALE)		// サイズ計算
 		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);		// 位置の設定
 }
-
 
 // --------------------------------
 //  表示処理
@@ -152,8 +145,6 @@ void TitleEnemy::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::
 #ifdef _DEBUG
 #endif // _DEBUG
 }
-
-
 
 // --------------------------------
 //  終了処理

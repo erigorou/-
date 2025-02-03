@@ -5,7 +5,6 @@
 //
 // -------------------------------
 
-
 #pragma once
 #ifndef ISTATE_DEFINED
 #define ISTATE_DEFINED

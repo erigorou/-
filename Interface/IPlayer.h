@@ -28,4 +28,3 @@ public:
 };
 
 #endif // !1
-

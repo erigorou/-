@@ -7,17 +7,14 @@
 //
 // -----------------------------
 
-
 #pragma once
 #include "pch.h"
 #include "Interface/IPlayer.h"
-
 
 class Player;
 
 class PlayerAttacking_2 : public IPlayer
 {
-
 public:
 	// コンストラクタ
 	PlayerAttacking_2(Player* player);

@@ -34,7 +34,7 @@ mylib::DebugCamera::DebugCamera()
 //---------------------------------------------------------
 // 初期化する
 //---------------------------------------------------------
-void mylib::DebugCamera::Initialize(int screenWidth,int screenHeight)
+void mylib::DebugCamera::Initialize(int screenWidth, int screenHeight)
 {
 	CalculateRerativeScale(screenWidth, screenHeight);
 	CalculateViewMatrix();

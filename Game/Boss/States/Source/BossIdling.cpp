@@ -26,14 +26,12 @@ BossIdling::BossIdling(Boss* boss)
 {
 }
 
-
 // --------------------------
 // デストラクタ
 // --------------------------
 BossIdling::~BossIdling()
 {
 }
-
 
 // --------------------------
 // 初期化処理
@@ -44,7 +42,6 @@ void BossIdling::Initialize()
 	void* object = EventMessenger::ExecuteGetter(GetterList::GetPlayer);
 	m_player = object ? static_cast<IObject*>(object) : nullptr;
 }
-
 
 // --------------------------
 // 設定処理(in)
@@ -66,7 +63,6 @@ void BossIdling::PreUpdate()
 	m_angle = m_boss->GetAngle();
 }
 
-
 // --------------------------
 // 更新処理
 // --------------------------
@@ -79,7 +75,6 @@ void BossIdling::Update(const float& elapsedTime)
 	// 次のステートに遷移するかを検知
 	CheckNextState();
 }
-
 
 // --------------------------
 // 敵の挙動更新処理
@@ -109,8 +104,6 @@ void BossIdling::UpdateAnimation()
 	// 角度を設定
 	m_boss->SetAngle(m_angle);
 }
-
-
 
 // ----------------------------------
 // 次のステートに遷移するかを検知
@@ -157,15 +150,12 @@ void BossIdling::CheckNextState()
 	}
 }
 
-
-
 // --------------------------
 // 設定処理(out)
 // --------------------------
 void BossIdling::PostUpdate()
 {
 }
-
 
 // ---------------------------
 // 終了処理

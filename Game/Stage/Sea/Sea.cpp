@@ -9,7 +9,6 @@
 #include "DeviceResources.h"
 #include "../../Data/GameData.h"
 
-
 // -----------------
 // コンストラクタ
 // -----------------
@@ -19,14 +18,12 @@ Sea::Sea()
 	Create();
 }
 
-
 // -----------------
 // デストラクタ
 // -----------------
 Sea::~Sea()
 {
 }
-
 
 // -----------------
 // 生成
@@ -39,13 +36,13 @@ void Sea::Create()
 
 	// カスタムシェーダー群の生成処理
 	m_customShader = std::make_unique<CustomShader>
-			(device,
-				VS_PATH,
-				PS_PATH,
-				GS_PATH,
-				InputElements
-			);
-	
+		(device,
+			VS_PATH,
+			PS_PATH,
+			GS_PATH,
+			InputElements
+		);
+
 	// プリミティブバッチの生成
 	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(context);
 
@@ -67,8 +64,6 @@ void Sea::Create()
 	}
 }
 
-
-
 // -----------------
 // 描画
 // -----------------
@@ -83,7 +78,7 @@ void Sea::Render(DirectX::SimpleMath::Matrix view,
 	{
 		DirectX::VertexPositionColorTexture(
 			DirectX::SimpleMath::Vector3(0.0f,  0.0f, 0.0f),
-			DirectX::SimpleMath::Vector4(0.0f,0.0f,0.0f,1.0f), 
+			DirectX::SimpleMath::Vector4(0.0f,0.0f,0.0f,1.0f),
 			DirectX::SimpleMath::Vector2(0.0f, 0.0f)),
 	};
 

@@ -12,7 +12,6 @@
 #include "Game/Weapon/Cudgel/Cudgel.h"
 #include "../../States/Header/BossDashAttacking.h"
 
-
 // --------------------
 // コンストラクタ
 // --------------------
@@ -25,14 +24,12 @@ BossDashAttacking::BossDashAttacking(Boss* boss)
 {
 }
 
-
 // --------------------
 // デストラクタ
 // --------------------
 BossDashAttacking::~BossDashAttacking()
 {
 }
-
 
 // --------------------
 // 初期化処理
@@ -47,7 +44,6 @@ void BossDashAttacking::Initialize()
 	void* cudgel = EventMessenger::ExecuteGetter(GetterList::GetCudgel);
 	m_cudgel = cudgel ? static_cast<Cudgel*>(cudgel) : nullptr;
 }
-
 
 // --------------------
 // 事前更新処理
@@ -68,7 +64,6 @@ void BossDashAttacking::PreUpdate()
 	CudgelState state = CudgelState::Idle;
 	EventMessenger::Execute(EventList::ChangeCudgelState, &state);
 }
-
 
 // --------------------
 // 更新処理
@@ -91,20 +86,17 @@ void BossDashAttacking::Update(const float& elapsedTime)
 	}
 }
 
-
 // --------------------
 // 敵の挙動更新処理
 // --------------------
 void BossDashAttacking::UpdateAction()
 {
 	// ためモーションの時
-	if (m_totalSeconds		<= CHARGE_TIME)	ChargeAction();	// 貯め
+	if (m_totalSeconds <= CHARGE_TIME)	ChargeAction();	// 貯め
 	else if (m_totalSeconds <= DASH_TIME)	DashAction();	// ダッシュ
 	else if (m_totalSeconds <= WAIT_TIME)	WaitAction();	// 待機
 	else if (m_totalSeconds <= RETURN_TIME)	ReturnAction();	// 元に戻る
-
 }
-
 
 // --------------------
 // 貯め
@@ -130,7 +122,6 @@ void BossDashAttacking::ChargeAction()
 	m_boss->SetBodyTilt(m_bodyTilt);
 }
 
-
 // --------------------
 // ダッシュ
 // --------------------
@@ -144,7 +135,7 @@ void BossDashAttacking::DashAction()
 
 	// 現在の時間に基づいてサイン波で加速度を計算
 	float easing = (m_totalSeconds - CHARGE_TIME) / (DASH_TIME - CHARGE_TIME);
-	
+
 	// 座標の更新 *
 	float accelerationFactor = sin(static_cast<float>(easing * M_PI)); // サイン波で速度を変化
 
@@ -165,7 +156,6 @@ void BossDashAttacking::DashAction()
 	m_boss->SetBodyTilt(m_bodyTilt);
 }
 
-
 // --------------------
 // 待機
 // --------------------
@@ -184,7 +174,6 @@ void BossDashAttacking::WaitAction()
 	m_bodyTilt = DirectX::XMConvertToRadians(TILT_ANGLE - TILT_ANGLE * Easing::easeOutBounce(easing));
 	m_boss->SetBodyTilt(m_bodyTilt);
 }
-
 
 // --------------------
 // 元に戻る
@@ -207,8 +196,6 @@ void BossDashAttacking::ReturnAction()
 	m_boss->SetAngle(m_angle);
 }
 
-
-
 // --------------------
 // 事後更新処理
 // --------------------
@@ -222,7 +209,6 @@ void BossDashAttacking::PostUpdate()
 	FaceState face = FaceState::Idling;
 	EventMessenger::Execute(EventList::ChangeBossFace, &face);
 }
-
 
 // --------------------
 // 終了処理

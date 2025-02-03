@@ -33,7 +33,6 @@ public:
 		return std::trunc(num * scale) / scale;
 	};
 
-
 	// ====================================================================================================
 	/// <summary>
 	/// 小数点第〇〇位より下を切り捨てる処理
@@ -51,7 +50,6 @@ public:
 		// 計算結果を返す
 		return num;
 	}
-
 
 	// ====================================================================================================
 	/// <summary>
@@ -73,8 +71,6 @@ public:
 
 		return diffVec * diffLength;			// 押し戻すベクトルを計算し、返す
 	}
-
-
 
 	// ====================================================================================================
 	/// <summary>
@@ -105,10 +101,6 @@ public:
 		return Vector3(0, 0, 0);
 	}
 
-
-
-
-
 	// ====================================================================================================
 	/// <summary>
 	/// サイン波を計算する方法（Updateで更新）
@@ -118,7 +110,7 @@ public:
 	/// <param name="frequency">周波数</param>
 	/// <returns>サイン波の値</returns>
 	// ====================================================================================================
-	static float CalculatingSinWave(const float totalTime , const float amplitude, const float frequency)
+	static float CalculatingSinWave(const float totalTime, const float amplitude, const float frequency)
 	{
 		// サイン波の計算結果
 		return amplitude * std::sin(2.0f * DirectX::XM_PI * frequency * totalTime);
@@ -144,7 +136,7 @@ public:
 		float angle = acosf(dotProduct);					// 内積から角度を取得(弧度法)
 
 		Vector3 crossProduct = forward.Cross(worldForward);	// カメラの前方向ベクトルが右方向に向いているかどうかで符号を決定
-		angle = (crossProduct.y < 0)? -angle : angle;		// -180 ~ 180に収める。
+		angle = (crossProduct.y < 0) ? -angle : angle;		// -180 ~ 180に収める。
 
 		return angle;		// 角度（ラジアン単位）を返す
 	}
@@ -203,7 +195,6 @@ public:
 		return Vector3(randomX(engine), randomY(engine), randomZ(engine)); // 乱数を生成して返す
 	}
 
-
 	// ====================================================================================================
 	/// <summary>
 	/// 0 ~ 1 で正規化されたサイン波を返す
@@ -215,8 +206,6 @@ public:
 	{
 		return static_cast<float>(sin(t * M_PI));
 	}
-
-
 
 	// ====================================================================================================
 	/// <summary>
@@ -235,7 +224,6 @@ public:
 		// 線形補間の計算
 		return (1.0f - t) * start + t * end;
 	}
-
 
 	// ====================================================================================================
 	/// <summary>
@@ -262,7 +250,6 @@ public:
 			(1.0f - t) * start.z + t * end.z
 		};
 	}
-
 
 	// ====================================================================================================
 	/// <summary>
@@ -308,4 +295,3 @@ public:
 		return first < now && now <= end;
 	}
 };
-

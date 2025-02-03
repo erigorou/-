@@ -13,23 +13,23 @@ class Player;
 
 class Sword : public IObject
 {
-// ------------------------------------
-// 固定値
-// ------------------------------------
+	// ------------------------------------
+	// 固定値
+	// ------------------------------------
 public:
 	// 刀の大きさ
 	static const float SWORD_SCALE;
 	// 刀の位置
 	static constexpr DirectX::SimpleMath::Vector3 SWORD_DIR_FOR_PLAYER = { -1.5f, 1.0f, -2.0f };
 	// モデルの先端の高さ
-	static constexpr float MODEL_TOP_HEIGHT  = 55.0f;
+	static constexpr float MODEL_TOP_HEIGHT = 55.0f;
 	// モデルの根本の高さ
 	static constexpr float MODEL_ROOT_HEIGHT = 20.0f;
 
-// ------------------------------------
-// アクセサ
-// ------------------------------------
-	// プレイヤーの取得
+	// ------------------------------------
+	// アクセサ
+	// ------------------------------------
+		// プレイヤーの取得
 	Player* GetPlayer() { return m_player; }
 	// ワールド行列の設定
 	void SetWorldMatrix(DirectX::SimpleMath::Matrix mat) { m_worldMatrix = mat; }
@@ -42,11 +42,10 @@ public:
 	// 当たり判定の位置の設定
 	void SetCollisionPosition(DirectX::SimpleMath::Matrix mat) { m_originalBox.Transform(*m_collision.get(), mat); }
 
-
-// ------------------------------------
-// メンバ関数(公開)
-// ------------------------------------
-	// コンストラクタ
+	// ------------------------------------
+	// メンバ関数(公開)
+	// ------------------------------------
+		// コンストラクタ
 	Sword(Player* player);
 	// デストラクタ
 	~Sword();
@@ -68,19 +67,17 @@ public:
 	// 当たったときの処理
 	void HitAction(InterSectData data)  override;
 
-// ------------------------------------
-// メンバ関数(非公開)
-// ------------------------------------
+	// ------------------------------------
+	// メンバ関数(非公開)
+	// ------------------------------------
 private:
 	// ステートを生成
 	void CreateState();
 	void CreateCollision();
 
-
-
-// ------------------------------------
-// メンバ変数
-// ------------------------------------
+	// ------------------------------------
+	// メンバ変数
+	// ------------------------------------
 private:
 	// プレイヤー
 	Player* m_player;

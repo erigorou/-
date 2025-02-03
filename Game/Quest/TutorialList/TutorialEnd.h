@@ -3,7 +3,6 @@
 #include "Interface/IQuestChecker.h"
 #include "../../Scene/PlayScene.h"
 
-
 class TutorialEnd : public IQuestChecker
 {
 private:
@@ -11,7 +10,7 @@ private:
 public:
 
 	// テクスチャパスを取得する
-	const wchar_t* GetTexturePath() override { return nullptr; }
+	const wchar_t* GetTexturePath() override { return L"Resources/Textures/Quest/QuestUI_Boss.png"; }
 
 	// チュートリアルのテクスチャパスを取得する
 	const wchar_t* GetTutorialTexturePath() override { return L"Resources/Textures/Quest/TutorialEnd.png"; }
@@ -19,11 +18,10 @@ public:
 	// チェッカーを実行する
 	bool ExecuteChecker(PlayScene* playScene) override
 	{
-		auto tutorial = playScene->GetQuestManager()->GetTutorial();
+		// 敵マネージャーの取得
+		auto enemyManager = playScene->GetEnemyManager();
 
-		// alpha値を減らす
-		tutorial->StartAlphaMinus();
-
-		return tutorial->GetTimerIsEnd();
+		// 敵が全滅しているならtrueを返す
+		return !enemyManager->IsEnemysAlive();
 	};
 };

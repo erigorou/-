@@ -6,7 +6,6 @@
 #include "pch.h"
 #include "IScene.h"
 
-
 // 前方宣言
 class CommonResources;
 class Camera;
@@ -27,7 +26,6 @@ namespace mylib
 	class GridFloor;
 }
 
-
 class QuestSelectScene final : public IScene
 {
 public:
@@ -35,7 +33,7 @@ public:
 	static constexpr float ANIM_END = 1.5f;		// タイトル画面のアニメーション終了時間
 
 	static constexpr float STAGE_SELECT_DELAY = 2.5f;	// ステージセレクト画面の遅延時間
-	static constexpr float STAGE_SELECT_END	  = 1.0f;	// ステージセレクト画面のアニメーション終了時間
+	static constexpr float STAGE_SELECT_END = 1.0f;	// ステージセレクト画面のアニメーション終了時間
 
 	static constexpr float TITLE_LOGO_CENTER_Y = -165.0f;	// タイトルの中心座標 ※bottom基準
 
@@ -52,7 +50,6 @@ public:
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3), D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3) + sizeof(DirectX::SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
-
 
 	// 定数バッファ
 	struct CBuffer

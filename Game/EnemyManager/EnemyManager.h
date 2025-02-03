@@ -7,7 +7,6 @@
 #include "pch.h"
 #include "Interface/IEnemy.h"
 
-
 // 前方宣言
 class Enemy;
 class Goblin;
@@ -20,11 +19,13 @@ class PlayScene;
 // ---------------------------
 class EnemyManager
 {
-// ** 構造体 ** 
+	// ** 構造体 **
 public:
 	// 敵の種類
 	enum class EnemyType
-	{ Goblin,Boss };
+	{
+		Goblin, Boss
+	};
 
 	// 敵のデータ
 	struct EnemyData
@@ -40,10 +41,9 @@ public:
 		DirectX::SimpleMath::Vector3 position;
 	};
 
-
-// ---------------------------
-// 固定値
-// ---------------------------
+	// ---------------------------
+	// 固定値
+	// ---------------------------
 public:
 	// Jsonデータを読み込む
 	static constexpr wchar_t ENEMY_JSON_PATH[] = L"Resources/Jsons/EnemySpawnPoint.json";;
@@ -51,10 +51,9 @@ public:
 	// ボスが死亡したことを伝える際の遅延
 	static constexpr float BOSS_DEAD_DELAY = 2.0f;
 
-
-// ---------------------------
-// アクセサ
-// ---------------------------
+	// ---------------------------
+	// アクセサ
+	// ---------------------------
 public:
 	// ボスのポインタを取得
 	Boss* GetBossEnemy();
@@ -63,10 +62,9 @@ public:
 	// ターゲットとしている敵の座標を取得
 	DirectX::SimpleMath::Vector3 GetPicupEnemyPosition();
 
-
-// ---------------------------
-// 公開関数
-// ---------------------------
+	// ---------------------------
+	// 公開関数
+	// ---------------------------
 public:
 	// コンストラクタ
 	EnemyManager(PlayScene* playScene);
@@ -95,10 +93,9 @@ public:
 	// 全ての敵に被ダメ可能を通達
 	void AllEnemyCanHit(void* flag);
 
-
-// ---------------------------
-// 内部関数
-// ---------------------------
+	// ---------------------------
+	// 内部関数
+	// ---------------------------
 private:
 
 	// Jsonから敵の生成
@@ -108,10 +105,9 @@ private:
 	// ボスの生成処理
 	void GenerateBoss(const DirectX::SimpleMath::Vector3& position);
 
-
-// ---------------------------
-// メンバ変数
-// ---------------------------
+	// ---------------------------
+	// メンバ変数
+	// ---------------------------
 private:
 	// 敵の配列
 	std::vector<EnemyData> m_enemies;

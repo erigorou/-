@@ -35,7 +35,6 @@ public:
 	virtual void SetValue(float max) = 0;
 	// ƒQ[ƒW‚Ì—Ê‚ğæ“¾
 	virtual void GetValue(float value) = 0;
-
-}; 
+};
 
 #endif

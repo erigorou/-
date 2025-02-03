@@ -6,7 +6,6 @@
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "Game/Data/HPSystem.h"
 #include "CommonStates.h"
-
 // コンストラクタ
 Warning::Warning(HPSystem* hp)
 	:
@@ -24,12 +23,10 @@ Warning::Warning(HPSystem* hp)
 	m_pDR = CommonResources::GetInstance()->GetDeviceResources();
 }
 
-
 // デストラクタ
 Warning::~Warning()
 {
 }
-
 
 // 初期化処理
 void Warning::Initialize()
@@ -72,17 +69,15 @@ void Warning::Initialize()
 	}
 }
 
-
 // 更新処理
 void Warning::Update(float elapsedTime)
 {
-	if (m_hp->GetHP() > LOW_HP) 
+	if (m_hp->GetHP() > LOW_HP)
 		return;
 
 	// 経過時間の加算
 	m_totalTime += elapsedTime;
 }
-
 
 // 描画処理
 void Warning::Render()
@@ -96,13 +91,13 @@ void Warning::Render()
 
 	// バッファの作成
 	ConstBuffer cbuff;
-	cbuff.matWorld	= SimpleMath::Matrix::Identity;
-	cbuff.matView	= SimpleMath::Matrix::Identity;
-	cbuff.matProj	= SimpleMath::Matrix::Identity;
-	cbuff.diffuse	= SimpleMath::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-	cbuff.easing	= SimpleMath::Vector4(0.0f, 0.0f, 0.0f, 0.0f);
-	cbuff.time		= SimpleMath::Vector4(m_totalTime, 0.0f, 0.0f, 0.0f);
-	
+	cbuff.matWorld = SimpleMath::Matrix::Identity;
+	cbuff.matView = SimpleMath::Matrix::Identity;
+	cbuff.matProj = SimpleMath::Matrix::Identity;
+	cbuff.diffuse = SimpleMath::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	cbuff.easing = SimpleMath::Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+	cbuff.time = SimpleMath::Vector4(m_totalTime, 0.0f, 0.0f, 0.0f);
+
 	// コンスタントバッファの設定
 	context->UpdateSubresource(m_CBuffer.Get(), 0, nullptr, &cbuff, 0, 0);
 
@@ -114,7 +109,7 @@ void Warning::Render()
 	context->VSSetConstantBuffers(0, 1, cb);
 	context->GSSetConstantBuffers(0, 1, cb);
 	context->PSSetConstantBuffers(0, 1, cb);
-	
+
 	// サンプラーステートの設定
 	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
 	context->PSSetSamplers(0, 1, sampler);
@@ -136,7 +131,6 @@ void Warning::Render()
 	// シェーダーの終了
 	m_customShader->EndSharder(context);
 }
-
 
 // 終了処理
 void Warning::Finalize()

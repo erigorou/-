@@ -26,7 +26,6 @@ public:
 		DirectX::SimpleMath::Matrix projection
 	);
 
-
 private:
 	// SkyeSphere‚Ìƒ‚ƒfƒ‹
 	std::unique_ptr<DirectX::Model> m_skySphereModel;

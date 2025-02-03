@@ -25,11 +25,9 @@ public:
 	// 終了処理
 	void Finalize() override;
 
-
-
 private:
-	static constexpr float MINIMAL		= 0.01f;
-	static constexpr float COOL_TIME	= 0.5f;
+	static constexpr float MINIMAL = 0.01f;
+	static constexpr float COOL_TIME = 0.5f;
 
 	// 座標
 	DirectX::SimpleMath::Vector3 m_position;
@@ -49,7 +47,6 @@ private:
 	// モデル
 	DirectX::Model* m_model;
 
-
 	// サイン波の振幅
 	float m_amplitude;
 	// サイン波の周波数
@@ -58,7 +55,6 @@ private:
 	bool m_isJump;
 	// シェイクできるか
 	bool m_canShake;
-
 };
 
 #endif		// ENEMY_IDLING_DEFINED

@@ -17,8 +17,8 @@ namespace mylib
 		// fileName: ファイル名
 		// ------------------------------------------------
 		static void LoadTexture(
-			ID3D11Device* device										,	// デバイス
-			Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& texture	,	// テクスチャ
+			ID3D11Device* device,	// デバイス
+			Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& texture,	// テクスチャ
 			const wchar_t* fileName											// ファイル名
 		);
 
@@ -31,12 +31,10 @@ namespace mylib
 		// texCenter: テクスチャの中心座標
 		// ------------------------------------------------
 		static void CalculateTextureCenter(
-			Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& texture	,	// テクスチャ
-			DirectX::SimpleMath::Vector2& texSize						,	// テクスチャの大きさ
+			Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& texture,	// テクスチャ
+			DirectX::SimpleMath::Vector2& texSize,	// テクスチャの大きさ
 			DirectX::SimpleMath::Vector2& texCenter							// テクスチャの中心座標
 		);
-
-
 
 		// ------------------------------------------------
 		// テクスチャを描画する

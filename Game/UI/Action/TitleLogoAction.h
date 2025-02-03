@@ -7,9 +7,9 @@
 // タイトルロゴのアクション
 class TitleLogoAction final : public IAction
 {
-// ------------------------------
-// 固定値
-// ------------------------------
+	// ------------------------------
+	// 固定値
+	// ------------------------------
 private:
 	// 遅延
 	static constexpr float DELAY = 1.5f;
@@ -20,10 +20,9 @@ private:
 	// 移動距離
 	static constexpr float MOVE_DISTANCE = 200.0f;
 
-
-// ------------------------------
-// 公開関数
-// ------------------------------
+	// ------------------------------
+	// 公開関数
+	// ------------------------------
 public:
 	// 実行内容
 	ActionParams Execute(ActionParams param, const float time) override

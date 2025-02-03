@@ -8,7 +8,6 @@
 #include "Libraries/MyLib/EasingFunctions.h"
 #include "Libraries/MyLib/DebugString.h"
 
-
 // -------------------------------
 // コンストラクタ
 // -------------------------------
@@ -22,7 +21,6 @@ GoblinAttacking::GoblinAttacking(Goblin* goblin)
 {
 }
 
-
 // -------------------------------
 // 終了処理
 // -------------------------------
@@ -30,14 +28,12 @@ GoblinAttacking::~GoblinAttacking()
 {
 }
 
-
 // -------------------------------
 // 初期化処理
 // -------------------------------
 void GoblinAttacking::Initialize()
 {
 }
-
 
 // -------------------------------
 // 事前更新
@@ -67,7 +63,6 @@ void GoblinAttacking::Update(const float& elapsedTime)
 	}
 }
 
-
 // -------------------------------
 // アニメーションの更新処理
 // -------------------------------
@@ -81,26 +76,24 @@ void GoblinAttacking::UpdateAnimation()
 	ReturnAnimation();
 }
 
-
 // --------------------------------
 // 貯めアニメーション
 // --------------------------------
 void GoblinAttacking::ChargeAnimation()
 {
 	// 時間内出ない場合は終了
-	if (! Math::InTime(0, m_totalTime, CHARGE_TIME)) return;
+	if (!Math::InTime(0, m_totalTime, CHARGE_TIME)) return;
 
 	// 秒数を正規化
 	float t = m_totalTime / CHARGE_TIME;
-	
+
 	// 大きさyをsin波で変更
 	float sin = Math::NormalizeSin(t);
 	float sizeY = 1.0f - (sin * MAX_MINUS_SIZE);
-	
+
 	// 大きさを設定
 	m_goblin->SetScale(DirectX::SimpleMath::Vector3(1.0f, sizeY, 1.0f));
 }
-
 
 // -------------------------------
 // 攻撃アニメーション
@@ -108,7 +101,7 @@ void GoblinAttacking::ChargeAnimation()
 void GoblinAttacking::AttackAnimation()
 {
 	// 攻撃時間を過ぎたら終了
-	if (! Math::InTime(CHARGE_TIME, m_totalTime, ATTACK_TIME)) return;
+	if (!Math::InTime(CHARGE_TIME, m_totalTime, ATTACK_TIME)) return;
 
 	// 攻撃中フラグを立てる
 	m_goblin->SetIsAttacking(true);
@@ -132,15 +125,13 @@ void GoblinAttacking::AttackAnimation()
 	m_goblin->SetPosition(m_movePosition);
 }
 
-
 // -------------------------------
 // 元に戻るアニメーション
 // -------------------------------
 void GoblinAttacking::ReturnAnimation()
 {
-	if (! Math::InTime(ATTACK_TIME, m_totalTime, RETURN_TIME))return;
+	if (!Math::InTime(ATTACK_TIME, m_totalTime, RETURN_TIME))return;
 }
-
 
 // -------------------------------
 // 事後更新
@@ -150,14 +141,12 @@ void GoblinAttacking::PostUpdate()
 	m_goblin->SetIsAttacking(false);
 }
 
-
 // -------------------------------
 // 終了処理
 // -------------------------------
 void GoblinAttacking::Finalize()
 {
 }
-
 
 // -------------------------------
 // プレイヤーの探索を行う処理
@@ -180,4 +169,3 @@ void GoblinAttacking::SearchPlayer()
 	// ゴブリンとプレイヤーの距離を取得
 	m_moveValue = playerPos - m_position;
 }
-

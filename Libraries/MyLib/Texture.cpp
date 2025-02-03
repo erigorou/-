@@ -7,11 +7,11 @@
 // テクスチャをロードする
 // ------------------------------------------------
 void mylib::Texture::LoadTexture
-	(
+(
 	ID3D11Device* device,
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& texture,
 	const wchar_t* fileName
-	)
+)
 {
 	// 画像をロードする
 	DX::ThrowIfFailed(
@@ -24,16 +24,15 @@ void mylib::Texture::LoadTexture
 	);
 }
 
-
 // ------------------------------------------------
 // 画像の大きさを取得し、テクスチャの中心座標を計算する
 // ------------------------------------------------
 void mylib::Texture::CalculateTextureCenter
-	(
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& texture	, 
-	DirectX::SimpleMath::Vector2& texSize						, 
+(
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& texture,
+	DirectX::SimpleMath::Vector2& texSize,
 	DirectX::SimpleMath::Vector2& texCenter
-	)
+)
 {
 	Microsoft::WRL::ComPtr<ID3D11Resource> resource{};	// リソース
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> tex2D{};	// テクスチャ(2D版)
@@ -52,25 +51,24 @@ void mylib::Texture::CalculateTextureCenter
 	texCenter = texSize / 2.0f;
 }
 
-
 // ------------------------------------------------
 // テクスチャを描画する
 // ------------------------------------------------
 void mylib::Texture::DrawTexture
-	(
-		DirectX::SpriteBatch* spriteBatch,
-		DirectX::SimpleMath::Vector2 position,
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& texture,
-		DirectX::SimpleMath::Vector2 texCenter,
-		DirectX::SimpleMath::Vector2 scale,
-		float rotation
-	)
+(
+	DirectX::SpriteBatch* spriteBatch,
+	DirectX::SimpleMath::Vector2 position,
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& texture,
+	DirectX::SimpleMath::Vector2 texCenter,
+	DirectX::SimpleMath::Vector2 scale,
+	float rotation
+)
 {
 	auto common = CommonResources::GetInstance();
 
 	// TRIDENTロゴの描画位置を決める
 	RECT rect{ common->GetDeviceResources()->GetOutputSize() };
-	
+
 	// 中心から見て pos 分ずらす
 	DirectX::SimpleMath::Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
 	DirectX::SimpleMath::Vector2 calPos = pos + position;

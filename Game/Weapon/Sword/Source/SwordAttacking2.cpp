@@ -1,7 +1,7 @@
 /// ---------------------------
 ///
 /// プレイヤーの剣の攻撃（円切り）
-/// 
+///
 /// ---------------------------
 
 #include "pch.h"
@@ -19,13 +19,11 @@
 #include "Game/Boss/Boss.h"
 #include "Game/Weapon/Sword/Header/SwordAttacking2.h"
 
-
 // --------------------------------
 //  固定値
 // --------------------------------
-// 
+//
 const float SwordAttacking2::RADIAN_90 = DirectX::XMConvertToRadians(90);
-
 
 // --------------------------------
 //  コンストラクタ
@@ -48,14 +46,12 @@ SwordAttacking2::~SwordAttacking2()
 {
 }
 
-
 // --------------------------------
 //  初期化処理
 // --------------------------------
 void SwordAttacking2::Initialize()
 {
 }
-
 
 // --------------------------------
 //  状態開始処理
@@ -65,8 +61,8 @@ void SwordAttacking2::PreUpdate()
 	m_sword->SetAttackFlag(true); // 攻撃フラグを立てる
 
 	m_totalSeconds = 0.0f;	// 経過時間の初期化
-	m_rootPos	.clear();	// 根本の座標配列をクリア
-	m_tipPos	.clear();	// 先端の座標配列をクリア
+	m_rootPos.clear();	// 根本の座標配列をクリア
+	m_tipPos.clear();	// 先端の座標配列をクリア
 
 	bool canHit = true;
 
@@ -74,12 +70,11 @@ void SwordAttacking2::PreUpdate()
 	EventMessenger::Execute(EventList::EnemyCanHit, &canHit);
 }
 
-
 // --------------------------------
 //  更新処理
 // --------------------------------
 void SwordAttacking2::Update(float elapsedTime)
-{	
+{
 	// 経過時間を計測
 	m_totalSeconds += elapsedTime;
 
@@ -102,7 +97,6 @@ void SwordAttacking2::Update(float elapsedTime)
 	GetCudgelBothEnds();
 }
 
-
 // --------------------------------
 // アニメーション更新処理
 // --------------------------------
@@ -115,8 +109,8 @@ void SwordAttacking2::UpdateAnimation()
 		float t = m_totalSeconds / ATTACK_TIME;
 
 		// イージング関数を使って回転を計算
-		m_rot.y = MAX_SIDE_ANGLE					* Easing::easeOutBack(t);
-		m_rot.x = INIT_ANGLE + MAX_VERTICAL_ANGLE	* Easing::easeOutBack(t);
+		m_rot.y = MAX_SIDE_ANGLE * Easing::easeOutBack(t);
+		m_rot.x = INIT_ANGLE + MAX_VERTICAL_ANGLE * Easing::easeOutBack(t);
 
 		if (m_rot.y > MAX_SIDE_ANGLE)
 		{
@@ -128,8 +122,6 @@ void SwordAttacking2::UpdateAnimation()
 		m_rot.y = DirectX::XMConvertToRadians(m_rot.y);
 	}
 }
-
-
 
 // --------------------------------
 // ワールド行列の更新処理
@@ -164,21 +156,18 @@ void SwordAttacking2::UpdateWorldMatrix()
 	m_sword->SetWorldMatrix(m_worldMatrix);
 }
 
-
-
 // --------------------------------
 //  両端座標の取得処理
 // --------------------------------
 void SwordAttacking2::GetCudgelBothEnds()
 {
 	// 根本と頂点のワールド座標をそれぞれ取得
-	m_rootPos.	push_back(Vector3::Transform(Vector3(0.0f, Sword::MODEL_ROOT_HEIGHT, 0.0f)	, m_worldMatrix));
-	m_tipPos.	push_back(Vector3::Transform(Vector3(0.0f, Sword::MODEL_TOP_HEIGHT, 0.0f)	, m_worldMatrix));
+	m_rootPos.push_back(Vector3::Transform(Vector3(0.0f, Sword::MODEL_ROOT_HEIGHT, 0.0f), m_worldMatrix));
+	m_tipPos.push_back(Vector3::Transform(Vector3(0.0f, Sword::MODEL_TOP_HEIGHT, 0.0f), m_worldMatrix));
 
 	// パーティクルを生成
 	CreateSwordParticle();
 }
-
 
 // --------------------------------
 //  斬撃エフェクト生成処理
@@ -199,7 +188,6 @@ void SwordAttacking2::CreateSwordParticle()
 	}
 }
 
-
 // --------------------------------
 //  状態終了処理
 // --------------------------------
@@ -211,14 +199,12 @@ void SwordAttacking2::PostUpdate()
 	EventMessenger::Execute(EventList::EnemyCanHit, &canHit);
 }
 
-
 // --------------------------------
 //  終了処理
 // --------------------------------
 void SwordAttacking2::Finalize()
 {
 }
-
 
 // --------------------------------
 //  衝突時イベント

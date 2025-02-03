@@ -10,9 +10,9 @@ class Easying;
 /// </summary>
 class SwordAttacking1 : public IWeapon
 {
-// -----------------------
-// 固定値
-// -----------------------
+	// -----------------------
+	// 固定値
+	// -----------------------
 public:
 	// 90度のラジアン
 	static const float RADIAN_90;
@@ -30,10 +30,9 @@ public:
 	// 縦の最大
 	static constexpr float MAX_VERTICAL_ANGLE = 40.0f;
 
-
-// -----------------------
-// メンバ関数(公開)
-// -----------------------
+	// -----------------------
+	// メンバ関数(公開)
+	// -----------------------
 public:
 	// コンストラクタ
 	SwordAttacking1(Sword* sword);
@@ -54,10 +53,9 @@ public:
 	// 衝突処理
 	void HitAction(InterSectData data)override;
 
-
-// ---------------------
-// メンバ関数(非公開)
-// ---------------------
+	// ---------------------
+	// メンバ関数(非公開)
+	// ---------------------
 private:
 	// アニメーション更新処理
 	void UpdateAnimation();
@@ -66,11 +64,9 @@ private:
 	// 根本と頂点の座標を取得する ※ both ends = 両端
 	void GetCudgelBothEnds();
 
-
-
-// -----------------------
-// メンバ変数
-// -----------------------
+	// -----------------------
+	// メンバ変数
+	// -----------------------
 private:
 	// ソードの元を取得
 	Sword* m_sword;
@@ -84,5 +80,4 @@ private:
 
 	std::vector<DirectX::SimpleMath::Vector3>	m_rootPos;	// 根本の座標
 	std::vector<DirectX::SimpleMath::Vector3>	m_tipPos;	// 先端の座標
-
 };

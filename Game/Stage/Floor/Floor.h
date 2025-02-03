@@ -14,7 +14,6 @@ public:
 	static constexpr float	RADIUS = 200.0f;
 	static constexpr int	SEGMENTS = 16;
 
-
 	// コンストラクタ
 	Floor();
 	// デストラクタ

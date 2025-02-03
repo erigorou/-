@@ -37,7 +37,6 @@ std::unique_ptr<CollisionManager> Factory::CreateCollisionManager()
 	return collisionManager;
 }
 
-
 // ---------------------------------------------
 // カメラの生成関数
 // ---------------------------------------------
@@ -50,7 +49,6 @@ std::unique_ptr<Camera> Factory::CreateCamera()
 	// カメラの設定
 	return camera;
 }
-
 
 // ---------------------------------------------
 // 天球の生成関数
@@ -80,7 +78,6 @@ std::unique_ptr<Particle> Factory::CreateParticle()
 	return particle;
 }
 
-
 // ---------------------------------------------
 // 床の生成関数
 // ---------------------------------------------
@@ -93,7 +90,6 @@ std::unique_ptr<Floor> Factory::CreateFloor()
 	return floor;
 }
 
-
 // ---------------------------------------------
 // 海の生成関数
 // ---------------------------------------------
@@ -103,7 +99,6 @@ std::unique_ptr<Sea> Factory::CreateSea()
 	sea = std::make_unique<Sea>();
 	return sea;
 }
-
 
 // ---------------------------------------------
 // 壁の生成関数
@@ -117,9 +112,7 @@ std::unique_ptr<Wall> Factory::CreateWall()
 	wall->Initialize();
 	// 壁の設定
 	return wall;
-
 }
-
 
 // ---------------------------------------------
 // プレイヤーの生成関数
@@ -133,17 +126,15 @@ std::unique_ptr<Player> Factory::CreatePlayer(PlayScene* playScene)
 	// 初期化処理
 	player->Initialize();
 	// キーを登録
-	KeyboardMessenger::Attach(DirectX::Keyboard::X			, player.get(), KeyboardMessenger::KeyPressType::PRESSED);
-	KeyboardMessenger::Attach(DirectX::Keyboard::LeftShift	, player.get(), KeyboardMessenger::KeyPressType::PRESSED);
-	KeyboardMessenger::Attach(DirectX::Keyboard::Left		, player.get(), KeyboardMessenger::KeyPressType::DOWN);
-	KeyboardMessenger::Attach(DirectX::Keyboard::Right		, player.get(), KeyboardMessenger::KeyPressType::DOWN);
-	KeyboardMessenger::Attach(DirectX::Keyboard::Up			, player.get(), KeyboardMessenger::KeyPressType::DOWN);
-	KeyboardMessenger::Attach(DirectX::Keyboard::Down		, player.get(), KeyboardMessenger::KeyPressType::DOWN);
-	KeyboardMessenger::Attach(DirectX::Keyboard::L			, player.get(), KeyboardMessenger::KeyPressType::PRESSED);
+	KeyboardMessenger::Attach(DirectX::Keyboard::X,			player.get(), KeyboardMessenger::KeyPressType::PRESSED);
+	KeyboardMessenger::Attach(DirectX::Keyboard::LeftShift, player.get(), KeyboardMessenger::KeyPressType::PRESSED);
+	KeyboardMessenger::Attach(DirectX::Keyboard::Left,		player.get(), KeyboardMessenger::KeyPressType::DOWN);
+	KeyboardMessenger::Attach(DirectX::Keyboard::Right,		player.get(), KeyboardMessenger::KeyPressType::DOWN);
+	KeyboardMessenger::Attach(DirectX::Keyboard::Up,		player.get(), KeyboardMessenger::KeyPressType::DOWN);
+	KeyboardMessenger::Attach(DirectX::Keyboard::Down,		player.get(), KeyboardMessenger::KeyPressType::DOWN);
+
 	return player;
 }
-
-
 
 // ---------------------------------------------
 // 鬼（敵）の生成関数
@@ -156,13 +147,9 @@ std::unique_ptr<Boss> Factory::CreateBoss()
 	// 初期化処理
 	boss->Initialize();
 
-	//EventMessenger::Attach("canHit", std::bind(&Boss::CanHitSword, boss.get()));
-	//EventMessenger::Attach("canNotHit",std::bind(&Boss::CanNotHitSword, boss.get()));
-
 	// 鬼（敵）の設定
 	return boss;
 }
-
 
 // ---------------------------------------------
 // ゴブリンの生成関数
@@ -177,8 +164,6 @@ std::unique_ptr<Goblin> Factory::CreateGoblin(PlayScene* playScene)
 	// ゴブリンの設定
 	return goblin;
 }
-
-
 
 // ---------------------------------------------
 // プレイヤーの武器の生成関数
@@ -198,7 +183,6 @@ std::unique_ptr<Sword> Factory::CreateSword(Player* player)
 	return sword;
 }
 
-
 // ---------------------------------------------
 // 鬼（敵）の武器の生成関数
 // ---------------------------------------------
@@ -214,7 +198,6 @@ std::unique_ptr<Cudgel> Factory::CreateCudgel(Boss* boss)
 	return cudgel;
 }
 
-
 // ---------------------------------------------
 // プレイシーンのUIの生成関数
 // ---------------------------------------------
@@ -229,7 +212,6 @@ std::unique_ptr<PlaySceneUIManager> Factory::CreateUIManager(PlayScene* playScen
 	return uiManager;
 }
 
-
 // ---------------------------------------------
 // 敵マネージャーの生成関数
 // ---------------------------------------------
@@ -243,7 +225,6 @@ std::unique_ptr<EnemyManager> Factory::CreateEnemyManager(PlayScene* playScene)
 	// 敵マネージャーの設定
 	return enemyManager;
 }
-
 
 // ---------------------------------------------
 // クエストマネージャーの生成関数

@@ -6,7 +6,6 @@
 #include "Game/Scene/PlayScene.h"
 #include "Game/EnemyManager/EnemyManager.h"
 
-
 // -------------------
 // コンストラクタ
 // -------------------
@@ -17,7 +16,6 @@ GoblinDead::GoblinDead(Goblin* goblin)
 {
 }
 
-
 // -------------------
 // デストラクタ
 // -------------------
@@ -25,15 +23,12 @@ GoblinDead::~GoblinDead()
 {
 }
 
-
 // -------------------
 // 初期化する
 // -------------------
 void GoblinDead::Initialize()
 {
 }
-
-
 
 // -------------------
 // 初期化(in)
@@ -49,8 +44,6 @@ void GoblinDead::PreUpdate()
 	m_startPos = m_goblin->GetPosition();
 }
 
-
-
 // -------------------
 // 更新する
 // -------------------
@@ -65,7 +58,6 @@ void GoblinDead::Update(const float& elapsedTime)
 	// 一定時間経過したらゴブリンを消滅させる
 	if (m_totalTime > DEAD_TIME) m_goblin->DeleteGoblin();
 }
-
 
 // -------------------
 // アニメーション更新処理
@@ -83,14 +75,12 @@ void GoblinDead::UpdateAnimation()
 	m_goblin->SetPosition(m_startPos);
 }
 
-
 // -------------------
 // 初期化(out)
 // -------------------
 void GoblinDead::PostUpdate()
 {
 }
-
 
 // -------------------
 // 後処理を行う

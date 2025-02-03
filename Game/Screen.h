@@ -13,10 +13,10 @@ public:
 	static const int CENTER_X = WIDTH / 2;
 	static const int CENTER_Y = HEIGHT / 2;
 
-	static const int TOP	= 0;
-	static const int BOTTOM	= HEIGHT;
-	static const int LEFT	= 0;
-	static const int RIGHT	= WIDTH;
+	static const int TOP = 0;
+	static const int BOTTOM = HEIGHT;
+	static const int LEFT = 0;
+	static const int RIGHT = WIDTH;
 
 	Screen() = default;
 	~Screen() = default;

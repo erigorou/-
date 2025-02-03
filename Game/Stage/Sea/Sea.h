@@ -12,7 +12,7 @@ class CustomShader;
 
 class Sea
 {
-// 固定値 =======
+	// 固定値 =======
 public:
 	// データの受け渡し用構造体
 	struct ConstBuffer
@@ -38,21 +38,19 @@ public:
 	static constexpr wchar_t PS_PATH[] = L"Resources/cso/VoronoiPS.cso";
 	static constexpr wchar_t GS_PATH[] = L"Resources/cso/VoronoiGS.cso";
 
-
-// 公開関数 =============
+	// 公開関数 =============
 public:
 	Sea();
 	~Sea();
 	void Render(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj);
 
-// 内部関数 ============
+	// 内部関数 ============
 private:
 
 	// 生成
 	void Create();
 
-
-// 内部変数 ============
+	// 内部変数 ============
 private:
 	// コンストバッファー
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_CBuffer;
@@ -68,6 +66,5 @@ private:
 
 	float m_totalTime;
 };
-
 
 #endif // !SEA_H

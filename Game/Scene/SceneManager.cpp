@@ -20,7 +20,6 @@
 #include "../Sound/Sound.h"
 #include <cassert>
 
-
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
@@ -31,9 +30,9 @@ SceneManager::SceneManager()
 	, m_canChangeScene(false)
 	, m_isFade(false)
 {
-	m_commonResources	= CommonResources::	GetInstance();
-	m_gameResources		= GameResources::	GetInstance();
-	m_sound				= Sound::			GetInstance();
+	m_commonResources = CommonResources::GetInstance();
+	m_gameResources = GameResources::GetInstance();
+	m_sound = Sound::GetInstance();
 }
 
 //---------------------------------------------------------
@@ -58,7 +57,6 @@ void SceneManager::Initialize()
 #ifdef _DEBUG
 	ChangeScene(IScene::SceneID::QUEST);
 #endif // !_DEBUG
-
 }
 
 //---------------------------------------------------------
@@ -79,7 +77,7 @@ void SceneManager::Update(float elapsedTime)
 	const IScene::SceneID nextSceneID = m_currentScene->GetNextSceneID();
 
 	// シーンを変更しないとき
-	if (nextSceneID == IScene::SceneID::NONE && ! m_isFade) return;
+	if (nextSceneID == IScene::SceneID::NONE && !m_isFade) return;
 
 	// 初回セットアップ
 	if (m_nextSceneID == IScene::SceneID::NONE)
@@ -138,25 +136,25 @@ void SceneManager::CreateScene(IScene::SceneID sceneID)
 
 	switch (sceneID)
 	{
-		case IScene::SceneID::TITLE:
-			m_currentScene = std::make_unique<TitleScene>();
-			break;
+	case IScene::SceneID::TITLE:
+		m_currentScene = std::make_unique<TitleScene>();
+		break;
 
-		case IScene::SceneID::QUEST:
-			m_currentScene = std::make_unique<QuestSelectScene>();
-			break;
+	case IScene::SceneID::QUEST:
+		m_currentScene = std::make_unique<QuestSelectScene>();
+		break;
 
-		case IScene::SceneID::PLAY:
-			m_currentScene = std::make_unique<PlayScene>();
-			break;
+	case IScene::SceneID::PLAY:
+		m_currentScene = std::make_unique<PlayScene>();
+		break;
 
-		case IScene::SceneID::RESULT:
-			m_currentScene = std::make_unique<ResultScene>();
-			break;
+	case IScene::SceneID::RESULT:
+		m_currentScene = std::make_unique<ResultScene>();
+		break;
 
-		default:
-			assert(!"SceneManager::CreateScene::シーン名が存在しません！");
-			// no break
+	default:
+		assert(!"SceneManager::CreateScene::シーン名が存在しません！");
+		// no break
 	}
 
 	assert(m_currentScene && "SceneManager::CreateScene::次のシーンが生成されませんでした！");

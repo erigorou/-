@@ -26,12 +26,10 @@ EnemyTitleIdling::EnemyTitleIdling(TitleEnemy* enemy)
 {
 }
 
-
 // デストラクタ
 EnemyTitleIdling::~EnemyTitleIdling()
 {
 }
-
 
 // 初期化処理
 void EnemyTitleIdling::Initialize()
@@ -40,38 +38,33 @@ void EnemyTitleIdling::Initialize()
 	m_velocity = DirectX::SimpleMath::Vector3::Forward;
 }
 
-
 // 事前更新処理
 void EnemyTitleIdling::PreUpdate()
 {
 	using namespace DirectX::SimpleMath;
 
 	// 経過時間を初期化
-	m_totalSeconds = 0.0f; 
+	m_totalSeconds = 0.0f;
 
 	m_position = Vector3::Zero;
 }
 
-
 // 更新処理
 void EnemyTitleIdling::Update(const float& elapsedTime)
 {
-
 	using namespace DirectX::SimpleMath;
-	
+
 	// 合計の時間を計算する
 	m_totalSeconds += elapsedTime;
-
 
 	if (m_totalSeconds > TitleEnemy::COOL_TIME)
 	{
 		m_enemy->ChangeState(m_enemy->GetTitleEnemyTitleMoving());
 	}
 
-
 	// 回転行列の作成
-	Matrix angleMat  = Matrix::CreateScale(TitleEnemy::TITLE_ENEMY_SCALE)
-					*= Matrix::CreateRotationY(-m_angle);
+	Matrix angleMat = Matrix::CreateScale(TitleEnemy::TITLE_ENEMY_SCALE)
+		*= Matrix::CreateRotationY(-m_angle);
 
 	// 回転角を設定する
 	m_enemy->SetAngle(m_angle);
@@ -79,9 +72,6 @@ void EnemyTitleIdling::Update(const float& elapsedTime)
 	// 座標を設定する
 	m_enemy->SetPosition(m_position);
 }
-
-
-
 
 // 事後更新処理
 void EnemyTitleIdling::PostUpdate()
@@ -92,8 +82,6 @@ void EnemyTitleIdling::PostUpdate()
 	m_position.y = 0.f;
 	m_enemy->SetPosition(m_position);
 }
-
-
 
 void EnemyTitleIdling::Finalize()
 {

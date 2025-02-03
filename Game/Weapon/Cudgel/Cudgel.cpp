@@ -8,7 +8,7 @@
 #include <Model.h>
 #include <cassert>
 // ヘッダー
-#include "Game/CommonResources.h"	
+#include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "DeviceResources.h"
@@ -27,9 +27,8 @@
 
 const float Cudgel::CUDGEL_SCALE = Boss::BOSS_SCALE * 1.2f;						// 金棒の拡大率
 const DirectX::SimpleMath::Vector3 Cudgel::DIRECTION_ENEMY = { 8.0f, 5.0f, 0.0f };	// 持ち手の距離（敵と比較）
-const DirectX::SimpleMath::Vector3 Cudgel::CUDGEL_LENGTH =	{ 0.0f, 35.0f, 0.0f };	// 金棒の長さ（一番下から）
+const DirectX::SimpleMath::Vector3 Cudgel::CUDGEL_LENGTH = { 0.0f, 35.0f, 0.0f };	// 金棒の長さ（一番下から）
 const DirectX::SimpleMath::Vector3 Cudgel::CUDGEL_HADLE_POS = { 0.0f, 10.0f, 0.0f };	// 金棒の取っ手の部分（一番上）
-
 
 // --------------------------------
 // コンストラクタ
@@ -42,14 +41,12 @@ Cudgel::Cudgel(Boss* boss)
 {
 }
 
-
 // --------------------------------
 // デストラクタ
 // --------------------------------
 Cudgel::~Cudgel()
 {
 }
-
 
 // --------------------------------
 // 初期化処理
@@ -86,21 +83,20 @@ void Cudgel::Initialize()
 	CreateCollision();		// 当たり判定の生成
 }
 
-
 // --------------------------------
 // 状態の生成
 // --------------------------------
 void Cudgel::CreateState()
 {
 	// 状態の生成
-	m_idling	= std::make_unique<Cudgel_Idling>	(this);		// 待機
+	m_idling = std::make_unique<Cudgel_Idling>(this);		// 待機
 	m_attacking = std::make_unique<Cudgel_Attacking>(this);		// 攻撃
-	m_sweeping	= std::make_unique<Cudgel_Sweeping>	(this);		// 薙ぎ払い
+	m_sweeping = std::make_unique<Cudgel_Sweeping>(this);		// 薙ぎ払い
 
 	// 状態の初期化
-	m_idling->		Initialize();	// 待機
-	m_attacking->	Initialize();	// 攻撃
-	m_sweeping->	Initialize();	// 薙ぎ払い
+	m_idling->Initialize();	// 待機
+	m_attacking->Initialize();	// 攻撃
+	m_sweeping->Initialize();	// 薙ぎ払い
 
 	// 初期状態を指定
 	m_currentState = m_idling.get();
@@ -110,7 +106,6 @@ void Cudgel::CreateState()
 	m_states.push_back(m_attacking.get());
 	m_states.push_back(m_sweeping.get());
 }
-
 
 // --------------------------------
 // 当たり判定の生成
@@ -132,7 +127,6 @@ void Cudgel::CreateCollision()
 	// 当たり判定を記録する
 	EventMessenger::Execute(EventList::AddOBBCollision, &data);
 }
-
 
 // --------------------------------
 // 更新処理
@@ -162,14 +156,12 @@ void Cudgel::Render(
 #endif // _DEBUG
 }
 
-
 // --------------------------------
 // 終了処理
 // --------------------------------
 void Cudgel::Finalize()
 {
 }
-
 
 // --------------------------------
 // ステートの変更
@@ -188,8 +180,6 @@ void Cudgel::ChangeState(void* state)
 	// 新しいステートの事前処理を行う
 	m_currentState->PreUpdate();
 }
-
-
 
 void Cudgel::HitAction(InterSectData data)
 {

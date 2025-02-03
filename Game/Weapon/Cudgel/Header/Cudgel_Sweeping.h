@@ -6,7 +6,6 @@ class Cudgel;
 class Boss;
 class Easying;
 
-
 /// <summary>
 /// 攻撃状態
 /// </summary>
@@ -32,10 +31,9 @@ public:
 	static constexpr float WINDUP_ROTATE_ANGLE = 240.0f;
 
 	// 腕の長さ
-	static constexpr DirectX::SimpleMath::Vector3 ARM_LENGTH = {0.0f, 5.0f, 0.0f};
+	static constexpr DirectX::SimpleMath::Vector3 ARM_LENGTH = { 0.0f, 5.0f, 0.0f };
 	// 減点から移動する位置
-	static constexpr DirectX::SimpleMath::Vector3 ZERO_DIREC = {6.0f, 1.0f, 0.0f};
-
+	static constexpr DirectX::SimpleMath::Vector3 ZERO_DIREC = { 6.0f, 1.0f, 0.0f };
 
 	// コンストラクタ
 	Cudgel_Sweeping(Cudgel* cudgel);
@@ -54,7 +52,7 @@ public:
 	void Finalize()override;
 
 	void HitAction(InterSectData data)override;
-	
+
 private:
 	// Cudgelの回転を計算する関数
 	void UpdateCudgelRotation();

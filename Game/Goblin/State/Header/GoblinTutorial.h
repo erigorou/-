@@ -8,19 +8,16 @@ class Goblin;
 
 class GoblinTutorial : public IState
 {
-
-// -----------0-
-// 固定値
-// -------------
+	// -----------0-
+	// 固定値
+	// -------------
 public:
 	static constexpr float MIN_COOLTIME = 1.0f;
 	static constexpr float MAX_COOLTIME = 3.0f;
 
-
-
-// -----------0-
-// 公開関数
-// -------------
+	// -----------0-
+	// 公開関数
+	// -------------
 public:
 
 	GoblinTutorial(Goblin* goblin);
@@ -42,15 +39,12 @@ public:
 	// 後処理を行う
 	void Finalize() override;
 
-
-// メンバ
+	// メンバ
 private:
 	Goblin* m_goblin;	// 親
 	float m_TotalTime;	// 経過時間
 
 	float m_coolTime;	// クールタイム
-
 };
-
 
 #endif

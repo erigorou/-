@@ -7,7 +7,6 @@
 #include "pch.h"
 #include "Interface/IUserInterface.h"
 
-
 // ゲージクラス
 class GaugeUI : public IUserInterface
 {
@@ -26,13 +25,13 @@ public:
 	void Finalize()	override;
 
 	// 減少関数
-	void MinusValue(float value)	{ m_value += value; }
+	void MinusValue(float value) { m_value += value; }
 	// 上昇関数
-	void PlusValue(float value)		{ m_value -= value; }
+	void PlusValue(float value) { m_value -= value; }
 	// ゲージ量を設定
-	void SetMaxValue(float max)		{ m_value = max; }
+	void SetMaxValue(float max) { m_value = max; }
 	// ゲージ量の取得
-	float GetValue()				{ return m_value; }
+	float GetValue() { return m_value; }
 
 private:
 	// スプライトバッチ
@@ -41,7 +40,6 @@ private:
 	// ゲージの画像
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
 
-
 	// 座標
 	DirectX::SimpleMath::Vector2 m_position;
 	// 大きさ
@@ -49,6 +47,5 @@ private:
 	// ゲージの量
 	float m_value;
 };
-
 
 #endif

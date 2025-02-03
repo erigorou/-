@@ -3,9 +3,9 @@
 
 class GameResources
 {
-// ------------------------
-// ファイルパス
-// ------------------------
+	// ------------------------
+	// ファイルパス
+	// ------------------------
 public:
 	// モデルのJsonファイル
 	static const wchar_t* MODEL_JSON;
@@ -15,9 +15,9 @@ public:
 	static const wchar_t* MODEL_BASE_PATH;
 	static const wchar_t* TEXTURE_BASE_PATH;
 
-// ------------------------
-// アクセサ
-// ------------------------
+	// ------------------------
+	// アクセサ
+	// ------------------------
 public:
 
 	// Resoucesクラスのインスタンスを取得する
@@ -27,20 +27,18 @@ public:
 	// テクスチャを取得する
 	ID3D11ShaderResourceView* GetTexture(std::string key) const;
 
-
-// ------------------------
-// 公開関数
-// ------------------------
+	// ------------------------
+	// 公開関数
+	// ------------------------
 public:
 	// コンストラクタ
 	GameResources();
 	// デストラクタ
 	~GameResources() = default;
 
-
-// ------------------------
-// 内部関数
-// ------------------------
+	// ------------------------
+	// 内部関数
+	// ------------------------
 private:
 	// Jsonファイルを読み込んでモデルを生成する
 	void LoadModelFromJson();
@@ -48,10 +46,9 @@ private:
 	// テクスチャを読み込む
 	void LoadTexture();
 
-
-// ------------------------
-// 内部変数
-// ------------------------
+	// ------------------------
+	// 内部変数
+	// ------------------------
 private:
 
 	// リソース
@@ -62,5 +59,4 @@ private:
 
 	// テクスチャリスト
 	std::unordered_map<std::string, Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> m_textureList;
-
 };

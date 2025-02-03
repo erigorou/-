@@ -37,7 +37,7 @@ QuestSelectScene::QuestSelectScene()
 	m_totalSeconds{},
 	m_isChangeScene{},
 	m_selectIndex{},
-	m_shakePower{1.0f}
+	m_shakePower{ 1.0f }
 {
 	m_commonResources = CommonResources::GetInstance();
 }
@@ -65,17 +65,14 @@ void QuestSelectScene::Initialize()
 	Sound::ChangeBGM(Sound::BGM_TYPE::TITLE);
 }
 
-
-
-
 //---------------------------------------------------------
 // オブジェクトの生成
 //---------------------------------------------------------
 void QuestSelectScene::CreateObjects()
 {
-	m_camera	= Factory::CreateCamera	();
-	m_floor		= Factory::CreateFloor	();
-	m_sea		= Factory::CreateSea();
+	m_camera = Factory::CreateCamera();
+	m_floor = Factory::CreateFloor();
+	m_sea = Factory::CreateSea();
 	m_skySphere = Factory::CreateSkySphere();
 
 	m_enemy = std::make_unique<TitleEnemy>();
@@ -91,7 +88,6 @@ void QuestSelectScene::CreateObjects()
 	m_uiManager->Initialize();
 }
 
-
 //---------------------------------------------------------
 // 射影行列の生成
 //---------------------------------------------------------
@@ -106,7 +102,6 @@ void QuestSelectScene::CreateProjection()
 		0.1f, 100000.0f
 	);
 }
-
 
 //---------------------------------------------------------
 // 更新する
@@ -125,7 +120,6 @@ void QuestSelectScene::Update(float elapsedTime)
 	SelectStage(kbTracker.get());
 }
 
-
 //---------------------------------------------------------
 // オブジェクトの更新
 //---------------------------------------------------------
@@ -141,7 +135,6 @@ void QuestSelectScene::UpdateObject(const float elapsedTime)
 	// UIの更新
 	m_uiManager->Update(elapsedTime);
 }
-
 
 //---------------------------------------------------------
 // ステージ選択
@@ -160,14 +153,13 @@ void QuestSelectScene::SelectStage(DirectX::Keyboard::KeyboardStateTracker* keyb
 	}
 
 	// ステージ選択
-	if (keyboard->pressed.Up	)	m_selectIndex = Math::Clamp(m_selectIndex - 1, MIN_STAGE_INDEX, MAX_STAGE_INDEX);
-	if (keyboard->pressed.Down	)	m_selectIndex = Math::Clamp(m_selectIndex + 1, MIN_STAGE_INDEX, MAX_STAGE_INDEX);
+	if (keyboard->pressed.Up)	m_selectIndex = Math::Clamp(m_selectIndex - 1, MIN_STAGE_INDEX, MAX_STAGE_INDEX);
+	if (keyboard->pressed.Down)	m_selectIndex = Math::Clamp(m_selectIndex + 1, MIN_STAGE_INDEX, MAX_STAGE_INDEX);
 
 	// ゲームデータにステージを設定
 	auto gameData = GameData::GetInstance();
 	gameData->SetSelectStage(m_selectIndex);
 }
-
 
 //---------------------------------------------------------
 // 描画する
@@ -175,7 +167,7 @@ void QuestSelectScene::SelectStage(DirectX::Keyboard::KeyboardStateTracker* keyb
 void QuestSelectScene::Render()
 {
 	// ビュー行列を取得する
-	auto view = m_camera -> GetViewMatrix();
+	auto view = m_camera->GetViewMatrix();
 	// 床の描画
 	m_floor->Render(view, m_projection);
 	// 海の描画
@@ -185,12 +177,11 @@ void QuestSelectScene::Render()
 	// 天球の描画
 	m_skySphere->DrawSkySphere(view, m_projection);
 	// パーティクルの描画
-	m_particle->CreateBillboard(m_camera->GetEyePosition(),DirectX::SimpleMath::Vector3::Zero,m_camera->GetUpVector());
+	m_particle->CreateBillboard(m_camera->GetEyePosition(), DirectX::SimpleMath::Vector3::Zero, m_camera->GetUpVector());
 	m_particle->Render(view, m_projection);
 	// UIの描画
 	m_uiManager->Render();
 }
-
 
 //---------------------------------------------------------
 // 後始末する
@@ -198,7 +189,6 @@ void QuestSelectScene::Render()
 void QuestSelectScene::Finalize()
 {
 }
-
 
 //---------------------------------------------------------
 // 次のシーンIDを取得する

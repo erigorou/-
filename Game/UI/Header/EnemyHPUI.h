@@ -13,13 +13,12 @@ class EnemyHPUI
 private:
 	const wchar_t* ENEMY_HP_TEXTURE = L"Resources/Textures/UI/1px.png";	// 1pxのテクスチャのパス（画像として一応ね？）
 
-	static constexpr int MAX_WIDTH			= 500;
+	static constexpr int MAX_WIDTH = 500;
 
 	// 上から参照
-	static constexpr int	TOP_POSITION	= 650;
-	static constexpr int	BOTTOM_POSITION	= 670;
-	static constexpr float EASING_TIME		= 0.5f;
-
+	static constexpr int	TOP_POSITION = 650;
+	static constexpr int	BOTTOM_POSITION = 670;
+	static constexpr float EASING_TIME = 0.5f;
 
 public:
 	EnemyHPUI(HPSystem* hpSystem);	// コンストラクタ
@@ -43,8 +42,6 @@ private:
 
 	// 経過時間
 	float m_totalTime;
-
-
 };
 
 #endif

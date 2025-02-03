@@ -10,10 +10,9 @@
 
 class Operation
 {
-// 固定値
+	// 固定値
 private:
-	static const wchar_t* TEXT_PATH; 
-
+	static const wchar_t* TEXT_PATH;
 
 	static const wchar_t* X_PATH;
 	static const wchar_t* SHIFT_PATH;
@@ -22,9 +21,7 @@ private:
 	static const wchar_t* LEFT_PATH;
 	static const wchar_t* RIGHT_PATH;
 
-
 	static constexpr int LOW_HP = 2;
-
 
 	std::vector<D3D11_INPUT_ELEMENT_DESC> InputElements =
 	{
@@ -33,47 +30,41 @@ private:
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3) + sizeof(DirectX::SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 
-
 	static constexpr float FADE_TIME = 1.2f;
-
 
 	struct ConstBuffer
 	{
-		DirectX::SimpleMath::Matrix		matWorld	;
-		DirectX::SimpleMath::Matrix		matView		;
-		DirectX::SimpleMath::Matrix		matProj		;
-		DirectX::SimpleMath::Vector4	diffuse		;
-		DirectX::SimpleMath::Vector4	easing		;
-		DirectX::SimpleMath::Vector4	time		;
+		DirectX::SimpleMath::Matrix		matWorld;
+		DirectX::SimpleMath::Matrix		matView;
+		DirectX::SimpleMath::Matrix		matProj;
+		DirectX::SimpleMath::Vector4	diffuse;
+		DirectX::SimpleMath::Vector4	easing;
+		DirectX::SimpleMath::Vector4	time;
 	};
 
-
-// パブリック関数
+	// パブリック関数
 public:
 	Operation();
 	~Operation();
-
 
 	void Initialize();
 	void Update(float elapsedTime);
 	void Render();
 	void Finalize();
 
-// プライベート関数
+	// プライベート関数
 private:
 
-
-
-// プライベート変数
+	// プライベート変数
 private:
 
 	std::unique_ptr<CustomShader>			m_customShader;		// シェーダー
-	DX::DeviceResources*					m_pDR;				// デバイスリソース
+	DX::DeviceResources* m_pDR;				// デバイスリソース
 	Microsoft::WRL::ComPtr<ID3D11Buffer>	m_CBuffer;			// コンスタントバッファ
 	std::unique_ptr<DirectX::CommonStates>	m_states;			// ステート
 
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_batch;	// プリミティブバッチ
-	
+
 	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> m_texture;	// テクスチャ
 
 	float m_elapsedTime;	// フレーム時間
@@ -83,6 +74,4 @@ private:
 	std::unique_ptr<UI> m_textUI;							// UI
 };
 
-
 #endif // Operation_DEFINED
-

@@ -31,13 +31,11 @@ class CollisionManager;
 class EnemyManager;
 class QuestManager;
 
-
-class PlayScene final :	public IScene
+class PlayScene final : public IScene
 {
-
-// --------------------------
-// 固定値
-// --------------------------
+	// --------------------------
+	// 固定値
+	// --------------------------
 public:
 	// キーボードのキーの最大値
 	static constexpr int MAX_KEY = 256;
@@ -47,15 +45,13 @@ public:
 	static constexpr float NEAR_Z = 0.1f;
 	static constexpr float FAR_Z = 50000.0f;
 
-
-
-// --------------------------
-// アクセサ
-// --------------------------
+	// --------------------------
+	// アクセサ
+	// --------------------------
 public:
-	Player*		GetPlayer()		{ return m_player.get();}
-	Boss*		GetBoss();
-	Particle*	GetParticle()	{ return m_particles.get(); }
+	Player* GetPlayer() { return m_player.get(); }
+	Boss* GetBoss();
+	Particle* GetParticle() { return m_particles.get(); }
 	EnemyManager* GetEnemyManager() { return m_enemyManager.get(); }
 	PlaySceneUIManager* GetUIManager() { return m_uiManager.get(); }
 
@@ -68,9 +64,9 @@ public:
 	// クエストマネージャーを取得
 	QuestManager* GetQuestManager() { return m_questManager.get(); }
 
-// --------------------------
-// 公開関数
-// --------------------------
+	// --------------------------
+	// 公開関数
+	// --------------------------
 public:
 	PlayScene();
 	~PlayScene()					override;
@@ -82,10 +78,9 @@ public:
 
 	void GameEnd();								// ゲーム終了処理
 
-
-// --------------------------
-// 内部関数
-// --------------------------
+	// --------------------------
+	// 内部関数
+	// --------------------------
 private:
 	void CreateObjects();					// オブジェクトの生成
 	SceneID GetNextSceneID()const;			// 次のシーンIDを取得
@@ -95,14 +90,14 @@ private:
 	void UpdateKeyboard();					// キーボードの更新
 
 	// パーティクルの描画
-	void DrawParticle(const DirectX::SimpleMath::Matrix &view, DirectX::SimpleMath::Matrix projection);	
+	void DrawParticle(const DirectX::SimpleMath::Matrix& view, DirectX::SimpleMath::Matrix projection);
 
 	void CheckResult();						// 勝敗判定
 	void GameOverChacker();					// ゲームオーバー判定
 
-// --------------------------
-// 内部変数
-// --------------------------
+	// --------------------------
+	// 内部変数
+	// --------------------------
 private:
 	// データ関連
 	CommonResources* m_commonResources;					// 共通リソース
@@ -111,11 +106,11 @@ private:
 	bool m_isChangeScene; // シーン遷移フラグ
 
 	// システム周り
-	Sound*								m_sound;			// 音
+	Sound* m_sound;			// 音
 	std::unique_ptr<PlaySceneUIManager> m_uiManager;		// UIマネージャ
 	std::unique_ptr<CollisionManager>	m_collisionManager;	// 当たり判定マネージャ
 	std::unique_ptr<EnemyManager>		m_enemyManager;		// 敵マネージャ
-	HitStop*							m_hitStop;			// ヒットストップ
+	HitStop* m_hitStop;			// ヒットストップ
 	std::unique_ptr<QuestManager>		m_questManager;		// クエストマネージャ
 
 	// オブジェクト関連の変数
@@ -126,9 +121,8 @@ private:
 
 	// ステージ関連の変数
 	std::unique_ptr<Floor>	m_floor;			// 床
-	std::unique_ptr<Sea>	m_sea;				// 海	
+	std::unique_ptr<Sea>	m_sea;				// 海
 	std::unique_ptr<Wall>	m_wall;				// 壁（天球の枠）
-
 
 	// キーボード用の変数
 	DirectX::Keyboard::State				m_keyboardState;		// キーボードの状態

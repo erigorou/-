@@ -21,7 +21,6 @@ public:
 		FADE_NONE,	// なし
 	};
 
-
 	//	データ受け渡し用コンスタントバッファ(送信側)
 	struct ConstBuffer
 	{
@@ -45,7 +44,6 @@ public:
 	static constexpr wchar_t MASK_GS_PATH[] = L"Resources/cso/MaskGS.cso";
 	static constexpr wchar_t MASK_PS_PATH[] = L"Resources/cso/MaskPS.cso";
 
-
 	// フェードの設定
 	static constexpr float CHANGE_SCENE_EDLAY = 1.0f;
 	static constexpr float FADE_TIME = 1.0f;
@@ -53,7 +51,6 @@ public:
 	static constexpr float FADE_FIRST_SIZE = 1.25f;
 	static constexpr float FADE_MAX_SIZE = 6.0f;
 	static constexpr float FADE_THRESHOLD = 0.7f;
-
 
 	void StartFadeIn();
 	void StartFadeOut();
@@ -64,7 +61,6 @@ public:
 	void Initialize();					// 初期化処理
 	void Update(float elapsedTime);		// 更新処理
 	void Render();						// 描画処理
-
 
 private:
 	void CreateShader();						// シェーダーの生成処理
@@ -90,7 +86,6 @@ private:
 
 	float		m_easingValue;	// イージング値
 
-
 	Microsoft::WRL::ComPtr<ID3D11Buffer>		m_CBuffer;	// コンスタントバッファ
 
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_batch;
@@ -112,7 +107,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_captureRTV;
 	// 型抜き画像のみの描画結果を持つ画像のシェーダーリソースビュー
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_captureSRV;
-
 };
 
 #endif // !FADE_DEFINED

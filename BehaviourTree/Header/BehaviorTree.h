@@ -7,14 +7,14 @@
 // ビヘイビアツリーのルートクラス
 class BehaviorTree {
 public:
-    BehaviorTree();
+	BehaviorTree();
 
-    /// <summary>
-    /// rootに構築されたBTを実行する
-    /// </summary>
-    /// <returns>成功 or 失敗</returns>
-    bool run();
+	/// <summary>
+	/// rootに構築されたBTを実行する
+	/// </summary>
+	/// <returns>成功 or 失敗</returns>
+	bool run();
 
 private:
-    Sequence* root;
+	Sequence* root;
 };

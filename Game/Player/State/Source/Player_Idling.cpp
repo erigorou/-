@@ -11,7 +11,6 @@
 
 #include "Game/Player/State/Header/Player_Idling.h"
 
-
 // -------------------------------
 // コンストラクタ
 // -------------------------------
@@ -21,7 +20,6 @@ PlayerIdling::PlayerIdling(Player* player)
 {
 }
 
-
 // -------------------------------
 // デストラクタ
 // -------------------------------
@@ -29,14 +27,12 @@ PlayerIdling::~PlayerIdling()
 {
 }
 
-
 // -------------------------------
 // 初期化処理
 // -------------------------------
 void PlayerIdling::Initialize()
 {
 }
-
 
 // -------------------------------
 // 変更処理（in）
@@ -51,7 +47,6 @@ void PlayerIdling::PreUpdate()
 	// 移動加速度の初期化
 	m_player->SetAcceleration(DirectX::SimpleMath::Vector3::Zero);
 }
-
 
 // -------------------------------
 // 更新処理
@@ -69,7 +64,6 @@ void PlayerIdling::Update(const float& elapsedTime)
 	m_player->MovePlayer();
 }
 
-
 // -------------------------------
 // 変更処理（out）
 // -------------------------------
@@ -77,17 +71,14 @@ void PlayerIdling::PostUpdate()
 {
 }
 
-
-
 // -------------------------------
 // キーボード入力(押した瞬間)
 // -------------------------------
 void PlayerIdling::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 {
-	if (key == DirectX::Keyboard::X			)	m_player->ChangeState(m_player->GetPlayerAttackingState1());
-	if (key == DirectX::Keyboard::LeftShift	)	m_player->ChangeState(m_player->GetPlayerDodgingState());
+	if (key == DirectX::Keyboard::X)	m_player->ChangeState(m_player->GetPlayerAttackingState1());
+	if (key == DirectX::Keyboard::LeftShift)	m_player->ChangeState(m_player->GetPlayerDodgingState());
 }
-
 
 // -------------------------------
 // キーボード入力(押してる間)
@@ -96,8 +87,6 @@ void PlayerIdling::OnKeyDown(const DirectX::Keyboard::Keys& key)
 {
 	UNREFERENCED_PARAMETER(key);
 }
-
-
 
 // -------------------------------
 // 終了処理

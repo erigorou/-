@@ -37,7 +37,6 @@
 // UI関連　====================================================
 #include "Game/UI/!PlaySceneUIManager/PlaySceneUIManager.h"	// UI描画関連
 
-
 // ----------------
 // コンストラクタ
 // ----------------
@@ -45,13 +44,12 @@ PlayScene::PlayScene()
 	: m_commonResources{}
 	, m_debugCamera{}
 	, m_projection{}
-	, m_isChangeScene{false}
+	, m_isChangeScene{ false }
 	, m_smoothDeltaTime{}
 {
 	m_commonResources = CommonResources::GetInstance();
 	GameData::GetInstance()->SetBattleResult(GameData::BATTLE_RESULT::NONE);
 }
-
 
 // ----------------
 // デストラクタ
@@ -59,7 +57,6 @@ PlayScene::PlayScene()
 PlayScene::~PlayScene()
 {
 }
-
 
 // ----------------
 // 初期化関数
@@ -82,7 +79,6 @@ void PlayScene::Initialize()
 	CreateObjects();
 }
 
-
 // ----------------
 // オブジェクトの生成
 // ----------------
@@ -92,20 +88,19 @@ void PlayScene::CreateObjects()
 
 	m_hitStop = HitStop::GetInstance();
 
-	m_collisionManager	= Factory::CreateCollisionManager	();	// パーティクル
-	m_camera			= Factory::CreateCamera				();	// カメラ
-	m_particles			= Factory::CreateParticle			();	// パーティクル
+	m_collisionManager = Factory::CreateCollisionManager();	// パーティクル
+	m_camera = Factory::CreateCamera();	// カメラ
+	m_particles = Factory::CreateParticle();	// パーティクル
 
-	m_skySphere			= Factory::CreateSkySphere			();	// 天球	
-	m_floor				= Factory::CreateFloor				();	// フロア
-	m_sea				= Factory::CreateSea				();	// 海
-	m_wall				= Factory::CreateWall				();	// 壁
-	m_player			= Factory::CreatePlayer				(this);	// プレイヤ
+	m_skySphere = Factory::CreateSkySphere();	// 天球
+	m_floor = Factory::CreateFloor();	// フロア
+	m_sea = Factory::CreateSea();	// 海
+	m_wall = Factory::CreateWall();	// 壁
+	m_player = Factory::CreatePlayer(this);	// プレイヤ
 
-	m_uiManager		= Factory::CreateUIManager				(this);	// UIマネージャー
-	m_enemyManager	= Factory::CreateEnemyManager			(this);	// 敵マネージャー
-	m_questManager	= Factory::CreateQuestManager			(this);	// クエストマネージャー
-
+	m_uiManager = Factory::CreateUIManager(this);	// UIマネージャー
+	m_enemyManager = Factory::CreateEnemyManager(this);	// 敵マネージャー
+	m_questManager = Factory::CreateQuestManager(this);	// クエストマネージャー
 
 	m_uiManager->CreateUI();	// UIの生成
 	// 観察者リストをソートする
@@ -117,8 +112,6 @@ void PlayScene::CreateObjects()
 	// BGM変更
 	Sound::GetInstance()->ChangeBGM(Sound::BGM_TYPE::PLAY);
 }
-
-
 
 // --------------------------------
 // キーが押されたかどうかを判定する
@@ -138,7 +131,6 @@ inline bool IsKeyPress(DirectX::Keyboard::KeyboardStateTracker& stateTracker)
 	return false;
 }
 
-
 // --------------------------------
 // キーが押下げられたかどうかを判定する
 // --------------------------------
@@ -156,7 +148,6 @@ inline bool IsKeyDown(DirectX::Keyboard::State& state)
 	return false;
 }
 
-
 // --------------------------------
 // 更新処理
 // --------------------------------
@@ -167,7 +158,6 @@ void PlayScene::Update(float elapsedTime)
 	// オブジェクトの更新処理
 	UpdateObjects(elapsedTime);
 }
-
 
 // --------------------------------
 // キーボードの更新処理
@@ -186,7 +176,6 @@ void PlayScene::UpdateKeyboard()
 	if (m_keyboardStateTracker.IsKeyPressed(DirectX::Keyboard::Keys::Space)) m_enemyManager->ChangeCameraTarget();
 }
 
-
 // --------------------------------
 // オブジェクトの更新処理
 // --------------------------------
@@ -198,22 +187,20 @@ void PlayScene::UpdateObjects(float elapsedTime)
 	float smoothDeltaTime = m_hitStop->GetSmoothDeltaTime();
 
 	// オブジェクトの更新
-	m_uiManager		->Update(elapsedTime);
-	m_player		->Update(smoothDeltaTime);
-	m_enemyManager	->Update(smoothDeltaTime);
-	m_questManager	->Update(elapsedTime);
+	m_uiManager->Update(elapsedTime);
+	m_player->Update(smoothDeltaTime);
+	m_enemyManager->Update(smoothDeltaTime);
+	m_questManager->Update(elapsedTime);
 	UpdateCamera(elapsedTime);
 
 	// パーティクルの更新
-	m_particles->Update(elapsedTime,m_player->GetPosition(),m_player->GetVelocity());
+	m_particles->Update(elapsedTime, m_player->GetPosition(), m_player->GetVelocity());
 
 	// 衝突判定の更新処理
 	m_collisionManager->Update();
 
-
 	GameOverChacker();	// ゲームオーバー判定
 }
-
 
 // --------------------------------
 // 描画関数
@@ -225,14 +212,14 @@ void PlayScene::Render()
 
 	m_collisionManager->Render(view, m_projection);	// 当たり判定
 
-	m_skySphere->	DrawSkySphere	(view, m_projection);	// 空
-	m_floor->		Render			(view, m_projection);	// 地面
-	m_sea->			Render			(view, m_projection);	// 海
-	m_wall->		Render			(view, m_projection);	// 壁
+	m_skySphere->DrawSkySphere(view, m_projection);	// 空
+	m_floor->Render(view, m_projection);	// 地面
+	m_sea->Render(view, m_projection);	// 海
+	m_wall->Render(view, m_projection);	// 壁
 
-	m_player->		Render(view, m_projection);	// プレイヤー
+	m_player->Render(view, m_projection);	// プレイヤー
 	m_enemyManager->Render(view, m_projection); // 敵（複数）
-	
+
 	DrawParticle(view, m_projection);	// パーティクル
 
 	m_questManager->DrawQuest();	// クエスト
@@ -249,7 +236,6 @@ void PlayScene::DrawParticle(const DirectX::SimpleMath::Matrix& view, DirectX::S
 	// パーティクルの描画
 	m_particles->Render(view, projection);
 }
-
 
 // --------------------------------
 // 終了関数
@@ -283,7 +269,6 @@ DirectX::SimpleMath::Vector3 PlayScene::GetTargetPosition()
 	return m_enemyManager->GetPicupEnemyPosition();
 }
 
-
 // --------------------------------
 // 次のシーンIDを取得
 // --------------------------------
@@ -299,8 +284,6 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 	return IScene::SceneID::NONE;
 }
 
-
-
 // --------------------------------
 // リザルトに行けるかどうかを判定
 // --------------------------------
@@ -308,7 +291,6 @@ void PlayScene::CheckResult()
 {
 	m_isChangeScene = true;
 }
-
 
 // --------------------------------
 // ゲームオーバー判定
@@ -329,7 +311,6 @@ void PlayScene::GameOverChacker()
 		GameEnd();
 	}
 }
-
 
 // --------------------------------
 // ゲーム終了処理

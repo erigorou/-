@@ -12,7 +12,6 @@ private:
 	static constexpr wchar_t PS_PATH[] = L"Resources/cso/OperationPS.cso";
 	static constexpr wchar_t GS_PATH[] = L"Resources/cso/OperationGS.cso";
 
-
 	std::vector<D3D11_INPUT_ELEMENT_DESC> InputElements =
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -20,9 +19,7 @@ private:
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3) + sizeof(DirectX::SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 
-
 	static constexpr float FADE_TIME = 1.2f;
-
 
 	struct ConstBuffer
 	{
@@ -34,12 +31,10 @@ private:
 		DirectX::SimpleMath::Vector4	time;
 	};
 
-
 	// パブリック関数
 public:
 	UI(const wchar_t* texturePath);
 	~UI();
-
 
 	void Initialize();
 	void Render();
@@ -48,13 +43,11 @@ public:
 	// プライベート関数
 private:
 
-
-
 	// プライベート変数
 private:
 
 	std::unique_ptr<CustomShader>			m_customShader;		// シェーダー
-	DX::DeviceResources*					m_pDR;				// デバイスリソース
+	DX::DeviceResources* m_pDR;				// デバイスリソース
 	Microsoft::WRL::ComPtr<ID3D11Buffer>	m_CBuffer;			// コンスタントバッファ
 	std::unique_ptr<DirectX::CommonStates>	m_states;			// ステート
 

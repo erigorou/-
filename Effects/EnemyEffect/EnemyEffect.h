@@ -21,7 +21,7 @@ public:
 	static constexpr wchar_t DAMAGE_VS_PATH[] = L"Resources/cso/DamageEffectVS.cso";
 	// 頂点入力レイアウト
 	std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT;
-	
+
 	// 定数バッファ
 	struct ConstBuffer
 	{
@@ -61,7 +61,6 @@ public:
 		const DirectX::SimpleMath::Matrix& proj
 	);
 
-
 	// ----------------------------
 	// メンバ関数（非公開）
 	// ----------------------------
@@ -72,7 +71,6 @@ private:
 	void CreateConstBuffer();
 	// 定数バッファの更新処理
 	void UpdateConstBuffer(ConstBuffer* cb);
-
 
 	// ----------------------------
 	// メンバ変数
