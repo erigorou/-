@@ -71,7 +71,7 @@ void SwordAttacking2::PreUpdate()
 	bool canHit = true;
 
 	// 衝突可能フラグを敵全体に付与
-	EventMessenger::Execute("EnemyCanHit", &canHit);
+	EventMessenger::Execute(EventList::EnemyCanHit, &canHit);
 }
 
 
@@ -195,7 +195,7 @@ void SwordAttacking2::CreateSwordParticle()
 			DirectX::VertexPositionTexture(m_rootPos[max - 1]	,Vector2(1, 1)),	// 右下
 			DirectX::VertexPositionTexture(m_rootPos[max]		,Vector2(0, 1)),	// 左下
 		};
-		EventMessenger::Execute("CreateSwordTrail", &ver);	// パーティクルの生成
+		EventMessenger::Execute(EventList::CreateWeaponTrail, &ver);	// パーティクルの生成
 	}
 }
 
@@ -208,7 +208,7 @@ void SwordAttacking2::PostUpdate()
 	bool canHit = false;
 
 	// 衝突可能フラグを敵全体に付与
-	EventMessenger::Execute("EnemyCanHit", &canHit);
+	EventMessenger::Execute(EventList::EnemyCanHit, &canHit);
 }
 
 

@@ -41,7 +41,7 @@ BossIdling::~BossIdling()
 void BossIdling::Initialize()
 {
 	// プレイヤーの取得
-	void* object = EventMessenger::ExecuteGetter("GetPlayerObject");
+	void* object = EventMessenger::ExecuteGetter(GetterList::GetPlayer);
 	m_player = object ? static_cast<IObject*>(object) : nullptr;
 }
 
@@ -56,11 +56,11 @@ void BossIdling::PreUpdate()
 
 	// 武器のステートを変更
 	CudgelState state = CudgelState::Idle;
-	EventMessenger::Execute("ChangeCudgelState", &state);
+	EventMessenger::Execute(EventList::ChangeCudgelState, &state);
 
 	// 顔を変更
 	FaceState face = FaceState::Idling;
-	EventMessenger::Execute("ChangeBossFace", &face);
+	EventMessenger::Execute(EventList::ChangeBossFace, &face);
 
 	// 回転を取得
 	m_angle = m_boss->GetAngle();
@@ -153,7 +153,7 @@ void BossIdling::CheckNextState()
 		}
 
 		// ボスのステートを変更
-		EventMessenger::Execute("ChangeBossState", &state);
+		EventMessenger::Execute(EventList::ChangeBossState, &state);
 	}
 }
 

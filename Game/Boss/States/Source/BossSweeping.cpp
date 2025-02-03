@@ -54,11 +54,11 @@ void BossSweeping::PreUpdate()
 
 	// 武器のステートを変更
 	CudgelState state = CudgelState::Sweep;
-	EventMessenger::Execute("ChangeCudgelState", &state);
+	EventMessenger::Execute(EventList::ChangeCudgelState, &state);
 
 	// 顔のステートを変更
 	FaceState face = FaceState::Attacking;
-	EventMessenger::Execute("ChangeBossFace", &face);
+	EventMessenger::Execute(EventList::ChangeBossFace, &face);
 }
 
 
@@ -94,7 +94,7 @@ void BossSweeping::UpdateAnimation()
 	{
 		// ステートを変更（待機状態）
 		BossState state = BossState::Idling;
-		EventMessenger::Execute("ChangeBossState", &state);
+		EventMessenger::Execute(EventList::ChangeBossState, &state);
 
 	}
 
@@ -133,11 +133,11 @@ void BossSweeping::PostUpdate()
 {
 	// 武器のステートを変更
 	CudgelState state = CudgelState::Idle;
-	EventMessenger::Execute("ChangeCudgelState", &state);
+	EventMessenger::Execute(EventList::ChangeCudgelState, &state);
 
 	// 顔のステートを変更
 	FaceState face = FaceState::Idling;
-	EventMessenger::Execute("ChangeBossFace", &face);
+	EventMessenger::Execute(EventList::ChangeBossFace, &face);
 }
 
 

@@ -68,8 +68,8 @@ void Wall::CreateCollision()
 
 
 	// Õ“Ë”»’è‚ğManager‚É“o˜^
-	EventMessenger::Execute("AddSphereCollision", &data);
-	EventMessenger::Execute("AddSphereCollision", &overData);
+	EventMessenger::Execute(EventList::AddSphereCollision, &data);
+	EventMessenger::Execute(EventList::AddSphereCollision, &overData);
 }
 
 

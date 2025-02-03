@@ -165,7 +165,7 @@ void GoblinAttacking::Finalize()
 void GoblinAttacking::SearchPlayer()
 {
 	// プレイヤーを取得
-	auto object = EventMessenger::ExecuteGetter("GetPlayerObject");
+	auto object = EventMessenger::ExecuteGetter(GetterList::GetPlayer);
 	auto player = static_cast<IObject*>(object);
 	// プレイヤーの位置を取得
 	DirectX::SimpleMath::Vector3 playerPos = player->GetPosition();

@@ -212,6 +212,7 @@
     <ClInclude Include="Game\Goblin\State\Header\GoblinDead.h" />
     <ClInclude Include="Game\Goblin\State\Header\GoblinTutorial.h" />
     <ClInclude Include="Game\HitStop\HitStop.h" />
+    <ClInclude Include="Game\Messenger\EventList.h" />
     <ClInclude Include="Game\Messenger\EventMessenger.h" />
     <ClInclude Include="Game\Player\State\Header\Player_NockBacking.h" />
     <ClInclude Include="Game\Quest\QuestList\QuestPlayerAttack.h" />

@@ -156,8 +156,8 @@ std::unique_ptr<Boss> Factory::CreateBoss()
 	// 初期化処理
 	boss->Initialize();
 
-	EventMessenger::Attach("canHit", std::bind(&Boss::CanHitSword, boss.get()));
-	EventMessenger::Attach("canNotHit",std::bind(&Boss::CanNotHitSword, boss.get()));
+	//EventMessenger::Attach("canHit", std::bind(&Boss::CanHitSword, boss.get()));
+	//EventMessenger::Attach("canNotHit",std::bind(&Boss::CanNotHitSword, boss.get()));
 
 	// 鬼（敵）の設定
 	return boss;
@@ -192,7 +192,7 @@ std::unique_ptr<Sword> Factory::CreateSword(Player* player)
 	sword->Initialize();
 
 	// プレイヤーの武器のステートを変更
-	EventMessenger::Attach("ChangeSwordState", std::bind(&Sword::ChangeState, sword.get(), std::placeholders::_1));
+	EventMessenger::Attach(EventList::ChangeSwordState, std::bind(&Sword::ChangeState, sword.get(), std::placeholders::_1));
 
 	// プレイヤーの武器の設定
 	return sword;

@@ -179,7 +179,7 @@ void Boss::CreateCollision()
 	};
 
 	// 衝突判定をManagerに登録
-	EventMessenger::Execute("AddSphereCollision", &data);
+	EventMessenger::Execute(EventList::AddSphereCollision, &data);
 }
 
 
@@ -220,9 +220,9 @@ void Boss::ChangeFace(void* face)
 void Boss::AttachEvent()
 {
 	// 状態変更のイベント
-	EventMessenger::Attach("ChangeBossState", std::bind(&Boss::ChangeState, this, std::placeholders::_1));
+	EventMessenger::Attach(EventList::ChangeBossState, std::bind(&Boss::ChangeState, this, std::placeholders::_1));
 	// 顔変更のイベント
-	EventMessenger::Attach("ChangeBossFace", std::bind(&Boss::ChangeFace, this, std::placeholders::_1));
+	EventMessenger::Attach(EventList::ChangeBossFace, std::bind(&Boss::ChangeFace, this, std::placeholders::_1));
 }
 
 
@@ -350,7 +350,7 @@ void Boss::Finalize()
 	DeleteCollisionData data = { CollisionType::Sphere, this };
 
 	// 削除イベントを実行
-	EventMessenger::Execute("DeleteCollision", &data);
+	EventMessenger::Execute(EventList::DeleteCollision, &data);
 }
 
 
@@ -386,7 +386,7 @@ void Boss::HitSword(InterSectData data)
 		m_effect->SetEffect(EnemyEffect::ENEMY_EFFECT::DAMAGE);
 
 		// 画面を揺らす
-		EventMessenger::Execute("CameraShake", &m_shakePower);
+		EventMessenger::Execute(EventList::ShakeCamera, &m_shakePower);
 	}
 }
 

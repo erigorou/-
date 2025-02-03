@@ -37,7 +37,7 @@ BossAttacking::~BossAttacking()
 void BossAttacking::Initialize()
 {
 	// プレイヤーの取得
-	void* object = EventMessenger::ExecuteGetter("GetPlayerObject");
+	void* object = EventMessenger::ExecuteGetter(GetterList::GetPlayer);
 	m_player = object ? static_cast<IObject*>(object) : nullptr;
 }
 
@@ -51,11 +51,11 @@ void BossAttacking::PreUpdate()
 	m_totalSeconds = 0.0f;
 	// 武器のステートを変更
 	CudgelState state = CudgelState::Attack;
-	EventMessenger::Execute("ChangeCudgelState", &state);
+	EventMessenger::Execute(EventList::ChangeCudgelState, &state);
 
 	// 顔のステートを変更
 	FaceState face = FaceState::Attacking;
-	EventMessenger::Execute("ChangeBossFace", &face);
+	EventMessenger::Execute(EventList::ChangeBossFace, &face);
 }
 
 
@@ -85,7 +85,7 @@ void BossAttacking::Update(const float& elapsedTime)
 	{
 		// ステートを変更（待機状態）
 		BossState state = BossState::Idling;
-		EventMessenger::Execute("ChangeBossState", &state);
+		EventMessenger::Execute(EventList::ChangeBossState, &state);
 	}
 }
 
@@ -99,10 +99,10 @@ void BossAttacking::PostUpdate()
 {
 	// 武器のステートを変更
 	CudgelState state = CudgelState::Idle;
-	EventMessenger::Execute("ChangeCudgelState", &state);
+	EventMessenger::Execute(EventList::ChangeCudgelState, &state);
 	// 顔のステートを変更
 	FaceState face = FaceState::Idling;
-	EventMessenger::Execute("ChangeBossFace", &face);
+	EventMessenger::Execute(EventList::ChangeBossFace, &face);
 }
 
 

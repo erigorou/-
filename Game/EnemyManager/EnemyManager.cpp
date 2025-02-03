@@ -56,8 +56,8 @@ void EnemyManager::Initialize(PlayScene* playScene)
 	m_playScene = playScene;
 
 	// イベントメッセンジャーに登録
-	EventMessenger::Attach("EnemyCanHit", std::bind(&EnemyManager::AllEnemyCanHit, this, std::placeholders::_1));
-	EventMessenger::Attach("DeleteAllGoblin", std::bind(&EnemyManager::AllGoblinHPZero, this));
+	EventMessenger::Attach(EventList::EnemyCanHit, std::bind(&EnemyManager::AllEnemyCanHit, this, std::placeholders::_1));
+	EventMessenger::Attach(EventList::DeleteAllGoblin, std::bind(&EnemyManager::AllGoblinHPZero, this));
 }
 
 

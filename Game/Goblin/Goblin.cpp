@@ -121,7 +121,7 @@ void Goblin::CreateCollision()
 	};
 
 	// 衝突判定をManagerに登録
-	EventMessenger::Execute("AddSphereCollision", &data);
+	EventMessenger::Execute(EventList::AddSphereCollision, &data);
 }
 
 
@@ -202,7 +202,7 @@ void Goblin::Finalize()
 	DeleteCollisionData data = { CollisionType::Sphere, this };
 
 	// 削除イベントを実行
-	EventMessenger::Execute("DeleteCollision", &data);
+	EventMessenger::Execute(EventList::DeleteCollision, &data);
 }
 
 
@@ -330,7 +330,7 @@ void Goblin::Damaged(float damage)
 
 	// 画面を揺らす
 	float shakePower = 0.25f;
-	EventMessenger::Execute("CameraShake", &shakePower);
+	EventMessenger::Execute(EventList::ShakeCamera, &shakePower);
 
 	// クールタイムを有効にする
 	m_isHit = true;

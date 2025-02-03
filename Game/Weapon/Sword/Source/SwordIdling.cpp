@@ -55,7 +55,7 @@ void SwordIdling::PreUpdate()
 	bool canHit = false;
 
 	// 衝突可能フラグを敵全体に付与
-	EventMessenger::Execute("EnemyCanHit", &canHit);
+	EventMessenger::Execute(EventList::EnemyCanHit, &canHit);
 }
 
 // -----------------------

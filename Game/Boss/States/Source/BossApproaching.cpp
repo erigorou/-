@@ -44,7 +44,7 @@ void BossApproaching::Initialize()
 	m_velocity = DirectX::SimpleMath::Vector3::Forward;	
 
 	// プレイヤーの取得
-	void* player = EventMessenger::ExecuteGetter("GetPlayerObject");
+	void* player = EventMessenger::ExecuteGetter(GetterList::GetPlayer);
 	m_player = player ? static_cast<IObject*>(player) : nullptr;
 }
 
@@ -118,9 +118,9 @@ void BossApproaching::CheckNextState()
 	{
 		// カメラを揺らす
 		float shakePower = SHAKE_POWER;
-		EventMessenger::Execute("CameraShake", &shakePower);
+		EventMessenger::Execute(EventList::ShakeCamera, &shakePower);
 		// パーティクルを生成
-		EventMessenger::Execute("CreateBashDust", &m_position);
+		EventMessenger::Execute(EventList::CreateBashDust, &m_position);
 		// サウンドを再生
 		Sound::PlaySE(Sound::SE_TYPE::BOSS_MOVE);
 
@@ -137,7 +137,7 @@ void BossApproaching::CheckNextState()
 			else if (random == 3)	state = BossState::Idling;		// 何もしない
 
 			// 状態を変更
-			EventMessenger::Execute("ChangeBossState", &state);
+			EventMessenger::Execute(EventList::ChangeBossState, &state);
 
 			// 以降の処理は行わない
 			return;
@@ -149,7 +149,7 @@ void BossApproaching::CheckNextState()
 	{
 		// 待機状態に変更
 		BossState state = BossState::Idling;
-		EventMessenger::Execute("ChangeBossState", &state);
+		EventMessenger::Execute(EventList::ChangeBossState, &state);
 	}
 }
 
@@ -165,9 +165,9 @@ void BossApproaching::PostUpdate()
 	m_boss->SetPosition(m_position);
 	// カメラを揺らす
 	float shakePower = SHAKE_POWER;
-	EventMessenger::Execute("CameraShake", &shakePower);
+	EventMessenger::Execute(EventList::ShakeCamera, &shakePower);
 	// パーティクルを生成
-	EventMessenger::Execute("CreateBashDust", &m_position);
+	EventMessenger::Execute(EventList::CreateBashDust, &m_position);
 }
 
 

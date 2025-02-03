@@ -71,7 +71,7 @@ void EnemyTitleMoving::Update(const float& elapsedTime)
 	if (m_position.y <= MINIMAL)
 	{
 		// ƒJƒƒ‰‚ð—h‚ç‚·
-		EventMessenger::Execute("CameraShake",&m_shakePower);
+		EventMessenger::Execute(EventList::ShakeCamera,&m_shakePower);
 
 		m_enemy->ChangeState(m_enemy->GetTitleEnemyIdling());
 	}

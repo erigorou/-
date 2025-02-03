@@ -75,9 +75,9 @@ void Cudgel::Initialize()
 	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
 
 	// 金棒のポインタを取得
-	EventMessenger::AttachGetter("GetCudgelObject", std::bind(&Cudgel::GetCudgelObject, this));
+	EventMessenger::AttachGetter(GetterList::GetCudgel, std::bind(&Cudgel::GetCudgelObject, this));
 	// 金棒のステートを変更
-	EventMessenger::Attach("ChangeCudgelState", std::bind(&Cudgel::ChangeState, this, std::placeholders::_1));
+	EventMessenger::Attach(EventList::ChangeCudgelState, std::bind(&Cudgel::ChangeState, this, std::placeholders::_1));
 
 	// モデルを取得する
 	m_model = GameResources::GetInstance()->GetModel("cudgel");
@@ -130,7 +130,7 @@ void Cudgel::CreateCollision()
 	};
 
 	// 当たり判定を記録する
-	EventMessenger::Execute("AddOrientedCollision", &data);
+	EventMessenger::Execute(EventList::AddOBBCollision, &data);
 }
 
 

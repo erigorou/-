@@ -41,7 +41,7 @@ BossStarting::~BossStarting()
 void BossStarting::Initialize()
 {
 	// プレイヤーの取得
-	void* object = EventMessenger::ExecuteGetter("GetPlayerObject");
+	void* object = EventMessenger::ExecuteGetter(GetterList::GetPlayer);
 	m_player = object ? static_cast<IObject*>(object) : nullptr;
 
 
@@ -57,11 +57,11 @@ void BossStarting::PreUpdate()
 	m_totalSeconds = 0.0f;
 	// 武器のステートを変更
 	CudgelState state = CudgelState::Idle;
-	EventMessenger::Execute("ChangeCudgelState", &state);
+	EventMessenger::Execute(EventList::ChangeCudgelState, &state);
 
 	// 顔のステートを変更
 	FaceState face = FaceState::Idling;
-	EventMessenger::Execute("ChangeBossFace", &face);
+	EventMessenger::Execute(EventList::ChangeBossFace, &face);
 
 }
 
@@ -88,7 +88,7 @@ void BossStarting::Update(const float& elapsedTime)
 	{
 		// ステートを変更（待機状態）
 		BossState state = BossState::Idling;
-		EventMessenger::Execute("ChangeBossState", &state);
+		EventMessenger::Execute(EventList::ChangeBossState, &state);
 	}
 }
 
@@ -143,10 +143,10 @@ void BossStarting::PlayEffect()
 	if (m_isEndDelay) return;
 
 	// エフェクトを再生
-	EventMessenger::Execute("CreateBashDust", &m_position);
+	EventMessenger::Execute(EventList::CreateBashDust, &m_position);
 	// カメラを揺らす
 	float shakePower = SHAKE_POWER;
-	EventMessenger::Execute("CameraShake", &shakePower);
+	EventMessenger::Execute(EventList::ShakeCamera, &shakePower);
 	// 音声を再生
 	Sound::PlaySE(Sound::SE_TYPE::BOSS_MOVE);
 	// フラグを有効にする

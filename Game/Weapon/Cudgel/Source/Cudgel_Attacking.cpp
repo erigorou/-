@@ -112,7 +112,7 @@ void Cudgel_Attacking::UpdateAnimation()
 	m_cudgel->SetCollisionPosition(m_worldMatrix);
 
 	// プレイヤーに攻撃可能かを通知
-	EventMessenger::Execute("PlayerCanHit", &m_canHit);
+	EventMessenger::Execute(EventList::PlayerCanHit, &m_canHit);
 }
 
 /// <summary>
@@ -201,11 +201,11 @@ void Cudgel_Attacking::HandleSlamParticles()
 		m_canGenerateSlamParticles = false;
 
 		// パーティクルの生成
-		EventMessenger::Execute("CreateBashDust", (&m_tipPos[m_tipPos.size() - 1]));
+		EventMessenger::Execute(EventList::CreateBashDust, (&m_tipPos[m_tipPos.size() - 1]));
 
 		// カメラの振動を設定
 		float m_shakePower = 1.5f;
-		EventMessenger::Execute("CameraShake", &m_shakePower);
+		EventMessenger::Execute(EventList::ShakeCamera, &m_shakePower);
 	}
 }
 
@@ -297,7 +297,7 @@ void Cudgel_Attacking::GetCudgelBothEnds(float _totalTime)
 			VertexPositionTexture(m_rootPos[max]		,Vector2(0, 1)),	// 左下
 		};
 
-		EventMessenger::Execute("CreateSwordTrail", &ver);	// パーティクルの生成
+		EventMessenger::Execute(EventList::CreateWeaponTrail, &ver);	// パーティクルの生成
 	}
 }
 

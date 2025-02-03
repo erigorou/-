@@ -257,6 +257,7 @@
     <ClInclude Include="Effects\EnemyEffect\EnemyEffect.h" />
     <ClInclude Include="Game\Weapon\WeaponState.h" />
     <ClInclude Include="Game\Boss\BossState.h" />
+    <ClInclude Include="Game\Messenger\EventList.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />

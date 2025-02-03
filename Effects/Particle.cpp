@@ -26,10 +26,12 @@ Particle::Particle()
 	m_timerDustTrail{},
 	m_timerSwordTrail{}
 {
-	// ƒCƒxƒ“ƒg‚ğ“o˜^
-	EventMessenger::Attach("CreateTrailDust", std::bind(&Particle::CreateTrailDust, this));
-	EventMessenger::Attach("CreateBashDust", std::bind(&Particle::CreateBashDust, this, std::placeholders::_1));
-	EventMessenger::Attach("CreateSwordTrail", std::bind(&Particle::CreateSwordTrail, this, std::placeholders::_1));
+	// ˆÚ“®‚Ì“yšº‚ğ¶¬‚·‚éƒCƒxƒ“ƒg‚ğ“o˜^
+	EventMessenger::Attach(EventList::CreateTrailDust, std::bind(&Particle::CreateTrailDust, this));
+	// “y‰Œ‚ğ¶¬‚·‚éƒCƒxƒ“ƒg‚ğ“o˜^
+	EventMessenger::Attach(EventList::CreateBashDust, std::bind(&Particle::CreateBashDust, this, std::placeholders::_1));
+	// •Ší‚Ìc‘œ‚ğo‚·ƒCƒxƒ“ƒg‚ğ“o˜^
+	EventMessenger::Attach(EventList::CreateWeaponTrail, std::bind(&Particle::CreateSwordTrail, this, std::placeholders::_1));
 }
 
 

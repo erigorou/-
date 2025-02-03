@@ -45,7 +45,7 @@ BossDead::~BossDead()
 // ---------------------------
 void BossDead::Initialize()
 {
-	auto object = EventMessenger::ExecuteGetter("GetCudgelObject");
+	auto object = EventMessenger::ExecuteGetter(GetterList::GetCudgel);
 	m_cudgel = object ? static_cast<Cudgel*>(object) : nullptr;
 }
 
@@ -63,10 +63,10 @@ void BossDead::PreUpdate()
 	m_startTilt = m_boss->GetBodyTilt();
 	// 顔のステートを変更
 	CudgelState state = CudgelState::Idle;
-	EventMessenger::Execute("ChangeCudgelState", &state);
+	EventMessenger::Execute(EventList::ChangeBossFace, &state);
 
 	// 全ての敵のHPを0にする
-	EventMessenger::Execute("DeleteAllGoblin", nullptr);
+	EventMessenger::Execute(EventList::DeleteAllGoblin, nullptr);
 }
 
 
@@ -108,11 +108,11 @@ void BossDead::UpdateAnimation()
 	if (m_tiltAngle <= CAMERA_SHAKE_TIMING)
 	{
 		float shakePower = CAMERA_SHAKE_POWER;
-		EventMessenger::Execute("CameraShake", &shakePower);
+		EventMessenger::Execute(EventList::ShakeCamera, &shakePower);
 
 		DirectX::SimpleMath::Vector3 BossPos = m_boss->GetPosition();
 
-		EventMessenger::Execute("CreateBashDust", &BossPos);
+		EventMessenger::Execute(EventList::CreateBashDust, &BossPos);
 	}
 }
 

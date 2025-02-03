@@ -117,7 +117,7 @@ void Sword::CreateCollision()
 	};
 
 	// Õ“Ë”»’è‚ğManager‚É“o˜^
-	EventMessenger::Execute("AddOrientedCollision", &data);
+	EventMessenger::Execute(EventList::AddOBBCollision, &data);
 }
 
 

@@ -8,8 +8,8 @@ enum class EventList
 {
 	// プレイヤーに攻撃ができるか
 	PlayerCanHit,
-	// ボスに攻撃ができるか
-	BossCanHit,
+	// 敵に攻撃ができるか
+	EnemyCanHit,
 	// 刀のステートを変更する
 	ChangeSwordState,
 	// 金棒のステートを変更する
@@ -47,4 +47,8 @@ enum class GetterList
 	GetPlayer,
 	// ボスのポインタを取得する
 	GetBoss,
+	// 刀のポインタを取得する
+	GetSword,
+	// 金棒のポインタを取得する
+	GetCudgel,
 };

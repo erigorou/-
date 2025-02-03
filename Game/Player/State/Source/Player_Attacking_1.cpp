@@ -58,7 +58,7 @@ void PlayerAttacking_1::PreUpdate()
 
 	// •Ší‚ğUŒ‚ó‘Ô‚É•ÏX
 	SwordState state = SwordState::Attack1;
-	EventMessenger::Execute("ChangeSwordState", &state);
+	EventMessenger::Execute(EventList::ChangeSwordState, &state);
 
 	// Œø‰Ê‰¹‚ÌÄ¶
 	Sound::PlaySE(Sound::SE_TYPE::PLAYER_ATTACK);
@@ -138,7 +138,7 @@ void PlayerAttacking_1::PostUpdate()
 
 	// •Ší‚ğ‘Ò‹@ó‘Ô‚É•ÏX
 	SwordState state = SwordState::Idle;
-	EventMessenger::Execute("ChangeSwordState", &state);
+	EventMessenger::Execute(EventList::ChangeSwordState, &state);
 }
 
 

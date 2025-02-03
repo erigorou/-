@@ -75,9 +75,12 @@ void CollisionManager::Initialize()
 // -------------------------------------------------------
 void CollisionManager::AddEventMessenger()
 {
-	EventMessenger::Attach("AddOrientedCollision"	, std::bind(&CollisionManager::AddCollision<DirectX::BoundingOrientedBox>,	this, std::placeholders::_1));
-	EventMessenger::Attach("AddSphereCollision"		, std::bind(&CollisionManager::AddCollision<DirectX::BoundingSphere>,		this, std::placeholders::_1));
-	EventMessenger::Attach("DeleteCollision"		, std::bind(&CollisionManager::DeleteCollision,								this, std::placeholders::_1));
+	// OBB‚Ì“o˜^
+	EventMessenger::Attach(EventList::AddOBBCollision, std::bind(&CollisionManager::AddCollision<DirectX::BoundingOrientedBox>,	this, std::placeholders::_1));
+	// Sphere‚Ì“o˜^
+	EventMessenger::Attach(EventList::AddSphereCollision, std::bind(&CollisionManager::AddCollision<DirectX::BoundingSphere>, this, std::placeholders::_1));
+	// Õ“Ë”»’è‚Ìíœ
+	EventMessenger::Attach(EventList::DeleteCollision, std::bind(&CollisionManager::DeleteCollision, this, std::placeholders::_1));
 }
 
 

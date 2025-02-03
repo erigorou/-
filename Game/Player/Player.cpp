@@ -97,7 +97,7 @@ void Player::CreateCollision()
 	};
 
 	// 当たり判定を記録する
-	EventMessenger::Execute("AddSphereCollision", &data);
+	EventMessenger::Execute(EventList::AddSphereCollision, &data);
 }
 
 
@@ -159,9 +159,9 @@ void Player::InitializeRender()
 void Player::AttachEvent()
 {
 	// IObject* 型のオブジェクトを取得する
-	EventMessenger::AttachGetter("GetPlayerObject", std::bind(&Player::GetObject, this));
+	EventMessenger::AttachGetter(GetterList::GetPlayer, std::bind(&Player::GetObject, this));
 	// 衝突可能かを設定
-	EventMessenger::Attach("PlayerCanHit", std::bind(&Player::CanHit, this, std::placeholders::_1));
+	EventMessenger::Attach(EventList::PlayerCanHit, std::bind(&Player::CanHit, this, std::placeholders::_1));
 }
 
 
@@ -363,7 +363,7 @@ void Player::MovePlayer()
 		m_particleTime += m_elapsedTime;
 		if (m_particleTime >= 0.15f)
 		{
-			EventMessenger::Execute("CreateTrailDust", nullptr);
+			EventMessenger::Execute(EventList::CreateTrailDust, nullptr);
 			m_particleTime = 0.0f;
 		}
 	}

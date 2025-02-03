@@ -124,7 +124,7 @@ void Cudgel_Sweeping::UpdateCudgelRotation()
 	// 終了モーション
 	EndAnimation();
 	// プレイヤーに攻撃可能かを通知
-	EventMessenger::Execute("PlayerCanHit", &m_playerCanHit);
+	EventMessenger::Execute(EventList::PlayerCanHit, &m_playerCanHit);
 }
 
 
@@ -178,7 +178,7 @@ void Cudgel_Sweeping::EndAnimation()
 	{
 		// ステートを変更
 		CudgelState state = CudgelState::Idle;
-		EventMessenger::Execute("ChangeCudgelState", &state);
+		EventMessenger::Execute(EventList::ChangeCudgelState, &state);
 	}
 }
 
@@ -245,7 +245,7 @@ void Cudgel_Sweeping::GetCudgelBothEnds()
 			DirectX::VertexPositionTexture(m_rootPos[max]		,DirectX::SimpleMath::Vector2(0, 1)),	// 左下
 		};
 
-		EventMessenger::Execute("CreateSwordTrail", &ver);	// パーティクルの生成
+		EventMessenger::Execute(EventList::CreateWeaponTrail, &ver);	// パーティクルの生成
 	}
 }
 
