@@ -56,7 +56,7 @@ void BossDead::Initialize()
 void BossDead::PreUpdate()
 {
 	// 経過時間を初期化
-	m_totalSeconds = 0;
+	m_totalSeconds = 0.0f;
 	// 回転を取得
 	m_angle = m_boss->GetAngle();
 	// 状態開始時の傾きを取得
@@ -64,10 +64,6 @@ void BossDead::PreUpdate()
 	// 顔のステートを変更
 	CudgelState state = CudgelState::Idle;
 	EventMessenger::Execute("ChangeCudgelState", &state);
-
-	// 顔のステートを変更
-	FaceState face = FaceState::Idling;
-	EventMessenger::Execute("ChangeBossFace", &face);
 
 	// 全ての敵のHPを0にする
 	EventMessenger::Execute("DeleteAllGoblin", nullptr);

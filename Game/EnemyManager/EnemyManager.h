@@ -83,8 +83,6 @@ public:
 
 	// “G‚Ì¶¬ˆ—
 	void GenerateEnemy(const DirectX::SimpleMath::Vector3& position, EnemyType type);
-	// ƒSƒuƒŠƒ“‚Ì‘Síœ
-	void DeleteAllGoblin();
 	// ‘S‚Ä‚ÌƒSƒuƒŠƒ“‚ÌHP‚ğ0‚É‚·‚é
 	void AllGoblinHPZero();
 	// “G‚P‘Ì‚Ìíœ

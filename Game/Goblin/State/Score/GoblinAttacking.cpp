@@ -62,7 +62,7 @@ void GoblinAttacking::Update(const float& elapsedTime)
 
 	if (m_totalTime > STATE_TIME)
 	{
-		m_goblin->ChangeState(m_goblin->GetIdling());
+		m_goblin->ChangeState(GoblinState::IDLING);
 	}
 }
 

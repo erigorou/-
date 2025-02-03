@@ -78,16 +78,27 @@ void Goblin::Initialize()
 // --------------------------------
 void Goblin::CreateState()
 {
-	m_idling	= std::make_unique<GoblinIdling>	(this);	// 待機
-	m_attacking = std::make_unique<GoblinAttacking>	(this);	// 攻撃
-	m_dead		= std::make_unique<GoblinDead>		(this);	// 死亡
-	m_tutorial	= std::make_unique<GoblinTutorial>	(this);	// チュートリアル
+	// 待機
+	m_idling = std::make_unique<GoblinIdling>(this);
+	m_idling->Initialize();
+	m_states.push_back(m_idling.get());
 
-	m_idling->		Initialize();
-	m_attacking->	Initialize();
-	m_dead->		Initialize();
-	m_tutorial->	Initialize();
+	// 攻撃
+	m_attacking = std::make_unique<GoblinAttacking>(this);
+	m_attacking->Initialize();
+	m_states.push_back(m_attacking.get());
 
+	// 死亡
+	m_dead = std::make_unique<GoblinDead>(this);
+	m_dead->Initialize();
+	m_states.push_back(m_dead.get());
+
+	// チュートリアル
+	m_tutorial = std::make_unique<GoblinTutorial>(this);
+	m_tutorial->Initialize();
+	m_states.push_back(m_tutorial.get());
+
+	// 初期ステートを待機状態に
 	m_currentState = m_idling.get();
 }
 
@@ -283,17 +294,24 @@ void Goblin::HitSword(InterSectData data)
 // --------------------------------
 // ステートの変更
 // --------------------------------
-void Goblin::ChangeState(IState* state)
+void Goblin::ChangeState(GoblinState state)
 {
-	// すでに同じステートの場合は変更しない
-	if (m_currentState == state) return;
-	// 変更前ステートの最終処理
+	// 引数からステートのインデックスを取得
+	int index = static_cast<int>(state);
+
+	// ステートが存在しない場合は処理を行わない
+	if (m_currentState == m_states[index]) return;
+
+	// ステートの終了処理
 	m_currentState->PostUpdate();
 	// ステートの変更
-	m_currentState = state;
-	// 変更後ステートの初期処理
+	m_currentState = m_states[index];
+	// ステートの初期化
 	m_currentState->PreUpdate();
 }
+
+
+
 
 
 // --------------------------------
@@ -349,7 +367,7 @@ void Goblin::CheckAlive()
 	if (m_hp->GetHP() <= 0)
 	{
 		// ステートを変更
-		ChangeState(m_dead.get());
+		ChangeState(GoblinState::DEAD);
 		// 死亡エフェクトを再生
 		m_enemyEffect->SetEffect(EnemyEffect::ENEMY_EFFECT::DEAD);
 	}

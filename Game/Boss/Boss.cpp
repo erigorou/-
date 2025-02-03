@@ -80,7 +80,6 @@ void Boss::Initialize()
 {
 	// 武器の生成
 	m_cudgel = Factory::CreateCudgel(this);
-
 	// モデルを取得
 	m_model = GameResources::GetInstance()->GetModel("boss");
 	// HPを設定
@@ -335,10 +334,8 @@ void Boss::Render(
 	context->OMSetDepthStencilState(states->DepthDefault(), 0);
 	// 顔の描画
 	m_currentFace->DrawFace(m_worldMatrix, view, projection);
-
 	// ダメージのエフェクトを付与
 	m_effect->DrawWithEffect(m_model, m_worldMatrix, view, projection);
-
 	// 金棒の描画
 	m_cudgel->Render(view, projection);
 }
@@ -420,7 +417,9 @@ void Boss::CheckAlive()
 	// HPが0以下になったら
 	if (m_hp->GetHP() <= 0)
 	{
-		ChangeState(m_dead.get());
+		// 死亡状態に変更
+		BossState state = BossState::Dead;
+		ChangeState(&state);
 	}
 }
 

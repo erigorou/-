@@ -23,6 +23,17 @@ class EnemyEffect;
 #include "State/Header/GoblinDead.h"
 #include "State/Header/GoblinTutorial.h"
 
+
+enum class GoblinState
+{
+	IDLING,
+	ATTACKING,
+	DEAD,
+	TUTORIAL
+};
+
+
+
 class Goblin : public IEnemy
 {
 	// ---------------
@@ -81,7 +92,8 @@ public:
 	// 描画処理
 	void Render(
 		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection);
+		const DirectX::SimpleMath::Matrix& projection
+	);
 
 	// 終了処理
 	void Finalize();
@@ -90,7 +102,7 @@ public:
 	// 衝突処理
 	void HitAction(InterSectData data) override;
 	// ステートの変更
-	void ChangeState(IState* state);
+	void ChangeState(GoblinState state);
 	// ゴブリンを消す
 	void DeleteGoblin();
 
@@ -123,27 +135,39 @@ private:
 // メンバ変数
 // ---------------
 private:
-	DirectX::SimpleMath::Vector3 m_position;	// 座標
-	DirectX::SimpleMath::Vector3 m_velocity;	// 速度
-	float m_angle;								// 回転角
-	DirectX::SimpleMath::Vector3 m_scale;		// スケール
-	DirectX::SimpleMath::Matrix m_worldMatrix;	// ワールド座標
-
-	DirectX::Model* m_model;	// モデル
-
+	// 座標
+	DirectX::SimpleMath::Vector3 m_position;
+	// 速度
+	DirectX::SimpleMath::Vector3 m_velocity;
+	// 回転角
+	float m_angle;
+	// スケール
+	DirectX::SimpleMath::Vector3 m_scale;
+	// ワールド座標
+	DirectX::SimpleMath::Matrix m_worldMatrix;
+	// モデル
+	DirectX::Model* m_model;
 	// 押し戻し量
 	DirectX::SimpleMath::Vector3 m_pushBackValue;
 
-	// ステート用変数 **
-	IState* m_currentState;								// 現在のステート
-	std::unique_ptr<GoblinIdling>		m_idling;		// 待機
-	std::unique_ptr<GoblinAttacking>	m_attacking;	// 攻撃
-	std::unique_ptr<GoblinDead>			m_dead;			// 死亡
-	std::unique_ptr<GoblinTutorial>		m_tutorial;		// チュートリアル
 
-	// システム **
-	std::unique_ptr<HPSystem>			m_hp;			// HP
-	std::unique_ptr<EnemyEffect> m_enemyEffect;	// 敵エフェクト
+	// 現在のステート
+	IState* m_currentState;
+	// 待機
+	std::unique_ptr<GoblinIdling> m_idling;
+	// 攻撃
+	std::unique_ptr<GoblinAttacking> m_attacking;
+	// 死亡
+	std::unique_ptr<GoblinDead> m_dead;
+	// チュートリアル
+	std::unique_ptr<GoblinTutorial> m_tutorial;
+	// ステートのリスト
+	std::vector<IState*> m_states;
+
+	// HP
+	std::unique_ptr<HPSystem> m_hp;
+	// 敵エフェクト
+	std::unique_ptr<EnemyEffect> m_enemyEffect;
 
 	// プレイシーン(当たり判定の処理に使用)
 	PlayScene* m_playScene;
@@ -151,10 +175,14 @@ private:
 	// 体の当たり判定
 	std::unique_ptr<DirectX::BoundingSphere> m_bodyCollision;
 
-	bool m_nowAttacking;	// 攻撃中フラグ
-	bool m_isHit;			// 攻撃を受けたフラグ
-	bool m_canHit;			// 衝突可能フラグ
-	float m_coolTime;		// クールタイム
+	// 攻撃中フラグ
+	bool m_nowAttacking;
+	// 攻撃を受けたフラグ
+	bool m_isHit;
+	// 衝突可能フラグ
+	bool m_canHit;
+	// クールタイム
+	float m_coolTime;
 };
 
 

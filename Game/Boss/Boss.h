@@ -57,15 +57,14 @@ public:
 	static constexpr float BOSS_SCALE= 0.6f;
 	// 攻撃のクールタイム
 	static constexpr float COOL_TIME = 0.3f;
-
 	// 衝突判定のY座標
-	static constexpr float COLISION_POS_Y	= 10.0f;
+	static constexpr float COLISION_POS_Y = 10.0f;
 	// 最大HP
-	static constexpr float HP				= 20.0f;
+	static constexpr float HP = 1.0f;
 	// 当たり判定の大きさ
 	static constexpr float COLLISION_RADIUS = 20.0f;
 	// ボスの高さ
-	static constexpr float BOSS_HEIGHT		= 50.0f;
+	static constexpr float BOSS_HEIGHT = 50.0f;
 
 	// カメラの揺れる強さ
 	static constexpr float SHAKE_POWER = 0.25f;

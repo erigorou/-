@@ -57,7 +57,7 @@ void EnemyManager::Initialize(PlayScene* playScene)
 
 	// イベントメッセンジャーに登録
 	EventMessenger::Attach("EnemyCanHit", std::bind(&EnemyManager::AllEnemyCanHit, this, std::placeholders::_1));
-	EventMessenger::Attach("DeleteAllGoblin", std::bind(&EnemyManager::DeleteAllGoblin, this));
+	EventMessenger::Attach("DeleteAllGoblin", std::bind(&EnemyManager::AllGoblinHPZero, this));
 }
 
 
@@ -171,29 +171,6 @@ DirectX::SimpleMath::Vector3 EnemyManager::GetPicupEnemyPosition()
 
 	// ターゲットの敵の座標を取得
 	return m_enemies[m_targetEnemyIndex].data->GetPosition();
-}
-
-
-
-// --------------------------------
-// 全てのゴブリンの削除
-// --------------------------------
-void EnemyManager::DeleteAllGoblin()
-{
-	// 配列の要素を安全に削除するためにerase-removeイディオムを使用
-	m_enemies.erase(std::remove_if(m_enemies.begin(),m_enemies.end(),[](EnemyData& enemy)
-		{
-			// ゴブリンの場合
-			if (enemy.type == EnemyType::Goblin) 
-				{
-				// Finalize処理と削除
-				enemy.data->Finalize();
-				return true;
-				}	
-			return false; // 削除しない
-		}),
-		m_enemies.end()
-	);
 }
 
 
@@ -366,6 +343,6 @@ void EnemyManager::GenerateEnemyFromJson()
 	{
 		// チュートリアル用にステートを変更する
 		auto goblin = dynamic_cast<Goblin*>(m_enemies[0].data.get());
-		goblin->ChangeState(goblin->GetTutorial());
+		goblin->ChangeState(GoblinState::TUTORIAL);
 	}
 }
