@@ -190,7 +190,7 @@ void QuestManager::CreateQuestList_1st()
 	ClearQuestData();
 
 	// クエストの作成
-	//m_questList.push_back(new TutorialStart());
+	m_questList.push_back(new TutorialStart());
 	m_questList.push_back(new QuestPlayerMove());
 	m_questList.push_back(new TutorialAttackStart());
 	m_questList.push_back(new QuestPlayerAttack());

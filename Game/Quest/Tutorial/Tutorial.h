@@ -25,7 +25,7 @@ public:
 	static constexpr float INIT_POSITION_Y = 600.0f;
 
 	// アニメーション時間
-	static constexpr float ANIMATION_TIME = 2.0f;
+	static constexpr float ANIMATION_TIME = 1.0f;
 
 	// シェーダーのファイルパス
 	static const wchar_t* VS_PATH;

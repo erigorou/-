@@ -126,6 +126,8 @@ void CollisionManager::Update()
 		}
 	}
 
+
+#ifdef _DEBUG
 	// キーボードの状態を取得する
 	m_keyboardState = DirectX::Keyboard::Get().GetState();
 	// キーボードステートトラッカーを更新する
@@ -136,6 +138,7 @@ void CollisionManager::Update()
 	{
 		m_drawFlag = !m_drawFlag;
 	}
+#endif // !_DEBUG
 }
 
 // -------------------------------------------------------

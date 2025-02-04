@@ -17,28 +17,39 @@ private:
 
 	// 上から参照
 	static constexpr int	TOP_POSITION = 650;
-	static constexpr int	BOTTOM_POSITION = 670;
+	static constexpr int	BOTTOM_POSITION = 680;
 	static constexpr float EASING_TIME = 0.5f;
 
 public:
-	EnemyHPUI(HPSystem* hpSystem);	// コンストラクタ
-	~EnemyHPUI();					// デストラクタ
+	// コンストラクタ
+	EnemyHPUI(HPSystem* hpSystem);
+	// デストラクタ
+	~EnemyHPUI();
 
-	void Initialize(DX::DeviceResources* pDR);	// 初期化関数
-	void LoadTexture(const wchar_t* path);		// テクスチャの読み込み
-
-	void Update();		// 更新処理
-	void Render();						// 描画処理
-	void Finalize();					// 終了処理
+	// 初期化関数
+	void Initialize();
+	// 更新処理
+	void Update();
+	// 描画処理
+	void Render();
+	// 終了処理
+	void Finalize();
 
 private:
 
-	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;		// スプライトバッチ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;	// テクスチャ
-	DX::DeviceResources* m_pDR;									// デバイスリソース
+	// エネミーのHPクラス
+	HPSystem* m_enemyHPclass;
+	// エネミーのHP
+	float m_enemyHP;
 
-	HPSystem* m_enemyHPclass;	// エネミーのHPクラス
-	float m_enemyHP;				// エネミーのHP
+	// スプライトバッチ
+	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
+	// HPのテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
+	// 背景テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_backTexture;
+	// フレームテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_frameTexture;
 
 	// 経過時間
 	float m_totalTime;

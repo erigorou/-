@@ -138,7 +138,7 @@ void PlaySceneUIManager::CreateEnemyHPUI()
 	{
 		// エネミーHPの生成と初期化
 		m_enemyHP = std::make_unique<EnemyHPUI>(enemyHP);
-		m_enemyHP->Initialize(m_pDR);
+		m_enemyHP->Initialize();
 	}
 }
 

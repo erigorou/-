@@ -73,18 +73,19 @@ void PlayerHPUI::Render()
     LONG width = static_cast<LONG>(offset + MAX_WIDTH * (m_playerHP / MAXHP));
 
     // ゲージの範囲の設定
-    RECT outline{ offset - FRALE_WIDTH, TOP_POSITION - FRALE_WIDTH, offset + MAX_WIDTH + FRALE_WIDTH, BOTTOM_POSITION + FRALE_WIDTH };
-    RECT back{ offset, TOP_POSITION, offset + MAX_WIDTH, BOTTOM_POSITION };
-    RECT gauge{ offset, TOP_POSITION, width, BOTTOM_POSITION };
+    RECT outline{ offset, TOP_POSITION, offset + MAX_WIDTH, BOTTOM_POSITION };
+    RECT back   { offset, TOP_POSITION, offset + MAX_WIDTH, BOTTOM_POSITION };
+    RECT gauge  { offset, TOP_POSITION, width, BOTTOM_POSITION };
 
-
-    // ゲージの枠
+	// スプライトバッチを開始する
     m_spriteBatch->Begin();
-    m_spriteBatch->Draw(m_frameTexture.Get(), outline);
+
     // 背面の描画
-    m_spriteBatch->Draw(m_backTexture.Get(), back);
+    m_spriteBatch->Draw(m_backTexture.Get(), back,DirectX::Colors::White);
     // ゲージ部分
-    m_spriteBatch->Draw(m_texture.Get(), gauge);
+    m_spriteBatch->Draw(m_texture.Get(), gauge, DirectX::Colors::White);
+    // ゲージの枠
+    m_spriteBatch->Draw(m_frameTexture.Get(), outline, DirectX::Colors::White);
 
     // スプライトバッチを終了する
     m_spriteBatch->End();
@@ -101,6 +102,5 @@ void PlayerHPUI::Finalize()
     // リソースの解放
     m_spriteBatch.reset();
     m_texture.Reset();
-    m_pDR = nullptr;
     m_playerHPclass = nullptr;
 }

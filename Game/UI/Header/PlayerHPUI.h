@@ -12,15 +12,14 @@ class CustomShader;
 class PlayerHPUI
 {
 private:
+    // 最大横幅
     static constexpr int MAX_WIDTH = 300;
-
-    // 上から参照
+	// Y座標（上）
     static constexpr int TOP_POSITION = 50;
+	// Y座標（下）
     static constexpr int BOTTOM_POSITION = 80;
-
+	// X座標(左)
     static constexpr int LEFT_POSITION = 50;
-
-    static constexpr int FRALE_WIDTH = 4;
 
 public:
     // コンストラクタ
@@ -37,14 +36,19 @@ public:
     void Finalize();
 
 private:
-    std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;          // スプライトバッチ
-    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;    // テクスチャ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_backTexture;    // テクスチャ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_frameTexture;    // テクスチャ
-    DX::DeviceResources* m_pDR;                                    // デバイスリソース
+    // スプライトバッチ
+    std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
+    // HPのテクスチャ
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
+    // 背景テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_backTexture;
+    // フレームテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_frameTexture;
 
-    HPSystem* m_playerHPclass;  // プレイヤーのHPクラス
-    float m_playerHP;           // プレイヤーのHP
+    // プレイヤーのHPクラス
+    HPSystem* m_playerHPclass;
+    // プレイヤーのHP
+    float m_playerHP;
 };
 
 #endif

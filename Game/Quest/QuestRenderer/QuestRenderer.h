@@ -41,7 +41,7 @@ public:
 	static constexpr float ANIMATION_TIME = 1.0f;
 	static constexpr float FIER_TIME = 2.0f;
 	static constexpr float INITIAL_TIME = -0.5f;
-	static constexpr float ANIMATION_WAIT = 1.0f;
+	static constexpr float ANIMATION_WAIT = 0.5f;
 
 	// “§–¾“x
 	static constexpr float MAX_ALPHA = 1.0f;

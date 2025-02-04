@@ -11,5 +11,8 @@
   "bossfight": "Quest/TitleBossFight.png",
   "playerHP": "PlayerHP.png",
   "playerHPBack": "PlayerHPBack.png",
-  "playerHPFrame": "HPFrame.png"
+  "playerHPFrame": "HPFrame.png",
+  "enemyHP": "EnemyHP.png",
+  "enemyHPBack": "EnemyHPBack.png",
+  "enemyHPFrame": "EnemyHPFrame.png"
 }
