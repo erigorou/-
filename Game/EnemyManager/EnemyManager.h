@@ -10,7 +10,6 @@
 // 前方宣言
 class Boss;
 class Goblin;
-class PlayScene;
 class IObject;
 class PlayScene;
 
@@ -67,11 +66,11 @@ public:
 	// ---------------------------
 public:
 	// コンストラクタ
-	EnemyManager(PlayScene* playScene);
+	EnemyManager();
 	// デストラクタ
 	~EnemyManager();
 	// 初期化処理
-	void Initialize(PlayScene* playScene);
+	void Initialize();
 	// 更新処理
 	void Update(float elapsedTime);
 	// 描画処理

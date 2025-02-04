@@ -12,17 +12,21 @@
 #include "../Boss/Boss.h"
 #include "../Goblin/Goblin.h"
 #include "../Factory/Factory.h"
-#include "../Scene/PlayScene.h"
 #include "Interface/IEnemy.h"
 #include "nlohmann/json.hpp"
 #include <fstream>
 
 // --------------------------------
-EnemyManager::EnemyManager(PlayScene* playScene)
-	: m_targetEnemyIndex()
-	, m_playScene(playScene)
-	, m_elapsedTime()
-	, m_currentTime()
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="playScene"></param>
+// --------------------------------
+EnemyManager::EnemyManager()
+	: 
+	m_targetEnemyIndex(),
+	m_elapsedTime(),
+	m_currentTime()
 {
 	// セレクトクエストのインデックスを取得
 	m_selectQuestIndex = GameData::GetInstance()->GetSelectStage();
@@ -32,19 +36,22 @@ EnemyManager::EnemyManager(PlayScene* playScene)
 }
 
 // --------------------------------
-// デストラクタ
+/// <summary>
+/// デストラクタ
+/// </summary>
 // --------------------------------
 EnemyManager::~EnemyManager()
 {
 }
 
-// --------------------------------
-// 初期化処理
-// --------------------------------
-void EnemyManager::Initialize(PlayScene* playScene)
-{
-	m_playScene = playScene;
 
+// --------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+// --------------------------------
+void EnemyManager::Initialize()
+{
 	// イベントメッセンジャーに登録
 	EventMessenger::Attach(EventList::EnemyCanHit, std::bind(&EnemyManager::AllEnemyCanHit, this, std::placeholders::_1));
 	EventMessenger::Attach(EventList::DeleteAllGoblin, std::bind(&EnemyManager::AllGoblinHPZero, this));
@@ -52,14 +59,20 @@ void EnemyManager::Initialize(PlayScene* playScene)
 }
 
 // --------------------------------
-// 更新処理
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
 // --------------------------------
 void EnemyManager::Update(float elapsedTime)
 {
+	// 経過時間を保存
 	m_elapsedTime = elapsedTime;
 
+	// 敵がいない場合は処理なし
 	if (m_enemies.empty()) return;
 
+	// すべての敵の更新処理
 	for (auto& enemy : m_enemies)
 	{
 		enemy.data->Update(elapsedTime);
@@ -67,7 +80,11 @@ void EnemyManager::Update(float elapsedTime)
 }
 
 // --------------------------------
-// 描画処理
+/// <summary>
+/// 描画処理
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="projection">プロジェクション行列</param>
 // --------------------------------
 void EnemyManager::Render(
 	const DirectX::SimpleMath::Matrix& view,
@@ -83,7 +100,9 @@ void EnemyManager::Render(
 }
 
 // --------------------------------
-// 終了処理
+/// <summary>
+/// 終了処理
+/// </summary>
 // --------------------------------
 void EnemyManager::Finalize()
 {
@@ -98,7 +117,11 @@ void EnemyManager::Finalize()
 }
 
 // --------------------------------
-// 敵の生成処理
+/// <summary>
+/// 敵の生成処理
+/// </summary>
+/// <param name="position">座標</param>
+/// <param name="type">種類</param>
 // --------------------------------
 void EnemyManager::GenerateEnemy(const DirectX::SimpleMath::Vector3& position, EnemyType type)
 {
@@ -111,7 +134,10 @@ void EnemyManager::GenerateEnemy(const DirectX::SimpleMath::Vector3& position, E
 }
 
 // --------------------------------
-// ボスのポインタを取得
+/// <summary>
+/// ボスの取得
+/// </summary>
+/// <returns>ボスのポインタ</returns>
 // --------------------------------
 Boss* EnemyManager::GetBossEnemy()
 {
@@ -128,7 +154,10 @@ Boss* EnemyManager::GetBossEnemy()
 }
 
 // --------------------------------
-// ボスの座標を取得
+/// <summary>
+/// ボスの座標を取得
+/// </summary>
+/// <returns>ボスの座標</returns>
 // --------------------------------
 DirectX::SimpleMath::Vector3 EnemyManager::GetBossPosition()
 {
@@ -145,7 +174,10 @@ DirectX::SimpleMath::Vector3 EnemyManager::GetBossPosition()
 }
 
 // --------------------------------
-// ターゲット中の敵の座標を取得
+/// <summary>
+/// ターゲット中の座標を取得
+/// </summary>
+/// <returns>ターゲット中の座標</returns>
 // --------------------------------
 DirectX::SimpleMath::Vector3 EnemyManager::GetPicupEnemyPosition()
 {
@@ -159,7 +191,9 @@ DirectX::SimpleMath::Vector3 EnemyManager::GetPicupEnemyPosition()
 }
 
 // --------------------------------
-// 全てのゴブリンのHPを0にする
+/// <summary>
+/// 全ゴブリンのHPを0にする
+/// </summary>
 // --------------------------------
 void EnemyManager::AllGoblinHPZero()
 {
@@ -175,7 +209,10 @@ void EnemyManager::AllGoblinHPZero()
 }
 
 // --------------------------------
-// 敵１体の削除
+/// <summary>
+/// 敵1体を削除
+/// </summary>
+/// <param name="pointer">削除する対象</param>
 // --------------------------------
 void EnemyManager::DeleteEnemy(void* pointer)
 {
@@ -196,7 +233,9 @@ void EnemyManager::DeleteEnemy(void* pointer)
 }
 
 // --------------------------------
-// カメラのターゲットを変更
+/// <summary>
+/// カメラのターゲットを変更
+/// </summary>
 // --------------------------------
 void EnemyManager::ChangeCameraTarget()
 {
@@ -211,7 +250,10 @@ void EnemyManager::ChangeCameraTarget()
 }
 
 // --------------------------------
-// 敵が生きているかのフラグ
+/// <summary>
+/// 敵が生存しているかの判定
+/// </summary>
+/// <returns>生存：true</returns>
 // --------------------------------
 bool EnemyManager::IsEnemysAlive()
 {
@@ -239,7 +281,10 @@ bool EnemyManager::IsEnemysAlive()
 }
 
 // --------------------------------
-// 全ての敵に被ダメ可能を通達
+/// <summary>
+/// 全敵に攻撃可能フラグを設定
+/// </summary>
+/// <param name="flag">設定するフラグ</param>
 // --------------------------------
 void EnemyManager::AllEnemyCanHit(void* flag)
 {
@@ -251,7 +296,10 @@ void EnemyManager::AllEnemyCanHit(void* flag)
 }
 
 // --------------------------------
-// ゴブリンの生成
+/// <summary>
+/// ゴブリンの生成
+/// </summary>
+/// <param name="position">座標</param>
 // --------------------------------
 void EnemyManager::GenerateGoblin(const DirectX::SimpleMath::Vector3& position)
 {
@@ -264,7 +312,10 @@ void EnemyManager::GenerateGoblin(const DirectX::SimpleMath::Vector3& position)
 }
 
 // --------------------------------
-// ボスの生成
+/// <summary>
+/// ボスの生成
+/// </summary>
+/// <param name="position">座標</param>
 // --------------------------------
 void EnemyManager::GenerateBoss(const DirectX::SimpleMath::Vector3& position)
 {
@@ -277,7 +328,9 @@ void EnemyManager::GenerateBoss(const DirectX::SimpleMath::Vector3& position)
 }
 
 // --------------------------------
-// JSONデータから敵を生成する
+/// <summary>
+/// Jsonファイルデータで敵を生成
+/// </summary>
 // --------------------------------
 void EnemyManager::GenerateEnemyFromJson()
 {

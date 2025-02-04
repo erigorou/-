@@ -6,7 +6,6 @@
 #include "../Scene/PlayScene.h"								// プレイシーン
 #include "../Camera/Camera.h"								// カメラ
 #include "Effects/Particle.h"								// パーティクル
-
 #include "Libraries/MyLib/SkySphere.h"						// 天球
 #include "../Stage/Floor/Floor.h"							// 床
 #include "../Stage/Sea/Sea.h"								// 海
@@ -16,14 +15,16 @@
 #include "../Goblin/Goblin.h"								// ゴブリン
 #include "../Weapon/Sword/Sword.h"							// プレイヤーの武器
 #include "../Weapon/Cudgel/Cudgel.h"						// 鬼（敵）の武器
-
 #include "Libraries/MyLib/Collision/CollisionManager.h"		// 当たり判定統括
 #include "../UI/!PlaySceneUIManager/PlaySceneUIManager.h"	// プレイシーンのUI
 #include "../EnemyManager/EnemyManager.h"					// 敵マネージャー
 #include "../Quest/QuestManager.h"							// クエストマネージャー
 
 // ---------------------------------------------
-// 当たり判定統括の生成関数
+/// <summary>
+/// 衝突判定の生成関数
+/// </summary>
+/// <returns>衝突判定のポインタ</returns>
 // ---------------------------------------------
 std::unique_ptr<CollisionManager> Factory::CreateCollisionManager()
 {
@@ -35,7 +36,10 @@ std::unique_ptr<CollisionManager> Factory::CreateCollisionManager()
 }
 
 // ---------------------------------------------
-// カメラの生成関数
+/// <summary>
+/// カメラの生成関数
+/// </summary>
+/// <returns>カメラのポインタ</returns>
 // ---------------------------------------------
 std::unique_ptr<Camera> Factory::CreateCamera()
 {
@@ -48,7 +52,10 @@ std::unique_ptr<Camera> Factory::CreateCamera()
 }
 
 // ---------------------------------------------
-// 天球の生成関数
+/// <summary>
+/// 天球の生成関数
+/// </summary>
+/// <returns>天球のポインタ</returns>
 // ---------------------------------------------
 std::unique_ptr<SkySphere> Factory::CreateSkySphere()
 {
@@ -62,7 +69,10 @@ std::unique_ptr<SkySphere> Factory::CreateSkySphere()
 }
 
 // ---------------------------------------------
-// パーティクルの生成関数
+/// <summary>
+/// パーティクルの生成関数
+/// </summary>
+/// <returns>パーティクルのポインタ</returns>
 // ---------------------------------------------
 std::unique_ptr<Particle> Factory::CreateParticle()
 {
@@ -76,7 +86,10 @@ std::unique_ptr<Particle> Factory::CreateParticle()
 }
 
 // ---------------------------------------------
-// 床の生成関数
+/// <summary>
+/// 床の生成関数
+/// </summary>
+/// <returns>床のポインタ</returns>
 // ---------------------------------------------
 std::unique_ptr<Floor> Factory::CreateFloor()
 {
@@ -88,7 +101,10 @@ std::unique_ptr<Floor> Factory::CreateFloor()
 }
 
 // ---------------------------------------------
-// 海の生成関数
+/// <summary>
+/// 海の生成関数
+/// </summary>
+/// <returns>海のポインタ</returns>
 // ---------------------------------------------
 std::unique_ptr<Sea> Factory::CreateSea()
 {
@@ -98,7 +114,10 @@ std::unique_ptr<Sea> Factory::CreateSea()
 }
 
 // ---------------------------------------------
-// 壁の生成関数
+/// <summary>
+/// 壁の生成関数
+/// </summary>
+/// <returns>壁のポインタ</returns>
 // ---------------------------------------------
 std::unique_ptr<Wall> Factory::CreateWall()
 {
@@ -112,7 +131,11 @@ std::unique_ptr<Wall> Factory::CreateWall()
 }
 
 // ---------------------------------------------
-// プレイヤーの生成関数
+/// <summary>
+/// プレイヤーの生成関数
+/// </summary>
+/// <param name="playScene">プレイシーンのポインタ</param>
+/// <returns>プレイヤーのポインタ</returns>
 // ---------------------------------------------
 std::unique_ptr<Player> Factory::CreatePlayer(PlayScene* playScene)
 {
@@ -134,7 +157,10 @@ std::unique_ptr<Player> Factory::CreatePlayer(PlayScene* playScene)
 }
 
 // ---------------------------------------------
-// 鬼（敵）の生成関数
+/// <summary>
+/// 鬼（敵）の生成関数
+/// </summary>
+/// <returns>鬼（敵）のポインタ</returns>
 // ---------------------------------------------
 std::unique_ptr<Boss> Factory::CreateBoss()
 {
@@ -149,7 +175,10 @@ std::unique_ptr<Boss> Factory::CreateBoss()
 }
 
 // ---------------------------------------------
-// ゴブリンの生成関数
+/// <summary>
+/// ゴブリンの生成関数
+/// </summary>
+/// <returns>ゴブリンのポインタ</returns>
 // ---------------------------------------------
 std::unique_ptr<Goblin> Factory::CreateGoblin()
 {
@@ -163,7 +192,11 @@ std::unique_ptr<Goblin> Factory::CreateGoblin()
 }
 
 // ---------------------------------------------
-// プレイヤーの武器の生成関数
+/// <summary>
+/// プレイヤーの武器の生成関数
+/// </summary>
+/// <param name="player">プレイヤーのポインタ</param>
+/// <returns>プレイヤーの武器のポインタ</returns>
 // ---------------------------------------------
 std::unique_ptr<Sword> Factory::CreateSword(Player* player)
 {
@@ -181,7 +214,11 @@ std::unique_ptr<Sword> Factory::CreateSword(Player* player)
 }
 
 // ---------------------------------------------
-// 鬼（敵）の武器の生成関数
+/// <summary>
+/// 鬼（敵）の武器の生成関数
+/// </summary>
+/// <param name="boss">鬼（敵）のポインタ</param>
+/// <returns>鬼（敵）の武器のポインタ</returns>
 // ---------------------------------------------
 std::unique_ptr<Cudgel> Factory::CreateCudgel(Boss* boss)
 {
@@ -196,7 +233,11 @@ std::unique_ptr<Cudgel> Factory::CreateCudgel(Boss* boss)
 }
 
 // ---------------------------------------------
-// プレイシーンのUIの生成関数
+/// <summary>
+/// プレイシーンのUIの生成関数
+/// </summary>
+/// <param name="playScene">プレイシーンのポインタ</param>
+/// <returns>プレイシーンのUIマネージャーのポインタ</returns>
 // ---------------------------------------------
 std::unique_ptr<PlaySceneUIManager> Factory::CreateUIManager(PlayScene* playScene)
 {
@@ -210,21 +251,28 @@ std::unique_ptr<PlaySceneUIManager> Factory::CreateUIManager(PlayScene* playScen
 }
 
 // ---------------------------------------------
-// 敵マネージャーの生成関数
+/// <summary>
+/// 敵マネージャーの生成関数
+/// </summary>
+/// <returns>敵マネージャーのポインタ</returns>
 // ---------------------------------------------
-std::unique_ptr<EnemyManager> Factory::CreateEnemyManager(PlayScene* playScene)
+std::unique_ptr<EnemyManager> Factory::CreateEnemyManager()
 {
 	// 敵マネージャーを宣言する
 	std::unique_ptr<EnemyManager> enemyManager;
-	enemyManager = std::make_unique<EnemyManager>(playScene);
+	enemyManager = std::make_unique<EnemyManager>();
 	// 初期化処理
-	enemyManager->Initialize(playScene);
+	enemyManager->Initialize();
 	// 敵マネージャーの設定
 	return enemyManager;
 }
 
 // ---------------------------------------------
-// クエストマネージャーの生成関数
+/// <summary>
+/// クエストマネージャーの生成関数
+/// </summary>
+/// <param name="playScene">プレイシーンのポインタ</param>
+/// <returns>クエストマネージャーのポインタ</returns>
 // ---------------------------------------------
 std::unique_ptr<QuestManager> Factory::CreateQuestManager(PlayScene* playScene)
 {

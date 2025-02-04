@@ -91,7 +91,7 @@ void PlayScene::CreateObjects()
 	m_player = Factory::CreatePlayer(this);	// プレイヤ
 
 	m_uiManager = Factory::CreateUIManager(this);	// UIマネージャー
-	m_enemyManager = Factory::CreateEnemyManager(this);	// 敵マネージャー
+	m_enemyManager = Factory::CreateEnemyManager();	// 敵マネージャー
 	m_questManager = Factory::CreateQuestManager(this);	// クエストマネージャー
 
 	m_uiManager->CreateUI();	// UIの生成

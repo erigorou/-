@@ -3,34 +3,44 @@
 #include "../../Goblin.h"
 #include "Libraries/MyLib/Math.h"
 
-// -------------------
-// コンストラクタ
-// -------------------
+// ---------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="goblin">ゴブリンのポインタ</param>
+// ---------------------------------------------
 GoblinTutorial::GoblinTutorial(Goblin* goblin)
-	: m_goblin(goblin)
-	, m_TotalTime(0.0f)
+	: 
+	m_goblin{ goblin },
+	m_TotalTime{}
 {
 }
 
-// -------------------
-// デストラクタ
-// -------------------
+// ---------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// ---------------------------------------------
 GoblinTutorial::~GoblinTutorial()
 {
 }
 
-// -------------------
-// 初期化する
-// -------------------
+// ---------------------------------------------
+/// <summary>
+/// 初期化
+/// </summary>
+// ---------------------------------------------
 void GoblinTutorial::Initialize()
 {
 	// ランダムにクールタイムを設定する
 	m_coolTime = Math::RandomFloat(MIN_COOLTIME, MAX_COOLTIME);
 }
 
-// -------------------
-// 初期化(in)
-// -------------------
+// ---------------------------------------------
+/// <summary>
+/// 初期化(in)
+/// </summary>
+// ----------------------------------------------
 void GoblinTutorial::PreUpdate()
 {
 	m_goblin->SetIsAttacking(false);
@@ -40,24 +50,31 @@ void GoblinTutorial::PreUpdate()
 	m_coolTime = Math::RandomFloat(MIN_COOLTIME, MAX_COOLTIME);
 }
 
-// -------------------
-// 更新する
-// -------------------
+// ---------------------------------------------
+/// <summary>
+/// 更新
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// ---------------------------------------------
 void GoblinTutorial::Update(const float& elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 }
 
-// -------------------
-// 初期化(out)
-// -------------------
+// ---------------------------------------------
+/// <summary>
+/// 初期化(out)
+/// </summary>
+// ---------------------------------------------
 void GoblinTutorial::PostUpdate()
 {
 }
 
-// -------------------
-// 後処理を行う
-// -------------------
+// ---------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
+// ---------------------------------------------
 void GoblinTutorial::Finalize()
 {
 }

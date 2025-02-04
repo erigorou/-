@@ -46,7 +46,7 @@ public:
 
 	static std::unique_ptr<CollisionManager>	CreateCollisionManager();
 	static std::unique_ptr<PlaySceneUIManager>	CreateUIManager(PlayScene* playScene);
-	static std::unique_ptr<EnemyManager>		CreateEnemyManager(PlayScene* playScene);
+	static std::unique_ptr<EnemyManager>		CreateEnemyManager();
 	static std::unique_ptr<QuestManager>		CreateQuestManager(PlayScene* playScene);
 };
 
