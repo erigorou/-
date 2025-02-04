@@ -5,32 +5,22 @@
 #include "pch.h"
 #include "PlayScene.h"
 
-#include <Model.h>
-#include <cassert>
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugCamera.h"
-#include "Libraries/MyLib/DebugString.h"
-#include "Libraries/MyLib/InputManager.h"
-#include "Libraries/MyLib/MemoryLeakDetector.h"
 // システム面 ================================================
 #include "Game/Factory/Factory.h"						// ファクトリ
 #include "Game/Sound/Sound.h"							// 音
 #include "Game/HitStop/HitStop.h"						// ヒットストップ
 #include "Libraries/MyLib/Collision/CollisionManager.h"	// 当たり判定
 #include "Game/Data/GameData.h"							// ゲームデータ
-#include"Interface/IObserver.h"							// オブザーバー
 #include "Game/Messenger/KeyboardMessenger.h"			// メッセンジャー
-#include "Game/Messenger/EventMessenger.h"				// イベントメッセンジャー
 #include "Game/Quest/QuestManager.h"					// クエストマネージャー
+#include "Game/Messenger/EventMessenger.h"				// イベントメッセンジャー
 // オブジェクト関連　=========================================
 #include "Game/EnemyManager/EnemyManager.h"	// 敵マネージャー
 #include "Game/Player/Player.h"				// プレイヤー
 #include "Game/Boss/Boss.h"					// 鬼
-#include "Game/Weapon/Sword/Sword.h"		// 刀
-#include "Game/Weapon/Cudgel/Cudgel.h"		// 金棒
-#include "Game/Goblin/Goblin.h"				// ゴブリン
-
 #include "Game/Stage/Floor/Floor.h"			// 床
 #include "Game/Stage/Sea/Sea.h"				// 海
 #include "Game/Stage/Wall/Wall.h"			// 壁
@@ -77,6 +67,8 @@ void PlayScene::Initialize()
 
 	// オブジェクトの生成
 	CreateObjects();
+
+	EventMessenger::Attach(EventList::EndPlayScene, std::bind(&PlayScene::CheckResult, this));
 }
 
 // ----------------
@@ -297,14 +289,6 @@ void PlayScene::CheckResult()
 // --------------------------------
 void PlayScene::GameOverChacker()
 {
-	static bool flag = true;
-
-	if (m_keyboardStateTracker.IsKeyPressed(DirectX::Keyboard::Keys::F2)) {
-		flag = !flag;
-	}
-
-	if (flag) return;
-
 	// プレイヤーが死亡
 	if (m_player->GetPlayerHP()->GetHP() <= 0)
 	{

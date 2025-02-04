@@ -33,6 +33,8 @@ enum class EventList
 	CreateWeaponTrail,
 	// カメラを揺らす
 	ShakeCamera,
+	// プレイシーン終了
+	EndPlayScene
 };
 
 // -------------------------------------------------------

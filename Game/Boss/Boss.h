@@ -133,8 +133,6 @@ private:
 	void CreateCollision();
 	// イベントの登録
 	void AttachEvent();
-	// 衝突クールタイムを計測
-	void CheckHitCoolTime(float elapsedTime);
 	// 刀の衝突判定
 	void HitSword(InterSectData data);
 	// ステージの衝突判定
@@ -204,10 +202,6 @@ private:
 	DirectX::SimpleMath::Vector3 m_pushBackValue;
 	// 体の当たり判定
 	std::unique_ptr<DirectX::BoundingSphere> m_bodyCollision;
-	// 衝突しているか
-	bool m_isHit;
-	// 衝突クールタイム
-	float m_coolTime;
 	// 衝突可能か
 	bool m_canHit;
 	// カメラの揺らすちから

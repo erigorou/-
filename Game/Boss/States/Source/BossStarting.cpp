@@ -1,23 +1,18 @@
 #include "pch.h"
-#include <cassert>
-#include "Interface/IObject.h"
-#include "Game/CommonResources.h"
-#include "DeviceResources.h"
-#include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/EasingFunctions.h"
 #include "Game/Messenger/EventMessenger.h"
 #include "Game/Sound/Sound.h"
 #include "Game/Boss/States/Header/BossStarting.h"
 #include "Game/Weapon/WeaponState.h"
-// 関数を使用するのに必要な引数
 #include "Game/Boss/Boss.h"
-#include "Game/Player/Player.h"
-#include "Game/Weapon/Cudgel/Cudgel.h"
 
-// --------------------------
-// コンストラクタ
-// --------------------------
+// --------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="boss">ボスのポインタ</param>
+// --------------------------------------
 BossStarting::BossStarting(Boss* boss)
 	:
 	m_boss(boss),
@@ -27,16 +22,20 @@ BossStarting::BossStarting(Boss* boss)
 {
 }
 
-// --------------------------
-// デストラクタ
-// --------------------------
+// --------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// --------------------------------------
 BossStarting::~BossStarting()
 {
 }
 
-// --------------------------
-// 初期化処理
-// --------------------------
+// --------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+// --------------------------------------
 void BossStarting::Initialize()
 {
 	// プレイヤーの取得
@@ -44,9 +43,11 @@ void BossStarting::Initialize()
 	m_player = object ? static_cast<IObject*>(object) : nullptr;
 }
 
-// --------------------------
-// 事前更新処理
-// --------------------------
+// --------------------------------------
+/// <summary>
+/// 事前更新処理
+/// </summary>
+// --------------------------------------
 void BossStarting::PreUpdate()
 {
 	// 経過時間を初期化
@@ -60,9 +61,11 @@ void BossStarting::PreUpdate()
 	EventMessenger::Execute(EventList::ChangeBossFace, &face);
 }
 
-// --------------------------
-// 更新処理
-// --------------------------
+// --------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+// --------------------------------------
 void BossStarting::Update(const float& elapsedTime)
 {
 	m_totalSeconds += elapsedTime;
@@ -86,27 +89,33 @@ void BossStarting::Update(const float& elapsedTime)
 	}
 }
 
-// --------------------------
-// アニメーション更新処理
-// --------------------------
+// --------------------------------------
+/// <summary>
+/// アニメーション更新処理
+/// </summary>
+// --------------------------------------
 void BossStarting::UpdateAnimation()
 {
 	if (m_totalSeconds < DELAY_TIME)		UpdateDelay();
 	else if (m_totalSeconds < MOVE_TIME)	UpdateMove();
 }
 
-// --------------------------
-// アニメーションの遅延処理
-// --------------------------
+// --------------------------------------
+/// <summary>
+/// アニメーションの遅延処理
+/// </summary>
+// --------------------------------------
 void BossStarting::UpdateDelay()
 {
 	m_position = m_boss->GetPosition();
 	m_boss->SetPosition(DirectX::SimpleMath::Vector3(m_position.x, START_HEIGHT, m_position.z));
 }
 
-// --------------------------
-// アニメーションの移動処理
-// --------------------------
+// --------------------------------------
+/// <summary>
+/// アニメーションの移動処理
+/// </summary>
+// --------------------------------------
 void BossStarting::UpdateMove()
 {
 	// 秒数を正規化
@@ -123,9 +132,11 @@ void BossStarting::UpdateMove()
 	}
 }
 
-// --------------------------
-// エフェクトを再生する
-// --------------------------
+// --------------------------------------
+/// <summary>
+/// エフェクトを再生する
+/// </summary>
+// --------------------------------------
 void BossStarting::PlayEffect()
 {
 	// 一度だけ実行する
@@ -142,16 +153,20 @@ void BossStarting::PlayEffect()
 	m_isEndDelay = true;
 }
 
-// --------------------------
-// 事後更新処理
-// --------------------------
+// --------------------------------------
+/// <summary>
+/// 事後更新処理
+/// </summary>
+// --------------------------------------
 void BossStarting::PostUpdate()
 {
 }
 
-// --------------------------
-// 終了処理
-// --------------------------
+// --------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
+// --------------------------------------
 void BossStarting::Finalize()
 {
 }

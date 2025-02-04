@@ -1,15 +1,8 @@
 #include "pch.h"
-#include <cassert>
-#include "Game/CommonResources.h"
-#include "DeviceResources.h"
-#include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
-#include "Game/Sound/Sound.h"
 #include "Game/Weapon/WeaponState.h"
 #include "Game/Messenger/EventMessenger.h"
 #include "Game/Boss/Boss.h"
-#include "Game/Player/Player.h"
-#include "Game/Weapon/Cudgel/Cudgel.h"
 #include "Libraries/MyLib/EasingFunctions.h"
 #include "Game/Boss/States/Header/BossSweeping.h"
 

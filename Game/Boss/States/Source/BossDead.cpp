@@ -1,17 +1,10 @@
 #include "pch.h"
-#include <cassert>
-#include "Game/CommonResources.h"
-#include "DeviceResources.h"
-#include "Libraries/MyLib/DebugString.h"
-#include "Libraries/MyLib/Math.h"
 #include "Libraries//MyLib/EasingFunctions.h"
 #include "Game/Weapon/WeaponState.h"
 
 // 関数を使用するのに必要な引数
 #include "Game/Boss/Boss.h"
-#include "Game/Player/Player.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
-#include "Game/EnemyManager/EnemyManager.h"
 #include "Game/Messenger/EventMessenger.h"
 
 // ヘッダーファイル

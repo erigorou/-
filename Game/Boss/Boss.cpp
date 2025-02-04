@@ -5,7 +5,6 @@
 // ----------------
 
 #include "pch.h"
-
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/Math.h"
@@ -18,21 +17,22 @@
 #include "BehaviourTree/Header/BehaviorTree.h"	// ビヘイビアツリー
 #include "Game/Factory/Factory.h"
 // ステートパターン用
-#include "States/Header/BossStarting.h"// 開始状態
-#include "States/Header/BossIdling.h"// 待機状態
-#include "States/Header/BossAttacking.h"// たたきつけ攻撃
-#include "States/Header/BossSweeping.h"// 薙ぎ払い攻撃
-#include "States/Header/BossDashAttacking.h"// 突撃攻撃
-#include "States/Header/BossApproaching.h"// 追尾状態
-#include "States/Header/BossDead.h"// 死亡状態
+#include "States/Header/BossStarting.h"
+#include "States/Header/BossIdling.h"
+#include "States/Header/BossAttacking.h"
+#include "States/Header/BossSweeping.h"
+#include "States/Header/BossDashAttacking.h"
+#include "States/Header/BossApproaching.h"
+#include "States/Header/BossDead.h"
 // 顔のパーツ用
 #include "Face/Header/BossFaceIdling.h"
 #include "Face/Header/BossFaceAttacking.h"
-// エフェクト
 #include "Effects/EnemyEffect/EnemyEffect.h"
 
 // --------------------------------
-//  コンストラクタ
+/// <summary>
+/// コンストラクタ
+/// </summary>
 // --------------------------------
 Boss::Boss()
 	:
@@ -41,19 +41,19 @@ Boss::Boss()
 	, m_idling{}
 	, m_attacking{}
 	, m_approaching{}
-	, m_coolTime{}
 	, m_position{}
 	, m_angle{}
 	, m_bodyTilt{}
 	, m_pushBackValue{}
-	, m_isHit(false)
 	, m_canHit(false)
 	, m_shakePower{ SHAKE_POWER }
 {
 }
 
 // --------------------------------
-//  デストラクタ
+/// <summary>
+/// デストラクタ
+/// </summary>
 // --------------------------------
 Boss::~Boss()
 {
@@ -65,8 +65,10 @@ Boss::~Boss()
 }
 
 // --------------------------------
-//  イニシャライズ
- // --------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary
+// --------------------------------
 void Boss::Initialize()
 {
 	// 武器の生成
@@ -90,7 +92,9 @@ void Boss::Initialize()
 }
 
 // --------------------------------
-//  状態の生成処理
+/// <summary>
+/// ステートの生成処理
+/// </summary>
 // --------------------------------
 void Boss::CreateState()
 {
@@ -134,7 +138,9 @@ void Boss::CreateState()
 }
 
 // --------------------------------
-//  顔パーツの生成処理
+/// <summary>
+/// 顔の生成処理
+/// </summary>
 // --------------------------------
 void Boss::CreateFace()
 {
@@ -149,7 +155,9 @@ void Boss::CreateFace()
 }
 
 // --------------------------------
-//  衝突判定の生成処理
+/// <summary>
+/// 当たり判定の生成処理
+/// </summary>
 // --------------------------------
 void Boss::CreateCollision()
 {
@@ -170,7 +178,10 @@ void Boss::CreateCollision()
 }
 
 // --------------------------------
-//  状態の変更処理
+/// <summary>
+/// ステートの更新処理
+/// </summary>
+/// <param name="state">次のステート</param>
 // --------------------------------
 void Boss::ChangeState(void* state)
 {
@@ -189,7 +200,10 @@ void Boss::ChangeState(void* state)
 }
 
 // --------------------------------
-//  顔の変更処理
+/// <summary>
+/// 顔の変更処理
+/// </summary>
+/// <param name="face">次の顔</param>
 // --------------------------------
 void Boss::ChangeFace(void* face)
 {
@@ -200,7 +214,9 @@ void Boss::ChangeFace(void* face)
 }
 
 // --------------------------------
-// イベントの登録
+/// <summary>
+/// イベントの登録
+/// </summary>
 // --------------------------------
 void Boss::AttachEvent()
 {
@@ -211,7 +227,10 @@ void Boss::AttachEvent()
 }
 
 // --------------------------------
-//  更新処理
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
 // --------------------------------
 void Boss::Update(float elapsedTime)
 {
@@ -223,8 +242,6 @@ void Boss::Update(float elapsedTime)
 	CalcrationWorldMatrix();
 	// 当たり判定の更新
 	m_bodyCollision->Center = DirectX::SimpleMath::Vector3(m_position.x, m_position.y + COLISION_POS_Y, m_position.z);
-	// 衝突のクールタイムの計測
-	CheckHitCoolTime(elapsedTime);
 	// 生存確認
 	CheckAlive();
 	// 武器の更新
@@ -252,7 +269,9 @@ void Boss::Update(float elapsedTime)
 }
 
 // --------------------------------
-//  ワールド行列の計算
+/// <summary>
+/// ワールド行列の計算
+/// </summary>
 // --------------------------------
 void Boss::CalcrationWorldMatrix()
 {
@@ -278,30 +297,16 @@ void Boss::CalcrationWorldMatrix()
 }
 
 // --------------------------------
-//  衝突のクールタイムの計測を行う
-// --------------------------------
-void Boss::CheckHitCoolTime(float elapsedTime)
-{
-	// クールタイムの計測を行う
-	if (m_isHit && m_coolTime < COOL_TIME)
-	{
-		m_coolTime += elapsedTime;
-	}
-
-	// クールタイムが終了したら
-	else if (m_coolTime >= COOL_TIME)
-	{
-		m_isHit = false;
-		m_coolTime = 0.0f;
-	}
-}
-
-// --------------------------------
-//  表示処理
+/// <summary>
+/// 描画処理
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="projection">プロジェクション行列</param>
 // --------------------------------
 void Boss::Render(
 	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection)
+	const DirectX::SimpleMath::Matrix& projection
+)
 {
 	// 描画に必要なデータを取得する
 	CommonResources* resources = CommonResources::GetInstance();
@@ -319,7 +324,9 @@ void Boss::Render(
 }
 
 // --------------------------------
-//  終了処理
+/// <summary>
+/// 終了処理
+/// </summary>
 // --------------------------------
 void Boss::Finalize()
 {
@@ -331,7 +338,10 @@ void Boss::Finalize()
 }
 
 // --------------------------------
-//  全体の衝突判定イベント
+/// <summary>
+/// 衝突判定
+/// </summary>
+/// <param name="data">衝突データ</param>
 // --------------------------------
 void Boss::HitAction(InterSectData data)
 {
@@ -339,19 +349,21 @@ void Boss::HitAction(InterSectData data)
 	HitStage(data);
 }
 
+
 // --------------------------------
-//  刀との衝突判定
+/// <summary>
+/// 剣との衝突判定
+/// </summary>
+/// <param name="data">衝突データ</param>
 // --------------------------------
 void Boss::HitSword(InterSectData data)
 {
 	if (
-		!m_isHit &&
 		m_canHit &&
 		data.objType == ObjectType::Sword &&
 		data.colType == CollisionType::OBB)
 	{
 		m_hp->Damage(1);
-		m_isHit = true;
 		m_canHit = false;
 
 		// ヒットストップを有効にする
@@ -364,8 +376,12 @@ void Boss::HitSword(InterSectData data)
 	}
 }
 
+
 // --------------------------------
-//  ステージとの衝突判定
+/// <summary>
+/// ステージとの衝突判定
+/// </summary>
+/// <param name="data">衝突データ</param>
 // --------------------------------
 void Boss::HitStage(InterSectData data)
 {
@@ -384,7 +400,9 @@ void Boss::HitStage(InterSectData data)
 }
 
 // --------------------------------
-//  生存確認
+/// <summary>
+/// 生存判定
+/// </summary>
 // --------------------------------
 void Boss::CheckAlive()
 {
@@ -398,7 +416,9 @@ void Boss::CheckAlive()
 }
 
 // --------------------------------
-// 死亡処理
+/// <summary>
+/// 死亡時の処理
+/// </summary>
 // --------------------------------
 void Boss::DeadAction()
 {
