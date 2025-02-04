@@ -4,7 +4,6 @@
 
 #include "pch.h"
 #include "Goblin.h"
-#include "Game/Scene/PlayScene.h"
 #include "Libraries/MyLib/Math.h"
 #include "Interface/IState.h"
 #include "Game/Data/HPSystem.h"
@@ -12,7 +11,6 @@
 #include "../Boss/Boss.h"
 #include "Effects/EnemyEffect/EnemyEffect.h"
 #include "Game/HitStop/HitStop.h"
-#include "Game/EnemyManager/EnemyManager.h"
 #include "Game/Messenger/EventMessenger.h"
 
 #include "State/Header/GoblinIdling.h"
@@ -29,19 +27,19 @@ const float Goblin::GOBLIN_SCALE = Boss::BOSS_SCALE / 4.0f;	// サイズ
 // -------------------------------
 // コンストラクタ
 // -------------------------------
-Goblin::Goblin(PlayScene* playScene)
-	: m_playScene(playScene)
-	, m_position{}
-	, m_velocity{}
-	, m_angle{}
-	, m_scale{ 1.0f, 1.0f, 1.0f }
-	, m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
-	, m_model(nullptr)
-	, m_nowAttacking(false)
-	, m_pushBackValue{}
-	, m_isHit(false)
-	, m_canHit(false)
-	, m_coolTime(0.0f)
+Goblin::Goblin()
+	:
+	m_position{},
+	m_velocity{},
+	m_angle{},
+	m_scale{ 1.0f, 1.0f, 1.0f },
+	m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity },
+	m_model(nullptr),
+	m_nowAttacking(false),
+	m_pushBackValue{},
+	m_isHit(false),
+	m_canHit(false),
+	m_coolTime{}
 {
 }
 
@@ -356,5 +354,5 @@ void Goblin::CheckAlive()
 // --------------------------------
 void Goblin::DeleteGoblin()
 {
-	m_playScene->GetEnemyManager()->DeleteEnemy(this);
+	EventMessenger::Execute(EventList::DeleteEnemy, this);
 }

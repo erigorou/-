@@ -17,6 +17,8 @@ enum class EventList
 	ChangeBossState,
 	// ƒ{ƒX‚ÌŠç‚ğ•ÏX‚·‚é
 	ChangeBossFace,
+	// “G‚ğ‚P‘Ìíœ
+	DeleteEnemy,
 	// ƒSƒuƒŠƒ“‚ğ‘S‚Ä“|‚·
 	DeleteAllGoblin,
 	// OBBÕ“Ë”»’è‚ğ“o˜^‚·‚é

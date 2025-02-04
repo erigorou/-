@@ -12,8 +12,6 @@
 #include "Interface/IState.h"
 #include "Interface/IEnemy.h"
 
-class Player;
-class PlayScene;
 class HPSystem;
 class EnemyEffect;
 
@@ -79,7 +77,7 @@ public:
 	// ---------------
 public:
 	// コンストラクタ
-	Goblin(PlayScene* playScene);
+	Goblin();
 	// デストラクタ
 	~Goblin();
 	// 初期化関数
@@ -163,10 +161,6 @@ private:
 	std::unique_ptr<HPSystem> m_hp;
 	// 敵エフェクト
 	std::unique_ptr<EnemyEffect> m_enemyEffect;
-
-	// プレイシーン(当たり判定の処理に使用)
-	PlayScene* m_playScene;
-
 	// 体の当たり判定
 	std::unique_ptr<DirectX::BoundingSphere> m_bodyCollision;
 

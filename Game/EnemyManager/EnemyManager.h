@@ -84,7 +84,7 @@ public:
 	// 全てのゴブリンのHPを0にする
 	void AllGoblinHPZero();
 	// 敵１体の削除
-	void DeleteEnemy(IEnemy* enemy);
+	void DeleteEnemy(void* pointer);
 	// カメラのターゲットの設定
 	void ChangeCameraTarget();
 	// 敵が生きているかのフラグ

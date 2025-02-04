@@ -44,9 +44,6 @@ public:
 	// デストラクタ
 	~GameData() = default;
 
-	// 初期化処理
-	void Initialize();
-
 	// メンバ変数 --------------
 private:
 

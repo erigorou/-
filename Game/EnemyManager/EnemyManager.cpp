@@ -18,8 +18,6 @@
 #include <fstream>
 
 // --------------------------------
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-// --------------------------------
 EnemyManager::EnemyManager(PlayScene* playScene)
 	: m_targetEnemyIndex()
 	, m_playScene(playScene)
@@ -50,6 +48,7 @@ void EnemyManager::Initialize(PlayScene* playScene)
 	// ƒCƒxƒ“ƒgƒƒbƒZƒ“ƒWƒƒ[‚É“o˜^
 	EventMessenger::Attach(EventList::EnemyCanHit, std::bind(&EnemyManager::AllEnemyCanHit, this, std::placeholders::_1));
 	EventMessenger::Attach(EventList::DeleteAllGoblin, std::bind(&EnemyManager::AllGoblinHPZero, this));
+	EventMessenger::Attach(EventList::DeleteEnemy, std::bind(&EnemyManager::DeleteEnemy, this, std::placeholders::_1));
 }
 
 // --------------------------------
@@ -178,8 +177,10 @@ void EnemyManager::AllGoblinHPZero()
 // --------------------------------
 // “G‚P‘Ì‚Ìíœ
 // --------------------------------
-void EnemyManager::DeleteEnemy(IEnemy* enemy)
+void EnemyManager::DeleteEnemy(void* pointer)
 {
+	auto enemy = static_cast<IEnemy*>(pointer);
+
 	// ŠY“–‚·‚é“G‚ğ’Tõ
 	for (auto it = m_enemies.begin(); it != m_enemies.end(); ++it)
 	{
@@ -255,7 +256,7 @@ void EnemyManager::AllEnemyCanHit(void* flag)
 void EnemyManager::GenerateGoblin(const DirectX::SimpleMath::Vector3& position)
 {
 	// ƒSƒuƒŠƒ“‚Ì¶¬
-	auto goblin = Factory::CreateGoblin(m_playScene);
+	auto goblin = Factory::CreateGoblin();
 	// ˆÊ’u‚Ìİ’è
 	goblin->SetPosition(position);
 	// ”z—ñ‚ÉŠi”[

@@ -151,11 +151,11 @@ std::unique_ptr<Boss> Factory::CreateBoss()
 // ---------------------------------------------
 // ƒSƒuƒŠƒ“‚Ì¶¬ŠÖ”
 // ---------------------------------------------
-std::unique_ptr<Goblin> Factory::CreateGoblin(PlayScene* playScene)
+std::unique_ptr<Goblin> Factory::CreateGoblin()
 {
 	// ƒSƒuƒŠƒ“‚ÌéŒ¾
 	std::unique_ptr<Goblin> goblin;
-	goblin = std::make_unique<Goblin>(playScene);
+	goblin = std::make_unique<Goblin>();
 	// ‰Šú‰»ˆ—
 	goblin->Initialize();
 	// ƒSƒuƒŠƒ“‚Ìİ’è

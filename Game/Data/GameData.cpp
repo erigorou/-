@@ -9,7 +9,10 @@
 std::unique_ptr<GameData> GameData::s_data = nullptr;
 
 // ------------------------------------------------
-// インスタンスを返す関数
+/// <summary>
+/// インスタンスの取得
+/// </summary>
+/// <returns>GameDataのポインタ</returns>
 // ------------------------------------------------
 GameData* const GameData::GetInstance()
 {
@@ -25,17 +28,12 @@ GameData* const GameData::GetInstance()
 }
 
 // ------------------------------------------------
-// コンストラクタ
+/// <summary>
+/// コンストラクタ
+/// </summary>
 // ------------------------------------------------
 GameData::GameData()
 	: m_battleResult{ BATTLE_RESULT::NONE }
 	, m_questIndex{}
-{
-}
-
-//---------------------------------------------------------
-// 初期化する
-//---------------------------------------------------------
-void GameData::Initialize()
 {
 }
