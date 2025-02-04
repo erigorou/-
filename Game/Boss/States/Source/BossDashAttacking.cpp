@@ -1,20 +1,18 @@
 #include "pch.h"
-#include <cassert>
-#include "Game/CommonResources.h"
-#include "DeviceResources.h"
-#include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 #include "Libraries//MyLib/EasingFunctions.h"
 #include "Game/Messenger/EventMessenger.h"
 #include "Game/Weapon/WeaponState.h"
-
 #include "Game/Boss/Boss.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
 #include "../../States/Header/BossDashAttacking.h"
 
-// --------------------
-// コンストラクタ
-// --------------------
+// --------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="boss">ボスのポインタ</param>
+// --------------------------------------
 BossDashAttacking::BossDashAttacking(Boss* boss)
 	:
 	m_boss(boss),
@@ -24,16 +22,20 @@ BossDashAttacking::BossDashAttacking(Boss* boss)
 {
 }
 
-// --------------------
-// デストラクタ
-// --------------------
+// --------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// --------------------------------------
 BossDashAttacking::~BossDashAttacking()
 {
 }
 
-// --------------------
-// 初期化処理
-// --------------------
+// --------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+// --------------------------------------
 void BossDashAttacking::Initialize()
 {
 	// プレイヤーの取得
@@ -45,9 +47,11 @@ void BossDashAttacking::Initialize()
 	m_cudgel = cudgel ? static_cast<Cudgel*>(cudgel) : nullptr;
 }
 
-// --------------------
-// 事前更新処理
-// --------------------
+// --------------------------------------
+/// <summary>
+/// 事前更新処理
+/// </summary>
+// --------------------------------------
 void BossDashAttacking::PreUpdate()
 {
 	// 経過時間を初期化
@@ -65,9 +69,12 @@ void BossDashAttacking::PreUpdate()
 	EventMessenger::Execute(EventList::ChangeCudgelState, &state);
 }
 
-// --------------------
-// 更新処理
-// --------------------
+// --------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// --------------------------------------
 void BossDashAttacking::Update(const float& elapsedTime)
 {
 	// 経過時間を更新
@@ -86,9 +93,11 @@ void BossDashAttacking::Update(const float& elapsedTime)
 	}
 }
 
-// --------------------
-// 敵の挙動更新処理
-// --------------------
+// --------------------------------------
+/// <summary>
+/// 敵の挙動更新処理
+/// </summary>
+// --------------------------------------
 void BossDashAttacking::UpdateAction()
 {
 	// ためモーションの時
@@ -98,9 +107,11 @@ void BossDashAttacking::UpdateAction()
 	else if (m_totalSeconds <= RETURN_TIME)	ReturnAction();	// 元に戻る
 }
 
-// --------------------
-// 貯め
-// --------------------
+// --------------------------------------
+/// <summary>
+/// 貯め
+/// </summary>
+// --------------------------------------
 void BossDashAttacking::ChargeAction()
 {
 	// プレイヤーに攻撃を受けられるフラグを無効化
@@ -122,9 +133,11 @@ void BossDashAttacking::ChargeAction()
 	m_boss->SetBodyTilt(m_bodyTilt);
 }
 
-// --------------------
-// ダッシュ
-// --------------------
+// --------------------------------------
+/// <summary>
+/// ダッシュ
+/// </summary>
+// --------------------------------------
 void BossDashAttacking::DashAction()
 {
 	// アタック中
@@ -156,9 +169,11 @@ void BossDashAttacking::DashAction()
 	m_boss->SetBodyTilt(m_bodyTilt);
 }
 
-// --------------------
-// 待機
-// --------------------
+// --------------------------------------
+/// <summary>
+/// 待機
+/// </summary>
+// --------------------------------------
 void BossDashAttacking::WaitAction()
 {
 	// アタック終わり
@@ -175,9 +190,11 @@ void BossDashAttacking::WaitAction()
 	m_boss->SetBodyTilt(m_bodyTilt);
 }
 
-// --------------------
-// 元に戻る
-// --------------------
+// --------------------------------------
+/// <summary>
+/// 元に戻る
+/// </summary>
+// --------------------------------------
 void BossDashAttacking::ReturnAction()
 {
 	// 時間の正規化
@@ -196,9 +213,11 @@ void BossDashAttacking::ReturnAction()
 	m_boss->SetAngle(m_angle);
 }
 
-// --------------------
-// 事後更新処理
-// --------------------
+// --------------------------------------
+/// <summary>
+/// 事後更新処理
+/// </summary>
+// --------------------------------------
 void BossDashAttacking::PostUpdate()
 {
 	// 武器のステートを変更
@@ -210,9 +229,11 @@ void BossDashAttacking::PostUpdate()
 	EventMessenger::Execute(EventList::ChangeBossFace, &face);
 }
 
-// --------------------
-// 終了処理
-// --------------------
+// --------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
+// --------------------------------------
 void BossDashAttacking::Finalize()
 {
 }

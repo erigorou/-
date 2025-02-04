@@ -1,10 +1,7 @@
 #include "pch.h"
 #include "../Header/GoblinDead.h"
 #include "../../Goblin.h"
-#include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/EasingFunctions.h"
-#include "Game/Scene/PlayScene.h"
-#include "Game/EnemyManager/EnemyManager.h"
 
 // -------------------
 // コンストラクタ

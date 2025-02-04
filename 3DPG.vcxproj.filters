@@ -343,7 +343,7 @@
     <ClCompile Include="Game\Stage\Wall\Wall.cpp" />
     <ClCompile Include="Game\UI\!PlaySceneUIManager\PlaySceneUIManager.cpp" />
     <ClCompile Include="Game\UI\Source\Gauge.cpp" />
-    <ClCompile Include="Effects\Source\SwordTrialParticle.cpp" />
+    <ClCompile Include="Effects\Source\SwordTrailParticle.cpp" />
     <ClCompile Include="Game\Boss\States\Source\BossSweeping.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp" />
     <ClCompile Include="Game\UI\Source\PlayerHPUI.cpp" />

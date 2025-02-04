@@ -4,10 +4,8 @@
 
 #include "pch.h"
 #include "Goblin.h"
-#include "Game/Player/Player.h"
 #include "Game/Scene/PlayScene.h"
 #include "Libraries/MyLib/Math.h"
-#include "Libraries/MyLib/DebugString.h"
 #include "Interface/IState.h"
 #include "Game/Data/HPSystem.h"
 #include "Game/GameResources.h"
@@ -19,6 +17,8 @@
 
 #include "State/Header/GoblinIdling.h"
 #include "State/Header/GoblinAttacking.h"
+#include "State/Header/GoblinDead.h"
+#include "State/Header/GoblinTutorial.h"
 
 // ---------------
 // ŒÅ’è’l

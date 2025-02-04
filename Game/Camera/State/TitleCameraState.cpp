@@ -2,32 +2,44 @@
 #include "TitleCameraState.h"
 #include "../Camera.h"
 
-// ----------------------------
-// コンストラクタ
-// ----------------------------
+// ---------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="camera">カメラオブジェクト</param>
+// ---------------------------------------------
 TitleCameraState::TitleCameraState(Camera* camera)
 	: m_camera(camera)
 	, m_angle(0.0f)
 {
 }
 
-// ----------------------------
-// デストラクタ
-// ----------------------------
+// ---------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// ---------------------------------------------
 TitleCameraState::~TitleCameraState()
 {
 }
 
-// ----------------------------
-// ステート変更（in）
-// ----------------------------
+// ---------------------------------------------
+/// <summary>
+/// ステートの前更新処理
+/// </summary>
+// ---------------------------------------------
 void TitleCameraState::PreUpdate()
 {
 }
 
-// ----------------------------
-// 更新処理
-// ----------------------------
+// ---------------------------------------------
+/// <summary>
+/// ステートの更新処理
+/// </summary>
+/// <param name="playerPos">プレイヤーの座標</param>
+/// <param name="enemyPos">敵の座標</param>
+/// <param name="elapsedTime">経過時間</param>
+// ---------------------------------------------
 void TitleCameraState::Update(
 	const DirectX::SimpleMath::Vector3& playerPos,
 	const DirectX::SimpleMath::Vector3& enemyPos,
@@ -51,9 +63,11 @@ void TitleCameraState::Update(
 	m_camera->CalculateCameraAngle();
 }
 
-// ----------------------------
-// ステート変更（out)
-// ----------------------------
+// ---------------------------------------------
+/// <summary>
+/// ステートの後更新処理
+/// </summary>
+// ---------------------------------------------
 void TitleCameraState::PostUpdate()
 {
 }

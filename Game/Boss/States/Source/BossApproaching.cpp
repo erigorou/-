@@ -1,19 +1,16 @@
 #include "pch.h"
-#include <cassert>
-#include "Game/CommonResources.h"
-#include "DeviceResources.h"
-#include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 #include "Game/Sound/Sound.h"
 #include "Game/Messenger/EventMessenger.h"
 
-#include "Game/Player/Player.h"
 #include "Game/Boss/Boss.h"
-#include "Game/Weapon/Cudgel/Cudgel.h"
 #include "Game/Boss/States/Header/BossApproaching.h"
 
 // --------------------------------------
-// コンストラクタ
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="boss">ボスのポインタ</param>
 // --------------------------------------
 BossApproaching::BossApproaching(Boss* boss)
 	:
@@ -26,15 +23,19 @@ BossApproaching::BossApproaching(Boss* boss)
 }
 
 // --------------------------------------
-// デストラクタ
-// --------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// ---------------------------------------
 BossApproaching::~BossApproaching()
 {
 }
 
 // --------------------------------------
-// 初期化処理
-// --------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+// ---------------------------------------
 void BossApproaching::Initialize()
 {
 	// 速度を設定（前にしか動かない）
@@ -46,8 +47,10 @@ void BossApproaching::Initialize()
 }
 
 // --------------------------------------
-// ステート変更処理(in)
-// --------------------------------------
+/// <summary>
+/// 変更処理(in)
+/// </summary>
+/// --------------------------------------
 void BossApproaching::PreUpdate()
 {
 	// 経過時間を初期化
@@ -59,7 +62,9 @@ void BossApproaching::PreUpdate()
 }
 
 // --------------------------------------
-// 更新処理
+/// <summary>
+/// 更新処理
+/// </summary>
 // --------------------------------------
 void BossApproaching::Update(const float& elapsedTime)
 {
@@ -72,7 +77,10 @@ void BossApproaching::Update(const float& elapsedTime)
 }
 
 // --------------------------------------
-// アニメーションの更新
+/// <summary>
+/// アニメーションの更新
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
 // --------------------------------------
 void BossApproaching::UpdateAnimation(float elapsedTime)
 {
@@ -97,7 +105,9 @@ void BossApproaching::UpdateAnimation(float elapsedTime)
 }
 
 // --------------------------------------
-// いつ次のステートに移行するかを検知
+/// <summary>
+/// 次のステートに移行するかを検知
+/// </summary>
 // --------------------------------------
 void BossApproaching::CheckNextState()
 {
@@ -145,7 +155,9 @@ void BossApproaching::CheckNextState()
 }
 
 // --------------------------------------
-// ステート変更処理(out)
+/// <summary>
+/// 変更処理(out)
+/// </summary>
 // --------------------------------------
 void BossApproaching::PostUpdate()
 {
@@ -161,7 +173,9 @@ void BossApproaching::PostUpdate()
 }
 
 // --------------------------------------
-// 終了処理
+/// <summary>
+/// 終了処理
+/// </summary>
 // --------------------------------------
 void BossApproaching::Finalize()
 {

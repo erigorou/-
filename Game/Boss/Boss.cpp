@@ -5,21 +5,15 @@
 // ----------------
 
 #include "pch.h"
-#include <Model.h>
-#include <cassert>
 
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
-#include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
-#include "Game/Scene/PlayScene.h"
 #include "../HitStop/HitStop.h"
 #include "Game/GameResources.h"
 #include "Game/Messenger/EventMessenger.h"
 #include "Game/Boss/Boss.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
-#include "Game/EnemyManager/EnemyManager.h"
-#include "Game/Stage/Wall/Wall.h"
 #include "Interface/IState.h"
 #include "BehaviourTree/Header/BehaviorTree.h"	// ビヘイビアツリー
 #include "Game/Factory/Factory.h"

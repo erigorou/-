@@ -4,15 +4,24 @@
 //
 // -------------------------------------
 #include "pch.h"
-#include "Interface/IParticle.h"
 #include "Effects/Header/DustTrailParticle.h"
 
 // 終了時間
 const static float ENDLESS = -100.0f;
 
-// ----------------------------
-// コンストラクタ
-// ----------------------------
+// --------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="life">生存時間</param>
+/// <param name="pos">座標</param>
+/// <param name="velocity">速度</param>
+/// <param name="accelerator">加速度</param>
+/// <param name="startScale">初期サイズ</param>
+/// <param name="endScale">最終サイズ</param>
+/// <param name="startColor">初期カラー</param>
+/// <param name="endColor">最終カラー</param>
+// --------------------------------------------------------
 DustTrailParticle::DustTrailParticle(
 	float life,
 	DirectX::SimpleMath::Vector3 pos,
@@ -36,16 +45,22 @@ DustTrailParticle::DustTrailParticle(
 {
 }
 
-// ----------------------------
-// デストラクタ
-// ----------------------------
+// --------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// --------------------------------------------------------
 DustTrailParticle::~DustTrailParticle()
 {
 }
 
-// ----------------------------
-// 更新処理
-// ----------------------------
+// --------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+/// <returns>生存しているか</returns>
+// --------------------------------------------------------
 bool DustTrailParticle::Update(float elapsedTime)
 {
 	//	スケール。現在の生存時間から、大きさをLerpで算出する

@@ -4,17 +4,15 @@
 
 #include "pch.h"
 #include "Game/Camera/Camera.h"
-#include "Game/Screen.h"
 #include "Libraries/MyLib/Math.h"
 #include "Game/Messenger/EventMessenger.h"
 
-#include "Interface/ICameraState.h"
-#include "State/TitleCameraState.h"
-#include "State/PlayCameraState.h"
-
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+// ---------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="target">ターゲット座標</param>
+// ---------------------------------------------
 Camera::Camera(const DirectX::SimpleMath::Vector3& target)
 	:m_view{}
 	, m_projection{}
@@ -34,13 +32,18 @@ Camera::Camera(const DirectX::SimpleMath::Vector3& target)
 	EventMessenger::Attach(EventList::ShakeCamera, std::bind(&Camera::SetShake, this, std::placeholders::_1));
 }
 
-//-------------------------------------------------------------------
-// カメラの更新処理
-//-------------------------------------------------------------------
+// ---------------------------------------------
+/// <summary>
+/// カメラの更新処理
+/// </summary>
+/// <param name="playerPos">プレイヤーの座標</param>
+/// <param name="enemyPos">敵の座標</param>
+/// <param name="elapsedTime">経過時間</param>
+// ---------------------------------------------
 void Camera::Update(
 	const DirectX::SimpleMath::Vector3& playerPos,
 	const DirectX::SimpleMath::Vector3& enemyPos,
-	const float	elapsedTime
+	const float elapsedTime
 )
 {
 	// ステートを更新
@@ -51,17 +54,21 @@ void Camera::Update(
 	);
 }
 
-//-------------------------------------------------------------------
-// カメラのビュー行列を計算する
-//-------------------------------------------------------------------
+// ---------------------------------------------
+/// <summary>
+/// カメラのビュー行列を計算する
+/// </summary>
+// ---------------------------------------------
 void Camera::CalculateViewMatrix()
 {
 	m_view = DirectX::SimpleMath::Matrix::CreateLookAt(m_position, m_target, m_up);
 }
 
-//-------------------------------------------------------------------
-// カメラのアングルを計算する
-//-------------------------------------------------------------------
+// ---------------------------------------------
+/// <summary>
+/// カメラのアングルを計算する
+/// </summary>
+// ---------------------------------------------
 void Camera::CalculateCameraAngle()
 {
 	// カメラの前方向ベクトル
@@ -91,9 +98,12 @@ void Camera::CalculateCameraAngle()
 	m_angle = m_currentAngle;
 }
 
-// -----------------------------
-// カメラの振動
-// -----------------------------
+// ---------------------------------------------
+/// <summary>
+/// カメラの振動
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// ---------------------------------------------
 void Camera::Shake(float elapsedTime)
 {
 	if (!m_isShake) return;
@@ -118,34 +128,50 @@ void Camera::Shake(float elapsedTime)
 	m_target += Math::RandomVector3(min, max);
 }
 
-//-------------------------------------------------------------------
-// ステートの変更
-//-------------------------------------------------------------------
-void Camera::ChangeState(ICameraState* state)
+// ---------------------------------------------
+/// <summary>
+/// ステートの変更
+/// </summary>
+/// <param name="state">新しいカメラステート</param>
+// ---------------------------------------------
+void Camera::ChangeState(CameraState state)
 {
+	int index = static_cast<int>(state);
+
 	// ステートが同じなら変更しない
-	if (m_currentState == state) return;
+	if (m_currentState == m_states[index]) return;
 
 	// ステートの変更手続き
 	m_currentState->PostUpdate();
-	m_currentState = state;
+	m_currentState = m_states[index];
 	m_currentState->PreUpdate();
 }
 
-//-------------------------------------------------------------------
-// カメラの振動を開始
-//-------------------------------------------------------------------
+// ---------------------------------------------
+/// <summary>
+/// ステートの作成
+/// </summary>
+// ---------------------------------------------
 void Camera::CreateState()
 {
+	// タイトルステートの作成
 	m_titleState = std::make_unique<TitleCameraState>(this);
-	m_playState = std::make_unique<PlayCameraState>(this);
+	m_states.push_back(m_titleState.get());
 
+	// プレイステートの作成
+	m_playState = std::make_unique<PlayCameraState>(this);
+	m_states.push_back(m_playState.get());
+
+	// 初期ステートを設定
 	m_currentState = m_titleState.get();
 }
 
-//-------------------------------------------------------------------
-// カメラの振動を開始
-//-------------------------------------------------------------------
+// ---------------------------------------------
+/// <summary>
+/// カメラの振動を開始
+/// </summary>
+/// <param name="power">振動の強さ</param>
+// ---------------------------------------------
 void Camera::SetShake(void* power)
 {
 	m_isShake = true;

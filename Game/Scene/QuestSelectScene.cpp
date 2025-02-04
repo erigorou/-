@@ -4,30 +4,22 @@
 */
 #include "pch.h"
 #include "QuestSelectScene.h"
-#include "Game/Screen.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
-#include "Libraries/MyLib/MemoryLeakDetector.h"
 #include "Libraries/MyLib/InputManager.h"
-#include "Libraries/MyLib/DebugString.h"
 #include "../Factory/Factory.h"
 #include "../Sound/Sound.h"
 #include "../Data/GameData.h"
-#include "Libraries/MyLib/EasingFunctions.h"
 #include "Libraries/MyLib/Math.h"
 #include "Effects/Particle.h"
-#include "Game/UI/UIAnchor.h"
 #include "Game/UI/SceneUIManager/QuestSelectSceneUIManager.h"
-#include "Libraries/MyLib/CustomShader/CustomShader.h"
 
 #include "../Camera/Camera.h"
 #include "../Stage/Floor/Floor.h"
 #include "../Stage/Sea/Sea.h"
 #include "../TitleObject/TitleEnemy.h"
 #include "Libraries/MyLib/SkySphere.h"
-#include "Game/UI/Header/IconUI.h"
 
-#include <cassert>
 
 //---------------------------------------------------------
 // コンストラクタ
@@ -80,7 +72,7 @@ void QuestSelectScene::CreateObjects()
 	m_skySphere->LoadSkySphereModel();
 
 	// タイトルシーンのカメラステートを設定
-	m_camera->ChangeState(m_camera->GetTitleState());
+	m_camera->ChangeState(CameraState::Title);
 
 	m_particle = Factory::CreateParticle();
 

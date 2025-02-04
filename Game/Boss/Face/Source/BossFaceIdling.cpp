@@ -11,9 +11,12 @@
 #include "../../Boss.h"
 #include "../Header/BossFaceIdling.h"
 
-// --------------------
-// コンストラクタ
-// --------------------
+// --------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="Boss">ボスのポインタ</param>
+// --------------------------------------------------------
 BossFaceIdling::BossFaceIdling(Boss* Boss)
 	: m_Boss(Boss)
 {
@@ -21,16 +24,23 @@ BossFaceIdling::BossFaceIdling(Boss* Boss)
 	m_model = GameResources::GetInstance()->GetModel("bossIdlingFace");
 }
 
-// --------------------
-// デストラクタ
-// --------------------
+// --------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// --------------------------------------------------------
 BossFaceIdling::~BossFaceIdling()
 {
 }
 
-// --------------------
-// 顔の描画
-// --------------------
+// --------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
+/// <param name="mat">ワールド行列</param>
+/// <param name="view">ビュー行列</param>
+/// <param name="proj">プロジェクション行列</param>
+// --------------------------------------------------------
 void BossFaceIdling::DrawFace(
 	const DirectX::SimpleMath::Matrix mat,
 	const DirectX::SimpleMath::Matrix& view,

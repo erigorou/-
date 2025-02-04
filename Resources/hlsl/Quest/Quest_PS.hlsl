@@ -11,8 +11,8 @@ float4 main(PS_INPUT input) : SV_TARGET
     float4 quest = tex.Sample(samLinear, input.Tex);
     float4 pattern = tex2.Sample(samLinear, input.Tex);
     
-    // テクスチャが無効な場合は何も描画しない
-    float validTexture = step(0.01f, dot(quest.rgb, float3(1.0f, 1.0f, 1.0f)));
+    // アルファ値がある場合にのみ有効と判断する
+    float validTexture = step(0.0001f, quest.a);
     
     // ディゾルブが 0 の場合はそのまま quest を出力
     float dissolveActive = step(0.01f, dissolve);

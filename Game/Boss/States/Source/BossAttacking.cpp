@@ -1,19 +1,16 @@
 #include "pch.h"
-#include <cassert>
-#include "Game/CommonResources.h"
-#include "DeviceResources.h"
-#include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 #include "Game/Messenger/EventMessenger.h"
-
 #include "Game/Boss/Boss.h"
-#include "Game/Player/Player.h"
-#include "Game/Weapon/Cudgel/Cudgel.h"
 #include "Game/Boss/States/Header/BossAttacking.h"
 #include "Game/Weapon/WeaponState.h"
 
+
 // --------------------------------------
-// コンストラクタ
+/// <summary>
+/// BossAttacking コンストラクタ
+/// </summary>
+/// <param name="boss">ボスのポインタ</param>
 // --------------------------------------
 BossAttacking::BossAttacking(Boss* boss)
 	:
@@ -24,14 +21,18 @@ BossAttacking::BossAttacking(Boss* boss)
 }
 
 // --------------------------------------
-// デストラクタ
+/// <summary>
+/// BossAttacking デストラクタ
+/// </summary>
 // --------------------------------------
 BossAttacking::~BossAttacking()
 {
 }
 
 // --------------------------------------
-// 初期化処理
+/// <summary>
+/// 初期化処理
+/// </summary>
 // --------------------------------------
 void BossAttacking::Initialize()
 {
@@ -41,7 +42,9 @@ void BossAttacking::Initialize()
 }
 
 // --------------------------------------
-// ステート更新処理（in）
+/// <summary>
+/// ステート更新処理（in）
+/// </summary>
 // --------------------------------------
 void BossAttacking::PreUpdate()
 {
@@ -57,7 +60,10 @@ void BossAttacking::PreUpdate()
 }
 
 // --------------------------------------
-// 更新処理
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
 // --------------------------------------
 void BossAttacking::Update(const float& elapsedTime)
 {
@@ -87,7 +93,9 @@ void BossAttacking::Update(const float& elapsedTime)
 }
 
 // --------------------------------------
-// ステート変更処理(out)
+/// <summary>
+/// ステート変更処理(out)
+/// </summary>
 // --------------------------------------
 void BossAttacking::PostUpdate()
 {
@@ -100,7 +108,9 @@ void BossAttacking::PostUpdate()
 }
 
 // --------------------------------------
-// 終了処理
+/// <summary>
+/// 終了処理
+/// </summary>
 // --------------------------------------
 void BossAttacking::Finalize()
 {

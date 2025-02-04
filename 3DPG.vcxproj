@@ -131,6 +131,12 @@
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
+    <FxCompile>
+      <ObjectFileOutput>Resources\cso\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <Xdcmake>
+      <OutputFile>Resources.</OutputFile>
+    </Xdcmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -184,6 +190,12 @@
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
+    <FxCompile>
+      <ObjectFileOutput>Resources\cso\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <Xdcmake>
+      <OutputFile>Resources.</OutputFile>
+    </Xdcmake>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BehaviourTree\Header\Action.h" />
@@ -329,7 +341,7 @@
     <ClCompile Include="Effects\EnemyEffect\EnemyEffect.cpp" />
     <ClCompile Include="Effects\Particle.cpp" />
     <ClCompile Include="Effects\Source\DustTrailParticle.cpp" />
-    <ClCompile Include="Effects\Source\SwordTrialParticle.cpp" />
+    <ClCompile Include="Effects\Source\SwordTrailParticle.cpp" />
     <ClCompile Include="Game\Camera\State\PlayCameraState.cpp" />
     <ClCompile Include="Game\Camera\State\TitleCameraState.cpp" />
     <ClCompile Include="Game\Data\GameData.cpp" />

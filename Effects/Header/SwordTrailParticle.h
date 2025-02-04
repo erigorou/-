@@ -8,11 +8,6 @@
 #include "pch.h"
 #include "Interface/IParticle.h"
 
-//SimpleMath::Vector2(0.0f, 0.0f)), // ç∂è„
-//SimpleMath::Vector2(1.0f, 0.0f)), // âEè„
-//SimpleMath::Vector2(1.0f, 1.0f)), // âEâ∫
-//SimpleMath::Vector2(0.0f, 1.0f)), // ç∂â∫
-
 class SwordTrailParticle : public IParticle
 {
 	// ----------------------------

@@ -6,9 +6,7 @@
 
 #pragma once
 #include "pch.h"
-#include"Game/Scene/PlayScene.h"
 #include "Game/Data/GameData.h"
-#include "Game/UI/!PlaySceneUIManager/PlaySceneUIManager.h"
 #include "EnemyManager.h"
 #include "Game/Messenger/EventMessenger.h"
 #include "../Boss/Boss.h"
@@ -16,11 +14,8 @@
 #include "../Factory/Factory.h"
 #include "../Scene/PlayScene.h"
 #include "Interface/IEnemy.h"
-#include "Game/CommonResources.h"
-
-#include <iostream>
-#include <fstream>
 #include "nlohmann/json.hpp"
+#include <fstream>
 
 // --------------------------------
 // コンストラクタ

@@ -17,10 +17,10 @@ class PlayScene;
 class HPSystem;
 class EnemyEffect;
 
-#include "State/Header/GoblinIdling.h"
-#include "State/Header/GoblinAttacking.h"
-#include "State/Header/GoblinDead.h"
-#include "State/Header/GoblinTutorial.h"
+class GoblinIdling;
+class GoblinAttacking;
+class GoblinDead;
+class GoblinTutorial;
 
 enum class GoblinState
 {

@@ -5,7 +5,6 @@
 
 #include "pch.h"
 #include "Interface/ICameraState.h"
-#include "../Camera.h"
 
 class Camera;
 

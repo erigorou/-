@@ -24,7 +24,7 @@ class QuestRenderer
 public:
 	// テクスチャサイズの大きさ
 	static constexpr int WIDTH = 400;
-	static constexpr int HEIGHT = 120;
+	static constexpr int HEIGHT = 100;
 
 	// テクスチャの初期座標
 	static constexpr int INIT_POSITION_X = 1280;

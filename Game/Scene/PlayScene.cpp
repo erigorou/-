@@ -108,7 +108,7 @@ void PlayScene::CreateObjects()
 	// キー範囲リストを生成する
 	KeyboardMessenger::CreateKeyRangeList();
 	// カメラをプレイシーンで設定
-	m_camera->ChangeState(m_camera->GetPlayState());
+	m_camera->ChangeState(CameraState::Play);
 	// BGM変更
 	Sound::GetInstance()->ChangeBGM(Sound::BGM_TYPE::PLAY);
 }

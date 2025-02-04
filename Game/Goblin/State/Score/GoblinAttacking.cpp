@@ -1,12 +1,10 @@
 #include "pch.h"
 #include "../Header/GoblinAttacking.h"
 #include "../../Goblin.h"
-#include "Game/Player/Player.h"
 #include "Game/Messenger/EventMessenger.h"
 
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/EasingFunctions.h"
-#include "Libraries/MyLib/DebugString.h"
 
 // -------------------------------
 // コンストラクタ

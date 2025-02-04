@@ -1,34 +1,46 @@
 #include "pch.h"
 #include "PlayCameraState.h"
-#include "Interface/ICameraState.h"
+
 #include "../Camera.h"
 #include "Libraries/MyLib/Math.h"
 
-// ----------------------------
-// コンストラクタ
-// ----------------------------
+// ---------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="camera">カメラオブジェクト</param>
+// ---------------------------------------------
 PlayCameraState::PlayCameraState(Camera* camera)
 	: m_camera(camera)
 {
 }
 
-// ----------------------------
-// デストラクタ
-// ----------------------------
+// ---------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// ---------------------------------------------
 PlayCameraState::~PlayCameraState()
 {
 }
 
-// ----------------------------
-// ステート変更（in）
-// ----------------------------
+// ---------------------------------------------
+/// <summary>
+/// ステートの前更新処理
+/// </summary>
+// ---------------------------------------------
 void PlayCameraState::PreUpdate()
 {
 }
 
-// ----------------------------
-// 更新処理
-// ----------------------------
+// ---------------------------------------------
+/// <summary>
+/// ステートの更新処理
+/// </summary>
+/// <param name="playerPos">プレイヤーの座標</param>
+/// <param name="enemyPos">敵の座標</param>
+/// <param name="elapsedTime">経過時間</param>
+// ---------------------------------------------
 void PlayCameraState::Update(
 	const DirectX::SimpleMath::Vector3& playerPos,
 	const DirectX::SimpleMath::Vector3& enemyPos,
@@ -62,9 +74,11 @@ void PlayCameraState::Update(
 	m_camera->CalculateCameraAngle();
 }
 
-// ----------------------------
-// ステート変更（out)
-// ----------------------------
+// ---------------------------------------------
+/// <summary>
+/// ステートの後更新処理
+/// </summary>
+// ---------------------------------------------
 void PlayCameraState::PostUpdate()
 {
 }

@@ -8,7 +8,7 @@
 #include "Interface/IEnemy.h"
 
 // ‘O•ûéŒ¾
-class Enemy;
+class Boss;
 class Goblin;
 class PlayScene;
 class IObject;

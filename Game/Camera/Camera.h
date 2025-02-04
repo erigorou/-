@@ -1,11 +1,14 @@
 #pragma once
 
+#include "Interface/ICameraState.h"
 #include "State/TitleCameraState.h"
 #include "State/PlayCameraState.h"
 
-class ICameraState;
-class TitleCameraState;
-class PlayCameraState;
+enum class CameraState
+{
+	Title,
+	Play
+};
 
 class Camera
 {
@@ -36,11 +39,6 @@ public:
 	// アクセサ
 	// ----------------------------
 public:
-	// タイトルステート
-	TitleCameraState* GetTitleState() { return m_titleState.get(); }
-	// プレイステート
-	PlayCameraState* GetPlayState() { return m_playState.get(); }
-
 	// ビュー行列
 	DirectX::SimpleMath::Matrix GetViewMatrix() const { return m_view; }
 	// プロジェクション行列
@@ -77,7 +75,7 @@ public:
 	// カメラを揺らす
 	void Shake(float elapsedTime);
 	// ステートの変更
-	void ChangeState(ICameraState* state);
+	void ChangeState(CameraState state);
 
 	// ----------------------------
 	// メンバ関数(非公開)
@@ -120,4 +118,6 @@ public:
 	std::unique_ptr<TitleCameraState> m_titleState;
 	// プレイステート
 	std::unique_ptr<PlayCameraState> m_playState;
+	// ステートを格納
+	std::vector<ICameraState*> m_states;
 };

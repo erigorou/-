@@ -4,12 +4,18 @@
 //
 // -------------------------------------
 #include "pch.h"
-#include "Interface/IParticle.h"
 #include "Effects/Header/SwordTrailParticle.h"
 
-// ----------------------------
-// コンストラクタ
-// ----------------------------
+
+// --------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="vertex">頂点情報</param>
+/// <param name="life">生存時間</param>
+/// <param name="startColor">初期カラー</param>
+/// <param name="endColor">終了カラー</param>
+// --------------------------------------------------------
 SwordTrailParticle::SwordTrailParticle(
 	DirectX::VertexPositionTexture vertex[],
 	float life,
@@ -28,16 +34,23 @@ SwordTrailParticle::SwordTrailParticle(
 	}
 }
 
-// ----------------------------
-// デストラクタ
-// ----------------------------
+// --------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// --------------------------------------------------------
 SwordTrailParticle::~SwordTrailParticle()
 {
 }
 
-// ----------------------------
-// 更新処理
-// ----------------------------
+
+// --------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+/// <returns>生存しているか</returns>
+// --------------------------------------------------------
 bool SwordTrailParticle::Update(float elapsedTime)
 {
 	using namespace DirectX;

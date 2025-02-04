@@ -7,7 +7,6 @@
 //-------------------------------------------------------------------------------------
 
 #include "pch.h"
-#include "Libraries/MyLib/BinaryFile.h"
 #include "Game/CommonResources.h"
 #include "Game/GameResources.h"
 #include "Effects/Particle.h"
@@ -17,9 +16,11 @@
 #include "Effects/Header/SwordTrailParticle.h"
 #include <random>
 
-// ---------------------------
-// コンストラクタ
-// ---------------------------
+// --------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+// --------------------------------------------------------
 Particle::Particle()
 	:
 	m_timerDustTrail{},
@@ -33,16 +34,20 @@ Particle::Particle()
 	EventMessenger::Attach(EventList::CreateWeaponTrail, std::bind(&Particle::CreateSwordTrail, this, std::placeholders::_1));
 }
 
-// ---------------------------
-// デストラクタ
-// ---------------------------
+// --------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// --------------------------------------------------------
 Particle::~Particle()
 {
 }
 
-// ---------------------------
-// 生成関数
-// ---------------------------
+// --------------------------------------------------------
+/// <summary>
+/// 生成処理
+/// </summary>
+// --------------------------------------------------------
 void Particle::Create()
 {
 	// リソースの取得
@@ -61,9 +66,14 @@ void Particle::Create()
 	m_states = std::make_unique<DirectX::CommonStates>(device);
 }
 
-// ---------------------------
-// 更新処理
-// ---------------------------
+// --------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTimer">経過時間</param>
+/// <param name="playerPosition">プレイヤーの座標</param>
+/// <param name="playerVelocity">プレイヤーの速度</param>
+// --------------------------------------------------------
 void Particle::Update(float elapsedTimer, const DirectX::SimpleMath::Vector3 playerPosition, DirectX::SimpleMath::Vector3 playerVelocity)
 {
 	// 位置と速度を記録する
@@ -87,9 +97,11 @@ void Particle::Update(float elapsedTimer, const DirectX::SimpleMath::Vector3 pla
 	);
 }
 
-// ---------------------------
-// 軌跡をたどる土埃の生成を行う
-// ---------------------------
+// --------------------------------------------------------
+/// <summary>
+/// 土埃生成処理
+/// </summary>
+// --------------------------------------------------------
 void Particle::CreateTrailDust()
 {
 	// パーティクル(１つ)を生成
@@ -108,9 +120,13 @@ void Particle::CreateTrailDust()
 	m_timerDustTrail = 0.0f;
 }
 
-// ---------------------------
-// たたきつけの時に出る土埃を生成する
-// ---------------------------
+
+// --------------------------------------------------------
+/// <summary>
+/// 土煙生成処理
+/// </summary>
+/// <param name="center">中心座標</param>
+// --------------------------------------------------------
 void Particle::CreateBashDust(void* center)
 {
 	// 中心座標を取得
@@ -176,9 +192,12 @@ void Particle::CreateBashDust(void* center)
 	}
 }
 
-// ---------------------------
-// 剣を降ったときの残像を出す
-// ---------------------------
+// --------------------------------------------------------
+/// <summary>
+/// 剣の残像生成処理
+/// </summary>
+/// <param name="ver">頂点情報</param>
+// --------------------------------------------------------
 void Particle::CreateSwordTrail(void* ver)
 {
 	// void* を適切な型にキャスト
@@ -196,9 +215,12 @@ void Particle::CreateSwordTrail(void* ver)
 	m_swordTrail.push_back(sTP);
 }
 
-// ---------------------------
-// シェーダーを生成する
-// ---------------------------
+
+// --------------------------------------------------------
+/// <summary>
+/// シェーダーの生成処理
+/// </summary>
+// --------------------------------------------------------
 void Particle::CreateShader()
 {
 	auto device = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
@@ -233,9 +255,13 @@ void Particle::CreateShader()
 	device->CreateBuffer(&bd, nullptr, &m_CBuffer);
 }
 
-// -------------------------------------------------------------------
-// Render共通処理およびSwordTrailParticleとDustParticleの描画呼び出し
-// -------------------------------------------------------------------
+// --------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="proj">プロジェクション行列</param>
+// --------------------------------------------------------
 void Particle::Render(
 	DirectX::SimpleMath::Matrix view,
 	DirectX::SimpleMath::Matrix proj
@@ -267,9 +293,13 @@ void Particle::Render(
 	DrawDustParticle(view, proj, cameraDir);	// 土埃の描画
 }
 
-// -----------------------------------
-// 剣の残像パーティクルの描画
-// -----------------------------------
+// --------------------------------------------------------
+/// <summary>
+/// 武器の残像パーティクルの描画
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="proj">プロジェクション行列</param>
+// --------------------------------------------------------
 void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj)
 {
 	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
@@ -329,9 +359,13 @@ void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::Simp
 	m_swordShader->EndSharder(context);
 }
 
-// ----------------------------------------
+// --------------------------------------------------------
+/// <summary>
 /// 土埃パーティクルの描画
-// ----------------------------------------
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="proj">プロジェクション行列</param>
+// --------------------------------------------------------
 void Particle::DrawDustParticle(
 	DirectX::SimpleMath::Matrix view,
 	DirectX::SimpleMath::Matrix proj,
@@ -397,9 +431,14 @@ void Particle::DrawDustParticle(
 	m_dustShader->EndSharder(context);
 }
 
-// -------------------------------------
-// ビルボード作成関数
-// -------------------------------------
+// --------------------------------------------------------
+/// <summary>
+/// ビルボード行列の作成
+/// </summary>
+/// <param name="target">ターゲット</param>
+/// <param name="eye">カメラの位置</param>
+/// <param name="up">上方向</param>
+// --------------------------------------------------------
 void Particle::CreateBillboard(DirectX::SimpleMath::Vector3 target, DirectX::SimpleMath::Vector3 eye, DirectX::SimpleMath::Vector3 up)
 {
 	// パーティクルがカメラに向くようにビルボード行列を作成する

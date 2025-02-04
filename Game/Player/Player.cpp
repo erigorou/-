@@ -5,7 +5,6 @@
 // ----------------
 
 #include "pch.h"
-#include <Model.h>
 #include <cassert>
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
@@ -28,7 +27,7 @@
 // --------------------------------
 Player::Player(PlayScene* playScene)
 	:
-	m_playScene(playScene),
+	m_playScene{ playScene },
 	m_elapsedTime{},
 	m_tilt{},
 	m_model{},
@@ -90,7 +89,6 @@ void Player::CreateCollision()
 		this,					// オブジェクトのアドレス
 		m_bodyCollision.get()	// 当たり判定のアドレス
 	};
-
 	// 当たり判定を記録する
 	EventMessenger::Execute(EventList::AddSphereCollision, &data);
 }
@@ -374,7 +372,7 @@ void Player::CalculationMatrix()
 
 	// プレイヤーの方向調整（敵の方向を見る回転）
 	Quaternion directionRotation = Quaternion::CreateFromYawPitchRoll(
-		-m_angle + DirectX::XMConvertToRadians(180.f),
+		-m_angle + DirectX::XMConvertToRadians(180.0f),
 		0.0f,
 		0.0f
 	);
@@ -479,20 +477,19 @@ void Player::HitBossBody(InterSectData data)
 	if (data.objType == ObjectType::Boss && data.colType == CollisionType::Sphere)
 	{
 		// 敵のステートがダッシュ攻撃の場合で相手が攻撃中の場合
-		if (!m_isHit &&
-			m_canHit)
+		if (! m_isHit && m_canHit)
 		{
 			Damage(1);
 		}
 
 		// 衝突したオブジェクトの情報を取得
 		DirectX::BoundingSphere playerCollision = *m_bodyCollision.get();
-		DirectX::BoundingSphere enemyCollision = *data.collision;
+		DirectX::BoundingSphere enemyCollision  = *data.collision;
 
 		// 押し戻し量を計算
 		m_pushBackValue += Math::pushBack_BoundingSphere(playerCollision, enemyCollision);
 		// y座標には反映無しに設定
-		m_pushBackValue.y = 0;
+		m_pushBackValue.y = 0.0f;
 		// プレイヤーの位置を押し戻す
 		m_position += m_pushBackValue;
 		m_bodyCollision->Center = m_position;
@@ -520,7 +517,7 @@ void Player::HitGoblin(InterSectData data)
 		// 押し戻し量を計算
 		m_pushBackValue += Math::pushBack_BoundingSphere(playerCollision, goblinCollision);
 		// y座標には反映無しに設定
-		m_pushBackValue.y = 0;
+		m_pushBackValue.y = 0.0f;
 		// プレイヤーの位置を押し戻す
 		m_position += m_pushBackValue;
 		m_bodyCollision->Center = m_position;
@@ -556,7 +553,7 @@ void Player::HitStage(InterSectData data)
 		// 押し戻し量を計算
 		m_pushBackValue += Math::pushFront_BoundingSphere(*m_bodyCollision.get(), stageCollision);
 		// y座標には反映無しに設定
-		m_pushBackValue.y = 0;
+		m_pushBackValue.y = 0.0f;
 		// プレイヤーの位置を押し戻す
 		m_position += m_pushBackValue;
 		m_bodyCollision->Center = m_position;

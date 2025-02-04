@@ -10,9 +10,12 @@
 #include "../../Boss.h"
 #include "../Header/BossFaceAttacking.h"
 
-// --------------------
-// コンストラクタ
-// --------------------
+// --------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="Boss">ボスのポインタ</param>
+// --------------------------------------------------------
 BossFaceAttacking::BossFaceAttacking(Boss* Boss)
 	: m_Boss(Boss)
 {
@@ -20,16 +23,23 @@ BossFaceAttacking::BossFaceAttacking(Boss* Boss)
 	m_model = GameResources::GetInstance()->GetModel("bossAttackingFace");
 }
 
-// --------------------
-// デストラクタ
-// --------------------
+// --------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// --------------------------------------------------------
 BossFaceAttacking::~BossFaceAttacking()
 {
 }
 
-// --------------------
-// 描画処理
-// --------------------
+// --------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
+/// ]]param name="mat">ワールド行列</param>
+/// <param name="view">ビュー行列</param>
+/// <param name="proj">プロジェクション行列</param>
+// --------------------------------------------------------
 void BossFaceAttacking::DrawFace(
 	const DirectX::SimpleMath::Matrix mat,
 	const DirectX::SimpleMath::Matrix& view,
