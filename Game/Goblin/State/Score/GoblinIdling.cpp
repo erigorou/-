@@ -2,6 +2,7 @@
 #include "../Header/GoblinIdling.h"
 #include "../../Goblin.h"
 #include "Libraries/MyLib/Math.h"
+#include "Game/Messenger/EventMessenger.h"
 
 // ---------------------------------------------
 /// <summary>
@@ -58,6 +59,9 @@ void GoblinIdling::PreUpdate()
 // ---------------------------------------------
 void GoblinIdling::Update(const float& elapsedTime)
 {
+	// プレイヤーの方向を向く
+	SearchPlayer();
+
 	// 時間を加算する
 	m_TotalTime += elapsedTime;
 
@@ -84,4 +88,26 @@ void GoblinIdling::PostUpdate()
 // ---------------------------------------------
 void GoblinIdling::Finalize()
 {
+}
+
+
+// ---------------------------------------------
+/// <summary>
+/// プレイヤーの探索処理
+/// </summary>
+// ---------------------------------------------
+void GoblinIdling::SearchPlayer()
+{
+	// プレイヤーを取得
+	auto object = EventMessenger::ExecuteGetter(GetterList::GetPlayer);
+	auto player = static_cast<IObject*>(object);
+	// プレイヤーの位置を取得
+	DirectX::SimpleMath::Vector3 playerPos = player->GetPosition();
+	// 小鬼の位置を取得
+	m_position = m_goblin->GetPosition();
+
+	// プレイヤーの位置を探索
+	m_angle = Math::CalculationAngle(playerPos, m_position);
+	m_rotMatrix = DirectX::SimpleMath::Matrix::CreateRotationY(m_angle);
+	m_goblin->SetAngle(-m_angle);
 }

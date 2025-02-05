@@ -281,6 +281,7 @@ void Goblin::HitBoss(InterSectData data)
 
 	// ‰Ÿ‚µ–ß‚µ—Ê‚ðŒvŽZ
 	m_pushBackValue += Math::pushBack_BoundingSphere(goblinCollision, enemyCollision);
+	m_pushBackValue.y = 0.0f;
 
 	m_position += m_pushBackValue;
 	m_bodyCollision->Center = m_position;
