@@ -360,6 +360,7 @@
     <ClCompile Include="Game\HitStop\HitStop.cpp" />
     <ClCompile Include="Game\Messenger\EventMessenger.cpp" />
     <ClCompile Include="Game\Player\State\Source\Player_NockBacking.cpp" />
+    <ClCompile Include="Game\Quest\QuestList\QuestChangeTarget.h" />
     <ClCompile Include="Game\Quest\QuestManager.cpp" />
     <ClCompile Include="Game\Quest\QuestRenderer\QuestRenderer.cpp" />
     <ClCompile Include="Game\Quest\Tutorial\Tutorial.cpp" />

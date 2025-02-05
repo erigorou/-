@@ -10,6 +10,7 @@
 #include "Tutorial/Tutorial.h"
 
 #include "Interface/IQuestChecker.h"
+#include "QuestList/QuestChangeTarget.h"
 #include "QuestList/QuestPlayerMove.h"
 #include "QuestList/QuestPlayerAttack.h"
 #include "QuestList/QuestPlayerCombo.h"
@@ -191,6 +192,7 @@ void QuestManager::CreateQuestList_1st()
 
 	// クエストの作成
 	m_questList.push_back(new TutorialStart());
+	m_questList.push_back(new QuestChangeTarget());
 	m_questList.push_back(new QuestPlayerMove());
 	m_questList.push_back(new TutorialAttackStart());
 	m_questList.push_back(new QuestPlayerAttack());
