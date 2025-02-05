@@ -48,7 +48,7 @@ public:
 	static constexpr wchar_t ENEMY_JSON_PATH[] = L"Resources/Jsons/EnemySpawnPoint.json";;
 
 	// ボスが死亡したことを伝える際の遅延
-	static constexpr float BOSS_DEAD_DELAY = 2.0f;
+	static constexpr float BOSS_DEAD_DELAY = 3.0f;
 
 	// ---------------------------
 	// アクセサ

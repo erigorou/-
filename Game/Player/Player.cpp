@@ -41,7 +41,9 @@ Player::Player(PlayScene* playScene)
 	m_particleTime{},
 	m_isHit{},
 	m_coolTime{},
-	m_canHit{ false },
+	m_canHitBoss{ false },
+	m_canHitCudgel{ false },
+	m_canHitGoblin{ false },
 	m_animationRotate{},
 	m_isInputMoveKey{ false }
 {
@@ -149,8 +151,12 @@ void Player::AttachEvent()
 {
 	// IObject* 型のオブジェクトを取得する
 	EventMessenger::AttachGetter(GetterList::GetPlayer, std::bind(&Player::GetObject, this));
-	// 衝突可能かを設定
-	EventMessenger::Attach(EventList::PlayerCanHit, std::bind(&Player::CanHit, this, std::placeholders::_1));
+	// ボスがプレイヤーに攻撃をしているか
+	EventMessenger::Attach(EventList::PlayerCanDamageBoss, std::bind(&Player::CanHitBoss, this, std::placeholders::_1));
+	// 金棒がプレイヤーに攻撃をしているか
+	EventMessenger::Attach(EventList::PlayerCanDamageCudgel, std::bind(&Player::CanHitCudgel, this, std::placeholders::_1));
+	// ゴブリンがプレイヤーに攻撃をしているか
+	EventMessenger::Attach(EventList::PlayerCanDamageGoblin, std::bind(&Player::CanHitGoblin, this, std::placeholders::_1));
 }
 
 // -----------------------------------------------------
@@ -462,7 +468,9 @@ void Player::Damage(float damage)
 	// HPを減らす
 	m_hp->Damage(damage);
 	m_isHit = true;
-	m_canHit = false;
+	m_canHitBoss = false;
+	m_canHitCudgel = false;
+	m_canHitGoblin = false;
 	// ノックバックをする
 	ChangeState(m_playerNockBacking.get());
 	// 効果音を鳴らす
@@ -477,7 +485,7 @@ void Player::HitBossBody(InterSectData data)
 	if (data.objType == ObjectType::Boss && data.colType == CollisionType::Sphere)
 	{
 		// 敵のステートがダッシュ攻撃の場合で相手が攻撃中の場合
-		if (! m_isHit && m_canHit)
+		if (! m_isHit && m_canHitBoss)
 		{
 			Damage(1);
 		}
@@ -505,7 +513,7 @@ void Player::HitGoblin(InterSectData data)
 	{
 		// 敵のステートがダッシュ攻撃の場合で相手が攻撃中の場合
 		if (!m_isHit &&
-			m_canHit)
+			m_canHitGoblin)
 		{
 			Damage(1);
 		}
@@ -530,7 +538,7 @@ void Player::HitGoblin(InterSectData data)
 void Player::HitCudgel(InterSectData data)
 {
 	if (!m_isHit &&
-		m_canHit &&
+		m_canHitCudgel &&
 		data.objType == ObjectType::Cudgel &&
 		data.colType == CollisionType::OBB &&
 		m_currentState != m_playerDodging.get()
@@ -561,9 +569,25 @@ void Player::HitStage(InterSectData data)
 }
 
 // --------------------------------
-//  衝突可能か
+//  ボスがプレイヤーを攻撃しているか
 // --------------------------------
-void Player::CanHit(void* flag)
+void Player::CanHitBoss(void* flag)
 {
-	m_canHit = *(bool*)flag;
+	m_canHitBoss = *(bool*)flag;
+}
+
+// --------------------------------
+//  金棒がプレイヤーを攻撃しているか
+// --------------------------------
+void Player::CanHitCudgel(void* flag)
+{
+	m_canHitCudgel = *(bool*)flag;
+}
+
+// --------------------------------
+//  ゴブリンがプレイヤーを攻撃しているか
+// --------------------------------
+void Player::CanHitGoblin(void* flag)
+{
+	m_canHitCudgel = *(bool*)flag;
 }

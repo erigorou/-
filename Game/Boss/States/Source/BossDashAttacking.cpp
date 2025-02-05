@@ -115,7 +115,7 @@ void BossDashAttacking::UpdateAction()
 void BossDashAttacking::ChargeAction()
 {
 	// プレイヤーに攻撃を受けられるフラグを無効化
-	EventMessenger::Execute(EventList::PlayerCanHit, &m_isAttacking);
+	EventMessenger::Execute(EventList::PlayerCanDamageBoss, &m_isAttacking);
 
 	// プレイヤーの座標を取得
 	Vector3 playerPos = m_player->GetPosition();
@@ -144,7 +144,7 @@ void BossDashAttacking::DashAction()
 	m_isAttacking = true;
 
 	// プレイヤーに攻撃を受けられるフラグを有効化
-	EventMessenger::Execute(EventList::PlayerCanHit, &m_isAttacking);
+	EventMessenger::Execute(EventList::PlayerCanDamageBoss, &m_isAttacking);
 
 	// 現在の時間に基づいてサイン波で加速度を計算
 	float easing = (m_totalSeconds - CHARGE_TIME) / (DASH_TIME - CHARGE_TIME);
@@ -180,7 +180,7 @@ void BossDashAttacking::WaitAction()
 	m_isAttacking = false;
 
 	// プレイヤーに攻撃を受けられるフラグを有効化
-	EventMessenger::Execute(EventList::PlayerCanHit, &m_isAttacking);
+	EventMessenger::Execute(EventList::PlayerCanDamageBoss, &m_isAttacking);
 
 	// イージングに使用する秒数を計算（秒数のNormalize)
 	float easing = (m_totalSeconds - DASH_TIME) / (WAIT_TIME - DASH_TIME);

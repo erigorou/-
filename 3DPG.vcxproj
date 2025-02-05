@@ -203,6 +203,7 @@
     <ClInclude Include="BehaviourTree\Header\IfDecorator.h" />
     <ClInclude Include="BehaviourTree\Header\Selector.h" />
     <ClInclude Include="BehaviourTree\Header\Sequence.h" />
+    <ClInclude Include="Game\Camera\State\ClearCameraState.h" />
     <ClInclude Include="DeviceResources.h" />
     <ClInclude Include="Effects\EnemyEffect\EnemyEffect.h" />
     <ClInclude Include="Effects\Header\DustTrailParticle.h" />
@@ -337,6 +338,7 @@
     <ClCompile Include="BehaviourTree\Source\IfDecorator.cpp" />
     <ClCompile Include="BehaviourTree\Source\Selector.cpp" />
     <ClCompile Include="BehaviourTree\Source\Sequence.cpp" />
+    <ClCompile Include="Game\Camera\State\ClearCameraState.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="Effects\EnemyEffect\EnemyEffect.cpp" />
     <ClCompile Include="Effects\Particle.cpp" />
@@ -442,10 +444,6 @@
     <Manifest Include="settings.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-    <None Include="ClassDiagram1.cd" />
-    <None Include="ClassDiagram2.cd" />
-    <None Include="ClassDiagram3.cd" />
     <None Include="fmod.dll" />
     <None Include="fmodL.dll" />
     <None Include="packages.config" />

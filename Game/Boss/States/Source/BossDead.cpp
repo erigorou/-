@@ -9,6 +9,7 @@
 
 // ヘッダーファイル
 #include "Game/Boss/States/Header/BossDead.h"
+#include "Game/Camera/Camera.h"
 
 // ---------------------------
 // コンストラクタ
@@ -44,6 +45,10 @@ void BossDead::Initialize()
 // ---------------------------
 void BossDead::PreUpdate()
 {
+	// カメラのステートを変更
+	CameraState camera = CameraState::Clear;
+	EventMessenger::Execute(EventList::ChangeCamera,&camera);
+
 	// 経過時間を初期化
 	m_totalSeconds = 0.0f;
 	// 回転を取得

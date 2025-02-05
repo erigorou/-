@@ -117,7 +117,7 @@ void Cudgel_Sweeping::UpdateCudgelRotation()
 	// 終了モーション
 	EndAnimation();
 	// プレイヤーに攻撃可能かを通知
-	EventMessenger::Execute(EventList::PlayerCanHit, &m_playerCanHit);
+	EventMessenger::Execute(EventList::PlayerCanDamageCudgel, &m_playerCanHit);
 }
 
 // --------------------------------

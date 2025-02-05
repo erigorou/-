@@ -42,7 +42,8 @@ public:
 	// ƒƒ“ƒo•Ï”
 	// ----------------------------
 private:
+	// ƒJƒƒ‰
 	Camera* m_camera;
 };
 
-#endif // !PLAY_CAMERA_STATE
+	#endif // !PLAY_CAMERA_STATE

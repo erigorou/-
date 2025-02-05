@@ -45,11 +45,11 @@ void EventMessenger::Execute(const EventList event, void* args)
 	}
 	else
 	{
-		// std::string を std::wstring に変換
-		std::wstring wideEventName(L"未登録のイベント");
+		//// std::string を std::wstring に変換
+		//std::wstring wideEventName(L"未登録のイベント");
 
-		// MessageBox に渡す
-		MessageBox(nullptr, wideEventName.c_str(), L"エラー", MB_OK);
+		//// MessageBox に渡す
+		//MessageBox(nullptr, wideEventName.c_str(), L"エラー", MB_OK);
 	}
 }
 

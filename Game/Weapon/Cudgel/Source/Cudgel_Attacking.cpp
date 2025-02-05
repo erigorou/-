@@ -105,7 +105,7 @@ void Cudgel_Attacking::UpdateAnimation()
 	m_cudgel->SetCollisionPosition(m_worldMatrix);
 
 	// プレイヤーに攻撃可能かを通知
-	EventMessenger::Execute(EventList::PlayerCanHit, &m_canHit);
+	EventMessenger::Execute(EventList::PlayerCanDamageCudgel, &m_canHit);
 }
 
 /// <summary>

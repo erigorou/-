@@ -13,6 +13,7 @@
 #include "Libraries/MyLib/Math.h"
 #include "Effects/Particle.h"
 #include "Game/UI/SceneUIManager/QuestSelectSceneUIManager.h"
+#include "Game/Messenger/EventMessenger.h"
 
 #include "../Camera/Camera.h"
 #include "../Stage/Floor/Floor.h"
@@ -71,8 +72,9 @@ void QuestSelectScene::CreateObjects()
 	m_enemy->Initialize();
 	m_skySphere->LoadSkySphereModel();
 
-	// タイトルシーンのカメラステートを設定
-	m_camera->ChangeState(CameraState::Title);
+
+	CameraState state = CameraState::Title;
+	EventMessenger::Execute(EventList::ChangeCamera, &state);
 
 	m_particle = Factory::CreateParticle();
 

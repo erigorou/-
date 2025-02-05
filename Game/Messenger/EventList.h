@@ -5,8 +5,12 @@
 // -------------------------------------------------------
 enum class EventList
 {
-	// プレイヤーに攻撃ができるか
-	PlayerCanHit,
+	// ボスがプレイヤーに攻撃しているか
+	PlayerCanDamageBoss,
+	// 金棒がプレイヤーに攻撃しているか
+	PlayerCanDamageCudgel,
+	// ゴブリンがプレイヤーに攻撃しているか
+	PlayerCanDamageGoblin,
 	// 敵に攻撃ができるか
 	EnemyCanHit,
 	// 刀のステートを変更する
@@ -35,6 +39,8 @@ enum class EventList
 	CreateWeaponTrail,
 	// カメラを揺らす
 	ShakeCamera,
+	// カメラのステートを変更する
+	ChangeCamera,
 	// プレイシーン終了
 	EndPlayScene
 };

@@ -162,9 +162,6 @@ void TitleScene::CreateObjects()
 	m_enemy->Initialize();
 	m_skySphere->LoadSkySphereModel();
 
-	// タイトルシーンのカメラステートを設定
-	m_camera->ChangeState(CameraState::Title);
-
 	m_particle = Factory::CreateParticle();
 }
 

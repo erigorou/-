@@ -258,6 +258,7 @@
     <ClInclude Include="Game\Weapon\WeaponState.h" />
     <ClInclude Include="Game\Boss\BossState.h" />
     <ClInclude Include="Game\Messenger\EventList.h" />
+    <ClInclude Include="Game\Camera\State\ClearCameraState.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -394,6 +395,7 @@
     <ClCompile Include="Game\UI\SceneUIManager\QuestSelectSceneUIManager.cpp" />
     <ClCompile Include="Game\UI\UserInterface.cpp" />
     <ClCompile Include="Effects\EnemyEffect\EnemyEffect.cpp" />
+    <ClCompile Include="Game\Camera\State\ClearCameraState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -417,10 +419,6 @@
     <None Include="Resources\Shaders\ParticleVS.cso" />
     <None Include="Resources\hlsl\Particle.hlsli" />
     <None Include="Resources\hlsl\UI\UI.hlsli" />
-    <None Include="ClassDiagram.cd" />
-    <None Include="ClassDiagram1.cd" />
-    <None Include="ClassDiagram2.cd" />
-    <None Include="ClassDiagram3.cd" />
     <None Include="Resources\hlsl\DamageEffect\Common.hlsli" />
     <None Include="Resources\hlsl\Mask\Particle.hlsli" />
     <None Include="Resources\hlsl\Quest\Quest.hlsli" />

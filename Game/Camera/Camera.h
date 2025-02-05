@@ -3,11 +3,13 @@
 #include "Interface/ICameraState.h"
 #include "State/TitleCameraState.h"
 #include "State/PlayCameraState.h"
+#include "State/ClearCameraState.h"
 
 enum class CameraState
 {
 	Title,
-	Play
+	Play,
+	Clear
 };
 
 class Camera
@@ -75,7 +77,7 @@ public:
 	// カメラを揺らす
 	void Shake(float elapsedTime);
 	// ステートの変更
-	void ChangeState(CameraState state);
+	void ChangeState(void* state);
 
 	// ----------------------------
 	// メンバ関数(非公開)
@@ -118,6 +120,9 @@ public:
 	std::unique_ptr<TitleCameraState> m_titleState;
 	// プレイステート
 	std::unique_ptr<PlayCameraState> m_playState;
+	// クリアステート
+	std::unique_ptr<ClearCameraState> m_clearState;
+
 	// ステートを格納
 	std::vector<ICameraState*> m_states;
 };

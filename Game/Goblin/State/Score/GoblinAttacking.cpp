@@ -116,11 +116,14 @@ void GoblinAttacking::ChargeAnimation()
 // ---------------------------------------------
 void GoblinAttacking::AttackAnimation()
 {
+	bool flag = false;
+	EventMessenger::Execute(EventList::PlayerCanDamageGoblin, &flag);
+
 	// UŒ‚ŠÔ‚ğ‰ß‚¬‚½‚çI—¹
 	if (!Math::InTime(CHARGE_TIME, m_totalTime, ATTACK_TIME)) return;
 
-	// UŒ‚’†ƒtƒ‰ƒO‚ğ—§‚Ä‚é
-	m_goblin->SetIsAttacking(true);
+	flag = true;
+	EventMessenger::Execute(EventList::PlayerCanDamageGoblin, &flag);
 
 	// •b”‚ğ³‹K‰»
 	float t = (m_totalTime - CHARGE_TIME) / (ATTACK_TIME - CHARGE_TIME);

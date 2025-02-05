@@ -111,8 +111,13 @@ public:
 	void OnKeyPressed(const DirectX::Keyboard::Keys& key) override;
 	// キーボードの入力を取得する
 	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
-	// プレイヤーの攻撃判定
-	void CanHit(void* flag);
+	
+	// 被ダメを受けられる
+	void CanHitBoss(void* flag);
+	// 武器との当たり判定
+	void CanHitCudgel(void* flag);
+	// ゴブリンとの当たり判定
+	void CanHitGoblin(void* flag);
 
 	// -------------------
 	// 内部関数
@@ -198,7 +203,10 @@ private:
 	std::unique_ptr<DirectX::BoundingSphere> m_bodyCollision;	// 衝突判定
 	bool m_isHit;		// 衝突したか
 	float m_coolTime;	// クールタイム
-	bool m_canHit;		// 衝突可能か
+
+	bool m_canHitBoss;		// 衝突可能か
+	bool m_canHitCudgel;		// 衝突可能か
+	bool m_canHitGoblin;		// 衝突可能か
 
 	// アニメーション用変数
 	DirectX::SimpleMath::Vector3 m_animationRotate;

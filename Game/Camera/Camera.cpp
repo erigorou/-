@@ -30,6 +30,9 @@ Camera::Camera(const DirectX::SimpleMath::Vector3& target)
 
 	// カメラのシェイクをイベントに登録
 	EventMessenger::Attach(EventList::ShakeCamera, std::bind(&Camera::SetShake, this, std::placeholders::_1));
+
+	// カメラのステート変更をイベント化
+	EventMessenger::Attach(EventList::ChangeCamera, std::bind(&Camera::ChangeState, this, std::placeholders::_1));
 }
 
 // ---------------------------------------------
@@ -134,9 +137,9 @@ void Camera::Shake(float elapsedTime)
 /// </summary>
 /// <param name="state">新しいカメラステート</param>
 // ---------------------------------------------
-void Camera::ChangeState(CameraState state)
+void Camera::ChangeState(void* state)
 {
-	int index = static_cast<int>(state);
+	int index = *static_cast<int*>(state);
 
 	// ステートが同じなら変更しない
 	if (m_currentState == m_states[index]) return;
@@ -161,6 +164,10 @@ void Camera::CreateState()
 	// プレイステートの作成
 	m_playState = std::make_unique<PlayCameraState>(this);
 	m_states.push_back(m_playState.get());
+
+	// クリアステートの作成
+	m_clearState = std::make_unique<ClearCameraState>(this);
+	m_states.push_back(m_clearState.get());
 
 	// 初期ステートを設定
 	m_currentState = m_titleState.get();
