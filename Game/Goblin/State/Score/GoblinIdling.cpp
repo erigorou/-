@@ -93,7 +93,7 @@ void GoblinIdling::Finalize()
 
 // ---------------------------------------------
 /// <summary>
-/// プレイヤーの探索処理
+/// プレイヤーの探索処理（ゴブリンの回転にLerpを追加）
 /// </summary>
 // ---------------------------------------------
 void GoblinIdling::SearchPlayer()
@@ -106,8 +106,13 @@ void GoblinIdling::SearchPlayer()
 	// 小鬼の位置を取得
 	m_position = m_goblin->GetPosition();
 
-	// プレイヤーの位置を探索
-	m_angle = Math::CalculationAngle(playerPos, m_position);
+	// プレイヤーの方向を計算
+	float targetAngle = Math::CalculationAngle(playerPos, m_position);
+
+	// 現在の回転角度を補間して目標角度に徐々に近づける
+	m_angle = Math::LerpFloat(m_angle, targetAngle, 0.1f); // 0.1fは補間率（調整可能）
+
+	// 回転行列を更新
 	m_rotMatrix = DirectX::SimpleMath::Matrix::CreateRotationY(m_angle);
 	m_goblin->SetAngle(-m_angle);
 }
