@@ -1,30 +1,98 @@
 {
     "stage0" :[
-        {
-            "position" : {"x" : 0.0, "y": 0.0, "z": 0.0},
-            "type": "Goblin" 
-        }
+      {
+        "position": {
+          "x": -20.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "type": "Goblin"
+      },
+      {
+        "position": {
+          "x": 20.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "type": "Goblin"
+      }
     ],
+
+  "stage2": [
+    {
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "type": "Goblin"
+    },
+    {
+      "position": {
+        "x": 20.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "type": "Goblin"
+    },
+    {
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 60.0
+      },
+      "type": "Goblin"
+    },
+    {
+      "position": {
+        "x": 100.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "type": "Goblin"
+    },
+    {
+      "position": {
+        "x": -100.0,
+        "y": 0.0,
+        "z": 50.0
+      },
+      "type": "Goblin"
+    },
+    {
+      "position": {
+        "x": 100.0,
+        "y": 0.0,
+        "z": 100.0
+      },
+      "type": "Goblin"
+    },
+    {
+      "position": {
+        "x": -80.0,
+        "y": 0.0,
+        "z": -40.0
+      },
+      "type": "Goblin"
+    }
+  ],
 
     "stage1" : [
-        {
-            "position": { "x": 0.0, "y": 0.0, "z": -40.0 },
-            "type": "Boss"
+      {
+        "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -40.0
         },
-        {
-            "position": { "x": -80.0, "y": 0.0, "z": -40.0 },
-            "type": "Goblin"
-        }
-    ],
-
-    "stage2" : [
-        {
-        "position": { "x": 0.0, "y": 0.0, "z": -40.0 },
         "type": "Boss"
+      },
+      {
+        "position": {
+          "x": -80.0,
+          "y": 0.0,
+          "z": -40.0
         },
-        {
-        "position": { "x": -80.0, "y": 0.0, "z": -40.0 },
         "type": "Goblin"
-        }
+      }
     ]
 }

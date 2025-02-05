@@ -107,6 +107,9 @@ void GoblinAttacking::ChargeAnimation()
 
 	// ‘å‚«‚³‚ğİ’è
 	m_goblin->SetScale(DirectX::SimpleMath::Vector3(1.0f, sizeY, 1.0f));
+
+	// ƒvƒŒƒCƒ„[‚Ì•ûŒü‚ğŒü‚­
+	SearchPlayer();
 }
 
 // ---------------------------------------------

@@ -75,6 +75,8 @@ void EnemyManager::Update(float elapsedTime)
 	// すべての敵の更新処理
 	for (auto& enemy : m_enemies)
 	{
+		if(enemy.data == nullptr) continue;
+
 		enemy.data->Update(elapsedTime);
 	}
 }
@@ -208,29 +210,32 @@ void EnemyManager::AllGoblinHPZero()
 	}
 }
 
-// --------------------------------
+// ---------------------------------------------
 /// <summary>
-/// 敵1体を削除
+/// 敵1体を削除する処理
 /// </summary>
-/// <param name="pointer">削除する対象</param>
-// --------------------------------
+/// <param name="pointer">削除する対象のポインタ</param>
+// ---------------------------------------------
 void EnemyManager::DeleteEnemy(void* pointer)
 {
+	// ポインタをIEnemy型にキャスト
 	auto enemy = static_cast<IEnemy*>(pointer);
 
-	// 該当する敵を探索
-	for (auto it = m_enemies.begin(); it != m_enemies.end(); ++it)
-	{
-		if (it->data.get() == enemy)
-		{
-			// 敵の終了処理
-			it->data->Finalize();
-			// 配列から削除
-			m_enemies.erase(it);
-			return;
-		}
-	}
+	// 敵の削除
+	m_enemies.erase(
+		std::remove_if(m_enemies.begin(), m_enemies.end(),
+			[enemy](const EnemyData& data) {
+				if (data.data.get() == enemy)
+				{
+					data.data->Finalize();  // 敵の終了処理
+					return true;            // 削除対象とする
+				}
+				return false;               // 削除しない
+			}),
+		m_enemies.end() // 配列の末尾を削除範囲として指定
+	);
 }
+
 
 // --------------------------------
 /// <summary>
@@ -370,6 +375,10 @@ void EnemyManager::GenerateEnemyFromJson()
 	{
 		// チュートリアル用にステートを変更する
 		auto goblin = dynamic_cast<Goblin*>(m_enemies[0].data.get());
+		goblin->ChangeState(GoblinState::TUTORIAL);
+
+		// チュートリアル用にステートを変更する
+		goblin = dynamic_cast<Goblin*>(m_enemies[1].data.get());
 		goblin->ChangeState(GoblinState::TUTORIAL);
 	}
 }
