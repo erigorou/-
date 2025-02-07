@@ -1,8 +1,15 @@
+// ---------------------------------------------
+// 名前:	Factory.cpp
+// 内容:	オブジェクトの生成・初期化を行うクラス
+//			使用するキーもここで登録する
+// 作成:	池田
+// ---------------------------------------------
+
+
 #include "pch.h"
 #include "Factory.h"
 #include "../Messenger/KeyboardMessenger.h"		// キー入力メッセンジャー
 #include "../Messenger/EventMessenger.h"		// イベントメッセンジャー
-
 #include "../Scene/PlayScene.h"								// プレイシーン
 #include "../Camera/Camera.h"								// カメラ
 #include "Effects/Particle.h"								// パーティクル

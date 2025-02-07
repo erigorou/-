@@ -1,7 +1,10 @@
-// -------------------------------------------------------
-// 小鬼の親クラス
-// -------------------------------------------------------
-
+// -----------------------------------------------------
+// 名前:	Goblin.cpp
+// 内容:	小鬼を実装するクラス
+//			ステートや衝突判定を管理
+// 作成:	池田桜輔
+// -----------------------------------------------------
+// インクルード
 #include "pch.h"
 #include "Goblin.h"
 #include "Libraries/MyLib/Math.h"
@@ -12,7 +15,6 @@
 #include "Effects/EnemyEffect/EnemyEffect.h"
 #include "Game/HitStop/HitStop.h"
 #include "Game/Messenger/EventMessenger.h"
-
 #include "State/Header/GoblinIdling.h"
 #include "State/Header/GoblinAttacking.h"
 #include "State/Header/GoblinDead.h"

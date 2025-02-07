@@ -26,6 +26,8 @@ public:
 	static constexpr float MIN_COOLTIME = 1.0f;
 	// 最大クールタイム
 	static constexpr float MAX_COOLTIME = 4.0f;
+	// 最初のクールタイム
+	static constexpr float INIT_COOLTIME = 5.0f;
 
 	// -----------------------
 	// メンバ関数(公開)

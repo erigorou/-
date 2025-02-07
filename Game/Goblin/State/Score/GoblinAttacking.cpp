@@ -1,8 +1,13 @@
+// --------------------------------------------------
+//名前:	GoblinAttacking.cpp
+//内容:	ゴブリンの攻撃状態
+//作成:	池田桜輔
+// --------------------------------------------------
+// インクルード
 #include "pch.h"
 #include "../Header/GoblinAttacking.h"
 #include "../../Goblin.h"
 #include "Game/Messenger/EventMessenger.h"
-
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/EasingFunctions.h"
 
