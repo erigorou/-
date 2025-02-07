@@ -198,11 +198,6 @@
     </Xdcmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="BehaviourTree\Header\Action.h" />
-    <ClInclude Include="BehaviourTree\Header\BehaviorTree.h" />
-    <ClInclude Include="BehaviourTree\Header\IfDecorator.h" />
-    <ClInclude Include="BehaviourTree\Header\Selector.h" />
-    <ClInclude Include="BehaviourTree\Header\Sequence.h" />
     <ClInclude Include="Game\Camera\State\ClearCameraState.h" />
     <ClInclude Include="DeviceResources.h" />
     <ClInclude Include="Effects\EnemyEffect\EnemyEffect.h" />
@@ -210,7 +205,6 @@
     <ClInclude Include="Effects\Header\SwordTrailParticle.h" />
     <ClInclude Include="Effects\Source\SwordTrialParticle.h" />
     <ClInclude Include="Effects\Particle.h" />
-    <ClInclude Include="Game\Boss\BossState.h" />
     <ClInclude Include="Game\Camera\State\PlayCameraState.h" />
     <ClInclude Include="Game\Camera\State\TitleCameraState.h" />
     <ClInclude Include="Game\Data\GameData.h" />
@@ -333,11 +327,6 @@
     <ClInclude Include="StepTimer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BehaviourTree\Source\Action.cpp" />
-    <ClCompile Include="BehaviourTree\Source\BehaviorTree.cpp" />
-    <ClCompile Include="BehaviourTree\Source\IfDecorator.cpp" />
-    <ClCompile Include="BehaviourTree\Source\Selector.cpp" />
-    <ClCompile Include="BehaviourTree\Source\Sequence.cpp" />
     <ClCompile Include="Game\Camera\State\ClearCameraState.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="Effects\EnemyEffect\EnemyEffect.cpp" />

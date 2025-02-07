@@ -1,6 +1,11 @@
+// ---------------------------------------------
+// 名前		:PlayCameraState.cpp
+// 内容		:プレイ時のカメラステートクラス
+// 作成		:池田桜輔
+// ---------------------------------------------
+// インクルード
 #include "pch.h"
 #include "PlayCameraState.h"
-
 #include "../Camera.h"
 #include "Libraries/MyLib/Math.h"
 

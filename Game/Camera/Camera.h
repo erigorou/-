@@ -1,10 +1,16 @@
+// ---------------------------------------------
+// 名前:	Camera.h
+// 内容:	カメラ本体のクラス
+// 作成:	池田桜輔
+// ---------------------------------------------
+// インクルード
 #pragma once
-
 #include "Interface/ICameraState.h"
 #include "State/TitleCameraState.h"
 #include "State/PlayCameraState.h"
 #include "State/ClearCameraState.h"
 
+// カメラのステート
 enum class CameraState
 {
 	Title,
@@ -12,11 +18,15 @@ enum class CameraState
 	Clear
 };
 
+
+/// <summary>
+/// カメラクラス
+/// </summary>
 class Camera
 {
-	// ----------------------------
-	// 定数
-	// ----------------------------
+// ----------------------------
+// 定数
+// ----------------------------
 public:
 	// カメラの初期位置
 	static constexpr float CAMERA_POSITION_Y = 10.0f;

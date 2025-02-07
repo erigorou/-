@@ -1,13 +1,22 @@
+// -----------------------------------------------------
+// 名前:	BossDead.h
+// 内容:	ボスの死亡ステートクラス
+// 作成:	池田桜輔
+// -----------------------------------------------------
 #pragma once
-#ifndef Boss_DEAD_DEFINED
-#define Boss_DEAD_DEFINED
+#ifndef BOSS_DEAD_DEFINED
+#define BOSS_DEAD_DEFINED
+// インクルード
 #include "Interface/IState.h"
 
+// 前方宣言
 class Boss;
 class Player;
 class Cudgel;
 
-// 敵の待機ステートを定義
+/// <summary>
+/// ボスの死亡ステート
+/// </summary>
 class BossDead : public IState
 {
 	// ---------------------------

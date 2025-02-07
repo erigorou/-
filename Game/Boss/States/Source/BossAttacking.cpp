@@ -1,3 +1,9 @@
+// -----------------------------------------------------
+// 名前:	BossAttacking.cpp
+// 内容:	ボスの叩きつけ攻撃ステートクラス
+// 作成:	池田桜輔
+// -----------------------------------------------------
+// インクルード
 #include "pch.h"
 #include "Libraries/MyLib/Math.h"
 #include "Game/Messenger/EventMessenger.h"

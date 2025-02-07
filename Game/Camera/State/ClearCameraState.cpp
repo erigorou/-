@@ -1,6 +1,11 @@
+// ---------------------------------------------
+// 名前:	ClearCameraState.cpp
+// 内容:	クリア時のカメラステートクラス
+// 作成:	池田桜輔
+// ---------------------------------------------
+// インクルード
 #include "pch.h"
 #include "ClearCameraState.h"
-
 #include "../Camera.h"
 #include "Libraries/MyLib/Math.h"
 
@@ -53,28 +58,17 @@ void ClearCameraState::Update(
 	// 時間を加算
 	m_totalTime += elapsedTime;
 
-	// カメラの回転速度（ゆっくり）
-	const float rotationSpeed = 0.2f;
-
-	// 最大時間（演出時間）
-	const float maxTime = 3.0f;
-
-	// 最初のカメラ距離（開始時の距離）
-	const float startDistance = 10.0f;
-	// 最大カメラ距離（ズームアウト時の距離）
-	const float maxDistance = 20.0f;
-
 	// 徐々に遠ざかる距離を計算（Lerp）
-	float distanceFactor = std::min(m_totalTime / maxTime, 1.0f);
-	float currentDistance = startDistance + (maxDistance - startDistance) * distanceFactor;
+	float distanceFactor = std::min(m_totalTime / MAX_TIME, 1.0f);
+	float currentDistance = START_DISTANCE + (MAX_DISTANCE - START_DISTANCE) * distanceFactor;
 
 	// カメラの角度を計算（円運動）
-	float angle = rotationSpeed * m_totalTime;
+	float angle = ROTATION_SPEED * m_totalTime;
 	float offsetX = cosf(angle) * currentDistance;
 	float offsetZ = sinf(angle) * currentDistance;
 
 	// カメラの高さ（ゆっくり上昇）
-	float heightOffset = 10.0f + (10.0f * distanceFactor);
+	float heightOffset = CAMERA_HEIGHT + (CAMERA_HEIGHT * distanceFactor);
 
 	// 敵を中心にカメラを配置
 	Vector3 targetCameraPos = Vector3(offsetX, heightOffset, offsetZ);

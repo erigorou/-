@@ -1,13 +1,22 @@
+// -----------------------------------------------------
+// 名前:	BossStarting.h
+// 内容:	ボスの開始時のステートクラス
+// 作成:	池田桜輔
+// -----------------------------------------------------
 #pragma once
-#ifndef Boss_STARTING_DEFINED
-#define Boss_STARTING_DEFINED
+#ifndef BOSS_STARTING_DEFINED
+#define BOSS_STARTING_DEFINED
+// インクルード
 #include "Interface/IState.h"
 
+// 前方宣言
 class Boss;
 class Player;
 class IObject;
 
-// 敵の待機ステートを定義
+/// <summary>
+/// ボスの開始時のステート
+/// </summary>
 class BossStarting : public IState
 {
 	// ---------------------------
@@ -77,4 +86,4 @@ private:
 	IObject* m_player;
 };
 
-#endif		// Boss_IDLING_DEFINED
+#endif

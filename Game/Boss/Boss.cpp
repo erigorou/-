@@ -1,9 +1,10 @@
-// ----------------
-//
-// 鬼の挙動
-//
-// ----------------
-
+// -----------------------------------------------------
+// 名前:	Boss.cpp
+// 内容:	ボスを実装するクラス
+//			ステートや衝突判定を管理
+// 作成:	池田桜輔
+// -----------------------------------------------------
+// インクルード
 #include "pch.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
@@ -14,9 +15,9 @@
 #include "Game/Boss/Boss.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
 #include "Interface/IState.h"
-#include "BehaviourTree/Header/BehaviorTree.h"	// ビヘイビアツリー
 #include "Game/Factory/Factory.h"
-// ステートパターン用
+#include "Effects/EnemyEffect/EnemyEffect.h"
+// ステート
 #include "States/Header/BossStarting.h"
 #include "States/Header/BossIdling.h"
 #include "States/Header/BossAttacking.h"
@@ -24,10 +25,9 @@
 #include "States/Header/BossDashAttacking.h"
 #include "States/Header/BossApproaching.h"
 #include "States/Header/BossDead.h"
-// 顔のパーツ用
+// 顔
 #include "Face/Header/BossFaceIdling.h"
 #include "Face/Header/BossFaceAttacking.h"
-#include "Effects/EnemyEffect/EnemyEffect.h"
 
 // --------------------------------
 /// <summary>
@@ -77,8 +77,6 @@ void Boss::Initialize()
 	m_model = GameResources::GetInstance()->GetModel("boss");
 	// HPを設定
 	m_hp = std::make_unique<HPSystem>(HP);
-	// ビヘイビアツリーを取得
-	m_pBT = std::make_unique<BehaviorTree>();
 	// ステートの作成
 	CreateState();
 	// 顔パーツの生成

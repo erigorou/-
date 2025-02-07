@@ -1,3 +1,9 @@
+// -----------------------------------------------------
+// 名前:	BossStarting.cpp
+// 内容:	ボスの開始時のステートクラス
+// 作成:	池田桜輔
+// -----------------------------------------------------
+// インクルード
 #include "pch.h"
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/EasingFunctions.h"

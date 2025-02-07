@@ -1,9 +1,19 @@
+// ---------------------------------------------
+// 名前:	BossFaceIdling.h
+// 内容:	ボスの通常時の顔クラス
+// 作成:	池田桜輔
+// ---------------------------------------------
+// インクルード
 #pragma once
 #include "pch.h"
 #include "Interface/IFace.h"
 
+// 前方宣言
 class Boss;
 
+/// <summary>
+/// ボスの通常時の顔クラス
+/// </summary>
 class BossFaceIdling : public IFace
 {
 	// ---------------------------

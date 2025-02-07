@@ -1,8 +1,13 @@
+// -----------------------------------------------------
+// 名前:	BossApproaching.cpp
+// 内容:	ボスの追尾ステートクラス
+// 作成:	池田桜輔
+// -----------------------------------------------------
+// インクルード
 #include "pch.h"
 #include "Libraries/MyLib/Math.h"
 #include "Game/Sound/Sound.h"
 #include "Game/Messenger/EventMessenger.h"
-
 #include "Game/Boss/Boss.h"
 #include "Game/Boss/States/Header/BossApproaching.h"
 

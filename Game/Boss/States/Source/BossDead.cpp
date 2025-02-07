@@ -1,13 +1,15 @@
+// -----------------------------------------------------
+// 名前:	BossDead.cpp
+// 内容:	ボスの死亡ステートクラス
+// 作成:	池田桜輔
+// -----------------------------------------------------
+// インクルード
 #include "pch.h"
 #include "Libraries//MyLib/EasingFunctions.h"
 #include "Game/Weapon/WeaponState.h"
-
-// 関数を使用するのに必要な引数
 #include "Game/Boss/Boss.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
 #include "Game/Messenger/EventMessenger.h"
-
-// ヘッダーファイル
 #include "Game/Boss/States/Header/BossDead.h"
 #include "Game/Camera/Camera.h"
 

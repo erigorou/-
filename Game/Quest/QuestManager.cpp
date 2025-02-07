@@ -3,6 +3,7 @@
 // ---------------------------------------------
 
 #include "pch.h"
+#include "Game/CommonResources.h"
 #include "QuestManager.h"
 #include "../Scene/PlayScene.h"
 #include "../Data/GameData.h"
@@ -23,13 +24,13 @@
 #include "TutorialList/TutorialAttackEnd.h"
 #include "TutorialList/TutorialDodgStart.h"
 
-#include "Libraries/MyLib/DebugString.h"
 
 // -----------------------------
 // コンストラクタ
 // -----------------------------
 QuestManager::QuestManager(PlayScene* playScene)
 	: m_playScene(playScene)
+	, m_elapsedTime()
 	, m_currentQuestNo()
 	, m_totalTime()
 	, m_clearTime()

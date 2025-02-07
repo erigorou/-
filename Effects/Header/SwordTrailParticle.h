@@ -1,9 +1,8 @@
-// -------------------------------------------------------------------
+// -------------------------------------- //
 //
-// 動くものの後ろに付くパーティクルの動き
+// 武器の軌跡エフェクトの挙動を計算するクラス
 //
-// -------------------------------------------------------------------
-
+// -------------------------------------- //
 #pragma once
 #include "pch.h"
 #include "Interface/IParticle.h"
@@ -14,12 +13,18 @@ class SwordTrailParticle : public IParticle
 	// アクセサ
 	// ----------------------------
 public:
-	const float GetLife() { return m_life; }			// 表示時間
-	const float GetStartLife() { return m_startLife; }		// 開始時間
-	const DirectX::SimpleMath::Color GetNowColor() { return m_nowColor; }		// 現在の色
-	const DirectX::SimpleMath::Color GetStartColor() { return m_startColor; }		// 開始時色
-	const DirectX::SimpleMath::Color GetEndColor() { return m_endColor; }		// 終了時色
+	// 表示時間
+	const float GetLife() { return m_life; }
+	// 開始時間
+	const float GetStartLife() { return m_startLife; }
+	// 現在の色
+	const DirectX::SimpleMath::Color GetNowColor() { return m_nowColor; }
+	// 開始時色
+	const DirectX::SimpleMath::Color GetStartColor() { return m_startColor; }
+	// 終了時色
+	const DirectX::SimpleMath::Color GetEndColor() { return m_endColor; }
 
+	// 4頂点の座標を取得
 	void GetVertices(DirectX::VertexPositionColorTexture* vertices)
 	{
 		// 各頂点の位置、色、テクスチャ座標を設定する
@@ -35,9 +40,9 @@ public:
 public:
 	// コンストラクタ
 	SwordTrailParticle(
-		DirectX::VertexPositionTexture vertex[],											// 頂点情報
-		float life,																			// 生存時間
-		DirectX::SimpleMath::Color startColor, DirectX::SimpleMath::Color endColor			// 初期カラーと最終カラー
+		DirectX::VertexPositionTexture vertex[],
+		float life,
+		DirectX::SimpleMath::Color startColor, DirectX::SimpleMath::Color endColor
 	);
 	// デストラクタ
 	~SwordTrailParticle();

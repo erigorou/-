@@ -1,14 +1,24 @@
+// -----------------------------------------------------
+// 名前:	BossDashAttacking.h
+// 内容:	ボスの突進ステートを定義
+// 作成:	池田桜輔
+// -----------------------------------------------------
 #pragma once
-#ifndef ENEMY_DASH_ATTACKING_DEFINED
-#define ENEMY_DASH_ATTACKING_DEFINED
+#ifndef BOSS_DASH_ATTACKING_DEFINED
+#define BOSS_DASH_ATTACKING_DEFINED
+
+// インクルード
 #include "pch.h"
 #include "Interface/IState.h"
 
+// 前方宣言
 class Enemy;
 class Cudgel;
 class Player;
 
-// 敵の待機ステートを定義
+/// <summary>
+/// ボスの突進ステート
+/// </summary>
 class BossDashAttacking : public IState
 {
 	// ---------------------------
@@ -94,4 +104,4 @@ private:
 	Cudgel* m_cudgel;
 };
 
-#endif		// ENEMY_DASH_ATTACKING_DEFINED
+#endif		// BOSS_DASH_ATTACKING_DEFINED

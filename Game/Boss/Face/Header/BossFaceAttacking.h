@@ -1,9 +1,20 @@
+// ---------------------------------------------
+// 名前:	BossFaceAttacking.h
+// 内容:	ボスの攻撃時の顔クラス
+// 作成:	池田桜輔
+// ---------------------------------------------
+
+// インクルード
 #pragma once
 #include "pch.h"
 #include "Interface/IFace.h"
 
+// 前方宣言
 class Boss;
 
+/// <summary>
+/// ボスの攻撃時の顔クラス
+/// </summary>
 class BossFaceAttacking : public IFace
 {
 	// ---------------------------

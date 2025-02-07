@@ -1,3 +1,9 @@
+// ---------------------------------------------
+// 名前:	TitleCameraState.cpp
+// 内容:	タイトル時のカメラステートクラス
+// 作成:	池田桜輔
+// ---------------------------------------------
+// インクルード
 #include "pch.h"
 #include "TitleCameraState.h"
 #include "../Camera.h"
@@ -10,7 +16,7 @@
 // ---------------------------------------------
 TitleCameraState::TitleCameraState(Camera* camera)
 	: m_camera(camera)
-	, m_angle(0.0f)
+	, m_angle{}
 {
 }
 

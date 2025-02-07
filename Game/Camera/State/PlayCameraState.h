@@ -1,13 +1,22 @@
+// ---------------------------------------------
+// 名前		:PlayCameraState.h
+// 内容		:プレイ時のカメラステートクラス
+// 作成		:池田桜輔
+// ---------------------------------------------
 #pragma once
-
 #ifndef PLAY_CAMERA_STATE
 #define PLAY_CAMERA_STATE
 
+// インクルード
 #include "pch.h"
 #include "Interface/ICameraState.h"
 
+// 前方宣言
 class Camera;
 
+/// <summary>
+/// プレイシーンのカメラステートクラス
+/// </summary>
 class PlayCameraState : public ICameraState
 {
 	// ----------------------------

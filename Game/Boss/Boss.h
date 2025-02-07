@@ -1,19 +1,24 @@
-#pragma once	// 多重読み込み防止
+// -----------------------------------------------------
+// 名前:	Boss.cpp
+// 内容:	ボスを実装するクラス
+//			ステートや衝突判定を管理
+// 作成:	池田桜輔
+// -----------------------------------------------------
+#pragma once
+// インクルード
 #include "Interface/IState.h"
-#include "Interface/IObject.h"
 #include "Interface/IFace.h"
 #include "Interface/IEnemy.h"
 
+// 前方宣言
 class PlayScene;
-class BehaviorTree;
 class EnemyEffect;
 class HPSystem;
 class Cudgel;
-
-#include "Face/Header/BossFaceIdling.h"
-#include "Face/Header/BossFaceAttacking.h"
-
-// ===== 敵の状態 =================================================================
+// 顔
+class BossFaceIdling;
+class BossFaceAttacking;
+// ステート
 class BossStarting;
 class BossIdling;
 class BossAttacking;
@@ -41,6 +46,9 @@ enum class FaceState
 	Attacking,	// 攻撃
 };
 
+/// <summary>
+/// ボスのステート
+/// </summary>
 class Boss : public IEnemy
 {
 	// --------------------------------
@@ -189,8 +197,6 @@ private:
 
 	// 敵のダメージエフェクト
 	std::unique_ptr<EnemyEffect> m_effect;
-	// ビヘイビアツリー
-	std::unique_ptr<BehaviorTree> m_pBT;
 	// モデル
 	DirectX::Model* m_model;
 	//　エフェクト

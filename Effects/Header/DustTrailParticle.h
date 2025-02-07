@@ -1,8 +1,8 @@
-// -------------------------------------------------------------------
+// -------------------------------------- //
 //
-// 動くものの後ろに付くパーティクルの動き
+// 土埃エフェクトの挙動を計算するクラス
 //
-// -------------------------------------------------------------------
+// -------------------------------------- //
 
 #pragma once
 #include "pch.h"
@@ -14,17 +14,28 @@ class DustTrailParticle : public IParticle
 	// アクセサ
 	// ----------------------------
 public:
-	DirectX::SimpleMath::Vector3 GetPosition() { return m_position; } // 座標
-	DirectX::SimpleMath::Vector3 GetVelocity() { return m_velocity; } // 速度
-	DirectX::SimpleMath::Vector3 GetAccelerator() { return m_accelerator; } // 加速度
-	DirectX::SimpleMath::Vector3 GetNowScale() { return m_nowScale; } // 現在のサイズ
-	DirectX::SimpleMath::Vector3 GetStartScale() { return m_startScale; } // 開始時サイズ
-	DirectX::SimpleMath::Vector3 GetEndScale() { return m_endScale; } // 終了時サイズ
-	float GetLife() { return m_life; } // 表示時間
-	float GetStartLife() { return m_startLife; } // 開始時間
-	DirectX::SimpleMath::Color GetNowColor() { return m_nowColor; } // 現在の色
-	DirectX::SimpleMath::Color GetStartColor() { return m_startColor; } // 開始時色
-	DirectX::SimpleMath::Color GetEndColor() { return m_endColor; } // 終了時色
+	// 座標
+	DirectX::SimpleMath::Vector3 GetPosition() { return m_position; }
+	// 速度
+	DirectX::SimpleMath::Vector3 GetVelocity() { return m_velocity; }
+	// 加速度
+	DirectX::SimpleMath::Vector3 GetAccelerator() { return m_accelerator; }
+	// 現在のサイズ
+	DirectX::SimpleMath::Vector3 GetNowScale() { return m_nowScale; }
+	// 開始時サイズ
+	DirectX::SimpleMath::Vector3 GetStartScale() { return m_startScale; }
+	// 終了時サイズ
+	DirectX::SimpleMath::Vector3 GetEndScale() { return m_endScale; }
+	// 表示時間
+	float GetLife() { return m_life; }
+	// 開始時間
+	float GetStartLife() { return m_startLife; }
+	// 現在の色
+	DirectX::SimpleMath::Color GetNowColor() { return m_nowColor; }
+	// 開始時色
+	DirectX::SimpleMath::Color GetStartColor() { return m_startColor; }
+	// 終了時色
+	DirectX::SimpleMath::Color GetEndColor() { return m_endColor; }
 
 	// ----------------------------
 	// メンバ関数（公開）

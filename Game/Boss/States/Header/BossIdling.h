@@ -1,12 +1,21 @@
+// -----------------------------------------------------
+// 名前:	BossIdling.h
+// 内容:	ボスの待機ステートクラス
+// 作成:	池田桜輔
+// -----------------------------------------------------
 #pragma once
-#ifndef ENEMY_IDLING_DEFINED
-#define ENEMY_IDLING_DEFINED
+#ifndef BOSS_IDLING_DEFINED
+#define BOSS_IDLING_DEFINED
+// インクルード
 #include "Interface/IState.h"
 
+// 前方宣言
 class Boss;
 class Player;
 
-// 敵の待機ステートを定義
+/// <summary>
+/// ボスの待機ステート
+/// </summary>
 class BossIdling : public IState
 {
 	// ---------------------------
@@ -73,4 +82,4 @@ private:
 	IObject* m_player;
 };
 
-#endif		// ENEMY_IDLING_DEFINED
+#endif

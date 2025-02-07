@@ -1,20 +1,38 @@
+// ---------------------------------------------
+// 名前:	ClearCameraState.h
+// 内容:	クリア時のカメラステートクラス
+// 作成:	池田桜輔
+// ---------------------------------------------
 #pragma once
 #ifndef CLEAR_CAMERA_STATE
 #define CLEAR_CAMERA_STATE
 
+// インクルード
 #include "pch.h"
 #include "Interface/ICameraState.h"
 
+// 前方宣言
 class Camera;
 
+/// <summary>
+/// クリア時のカメラステートクラス
+/// </summary>
 class ClearCameraState : public ICameraState
 {
 	// ----------------------------
 	// 定数
 	// ----------------------------
 public:
-
-
+	// カメラの回転速度
+	static constexpr float ROTATION_SPEED = 0.2f;
+	// 最大時間（演出時間）
+	static constexpr float MAX_TIME = 3.0f;
+	// 最初のカメラ距離（開始時の距離）
+	static constexpr float START_DISTANCE = 10.0f;
+	// 最大カメラ距離（ズームアウト時の距離）
+	static constexpr float MAX_DISTANCE = 20.0f;
+	//　カメラの高さ
+	static constexpr float CAMERA_HEIGHT = 10.0f;
 
 
 	// ----------------------------

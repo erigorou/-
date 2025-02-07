@@ -5,6 +5,7 @@
 // -----------------------------------------------
 
 #include "pch.h"
+#include "Game/CommonResources.h"
 #include "PlaySceneUIManager.h"
 #include "Game/Screen.h"
 #include "Game/Data/GameData.h"

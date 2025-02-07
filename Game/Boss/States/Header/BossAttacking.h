@@ -1,12 +1,21 @@
+// -----------------------------------------------------
+// 名前:	BossApproaching.h
+// 内容:	ボスの追尾ステートクラス
+// 作成:	池田桜輔
+// -----------------------------------------------------
 #pragma once
-#ifndef BossATTACKING_DEFINED
-#define BossATTACKING_DEFINED
+#ifndef BOSS_ATTACKING_DEFINED
+#define BOSS_ATTACKING_DEFINED
+// インクルード
 #include "Interface/IState.h"
 
+// 前方宣言
 class Boss;
 class Player;
 
-// 敵の待機ステートを定義
+/// <summary>
+/// ボスの叩きつけ攻撃ステート
+/// </summary>
 class BossAttacking : public IState
 {
 	// ---------------------------
@@ -51,4 +60,4 @@ private:
 	IObject* m_player;
 };
 
-#endif		// BossATTACKING_DEFINED
+#endif		// BOSS_ATTACKING_DEFINED

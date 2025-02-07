@@ -129,21 +129,6 @@
     <ClInclude Include="Interface\IState.h">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="BehaviourTree\Header\Action.h">
-      <Filter>BehaviorTree\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="BehaviourTree\Header\BehaviorTree.h">
-      <Filter>BehaviorTree\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="BehaviourTree\Header\IfDecorator.h">
-      <Filter>BehaviorTree\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="BehaviourTree\Header\Selector.h">
-      <Filter>BehaviorTree\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="BehaviourTree\Header\Sequence.h">
-      <Filter>BehaviorTree\Header</Filter>
-    </ClInclude>
     <ClInclude Include="Game\Player\State\Header\Player_Dodging.h">
       <Filter>Game\Player\State\Header</Filter>
     </ClInclude>
@@ -256,7 +241,6 @@
     <ClInclude Include="Game\UI\Action\BossFightButtonAction.h" />
     <ClInclude Include="Effects\EnemyEffect\EnemyEffect.h" />
     <ClInclude Include="Game\Weapon\WeaponState.h" />
-    <ClInclude Include="Game\Boss\BossState.h" />
     <ClInclude Include="Game\Messenger\EventList.h" />
     <ClInclude Include="Game\Camera\State\ClearCameraState.h" />
   </ItemGroup>
@@ -299,21 +283,6 @@
     </ClCompile>
     <ClCompile Include="Game\Player\Player.cpp">
       <Filter>Game\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="BehaviourTree\Source\Action.cpp">
-      <Filter>BehaviorTree\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="BehaviourTree\Source\BehaviorTree.cpp">
-      <Filter>BehaviorTree\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="BehaviourTree\Source\IfDecorator.cpp">
-      <Filter>BehaviorTree\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="BehaviourTree\Source\Selector.cpp">
-      <Filter>BehaviorTree\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="BehaviourTree\Source\Sequence.cpp">
-      <Filter>BehaviorTree\Source</Filter>
     </ClCompile>
     <ClCompile Include="Game\Player\State\Source\Player_Idling.cpp">
       <Filter>Game\Player\State\Source</Filter>

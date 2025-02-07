@@ -1,13 +1,22 @@
+// -----------------------------------------------------
+// 名前:	BossSweeping.h
+// 内容:	ボスの薙ぎ払い攻撃ステートクラス
+// 作成:	池田桜輔
+// -----------------------------------------------------
 #pragma once
 #ifndef BOSS_SWEEPING_DEFINED
 #define BOSS_SWEEPING_DEFINED
+// インクルード
 #include "Interface/IState.h"
 
+// 前方宣言
 class Boss;
 class Player;
 class Easing;
 
-// 敵の薙ぎ払いステートを定義
+/// <summary>
+/// ボスの薙ぎ払い攻撃ステート
+/// </summary>
 class BossSweeping : public IState
 {
 	// ---------------------------

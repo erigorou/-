@@ -1,3 +1,9 @@
+// -----------------------------------------------------
+// 名前:	BossDashAttacking.cpp
+// 内容:	ボスの突進ステートを定義
+// 作成:	池田桜輔
+// -----------------------------------------------------
+// インクルード
 #include "pch.h"
 #include "Libraries/MyLib/Math.h"
 #include "Libraries//MyLib/EasingFunctions.h"
