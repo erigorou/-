@@ -1,23 +1,35 @@
+// --------------------------------------------------
+//名前:	GoblinIdling.h
+//内容:	ゴブリンの待機状態
+//作成:	池田桜輔
+// --------------------------------------------------
 #pragma once
 #ifndef GOBLIN_IDLING
 #define GOBLIN_IDLING
-
+// インクルード
 #include "pch.h"
 #include "Interface/IState.h"
+
+// 前方宣言
 class Goblin;
 
+/// <summary>
+///	ゴブリンの待機状態
+/// </summary>
 class GoblinIdling : public IState
 {
-	// -----------0-
+	// -----------------------
 	// 固定値
-	// -------------
+	// -----------------------
 public:
+	// 最小クールタイム
 	static constexpr float MIN_COOLTIME = 1.0f;
-	static constexpr float MAX_COOLTIME = 3.0f;
+	// 最大クールタイム
+	static constexpr float MAX_COOLTIME = 4.0f;
 
-	// -----------0-
-	// 公開関数
-	// -------------
+	// -----------------------
+	// メンバ関数(公開)
+	// -----------------------
 public:
 	// コンストラクタ
 	GoblinIdling(Goblin* goblin);
@@ -36,13 +48,16 @@ public:
 	// プレイヤーを探す
 	void SearchPlayer();
 
-
+	// -----------------------
+	// メンバ変数
+	// -----------------------
 private:
-	Goblin* m_goblin;	// 親
-	float m_TotalTime;	// 経過時間
-
-	float m_coolTime;	// クールタイム
-
+	// 親
+	Goblin* m_goblin;
+	// 経過時間
+	float m_TotalTime;
+	// クールタイム
+	float m_coolTime;
 	// 位置
 	DirectX::SimpleMath::Vector3 m_position;
 	// 角度

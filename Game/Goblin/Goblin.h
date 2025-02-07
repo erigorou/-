@@ -1,25 +1,29 @@
-// -------------------------------------------------------
-// 小鬼の親クラス
-// -------------------------------------------------------
-
+// -----------------------------------------------------
+// 名前:	Goblin.cpp
+// 内容:	小鬼を実装するクラス
+//			ステートや衝突判定を管理
+// 作成:	池田桜輔
+// -----------------------------------------------------
 #pragma once
-
 #ifndef GOBLIN_OBJECT
 #define GOBLIN_OBJECT
-
+// インクルード
 #include "pch.h"
 #include "Interface/IObject.h"
 #include "Interface/IState.h"
 #include "Interface/IEnemy.h"
 
+// 前方宣言
 class HPSystem;
 class EnemyEffect;
-
 class GoblinIdling;
 class GoblinAttacking;
 class GoblinDead;
 class GoblinTutorial;
 
+/// <summary>
+/// ゴブリンのステート
+/// </summary>
 enum class GoblinState
 {
 	IDLING,
@@ -28,24 +32,31 @@ enum class GoblinState
 	TUTORIAL
 };
 
+/// <summary>
+/// 小鬼を実装するクラス
+/// </summary>
 class Goblin : public IEnemy
 {
 	// ---------------
 	// 固定値
 	// ---------------
 public:
+	// 速度
 	static const float GOBLIN_SPEED;
+	// 大きさ
 	static const float GOBLIN_SCALE;
-
+	// 最大HP
 	static constexpr float GOBLIN_HP = 6.0f;
+	// 当たり判定の半径
 	static constexpr float COLLISION_RADIUS = 16.0f;
+	// 当たり判定の高さ
 	static constexpr float COLLISION_POS_Y = 2.0f;
-
+	// クールタイム
 	static constexpr float COOL_TIME = 0.1f;
 
-	// ---------------
+	// -----------------------
 	// アクセサ
-	// ---------------
+	// -----------------------
 public:
 	// 座標を取得
 	DirectX::SimpleMath::Vector3 GetPosition() override { return m_position; }
@@ -72,9 +83,9 @@ public:
 	// 攻撃中かどうかを設定
 	void SetIsAttacking(bool isAttacking) { m_nowAttacking = isAttacking; }
 
-	// ---------------
-	// 公開関数
-	// ---------------
+	// -----------------------
+	// メンバ関数(公開)
+	// -----------------------
 public:
 	// コンストラクタ
 	Goblin();
@@ -91,7 +102,6 @@ public:
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& projection
 	);
-
 	// 終了処理
 	void Finalize();
 	// 衝突可能
@@ -103,31 +113,36 @@ public:
 	// ゴブリンを消す
 	void DeleteGoblin();
 
-	// ---------------
-	// 内部関数
-	// ---------------
+	// -----------------------
+	// メンバ関数(非公開)
+	// -----------------------
 private:
+	// ステートの作成
+	void CreateState();
 	// ワールド行列の計算
 	void CalcWorldMatrix();
 	// 当たり判定の移動
 	void MoveCollision();
 	// 生存確認
 	void CheckAlive();
+	// プレイヤーに当たったときの処理
+	void HitPlayer(InterSectData data);
+	// 小鬼に当たったときの処理
+	void HitGoblin(InterSectData data);
+	// 敵に当たったときの処理
+	void HitBoss(InterSectData data);
+	// ステージに当たったときの処理
+	void HitStage(InterSectData data);
+	// 剣に当たったときの処理
+	void HitSword(InterSectData data);
+	// ダメージを受けたときの処理
+	void Damaged(float damage);
+	// クールタイムのカウント
+	void CountCoolTime(float elapsedTime);
 
-	void HitPlayer(InterSectData data);	// プレイヤーに当たったときの処理
-	void HitGoblin(InterSectData data);	// 小鬼に当たったときの処理
-	void HitBoss(InterSectData data);	// 敵に当たったときの処理
-	void HitStage(InterSectData data);	// ステージに当たったときの処理
-	void HitSword(InterSectData data);	// 剣に当たったときの処理
-
-	void Damaged(float damage);			// ダメージを受けたときの処理
-	void CountCoolTime(float elapsedTime);	// クールタイムのカウント
-
-	void CreateState();		// ステートの作成
-
-	// ---------------
+	// -----------------------
 	// メンバ変数
-	// ---------------
+	// -----------------------
 private:
 	// 座標
 	DirectX::SimpleMath::Vector3 m_position;
@@ -174,4 +189,4 @@ private:
 	float m_coolTime;
 };
 
-#endif // !GOBLIN_OBJECT
+#endif

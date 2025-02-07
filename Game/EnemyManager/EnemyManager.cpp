@@ -1,10 +1,11 @@
 // ---------------------------------------------
-// 「内容」全ての敵の管理を行うクラス
-// 「日付」12/18
-// 「作成者」池田
+// 名前:	EnemyManager.cpp
+// 内容:	全ての敵の管理を行うクラス
+//			すべての敵の生成、更新、描画、削除を行う
+// 作成:	池田
 // ---------------------------------------------
-
 #pragma once
+// インクルード
 #include "pch.h"
 #include "Game/Data/GameData.h"
 #include "EnemyManager.h"
@@ -42,6 +43,19 @@ EnemyManager::EnemyManager()
 // --------------------------------
 EnemyManager::~EnemyManager()
 {
+	// 敵すべての終了処理
+	for (auto& enemy : m_enemies)
+	{
+		enemy.data->Finalize();
+	}
+
+	// イベントメッセンジャーから削除
+	EventMessenger::Detach(EventList::EnemyCanHit);
+	EventMessenger::Detach(EventList::DeleteAllGoblin);
+	EventMessenger::Detach(EventList::DeleteEnemy);
+
+	// クリア
+	m_enemies.clear();
 }
 
 

@@ -1,3 +1,9 @@
+// --------------------------------------------------
+//名前:	GoblinIdling.cpp
+//内容:	ゴブリンの待機状態
+//作成:	池田桜輔
+// --------------------------------------------------
+// インクルード
 #include "pch.h"
 #include "../Header/GoblinIdling.h"
 #include "../../Goblin.h"
@@ -34,7 +40,7 @@ GoblinIdling::~GoblinIdling()
 void GoblinIdling::Initialize()
 {
 	// ランダムにクールタイムを設定する
-	m_coolTime = 5.0f;
+	m_coolTime = INIT_COOLTIME;
 }
 
 // ---------------------------------------------

@@ -1,7 +1,11 @@
+// --------------------------------------------------
+//名前:	GoblinTutorial.cpp
+//内容:	チュートリアル中のゴブリンステート
+//作成:	池田桜輔
+// --------------------------------------------------
 #include "pch.h"
 #include "../Header/GoblinTutorial.h"
 #include "../../Goblin.h"
-#include "Libraries/MyLib/Math.h"
 
 // ---------------------------------------------
 /// <summary>
@@ -32,8 +36,6 @@ GoblinTutorial::~GoblinTutorial()
 // ---------------------------------------------
 void GoblinTutorial::Initialize()
 {
-	// ランダムにクールタイムを設定する
-	m_coolTime = Math::RandomFloat(MIN_COOLTIME, MAX_COOLTIME);
 }
 
 // ---------------------------------------------
@@ -45,9 +47,6 @@ void GoblinTutorial::PreUpdate()
 {
 	m_goblin->SetIsAttacking(false);
 	m_TotalTime = 0.0f;
-
-	// ランダムにクールタイムを設定する
-	m_coolTime = Math::RandomFloat(MIN_COOLTIME, MAX_COOLTIME);
 }
 
 // ---------------------------------------------
@@ -58,7 +57,8 @@ void GoblinTutorial::PreUpdate()
 // ---------------------------------------------
 void GoblinTutorial::Update(const float& elapsedTime)
 {
-	UNREFERENCED_PARAMETER(elapsedTime);
+	// 時間を加算する
+	m_TotalTime += elapsedTime;
 }
 
 // ---------------------------------------------
