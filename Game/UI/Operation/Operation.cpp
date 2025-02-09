@@ -1,18 +1,25 @@
+// --------------------------------------------
+// 
+// 名前:	Operation.cpp
+// 機能:	操作説明UIのクラス
+//			マネージャー的な役割を持つ
+// 製作:	池田桜輔
+// 
+// --------------------------------------------
+// インクルード
 #include "pch.h"
-
 #include "Operation.h"
 #include "Game/CommonResources.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "CommonStates.h"
 #include "Game/Messenger/KeyboardMessenger.h"
 
-// 固定値
-const wchar_t* Operation::TEXT_PATH = L"Resources/Textures/UI/Operation/TEXT.png";
 
-
-// ------------------------------------
-// コンストラクタ
-// ------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+// ---------------------------------------------------------
 Operation::Operation()
 	:
 	m_customShader(nullptr),
@@ -25,16 +32,20 @@ Operation::Operation()
 {
 }
 
-// ------------------------------------
-// デストラクタ
-// ------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// ---------------------------------------------------------
 Operation::~Operation()
 {
 }
 
-// ------------------------------------
-// 初期化処理
-// ------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+// ---------------------------------------------------------
 void Operation::Initialize()
 {
 
@@ -55,22 +66,27 @@ void Operation::Initialize()
 	KeyboardMessenger::Attach(DirectX::Keyboard::Keys::Right, m_operateUIs[5].get(), KeyboardMessenger::KeyPressType::DOWN);
 
 	// テキストUIの初期化
-	m_textUI = std::make_unique<UI>(TEXT_PATH);
+	m_textUI = std::make_unique<UI>(TEXT_KEY[0]);
 	m_textUI->Initialize();
 }
 
-// ------------------------------------
-// 更新処理
-// ------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// ---------------------------------------------------------
 void Operation::Update(float elapsedTime)
 {
 	// 経過時間の加算
 	m_totalTime += elapsedTime;
 }
 
-// ------------------------------------
-// 描画処理
-// ------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
+// ---------------------------------------------------------
 void Operation::Render()
 {
 	for (size_t i = 0; i < m_operateUIs.size(); i++)
@@ -82,9 +98,11 @@ void Operation::Render()
 	m_textUI->Render();
 }
 
-// ------------------------------------
-// 終了処理
-// ------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
+// ---------------------------------------------------------
 void Operation::Finalize()
 {
 }

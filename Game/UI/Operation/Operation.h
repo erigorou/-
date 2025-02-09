@@ -1,22 +1,37 @@
-#pragma once
+// --------------------------------------------
+// 
+// 名前:	Operation.h
+// 機能:	操作説明UIのクラス
+//			マネージャー的な役割を持つ
+// 製作:	池田桜輔
+// 
+// --------------------------------------------
 #ifndef OPERATION_DEFINED
 #define OPERATION_DEFINED
-
+#pragma once
+// インクルード
 #include "pch.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "OperateUI.h"
 #include "../UI.h"
 
+/// <summary>
+/// 操作説明UIクラス
+/// </summary>
 class Operation
 {
+	// -----------------------------
 	// 固定値
+	// -----------------------------
 private:
-	static const wchar_t* TEXT_PATH;
-
-	// 変更後:
+	// HPの最低値
+	static constexpr int LOW_HP = 2;
+	// フェード時間
+	static constexpr float FADE_TIME = 1.2f;
+	// キーパスの配列
 	static constexpr std::string_view keys[] = {
-		"X_KEY", 
+		"X_KEY",
 		"SHIFT_KEY",
 		"UP_KEY",
 		"DOWN_KEY",
@@ -24,10 +39,8 @@ private:
 		"RIGHT_KEY"
 	};
 
-	// HPの最低値
-	static constexpr int LOW_HP = 2;
-	// フェード時間
-	static constexpr float FADE_TIME = 1.2f;
+	// テキストのテクスチャキー
+	static constexpr std::string_view TEXT_KEY[] = { "TEXT_KEY" };
 
 	// インプットレイアウト
 	std::vector<D3D11_INPUT_ELEMENT_DESC> InputElements =
@@ -48,7 +61,9 @@ private:
 		DirectX::SimpleMath::Vector4	time;
 	};
 
-	// パブリック関数
+	// -----------------------------
+	// メンバ関数(公開)
+	// -----------------------------
 public:
 	// コンストラクタ
 	Operation();
@@ -63,9 +78,10 @@ public:
 	// 終了処理
 	void Finalize();
 
-	// プライベート変数
+	// -----------------------------
+	// メンバ変数
+	// -----------------------------
 private:
-
 	// シェーダー
 	std::unique_ptr<CustomShader> m_customShader;
 	// コンスタントバッファ
@@ -80,8 +96,7 @@ private:
 	float m_elapsedTime;
 	// 経過時間
 	float m_totalTime;
-
-	// 操作UI
+	// 操作UI配列
 	std::vector<std::unique_ptr<OperateUI>> m_operateUIs;
 	// UI
 	std::unique_ptr<UI> m_textUI;

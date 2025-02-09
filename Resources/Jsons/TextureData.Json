@@ -22,5 +22,6 @@
   "LEFT_KEY": "UI/Operation/LEFT.png",
   "RIGHT_KEY": "UI/Operation/RIGHT.png",
   "SHIFT_KEY": "UI/Operation/SHIFT.png",
-  "X_KEY": "UI/Operation/X.png"
+  "X_KEY": "UI/Operation/X.png",
+  "TEXT_KEY" : "UI/Operation/TEXT.png"
 } 

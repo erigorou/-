@@ -1,12 +1,25 @@
+// ------------------------------------------------------------------
+// 
+// 名前:	Warning.cpp
+// 機能:	HPが一定値以下になった時に警告を表示するクラス
+// 製作:	池田桜輔
+// 
+// ------------------------------------------------------------------
+// インクルード
 #include "pch.h"
-
 #include "Warning.h"
 #include "Game/CommonResources.h"
 #include "Game/GameResources.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "Game/Data/HPSystem.h"
 #include "CommonStates.h"
-// コンストラクタ
+
+// ---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="hp">HPシステム</param>
+// ---------------------------------------------------------
 Warning::Warning(HPSystem* hp)
 	:
 	m_hp(hp),
@@ -20,12 +33,21 @@ Warning::Warning(HPSystem* hp)
 {
 }
 
-// デストラクタ
+// ---------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// ---------------------------------------------------------
 Warning::~Warning()
 {
+	Finalize();
 }
 
-// 初期化処理
+// ---------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+// ---------------------------------------------------------
 void Warning::Initialize()
 {
 	ID3D11Device* device = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
@@ -66,7 +88,12 @@ void Warning::Initialize()
 	}
 }
 
-// 更新処理
+// ---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// ---------------------------------------------------------
 void Warning::Update(float elapsedTime)
 {
 	if (m_hp->GetHP() > LOW_HP)
@@ -76,7 +103,11 @@ void Warning::Update(float elapsedTime)
 	m_totalTime += elapsedTime;
 }
 
-// 描画処理
+// ---------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
+// ---------------------------------------------------------
 void Warning::Render()
 {
 	using namespace DirectX;
@@ -129,7 +160,11 @@ void Warning::Render()
 	m_customShader->EndSharder(context);
 }
 
-// 終了処理
+// ---------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
+// ---------------------------------------------------------
 void Warning::Finalize()
 {
 }

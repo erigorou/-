@@ -1,3 +1,12 @@
+// --------------------------------------------
+// 
+// 名前:	OperateUI.cpp
+// 機能:	操作説明UIのクラス
+//			ボタン一つを生成
+// 製作:	池田桜輔
+// 
+// --------------------------------------------
+// インクルード
 #include "pch.h"
 #include "OperateUI.h"
 #include "Game/CommonResources.h"
@@ -5,40 +14,44 @@
 #include "CommonStates.h"
 #include "Game/GameResources.h"
 
-// -----------------------------------
-// コンストラクタ
-// -----------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="key">取得するテクスチャのキー</param>
+// ---------------------------------------------------------
 OperateUI::OperateUI(std::string_view key)
 	:
-	m_pDR(nullptr)
-	, m_customShader(nullptr)
-	, m_CBuffer(nullptr)
-	, m_states(nullptr)
-	, m_batch(nullptr)
-	, m_texture()
-	, m_elapsedTime(DOWN_FADE_TIME)
-	, m_totalTime{}
-	, m_downKey(false)
+	m_customShader(nullptr),
+	m_CBuffer(nullptr),
+	m_states(nullptr),
+	m_batch(nullptr),
+	m_texture(),
+	m_elapsedTime(DOWN_FADE_TIME),
+	m_totalTime{},
+	m_downKey(false)
 {
-	m_pDR = CommonResources::GetInstance()->GetDeviceResources();
-
 	// テクスチャを取得
 	m_texture = GameResources::GetInstance()->GetTexture(static_cast<std::string>(key));
 }
 
-// -----------------------------------
-// デストラクタ
-// -----------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// ---------------------------------------------------------
 OperateUI::~OperateUI()
 {
 }
 
-// -----------------------------------
-// 初期化処理
-// -----------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+// ---------------------------------------------------------
 void OperateUI::Initialize()
 {
-	ID3D11Device* device = m_pDR->GetD3DDevice();
+	ID3D11Device* device = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
 
 	// シェーダーの生成
 	m_customShader = std::make_unique<CustomShader>
@@ -53,7 +66,7 @@ void OperateUI::Initialize()
 	// プリミティブバッチの生成
 	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>
 		(
-			m_pDR->GetD3DDeviceContext()
+			CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext()
 		);
 
 	// コモンステートの生成
@@ -73,17 +86,24 @@ void OperateUI::Initialize()
 	}
 }
 
+// ---------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
+// ---------------------------------------------------------
 void OperateUI::Render()
 {
 	using namespace DirectX;
-	ID3D11DeviceContext* context = m_pDR->GetD3DDeviceContext();
+	ID3D11DeviceContext* context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 
+	// キーが押されている場合
 	if (m_downKey)
 	{
+		// 経過時間を減らす
 		m_totalTime -= m_elapsedTime;
 
-		if (m_totalTime <= 0.0f)
-			m_downKey = false;
+		// 経過時間が0以下になったらキーが押されていない状態にする
+		if (m_totalTime <= 0.0f) m_downKey = false;
 	}
 
 	// 頂点情報
@@ -139,6 +159,11 @@ void OperateUI::Render()
 	m_customShader->EndSharder(context);
 }
 
+// ---------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
+// ---------------------------------------------------------
 void OperateUI::Finalize()
 {
 	// シェーダーの解放
@@ -153,11 +178,23 @@ void OperateUI::Finalize()
 	m_CBuffer.Reset();
 }
 
+// ---------------------------------------------------------
+/// <summary>
+/// 入力処理
+/// </summary>
+/// <param name="key">押されたキー</param>
+// ---------------------------------------------------------
 void OperateUI::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 {
 	UNREFERENCED_PARAMETER(key);
 }
 
+// ---------------------------------------------------------
+/// <summary>
+/// 入力処理
+/// </summary>
+/// <param name="key">押されたキー</param>
+// ---------------------------------------------------------
 void OperateUI::OnKeyDown(const DirectX::Keyboard::Keys& key)
 {
 	m_downKey = true;
@@ -166,11 +203,23 @@ void OperateUI::OnKeyDown(const DirectX::Keyboard::Keys& key)
 	UNREFERENCED_PARAMETER(key);
 }
 
+// ---------------------------------------------------------
+/// <summary>
+/// 衝突判定処理
+/// </summary>
+/// <param name="data">衝突情報</param>
+// ---------------------------------------------------------
 void OperateUI::HitAction(InterSectData data)
 {
 	UNREFERENCED_PARAMETER(data);
 }
 
+// ---------------------------------------------------------
+/// <summary>
+/// 位置取得
+/// </summary>
+/// <returns>現在の位置</returns>
+// ---------------------------------------------------------
 DirectX::SimpleMath::Vector3 OperateUI::GetPosition()
 {
 	return DirectX::SimpleMath::Vector3::Zero;

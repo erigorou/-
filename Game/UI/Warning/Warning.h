@@ -1,7 +1,14 @@
-#pragma once
+// ------------------------------------------------------------------
+// 
+// 名前:	Warning.cpp
+// 機能:	HPが一定値以下になった時に警告を表示するクラス
+// 製作:	池田桜輔
+// 
+// ------------------------------------------------------------------
 #ifndef WARNING_DEFINED
 #define WARNING_DEFINED
-
+#pragma once
+// インクルード
 #include "pch.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
