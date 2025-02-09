@@ -137,10 +137,6 @@ void UI::Render()
 	// テクスチャの設定
 	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
 
-
-	// 入力レイアウトの設定
-	context->IASetInputLayout(m_customShader->GetInputLayout());
-
 	// 描画開始
 	m_batch->Begin();
 	m_batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], 4);
