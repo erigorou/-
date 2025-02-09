@@ -273,7 +273,6 @@
     <ClInclude Include="Game\UI\Action\TutorialButtonAction.h" />
     <ClInclude Include="Game\UI\Fade\Fade.h" />
     <ClInclude Include="Game\UI\EnemyHP\EnemyHPUI.h" />
-    <ClInclude Include="Game\UI\IconUI\IconUI.h" />
     <ClInclude Include="Game\UI\Operation\OperateUI.h" />
     <ClInclude Include="Game\UI\Operation\Operation.h" />
     <ClInclude Include="Game\UI\PlayerHP\PlayerHPUI.h" />
@@ -385,7 +384,6 @@
     <ClCompile Include="Game\UI\!PlaySceneUIManager\PlaySceneUIManager.cpp" />
     <ClCompile Include="Game\UI\SceneUIManager\QuestSelectSceneUIManager.cpp" />
     <ClCompile Include="Game\UI\EnemyHP\EnemyHPUI.cpp" />
-    <ClCompile Include="Game\UI\IconUI\IconUI.cpp" />
     <ClCompile Include="Game\UI\Operation\OperateUI.cpp" />
     <ClCompile Include="Game\UI\Operation\Operation.cpp" />
     <ClCompile Include="Game\UI\PlayerHP\PlayerHPUI.cpp" />

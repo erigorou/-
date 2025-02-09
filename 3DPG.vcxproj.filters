@@ -163,7 +163,6 @@
     <ClInclude Include="Libraries\MyLib\EasingFunctions.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Sweeping.h" />
     <ClInclude Include="Game\UI\PlayerHP\PlayerHPUI.h" />
-    <ClInclude Include="Game\UI\IconUI\IconUI.h" />
     <ClInclude Include="Game\UI\EnemyHP\EnemyHPUI.h" />
     <ClInclude Include="Libraries\MyLib\Collision\CollisionManager.h" />
     <ClInclude Include="Interface\IObject.h" />
@@ -308,7 +307,6 @@
     <ClCompile Include="Game\Boss\States\Source\BossSweeping.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp" />
     <ClCompile Include="Game\UI\PlayerHP\PlayerHPUI.cpp" />
-    <ClCompile Include="Game\UI\IconUI\IconUI.cpp" />
     <ClCompile Include="Game\UI\EnemyHP\EnemyHPUI.cpp" />
     <ClCompile Include="Libraries\MyLib\Collision\CollisionManager.cpp" />
     <ClCompile Include="Game\UI\Fade\Fade.cpp" />
