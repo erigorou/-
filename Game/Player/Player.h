@@ -42,6 +42,10 @@ public:
 	static constexpr DirectX::SimpleMath::Vector3 HOME_POSITION = { 40.0f, 0.0f, 40.0f };
 	// 速さ
 	static constexpr float PLAYER_SPEED = 0.4f;
+	// 摩擦力
+	static constexpr float PLAYER_FRICTION = 0.05f;
+	// 加速度
+	static constexpr float PLAYER_ACCELERATION = 0.05f;
 	// 大きさ
 	static constexpr float PLAYER_SCALE = 0.1f;
 	// 当たり判定の大きさ
@@ -69,6 +73,9 @@ public:
 	// ステートの最大数
 	static constexpr int STATE_MAX = 5;
 
+	// 移動時パーティクルを生成する間隔
+	static constexpr float PARTICLE_INTERVAL = 0.15f;
+
 	// キー入力
 	static constexpr DirectX::SimpleMath::Vector2 INPUT_FLONT = { 0.0f	, 1.0f };	// 前
 	static constexpr DirectX::SimpleMath::Vector2 INPUT_BACK = { 0.0f	, -1.0f };	// 後
@@ -85,35 +92,34 @@ public:
 	DirectX::SimpleMath::Vector3 GetPosition()override { return m_position; }
 	// 座標を設定
 	void SetPosition(DirectX::SimpleMath::Vector3 position) { m_position = position; }
-	// 速度
+	// 速度を取得
 	DirectX::SimpleMath::Vector3 GetVelocity()	const { return m_velocity; }
-	// 速度
+	// 速度を設定
 	void SetSpeed(DirectX::SimpleMath::Vector3 velocity) { m_velocity = velocity; }
-	// 向き
+	// 向きを取得
 	DirectX::SimpleMath::Vector3 GetDirection()	const { return m_direction; }
-
-	// 入力ベクトル
+	// 入力ベクトルを取得
 	DirectX::SimpleMath::Vector2 GetinputVector()	const { return m_inputVector; }
-	// 回転角
+	// 回転角を取得
 	float GetAngle()	const { return m_angle; }
-	// 回転角
+	// 回転角を設定
 	void SetAngle(const float angle) { m_angle = angle; }
-	// HP
+	// HPを取得
 	HPSystem* GetPlayerHP()	const { return m_hp.get(); }
-
-	// アニメーション用回転
+	// アニメーション用回転を設定
 	void SetAnimationRotate(DirectX::SimpleMath::Vector3 rotate) { m_animationRotate = rotate; }
-	// 入力ベクトル
+	// 入力ベクトルを設定
 	void SetInputVector(DirectX::SimpleMath::Vector2 inputVector) { m_inputVector = inputVector; }
-	// 加速度
+	// 加速度を設定
 	void SetAcceleration(DirectX::SimpleMath::Vector3 acceleration) { m_acceleration = acceleration; }
-
-	PlayerIdling* GetPlayerIdlingState()	const { return m_playerIdling.get(); }	// 待機状態
-	PlayerDodging* GetPlayerDodgingState()	const { return m_playerDodging.get(); }	// 回避状態
-	PlayerAttacking1* GetPlayerAttackingState1()	const { return m_playerAttacking1.get(); }	// 攻撃状態１
-	PlayerAttacking2* GetPlayerAttackingState2()	const { return m_playerAttacking2.get(); }	// 攻撃状態２
-	PlayerNockBacking* GetPlayerNockBackingState()	const { return m_playerNockBacking.get(); }	// やられ状態
-	IPlayer* GetCurrentState()			const { return m_currentState; }	// 現在のステート
+	// 現在のステートを取得
+	IPlayer* GetCurrentState() const { return m_currentState; }
+	// 回避ステートを取得
+	IPlayer* GetPlayerDodgingState() const { return m_playerDodging.get(); }
+	// 攻撃ステートを取得
+	IPlayer* GetPlayerAttackingState1() const { return m_playerAttacking1.get(); }
+	// 攻撃ステートを取得
+	IPlayer* GetPlayerAttackingState2() const { return m_playerAttacking2.get(); }	
 
 
 	// -------------------
@@ -150,7 +156,6 @@ public:
 	void OnKeyPressed(const DirectX::Keyboard::Keys& key) override;
 	// キーボードの入力を取得する
 	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
-	
 	// 被ダメを受けられる
 	void CanHitBoss(void* flag);
 	// 武器との当たり判定
@@ -170,6 +175,8 @@ private:
 	void InitializeRender();
 	// イベントの登録
 	void AttachEvent();
+	// クールタイムの計算
+	void CalculationCoolTime(const float elapsedTime);
 	// 敵の体との衝突判定
 	void HitBossBody(InterSectData data);
 	// 敵のブキとの衝突判定

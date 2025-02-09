@@ -1,3 +1,9 @@
+// ---------------------------------------------------------------------------------------
+// 名前:	QuestRenderer.cpp
+// 内容:	チュートリアル中の操作案内の描画を行うクラス
+// 作成:	池田桜輔
+// ---------------------------------------------------------------------------------------
+// インクルード
 #include "pch.h"
 #include "QuestRenderer.h"
 #include "../QuestManager.h"
@@ -9,42 +15,49 @@
 #include "CommonStates.h"
 #include "Game/GameResources.h"
 
-// --------------------
-// 固定値
-// --------------------
-
-const wchar_t* QuestRenderer::VS_PATH = L"Resources/cso/Quest_VS.cso";
-const wchar_t* QuestRenderer::PS_PATH = L"Resources/cso/Quest_PS.cso";
-const wchar_t* QuestRenderer::GS_PATH = L"Resources/cso/Quest_GS.cso";
-
-// --------------------
-// コンストラクタ
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="manager">クエストマネージャー</param>
+// -------------------------------------------------------
 QuestRenderer::QuestRenderer(QuestManager* manager)
-	: m_questManager(manager)
-	, m_position(INIT_POSITION_X, INIT_POSITION_Y, 0)
-	, m_angle{}
-	, m_scale(1.0f, 1.0f)
-	, m_alpha{}
-	, m_dissolve{}
-	, m_currentTime{}
-	, m_canChanegQuest(false)
-	, m_clearFlag(false)
+	: 
+	m_questManager(manager),
+	m_position(INIT_POSITION_X, INIT_POSITION_Y, 0),
+	m_angle{},
+	m_scale{INIT_SIZE},
+	m_alpha{},
+	m_dissolve{},
+	m_currentTime{},
+	m_canChanegQuest(false),
+	m_clearFlag(false)
 {
 }
 
-// --------------------
-// デストラクタ
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// -------------------------------------------------------
 QuestRenderer::~QuestRenderer()
 {
+	Finalize();
 }
 
-// --------------------
-// 初期化処理
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+/// <param name="texture">テクスチャ</param>
+// -------------------------------------------------------
 void QuestRenderer::Initialize(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture)
 {
+	// テクスチャを設定
+	m_texture = texture;
+	// ディゾルブテクスチャの設定
+	m_dissolveTexture = GameResources::GetInstance()->GetTexture("noize");
+
 	// デバイスの取得
 	auto device = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
 	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
@@ -53,10 +66,6 @@ void QuestRenderer::Initialize(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> 
 	CreateShader();
 	// コンスタントバッファの作成
 	ConstantBuffer();
-
-	m_texture = texture;
-
-	m_dissolveTexture = GameResources::GetInstance()->GetTexture("noize");
 
 	// コモンステートの生成
 	m_states = std::make_unique<DirectX::CommonStates>(device);
@@ -67,9 +76,12 @@ void QuestRenderer::Initialize(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> 
 	AddSlideAction();
 }
 
-// --------------------
-// 更新処理
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// -------------------------------------------------------
 void QuestRenderer::Update(float elapsedTime)
 {
 	// 経過時間の保存
@@ -79,9 +91,11 @@ void QuestRenderer::Update(float elapsedTime)
 	m_currentAction();
 }
 
-// --------------------
-// 描画処理
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
+// -------------------------------------------------------
 void QuestRenderer::Draw()
 {
 	// コンテキストの取得
@@ -115,7 +129,6 @@ void QuestRenderer::Draw()
 	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
 	context->PSSetShaderResources(1, 1, m_dissolveTexture.GetAddressOf());
 
-
 	//	板ポリゴンを描画
 	m_batch->Begin();
 	m_batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], 1);
@@ -125,16 +138,30 @@ void QuestRenderer::Draw()
 	m_shader->EndSharder(context);
 }
 
-// --------------------
-// 終了処理
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
+// -------------------------------------------------------
 void QuestRenderer::Finalize()
 {
+	// テクスチャの解放
+	m_texture.Reset();
+	// シェーダーの解放
+	m_shader.reset();
+	// コンスタントバッファの解放
+	m_CBuffer.Reset();
+	// ステートの解放
+	m_states.reset();
+	// プリミティブバッチの解放
+	m_batch.reset();
 }
 
-// --------------------
-// シェーダーの生成
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// カスタムシェーダーの生成
+/// </summary>
+// -------------------------------------------------------
 void QuestRenderer::CreateShader()
 {
 	// デバイスの取得
@@ -151,9 +178,11 @@ void QuestRenderer::CreateShader()
 		);
 }
 
-// --------------------
-// コンスタントバッファの作成
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// 定数バッファの作成
+/// </summary>
+// -------------------------------------------------------
 void QuestRenderer::ConstantBuffer()
 {
 	// デバイスの取得
@@ -173,9 +202,11 @@ void QuestRenderer::ConstantBuffer()
 	}
 }
 
-// --------------------
-// 定数バッファの更新処理
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// 定数バッファの更新処理
+/// </summary>
+// -------------------------------------------------------
 void QuestRenderer::UpdateConstantBuffer()
 {
 	// コンテキストの取得
@@ -198,9 +229,11 @@ void QuestRenderer::UpdateConstantBuffer()
 	context->PSSetConstantBuffers(0, 1, cb);
 }
 
-// --------------------
-// レンダーステートの設定
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// レンダーステートの設定処理
+/// </summary>
+// -------------------------------------------------------
 void QuestRenderer::SetRenderState()
 {
 	// コンテキストの取得
@@ -215,9 +248,11 @@ void QuestRenderer::SetRenderState()
 	context->RSSetState(m_states->CullClockwise());					// カリングは左回り
 }
 
-// --------------------------------
-// スライドアクションの追加
-// --------------------------------
+// -------------------------------------------------------
+/// <summary>
+/// スライドアクションの登録
+/// </summary>
+// -------------------------------------------------------
 void QuestRenderer::AddSlideAction()
 {
 	// アクションの追加
@@ -233,9 +268,11 @@ void QuestRenderer::AddSlideAction()
 	m_currentTime = INITIAL_TIME;
 }
 
-// --------------------------------
-// 画像をスライドさせない
-// --------------------------------
+// -------------------------------------------------------	
+/// <summary>
+/// 画像をスライドさせない
+/// </summary>
+// -------------------------------------------------------
 void QuestRenderer::NoSlideTexture()
 {
 	// マネージャーがクエストの変更を許可しているか
@@ -246,9 +283,11 @@ void QuestRenderer::NoSlideTexture()
 	}
 }
 
-// --------------------------------
-// テクスチャをサイドアウトする
-// --------------------------------
+// -------------------------------------------------------
+/// <summary>
+/// テクスチャをスライドアウトさせる
+/// </summary>
+// -------------------------------------------------------
 void QuestRenderer::SlideOutTexture()
 {
 	// 経過時間の更新
@@ -272,9 +311,11 @@ void QuestRenderer::SlideOutTexture()
 	}
 }
 
-// --------------------------------
-// スライドのクールタイム
-// --------------------------------
+// -------------------------------------------------------
+/// <summary>
+/// スライドのクールタイム
+/// </summary>
+// -------------------------------------------------------
 void QuestRenderer::SlideCoolTime()
 {
 	// クールタイムの更新
@@ -288,9 +329,11 @@ void QuestRenderer::SlideCoolTime()
 	}
 }
 
-// --------------------------------
-// テクスチャをサイドインする
-// --------------------------------
+// -------------------------------------------------------
+/// <summary>
+/// テクスチャをスライドインさせる
+/// </summary>
+// -------------------------------------------------------
 void QuestRenderer::SlideInTexture()
 {
 	// ディゾルブの初期化

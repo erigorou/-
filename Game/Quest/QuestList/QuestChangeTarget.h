@@ -1,12 +1,20 @@
 // ---------------------------------------------------------------------------------------
-// スペースを押されたか	: チュートリアル
+// 名前:	QuestChangeTarget.h
+// 内容:	クエストのチェッカー
+//			ターゲットの変更を行ったかを確認する
+// 作成:	池田桜輔
 // ---------------------------------------------------------------------------------------
 
+// インクルード
 #pragma once
 #include "pch.h"
 #include "Interface/IQuestChecker.h"
 #include "Game/Scene/PlayScene.h"
 
+
+/// <summary>
+/// チュートリアルのターゲット変更クエスト
+/// </summary>
 class QuestChangeTarget : public IQuestChecker
 {
 public:
@@ -19,6 +27,8 @@ public:
 	// チェッカーを実行する
 	bool ExecuteChecker(PlayScene* playScene) override
 	{
+		UNREFERENCED_PARAMETER(playScene);
+
 		// キーボードの状態を取得する
 		DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
 		DirectX::Keyboard::KeyboardStateTracker keyboardTracker;

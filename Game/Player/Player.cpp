@@ -181,7 +181,12 @@ void Player::AttachEvent()
 }
 
 
-
+// ---------------------------------------------------------
+/// <summary>
+/// プレイヤーのステートを変更する
+/// </summary>
+/// <param name="state">変更後のステート</param>
+// ---------------------------------------------------------
 void Player::ChangeState(PlayerState state)
 {
 	int stateIndex = static_cast<int>(state);
@@ -233,16 +238,31 @@ void Player::Update(const float elapsedTime)
 	m_currentState->Update(elapsedTime);
 	// プレイヤーの移動
 	CalculationMatrix();
-	m_pushBackValue = Vector3::Zero;
 	// 当たり判定の更新
 	m_bodyCollision->Center = m_position;
 	m_bodyCollision->Center.y = 0.0f;
 	// 武器の更新処理
 	m_sword->Update(elapsedTime);
-	// クールタイムを計測中
-	if (m_isHit && m_coolTime < COOL_TIME) { m_coolTime += elapsedTime; }
-	// クールタイム終わり
-	else if (m_coolTime >= COOL_TIME) { m_isHit = false; m_coolTime = 0.0f; }
+	// クールタイムを計測する
+	CalculationCoolTime(elapsedTime);
+}
+
+// ---------------------------------------------------------
+/// <summary>
+/// クールタイムを計測する
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// ---------------------------------------------------------
+void Player::CalculationCoolTime(const float elapsedTime)
+{
+	// クールタイムが起動中で、クールタイムが終わっていない場合
+	if (m_isHit && m_coolTime < COOL_TIME) {
+		m_coolTime += elapsedTime;
+	}
+	// クールタイム経過後にリセット
+	else if (m_coolTime >= COOL_TIME) { 
+		m_isHit = false; m_coolTime = 0.0f;
+	}
 }
 
 // ---------------------------------------------------------
@@ -265,8 +285,10 @@ void Player::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 // // ---------------------------------------------------------
 void Player::OnKeyDown(const DirectX::Keyboard::Keys& key)
 {
+	// 移動ベクトルをリセット
 	m_velocity = DirectX::SimpleMath::Vector3::Zero;
 
+	// 矢印キーの入力がある場合
 	if (KeyboardChacker::IsInputArrowKey(key))
 	{
 		if (!m_isInputMoveKey)
@@ -338,64 +360,75 @@ void Player::MovePlayer()
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
-
-	Vector3 moveVelocity = Vector3::Zero; // 加速用速度
+	// 加速用速度
+	Vector3 moveVelocity = Vector3::Zero;
 
 	///////////////////// 移動キーの入力がない場合の処理 /////////////////
 	if (m_isInputMoveKey == false)
 	{
-		float accelerationLength = m_acceleration.Length(); // 速度の長さを取得する
+		// 速度の長さを取得する
+		float accelerationLength = m_acceleration.Length();
 		// 0の近似値より大きい場合
 		if (accelerationLength >= FLT_EPSILON)
 		{
-			Vector3 accelerationNormal = m_acceleration / accelerationLength; // 保持する加速度の正規化ベクトルを取得する
-
-			float friction = 0.05f; // 摩擦量
-			accelerationLength -= friction;	// 摩擦を計算
-
+			// 保持する加速度の正規化ベクトルを取得する
+			Vector3 accelerationNormal = m_acceleration / accelerationLength;
+			// 摩擦を計算
+			accelerationLength -= PLAYER_FRICTION;
 			// 加速度が（ー）になるときにリセットする
 			if (accelerationLength < 0.0f)	accelerationLength = 0.0f;
-
+			// 加速度を再計算する
 			m_acceleration = accelerationNormal * accelerationLength;
-			moveVelocity += m_acceleration;	// 基本速度に加速度を上書きする
+			// 速度を計算する
+			moveVelocity += m_acceleration;
 		}
 	}
 
 	///////////////////// 移動キーの入力があった場合の処理 /////////////////
 	else
 	{
+		// 左右キー同時押しのような場合は、処理なし
+		if (m_inputVector.Length() <= FLT_EPSILON)
+			return;
+
 		// 基本移動量を計算する
 		moveVelocity += Vector3::Forward * PLAYER_SPEED;
-
-		float acceleration = 0.05f; // 加速度
-		m_acceleration += Vector3::Forward * acceleration; // 加速度の計算を行う
+		// 加速度の計算を行う
+		m_acceleration += Vector3::Forward * PLAYER_ACCELERATION;
 
 		// 2乗にすることで符号を外す
-		if (m_acceleration.LengthSquared() > 1.0f)
-		{
-			m_acceleration.Normalize(); // 上限を1に設定する
+		if (m_acceleration.LengthSquared() > 1.0f){
+			// 上限を1に設定する
+			m_acceleration.Normalize();
 		}
-
-		moveVelocity += m_acceleration; // 基本移動に加速度を上乗せする
-		m_velocity = moveVelocity; // 速度を保存する
+		// 基本移動に加速度を上乗せする
+		moveVelocity += m_acceleration;
+		// 速度を保存する
+		m_velocity = moveVelocity;
 	}
 
-	moveVelocity *= PLAYER_SPEED;
 	/////////////////////////// 移動処理 //////////////////////////////////
+	// 加速度を計算する
+	moveVelocity *= PLAYER_SPEED;
+	// 移動後の座標を計算する
 	m_position += Vector3::Transform(moveVelocity, Matrix::CreateRotationY(-m_angle));
 
 	/////////////////////////// パーティクルの生成 //////////////////////////
 	if (moveVelocity != Vector3::Zero)
 	{
+		// 経過時間を記録
 		m_particleTime += m_elapsedTime;
-		if (m_particleTime >= 0.15f)
+		// 一定時間経過後にパーティクルを生成する
+		if (m_particleTime >= PARTICLE_INTERVAL)
 		{
+			// パーティクルの生成イベント
 			EventMessenger::Execute(EventList::CreateTrailDust, nullptr);
+			// 時間をリセット
 			m_particleTime = 0.0f;
 		}
 	}
-
-	m_isInputMoveKey = false;	// 移動キーの入力をリセットする
+	// 移動キーの入力をリセットする
+	m_isInputMoveKey = false;
 }
 
 // ---------------------------------------------------------
@@ -409,30 +442,28 @@ void Player::CalculationMatrix()
 
 	// ワールド行列を初期化
 	m_worldMatrix = Matrix::Identity;
-
 	// スケールの適用
 	m_worldMatrix *= Matrix::CreateScale(PLAYER_SCALE);
-
 	// アニメーション回転の適用（ヨー・ピッチ・ロール）
 	Quaternion animationRotation = Quaternion::CreateFromYawPitchRoll(
 		m_animationRotate.y,
 		m_animationRotate.x,
 		m_animationRotate.z
 	);
-
 	// プレイヤーの方向調整（敵の方向を見る回転）
 	Quaternion directionRotation = Quaternion::CreateFromYawPitchRoll(
 		-m_angle + DirectX::XMConvertToRadians(180.0f),
 		0.0f,
 		0.0f
 	);
-
 	// 回転を適用
 	Quaternion totalRotation = animationRotation * directionRotation;
 	m_worldMatrix *= Matrix::CreateFromQuaternion(totalRotation);
 
 	// 位置を適用（最後に平行移動）
 	m_worldMatrix *= Matrix::CreateTranslation(m_position);
+	// 押し戻し量をリセット
+	m_pushBackValue = Vector3::Zero;
 }
 
 // ---------------------------------------------------------
@@ -580,9 +611,7 @@ void Player::HitGoblin(InterSectData data)
 	if (data.objType == ObjectType::Goblin && data.colType == CollisionType::Sphere)
 	{
 		// 敵のステートがダッシュ攻撃の場合で相手が攻撃中の場合
-		if (!m_isHit &&
-			m_canHitGoblin)
-		{
+		if (!m_isHit && m_canHitGoblin) {
 			Damage(GOBLIN_ATTACK_POWER);
 		}
 
@@ -607,6 +636,7 @@ void Player::HitGoblin(InterSectData data)
 // ---------------------------------------------------------
 void Player::HitCudgel(InterSectData data)
 {
+	// 金棒が攻撃状態かつ、クールタイム中でない場合
 	if (!m_isHit &&
 		m_canHitCudgel &&
 		data.objType == ObjectType::Cudgel &&
@@ -630,7 +660,6 @@ void Player::HitStage(InterSectData data)
 	{
 		// 衝突したオブジェクトの情報を取得
 		DirectX::BoundingSphere stageCollision = *data.collision;
-
 		// 押し戻し量を計算
 		m_pushBackValue += Math::pushFront_BoundingSphere(*m_bodyCollision.get(), stageCollision);
 		// y座標には反映無しに設定

@@ -1,3 +1,9 @@
+// ---------------------------------------------------------------------------------------
+// 名前:	Tutorial.h
+// 内容:	チュートリアル中の言葉の部分を描画するクラス
+// 作成:	池田桜輔
+// ---------------------------------------------------------------------------------------
+// インクルード
 #include "pch.h"
 #include "Tutorial.h"
 #include "../QuestManager.h"
@@ -8,40 +14,42 @@
 #include "DeviceResources.h"
 #include "CommonStates.h"
 
-// --------------------
-// 固定値
-// --------------------
-
-const wchar_t* Tutorial::VS_PATH = L"Resources/cso/TutorialVS.cso";
-const wchar_t* Tutorial::PS_PATH = L"Resources/cso/TutorialPS.cso";
-const wchar_t* Tutorial::GS_PATH = L"Resources/cso/TutorialGS.cso";
-
-// --------------------
-// コンストラクタ
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="manager">クエストマネージャー</param>
+// -------------------------------------------------------
 Tutorial::Tutorial(QuestManager* manager)
-	: m_questManager(manager)
-	, m_position(INIT_POSITION_X, INIT_POSITION_Y, 0)
-	, m_angle()
-	, m_scale(1.0f, 1.0f)
-	, m_alpha(1.0f)
-	, m_currentTime()
-	, m_timerPlay(false)
-	, m_canUseTimer(true)
-	, m_alphaFlag(false)
+	: 
+	m_questManager{ manager },
+	m_position{ INIT_POSITION_X, INIT_POSITION_Y, 0 },
+	m_angle{},
+	m_scale{ INIT_SIZE },
+	m_alpha{ INIT_ALPHA },
+	m_currentTime{},
+	m_timerPlay{ false },
+	m_canUseTimer{ true },
+	m_alphaFlag{ false }
 {
 }
 
-// --------------------
-// デストラクタ
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// -------------------------------------------------------
 Tutorial::~Tutorial()
 {
+	Finalize();
 }
 
-// --------------------
-// 初期化処理
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+/// <param name="texture">テクスチャ</param>
+// -------------------------------------------------------
 void Tutorial::Initialize(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture)
 {
 	// デバイスの取得
@@ -52,30 +60,34 @@ void Tutorial::Initialize(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> textu
 	CreateShader();
 	// コンスタントバッファの作成
 	ConstantBuffer();
-
+	// テクスチャの設定
 	m_texture = texture;
-
 	// コモンステートの生成
 	m_states = std::make_unique<DirectX::CommonStates>(device);
 	// プリミティブバッチの生成
 	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(context);
 }
 
-// --------------------
-// 更新処理
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// -------------------------------------------------------
 void Tutorial::Update(float elapsedTime)
 {
 	// タイマーの更新処理
 	UpdateTimer(elapsedTime);
-
 	// α値の更新処理
 	UpdateAlpha(elapsedTime);
 }
 
-// --------------------
-// タイマーの更新処理
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// タイマーの更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// -------------------------------------------------------
 void Tutorial::UpdateTimer(float elapsedTime)
 {
 	// タイマーが起動中でないと更新しない
@@ -88,9 +100,12 @@ void Tutorial::UpdateTimer(float elapsedTime)
 	if (m_currentTime <= 0.0f)	m_timerPlay = false;
 }
 
-// --------------------
-// α値の更新処理
-// --------------------
+// -------------------------------------------------------	
+/// <summary>
+/// α値の更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// -------------------------------------------------------
 void Tutorial::UpdateAlpha(float elapsedTime)
 {
 	// α値を減らすフラグが立っていないと更新しない
@@ -100,15 +115,17 @@ void Tutorial::UpdateAlpha(float elapsedTime)
 	m_currentTime = std::max((m_currentTime - elapsedTime), 0.0f);
 
 	// 時間を正規化
-	float t = m_currentTime / ANIMATION_TIME;
+	float easing = m_currentTime / ANIMATION_TIME;
 
 	// α値の更新
-	m_alpha = Easing::easeOutQuint(t);
+	m_alpha = Easing::easeOutQuint(easing);
 }
 
-// --------------------
-// 描画処理
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
+// -------------------------------------------------------
 void Tutorial::Draw()
 {
 	// コンテキストの取得
@@ -150,16 +167,30 @@ void Tutorial::Draw()
 	m_shader->EndSharder(context);
 }
 
-// --------------------
-// 終了処理
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
+// -------------------------------------------------------
 void Tutorial::Finalize()
 {
+	// テクスチャの解放
+	m_texture.Reset();
+	// シェーダーの解放
+	m_shader.reset();
+	// コンスタントバッファの解放
+	m_CBuffer.Reset();
+	// ステートの解放
+	m_states.reset();
+	// プリミティブバッチの解放
+	m_batch.reset();
 }
 
-// --------------------
-// タイマースタート
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// タイマーの開始処理
+/// </summary>
+// -------------------------------------------------------
 void Tutorial::StartTimer()
 {
 	// タイマーが使用可能でないと処理を行わない
@@ -173,9 +204,11 @@ void Tutorial::StartTimer()
 	m_canUseTimer = false;
 }
 
-// --------------------
-// α値減らし開始
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// α値の減算処理開始
+/// </summary>
+// -------------------------------------------------------
 void Tutorial::StartAlphaMinus()
 {
 	if (m_alphaFlag) return;
@@ -184,9 +217,11 @@ void Tutorial::StartAlphaMinus()
 	m_currentTime = ANIMATION_TIME;
 }
 
-// --------------------
-// シェーダーの生成
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// カスタムシェーダーの生成
+/// </summary>
+// -------------------------------------------------------
 void Tutorial::CreateShader()
 {
 	// デバイスの取得
@@ -203,9 +238,11 @@ void Tutorial::CreateShader()
 		);
 }
 
-// --------------------
-// コンスタントバッファの作成
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// 定数バッファの作成
+/// </summary>
+// -------------------------------------------------------
 void Tutorial::ConstantBuffer()
 {
 	// デバイスの取得
@@ -225,9 +262,11 @@ void Tutorial::ConstantBuffer()
 	}
 }
 
-// --------------------
-// 定数バッファの更新処理
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// 定数バッファの更新処理
+/// </summary>
+// -------------------------------------------------------
 void Tutorial::UpdateConstantBuffer()
 {
 	// コンテキストの取得
@@ -237,7 +276,7 @@ void Tutorial::UpdateConstantBuffer()
 	CBuffer cbuff;
 	cbuff.windowSize = DirectX::SimpleMath::Vector4(WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0.0f);
 	cbuff.alpha = m_alpha;
-	cbuff.padding = DirectX::SimpleMath::Vector3(0.0f, 0.0f, 0.0f);
+	cbuff.padding = DirectX::SimpleMath::Vector3::Zero;
 
 	// 受け渡し用バッファの内容更新
 	context->UpdateSubresource(m_CBuffer.Get(), 0, nullptr, &cbuff, 0, 0);
@@ -249,9 +288,11 @@ void Tutorial::UpdateConstantBuffer()
 	context->PSSetConstantBuffers(0, 1, cb);
 }
 
-// --------------------
-// レンダーステートの設定
-// --------------------
+// -------------------------------------------------------
+/// <summary>
+/// レンダーステートの設定処理
+/// </summary>
+// -------------------------------------------------------
 void Tutorial::SetRenderState()
 {
 	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();

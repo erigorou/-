@@ -1,13 +1,20 @@
 // ---------------------------------------------------------------------------------------
-// プレイヤーが攻撃中かどうかをチェックするクラス	: チュートリアル
+// 名前:	QuestPlayerAttack.h
+// 内容:	クエストのチェッカー
+//			プレイヤーが攻撃中かを確認する
+// 作成:	池田桜輔
 // ---------------------------------------------------------------------------------------
 
+// インクルード
 #pragma once
 #include "pch.h"
 #include "Interface/IQuestChecker.h"
 #include "Game/Scene/PlayScene.h"
 #include "Game/Player/Player.h"
 
+/// <summary>
+/// チュートリアルの攻撃クエスト
+/// </summary>
 class QuestPlayerAttack : public IQuestChecker
 {
 public:

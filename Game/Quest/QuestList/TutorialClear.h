@@ -1,13 +1,19 @@
 // ---------------------------------------------------------------------------------------
-// プレイヤーが移動しているかをチェックするクラス	: チュートリアル
+// 名前:	QuestPlayerAvoid.h
+// 内容:	クエストのチェッカー
+//			プレイヤーが回避中かを確認する
+// 作成:	池田桜輔
 // ---------------------------------------------------------------------------------------
-
+// インクルード
 #pragma once
 #include "pch.h"
 #include "Interface/IQuestChecker.h"
 #include "Game/Scene/PlayScene.h"
 #include "Game/EnemyManager/EnemyManager.h"
 
+/// <summary>
+/// クエストの全敵死亡チェッカー
+/// </summary>
 class TutorialClear : public IQuestChecker
 {
 public:

@@ -1,13 +1,19 @@
 // ---------------------------------------------------------------------------------------
-// プレイヤーが回避中かどうかをチェックするクラス		: チュートリアル
+// 名前:	QuestPlayerAvoid.h
+// 内容:	クエストのチェッカー
+//			プレイヤーが回避中かを確認する
+// 作成:	池田桜輔
 // ---------------------------------------------------------------------------------------
-
+// インクルード
 #pragma once
 #include "pch.h"
 #include "Interface/IQuestChecker.h"
 #include "Game/Scene/PlayScene.h"
 #include "Game/Player/Player.h"
 
+/// <summary>
+/// チュートリアルの回避クエスト
+/// </summary>
 class QuestPlayerAvoid : public IQuestChecker
 {
 public:
@@ -23,7 +29,7 @@ public:
 		// プレイヤーの取得
 		auto player = playScene->GetPlayer();
 
-		// 現在のステートとコンボのステートを取得
+		// 現在のステートと回避のステートを取得
 		auto currentState = player->GetCurrentState();
 		auto attackState = player->GetPlayerDodgingState();
 

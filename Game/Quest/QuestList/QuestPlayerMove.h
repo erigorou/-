@@ -1,13 +1,19 @@
 // ---------------------------------------------------------------------------------------
-// プレイヤーが移動しているかをチェックするクラス	: チュートリアル
+// 名前:	QuestPlayerMove.h
+// 内容:	クエストのチェッカー
+//			プレイヤーが移動したかを確認する
+// 作成:	池田桜輔
 // ---------------------------------------------------------------------------------------
-
+// インクルード
 #pragma once
 #include "pch.h"
 #include "Interface/IQuestChecker.h"
 #include "Game/Scene/PlayScene.h"
 #include "Game/Player/Player.h"
 
+/// <summary>
+/// チュートリアルの移動クエスト
+/// </summary>
 class QuestPlayerMove : public IQuestChecker
 {
 public:

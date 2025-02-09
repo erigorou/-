@@ -4,12 +4,12 @@
 
 #include "pch.h"
 #include "Game/CommonResources.h"
+#include "DeviceResources.h"
 #include "QuestManager.h"
 #include "../Scene/PlayScene.h"
 #include "../Data/GameData.h"
 #include "QuestRenderer/QuestRenderer.h"
 #include "Tutorial/Tutorial.h"
-
 #include "Interface/IQuestChecker.h"
 #include "QuestList/QuestChangeTarget.h"
 #include "QuestList/QuestPlayerMove.h"
@@ -17,7 +17,6 @@
 #include "QuestList/QuestPlayerCombo.h"
 #include "QuestList/QuestPlayerAvoid.h"
 #include "QuestList/TutorialClear.h"
-
 #include "TutorialList/TutorialStart.h"
 #include "TutorialList/TutorialEnd.h"
 #include "TutorialList/TutorialAttackStart.h"

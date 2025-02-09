@@ -1,6 +1,11 @@
+// ---------------------------------------------------------------------------------------
+// 名前:	Tutorial.h
+// 内容:	チュートリアル中の言葉の部分を描画するクラス
+// 作成:	池田桜輔
+// ---------------------------------------------------------------------------------------
 #pragma once
 #include "pch.h"
-#include "DeviceResources.h"
+
 
 class QuestManager;
 class CustomShader;
@@ -28,9 +33,9 @@ public:
 	static constexpr float ANIMATION_TIME = 1.0f;
 
 	// シェーダーのファイルパス
-	static const wchar_t* VS_PATH;
-	static const wchar_t* PS_PATH;
-	static const wchar_t* GS_PATH;
+	static constexpr wchar_t VS_PATH[] = L"Resources/cso/TutorialVS.cso";
+	static constexpr wchar_t PS_PATH[] = L"Resources/cso/TutorialPS.cso";
+	static constexpr wchar_t GS_PATH[] = L"Resources/cso/TutorialGS.cso";
 
 	// 入力レイアウト
 	std::vector<D3D11_INPUT_ELEMENT_DESC> InputElements =
@@ -52,11 +57,13 @@ public:
 	// アクセサ
 	// --------------------
 public:
-	void ChangeTexture(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture) { m_texture = texture; m_canUseTimer = true; }	// テクスチャの変更
-	bool GetTimerIsEnd() { return !m_timerPlay; }	// タイマーフラグの取得
+	// テクスチャの変更
+	void ChangeTexture(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture) { m_texture = texture; m_canUseTimer = true; }
+	// タイマーフラグの取得
+	bool GetTimerIsEnd() { return !m_timerPlay; }
 
 	// --------------------
-	// 公開関数
+	// メンバ関数(公開)
 	// --------------------
 public:
 	// コンストラクタ
@@ -71,13 +78,13 @@ public:
 	void Draw();
 	// 終了処理
 	void Finalize();
-
-	void StartTimer();	// タイマーの開始
-
+	// タイマーの開始
+	void StartTimer();
+	// α値を減らす
 	void StartAlphaMinus();
 
 	// --------------------
-	// 内部関数
+	// メンバ関数(非公開)
 	// --------------------
 private:
 	// シェーダーの生成
@@ -88,30 +95,35 @@ private:
 	void UpdateConstantBuffer();
 	// 描画設定
 	void SetRenderState();
-
 	// タイマーの更新処理
 	void UpdateTimer(float elapsedTime);
 	// α値の更新処理
 	void UpdateAlpha(float elapsedTime);
 
 	// --------------------
-	// メンバー変数
+	// メンバ変数
 	// --------------------
 private:
-
-	QuestManager* m_questManager;	// クエストマネージャー
-
-	DirectX::SimpleMath::Vector3	m_position;	// 座標
-	float							m_angle;	// 回転角
-	DirectX::SimpleMath::Vector2	m_scale;	// 拡大率
-	float							m_alpha;	// 透明度
-
-	float	m_currentTime;	// 経過時間
-	float	m_elapsedTime;	// 経過時間
-
-	bool m_timerPlay;		// タイマーフラグ
-	bool m_canUseTimer;		// タイマーの使用フラグ
-	bool m_alphaFlag;		// α値を減らす
+	// クエストマネージャー
+	QuestManager* m_questManager;
+	// 座標
+	DirectX::SimpleMath::Vector3 m_position;
+	// 回転角
+	float m_angle;
+	// 拡大率
+	DirectX::SimpleMath::Vector2 m_scale;
+	// 透明度
+	float m_alpha;
+	// 経過時間
+	float m_currentTime;
+	// 経過時間
+	float m_elapsedTime;
+	// タイマーフラグ
+	bool m_timerPlay;
+	// タイマーの使用フラグ
+	bool m_canUseTimer;
+	// α値を減らす
+	bool m_alphaFlag;
 
 	// シェーダー
 	std::unique_ptr<CustomShader> m_shader;

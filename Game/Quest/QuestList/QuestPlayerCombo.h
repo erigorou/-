@@ -1,13 +1,19 @@
 // ---------------------------------------------------------------------------------------
-// プレイヤーがコンボ中かどうかをチェックするクラス		: チュートリアル
+// 名前:	QuestPlayerCombo.h
+// 内容:	クエストのチェッカー
+//			プレイヤーがコンボ中かを確認する
+// 作成:	池田桜輔
 // ---------------------------------------------------------------------------------------
-
+// インクルード
 #pragma once
 #include "pch.h"
 #include "Interface/IQuestChecker.h"
 #include "Game/Scene/PlayScene.h"
 #include "Game/Player/Player.h"
 
+/// <summary>
+/// チュートリアルのコンボクエスト
+/// </summary>
 class QuestPlayerCombo : public IQuestChecker
 {
 public:
