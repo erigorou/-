@@ -1,11 +1,11 @@
-//----------------
-// ----------------------------------------------------------------------
-// File: UserInterface.h
-//
-// ユーザーインターフェースクラス
+//--------------------------------------------------------------------------------------
+// 
+// 名前: UserInterface.cpp
+// 機能: UIを表示するクラス
+// 製作: 池田桜輔
 //
 //-------------------------------------------------------------------------------------
-
+// インクルード
 #include "pch.h"
 #include "Game/CommonResources.h"
 #include "UserInterface.h"
@@ -13,19 +13,22 @@
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "Interface/IAction.h"
 
-/// <summary>
-/// インプットレイアウト
-/// </summary>
+// ---------------------------------------------------------
+// 定数
+// ---------------------------------------------------------
+
+// インプットレイアウト
 const std::vector<D3D11_INPUT_ELEMENT_DESC> UserInterface::INPUT_LAYOUT =
 {
 	{ "POSITION",	0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	{ "COLOR",	0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3), D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	{ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3) + sizeof(DirectX::SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
-
+// ---------------------------------------------------------
 /// <summary>
 /// コンストラクタ
 /// </summary>
+// ---------------------------------------------------------
 UserInterface::UserInterface()
 	:
 	m_totalTime{},
@@ -35,17 +38,27 @@ UserInterface::UserInterface()
 	m_scale(DirectX::SimpleMath::Vector2::One),
 	m_position(),
 	m_alpha(1.0f),
-	m_anchor(ANCHOR::TOP_LEFT)
+	m_anchor(ANCHOR::TOP_LEFT),
+	m_action(nullptr)
 {
 }
 
+// ---------------------------------------------------------
 /// <summary>
 /// デストラクタ
 /// </summary>
+// ---------------------------------------------------------
 UserInterface::~UserInterface()
 {
 }
 
+// ---------------------------------------------------------
+/// <summary>
+/// テクスチャサイズの取得
+/// </summary>
+/// <param name="srv">テクスチャ</param>
+/// <summary>
+// ---------------------------------------------------------
 void UserInterface::GetTextureSize(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv) {
 	// ID3D11Resourceを取得
 	Microsoft::WRL::ComPtr<ID3D11Resource> resource;
@@ -70,10 +83,16 @@ void UserInterface::GetTextureSize(Microsoft::WRL::ComPtr<ID3D11ShaderResourceVi
 		);
 }
 
+// ---------------------------------------------------------
 /// <summary>
 /// 生成関数
 /// </summary>
-/// <param name="pDR">ユーザーリソース等から持ってくる</param>
+/// <param name="texture">テクスチャ</param>
+/// <param name="position">座標</param>
+/// <param name="scale">拡大倍率</param>
+/// <param name="anchor">アンカーポイント</param>
+/// <param name="action">アニメーションアクション</param>
+// ---------------------------------------------------------
 void UserInterface::Create(
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture,
 	DirectX::SimpleMath::Vector2 position,
@@ -106,9 +125,12 @@ void UserInterface::Create(
 	m_states = std::make_unique<DirectX::CommonStates>(device);
 }
 
+// ---------------------------------------------------------
 /// <summary>
-/// 更新関数
+/// 更新処理
 /// </summary>
+/// <param name="time">経過時間</param>
+// ---------------------------------------------------------
 void UserInterface::Update(const float time)
 {
 	//	経過時間を加算
@@ -133,9 +155,11 @@ void UserInterface::Update(const float time)
 	}
 }
 
+// ---------------------------------------------------------
 /// <summary>
 /// Shader作成部分だけ分離した関数
 /// </summary>
+// ---------------------------------------------------------
 void UserInterface::CreateShader()
 {
 	// デバイスの取得
@@ -144,9 +168,9 @@ void UserInterface::CreateShader()
 	// シェーダーの作成
 	m_shader = std::make_unique<CustomShader>(
 		device,
-		L"Resources/cso/UIVS.cso",
-		L"Resources/cso/UIPS.cso",
-		L"Resources/cso/UIGS.cso",
+		VS_PATH,
+		PS_PATH,
+		GS_PATH,
 		INPUT_LAYOUT
 	);
 
@@ -165,9 +189,11 @@ void UserInterface::CreateShader()
 	}
 }
 
+// ---------------------------------------------------------
 /// <summary>
 /// 描画関数
 /// </summary>
+// ---------------------------------------------------------
 void UserInterface::Render()
 {
 	//	デバイスコンテキストの取得

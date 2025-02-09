@@ -1,18 +1,21 @@
 //--------------------------------------------------------------------------------------
-// File: UserInterface.h
-//
-// ユーザーインターフェースクラス
+// 
+// 名前: UserInterface.cpp
+// 機能: UIを表示するクラス
+// 製作: 池田桜輔
 //
 //-------------------------------------------------------------------------------------
-
 #pragma once
-
+// インクルード
 #include "pch.h"
 #include "DeviceResources.h"
 #include "Game/UI/UIAnchor.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "Interface/IAction.h"
 
+/// <summary>
+/// UIの表示を行うクラス
+/// </summary>
 class UserInterface
 {
 	// ------------------------------
@@ -32,9 +35,14 @@ public:
 	// ウィンドウサイズ
 	static constexpr DirectX::SimpleMath::Vector2 WINDOW_SIZE = DirectX::SimpleMath::Vector2(1280.0f, 720.0f);
 
-	// ------------------------------
-	// 公開関数
-	// ------------------------------
+	// シェーダーのファイルパ
+	static constexpr wchar_t VS_PATH[] = L"Resources/cso/UIVS.cso";
+	static constexpr wchar_t PS_PATH[] = L"Resources/cso/UIPS.cso";
+	static constexpr wchar_t GS_PATH[] = L"Resources/cso/UIGS.cso";
+
+	// -----------------------------
+	// メンバ関数(公開)
+	// -----------------------------
 public:
 	// コンストラクタ
 	UserInterface();
@@ -53,9 +61,9 @@ public:
 	// 描画処理
 	void Render();
 
-	// ------------------------------
-	// 内部関数
-	// ------------------------------
+	// -----------------------------
+	// メンバ関数(非公開)
+	// -----------------------------
 private:
 	// テクスチャのサイズを取得
 	void GetTextureSize(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv);
@@ -69,7 +77,7 @@ private:
 	// 経過時間
 	float m_totalTime;
 	// 定数バッファ
-	Microsoft::WRL::ComPtr<ID3D11Buffer>	m_CBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_CBuffer;
 	// 入力レイアウト
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
 	// プリミティブバッチ
