@@ -1,23 +1,22 @@
 // -----------------------------------
-// ＊プリミティブによる円形の地面の描画
+// 名前:	Floor.cpp
+// 内容:	円形の地面の描画クラス
+// 作成:	池田桜輔
 // -----------------------------------
 
+// インクルード
 #include "pch.h"
 #include "Floor.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
+#include "Game/GameResources.h"
 
-// ------------------------------
-// 定数
-// ------------------------------
-const wchar_t* Floor::TEXTURE_PATH = L"Resources/Textures/floor.png";
-
-// -------------------------------------------------------------------^
+// --------------------------------------------------
 /// <summary>
 /// コンストラクタ
 /// </summary>
 /// <param name="device">デバイスのポインタ</param>
-/// // ---------------------------------------------------------------^
+/// --------------------------------------------------
 Floor::Floor()
 {
 	CommonResources* resources = CommonResources::GetInstance();
@@ -41,51 +40,52 @@ Floor::Floor()
 	// 共通ステートの作成
 	m_states = std::make_unique<DirectX::CommonStates>(device);
 
-	// テクスチャのロード
-	DirectX::CreateWICTextureFromFile(
-		device,
-		TEXTURE_PATH,
-		nullptr,
-		m_texture.GetAddressOf()
-	);
+	// テクスチャの読み込み
+	m_texture = GameResources::GetInstance()->GetTexture("floor");
 }
 
-// ----------------------^
+// --------------------------------------------------
 /// <summary>
 /// デストラクタ
 /// </summary>
-// ----------------------^
+/// --------------------------------------------------
 Floor::~Floor()
 {
 }
 
-// -------------------------------------------
+// --------------------------------------------------
 /// <summary>
 /// 円の頂点を生成する
 /// </summary>
 /// <param name="vertices">頂点配列</param>
 /// <param name="radius">円の半径</param>
 /// <param name="segments">円の分割数</param>
-/// -------------------------------------------
+/// --------------------------------------------------
 void Floor::GenerateCircleVertices(DirectX::VertexPositionTexture* vertices, float radius, int segments)
 {
 	// 円の頂点を生成
 	for (int i = 0; i < segments; ++i)
 	{
+		// 1周分の角度を求める
 		float angle = (2.0f * DirectX::XM_PI / segments) * i;
+		// 頂点座標を設定
 		vertices[i].position = DirectX::SimpleMath::Vector3(radius * cosf(angle), 0.0f, radius * sinf(angle));
-		vertices[i].textureCoordinate = DirectX::SimpleMath::Vector2(cosf(angle) * 0.5f + 0.5f, sinf(angle) * 0.5f + 0.5f);
+		// 正規化したテクスチャ座標を取得
+		float normalizedSin = sin(angle) * NORMALIZE + NORMALIZE;
+		float normalizedCos = cos(angle) * NORMALIZE + NORMALIZE;
+		// テクスチャ座標を設定
+		vertices[i].textureCoordinate = DirectX::SimpleMath::Vector2(normalizedCos, normalizedSin);
 	}
 }
 
-// ---------------------------------------------
+// --------------------------------------------------
 /// <summary>
 /// 床の描画を行う
 /// </summary>
 /// <param name="context">デバイスコンテキスト</param>
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">プロジェクション行列</param>
-// ---------------------------------------------
+/// --------------------------------------------------
 void Floor::Render(
 	DirectX::SimpleMath::Matrix view,
 	DirectX::SimpleMath::Matrix proj
@@ -108,7 +108,7 @@ void Floor::Render(
 	// カリングは左周り（反時計回り）
 	context->RSSetState(m_states->CullCounterClockwise());
 
-	// 不透明のみ描画する設定
+	// 完全不透明のみ描画する設定
 	m_BatchEffect->SetAlphaFunction(D3D11_COMPARISON_NOT_EQUAL);
 	m_BatchEffect->SetReferenceAlpha(0);
 	m_BatchEffect->SetWorld(DirectX::SimpleMath::Matrix::Identity);
@@ -118,7 +118,7 @@ void Floor::Render(
 	m_BatchEffect->Apply(context);
 	context->IASetInputLayout(m_inputLayout.Get());
 
-	//	サンプラーステートの設定
+	// サンプラーステートの設定
 	ID3D11SamplerState* sampler[1] = { states->LinearWrap() };
 	context->PSSetSamplers(0, 1, sampler);
 
@@ -134,11 +134,11 @@ void Floor::Render(
 	m_Batch->End();
 }
 
-// -----------------------------
+// --------------------------------------------------
 /// <summary>
 /// 終了処理
 /// </summary>
-// -----------------------------
+/// --------------------------------------------------
 void Floor::Finalize()
 {
 }

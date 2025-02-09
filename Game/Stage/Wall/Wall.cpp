@@ -1,23 +1,24 @@
 // -----------------------------------------------------------------
-// * 天球によって違和感が出ないようにする為のステージ
+// 
+// 名前: Wall.cpp
+// 内容: ステージの境界壁を描画するクラス
+// 作成: 池田桜輔
+// 
 // -----------------------------------------------------------------
+
+// インクルード
 #include "pch.h"
-#include <Model.h>
-#include <cassert>
-// ヘッダー
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
-#include "Libraries/MyLib/DebugString.h"
-#include "DeviceResources.h"
-#include "Game/CommonResources.h"
 #include "Game/GameResources.h"
 #include "Wall.h"
 #include "Game/Messenger/EventMessenger.h"
 
-// 固定値
-const float Wall::WALL_SCALE = 2.0f;
-
-// コンストラクタ
+// ---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+// ---------------------------------------------------------
 Wall::Wall()
 	:
 	m_worldMatrix{},
@@ -25,12 +26,20 @@ Wall::Wall()
 {
 }
 
-// デストラクタ
+// ---------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// ---------------------------------------------------------
 Wall::~Wall()
 {
 }
 
-// 初期化処理
+// ---------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+// ---------------------------------------------------------
 void Wall::Initialize()
 {
 	// モデルを取得する
@@ -40,7 +49,11 @@ void Wall::Initialize()
 	CreateCollision();
 }
 
-// 当たり判定の生成
+// ---------------------------------------------------------
+/// <summary>
+/// 当たり判定の生成
+/// </summary>
+// ---------------------------------------------------------
 void Wall::CreateCollision()
 {
 	m_collision = std::make_unique<DirectX::BoundingSphere>(DirectX::SimpleMath::Vector3::Zero, COLLISION_RADIUS);
@@ -69,7 +82,11 @@ void Wall::CreateCollision()
 	EventMessenger::Execute(EventList::AddSphereCollision, &overData);
 }
 
-// ワールド座標更新処理
+// ---------------------------------------------------------
+/// <summary>
+/// ワールド座標更新処理
+/// </summary>
+// ---------------------------------------------------------
 void Wall::UpdateWorldMatrix()
 {
 	using namespace DirectX::SimpleMath;
@@ -80,7 +97,11 @@ void Wall::UpdateWorldMatrix()
 	m_worldMatrix *= Matrix::CreateTranslation(WALL_POS);	// 移動
 }
 
-// 描画
+// ---------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
+// ---------------------------------------------------------
 void Wall::Render(
 	const DirectX::SimpleMath::Matrix& view,
 	const DirectX::SimpleMath::Matrix& projection)
@@ -95,11 +116,20 @@ void Wall::Render(
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 }
 
-// 終了処理
+// ---------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
+// ---------------------------------------------------------
 void Wall::Finalize()
 {
 }
 
+// ---------------------------------------------------------
+/// <summary>
+/// 衝突処理
+/// </summary>
+// ---------------------------------------------------------
 void Wall::HitAction(InterSectData data)
 {
 	UNREFERENCED_PARAMETER(data);

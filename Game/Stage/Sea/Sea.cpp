@@ -1,7 +1,11 @@
 // -------------------------------------
-// 海を表示する為のクラス
+// 
+// 名前;	Sea.h
+// 内容:	海の描画を担当するクラス
+// 作成:	池田桜輔
+// 
 // -------------------------------------
-
+// ヘッダーファイル
 #include "pch.h"
 #include "Sea.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
@@ -9,9 +13,11 @@
 #include "DeviceResources.h"
 #include "../../Data/GameData.h"
 
-// -----------------
-// コンストラクタ
-// -----------------
+// ---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+// ---------------------------------------------------------
 Sea::Sea()
 	:
 	m_totalTime{}
@@ -19,16 +25,20 @@ Sea::Sea()
 	Create();
 }
 
-// -----------------
-// デストラクタ
-// -----------------
+// ---------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// ---------------------------------------------------------
 Sea::~Sea()
 {
 }
 
-// -----------------
-// 生成
-// -----------------
+// ---------------------------------------------------------
+/// <summary>
+/// 生成を行う
+/// </summary>
+// ---------------------------------------------------------
 void Sea::Create()
 {
 	CommonResources* resources = CommonResources::GetInstance();
@@ -50,7 +60,7 @@ void Sea::Create()
 	// コモンステートの生成
 	m_states = std::make_unique<DirectX::CommonStates>(device);
 
-	//	シェーダーにデータを渡すためのコンスタントバッファ生成
+	// シェーダーにデータを渡すためのコンスタントバッファ生成
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
 	bd.Usage = D3D11_USAGE_DEFAULT;
@@ -65,16 +75,18 @@ void Sea::Create()
 	}
 }
 
-// -----------------
-// 描画
-// -----------------
+// ---------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
+// ---------------------------------------------------------
 void Sea::Render(DirectX::SimpleMath::Matrix view,
 	DirectX::SimpleMath::Matrix proj)
 {
 	CommonResources* resources = CommonResources::GetInstance();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 
-	//	頂点情報(板ポリゴンの４頂点の座標情報）
+	// 頂点情報(板ポリゴンの４頂点の座標情報）
 	DirectX::VertexPositionColorTexture vertex[4] =
 	{
 		DirectX::VertexPositionColorTexture(
@@ -99,7 +111,7 @@ void Sea::Render(DirectX::SimpleMath::Matrix view,
 	cbuff.easing = DirectX::SimpleMath::Vector4(0, 0, 0, 0);
 	cbuff.time = DirectX::SimpleMath::Vector4(m_totalTime, 0, 0, 0);
 
-	//	受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）
+	// 受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）
 	context->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);
 
 	// シェーダーにバッファを渡す
@@ -108,13 +120,13 @@ void Sea::Render(DirectX::SimpleMath::Matrix view,
 	context->GSSetConstantBuffers(0, 1, cb);
 	context->PSSetConstantBuffers(0, 1, cb);
 
-	//	半透明描画指定
+	// 半透明描画指定
 	ID3D11BlendState* blendstate = m_states->NonPremultiplied();
-	//	透明判定処理
+	// 透明判定処理
 	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
-	//	深度バッファに書き込み参照する
+	// 深度バッファに書き込み参照する
 	context->OMSetDepthStencilState(m_states->DepthDefault(), 0);
-	//	カリングは左周り
+	// カリングは左周り
 	context->RSSetState(m_states->CullCounterClockwise());
 	// シェーダーの登録
 	m_customShader->BeginSharder(context);

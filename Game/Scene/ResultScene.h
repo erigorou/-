@@ -14,13 +14,9 @@ class LoseResult;
 
 class ResultScene final : public IScene
 {
-	// 固定値
-public:
-
 	// -----------------------------
 	// メンバ関数(公開)
 	// -----------------------------
-
 public:
 	// コンストラクタ
 	ResultScene();

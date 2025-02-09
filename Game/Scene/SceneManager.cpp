@@ -11,7 +11,6 @@
 #include "PlayScene.h"
 #include "ResultScene.h"
 #include "Game/Data/GameData.h"
-#include "Game/CommonResources.h"
 #include "Game/GameResources.h"
 #include "../Sound/Sound.h"
 #include <cassert>

@@ -44,7 +44,6 @@ LoseResult::~LoseResult()
 // ---------------------------------------------
 void LoseResult::Initialize()
 {
-	auto device = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
 	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 
 	// スプライトバッチを作成する
