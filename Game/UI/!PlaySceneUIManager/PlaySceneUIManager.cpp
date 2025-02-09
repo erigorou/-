@@ -1,9 +1,11 @@
-// -----------------------------------------------
+// ----------------------------------------------
 //
-// プレイ中のUIの描画や生成を行う関数
+//  名前:  PlaySceneUIManager.h
+//  内容:  プレイシーンのUIを管理するクラス
+//  作成:  池田桜輔
 //
-// -----------------------------------------------
-
+// ----------------------------------------------
+// インクルード
 #include "pch.h"
 #include "Game/CommonResources.h"
 #include "PlaySceneUIManager.h"
@@ -17,41 +19,51 @@
 #include "../Warning/Warning.h"
 #include "../Operation/Operation.h"
 
-// ----------------------------
+// -----------------------------------------------------
 // 固定値
-// ----------------------------
+// -----------------------------------------------------
 
 // プレイヤーのHPの位置
 const DirectX::SimpleMath::Vector2 PlaySceneUIManager::PLAYER_HP_POSITION = DirectX::SimpleMath::Vector2(Screen::LEFT + 50.0f, 50.0f);
 
-// ----------------------------
-// コンストラクタ
-// ----------------------------
+// -----------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="playScene">プレイシーン</param>
+// -----------------------------------------------------
 PlaySceneUIManager::PlaySceneUIManager(PlayScene* playScene)
-	: m_playScene(playScene)
+	: 
+	m_playScene(playScene)
 {
-	// リソースの取得
-	m_commonResources = CommonResources::GetInstance();
-	m_pDR = m_commonResources->GetDeviceResources();
 }
 
-// ----------------------------
-// デストラクタ
-// ----------------------------
+// -----------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// -----------------------------------------------------
 PlaySceneUIManager::~PlaySceneUIManager()
 {
+	Finalize();
 }
 
-// ----------------------------
-// 初期化関数
-// ----------------------------
+// -----------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+// -----------------------------------------------------
 void PlaySceneUIManager::Initialize()
 {
+	// UIの生成
+	CreateUI();
 }
 
-// ----------------------------
-// UIの生成関数
-// ----------------------------
+// -----------------------------------------------------
+/// <summary>
+/// UIの生成処理
+/// </summary>
+// -----------------------------------------------------
 void PlaySceneUIManager::CreateUI()
 {
 	// プレイヤーHPの生成と初期化
@@ -61,60 +73,82 @@ void PlaySceneUIManager::CreateUI()
 	CreateOperation();
 }
 
-// ----------------------------
-// 更新関数
-// ----------------------------
+// -----------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// -----------------------------------------------------
 void PlaySceneUIManager::Update(float elapsedTime)
 {
+	// プレイヤーHPの更新
 	m_playerHP->Update();
 
-	if (m_enemyHP)	// エネミーが存在する場合
+	// エネミーが存在する場合
+	if (m_enemyHP)
 	{
+		// エネミーHPの更新
 		m_enemyHP->Update();
 	}
 
+	// 警告UIの更新
 	m_warning->Update(elapsedTime);
+	// 操作UIの更新
 	m_operation->Update(elapsedTime);
 }
 
-// ----------------------------
-// 描画関数
-// ----------------------------
+// -----------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
+// -----------------------------------------------------
 void PlaySceneUIManager::Render()
 {
+	// 警告UIの更新
 	m_warning->Render();
+	// プレイヤーHPの描画
 	m_playerHP->Render();
 
-	if (m_enemyHP)	// エネミーが存在する場合
+	if (m_enemyHP)
 	{
+		// 敵HPの描画
 		m_enemyHP->Render();
 	}
 
 	// チュートリアルでは描画しない
 	if (GameData::GetInstance()->GetSelectStage() <= 0) return;
 
+	// 操作UIの更新
 	m_operation->Render();
 }
 
-// ----------------------------
-// 終了関数
-// ----------------------------
+// -----------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
+// -----------------------------------------------------
 void PlaySceneUIManager::Finalize()
 {
+	// プレイヤーHPの終了処理
 	m_playerHP->Finalize();
 
-	if (m_enemyHP)	// エネミーが存在する場合
+	if (m_enemyHP)
 	{
+		// エネミーHPの終了処理
 		m_enemyHP->Finalize();
 	}
 
+	// 警告UIの終了処理
 	m_warning->Finalize();
+	// 操作UIの終了処理
 	m_operation->Finalize();
 }
 
-// ----------------------------
-// プレイヤーのHPUIの生成関数
-// ----------------------------
+// -----------------------------------------------------
+/// <summary>
+/// プレイヤーHPの生成処理
+/// </summary>
+// -----------------------------------------------------
 void PlaySceneUIManager::CreatePlayerHPUI()
 {
 	auto playerHP = m_playScene->GetPlayer()->GetPlayerHP();
@@ -126,9 +160,11 @@ void PlaySceneUIManager::CreatePlayerHPUI()
 	m_playerHP->Initialize();
 }
 
-// ----------------------------
-// エネミーのHPUIの生成関数
-// ----------------------------
+// -----------------------------------------------------
+/// <summary>
+/// 敵HPの生成処理
+/// </summary>
+// -----------------------------------------------------
 void PlaySceneUIManager::CreateEnemyHPUI()
 {
 	// エネミーのHPを取得
@@ -143,9 +179,11 @@ void PlaySceneUIManager::CreateEnemyHPUI()
 	}
 }
 
-// ----------------------------
-// 警告UIの生成関数
-// ----------------------------
+// -----------------------------------------------------
+/// <summary>
+/// 警告UIの生成処理
+/// </summary>
+// -----------------------------------------------------
 void PlaySceneUIManager::CreateWarning()
 {
 	// プレイヤーHPの取得
@@ -159,9 +197,11 @@ void PlaySceneUIManager::CreateWarning()
 	m_warning->Initialize();
 }
 
-// ----------------------------
-// 操作説明UIの生成関数
-// ----------------------------
+// -----------------------------------------------------
+/// <summary>
+/// 操作説明UIの生成処理
+/// </summary>
+// -----------------------------------------------------
 void PlaySceneUIManager::CreateOperation()
 {
 	// 操作説明UIの生成と初期化

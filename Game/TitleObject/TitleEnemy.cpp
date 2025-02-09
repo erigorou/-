@@ -23,6 +23,10 @@
 // ---------------------------------------------------------
 TitleEnemy::TitleEnemy()
 	:
+	m_model{},
+	m_titleIdling{},
+	m_titleMoving{},
+	m_states{},
 	m_currentState{},
 	m_position{},
 	m_angle{},

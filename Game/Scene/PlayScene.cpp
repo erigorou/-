@@ -101,15 +101,14 @@ void PlayScene::CreateObjects()
 	// プレイヤーを生成
 	m_player = Factory::CreatePlayer();
 
-	// UIマネージャーを生成
-	m_uiManager = Factory::CreateUIManager(this);
 	// 敵マネージャー
 	m_enemyManager = Factory::CreateEnemyManager();
 	// クエストマネージャー
 	m_questManager = Factory::CreateQuestManager(this);
 
-	// UIの生成
-	m_uiManager->CreateUI();
+	// UIマネージャーを生成
+	m_uiManager = Factory::CreateUIManager(this);
+
 	// 観察者リストをソートする
 	KeyboardMessenger::SortObserverList();
 	// キー範囲リストを生成する

@@ -46,7 +46,7 @@ void Operation::Initialize()
 		m_operateUIs.push_back(std::move(operateUI));
 	}
 
-	// キーボードを登録
+	// キーボードイベントに使用キーを登録
 	KeyboardMessenger::Attach(DirectX::Keyboard::Keys::X, m_operateUIs[0].get(), KeyboardMessenger::KeyPressType::DOWN);
 	KeyboardMessenger::Attach(DirectX::Keyboard::Keys::LeftShift, m_operateUIs[1].get(), KeyboardMessenger::KeyPressType::DOWN);
 	KeyboardMessenger::Attach(DirectX::Keyboard::Keys::Up, m_operateUIs[2].get(), KeyboardMessenger::KeyPressType::DOWN);

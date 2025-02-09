@@ -1,8 +1,15 @@
-#pragma once
+// ----------------------------------------------
+//
+//  名前:  PlaySceneUIManager.h
+//  内容:  プレイシーンのUIを管理するクラス
+//  作成:  池田桜輔
+//
+// ----------------------------------------------
 
 #ifndef PLAYSCENE_UI_MANAGER
 #define PLAYSCENE_UI_MANAGER
-
+#pragma once
+// インクルード
 #include "pch.h"
 
 // 前方宣言
@@ -14,44 +21,62 @@ class EnemyHPUI;
 class Warning;
 class Operation;
 
-class CommonResources;
-
-namespace DX
-{
-	class DeviceResources;
-}
 
 class PlaySceneUIManager
 {
+	// -----------------------------
+	// 固定値
+	// -----------------------------
 public:
-	// ====================================================================================
-	static const DirectX::SimpleMath::Vector2 PLAYER_HP_POSITION; // プレイヤーのHPUIの座標
+	// プレイヤーのHPUIの座標
+	static const DirectX::SimpleMath::Vector2 PLAYER_HP_POSITION;
 
-	// ====================================================================================
+	// -----------------------------
+	// メンバ関数(公開)
+	// -----------------------------
+public:
+	// コンストラクタ
+	PlaySceneUIManager(PlayScene* playScene);
+	// デストラクタ
+	~PlaySceneUIManager();
+	// 初期化関数
+	void Initialize();
+	// 更新関数
+	void Update(float elapsedTime);
+	// 描画関数
+	void Render();
+	// 終了関数
+	void Finalize();
 
-	PlaySceneUIManager(PlayScene* playScene);   // コンストラクタ
-	~PlaySceneUIManager();                      // デストラクタ
-
-	void Initialize();  		// 初期化関数
-	void CreateUI();			// UIの生成関数
-	void CreatePlayerHPUI();	// プレイヤーのHPUIの生成関数
-	void CreateEnemyHPUI();		// エネミーのHPUIの生成関数
-	void CreateWarning();		// 警告UIの生成関数
-	void CreateOperation();		// 操作説明UIの生成関数
-
-	void Update(float elapsedTime);	// 更新関数
-	void Render();						// 描画関数
-	void Finalize();						// 終了関数
-
+	// -----------------------------
+	// メンバ関数(非公開)
+	// -----------------------------
 private:
-	PlayScene* m_playScene;				// プレイシーン
-	DX::DeviceResources* m_pDR;			// デバイスリソース
-	CommonResources* m_commonResources;	// 共通リソース
+	// UIの生成関数
+	void CreateUI();
+	// プレイヤーのHPUIの生成関数
+	void CreatePlayerHPUI();
+	// エネミーのHPUIの生成関数
+	void CreateEnemyHPUI();
+	// 警告UIの生成関数
+	void CreateWarning();
+	// 操作説明UIの生成関数
+	void CreateOperation();
 
-	std::unique_ptr<PlayerHPUI>	m_playerHP;		// プレイヤーのHP
-	std::unique_ptr<EnemyHPUI>	m_enemyHP;		// エネミーのHP
-	std::unique_ptr<Warning>	m_warning;		// 警告UI
-	std::unique_ptr<Operation>	m_operation;	// 操作説明UI
+	// -----------------------------
+	// メンバ変数
+	// -----------------------------
+private:
+	// プレイシーン
+	PlayScene* m_playScene;
+	// プレイヤーのHP
+	std::unique_ptr<PlayerHPUI> m_playerHP;
+	// エネミーのHP
+	std::unique_ptr<EnemyHPUI> m_enemyHP;
+	// 警告UI
+	std::unique_ptr<Warning> m_warning;
+	// 操作説明UI
+	std::unique_ptr<Operation> m_operation;
 };
 
 #endif
