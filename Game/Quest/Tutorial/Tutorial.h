@@ -21,6 +21,12 @@ public:
 	static constexpr int WIDTH = 1000;
 	static constexpr int HEIGHT = 100;
 
+	// テクスチャの初期サイズ
+	static constexpr DirectX::SimpleMath::Vector2 INIT_SIZE = { 1.0f, 1.0f };
+
+	// 初期のα値
+	static constexpr float INIT_ALPHA = 1.0f;
+
 	// 画面サイズの大きさ
 	static constexpr float WINDOW_WIDTH = 1280;
 	static constexpr float WINDOW_HEIGHT = 720;

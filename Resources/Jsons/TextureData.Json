@@ -14,5 +14,7 @@
   "playerHPFrame": "HPFrame.png",
   "enemyHP": "EnemyHP.png",
   "enemyHPBack": "EnemyHPBack.png",
-  "enemyHPFrame": "EnemyHPFrame.png"
+  "enemyHPFrame": "EnemyHPFrame.png",
+  "win": "UI/Win.png",
+  "lose": "UI/Lose.png"
 }

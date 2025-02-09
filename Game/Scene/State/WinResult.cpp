@@ -1,25 +1,20 @@
-/*
-	@file	WinResultScene.cpp
-	@brief	リザルトシーンクラス
-*/
+// ------------------------------------------------------------------------------
+// 名前:	WinResult.cpp
+// 内容:	敗北時のリザルトシーンクラス
+// 制作:	池田桜輔
+// ------------------------------------------------------------------------------
 #include "pch.h"
 #include "WinResult.h"
-#include "Game/Screen.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
-#include "Libraries/MyLib/MemoryLeakDetector.h"
-#include "Libraries/MyLib/InputManager.h"
 #include "Libraries/MyLib/Texture.h"
-#include <cassert>
-
-using namespace DirectX;
-using namespace DirectX::SimpleMath;
-
-const wchar_t* WinResult::TEXTURE_PATH = L"Resources/Textures/UI/Win.png";
+#include "Game/GameResources.h"
 
 //---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+// ---------------------------------------------------------
 WinResult::WinResult()
 	:
 	m_spriteBatch{},
@@ -27,35 +22,32 @@ WinResult::WinResult()
 	m_texCenter{},
 	m_isChangeScene{}
 {
-	m_commonResources = CommonResources::GetInstance();
 }
 
-//---------------------------------------------------------
-// デストラクタ
-//---------------------------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// ---------------------------------------------------------
 WinResult::~WinResult()
 {
 	// do nothing.
 }
 
-//---------------------------------------------------------
-// 初期化する
-//---------------------------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 初期化処理を行う
+/// </summary>
+// ---------------------------------------------------------
 void WinResult::Initialize()
 {
-	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
-	auto context = m_commonResources->GetDeviceResources()->GetD3DDeviceContext();
+	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 
 	// スプライトバッチを作成する
 	m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
 
 	// テクスチャの作成およびデータの取得
-	mylib::Texture::LoadTexture
-	(
-		device,
-		m_texture,
-		TEXTURE_PATH
-	);
+	m_texture = GameResources::GetInstance()->GetTexture("win");
 
 	// テクスチャの大きさ
 	DirectX::SimpleMath::Vector2 texSize;
@@ -72,9 +64,12 @@ void WinResult::Initialize()
 	m_isChangeScene = false;
 }
 
-//---------------------------------------------------------
-// 更新する
-//---------------------------------------------------------
+// ---------------------------------------------------------	
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// ---------------------------------------------------------
 void WinResult::Update(float elapsedTime)
 {
 	// 宣言をしたが、実際は使用していない変数
@@ -82,14 +77,16 @@ void WinResult::Update(float elapsedTime)
 }
 
 //---------------------------------------------------------
-// 描画する
-//---------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
+// ---------------------------------------------------------
 void WinResult::Render()
 {
-	auto states = m_commonResources->GetCommonStates();
+	auto states = CommonResources::GetInstance()->GetCommonStates();
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
-	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
+	m_spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, states->NonPremultiplied());
 
 	DirectX::SimpleMath::Vector2 texPos{ 0.0f, 200.0f };
 
@@ -100,28 +97,28 @@ void WinResult::Render()
 		texPos,
 		m_texture,
 		m_texCenter,
-		Vector2{ 1.0f, 1.0f },
+		DirectX::SimpleMath::Vector2{ 1.0f, 1.0f },
 		0.0f
 	);
-
-#ifdef _DEBUG
-#endif // _DEBUG
 
 	// スプライトバッチの終わり
 	m_spriteBatch->End();
 }
 
 //---------------------------------------------------------
-// 後始末する
-//---------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
+// ---------------------------------------------------------
 void WinResult::Finalize()
 {
-	// do nothing.
 }
 
-//---------------------------------------------------------
-// 次のシーンIDを取得する
-//---------------------------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 次のシーンIDを取得する
+/// </summary>
+// ---------------------------------------------------------
 IScene::SceneID WinResult::GetNextSceneID() const
 {
 	// シーン変更がある場合

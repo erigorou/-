@@ -155,8 +155,8 @@ void BossDashAttacking::DashAction()
 	// 現在の時間に基づいてサイン波で加速度を計算
 	float easing = (m_totalSeconds - CHARGE_TIME) / (DASH_TIME - CHARGE_TIME);
 
-	// 座標の更新 *
-	float accelerationFactor = sin(static_cast<float>(easing * M_PI)); // サイン波で速度を変化
+	// 座標の更新
+	float accelerationFactor = sin(static_cast<float>(easing * M_PI));
 
 	// 敵の向きに基づいて前方向を計算
 	Vector3 position = m_boss->GetPosition();

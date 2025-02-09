@@ -37,7 +37,6 @@ public:
 public:
 	// 現在のクエスト番号を取得
 	int GetCurrentQuestNo() const { return m_currentQuestNo; }
-
 	// チュートリアルを取得
 	Tutorial* GetTutorial() { return m_tutorial.get(); }
 
@@ -57,7 +56,6 @@ public:
 	void DrawQuest();
 	// クエストの終了
 	void Finalize();
-
 	// クエストを一つ更新する
 	void ChangeNextQuest();
 
@@ -67,28 +65,22 @@ public:
 private:
 	// クエストの更新
 	void UpdateQuest();
-
 	// クエストの作成
 	void CreateQuest(int questIndex);
-
 	// クエストリストの作成 1st
 	void CreateQuestList_1st();
 	// クエストリストの作成 2nd
 	void CreateQuestList_2nd();
 	// クエストリストの作成 3rd
 	void CreateQuestList_3rd();
-
 	// クエストのテクスチャを読み込む
 	void AddQuestTexture();
 	// チュートリアルのテクスチャを読み込む
 	void AddTutorialTexture();
-
 	// チュートリアルの作成
 	void CreateTutorial();
-
 	// クエストデータの消去
 	void ClearQuestData();
-
 	// クエストのクリアを確認
 	void IsQuestClear();
 
@@ -102,10 +94,12 @@ private:
 
 	// プレイシーン
 	PlayScene* m_playScene;
-
-	std::vector<IQuestChecker*>										m_questList;	// クエストのリスト
-	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>>	m_textureList;	// テクスチャのリスト
-	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>>	m_tutorialTextureList;	// チュートリアルのリスト
+	// クエストのリスト
+	std::vector<IQuestChecker*> m_questList;
+	// テクスチャのリスト
+	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> m_textureList;
+	// チュートリアルのリスト
+	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> m_tutorialTextureList;
 
 	// クエストの描画
 	std::unique_ptr<QuestRenderer> m_renderer;

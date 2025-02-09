@@ -62,7 +62,7 @@ private:
 	// インスタンス
 	static std::unique_ptr<GameData> s_data;
 	// 戦闘結果
-	BATTLE_RESULT m_battleResult;
+	BATTLE_RESULT m_battleResult = BATTLE_RESULT::WIN;
 	// 画面のフェード量
 	float m_fadeValue;
 	// 経過時間

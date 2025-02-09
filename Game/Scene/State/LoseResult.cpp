@@ -1,25 +1,23 @@
-/*
-	@file	LoseResultScene.cpp
-	@brief	リザルトシーンクラス
-*/
+// ------------------------------------------------------------------------------
+// 名前:	LoseResult.cpp
+// 内容:	敗北時のリザルトシーンクラス
+// 制作:	池田桜輔
+// ------------------------------------------------------------------------------
+
 #include "pch.h"
 #include "LoseResult.h"
-#include "Game/Screen.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
-#include "Libraries/MyLib/MemoryLeakDetector.h"
-#include "Libraries/MyLib/InputManager.h"
 #include "Libraries/MyLib/Texture.h"
-#include <cassert>
-
-using namespace DirectX;
-using namespace DirectX::SimpleMath;
+#include "Game/GameResources.h"
 
 const wchar_t* LoseResult::TEXTURE_PATH = L"Resources/Textures/UI/Lose.png";
 
-//---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
+// ---------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+// ---------------------------------------------
 LoseResult::LoseResult()
 	:
 	m_spriteBatch{},
@@ -27,35 +25,33 @@ LoseResult::LoseResult()
 	m_texCenter{},
 	m_isChangeScene{}
 {
-	m_commonResources = CommonResources::GetInstance();
 }
 
-//---------------------------------------------------------
-// デストラクタ
-//---------------------------------------------------------
+// ---------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// ---------------------------------------------
 LoseResult::~LoseResult()
 {
-	// do nothing.
+	Finalize();
 }
 
-//---------------------------------------------------------
-// 初期化する
-//---------------------------------------------------------
+// ---------------------------------------------
+/// <summary>
+/// 初期化する
+/// </summary>
+// ---------------------------------------------
 void LoseResult::Initialize()
 {
-	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
-	auto context = m_commonResources->GetDeviceResources()->GetD3DDeviceContext();
+	auto device = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
+	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 
 	// スプライトバッチを作成する
 	m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
 
-	// テクスチャの作成およびデータの取得
-	mylib::Texture::LoadTexture
-	(
-		device,
-		m_texture,
-		TEXTURE_PATH
-	);
+	// テクスチャを取得
+	m_texture = GameResources::GetInstance()->GetTexture("lose");
 
 	// テクスチャの大きさ
 	DirectX::SimpleMath::Vector2 texSize;
@@ -72,24 +68,29 @@ void LoseResult::Initialize()
 	m_isChangeScene = false;
 }
 
-//---------------------------------------------------------
-// 更新する
-//---------------------------------------------------------
+// ---------------------------------------------
+/// <summary>
+/// 更新する
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// ---------------------------------------------
 void LoseResult::Update(float elapsedTime)
 {
-	// 宣言をしたが、実際は使用していない変数
 	UNREFERENCED_PARAMETER(elapsedTime);
 }
 
-//---------------------------------------------------------
-// 描画する
-//---------------------------------------------------------
+// ---------------------------------------------
+/// <summary>
+/// 描画する
+/// </summary>
+// ---------------------------------------------
+
 void LoseResult::Render()
 {
-	auto states = m_commonResources->GetCommonStates();
+	auto states = CommonResources::GetInstance()->GetCommonStates();
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
-	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
+	m_spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, states->NonPremultiplied());
 
 	DirectX::SimpleMath::Vector2 texPos{ 0.0f, 200.0f };
 
@@ -100,28 +101,29 @@ void LoseResult::Render()
 		texPos,
 		m_texture,
 		m_texCenter,
-		Vector2{ 1.0f, 1.0f },
+		DirectX::SimpleMath::Vector2{ 1.0f, 1.0f },
 		0.0f
 	);
-
-#ifdef _DEBUG
-#endif // _DEBUG
 
 	// スプライトバッチの終わり
 	m_spriteBatch->End();
 }
 
-//---------------------------------------------------------
-// 後始末する
-//---------------------------------------------------------
+// ---------------------------------------------
+/// <summary>
+/// 後始末する
+/// </summary>
+// ---------------------------------------------
 void LoseResult::Finalize()
 {
-	// do nothing.
 }
 
-//---------------------------------------------------------
-// 次のシーンIDを取得する
-//---------------------------------------------------------
+// ---------------------------------------------
+/// <summary>
+/// 次のシーンIDを取得する
+/// </summary>
+/// <returns>次のシーンID</returns>
+// ---------------------------------------------
 IScene::SceneID LoseResult::GetNextSceneID() const
 {
 	// シーン変更がある場合

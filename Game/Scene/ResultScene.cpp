@@ -1,7 +1,9 @@
-/*
-	@file	ResultScene.cpp
-	@brief	リザルトシーンクラス
-*/
+// ------------------------------------------------------------------------------
+// 名前:	Result.cpp
+// 内容:	リザルトシーンクラス
+// 制作:	池田桜輔
+// ------------------------------------------------------------------------------
+// インクルード
 #include "pch.h"
 #include "ResultScene.h"
 #include "Game/CommonResources.h"
@@ -9,39 +11,41 @@
 #include "Libraries/MyLib/InputManager.h"
 #include "Libraries/MyLib/Texture.h"
 #include "../Sound/Sound.h"
-
 #include "State/WinResult.h"
 #include "State/LoseResult.h"
 
-//---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
+// ---------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+// ---------------------------------------------
 ResultScene::ResultScene()
 	: m_spriteBatch{}
 	, m_texture{}
 	, m_texCenter{}
 	, m_isChangeScene{}
-	, m_commonResources{}
 	, m_winResult{}
 
 {
-	m_commonResources = CommonResources::GetInstance();
 }
 
-//---------------------------------------------------------
-// デストラクタ
-//---------------------------------------------------------
+// ---------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// ---------------------------------------------
 ResultScene::~ResultScene()
 {
-	// do nothing.
 }
 
-//---------------------------------------------------------
-// 初期化する
-//---------------------------------------------------------
+// ---------------------------------------------
+/// <summary>
+/// 初期化する
+/// </summary>
+// ---------------------------------------------
 void ResultScene::Initialize()
 {
-	auto context = m_commonResources->GetDeviceResources()->GetD3DDeviceContext();
+	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 
 	// スプライトバッチを作成する
 	m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
@@ -53,9 +57,11 @@ void ResultScene::Initialize()
 	m_isChangeScene = false;
 }
 
-//---------------------------------------------------------
-// テクスチャ関連
-//---------------------------------------------------------
+// ---------------------------------------------
+/// <summary>
+/// テクスチャを作成し、データを取得する
+/// </summary>
+// ---------------------------------------------
 void ResultScene::CreateTextures()
 {
 	// デバイスの取得
@@ -79,9 +85,11 @@ void ResultScene::CreateTextures()
 	);
 }
 
-//---------------------------------------------------------
-// オブジェクトの生成
-//---------------------------------------------------------
+// ---------------------------------------------
+/// <summary>
+/// オブジェクトを生成する
+/// </summary>
+// ---------------------------------------------
 void ResultScene::CreateObjects()
 {
 	// 勝利リザルトの生成
@@ -109,21 +117,24 @@ void ResultScene::CreateObjects()
 
 		// それ以外
 	default:
-		assert(false && "GameDataのVATTLE_RESULTに正しい結果が入ってません。PlaySceneのUpdateのところの判定のとこちゃんと見てん。");
+		assert(false && "GameDataのVATTLE_RESULTに正しい結果が入ってません。");
 		break;
 	}
 }
 
-//---------------------------------------------------------
-// 更新する
-//---------------------------------------------------------
+// ---------------------------------------------
+/// <summary>
+/// シーンを更新する
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// ---------------------------------------------
 void ResultScene::Update(float elapsedTime)
 {
 	// 現在のステートを更新する
 	m_currentState->Update(elapsedTime);
 
 	// キーボードステートトラッカーを取得する
-	const auto& kbTracker = m_commonResources->GetInputManager()->GetKeyboardTracker();
+	const auto& kbTracker = CommonResources::GetInstance()->GetInputManager()->GetKeyboardTracker();
 
 	// スペースキーが押されたら
 	if (kbTracker->pressed.Space)
@@ -132,18 +143,21 @@ void ResultScene::Update(float elapsedTime)
 	}
 }
 
-//---------------------------------------------------------
-// 描画する
-//---------------------------------------------------------
+// ---------------------------------------------
+/// <summary>
+/// 描画する
+/// </summary>
+// ---------------------------------------------
 void ResultScene::Render()
 {
-	auto states = m_commonResources->GetCommonStates();
+	// コモンステートを取得する
+	auto states = CommonResources::GetInstance()->GetCommonStates();
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
 	m_spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, states->NonPremultiplied());
 
 	// TRIDENTロゴの描画位置を決める
-	RECT rect{ m_commonResources->GetDeviceResources()->GetOutputSize() };
+	RECT rect{ CommonResources::GetInstance()->GetDeviceResources()->GetOutputSize() };
 	// 画像の中心を計算する
 	DirectX::SimpleMath::Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
 
@@ -166,17 +180,21 @@ void ResultScene::Render()
 	m_currentState->Render();
 }
 
-//---------------------------------------------------------
-// 後始末する
-//---------------------------------------------------------
+// ---------------------------------------------
+/// <summary>
+/// 後始末する
+/// </summary>
+// ---------------------------------------------
 void ResultScene::Finalize()
 {
-	// do nothing.
 }
 
-//---------------------------------------------------------
-// 次のシーンIDを取得する
-//---------------------------------------------------------
+// ---------------------------------------------
+/// <summary>
+/// 次のシーンIDを取得する
+/// </summary>
+/// <returns>次のシーンID</returns>
+// ---------------------------------------------
 IScene::SceneID ResultScene::GetNextSceneID() const
 {
 	// シーン変更がある場合

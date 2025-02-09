@@ -1,8 +1,10 @@
-/*
-	@file	SceneManager.h
-	@brief	シーンマネージャクラス
-*/
+// --------------------------------------------------
+// 名前:	SceneManager.h
+// 内容:	シーンを管理するクラス
+// 作成:	池田桜輔
+// --------------------------------------------------
 #pragma once
+// インクルード
 #include "IScene.h"
 
 // 前方宣言
@@ -13,30 +15,54 @@ class Fade;
 
 class SceneManager
 {
+	// -----------------------------
+	// メンバ関数(公開)
+	// -----------------------------
 public:
+	// コンストラクタ
 	SceneManager();
+	// デストラクタ
 	~SceneManager();
 
+	// 初期化処理
 	void Initialize();
+	// 更新処理
 	void Update(float elapsedTime);
+	// 描画処理
 	void Render();
+	// 終了処理
 	void Finalize();
-
+	// シーン変更可能にする
 	void SetCanChangeScene() { m_canChangeScene = true; }
 
+	// -----------------------------
+	// メンバ関数(非公開)
+	// -----------------------------
 private:
+	// シーンを変更する
 	void ChangeScene(IScene::SceneID sceneID);
+	// シーンを作成する
 	void CreateScene(IScene::SceneID sceneID);
+	// シーンを削除する
 	void DeleteScene();
 
+	// -----------------------------
+	// メンバ変数
+	// -----------------------------
+private:
+	// 現在のシーン
 	std::unique_ptr<IScene> m_currentScene;
-	std::unique_ptr<Fade>	m_fade;
-
-	CommonResources* m_commonResources;
+	// フェード
+	std::unique_ptr<Fade> m_fade;
+	// ゲームリソース
 	GameResources* m_gameResources;
+	// サウンド管理
 	Sound* m_sound;
 
-	IScene::SceneID m_nextSceneID;		// 次のシーンID
-	bool			m_canChangeScene;	// シーン変更可能かどうか
-	bool			m_isFade;			// フェード中かどうか
+	// 次のシーンID
+	IScene::SceneID m_nextSceneID;
+	// シーン変更可能かどうか
+	bool m_canChangeScene;
+	// フェード中かどうか
+	bool m_isFade;
 };

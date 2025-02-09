@@ -14,7 +14,6 @@ public:
 	static const wchar_t* TEXTURE_PATH;	// テクスチャのパス
 
 private:
-	CommonResources* m_commonResources;								// 共通リソース
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;			// スプライトバッチ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;		// テクスチャ
 	DirectX::SimpleMath::Vector2 m_texCenter;						// テクスチャの中心座標

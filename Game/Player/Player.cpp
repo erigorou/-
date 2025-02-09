@@ -18,6 +18,8 @@
 #include "Game/Factory/Factory.h"
 #include "../Data/HPSystem.h"
 
+#include "Libraries/MyLib/DebugString.h"
+
 // ---------------------------------------------------------
 /// <summary>
 /// コンストラクタ

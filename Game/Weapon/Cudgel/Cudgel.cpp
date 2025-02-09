@@ -10,24 +10,19 @@
 // ƒwƒbƒ_[
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
-#include "Libraries/MyLib/DebugString.h"
-#include "DeviceResources.h"
-#include "Game/GameResources.h"
 #include "Game/GameResources.h"
 #include "Libraries/MyLib/Collision.h"
 #include "Game/Messenger/EventMessenger.h"
 
 #include "Game/Boss/Boss.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
-#include "Game/Boss/Boss.h"
-
 #include "header/Cudgel_Idling.h"		// ‘Ò‹@
 #include "header/Cudgel_Attacking.h"	// UŒ‚
 #include "header/Cudgel_Sweeping.h"		// “ã‚¬•¥‚¢
 
-const float Cudgel::CUDGEL_SCALE = Boss::BOSS_SCALE * 1.2f;						// ‹à–_‚ÌŠg‘å—¦
+const float Cudgel::CUDGEL_SCALE = Boss::BOSS_SCALE * 1.5f;						// ‹à–_‚ÌŠg‘å—¦
 const DirectX::SimpleMath::Vector3 Cudgel::DIRECTION_ENEMY = { 8.0f, 5.0f, 0.0f };	// ‚¿è‚Ì‹——£i“G‚Æ”äŠrj
-const DirectX::SimpleMath::Vector3 Cudgel::CUDGEL_LENGTH = { 0.0f, 35.0f, 0.0f };	// ‹à–_‚Ì’·‚³iˆê”Ô‰º‚©‚çj
+const DirectX::SimpleMath::Vector3 Cudgel::CUDGEL_LENGTH = { 0.0f, 50.0f, 0.0f };	// ‹à–_‚Ì’·‚³iˆê”Ô‰º‚©‚çj
 const DirectX::SimpleMath::Vector3 Cudgel::CUDGEL_HADLE_POS = { 0.0f, 10.0f, 0.0f };	// ‹à–_‚Ìæ‚Áè‚Ì•”•ªiˆê”Ôãj
 
 // --------------------------------

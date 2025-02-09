@@ -108,9 +108,6 @@
     <ClInclude Include="Game\Scene\IScene.h">
       <Filter>Game\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Scene\TitleScene.h">
-      <Filter>Game\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Game\Scene\PlayScene.h">
       <Filter>Game\Scene</Filter>
     </ClInclude>
@@ -151,7 +148,6 @@
     <ClInclude Include="Game\Weapon\Sword\Header\SwordIdling.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\SwordAttacking1.h" />
     <ClInclude Include="Game\Sound\Sound.h" />
-    <ClInclude Include="Game\Scene\ResultScene.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Cudgel.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Idling.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Attacking.h" />
@@ -192,10 +188,8 @@
     <ClInclude Include="Game\TitleObject\TitleEnemy.h" />
     <ClInclude Include="Game\TitleObject\EnemyTitleIdling.h" />
     <ClInclude Include="Interface\IResultScene.h" />
-    <ClInclude Include="Game\Scene\State\WinResult.h" />
     <ClInclude Include="Game\Data\GameData.h" />
     <ClInclude Include="Libraries\MyLib\Texture.h" />
-    <ClInclude Include="Game\Scene\State\LoseResult.h" />
     <ClInclude Include="Game\UI\Header\Operation.h" />
     <ClInclude Include="Game\UI\Header\OperateUI.h" />
     <ClInclude Include="Game\UI\UI.h" />
@@ -224,7 +218,7 @@
     <ClInclude Include="Game\UI\UIAnchor.h" />
     <ClInclude Include="Game\Goblin\State\Header\GoblinDead.h" />
     <ClInclude Include="Game\Boss\States\Header\BossDead.h" />
-    <ClInclude Include="Game\Scene\QuestSelectScene.h" />
+    <ClInclude Include="Game\Scene\TitleScene.h" />
     <ClInclude Include="Game\Quest\QuestList\TutorialClear.h" />
     <ClInclude Include="Game\Goblin\State\Header\GoblinTutorial.h" />
     <ClInclude Include="Game\Quest\TutorialList\TutorialAttackEnd.h" />
@@ -243,6 +237,9 @@
     <ClInclude Include="Game\Weapon\WeaponState.h" />
     <ClInclude Include="Game\Messenger\EventList.h" />
     <ClInclude Include="Game\Camera\State\ClearCameraState.h" />
+    <ClInclude Include="Game\Scene\State\LoseResult.h" />
+    <ClInclude Include="Game\Scene\State\WinResult.h" />
+    <ClInclude Include="Game\Scene\ResultScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -265,9 +262,6 @@
     </ClCompile>
     <ClCompile Include="Libraries\MyLib\InputManager.cpp">
       <Filter>Libraries\MyLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Scene\TitleScene.cpp">
-      <Filter>Game\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Game\Scene\PlayScene.cpp">
       <Filter>Game\Scene</Filter>
@@ -304,7 +298,6 @@
     <ClCompile Include="Game\Weapon\Sword\Source\SwordIdling.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Source\SwordAttacking1.cpp" />
     <ClCompile Include="Game\Sound\Sound.cpp" />
-    <ClCompile Include="Game\Scene\ResultScene.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Idling.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Cudgel.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Attacking.cpp" />
@@ -334,10 +327,8 @@
     <ClCompile Include="Game\TitleObject\EnemyTitleMoving.cpp" />
     <ClCompile Include="Game\TitleObject\TitleEnemy.cpp" />
     <ClCompile Include="Game\TitleObject\EnemyTitleIdling.cpp" />
-    <ClCompile Include="Game\Scene\State\WinResult.cpp" />
     <ClCompile Include="Game\Data\GameData.cpp" />
     <ClCompile Include="Libraries\MyLib\Texture.cpp" />
-    <ClCompile Include="Game\Scene\State\LoseResult.cpp" />
     <ClCompile Include="Game\UI\Source\Operation.cpp" />
     <ClCompile Include="Game\UI\Source\OperateUI.cpp" />
     <ClCompile Include="Game\UI\UI.cpp" />
@@ -357,7 +348,7 @@
     <ClCompile Include="Game\Quest\Tutorial\Tutorial.cpp" />
     <ClCompile Include="Game\Goblin\State\Score\GoblinDead.cpp" />
     <ClCompile Include="Game\Boss\States\Source\BossDead.cpp" />
-    <ClCompile Include="Game\Scene\QuestSelectScene.cpp" />
+    <ClCompile Include="Game\Scene\TitleScene.cpp" />
     <ClCompile Include="Game\Goblin\State\Score\GoblinTutorial.cpp" />
     <ClCompile Include="Game\GameResources.cpp" />
     <ClCompile Include="Game\Messenger\EventMessenger.cpp" />
@@ -366,6 +357,9 @@
     <ClCompile Include="Effects\EnemyEffect\EnemyEffect.cpp" />
     <ClCompile Include="Game\Camera\State\ClearCameraState.cpp" />
     <ClCompile Include="Game\Quest\QuestList\QuestChangeTarget.h" />
+    <ClCompile Include="Game\Scene\State\LoseResult.cpp" />
+    <ClCompile Include="Game\Scene\State\WinResult.cpp" />
+    <ClCompile Include="Game\Scene\ResultScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

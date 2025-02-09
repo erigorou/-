@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "GameResources.h"
-#include <cassert>
 #include <fstream>
 #include "nlohmann/json.hpp"
 #include "CommonResources.h"

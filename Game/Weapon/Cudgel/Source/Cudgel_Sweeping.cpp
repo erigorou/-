@@ -137,6 +137,10 @@ void Cudgel_Sweeping::AttackAnimation()
 	// 攻撃モーション
 	if (Math::InTime(WINDUP_TIME, m_totalSeconds, ATTACK_TIME))
 	{
+		// 攻撃可能を通知
+		bool attack = true;
+		EventMessenger::Execute(EventList::PlayerCanDamageCudgel, &attack);
+
 		// 秒数の正規化
 		float easing = (m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME);
 		// イージングを掛けた回転を計算
@@ -160,6 +164,10 @@ void Cudgel_Sweeping::EndAnimation()
 {
 	if (m_totalSeconds > END_TIME)
 	{
+		// 攻撃不可を通知
+		bool attack = false;
+		EventMessenger::Execute(EventList::PlayerCanDamageCudgel, &attack);
+
 		// ステートを変更
 		CudgelState state = CudgelState::Idle;
 		EventMessenger::Execute(EventList::ChangeCudgelState, &state);

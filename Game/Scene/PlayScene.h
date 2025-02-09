@@ -1,36 +1,35 @@
-/*
-	@file	PlayScene.h
-	@brief	プレイシーンクラス
-*/
+// ------------------------------------------------------------------------------
+// 名前:	PlayScene
+// 内容:	プレイシーンのオブジェクトを生成し、更新、描画を行う
+// 制作:	池田桜輔
+// ------------------------------------------------------------------------------
 #pragma once
+// インクルード
 #include "IScene.h"
-#include <unordered_map>
 #include "Game/Camera/Camera.h"
-#include "Interface/IObject.h"
-
 #include "Libraries/MyLib/SkySphere.h"
 #include "Effects/Particle.h"
 
-// === データ処理系 ==============
+// 前方宣言
 class CommonResources;
 class Sound;
 class HitStop;
-// === プレイヤー関連 ============
 class Player;
 class Sword;
 class Boss;
 class Cudgel;
 class Goblin;
-// === ステージ関連 =============
 class Floor;
 class Sea;
 class Wall;
-// マネージャー ========================
 class PlaySceneUIManager;
 class CollisionManager;
 class EnemyManager;
 class QuestManager;
 
+/// <summary>
+/// プレイシーンを更新・描画するクラス
+/// </summary>
 class PlayScene final : public IScene
 {
 	// --------------------------
@@ -49,81 +48,96 @@ public:
 	// アクセサ
 	// --------------------------
 public:
+	// プレイヤーを取得
 	Player* GetPlayer() { return m_player.get(); }
+	// ボス鬼を取得
 	Boss* GetBoss();
-	Particle* GetParticle() { return m_particles.get(); }
+	// 敵のマネージャーを取得
 	EnemyManager* GetEnemyManager() { return m_enemyManager.get(); }
-	PlaySceneUIManager* GetUIManager() { return m_uiManager.get(); }
-
-	// 衝突判定管理クラスを取得
-	CollisionManager* GetCollisionManager() { return m_collisionManager.get(); }
-
 	// クエストマネージャーを取得
 	QuestManager* GetQuestManager() { return m_questManager.get(); }
 
 	// --------------------------
-	// 公開関数
+	// メンバ関数(公開)
 	// --------------------------
 public:
+	// コンストラクタ
 	PlayScene();
-	~PlayScene()					override;
-
-	void Initialize()				override;
-	void Update(float elapsedTime)	override;
-	void Render()					override;
-	void Finalize()					override;
-
-	void GameEnd();								// ゲーム終了処理
+	// デストラクタ
+	~PlayScene() override;
+	// 初期化
+	void Initialize() override;
+	// 更新処理
+	void Update(float elapsedTime) override;
+	// 描画処理
+	void Render() override;
+	// 終了処理
+	void Finalize() override;
+	// リザルトシーンへの遷移
+	void ChangeResultScene();
 
 	// --------------------------
-	// 内部関数
+	// メンバ関数(非公開)
 	// --------------------------
 private:
-	void CreateObjects();					// オブジェクトの生成
-	SceneID GetNextSceneID()const;			// 次のシーンIDを取得
+	// オブジェクトの生成
+	void CreateObjects();
+	// 次のシーンIDを取得
+	SceneID GetNextSceneID()const;
 
-	void UpdateObjects(float elapsedTime);	// オブジェクトの更新
-	void UpdateCamera(float elapsedTime);	// カメラの更新
-	void UpdateKeyboard();					// キーボードの更新
+	// オブジェクトの更新
+	void UpdateObjects(float elapsedTime);
+	// カメラの更新
+	void UpdateCamera(float elapsedTime);
+	// キーボードの更新
+	void UpdateKeyboard();
 
 	// パーティクルの描画
 	void DrawParticle(const DirectX::SimpleMath::Matrix& view, DirectX::SimpleMath::Matrix projection);
-
-	void CheckResult();						// 勝敗判定
-	void GameOverChacker();					// ゲームオーバー判定
+	// ゲームオーバー判定
+	void GameOverChacker();
 
 	// --------------------------
-	// 内部変数
+	// メンバ変数
 	// --------------------------
 private:
-	// データ関連
-	CommonResources* m_commonResources;					// 共通リソース
-	std::unique_ptr<mylib::DebugCamera> m_debugCamera;	// デバッグカメラ
-	DirectX::SimpleMath::Matrix			m_projection;	// プロジェクション行列
-	bool m_isChangeScene; // シーン遷移フラグ
+	// プロジェクション行列
+	DirectX::SimpleMath::Matrix m_projection;
+	// シーン遷移フラグ
+	bool m_isChangeScene;
 
-	// システム周り
-	Sound* m_sound;			// 音
-	std::unique_ptr<PlaySceneUIManager> m_uiManager;		// UIマネージャ
-	std::unique_ptr<CollisionManager>	m_collisionManager;	// 当たり判定マネージャ
-	std::unique_ptr<EnemyManager>		m_enemyManager;		// 敵マネージャ
-	HitStop* m_hitStop;			// ヒットストップ
-	std::unique_ptr<QuestManager>		m_questManager;		// クエストマネージャ
+	// サウンドマネージャー
+	Sound* m_sound;
+	// UIマネージャー
+	std::unique_ptr<PlaySceneUIManager> m_uiManager;
+	// 当たり判定マネージャー
+	std::unique_ptr<CollisionManager> m_collisionManager;
+	// 敵マネージャー
+	std::unique_ptr<EnemyManager> m_enemyManager;
+	// ヒットストップマネージャー
+	HitStop* m_hitStop;
+	// クエストマネージャー
+	std::unique_ptr<QuestManager> m_questManager;
+	// カメラ
+	std::unique_ptr<Camera> m_camera;
+	// 天球
+	std::unique_ptr<SkySphere> m_skySphere;
+	// パーティクル
+	std::unique_ptr<Particle> m_particles;
+	// プレイヤー
+	std::unique_ptr<Player> m_player;
 
-	// オブジェクト関連の変数
-	std::unique_ptr<Camera>		m_camera;		// カメラ
-	std::unique_ptr<SkySphere>	m_skySphere;	// 天球
-	std::unique_ptr<Particle>	m_particles;	// パーティクル
-	std::unique_ptr<Player>		m_player;		// プレイヤー
+	// 床
+	std::unique_ptr<Floor> m_floor;
+	// 海
+	std::unique_ptr<Sea> m_sea;
+	// 壁（天球の枠）
+	std::unique_ptr<Wall> m_wall;
 
-	// ステージ関連の変数
-	std::unique_ptr<Floor>	m_floor;			// 床
-	std::unique_ptr<Sea>	m_sea;				// 海
-	std::unique_ptr<Wall>	m_wall;				// 壁（天球の枠）
-
-	// キーボード用の変数
-	DirectX::Keyboard::State				m_keyboardState;		// キーボードの状態
-	DirectX::Keyboard::KeyboardStateTracker m_keyboardStateTracker;	// キーボードの状態トラッカー
+	// キーボードの状態
+	DirectX::Keyboard::State m_keyboardState;
+	// キーボードの状態トラッカー
+	DirectX::Keyboard::KeyboardStateTracker m_keyboardStateTracker;
 
 	// ヒットストップのかかるオブジェクト用の変数
 	float m_smoothDeltaTime;

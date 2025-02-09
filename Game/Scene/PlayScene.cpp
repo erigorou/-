@@ -1,63 +1,61 @@
-/*
-	@file	PlayScene.cpp
-	@brief	プレイシーンクラス
-*/
+// ------------------------------------------------------------------------------
+// 名前:	PlayScene
+// 内容:	プレイシーンのオブジェクトを生成し、更新、描画を行う
+// 制作:	池田桜輔
+// ------------------------------------------------------------------------------
+// インクルード
 #include "pch.h"
 #include "PlayScene.h"
-
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
-#include "Libraries/MyLib/DebugCamera.h"
-// システム面 ================================================
-#include "Game/Factory/Factory.h"						// ファクトリ
-#include "Game/Sound/Sound.h"							// 音
-#include "Game/HitStop/HitStop.h"						// ヒットストップ
-#include "Libraries/MyLib/Collision/CollisionManager.h"	// 当たり判定
-#include "Game/Data/GameData.h"							// ゲームデータ
-#include "Game/Messenger/KeyboardMessenger.h"			// メッセンジャー
-#include "Game/Quest/QuestManager.h"					// クエストマネージャー
-#include "Game/Messenger/EventMessenger.h"				// イベントメッセンジャー
-// オブジェクト関連　=========================================
-#include "Game/EnemyManager/EnemyManager.h"	// 敵マネージャー
-#include "Game/Player/Player.h"				// プレイヤー
-#include "Game/Boss/Boss.h"					// 鬼
-#include "Game/Stage/Floor/Floor.h"			// 床
-#include "Game/Stage/Sea/Sea.h"				// 海
-#include "Game/Stage/Wall/Wall.h"			// 壁
-// UI関連　====================================================
-#include "Game/UI/!PlaySceneUIManager/PlaySceneUIManager.h"	// UI描画関連
+#include "Game/Factory/Factory.h"
+#include "Game/Sound/Sound.h"
+#include "Game/HitStop/HitStop.h"
+#include "Libraries/MyLib/Collision/CollisionManager.h"
+#include "Game/Data/GameData.h"
+#include "Game/Messenger/KeyboardMessenger.h"
+#include "Game/Quest/QuestManager.h"
+#include "Game/Messenger/EventMessenger.h"
+#include "Game/EnemyManager/EnemyManager.h"
+#include "Game/Player/Player.h"
+#include "Game/Boss/Boss.h"
+#include "Game/Stage/Floor/Floor.h"
+#include "Game/Stage/Sea/Sea.h"
+#include "Game/Stage/Wall/Wall.h"
+#include "Game/UI/!PlaySceneUIManager/PlaySceneUIManager.h"
 
-// ----------------
-// コンストラクタ
-// ----------------
+// ------------------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+// ------------------------------------------------------------------------------
 PlayScene::PlayScene()
-	: m_commonResources{}
-	, m_debugCamera{}
-	, m_projection{}
-	, m_isChangeScene{ false }
-	, m_smoothDeltaTime{}
+	: 
+	m_projection{},
+	m_isChangeScene{ false },
+	m_smoothDeltaTime{}
 {
-	m_commonResources = CommonResources::GetInstance();
 	GameData::GetInstance()->SetBattleResult(GameData::BATTLE_RESULT::NONE);
 }
 
-// ----------------
-// デストラクタ
-// ----------------
+// ------------------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// ------------------------------------------------------------------------------
 PlayScene::~PlayScene()
 {
 }
 
-// ----------------
-// 初期化関数
-// ----------------
+// ------------------------------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+// ------------------------------------------------------------------------------
 void PlayScene::Initialize()
 {
 	// デバッグカメラを作成する
-	RECT rect{ m_commonResources->GetDeviceResources()->GetOutputSize() };
-
-	m_debugCamera = std::make_unique<mylib::DebugCamera>();
-	m_debugCamera->Initialize(rect.right, rect.bottom);
+	RECT rect{ CommonResources::GetInstance()->GetDeviceResources()->GetOutputSize() };
 
 	// 射影行列を作成する
 	m_projection = DirectX::SimpleMath::Matrix::CreatePerspectiveFieldOfView(
@@ -68,48 +66,68 @@ void PlayScene::Initialize()
 	// オブジェクトの生成
 	CreateObjects();
 
-	EventMessenger::Attach(EventList::EndPlayScene, std::bind(&PlayScene::CheckResult, this));
+	// イベントを登録する (シーン終了)
+	EventMessenger::Attach(EventList::EndPlayScene, std::bind(&PlayScene::ChangeResultScene, this));
 }
 
-// ----------------
-// オブジェクトの生成
-// ----------------
+// ------------------------------------------------------------------------------
+/// <summary>
+/// オブジェクトの生成
+/// </summary>
+// ------------------------------------------------------------------------------
 void PlayScene::CreateObjects()
 {
-	KeyboardMessenger::Clear();	// メッセンジャーのクリア
+	// メッセンジャーのクリア
+	KeyboardMessenger::Clear();
 
+	// 火っとストップを取得
 	m_hitStop = HitStop::GetInstance();
+	// パーティクルを生成
+	m_collisionManager = Factory::CreateCollisionManager();
+	// カメラを生成
+	m_camera = Factory::CreateCamera();
+	// パーティクルを生成
+	m_particles = Factory::CreateParticle();
+	// 天球を生成
+	m_skySphere = Factory::CreateSkySphere();
+	// 床を生成
+	m_floor = Factory::CreateFloor();
+	// 海を生成
+	m_sea = Factory::CreateSea();
+	// 壁を生成
+	m_wall = Factory::CreateWall();
+	// プレイヤーを生成
+	m_player = Factory::CreatePlayer();
 
-	m_collisionManager = Factory::CreateCollisionManager();	// パーティクル
-	m_camera = Factory::CreateCamera();	// カメラ
-	m_particles = Factory::CreateParticle();	// パーティクル
+	// UIマネージャーを生成
+	m_uiManager = Factory::CreateUIManager(this);
+	// 敵マネージャー
+	m_enemyManager = Factory::CreateEnemyManager();
+	// クエストマネージャー
+	m_questManager = Factory::CreateQuestManager(this);
 
-	m_skySphere = Factory::CreateSkySphere();	// 天球
-	m_floor = Factory::CreateFloor();	// フロア
-	m_sea = Factory::CreateSea();	// 海
-	m_wall = Factory::CreateWall();	// 壁
-	m_player = Factory::CreatePlayer();	// プレイヤ
-
-	m_uiManager = Factory::CreateUIManager(this);	// UIマネージャー
-	m_enemyManager = Factory::CreateEnemyManager();	// 敵マネージャー
-	m_questManager = Factory::CreateQuestManager(this);	// クエストマネージャー
-
-	m_uiManager->CreateUI();	// UIの生成
+	// UIの生成
+	m_uiManager->CreateUI();
 	// 観察者リストをソートする
 	KeyboardMessenger::SortObserverList();
 	// キー範囲リストを生成する
 	KeyboardMessenger::CreateKeyRangeList();
 
+	// カメラの状態を変更
 	CameraState state = CameraState::Play;
-	EventMessenger::Execute(EventList::ChangeCamera, &state);	// カメラの状態を変更
+	EventMessenger::Execute(EventList::ChangeCamera, &state);
 
 	// BGM変更
 	Sound::GetInstance()->ChangeBGM(Sound::BGM_TYPE::PLAY);
 }
 
-// --------------------------------
-// キーが押されたかどうかを判定する
-// --------------------------------
+// ------------------------------------------------------------------------------
+/// <summary>
+/// キーが押されたかどうかを判定する
+/// </summary>
+/// <param name="stateTracker">キーボードトラッカー</param>
+/// <returns>押されたかのフラグ</returns>
+// ------------------------------------------------------------------------------
 inline bool IsKeyPress(DirectX::Keyboard::KeyboardStateTracker& stateTracker)
 {
 	// すべてのキーが押されたかどうかをチェック
@@ -125,9 +143,13 @@ inline bool IsKeyPress(DirectX::Keyboard::KeyboardStateTracker& stateTracker)
 	return false;
 }
 
-// --------------------------------
-// キーが押下げられたかどうかを判定する
-// --------------------------------
+// ------------------------------------------------------------------------------
+/// <summary>
+/// キーが押されているかどうかを判定する
+/// </summary>
+/// <param name="state">キーボードステート</param>
+/// <returns>押されているかのフラグ</returns>
+// ------------------------------------------------------------------------------
 inline bool IsKeyDown(DirectX::Keyboard::State& state)
 {
 	// キーボードステートへのポインタを取得する
@@ -142,9 +164,12 @@ inline bool IsKeyDown(DirectX::Keyboard::State& state)
 	return false;
 }
 
-// --------------------------------
-// 更新処理
-// --------------------------------
+// ------------------------------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// ------------------------------------------------------------------------------
 void PlayScene::Update(float elapsedTime)
 {
 	// キーボードの更新処理
@@ -153,9 +178,11 @@ void PlayScene::Update(float elapsedTime)
 	UpdateObjects(elapsedTime);
 }
 
-// --------------------------------
-// キーボードの更新処理
-// --------------------------------
+// ------------------------------------------------------------------------------
+/// <summary>
+/// キーボードの更新処理
+/// </summary>
+// ------------------------------------------------------------------------------
 void PlayScene::UpdateKeyboard()
 {
 	// キーボードの状態を取得する
@@ -167,12 +194,16 @@ void PlayScene::UpdateKeyboard()
 	if (IsKeyDown(m_keyboardState))			KeyboardMessenger::Notify(m_keyboardState);
 	if (IsKeyPress(m_keyboardStateTracker))	KeyboardMessenger::Notify(m_keyboardStateTracker);
 
+	// スペースキーが押されたらターゲットを変更する
 	if (m_keyboardStateTracker.IsKeyPressed(DirectX::Keyboard::Keys::Space)) m_enemyManager->ChangeCameraTarget();
 }
 
-// --------------------------------
-// オブジェクトの更新処理
-// --------------------------------
+// ------------------------------------------------------------------------------
+/// <summary>
+/// オブジェクトの更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// ------------------------------------------------------------------------------
 void PlayScene::UpdateObjects(float elapsedTime)
 {
 	// ヒットストップの更新
@@ -180,11 +211,15 @@ void PlayScene::UpdateObjects(float elapsedTime)
 	// ヒットストップの残り時間を取得
 	float smoothDeltaTime = m_hitStop->GetSmoothDeltaTime();
 
-	// オブジェクトの更新
+	// UIマネジャーの更新
 	m_uiManager->Update(elapsedTime);
+	// プレイヤーの更新
 	m_player->Update(smoothDeltaTime);
+	// 敵マネージャーの更新
 	m_enemyManager->Update(smoothDeltaTime);
+	// クエストマネージャーの更新
 	m_questManager->Update(elapsedTime);
+	// カメラの更新
 	UpdateCamera(elapsedTime);
 
 	// パーティクルの更新
@@ -192,37 +227,49 @@ void PlayScene::UpdateObjects(float elapsedTime)
 
 	// 衝突判定の更新処理
 	m_collisionManager->Update();
-
-	GameOverChacker();	// ゲームオーバー判定
+	// ゲームオーバー判定
+	GameOverChacker();
 }
 
-// --------------------------------
-// 描画関数
-// --------------------------------
+// ------------------------------------------------------------------------------
+/// <summary>
+/// プレイシーンのオブジェクトの描画処理
+/// </summary>
+// ------------------------------------------------------------------------------
 void PlayScene::Render()
 {
 	// ビュー行列を取得する
 	const DirectX::SimpleMath::Matrix& view = m_camera->GetViewMatrix();
+	// 当たり判定を描画
+	m_collisionManager->Render(view, m_projection);
+	// 空の描画
+	m_skySphere->DrawSkySphere(view, m_projection);
+	// 地面の描画
+	m_floor->Render(view, m_projection);
+	// 海の描画
+	m_sea->Render(view, m_projection);
+	// 壁の描画
+	m_wall->Render(view, m_projection);
+	// プレイヤーの描画
+	m_player->Render(view, m_projection);
+	// 敵（複数）の描画
+	m_enemyManager->Render(view, m_projection);
 
-	m_collisionManager->Render(view, m_projection);	// 当たり判定
-
-	m_skySphere->DrawSkySphere(view, m_projection);	// 空
-	m_floor->Render(view, m_projection);	// 地面
-	m_sea->Render(view, m_projection);	// 海
-	m_wall->Render(view, m_projection);	// 壁
-
-	m_player->Render(view, m_projection);	// プレイヤー
-	m_enemyManager->Render(view, m_projection); // 敵（複数）
-
-	DrawParticle(view, m_projection);	// パーティクル
-
-	m_questManager->DrawQuest();	// クエスト
-	m_uiManager->Render();			// UI
+	// パーティクルの描画
+	DrawParticle(view, m_projection);
+	// クエストの描画
+	m_questManager->DrawQuest();
+	// UIの描画
+	m_uiManager->Render();
 }
 
-// --------------------------------
-// パーティクルの描画
-// --------------------------------
+// ------------------------------------------------------------------------------
+/// <summary>
+/// パーティクルの描画
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="projection">プロジェクション行列</param>
+// ------------------------------------------------------------------------------
 void PlayScene::DrawParticle(const DirectX::SimpleMath::Matrix& view, DirectX::SimpleMath::Matrix projection)
 {
 	// ビルボード行列の計算
@@ -231,16 +278,22 @@ void PlayScene::DrawParticle(const DirectX::SimpleMath::Matrix& view, DirectX::S
 	m_particles->Render(view, projection);
 }
 
-// --------------------------------
-// 終了関数
-// --------------------------------
+// ------------------------------------------------------------------------------
+/// <summary>
+/// 終了関数
+/// </summary>
+// ------------------------------------------------------------------------------
 void PlayScene::Finalize()
 {
 }
 
-// --------------------------------
-// カメラの更新
-// --------------------------------
+// ------------------------------------------------------------------------------
+/// <summary>
+/// カメラの更新処理
+/// 
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// ------------------------------------------------------------------------------
 void PlayScene::UpdateCamera(float elapsedTime)
 {
 	// 敵ターゲットの座標を取得
@@ -251,54 +304,66 @@ void PlayScene::UpdateCamera(float elapsedTime)
 	m_camera->Update(m_player->GetPosition(),targetPos, elapsedTime);
 }
 
-// --------------------------------
-// ボスのポインタを取得
-// --------------------------------
+// ------------------------------------------------------------------------------
+/// <summary>
+/// ボスのポインタを取得
+/// </summary>
+/// <returns>ボスポインタ</returns>
+// ------------------------------------------------------------------------------
 Boss* PlayScene::GetBoss()
 {
 	return m_enemyManager->GetBossEnemy();
 }
 
 
-// --------------------------------
-// 次のシーンIDを取得
-// --------------------------------
+// ------------------------------------------------------------------------------
+/// <summary>
+/// 次のシーンのIDを取得
+/// </summary>
+/// <returns>シーン</returns>
+// ------------------------------------------------------------------------------
 IScene::SceneID PlayScene::GetNextSceneID() const
 {
 	// シーン変更がある場合
 	if (m_isChangeScene)
 	{
-		return IScene::SceneID::QUEST;
+		return IScene::SceneID::RESULT;
 	}
 
 	// シーン変更がない場合
 	return IScene::SceneID::NONE;
 }
 
-// --------------------------------
-// リザルトに行けるかどうかを判定
-// --------------------------------
-void PlayScene::CheckResult()
+// ------------------------------------------------------------------------------
+/// <summary>
+/// リザルトに遷移する
+/// </summary>
+// ------------------------------------------------------------------------------
+void PlayScene::ChangeResultScene()
 {
+	// 勝敗を登録する
+	auto data = GameData::GetInstance();
+	data->SetBattleResult(GameData::BATTLE_RESULT::WIN);
+
+	// シーン遷移フラグを立てる
 	m_isChangeScene = true;
 }
 
-// --------------------------------
-// ゲームオーバー判定
-// --------------------------------
+// ------------------------------------------------------------------------------
+/// <summary>
+/// ゲームオーバーを判定する
+/// </summary>
+// ------------------------------------------------------------------------------
 void PlayScene::GameOverChacker()
 {
 	// プレイヤーが死亡
 	if (m_player->GetPlayerHP()->GetHP() <= 0)
 	{
-		GameEnd();
-	}
-}
+		// 勝敗を登録する
+		auto data = GameData::GetInstance();
+		data->SetBattleResult(GameData::BATTLE_RESULT::LOSE);
 
-// --------------------------------
-// ゲーム終了処理
-// --------------------------------
-void PlayScene::GameEnd()
-{
-	CheckResult();
+		// リザルトシーンに遷移
+		ChangeResultScene();
+	}
 }

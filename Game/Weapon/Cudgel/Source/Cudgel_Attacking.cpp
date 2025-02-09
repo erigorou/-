@@ -134,8 +134,9 @@ void Cudgel_Attacking::HandleAttackPhase(float t)
 {
 	m_canHit = true;
 
-	// 20“x‚©‚ç115“xU‚è‰º‚ë‚·i0.3•bŠÔ‚ÅAƒC[ƒWƒ“ƒOŽg—pj
+	// U‚è‰º‚ë‚·Šp“x‚ðŒvŽZ‚·‚é
 	m_angleUD = DirectX::XMConvertToRadians(-40.0f + 135.0f * Easing::easeInQuint(t));
+	// ‰¡‰ñ“]‚ðŒvŽZ‚·‚é
 	m_angleRL = DirectX::XMConvertToRadians(-ATTACK_ANGLE_UD * Easing::easeInQuint(t)) + m_angleRL;
 
 	if (t > 0.9f && m_playSound == false)

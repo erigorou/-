@@ -1,7 +1,8 @@
-/*
-	@file	ResultScene.h
-	@brief	リザルトシーンクラス
-*/
+// --------------------------------------------------
+// 名前:	ResultScene.h
+// 内容:	リザルトシーンを描画するクラス
+// 作成:	池田桜輔
+// --------------------------------------------------
 #pragma once
 #include "IScene.h"
 #include "Game/Data/GameData.h"
@@ -16,39 +17,58 @@ class ResultScene final : public IScene
 	// 固定値
 public:
 
-	// 共通関数
+	// -----------------------------
+	// メンバ関数(公開)
+	// -----------------------------
+
 public:
+	// コンストラクタ
 	ResultScene();
+	// デストラクタ
 	~ResultScene() override;
-
+	// 初期化処理
 	void Initialize() override;
+	// 更新処理
 	void Update(float elapsedTime)override;
+	// 描画処理
 	void Render() override;
+	// 終了処理
 	void Finalize() override;
-
+	// 次のシーンIDを取得する
 	SceneID GetNextSceneID() const;
 
-	// メンバ関数
-private:
-	void CreateTextures();	// テクスチャの作成
-	void CreateObjects();	// オブジェクトの作成
+	// -----------------------------
+	// メンバ関数(非公開)
+	// -----------------------------
 
+private:
+	// テクスチャの作成
+	void CreateTextures();
+	// オブジェクトの作成
+	void CreateObjects();
+
+	// -----------------------------
 	// メンバ変数
+	// -----------------------------
+
 private:
-	CommonResources* m_commonResources;								// 共通リソース
-	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;			// スプライトバッチ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;		// テクスチャ
-	DirectX::SimpleMath::Vector2 m_texCenter;						// テクスチャの中心座標
+	// スプライトバッチ
+	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
+	// テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
+	// テクスチャの中心座標
+	DirectX::SimpleMath::Vector2 m_texCenter;
 
-	// リザルトシーンステート
-	std::unique_ptr<WinResult>	m_winResult;	// 勝利リザルト
-	std::unique_ptr<LoseResult> m_loseResult;	// 敗北リザルト
-
-	bool m_isChangeScene;	// シーン遷移フラグ
-
-	GameData* m_gameData;	// ゲームデータ（シーンで渡すやつ）
-
-	GameData::BATTLE_RESULT m_result;	// 戦闘結果
-
-	IScene* m_currentState;	// 現在のステート
+	// 勝利リザルト
+	std::unique_ptr<WinResult>	m_winResult;
+	// 敗北リザルト
+	std::unique_ptr<LoseResult> m_loseResult;
+	// 現在のステート
+	IScene* m_currentState;
+	// シーン遷移フラグ
+	bool m_isChangeScene;
+	// ゲームデータ
+	GameData* m_gameData;
+	// 戦闘結果
+	GameData::BATTLE_RESULT m_result;
 };

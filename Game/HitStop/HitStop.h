@@ -23,7 +23,7 @@ public:
 	// ヒットストップの遅延時間
 	static constexpr float DELAY = 0.05f;
 	// ヒットストップ時間
-	static constexpr float HITSTOP_TIME = DELAY + 0.5f;
+	static constexpr float HITSTOP_TIME = DELAY + 0.2f;
 
 
 	// ------------------------------
