@@ -19,7 +19,6 @@ class TitleEnemy;
 class SkySphere;
 class Particle;
 class CustomShader;
-class IconUI;
 class QuestSelectSceneUIManager;
 class UIAnchor;
 

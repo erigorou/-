@@ -5,7 +5,6 @@
 //  作成:  池田桜輔
 //
 // ----------------------------------------------
-
 #ifndef PLAYSCENE_UI_MANAGER
 #define PLAYSCENE_UI_MANAGER
 #pragma once
@@ -21,7 +20,9 @@ class EnemyHPUI;
 class Warning;
 class Operation;
 
-
+/// <summary>
+/// プレイシーンUIのマネージャー
+/// </summary>
 class PlaySceneUIManager
 {
 	// -----------------------------

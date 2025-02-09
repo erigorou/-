@@ -1,9 +1,11 @@
-// --------------
+// --------------------------------------------
 //
-// EnemyHPUI.cpp
+// 名前:	EnemyHPUI.cpp
+// 機能:	ボスのHPを表示するUIクラス
+// 製作:	池田桜輔
 //
-// --------------
-
+// --------------------------------------------
+// インクルード
 #include "pch.h"
 #include "Game/UI/EnemyHP/EnemyHPUI.h"
 #include "Game/Data/HPSystem.h"
@@ -18,9 +20,12 @@
 /// <param name="hpSystem">HPを所持するクラスのポインタ</param>
 // ----------------------------
 EnemyHPUI::EnemyHPUI(HPSystem* hpSystem)
-	: m_enemyHPclass(hpSystem)
-	, m_spriteBatch()
-	, m_enemyHP(0)
+	: 
+	m_enemyHPclass(hpSystem), 
+	m_texture{},
+	m_totalTime{},
+	m_spriteBatch{}, 
+	m_enemyHP{}
 {
 }
 
@@ -33,8 +38,14 @@ EnemyHPUI::~EnemyHPUI()
 {
 }
 
+// ----------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+// ----------------------------
 void EnemyHPUI::Initialize()
 {
+	// コンテキストの取得
 	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 
 	// スプライトバッチの設定
@@ -95,7 +106,7 @@ void EnemyHPUI::Render()
 }
 
 // ----------------------------
-/// <summary>a
+/// <summary>
 /// 終了関数
 /// </summary>
 // ----------------------------

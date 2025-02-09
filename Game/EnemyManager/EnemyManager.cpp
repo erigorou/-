@@ -199,15 +199,15 @@ DirectX::SimpleMath::Vector3 EnemyManager::GetBossPosition()
 void* EnemyManager::GetPicupEnemyPosition()
 {
 	// ターゲットの敵の座標を取得(敵がいない場合)
-	DirectX::SimpleMath::Vector3 position = DirectX::SimpleMath::Vector3{ 0.0f, 0.0f, 200.0f };
+	m_targetPosition = DirectX::SimpleMath::Vector3{ 0.0f, 0.0f, 200.0f };
 	// 敵がいない場合はそのまま返す
-	if (m_enemies.empty()) return &position;
+	if (m_enemies.empty()) return &m_targetPosition;
 	// 敵の配列をオーバーしている場合は0番を見る
 	if (m_enemies.size() - 1 < m_targetEnemyIndex) m_targetEnemyIndex = 0;
 	// ターゲットの敵の座標を取得	
-	position = m_enemies[m_targetEnemyIndex].data->GetPosition();
+	m_targetPosition = m_enemies[m_targetEnemyIndex].data->GetPosition();
 	// 座標を返す
-	return &position;
+	return &m_targetPosition;
 }
 
 // --------------------------------

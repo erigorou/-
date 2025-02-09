@@ -1,11 +1,21 @@
+// --------------------------------------------
+//
+// 名前:	BossFightButtonAction
+// 機能:	ボス戦に進むボタンのアクション
+// 製作:	池田桜輔
+//
+// --------------------------------------------
 #pragma once
+// インクルード
 #include "pch.h"
 #include "Interface/IAction.h"
 #include "Libraries/MyLib/EasingFunctions.h"
 #include "Libraries/MyLib/Math.h"
 #include "Game/Data/GameData.h"
 
-// ボス戦ボタンのアクション
+/// <summary>
+/// ボス戦のボタンのアクション
+/// </summary>
 class BossFightButtonAction final : public IAction
 {
 	// ------------------------------
@@ -22,9 +32,17 @@ private:
 	static constexpr float MOVE_DISTANCE = 800.0f;
 
 	// ------------------------------
-	// 公開関数
+	// メンバ関数
 	// ------------------------------
 public:
+	// ---------------------------------------------------
+	/// <summary>
+	/// アクションの実行
+	/// </summary>
+	/// <param name="param">パラメーター</param>
+	/// <param name="time">時間</param>
+	/// <returns>アクション後のパラメーター</returns>
+	// ---------------------------------------------------
 	// 実行内容
 	ActionParams Execute(ActionParams param, const float time) override
 	{
@@ -37,9 +55,9 @@ public:
 		// 遅延内ならば計算無し
 		if (time < DELAY) return result;
 		// 秒数を正規化する
-		float t = Math::Clamp(time - DELAY, 0.0f, MOVE_TIME) / MOVE_TIME;
+		float easing = Math::Clamp(time - DELAY, 0.0f, MOVE_TIME) / MOVE_TIME;
 		// 上下にアニメーションさせる
-		result.position.x = INIT_POSITION_Y - MOVE_DISTANCE * Easing::easeOutBack(t);
+		result.position.x = INIT_POSITION_Y - MOVE_DISTANCE * Easing::easeOutBack(easing);
 
 		// 結果を返す
 		return result;

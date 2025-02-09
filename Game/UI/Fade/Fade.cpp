@@ -1,22 +1,23 @@
 //--------------------------------------------------------------------------------------
-//	File: Particle.h
 //
-//	パーティクルクラス
+// 名前:	Fade.cpp
+// 機能:	フェードイン、フェードアウトの処理を行う
+// 作成:	池田桜輔
 //
 //-------------------------------------------------------------------------------------
 
 #include "pch.h"
 #include "Fade.h"
-#include "Libraries/MyLib/BinaryFile.h"
 #include "Game/Scene/SceneManager.h"
 #include "Libraries/MyLib/EasingFunctions.h"
 #include "Game/GameResources.h"
-#include "Libraries/MyLib/DebugString.h"
 #include "Game/Data/GameData.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "Libraries/MyLib/Math.h"
 
-// 固定値 **
+// ----------------------------------
+// 固定値
+// ----------------------------------
 const std::vector<D3D11_INPUT_ELEMENT_DESC> Fade::INPUT_LAYOUT =
 {
 	{ "POSITION",	0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -24,9 +25,11 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> Fade::INPUT_LAYOUT =
 	{ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3) + sizeof(DirectX::SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
 
+// ------------------------------------------------------
 /// <summary>
 /// コンストラクタ
 /// </summary>
+// ------------------------------------------------------
 Fade::Fade(SceneManager* scene)
 	:
 	m_scene(scene),
@@ -40,16 +43,20 @@ Fade::Fade(SceneManager* scene)
 {
 }
 
+// ------------------------------------------------------
 /// <summary>
 /// デストラクタ
 /// </summary>
+// ------------------------------------------------------
 Fade::~Fade()
 {
 }
 
+// ------------------------------------------------------
 /// <summary>
 /// 初期化関数
 /// </summary>
+// ------------------------------------------------------
 void Fade::Initialize()
 {
 	// リソースの取得
@@ -71,9 +78,11 @@ void Fade::Initialize()
 	m_states = std::make_unique<DirectX::CommonStates>(device);
 }
 
+// ------------------------------------------------------
 /// <summary>
 /// シェーダー作成部分用関数
 /// </summary>
+// ------------------------------------------------------
 void Fade::CreateShader()
 {
 	// デバイスの取得
@@ -109,10 +118,11 @@ void Fade::CreateShader()
 	device->CreateBuffer(&bd, nullptr, &m_CBuffer);
 }
 
+// ------------------------------------------------------
 /// <summary>
 /// フェードインの開始処理
 /// </summary>
-/// <param name="type"></param>
+// ------------------------------------------------------
 void Fade::StartFadeIn()
 {
 	m_isFade = true;
@@ -120,6 +130,11 @@ void Fade::StartFadeIn()
 	m_fadeType = FadeType::FADE_IN;
 }
 
+// ------------------------------------------------------
+/// <summary>
+/// フェードアウト開始
+/// </summary>
+// ------------------------------------------------------
 void Fade::StartFadeOut()
 {
 	m_isFade = true;
@@ -127,14 +142,26 @@ void Fade::StartFadeOut()
 	m_fadeType = FadeType::FADE_OUT;
 }
 
+// ------------------------------------------------------
+/// <summary>
+///  フェードの停止
+/// </summary>
+// ------------------------------------------------------
 void Fade::FadeStop()
 {
 	m_isFade = false;
 	m_fadeType = FadeType::FADE_NONE;
 }
 
+// ------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// ------------------------------------------------------
 void Fade::Update(float elapsedTime)
 {
+	// 経過時間の保存
 	m_elapsedTime = elapsedTime;
 
 	// フェード中でない場合は何もしない
@@ -144,21 +171,30 @@ void Fade::Update(float elapsedTime)
 	CountTimer();
 }
 
+// ------------------------------------------------------
+/// <summary>
+/// 秒数を計測
+/// フェードの種類によって計測する方法を変更
+/// </summary>
+// ------------------------------------------------------
 void Fade::CountTimer()
 {
+	// フェードの種類によって処理を変更
 	switch (m_fadeType)
 	{
 	case FadeType::FADE_IN:		FadeIn();	break;
 	case FadeType::FADE_OUT:	FadeOut();	break;
 	case FadeType::END_DELAY:	FadeEnd();	break;
 
-	default:								break;
+	default: MessageBox(nullptr, L"フェードの種類が不正です", L"エラー", MB_OK); break;
 	}
 }
 
+// ------------------------------------------------------
 /// <summary>
 /// フェードインの処理
 /// </summary>
+// ------------------------------------------------------
 void Fade::FadeIn()
 {
 	// 時間を計算する( 0 → 1 )
@@ -171,9 +207,11 @@ void Fade::FadeIn()
 	}
 }
 
+// ------------------------------------------------------
 /// <summary>
 /// フェードアウト処理
 /// </summary>
+// ------------------------------------------------------
 void Fade::FadeOut()
 {
 	// 時間を計算する( 1 → 0 )
@@ -190,6 +228,11 @@ void Fade::FadeOut()
 	}
 }
 
+// ------------------------------------------------------
+/// <summary>
+/// フェードを終了する
+/// </summary>
+// ------------------------------------------------------
 void Fade::FadeEnd()
 {
 	// 時間を減らす
@@ -209,12 +252,16 @@ void Fade::FadeEnd()
 	}
 }
 
-// 切り抜き用の画像を取得する
+// ------------------------------------------------------
+/// <summary>
+/// フェード用の片貫画像を描画する
+/// </summary>
+// ------------------------------------------------------
 void Fade::DrawStencilImage()
 {
 	// デバイスリソースの取得
 	auto deviceResources = CommonResources::GetInstance()->GetDeviceResources();
-
+	// コンテキストの取得
 	ID3D11DeviceContext* context = deviceResources->GetD3DDeviceContext();
 
 	//	描画についての設定を行う
@@ -317,6 +364,11 @@ void Fade::DrawStencilImage()
 	context->ClearDepthStencilView(pDSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 0.0f, 0);
 }
 
+// ------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
+// ------------------------------------------------------
 void Fade::Render()
 {
 	// デバイスリソースの取得
@@ -327,10 +379,10 @@ void Fade::Render()
 	// 型抜き画像の描画
 	DrawStencilImage();
 
-	float t = 0.0f;
-	t = std::max(0.0f, 1.0f - (m_totalTime / FADE_TIME));
-	t = std::max(0.0001f, Easing::easeInCubic(t));
-	GameData::GetInstance()->SetFadeValue(1 - t);
+	float easing = 0.0f;
+	easing = std::max(0.0f, 1.0f - (m_totalTime / FADE_TIME));
+	easing = std::max(0.0001f, Easing::easeInCubic(easing));
+	GameData::GetInstance()->SetFadeValue(1 - easing);
 
 	ID3D11DeviceContext1* context = deviceResources->GetD3DDeviceContext();
 
@@ -343,11 +395,11 @@ void Fade::Render()
 	ConstBuffer cbuff;
 
 	// 渡すデータを登録する
-	cbuff.matView = SimpleMath::Matrix::Identity;						// スクリーン座標で描画するため不要
-	cbuff.matProj = SimpleMath::Matrix::Identity;						// スクリーン座標で描画するため不要
-	cbuff.matWorld = SimpleMath::Matrix::Identity;						// スクリーン座標で描画するため不要
-	cbuff.Diffuse = SimpleMath::Vector4::One;							// テクスチャの色
-	cbuff.time = SimpleMath::Vector4(t, 0.0f, 0.0f, 0.0f);				// フェードの時間（第一要素のみ使用）
+	cbuff.matView = SimpleMath::Matrix::Identity;				// スクリーン座標で描画するため不要
+	cbuff.matProj = SimpleMath::Matrix::Identity;				// スクリーン座標で描画するため不要
+	cbuff.matWorld = SimpleMath::Matrix::Identity;				// スクリーン座標で描画するため不要
+	cbuff.Diffuse = SimpleMath::Vector4::One;					// テクスチャの色
+	cbuff.time = SimpleMath::Vector4(easing, 0.0f, 0.0f, 0.0f);	// フェードの時間（第一要素のみ使用）
 
 	//	シェーダの開始
 	m_customShader->BeginSharder(context);
@@ -388,13 +440,23 @@ void Fade::Render()
 	m_customShader->EndSharder(context);
 }
 
-// ----------------------------------
-// フェードの値を計算する
-// ----------------------------------
-float Fade::CalcrateFadeValue(float t)
+// ------------------------------------------------------
+/// <summary>
+/// フェードの種類を計算する
+/// </summary>
+/// <param name="easing">正規化した時間</param>
+/// <returns>フェード量</returns>
+// ------------------------------------------------------
+float Fade::CalcrateFadeValue(float easing)
 {
-	if (FadeType::FADE_IN == m_fadeType)	return Easing::easeBetweenIn(t, FADE_THRESHOLD, FADE_FIRST_SIZE, FADE_MAX_SIZE);
-	else if (FadeType::FADE_OUT == m_fadeType)	return Easing::easeBetweenOut(t, FADE_THRESHOLD, FADE_FIRST_SIZE, FADE_MAX_SIZE);
-
+	// フェードインなら
+	if (FadeType::FADE_IN == m_fadeType) {
+		return Easing::easeBetweenIn(easing, FADE_THRESHOLD, FADE_FIRST_SIZE, FADE_MAX_SIZE);
+	}
+	// フェードアウトなら
+	else if (FadeType::FADE_OUT == m_fadeType) {
+		return Easing::easeBetweenOut(easing, FADE_THRESHOLD, FADE_FIRST_SIZE, FADE_MAX_SIZE);
+	}
+	// 実行なし
 	else return 0;
 }

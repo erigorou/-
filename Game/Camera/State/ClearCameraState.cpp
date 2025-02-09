@@ -55,6 +55,9 @@ void ClearCameraState::Update(
 	float elapsedTime
 )
 {
+	// プレイヤーの座標を使用しない
+	UNREFERENCED_PARAMETER(playerPos);
+
 	// 時間を加算
 	m_totalTime += elapsedTime;
 

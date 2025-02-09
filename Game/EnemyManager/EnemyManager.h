@@ -121,6 +121,8 @@ private:
 
 	// 現在ターゲットにしている敵の配列番号
 	int m_targetEnemyIndex;
+	// ターゲットの座標
+	DirectX::SimpleMath::Vector3 m_targetPosition;
 
 	DirectX::Model* m_goblinModel;
 	DirectX::Model* m_bossModel;
