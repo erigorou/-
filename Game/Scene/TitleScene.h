@@ -1,8 +1,10 @@
-// ------------------------------------------------------------------------------
-// 名前:	PlayScene
-// 内容:	タイトルシーンのオブジェクトを生成し、更新、描画を行う
-// 制作:	池田桜輔
-// ------------------------------------------------------------------------------
+// --------------------------------------------------
+// 
+// 名前:	TitleScene.h
+// 内容:	タイトルシーンを描画するクラス
+// 作成:	池田桜輔
+// 
+// --------------------------------------------------
 #pragma once
 // インクルード
 #include "pch.h"
@@ -34,6 +36,15 @@ public:
 	static constexpr float DELAY = 1.5f;
 	// タイトル画面のアニメーション終了時間
 	static constexpr float ANIM_END = 1.5f;
+	// カメラの揺れる強さ
+	static constexpr float SHAKE_POWER = 1.0f;
+
+	// カメラのfov
+	static constexpr float FOV = 40.0f;
+	// 視錐台の手前
+	static constexpr float NEAR_Z = 0.1f;
+	// 視錐台の奥
+	static constexpr float FAR_Z = 100000.0f;
 
 	// ステージセレクト画面の遅延時間
 	static constexpr float STAGE_SELECT_DELAY = 2.5f;

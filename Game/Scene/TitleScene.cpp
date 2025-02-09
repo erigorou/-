@@ -1,7 +1,11 @@
-/*
-	@file	TitleScene.cpp
-	@brief	タイトルシーンクラス
-*/
+// --------------------------------------------------
+// 
+// 名前:	TitleScene.h
+// 内容:	タイトルシーンを描画するクラス
+// 作成:	池田桜輔
+// 
+// --------------------------------------------------
+// インクルード
 #include "pch.h"
 #include "TitleScene.h"
 #include "Game/CommonResources.h"
@@ -14,37 +18,41 @@
 #include "Effects/Particle.h"
 #include "Game/UI/SceneUIManager/QuestSelectSceneUIManager.h"
 #include "Game/Messenger/EventMessenger.h"
-
 #include "../Camera/Camera.h"
 #include "../Stage/Floor/Floor.h"
 #include "../Stage/Sea/Sea.h"
 #include "../TitleObject/TitleEnemy.h"
 #include "Libraries/MyLib/SkySphere.h"
 
-
-//---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+// ---------------------------------------------------------
 TitleScene::TitleScene()
 	:
 	m_totalSeconds{},
 	m_isChangeScene{},
 	m_selectIndex{},
-	m_shakePower{ 1.0f }
+	m_shakePower{ SHAKE_POWER }
 {
 }
 
-//---------------------------------------------------------
-// デストラクタ
-//---------------------------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// ---------------------------------------------------------
 TitleScene::~TitleScene()
 {
 	Finalize();
 }
 
-//---------------------------------------------------------
-// 初期化する
-//---------------------------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+// ---------------------------------------------------------
 void TitleScene::Initialize()
 {
 	// オブジェクトを生成する
@@ -57,33 +65,43 @@ void TitleScene::Initialize()
 	Sound::ChangeBGM(Sound::BGM_TYPE::TITLE);
 }
 
-//---------------------------------------------------------
-// オブジェクトの生成
-//---------------------------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// オブジェクト生成処理
+/// </summary>
+// ---------------------------------------------------------
 void TitleScene::CreateObjects()
 {
+	// カメラの生成
 	m_camera = Factory::CreateCamera();
+	// 床の生成
 	m_floor = Factory::CreateFloor();
+	// 海の生成
 	m_sea = Factory::CreateSea();
+	// 天球の生成
 	m_skySphere = Factory::CreateSkySphere();
 
+	// 敵の生成
 	m_enemy = std::make_unique<TitleEnemy>();
 	m_enemy->Initialize();
-	m_skySphere->LoadSkySphereModel();
 
+	// パーティクルの生成
+	m_particle = Factory::CreateParticle();
 
+	// カメラの状態を変更
 	CameraState state = CameraState::Title;
 	EventMessenger::Execute(EventList::ChangeCamera, &state);
 
-	m_particle = Factory::CreateParticle();
-
+	// UIの生成
 	m_uiManager = std::make_unique<QuestSelectSceneUIManager>();
 	m_uiManager->Initialize();
 }
 
-//---------------------------------------------------------
-// 射影行列の生成
-//---------------------------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 射影行列生成処理
+/// </summary>
+// ---------------------------------------------------------
 void TitleScene::CreateProjection()
 {
 	// ウィンドウのサイズを取得する
@@ -91,17 +109,21 @@ void TitleScene::CreateProjection()
 
 	// 射影行列を作成する
 	m_projection = DirectX::SimpleMath::Matrix::CreatePerspectiveFieldOfView(
-		DirectX::XMConvertToRadians(40.0f),
+		DirectX::XMConvertToRadians(FOV),
 		static_cast<float>(rect.right) / static_cast<float>(rect.bottom),
-		0.1f, 100000.0f
+		NEAR_Z, FAR_Z
 	);
 }
 
-//---------------------------------------------------------
-// 更新する
-//---------------------------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// ---------------------------------------------------------
 void TitleScene::Update(float elapsedTime)
 {
+	// 秒数を加算する
 	m_totalSeconds += elapsedTime;
 
 	// キーボードステートトラッカーを取得する
@@ -114,9 +136,12 @@ void TitleScene::Update(float elapsedTime)
 	SelectStage(kbTracker.get());
 }
 
-//---------------------------------------------------------
-// オブジェクトの更新
-//---------------------------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// ---------------------------------------------------------
 void TitleScene::UpdateObject(const float elapsedTime)
 {
 	// ゼロベクトル
@@ -131,9 +156,12 @@ void TitleScene::UpdateObject(const float elapsedTime)
 	m_uiManager->Update(elapsedTime);
 }
 
-//---------------------------------------------------------
-// ステージ選択
-//---------------------------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// ---------------------------------------------------------
 void TitleScene::SelectStage(DirectX::Keyboard::KeyboardStateTracker* keyboard)
 {
 	// シーン変更中は処理しない
@@ -156,9 +184,12 @@ void TitleScene::SelectStage(DirectX::Keyboard::KeyboardStateTracker* keyboard)
 	gameData->SetSelectStage(m_selectIndex);
 }
 
-//---------------------------------------------------------
-// 描画する
-//---------------------------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// ---------------------------------------------------------
 void TitleScene::Render()
 {
 	// ビュー行列を取得する
@@ -178,16 +209,29 @@ void TitleScene::Render()
 	m_uiManager->Render();
 }
 
-//---------------------------------------------------------
-// 後始末する
-//---------------------------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
+// ---------------------------------------------------------
 void TitleScene::Finalize()
 {
+	// オブジェクトの終了処理
+	m_camera.reset();
+	m_floor.reset();
+	m_sea.reset();
+	m_enemy.reset();
+	m_skySphere.reset();
+	m_particle.reset();
+	m_uiManager.reset();
 }
 
-//---------------------------------------------------------
-// 次のシーンIDを取得する
-//---------------------------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 次のシーンID取得処理
+/// </summary>
+/// <returns>次のシーンID</returns>
+// ---------------------------------------------------------
 IScene::SceneID TitleScene::GetNextSceneID() const
 {
 	// シーン変更がある場合

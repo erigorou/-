@@ -68,6 +68,13 @@ public:
 	// ボスの掃討SE
 	static constexpr const char* ENEMY_SWEEP_SE_PATH = "Resources/Sounds/SE/Enemy/Sweep.mp3";
 
+	// 初期のBGM音量
+	static constexpr float DEFAULT_BGM_VOLUME = 1.0f;
+	// 初期のSE音量
+	static constexpr float DEFAULT_SE_VOLUME = 1.0f;
+	// フェード量
+	static constexpr float FADE_VALUE = 1.0f;
+
 	// -----------------------------
 	// アクセサ
 	// -----------------------------
