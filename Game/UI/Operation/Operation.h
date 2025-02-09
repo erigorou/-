@@ -14,15 +14,22 @@ class Operation
 private:
 	static const wchar_t* TEXT_PATH;
 
-	static const wchar_t* X_PATH;
-	static const wchar_t* SHIFT_PATH;
-	static const wchar_t* UP_PATH;
-	static const wchar_t* DOWN_PATH;
-	static const wchar_t* LEFT_PATH;
-	static const wchar_t* RIGHT_PATH;
+	// 変更後:
+	static constexpr std::string_view keys[] = {
+		"X_KEY", 
+		"SHIFT_KEY",
+		"UP_KEY",
+		"DOWN_KEY",
+		"LEFT_KEY",
+		"RIGHT_KEY"
+	};
 
+	// HPの最低値
 	static constexpr int LOW_HP = 2;
+	// フェード時間
+	static constexpr float FADE_TIME = 1.2f;
 
+	// インプットレイアウト
 	std::vector<D3D11_INPUT_ELEMENT_DESC> InputElements =
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -30,8 +37,7 @@ private:
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3) + sizeof(DirectX::SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 
-	static constexpr float FADE_TIME = 1.2f;
-
+	// 定数バッファ
 	struct ConstBuffer
 	{
 		DirectX::SimpleMath::Matrix		matWorld;
@@ -44,34 +50,41 @@ private:
 
 	// パブリック関数
 public:
+	// コンストラクタ
 	Operation();
+	// デストラクタ
 	~Operation();
-
+	// 初期化処理
 	void Initialize();
+	// 更新処理
 	void Update(float elapsedTime);
+	// 描画処理
 	void Render();
+	// 終了処理
 	void Finalize();
-
-	// プライベート関数
-private:
 
 	// プライベート変数
 private:
 
-	std::unique_ptr<CustomShader>			m_customShader;		// シェーダー
-	DX::DeviceResources* m_pDR;				// デバイスリソース
-	Microsoft::WRL::ComPtr<ID3D11Buffer>	m_CBuffer;			// コンスタントバッファ
-	std::unique_ptr<DirectX::CommonStates>	m_states;			// ステート
+	// シェーダー
+	std::unique_ptr<CustomShader> m_customShader;
+	// コンスタントバッファ
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_CBuffer;
+	// ステート
+	std::unique_ptr<DirectX::CommonStates> m_states;
+	// プリミティブバッチ
+	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_batch;
+	// テクスチャ
+	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> m_texture;
+	// フレーム時間
+	float m_elapsedTime;
+	// 経過時間
+	float m_totalTime;
 
-	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_batch;	// プリミティブバッチ
-
-	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> m_texture;	// テクスチャ
-
-	float m_elapsedTime;	// フレーム時間
-	float m_totalTime;		// 経過時間
-
-	std::vector<std::unique_ptr<OperateUI>> m_operateUIs;	// 操作UI
-	std::unique_ptr<UI> m_textUI;							// UI
+	// 操作UI
+	std::vector<std::unique_ptr<OperateUI>> m_operateUIs;
+	// UI
+	std::unique_ptr<UI> m_textUI;
 };
 
 #endif // Operation_DEFINED

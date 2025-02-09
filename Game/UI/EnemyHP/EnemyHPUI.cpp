@@ -5,7 +5,7 @@
 // --------------
 
 #include "pch.h"
-#include "Game/UI/Header/EnemyHPUI.h"
+#include "Game/UI/EnemyHP/EnemyHPUI.h"
 #include "Game/Data/HPSystem.h"
 #include "Game/Screen.h"
 #include "Game/CommonResources.h"

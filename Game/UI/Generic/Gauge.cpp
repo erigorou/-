@@ -5,7 +5,7 @@
 // ----------------
 
 #include "pch.h"
-#include "Game/UI/Header/Gauge.h"
+#include "Gauge.h"
 #include "Interface/IUserInterface.h"
 
 // ----------------------------

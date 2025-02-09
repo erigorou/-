@@ -1,10 +1,8 @@
 #include "pch.h"
-#include "Game/UI/Header/PlayerHPUI.h"
+#include "PlayerHPUI.h"
 #include "Game/Data/HPSystem.h"
-#include "Game/Screen.h"
 #include "Game/GameResources.h"
 #include "Game/CommonResources.h"
-#include "Libraries/MyLib/CustomShader/CustomShader.h"
 
 // ----------------------------
 /// <summary>

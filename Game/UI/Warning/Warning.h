@@ -53,7 +53,7 @@ private:
 	HPSystem* m_hp;
 
 	std::unique_ptr<CustomShader>			m_customShader;		// シェーダー
-	DX::DeviceResources* m_pDR;				// デバイスリソース
+
 	Microsoft::WRL::ComPtr<ID3D11Buffer>	m_CBuffer;			// コンスタントバッファ
 	std::unique_ptr<DirectX::CommonStates>	m_states;			// ステート
 

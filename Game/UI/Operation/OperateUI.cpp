@@ -1,25 +1,29 @@
 #include "pch.h"
-#include "../Header/OperateUI.h"
+#include "OperateUI.h"
 #include "Game/CommonResources.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "CommonStates.h"
+#include "Game/GameResources.h"
 
 // -----------------------------------
 // コンストラクタ
 // -----------------------------------
-OperateUI::OperateUI(const wchar_t* texturePath)
-	: m_texturePath(texturePath)
-	, m_pDR(nullptr)
+OperateUI::OperateUI(std::string_view key)
+	:
+	m_pDR(nullptr)
 	, m_customShader(nullptr)
 	, m_CBuffer(nullptr)
 	, m_states(nullptr)
 	, m_batch(nullptr)
 	, m_texture()
-	, m_elapsedTime(0.01667f * 10.0f)
-	, m_totalTime(0.0f)
+	, m_elapsedTime(DOWN_FADE_TIME)
+	, m_totalTime{}
 	, m_downKey(false)
 {
 	m_pDR = CommonResources::GetInstance()->GetDeviceResources();
+
+	// テクスチャを取得
+	m_texture = GameResources::GetInstance()->GetTexture(static_cast<std::string>(key));
 }
 
 // -----------------------------------
@@ -54,9 +58,6 @@ void OperateUI::Initialize()
 
 	// コモンステートの生成
 	m_states = std::make_unique<DirectX::CommonStates>(device);
-
-	// テクスチャの読み込み
-	CustomShader::LoadTexture(device, m_texturePath, m_texture);
 
 	//	シェーダーにデータを渡すためのコンスタントバッファ生成
 	D3D11_BUFFER_DESC bd;
@@ -116,6 +117,7 @@ void OperateUI::Render()
 	context->GSSetConstantBuffers(0, 1, cb);
 	context->PSSetConstantBuffers(0, 1, cb);
 
+	// サンプラーステートの設定
 	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
 	context->PSSetSamplers(0, 1, sampler);
 
@@ -126,27 +128,28 @@ void OperateUI::Render()
 	context->RSSetState(m_states->CullNone());
 
 	// テクスチャの設定
-	for (int i = 0; i < m_texture.size(); i++)
-	{
-		context->PSSetShaderResources(i, 1, m_texture[i].GetAddressOf());
-	}
-
-	context->IASetInputLayout(m_customShader->GetInputLayout());
+	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
 
 	// 描画
 	m_batch->Begin();
 	m_batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], 4);
 	m_batch->End();
 
+	// シェーダーの終了
 	m_customShader->EndSharder(context);
 }
 
 void OperateUI::Finalize()
 {
+	// シェーダーの解放
 	m_customShader.reset();
+	// プリミティブバッチの解放
 	m_batch.reset();
+	// ステートの解放
 	m_states.reset();
-	m_texture.clear();
+	// テクスチャの解放
+	m_texture.Reset();
+	// コンスタントバッファの解放
 	m_CBuffer.Reset();
 }
 

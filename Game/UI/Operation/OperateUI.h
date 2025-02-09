@@ -13,6 +13,8 @@ public:
 	static constexpr wchar_t PS_PATH[] = L"Resources/cso/OperationPS.cso";
 	static constexpr wchar_t GS_PATH[] = L"Resources/cso/OperationGS.cso";
 
+	static constexpr float DOWN_FADE_TIME = 0.01667f * 10.0f;
+
 	std::vector<D3D11_INPUT_ELEMENT_DESC> InputElements =
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -34,7 +36,7 @@ public:
 
 	// パブリック関数
 public:
-	OperateUI(const wchar_t* texturePath);
+	OperateUI(std::string_view key);
 	~OperateUI();
 
 	void Initialize();
@@ -60,7 +62,7 @@ private:
 
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_batch;	// プリミティブバッチ
 
-	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> m_texture;	// テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;	// テクスチャ
 
 	float m_elapsedTime;	// フレーム時間
 	float m_totalTime;		// 経過時間

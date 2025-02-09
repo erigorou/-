@@ -49,11 +49,6 @@ TitleEnemy::~TitleEnemy()
 
 void TitleEnemy::Initialize()
 {
-	CommonResources* resources = CommonResources::GetInstance();
-
-	auto device = resources->GetDeviceResources()->GetD3DDevice();
-	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
-
 	// ƒ‚ƒfƒ‹‚ÌŽæ“¾
 	m_model = GameResources::GetInstance()->GetModel("titleOni");
 

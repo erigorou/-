@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "../Header/Operation.h"
+#include "Operation.h"
 #include "Game/CommonResources.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "CommonStates.h"
@@ -9,28 +9,20 @@
 // 固定値
 const wchar_t* Operation::TEXT_PATH = L"Resources/Textures/UI/Operation/TEXT.png";
 
-const wchar_t* Operation::X_PATH = L"Resources/Textures/UI/Operation/X.png";
-const wchar_t* Operation::SHIFT_PATH = L"Resources/Textures/UI/Operation/Shift.png";
-const wchar_t* Operation::UP_PATH = L"Resources/Textures/UI/Operation/Up.png";
-const wchar_t* Operation::DOWN_PATH = L"Resources/Textures/UI/Operation/Down.png";
-const wchar_t* Operation::LEFT_PATH = L"Resources/Textures/UI/Operation/Left.png";
-const wchar_t* Operation::RIGHT_PATH = L"Resources/Textures/UI/Operation/Right.png";
 
 // ------------------------------------
 // コンストラクタ
 // ------------------------------------
 Operation::Operation()
-	: m_pDR(nullptr)
-	, m_customShader(nullptr)
-	, m_CBuffer(nullptr)
-	, m_states(nullptr)
-	, m_batch(nullptr)
-	, m_texture()
-	, m_elapsedTime(0.0f)
-	, m_totalTime(0.0f)
+	:
+	m_customShader(nullptr),
+	m_CBuffer(nullptr),
+	m_states(nullptr),
+	m_batch(nullptr),
+	m_texture{},
+	m_elapsedTime{},
+	m_totalTime{}
 {
-	// デバイスリソースの取得
-	m_pDR = CommonResources::GetInstance()->GetDeviceResources();
 }
 
 // ------------------------------------
@@ -45,16 +37,11 @@ Operation::~Operation()
 // ------------------------------------
 void Operation::Initialize()
 {
-	// 操作キーのパスを格納した配列
-	const std::vector<const wchar_t*> keyPaths =
-	{
-		X_PATH, SHIFT_PATH, UP_PATH, DOWN_PATH, LEFT_PATH, RIGHT_PATH
-	};
 
 	// 各キーに対して操作UIを生成し、初期化してリストに追加
-	for (const auto& path : keyPaths)
+	for (const auto& key : keys)
 	{
-		auto operateUI = std::make_unique<OperateUI>(path);
+		auto operateUI = std::make_unique<OperateUI>(key);
 		operateUI->Initialize();
 		m_operateUIs.push_back(std::move(operateUI));
 	}

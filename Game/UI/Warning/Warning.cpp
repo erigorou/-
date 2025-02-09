@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "../Header/Warning.h"
+#include "Warning.h"
 #include "Game/CommonResources.h"
 #include "Game/GameResources.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
@@ -10,7 +10,6 @@
 Warning::Warning(HPSystem* hp)
 	:
 	m_hp(hp),
-	m_pDR{},
 	m_customShader{},
 	m_CBuffer{},
 	m_states{},
@@ -19,8 +18,6 @@ Warning::Warning(HPSystem* hp)
 	m_elapsedTime{},
 	m_totalTime{}
 {
-	// デバイスリソースの取得
-	m_pDR = CommonResources::GetInstance()->GetDeviceResources();
 }
 
 // デストラクタ
@@ -31,7 +28,7 @@ Warning::~Warning()
 // 初期化処理
 void Warning::Initialize()
 {
-	ID3D11Device* device = m_pDR->GetD3DDevice();
+	ID3D11Device* device = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
 
 	// シェーダーの生成
 	m_customShader = std::make_unique<CustomShader>
@@ -46,7 +43,7 @@ void Warning::Initialize()
 	// プリミティブバッチの生成
 	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>
 		(
-			m_pDR->GetD3DDeviceContext()
+			CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext()
 		);
 
 	// コモンステートの生成
@@ -83,7 +80,7 @@ void Warning::Update(float elapsedTime)
 void Warning::Render()
 {
 	using namespace DirectX;
-	ID3D11DeviceContext* context = m_pDR->GetD3DDeviceContext();
+	ID3D11DeviceContext* context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 
 	// 頂点情報
 	VertexPositionColorTexture vertex[4] =

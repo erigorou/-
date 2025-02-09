@@ -12,10 +12,10 @@
 #include "Game/Scene/PlayScene.h"
 #include "Game/Player/Player.h"
 #include "Game/Boss/Boss.h"
-#include "../Header/PlayerHPUI.h"
-#include "../Header/EnemyHPUI.h"
-#include "../Header/Warning.h"
-#include "../Header/Operation.h"
+#include "../PlayerHP/PlayerHPUI.h"
+#include "../EnemyHP/EnemyHPUI.h"
+#include "../Warning/Warning.h"
+#include "../Operation/Operation.h"
 
 // ----------------------------
 // ŒÅ’è’l

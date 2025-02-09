@@ -16,5 +16,11 @@
   "enemyHPBack": "EnemyHPBack.png",
   "enemyHPFrame": "EnemyHPFrame.png",
   "win": "UI/Win.png",
-  "lose": "UI/Lose.png"
-}
+  "lose": "UI/Lose.png",
+  "DOWN_KEY": "UI/Operation/DOWN.png",
+  "UP_KEY": "UI/Operation/UP.png",
+  "LEFT_KEY": "UI/Operation/LEFT.png",
+  "RIGHT_KEY": "UI/Operation/RIGHT.png",
+  "SHIFT_KEY": "UI/Operation/SHIFT.png",
+  "X_KEY": "UI/Operation/X.png"
+} 
