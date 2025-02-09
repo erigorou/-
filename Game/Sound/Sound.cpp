@@ -1,15 +1,15 @@
 // ---------------------------------------------------------
+// 
 // 名前:    Sound.cpp
 // 内容:    サウンド管理クラス
 //          FMODを使用してサウンドを再生する
 // 作成:    池田桜輔
+// 
 // ---------------------------------------------------------
-
+// インクルード
 #include "pch.h"
-#include "Game/CommonResources.h"
 #include "Game/Sound/Sound.h"
 #include "Libraries/FMOD/inc/fmod.hpp"
-#include "Libraries/FMOD/inc/fmod_errors.h"
 #include "Game/Data/GameData.h"
 
 std::unique_ptr<Sound> Sound::s_sound = nullptr;
@@ -45,10 +45,11 @@ Sound::Sound()
     m_channelSE(nullptr),
     m_bgmList(),
     m_seList(),
-    m_bgmVolume(1.0f),
-    m_seVolume(1.0f),
-    m_fadeValue(1.0f)
+    m_bgmVolume(DEFAULT_BGM_VOLUME),
+    m_seVolume(DEFAULT_SE_VOLUME),
+    m_fadeValue(FADE_VALUE)
 {
+    // FMODのシステムを初期化
     InitializeFMOD();
 }
 

@@ -1,7 +1,6 @@
-#pragma once	// 多重読み込み防止
+#pragma once  // 多重読み込み防止
 #include "pch.h"
 #include "Interface/IState.h"
-#include "Game/Scene/TitleScene.h"
 
 // ===== 敵の状態 =================================================================
 class EnemyTitleMoving;
@@ -9,31 +8,49 @@ class EnemyTitleIdling;
 
 class TitleEnemy
 {
-public:
+	// -----------------------------
 	// 固定値
-	static const float TITLE_ENEMY_SPEED;
-	static const float TITLE_ENEMY_SCALE;
+	// -----------------------------
+public:
+	// 敵の速度
+	static constexpr float TITLE_ENEMY_SPEED = 0.1f;
+	// 敵のスケール
+	static constexpr float TITLE_ENEMY_SCALE = 1.0f;
+	// クールタイム
+	static constexpr float COOL_TIME = 0.4f;
+	// ステートの最大数
+	static constexpr int STATE_MAX = 2;
 
-	static const float COOL_TIME;
+
+	// -----------------------------
+	// 列挙型
+	// -----------------------------
+	enum class BossState
+	{
+		IDLING,  // 待機状態
+		MOVING,  // 移動状態
+	};
 
 public:
-
-	// /////////////////敵の基礎情報を渡す関数/////////////////////////////////////////////////////////////////////
-	DirectX::SimpleMath::Vector3	GetPosition()	const { return m_position; }		// 鬼の座標を取得する
-	float							GetAngle()		const { return m_angle; }			// 鬼の回転角を取得する
-	DirectX::SimpleMath::Matrix		GetWorldMatrix()const { return m_worldMatrix; }	// 敵のワールド座標を取得する
-
-	void SetPosition(const DirectX::SimpleMath::Vector3 pos) { m_position = pos; }		// 鬼の座標を設定する
-	void SetAngle(const float angle) { m_angle = angle; }		// 鬼の回転角を設定する
-	void SetWorldMatrix(DirectX::SimpleMath::Matrix mat) { m_worldMatrix = mat; }	// 敵のワールド座標を設定する
-
-	// /////////////////敵のステートを渡す関数/////////////////////////////////////////////////////////////////////
-	EnemyTitleMoving* GetTitleEnemyTitleMoving() const { return m_titleMoving.get(); }	// タイトル画面の敵の移動状態
-	EnemyTitleIdling* GetTitleEnemyIdling() const { return m_titleIdling.get(); }	// タイトル画面の敵の待機状態
-
-	// 現在のステートを返す
-	IState* GetCurrentState() const { return m_currentState; }
-
+	// -----------------------------
+	// アクセサ
+	// -----------------------------
+	// 鬼の座標を取得する
+	DirectX::SimpleMath::Vector3 GetPosition() const { return m_position; }
+	// 鬼の座標を設定する
+	void SetPosition(const DirectX::SimpleMath::Vector3 pos) { m_position = pos; }
+	// 鬼の回転角を取得する
+	float GetAngle() const { return m_angle; }
+	// 鬼の回転角を設定する
+	void SetAngle(const float angle) { m_angle = angle; }
+	// 敵のワールド座標を取得する
+	DirectX::SimpleMath::Matrix GetWorldMatrix() const { return m_worldMatrix; }
+	// 敵のワールド座標を設定する
+	void SetWorldMatrix(DirectX::SimpleMath::Matrix mat) { m_worldMatrix = mat; }
+	
+	// -----------------------------
+	// メンバ関数(公開)
+	// -----------------------------
 public:
 	// コンストラクタ
 	TitleEnemy();
@@ -41,8 +58,8 @@ public:
 	~TitleEnemy();
 	// 初期化処理
 	void Initialize();
-	// 新しい状態に遷移する（ステートパターン）
-	void ChangeState(IState* newState);
+	// 新しい状態に遷移（ステートパターン）
+	void ChangeState(BossState state);
 	// 更新処理
 	void Update(float elapsedTime);
 	// 描画処理
@@ -51,29 +68,33 @@ public:
 	void Finalize();
 
 private:
+	// -----------------------------
+	// メンバ関数(非公開)
+	// -----------------------------
+private:
 	// ステートの作成処理
 	void CreateState();
 
+	// -----------------------------
+	// メンバ変数
+	// -----------------------------
+private:
 	// 位置
 	DirectX::SimpleMath::Vector3 m_position;
 	// 速度
 	DirectX::SimpleMath::Vector3 m_velocity;
-	// 角度
+	// 回転角
 	float m_angle;
-	// 敵用のワールド行列
+	// ワールド行列
 	DirectX::SimpleMath::Matrix m_worldMatrix;
 	// モデル
-	std::unique_ptr<DirectX::Model> m_model;
-
-	// ==== ステートパターンに使用 =============================================　
-	IState* m_currentState;			// 現在のステート（ステートパターン）
-	std::unique_ptr<EnemyTitleMoving> m_titleMoving;		// タイトル画面の敵の移動状態
-	std::unique_ptr<EnemyTitleIdling> m_titleIdling;		// タイトル画面の敵の待機状態
-
-private:
-	// ベーシックエフェクト
-	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
-	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
-	// 入力レイアウト
-	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
+	DirectX::Model* m_model;
+	// 現在のステート
+	IState* m_currentState;
+	// 待機状態
+	std::unique_ptr<EnemyTitleIdling> m_titleIdling;
+	// 移動状態
+	std::unique_ptr<EnemyTitleMoving> m_titleMoving;
+	// ステートの配列
+	IState* m_states[STATE_MAX];
 };

@@ -1,50 +1,52 @@
-// ----------------
+// ---------------------------------------------------------
 //
-// 鬼の挙動
+// 名前:	TitleEnemy.cpp
+// 内容:	タイトルシーンの敵を実装している
+// 作成;	池田桜輔
 //
-// ----------------
-
+// ---------------------------------------------------------
+// インクルード
 #include "pch.h"
 #include <Model.h>
-#include <cassert>
-
 #include "Game/CommonResources.h"
+#include "Game/GameResources.h"
 #include "DeviceResources.h"
-#include "Libraries/MyLib/DebugString.h"
-#include "Libraries/MyLib/Math.h"
-
 #include "TitleEnemy.h"
 #include "EnemyTitleMoving.h"
 #include "EnemyTitleIdling.h"
-
 #include "Interface/IState.h"
 
-// 固定値
-const float TitleEnemy::TITLE_ENEMY_SPEED = 0.1f;
-const float TitleEnemy::TITLE_ENEMY_SCALE = 1.0f;
-const float TitleEnemy::COOL_TIME = 0.4f;
-
-// --------------------------------
-//  コンストラクタ
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+// ---------------------------------------------------------
 TitleEnemy::TitleEnemy()
-	: m_currentState()
-	, m_position{ 0.0f, 0.0f, 0.0f }
-	, m_angle{ 0.f }
-	, m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
+	:
+	m_currentState{},
+	m_position{},
+	m_angle{},
+	m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
 {
 }
 
-// --------------------------------
-//  デストラクタ
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// ---------------------------------------------------------
+
 TitleEnemy::~TitleEnemy()
 {
+	Finalize();
 }
 
-// --------------------------------
-//  イニシャライズ
- // --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+// ---------------------------------------------------------
+
 void TitleEnemy::Initialize()
 {
 	CommonResources* resources = CommonResources::GetInstance();
@@ -52,103 +54,115 @@ void TitleEnemy::Initialize()
 	auto device = resources->GetDeviceResources()->GetD3DDevice();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 
-	// モデルを読み込む準備
-	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
-	fx->SetDirectory(L"Resources/Models");
-	// モデルを読み込む
-	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Title/oni.cmo", *fx);
+	// モデルの取得
+	m_model = GameResources::GetInstance()->GetModel("titleOni");
 
 	// ステートの作成
 	CreateState();
-
-	// ベーシックエフェクトを作成する
-	m_basicEffect = std::make_unique<DirectX::BasicEffect>(device);
-	m_basicEffect->SetVertexColorEnabled(true);
-	// 入力レイアウトを作成する
-	DX::ThrowIfFailed(
-		DirectX::CreateInputLayoutFromEffect<DirectX::VertexPositionColor>(
-			device,
-			m_basicEffect.get(),
-			m_inputLayout.ReleaseAndGetAddressOf())
-	);
-	// プリミティブバッチの作成
-	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
 }
 
-// --------------------------------
-//  更新処理
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// ステートの作成処理
+/// </summary>
+// ---------------------------------------------------------
 void TitleEnemy::CreateState()
 {
-	// === 状態の生成 ====
-	m_titleIdling = std::make_unique<EnemyTitleIdling>(this);		// タイトル画面の敵の待機
-	m_titleMoving = std::make_unique<EnemyTitleMoving>(this);	// タイトル画面の敵の移動
+	// 待機状態の作成・初期化・保存
+	m_titleIdling = std::make_unique<EnemyTitleIdling>(this);
+	m_titleIdling->Initialize();
+	m_states[static_cast<int>(BossState::IDLING)] = m_titleIdling.get();
 
-	// === 状態の初期化 ===
-	m_titleIdling->Initialize();	// タイトル画面の敵の待機
-	m_titleMoving->Initialize();	// タイトル画面の敵の移動
+	// 移動状態の作成・初期化・保存
+	m_titleMoving = std::make_unique<EnemyTitleMoving>(this);
+	m_titleMoving->Initialize();
+	m_states[static_cast<int>(BossState::MOVING)] = m_titleMoving.get();
 
 	// 初期のステートを待機状態に割り当てる
 	m_currentState = m_titleIdling.get();
 }
 
-// --------------------------------
-//  状態の生成処理
-// --------------------------------
-void TitleEnemy::ChangeState(IState* newState)
+// ---------------------------------------------------------
+/// <summary>
+/// 状態遷移処理
+/// </summary>
+/// <param name="state">遷移先の状態</param>
+// ---------------------------------------------------------
+void TitleEnemy::ChangeState(BossState state)
 {
+	// ステートのインデックスを取得
+	int index = static_cast<int>(state);
+
 	// おんなじステートを更新しようとしたら戻る
-	if (m_currentState == newState) return;
+	if (m_currentState == m_states[index]) return;
 	// 新規の状態遷移前に事後更新を行う
 	m_currentState->PostUpdate();
 	// 新規の状態を現在の状態に設定する
-	m_currentState = newState;
+	m_currentState = m_states[index];
 	// 新規の状態遷移後に事前更新を行う
 	m_currentState->PreUpdate();
 }
 
-// --------------------------------
-//  更新処理
-// --------------------------------
+
+// ---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// ---------------------------------------------------------
+
 void TitleEnemy::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
+	// ワールド行列を初期化
 	m_worldMatrix = Matrix::Identity;
 
-	// ステータスを更新しまーす
+	// ステータスを更新
 	m_currentState->Update(elapsedTime);
 
-	m_worldMatrix = DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle + DirectX::XMConvertToRadians(180));	// 回転角の設定
+	// 回転角の計算
+	m_worldMatrix = DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle + DirectX::XMConvertToRadians(180));
 
+	// 移動処理
 	m_velocity *= TitleEnemy::TITLE_ENEMY_SPEED;
+	// 位置の更新
 	m_position += DirectX::SimpleMath::Vector3::Transform(m_velocity, m_worldMatrix);
 
-	// ワールド行列の計算@;;;;;;;;;;;;;;;;
+	// ワールド行列の計算
 	m_worldMatrix
-		*= DirectX::SimpleMath::Matrix::CreateScale(TITLE_ENEMY_SCALE)		// サイズ計算
-		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);		// 位置の設定
+		// サイズ計算
+		*= DirectX::SimpleMath::Matrix::CreateScale(TITLE_ENEMY_SCALE)
+		// 位置の設定
+		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);
 }
 
-// --------------------------------
-//  表示処理
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 表示処理
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="projection">射影行列</param>
+// ---------------------------------------------------------
 void TitleEnemy::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection)
 {
+	// デバイスコンテキストを取得
 	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
+	// コモンステートを取得
 	auto states = CommonResources::GetInstance()->GetCommonStates();
 
 	// 深度値を参照して書き込む
 	context->OMSetDepthStencilState(states->DepthDefault(), 0);
-	m_model->Draw(context, *states, m_worldMatrix, view, projection);	// モデルの描画
+	// モデルの描画
+	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 
-#ifdef _DEBUG
-#endif // _DEBUG
 }
 
-// --------------------------------
-//  終了処理
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
+// ---------------------------------------------------------
 void TitleEnemy::Finalize()
 {
 }

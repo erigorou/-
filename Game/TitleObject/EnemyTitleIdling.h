@@ -1,15 +1,30 @@
+// ---------------------------------------------------------
+//
+// 名前:	EnemyTitleIdling.h
+// 内容:	敵の待機状態
+//			ステートパターンで実装
+// 作成;	池田桜輔
+//
+// ---------------------------------------------------------
 #pragma once
 #ifndef ENEMY_TITLEIDLING_DEFINED
 #define ENEMY_TITLEIDLING_DEFINED
+// インクルード
 #include "Interface/IState.h"
 
+// 前方宣言
 class TitleEnemy;
 
-// 敵の待機ステートを定義
+
+/// <summary>
+/// 敵の待機状態を定義
+/// </summary>
 class EnemyTitleIdling : public IState
 {
+	// -----------------------------
+	// メンバ関数(公開)
+	// -----------------------------
 public:
-
 	// コンストラクタ
 	EnemyTitleIdling(TitleEnemy* enemy);
 	// デストラクタ
@@ -25,10 +40,11 @@ public:
 	// 終了処理
 	void Finalize() override;
 
-private:
-	static constexpr float MINIMAL = 0.01f;
-	static constexpr float COOL_TIME = 0.5f;
+	// -----------------------------
+	// メンバ変数
+	// -----------------------------
 
+private:
 	// 座標
 	DirectX::SimpleMath::Vector3 m_position;
 	// 移動速度
@@ -37,24 +53,10 @@ private:
 	float m_angle;
 	// ワールド行列
 	DirectX::SimpleMath::Matrix m_worldMat;
-
 	// 総時間
 	float m_totalSeconds;
-	// 終了時間
-	float m_finishTime;
 	// 敵
 	TitleEnemy* m_enemy;
-	// モデル
-	DirectX::Model* m_model;
-
-	// サイン波の振幅
-	float m_amplitude;
-	// サイン波の周波数
-	float m_frequency;
-	// ジャンプ中か
-	bool m_isJump;
-	// シェイクできるか
-	bool m_canShake;
 };
 
 #endif		// ENEMY_IDLING_DEFINED

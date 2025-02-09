@@ -5,7 +5,6 @@
 // 作成: 池田桜輔
 // 
 // -----------------------------------------------------------------
-
 // インクルード
 #include "pch.h"
 #include "Game/CommonResources.h"
@@ -33,6 +32,7 @@ Wall::Wall()
 // ---------------------------------------------------------
 Wall::~Wall()
 {
+	Finalize();
 }
 
 // ---------------------------------------------------------
@@ -89,12 +89,12 @@ void Wall::CreateCollision()
 // ---------------------------------------------------------
 void Wall::UpdateWorldMatrix()
 {
-	using namespace DirectX::SimpleMath;
-	using namespace DirectX;
-
-	m_worldMatrix = Matrix::Identity;						// 初期化
-	m_worldMatrix *= Matrix::CreateScale(WALL_SCALE);		// 拡大　縮小
-	m_worldMatrix *= Matrix::CreateTranslation(WALL_POS);	// 移動
+	// 初期化
+	m_worldMatrix = DirectX::SimpleMath::Matrix::Identity;
+	// 大きさの変更
+	m_worldMatrix *= DirectX::SimpleMath::Matrix::CreateScale(WALL_SCALE);
+	// 移動
+	m_worldMatrix *= DirectX::SimpleMath::Matrix::CreateTranslation(WALL_POS);
 }
 
 // ---------------------------------------------------------
@@ -123,6 +123,9 @@ void Wall::Render(
 // ---------------------------------------------------------
 void Wall::Finalize()
 {
+	// 衝突判定をManagerから削除
+	EventMessenger::Execute(EventList::DeleteCollision, this);
+	EventMessenger::Execute(EventList::DeleteCollision, this);
 }
 
 // ---------------------------------------------------------
