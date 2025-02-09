@@ -4,13 +4,9 @@
 */
 #include "pch.h"
 #include "ResultScene.h"
-#include "Game/Screen.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
-#include "Libraries/MyLib/MemoryLeakDetector.h"
 #include "Libraries/MyLib/InputManager.h"
-#include <cassert>
-#include "../Data/GameData.h"
 #include "Libraries/MyLib/Texture.h"
 #include "../Sound/Sound.h"
 
@@ -96,22 +92,22 @@ void ResultScene::CreateObjects()
 	m_winResult->Initialize();
 	m_loseResult->Initialize();
 
-	//// ゲームデータの取得
-	//m_gameData = GameData::GetInstance();
-
 	// ゲームデータを取得し、それに応じた結果を出す
 	switch (GameData::GetInstance()->GetBattleResult())
 	{
+		// 勝利
 	case GameData::BATTLE_RESULT::WIN:
 		m_currentState = m_winResult.get();
 		Sound::ChangeBGM(Sound::BGM_TYPE::WIN);
-
 		break;
+
+		// 敗北
 	case GameData::BATTLE_RESULT::LOSE:
 		m_currentState = m_loseResult.get();
 		Sound::ChangeBGM(Sound::BGM_TYPE::LOSE);
 		break;
 
+		// それ以外
 	default:
 		assert(false && "GameDataのVATTLE_RESULTに正しい結果が入ってません。PlaySceneのUpdateのところの判定のとこちゃんと見てん。");
 		break;

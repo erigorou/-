@@ -1,14 +1,28 @@
+// ----------------------------------------------------------
+// 名前;	EventMessenger.h
+// 内容:	イベントメッセンジャークラス
+//			オブジェクトごとの保守性を高めるため
+//			オブザーバーシステムを採用
+// 作成:	池田桜輔
+// ----------------------------------------------------------
 #pragma once
 #ifndef EVENT_MESSENGER_H
 #define EVENT_MESSENGER_H
 
+// インクルード
 #include "pch.h"
 #include <unordered_map>
 #include <functional>
 #include "EventList.h"
 
+/// <summary>
+/// イベントメッセンジャークラス
+/// </summary>
 class EventMessenger
 {
+	// ------------------
+	// メンバ関数
+	// ------------------
 public:
 	// イベントを登録する
 	static void Attach(const EventList event, std::function<void(void*)> function);
@@ -22,6 +36,10 @@ public:
 	static void Detach(const EventList event);
 	// イベントリストをクリアする
 	static void ClearEventList();
+
+	// ------------------
+	// メンバ変数
+	// ------------------
 private:
 	// 登録されたイベントを保存する変数
 	static std::unordered_map<EventList, std::function<void(void*)>> s_eventList;

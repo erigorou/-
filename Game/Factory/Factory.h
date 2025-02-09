@@ -54,7 +54,7 @@ public:
 	static std::unique_ptr<Wall> CreateWall();
 
 	// プレイヤーの生成
-	static std::unique_ptr<Player> CreatePlayer(PlayScene* playScene);
+	static std::unique_ptr<Player> CreatePlayer();
 	// ボスの生成
 	static std::unique_ptr<Boss> CreateBoss();
 	// 小鬼の生成

@@ -221,7 +221,7 @@
     <ClInclude Include="Game\HitStop\HitStop.h" />
     <ClInclude Include="Game\Messenger\EventList.h" />
     <ClInclude Include="Game\Messenger\EventMessenger.h" />
-    <ClInclude Include="Game\Player\State\Header\Player_NockBacking.h" />
+    <ClInclude Include="Game\Player\State\Header\PlayerNockBacking.h" />
     <ClInclude Include="Game\Quest\QuestList\QuestPlayerAttack.h" />
     <ClInclude Include="Game\Quest\QuestList\QuestPlayerAvoid.h" />
     <ClInclude Include="Game\Quest\QuestList\QuestPlayerCombo.h" />
@@ -254,10 +254,10 @@
     <ClInclude Include="Game\Goblin\State\Header\GoblinAttacking.h" />
     <ClInclude Include="Game\Goblin\State\Header\GoblinIdling.h" />
     <ClInclude Include="Game\Player\Player.h" />
-    <ClInclude Include="Game\Player\State\Header\Player_Attacking_1.h" />
-    <ClInclude Include="Game\Player\State\Header\Player_Attacking_2.h" />
-    <ClInclude Include="Game\Player\State\Header\Player_Dodging.h" />
-    <ClInclude Include="Game\Player\State\Header\Player_Idling.h" />
+    <ClInclude Include="Game\Player\State\Header\PlayerAttacking1.h" />
+    <ClInclude Include="Game\Player\State\Header\PlayerAttacking2.h" />
+    <ClInclude Include="Game\Player\State\Header\PlayerDodging.h" />
+    <ClInclude Include="Game\Player\State\Header\PlayerIdling.h" />
     <ClInclude Include="Game\Scene\IScene.h" />
     <ClInclude Include="Game\Scene\PlayScene.h" />
     <ClInclude Include="Game\Scene\ResultScene.h" />
@@ -348,7 +348,7 @@
     <ClCompile Include="Game\Goblin\State\Score\GoblinTutorial.cpp" />
     <ClCompile Include="Game\HitStop\HitStop.cpp" />
     <ClCompile Include="Game\Messenger\EventMessenger.cpp" />
-    <ClCompile Include="Game\Player\State\Source\Player_NockBacking.cpp" />
+    <ClCompile Include="Game\Player\State\Source\PlayerNockBacking.cpp" />
     <ClCompile Include="Game\Quest\QuestList\QuestChangeTarget.h" />
     <ClCompile Include="Game\Quest\QuestManager.cpp" />
     <ClCompile Include="Game\Quest\QuestRenderer\QuestRenderer.cpp" />
@@ -372,10 +372,10 @@
     <ClCompile Include="Game\Goblin\State\Score\GoblinAttacking.cpp" />
     <ClCompile Include="Game\Goblin\State\Score\GoblinIdling.cpp" />
     <ClCompile Include="Game\Player\Player.cpp" />
-    <ClCompile Include="Game\Player\State\Source\Player_Attacking_1.cpp" />
-    <ClCompile Include="Game\Player\State\Source\Player_Attacking_2.cpp" />
-    <ClCompile Include="Game\Player\State\Source\Player_Idling.cpp" />
-    <ClCompile Include="Game\Player\State\Source\Player_Dodging.cpp" />
+    <ClCompile Include="Game\Player\State\Source\PlayerAttacking1.cpp" />
+    <ClCompile Include="Game\Player\State\Source\PlayerAttacking2.cpp" />
+    <ClCompile Include="Game\Player\State\Source\PlayerIdling.cpp" />
+    <ClCompile Include="Game\Player\State\Source\PlayerDodging.cpp" />
     <ClCompile Include="Game\Scene\PlayScene.cpp" />
     <ClCompile Include="Game\Scene\ResultScene.cpp" />
     <ClCompile Include="Game\Scene\SceneManager.cpp" />

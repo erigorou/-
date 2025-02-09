@@ -88,7 +88,7 @@ void PlayScene::CreateObjects()
 	m_floor = Factory::CreateFloor();	// フロア
 	m_sea = Factory::CreateSea();	// 海
 	m_wall = Factory::CreateWall();	// 壁
-	m_player = Factory::CreatePlayer(this);	// プレイヤ
+	m_player = Factory::CreatePlayer();	// プレイヤ
 
 	m_uiManager = Factory::CreateUIManager(this);	// UIマネージャー
 	m_enemyManager = Factory::CreateEnemyManager();	// 敵マネージャー
@@ -243,8 +243,12 @@ void PlayScene::Finalize()
 // --------------------------------
 void PlayScene::UpdateCamera(float elapsedTime)
 {
+	// 敵ターゲットの座標を取得
+	DirectX::SimpleMath::Vector3 targetPos = 
+		*(DirectX::SimpleMath::Vector3*)EventMessenger::ExecuteGetter(GetterList::GetTargetPosition);
+
 	// カメラの更新
-	m_camera->Update(m_player->GetPosition(), m_enemyManager->GetPicupEnemyPosition(), elapsedTime);
+	m_camera->Update(m_player->GetPosition(),targetPos, elapsedTime);
 }
 
 // --------------------------------
@@ -255,13 +259,6 @@ Boss* PlayScene::GetBoss()
 	return m_enemyManager->GetBossEnemy();
 }
 
-// --------------------------------
-// ターゲットとなる敵の座標を取得
-// --------------------------------
-DirectX::SimpleMath::Vector3 PlayScene::GetTargetPosition()
-{
-	return m_enemyManager->GetPicupEnemyPosition();
-}
 
 // --------------------------------
 // 次のシーンIDを取得

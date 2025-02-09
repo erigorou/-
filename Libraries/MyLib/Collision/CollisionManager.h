@@ -35,14 +35,27 @@ struct CollisionData
 	{}
 };
 
-// 衝突判定を削除する構造体
+// -------------------------------------------
+/// <summary>
+/// 衝突判定を削除する際に使用する構造体
+/// CollisionType : 衝突判定の形状
+/// IObject : 持ち主
+/// </summary>
+// -------------------------------------------
 struct DeleteCollisionData
 {
 	CollisionType collType;
 	IObject* object;
 };
 
-// 衝突したときに相手に渡すデータの構造体
+// -------------------------------------------
+/// <summary>
+/// 衝突時に相手に渡すデータ
+/// objType : オブジェクトの種類
+/// colType : 衝突判定の形状
+/// ccollision : 衝突判定
+/// </summary>
+// -------------------------------------------
 struct InterSectData
 {
 	ObjectType					objType;

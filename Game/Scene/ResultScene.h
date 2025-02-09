@@ -4,19 +4,12 @@
 */
 #pragma once
 #include "IScene.h"
-
-#include "../Data/GameData.h"
+#include "Game/Data/GameData.h"
 
 // ‘O•ûéŒ¾
 class CommonResources;
-class GameData;
 class WinResult;
 class LoseResult;
-
-namespace mylib
-{
-	class DebugCamera;
-}
 
 class ResultScene final : public IScene
 {

@@ -5,18 +5,13 @@
 #include "pch.h"
 #include "SceneManager.h"
 #include "Game/UI/Fade/Fade.h"
-
 #include "TitleScene.h"
 #include "PlayScene.h"
 #include "QuestSelectScene.h"
+#include "Game/Data/GameData.h"
 #include "ResultScene.h"
-
-#include "Game/Screen.h"
 #include "Game/CommonResources.h"
 #include "Game/GameResources.h"
-#include "DeviceResources.h"
-#include "Libraries/MyLib/MemoryLeakDetector.h"
-#include "Libraries/MyLib/InputManager.h"
 #include "../Sound/Sound.h"
 #include <cassert>
 

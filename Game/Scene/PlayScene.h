@@ -58,9 +58,6 @@ public:
 	// 衝突判定管理クラスを取得
 	CollisionManager* GetCollisionManager() { return m_collisionManager.get(); }
 
-	// ターゲットとなる敵の座標を取得
-	DirectX::SimpleMath::Vector3 GetTargetPosition();
-
 	// クエストマネージャーを取得
 	QuestManager* GetQuestManager() { return m_questManager.get(); }
 

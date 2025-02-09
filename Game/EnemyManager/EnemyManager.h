@@ -64,7 +64,7 @@ public:
 	// ボスの座標を取得
 	DirectX::SimpleMath::Vector3 GetBossPosition();
 	// ターゲットとしている敵の座標を取得
-	DirectX::SimpleMath::Vector3 GetPicupEnemyPosition();
+	void* GetPicupEnemyPosition();
 
 	// ---------------------------
 	// メンバ関数(in)

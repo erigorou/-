@@ -1,3 +1,10 @@
+// ----------------------------------------------------------
+// 名前;	KeyboardMessenger.cpp
+// 内容:	キーボードの入力を監視し、通知するクラス
+//			オブザーバーパターンを採用
+// 作成:	池田桜輔
+// ----------------------------------------------------------
+// インクルード
 #include "pch.h"
 #include "KeyboardMessenger.h"
 
@@ -7,7 +14,12 @@ std::vector<std::tuple<DirectX::Keyboard::Keys, IObserver*, KeyboardMessenger::K
 std::unordered_map<DirectX::Keyboard::Keys, std::vector<std::pair<int, int>>> KeyboardMessenger::s_keysRangeList;
 
 // -------------------------------------------------------
-// 観察者をアタッチする
+/// <summary>
+///	使用するキーを登録する
+/// </summary>
+/// <param name="key">使用するキー</param>
+/// <param name="observer">通知する対象</param>
+/// <param name="type">どのように押されたか</param>
 // -------------------------------------------------------
 void KeyboardMessenger::Attach(const DirectX::Keyboard::Keys& key, IObserver* observer, const KeyPressType type)
 {
@@ -16,7 +28,12 @@ void KeyboardMessenger::Attach(const DirectX::Keyboard::Keys& key, IObserver* ob
 }
 
 // -------------------------------------------------------
-// 観察者をデタッチする
+/// <summary>
+/// 登録された情報を解除する
+/// </summary>
+/// <param name="key">解除するキー</param>
+/// <param name="observer">通知していた対象</param>
+/// <param name="type">どのように押されていたか</param>
 // -------------------------------------------------------
 void KeyboardMessenger::Detach(const DirectX::Keyboard::Keys& key, IObserver* observer, const KeyPressType type)
 {
@@ -37,7 +54,10 @@ void KeyboardMessenger::Detach(const DirectX::Keyboard::Keys& key, IObserver* ob
 }
 
 // -------------------------------------------------------
-// キーボードの状態を通知する
+/// <summary>
+/// キーボードの状態を通知する
+/// </summary>
+/// <param name="keyboardTracker">キーボードトラッカー</param>
 // -------------------------------------------------------
 void KeyboardMessenger::Notify(const DirectX::Keyboard::KeyboardStateTracker& keyboardTracker)
 {
@@ -66,7 +86,10 @@ void KeyboardMessenger::Notify(const DirectX::Keyboard::KeyboardStateTracker& ke
 }
 
 // -------------------------------------------------------
-// キーボードの状態を通知する
+/// <summary>
+/// キーボードの状態を通知する
+/// </summary>
+/// <param name="keyboardState">キーボードステート</param>
 // -------------------------------------------------------
 void KeyboardMessenger::Notify(const DirectX::Keyboard::State& keyboardState)
 {
@@ -93,7 +116,9 @@ void KeyboardMessenger::Notify(const DirectX::Keyboard::State& keyboardState)
 }
 
 // -------------------------------------------------------
-// 観察者リストをソートする
+/// <summary>
+/// 観察者リストをソートする(処理軽量化)
+/// </summary>
 // -------------------------------------------------------
 void KeyboardMessenger::SortObserverList()
 {
@@ -113,7 +138,9 @@ void KeyboardMessenger::SortObserverList()
 }
 
 // -------------------------------------------------------
-// キー範囲リストを生成する
+/// <summary>
+/// キー範囲リストを生成する(処理軽量化)
+/// </summary>
 // -------------------------------------------------------
 void KeyboardMessenger::CreateKeyRangeList()
 {
@@ -148,7 +175,9 @@ void KeyboardMessenger::CreateKeyRangeList()
 }
 
 // -------------------------------------------------------
-// 観察者リストとキー範囲リストをクリアする
+/// <summary>
+/// 観察者とキー範囲リストクリアする
+/// </summary>
 // -------------------------------------------------------
 void KeyboardMessenger::Clear()
 {

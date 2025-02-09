@@ -4,13 +4,16 @@
 //			主にシーン間でのデータの受け渡しに使用する
 // 作成;	池田桜輔
 // ------------------------------------------------
+#pragma once
 
 /// <summary>
 /// ゲームデータを渡すためのクラス
 /// </summary>
 class GameData
 {
-	// 列挙型 -------------------
+	// ------------------------------
+	// 構造体
+	// ------------------------------
 public:
 	enum class BATTLE_RESULT : unsigned int
 	{
@@ -19,49 +22,51 @@ public:
 		NONE
 	};
 
-	// アクセサ関数 ------------
+	// ------------------------------
+	// アクセサ
+	// ------------------------------
 public:
-
-	// 静的関数===========================================
 	// GameDataクラスのインスタンスを取得する
 	static GameData* const GetInstance();
 
-	// 戦闘結果
-	void			SetBattleResult(BATTLE_RESULT result) { m_battleResult = result; }
-	BATTLE_RESULT	GetBattleResult() const { return m_battleResult; }
-
-	// 画面のフェード量
-	void	SetFadeValue(float value) { m_fadeValue = value; }
-	float	GetFadeValue()		const { return m_fadeValue; }
-
+	// 戦闘結果の設定
+	void SetBattleResult(BATTLE_RESULT result) { m_battleResult = result; }
+	// 戦闘結果の取得
+	BATTLE_RESULT GetBattleResult() const { return m_battleResult; }
+	// 画面のフェード量の設定
+	void SetFadeValue(float value) { m_fadeValue = value; }
+	// 画面のフェード量の取得	
+	float GetFadeValue() const { return m_fadeValue; }
 	// 経過時間
-	void	SetElapsedTime(float time) { m_elapsedTime = time; }
-	float	GetElapsedTime()	const { return m_elapsedTime; }
-
-	// ステージ選択
+	void SetElapsedTime(float time) { m_elapsedTime = time; }
+	// 経過時間の取得
+	float GetElapsedTime() const { return m_elapsedTime; }
+	// 選択したステージのインデックスの設定
 	void SetSelectStage(int stageIndex) { m_questIndex = stageIndex; }
+	// 選択したステージのインデックスの取得
 	int GetSelectStage() const { return m_questIndex; }
 
-	// インスタンス化の為のprivate	(多重生成を防ぐため)
-private:
+	// ------------------------------
+	// メンバ関数(公開)
+	// ------------------------------
+public:
 	// コンストラクタ
 	GameData();
-
-	// 公開関数 -----------------
-public:
 	// デストラクタ
 	~GameData() = default;
 
-	// メンバ変数 --------------
+	// ------------------------------
+	// メンバ変数
+	// ------------------------------
 private:
-
-	static std::unique_ptr<GameData> s_data;	// インスタンス
-
-	BATTLE_RESULT m_battleResult; // 戦闘結果
-
-	float m_fadeValue;	// 画面のフェード量
-
-	float m_elapsedTime; // 経過時間
-
-	int m_questIndex;	// クエストのインデックス
+	// インスタンス
+	static std::unique_ptr<GameData> s_data;
+	// 戦闘結果
+	BATTLE_RESULT m_battleResult;
+	// 画面のフェード量
+	float m_fadeValue;
+	// 経過時間
+	float m_elapsedTime;
+	// クエストのインデックス
+	int m_questIndex;
 };

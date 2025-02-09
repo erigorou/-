@@ -141,15 +141,14 @@ std::unique_ptr<Wall> Factory::CreateWall()
 /// <summary>
 /// プレイヤーの生成関数
 /// </summary>
-/// <param name="playScene">プレイシーンのポインタ</param>
 /// <returns>プレイヤーのポインタ</returns>
 // ---------------------------------------------
-std::unique_ptr<Player> Factory::CreatePlayer(PlayScene* playScene)
+std::unique_ptr<Player> Factory::CreatePlayer()
 {
 	// プレイヤーを宣言する
 	std::unique_ptr<Player> player;
 	// プレイヤーを生成する
-	player = std::make_unique<Player>(playScene);
+	player = std::make_unique<Player>();
 	// 初期化処理
 	player->Initialize();
 	// キーを登録

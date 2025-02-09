@@ -5,16 +5,10 @@
 /// ---------------------------
 
 #include "pch.h"
-#include <cassert>
-#include "Game/CommonResources.h"
-#include "DeviceResources.h"
-#include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
-#include "Libraries/MyLib/Collision.h"
 #include "Game/Messenger/EventMessenger.h"
 #include "Game/Sound/Sound.h"
 #include "Game/Weapon/WeaponState.h"
-
 #include "Game/Boss/Boss.h"
 #include "Libraries/MyLib/EasingFunctions.h"
 #include "Game/Weapon/Cudgel/Header/Cudgel_Sweeping.h"

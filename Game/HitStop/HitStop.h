@@ -1,35 +1,46 @@
-// ---------===========------------
-// ヒットストップ関連クラス
-// ---------===========------------
-
+// --------------------------------------------------
+// 名前:	HitStop.cpp
+// 内容:	ヒットストップ実行クラス
+// 作成:	池田桜輔
+// --------------------------------------------------
+#pragma once
 #ifndef HITSTOP_H
 #define HITSTOP_H
-
-#pragma once
+// インクルード
 #include "pch.h"
 
+/// <summary>
+/// 火っとストップクラス
+/// </summary>
 class HitStop
 {
-	// 固定値 ================
+
+	// ------------------------------
+	// 定数
+	// ------------------------------
+
 public:
+	// ヒットストップの遅延時間
+	static constexpr float DELAY = 0.05f;
+	// ヒットストップ時間
+	static constexpr float HITSTOP_TIME = DELAY + 0.5f;
 
-	static constexpr float DELAY = 0.05f;				// ヒットストップの遅延時間
-	static constexpr float HITSTOP_TIME = DELAY + 0.1f;	// ヒットストップ時間
 
-	// 静的関数　=============
-		// インスタンスの取得
+	// ------------------------------
+	// アクセサ
+	// ------------------------------
+	// インスタンスの取得
 	static HitStop* const GetInstance();
-
-	// アクセサ関数 ==========
-public:
 	// ヒットストップが有効か
 	bool IsActive() const { return m_isActive; }
 	// ヒットストップを有効にする
 	void SetActive() { m_isActive = true; }
-
+	// ヒットストップを計算した時間を取得
 	inline float GetSmoothDeltaTime() const { return m_smoothDeltaTime; }
 
-	// 公開関数 ============
+	// ------------------------------
+	// メンバ関数(公開)
+	// ------------------------------
 public:
 	// コンストラクタ
 	HitStop();
@@ -38,15 +49,19 @@ public:
 	// 更新処理
 	void Update(float elapsedTime);
 
-	// 非公開関数 ==========
+	// ------------------------------
+	// メンバ関数(非公開)
+	// ------------------------------
 private:
+	// ヒットストップの計算（残り時間）
 	void CalculateSmoothDeltaTime(float elapsedTime);
 
-	// 内部変数 ==========
+	// ------------------------------
+	// メンバ変数
+	// ------------------------------
 private:
 	// インスタンス
 	static std::unique_ptr<HitStop> s_hitStop;
-
 	// ヒットストップが有効か
 	bool m_isActive;
 	// ヒットストップ関連の時間

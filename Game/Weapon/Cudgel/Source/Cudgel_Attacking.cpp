@@ -5,14 +5,7 @@
 /// ---------------------------
 
 #include "pch.h"
-#include <cassert>
-#include "Game/CommonResources.h"
-#include "DeviceResources.h"
-#include "Libraries/MyLib/DebugString.h"
-#include "Libraries/MyLib/Math.h"
-#include "Libraries/MyLib/Collision.h"
 #include "Game/Messenger/EventMessenger.h"
-
 #include "Game/Player/Player.h"
 #include "Game/Boss/Boss.h"
 #include "Game/Weapon/Cudgel/Header/Cudgel_Attacking.h"
@@ -54,7 +47,8 @@ Cudgel_Attacking::~Cudgel_Attacking()
 // 初期化処理
 void Cudgel_Attacking::Initialize()
 {
-	m_worldMatrix = Matrix::Identity;			// ワールド行列の初期化
+	// ワールド行列の初期化
+	m_worldMatrix = Matrix::Identity;
 }
 
 // 事前処理
@@ -103,9 +97,6 @@ void Cudgel_Attacking::UpdateAnimation()
 	// 計算したワールド行列を設定
 	m_cudgel->SetWorldMatrix(m_worldMatrix);
 	m_cudgel->SetCollisionPosition(m_worldMatrix);
-
-	// プレイヤーに攻撃可能かを通知
-	EventMessenger::Execute(EventList::PlayerCanDamageCudgel, &m_canHit);
 }
 
 /// <summary>
@@ -131,8 +122,6 @@ void Cudgel_Attacking::HandleChargePhase(float t)
 /// </summary>
 void Cudgel_Attacking::HandleWindoupPhase()
 {
-	m_canHit = true;
-
 	// 振りかざしの角度を保持（-40度の状態を維持）
 	m_angleUD = DirectX::XMConvertToRadians(-40.0f);
 }
@@ -143,6 +132,8 @@ void Cudgel_Attacking::HandleWindoupPhase()
 /// <param name="t">0から1に正規化された時間。</param>
 void Cudgel_Attacking::HandleAttackPhase(float t)
 {
+	m_canHit = true;
+
 	// 20度から115度振り下ろす（0.3秒間で、イージング使用）
 	m_angleUD = DirectX::XMConvertToRadians(-40.0f + 135.0f * Easing::easeInQuint(t));
 	m_angleRL = DirectX::XMConvertToRadians(-ATTACK_ANGLE_UD * Easing::easeInQuint(t)) + m_angleRL;
@@ -208,8 +199,8 @@ void Cudgel_Attacking::UpdateAttackState()
 	else if (m_totalSeconds > ATTACK_TIME && m_totalSeconds <= STOP_TIME)	KeepStampPhase();
 	else if (m_totalSeconds > STOP_TIME && m_totalSeconds <= RETURN_TIME)	ReturnToOriginalPhase((m_totalSeconds - STOP_TIME) / (RETURN_TIME - STOP_TIME));
 
-	//// プレイヤーに攻撃可能状態を通知
-	//m_cudgel->GetPlayScene()->GetPlayer()->CanHit(m_canHit);
+	// プレイヤーに攻撃可能かを通知
+	EventMessenger::Execute(EventList::PlayerCanDamageCudgel, &m_canHit);
 }
 
 /// <summary>

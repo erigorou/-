@@ -1,14 +1,13 @@
-// ----------------
-//
-// 桃太郎の挙動
-//
-// ----------------
-
+// --------------------------------------------------
+// 名前:	Player.h
+// 内容:	プレイヤークラス
+//			プレイヤーのステートや衝突判定、描画やアニメーション処理
+// 作成:	池田桜輔
+// --------------------------------------------------
+// インクルード
 #include "pch.h"
-#include <cassert>
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
-#include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/Math.h"
 #include "Game/Messenger/EventMessenger.h"
 #include "Game/Sound/Sound.h"
@@ -18,16 +17,14 @@
 #include "Game/Weapon/Sword/Sword.h"
 #include "Game/Factory/Factory.h"
 #include "../Data/HPSystem.h"
-#include "Game/Boss/Boss.h"
-#include "Game/Goblin/Goblin.h"
-#include "Game/Stage/Wall/Wall.h"
 
-// --------------------------------
-//  コンストラクタ
-// --------------------------------
-Player::Player(PlayScene* playScene)
+// ---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+// ---------------------------------------------------------
+Player::Player()
 	:
-	m_playScene{ playScene },
 	m_elapsedTime{},
 	m_tilt{},
 	m_model{},
@@ -49,16 +46,21 @@ Player::Player(PlayScene* playScene)
 {
 }
 
-// --------------------------------
-//  デストラクタ
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+// ---------------------------------------------------------
 Player::~Player()
 {
+	Finalize();
 }
 
-// --------------------------------
-//  イニシャライズ
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+// ---------------------------------------------------------
 void Player::Initialize()
 {
 	// 描画関連の初期化
@@ -75,9 +77,11 @@ void Player::Initialize()
 	m_sword = Factory::CreateSword(this);
 }
 
-// --------------------------------
-// 当たり判定の作成関数
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 衝突判定の登録
+/// </summary>
+// ---------------------------------------------------------
 void Player::CreateCollision()
 {
 	// 体の当たり判定を作成
@@ -95,32 +99,47 @@ void Player::CreateCollision()
 	EventMessenger::Execute(EventList::AddSphereCollision, &data);
 }
 
-// --------------------------------
-//  ステートを作成関数
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// ステートの作成・初期化・登録
+/// </summary>
+// ---------------------------------------------------------
 void Player::CreateState()
 {
-	//////////////////////ステートの作成////////////////////////////
+	// 待機状態の作成・初期化・登録
 	m_playerIdling = std::make_unique<PlayerIdling>(this);
-	m_playerDodging = std::make_unique<PlayerDodging>(this);
-	m_playerAttacking_1 = std::make_unique<PlayerAttacking_1>(this);
-	m_playerAttacking_2 = std::make_unique<PlayerAttacking_2>(this);
-	m_playerNockBacking = std::make_unique<PlayerNockBacking>(this);
-
-	//////////////////////ステートの初期化////////////////////////////
 	m_playerIdling->Initialize();
+	m_states[static_cast<int>(PlayerState::Idling)] = m_playerIdling.get();
+
+	// 回避状態の作成・初期化・登録
+	m_playerDodging = std::make_unique<PlayerDodging>(this);
 	m_playerDodging->Initialize();
-	m_playerAttacking_1->Initialize();
-	m_playerAttacking_2->Initialize();
+	m_states[static_cast<int>(PlayerState::Dodging)] = m_playerDodging.get();
+
+	// 攻撃状態の作成・初期化・登録
+	m_playerAttacking1 = std::make_unique<PlayerAttacking1>(this);
+	m_playerAttacking1->Initialize();
+	m_states[static_cast<int>(PlayerState::Attacking1)] = m_playerAttacking1.get();
+
+	// 攻撃状態の作成・初期化・登録
+	m_playerAttacking2 = std::make_unique<PlayerAttacking2>(this);
+	m_playerAttacking2->Initialize();
+	m_states[static_cast<int>(PlayerState::Attacking2)] = m_playerAttacking2.get();
+
+	// やられ状態の作成・初期化・登録
+	m_playerNockBacking = std::make_unique<PlayerNockBacking>(this);
 	m_playerNockBacking->Initialize();
+	m_states[static_cast<int>(PlayerState::NockBacking)] = m_playerNockBacking.get();
 
 	// 最初のステートを設定
 	m_currentState = m_playerIdling.get();
 }
 
-// --------------------------------
-//  レンダリングの初期化
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// レンダリング系の初期化
+/// </summary>
+// ---------------------------------------------------------
 void Player::InitializeRender()
 {
 	CommonResources* resources = CommonResources::GetInstance();
@@ -144,9 +163,11 @@ void Player::InitializeRender()
 	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
 }
 
-// --------------------------------
-// イベントの登録
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// イベントの登録
+/// </summary>
+// ---------------------------------------------------------
 void Player::AttachEvent()
 {
 	// IObject* 型のオブジェクトを取得する
@@ -159,74 +180,89 @@ void Player::AttachEvent()
 	EventMessenger::Attach(EventList::PlayerCanDamageGoblin, std::bind(&Player::CanHitGoblin, this, std::placeholders::_1));
 }
 
-// -----------------------------------------------------
-// ステートを変更する
-// -----------------------------------------------------
-void Player::ChangeState(IPlayer* newState)
-{
-	// 同じステートで更新しようとすると早期リターン
-	if (m_currentState == newState) return;
 
-	m_currentState->PostUpdate();	// 事後更新処理を行う
-	m_currentState = newState;		// 現在のステートを変更する
-	m_currentState->PreUpdate();	// 新しいステートの事前更新を行う
+
+void Player::ChangeState(PlayerState state)
+{
+	int stateIndex = static_cast<int>(state);
+
+	// 現在のステートと同じなら処理なし
+	if (m_currentState == m_states[stateIndex]) return;
+
+	// 事後更新処理を行う
+	m_currentState->PostUpdate();
+	// 現在のステートを変更する
+	m_currentState = m_states[stateIndex];
+	// 新しいステートの事前更新を行う
+	m_currentState->PreUpdate();
 }
 
 // ---------------------------------------------------------
-// 行動に対する時間を計算する関数
+/// <summary>
+/// 一定時間でステートを変更する
+/// </summary>
+/// <param name="nowTime">現在の時間</param>
+/// <param name="totalTime">変更する時間</param>
+/// <param name="state">変更後のステート</param>
+/// <param name="elapsedTime">経過時間</param>
 // ---------------------------------------------------------
-void Player::TimeComparison(float& nowTime, const float totalTime, IPlayer* newState, const float elapsedTime)
+void Player::TimeComparison(float& nowTime, const float totalTime, PlayerState state, const float elapsedTime)
 {
 	// 定められた時間になったら
 	if (nowTime >= totalTime)
 	{
-		// シーンを変更
-		ChangeState(newState);
+		// 新しいステートに変更する
+		ChangeState(state);
 		return;
 	}
 	// 時間の計測を行う
 	nowTime += elapsedTime;
 }
 
-// ----------------------------------------------
-// プレイヤーの更新処理
-// ---------------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// ---------------------------------------------------------
 void Player::Update(const float elapsedTime)
 {
-	m_elapsedTime = elapsedTime;	// 経過時間を保存する
-
+	// 経過時間を保存するg
+	m_elapsedTime = elapsedTime;
 	// ステートの更新
 	m_currentState->Update(elapsedTime);
-
 	// プレイヤーの移動
-
 	CalculationMatrix();
 	m_pushBackValue = Vector3::Zero;
-
 	// 当たり判定の更新
 	m_bodyCollision->Center = m_position;
-	m_bodyCollision->Center.y = 0;
-
+	m_bodyCollision->Center.y = 0.0f;
 	// 武器の更新処理
 	m_sword->Update(elapsedTime);
-
 	// クールタイムを計測中
 	if (m_isHit && m_coolTime < COOL_TIME) { m_coolTime += elapsedTime; }
 	// クールタイム終わり
 	else if (m_coolTime >= COOL_TIME) { m_isHit = false; m_coolTime = 0.0f; }
 }
 
-// ----------------------------------------------
-// キー入力を取得する
-// ----------------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// キー入力を取得する(押した瞬間)
+/// </summary>
+/// <param name="key">押されたキー</param>
+// // ---------------------------------------------------------
 void Player::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 {
+	// ステートにもキー入力を伝達
 	m_currentState->OnKeyPressed(key);
 }
 
-// ----------------------------------------------
-// キー入力を取得する
-// ----------------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// キー入力を取得する(押されている間)
+/// </summary>
+/// <param name="key">押されたキー</param>
+// // ---------------------------------------------------------
 void Player::OnKeyDown(const DirectX::Keyboard::Keys& key)
 {
 	m_velocity = DirectX::SimpleMath::Vector3::Zero;
@@ -247,13 +283,17 @@ void Player::OnKeyDown(const DirectX::Keyboard::Keys& key)
 		if (key == DirectX::Keyboard::Left)		m_inputVector += INPUT_LEFT;
 		if (key == DirectX::Keyboard::Right)	m_inputVector += INPUT_RIGHT;
 	}
-
+	// ステートにもキー入力を伝達
 	m_currentState->OnKeyDown(key);
 }
 
-// ----------------------------------------------
-// 回転角の計算関数
-//　---------------------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// プレイヤーの回転の計算を行う
+/// </summary>
+/// <param name="enemyPos">ターゲットの座標</param>
+/// <returns>計算結果</returns>
+// ---------------------------------------------------------
 float Player::CalucratePlayerRotation(DirectX::SimpleMath::Vector3 const enemyPos)
 {
 	// 入力がない場合は0を返す
@@ -289,9 +329,11 @@ float Player::CalucratePlayerRotation(DirectX::SimpleMath::Vector3 const enemyPo
 	return resultAngle; // 計算結果（ラジアン単位）を返す
 }
 
-// --------------------------------
-//  移動の管理
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 移動方向を計算する
+/// </summary>
+// ---------------------------------------------------------
 void Player::MovePlayer()
 {
 	using namespace DirectX;
@@ -356,9 +398,11 @@ void Player::MovePlayer()
 	m_isInputMoveKey = false;	// 移動キーの入力をリセットする
 }
 
-// --------------------------------
-//  ワールド行列の計算
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// ワールド行列の計算を行う
+/// </summary>
+// ---------------------------------------------------------
 void Player::CalculationMatrix()
 {
 	using namespace DirectX::SimpleMath;
@@ -391,12 +435,17 @@ void Player::CalculationMatrix()
 	m_worldMatrix *= Matrix::CreateTranslation(m_position);
 }
 
-// --------------------------------
-//  表示処理
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// モデルを描画する
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="projection">プロジェクション行列</param>
+// ---------------------------------------------------------
 void Player::Render(
 	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection)
+	const DirectX::SimpleMath::Matrix& projection
+)
 {
 	CommonResources* resources = CommonResources::GetInstance();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
@@ -431,38 +480,52 @@ void Player::Render(
 
 	// 武器を描画する
 	m_sword->Render(view, projection);
-#ifdef _DEBUG
-#endif // !_DEBUG
 }
 
-// --------------------------------
-//  終了処理
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 終了処理を行う
+/// </summary>
+// ---------------------------------------------------------
 void Player::Finalize()
 {
+	// 衝突判定を削除するための構造体
+	DeleteCollisionData data = { CollisionType::Sphere, this };
+	// 当たり判定の削除
+	EventMessenger::Execute(EventList::DeleteCollision, &data);
+
+	// ステート配列の解放
+	for (int i = 0; i < STATE_MAX; i++)
+	{
+		m_states[i]->Finalize();
+		m_states[i] = nullptr;
+	}
 }
 
-// --------------------------------
-//  衝突処理
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 衝突したときのイベント
+/// </summary>
+/// <param name="data">相手のデータ</param>
+// ---------------------------------------------------------
 void Player::HitAction(InterSectData data)
 {
 	// 体との当たり判定
 	HitBossBody(data);
-
 	// 武器との当たり判定
 	HitCudgel(data);
-
 	// ステージとの当たり判定
 	HitStage(data);
-
 	// ゴブリンとの当たり判定
 	HitGoblin(data);
 }
 
-// --------------------------------
-// ダメージ処理
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// ダメージ処理
+/// </summary>
+/// <param name="damage">受けたダメージ量</param>
+// ---------------------------------------------------------
 void Player::Damage(float damage)
 {
 	// HPを減らす
@@ -472,22 +535,24 @@ void Player::Damage(float damage)
 	m_canHitCudgel = false;
 	m_canHitGoblin = false;
 	// ノックバックをする
-	ChangeState(m_playerNockBacking.get());
+	ChangeState(PlayerState::NockBacking);
 	// 効果音を鳴らす
 	Sound::GetInstance()->PlaySE(Sound::SE_TYPE::PLAYER_DAMAGED);
 }
 
-// --------------------------------
-//  敵の体との衝突判定
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// ボスとの衝突イベント
+/// </summary>
+/// <param name="data">衝突相手のデータ</param>
+// ---------------------------------------------------------
 void Player::HitBossBody(InterSectData data)
 {
 	if (data.objType == ObjectType::Boss && data.colType == CollisionType::Sphere)
 	{
 		// 敵のステートがダッシュ攻撃の場合で相手が攻撃中の場合
-		if (! m_isHit && m_canHitBoss)
-		{
-			Damage(1);
+		if (! m_isHit && m_canHitBoss){
+			Damage(BOSS_ATTACK_POWER);
 		}
 
 		// 衝突したオブジェクトの情報を取得
@@ -504,9 +569,12 @@ void Player::HitBossBody(InterSectData data)
 	}
 }
 
-// ---------------------------------
-// ゴブリンとの衝突
-// ---------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 小鬼の衝突イベント
+/// </summary>
+/// <param name="data">衝突相手のデータ</param>
+// ---------------------------------------------------------
 void Player::HitGoblin(InterSectData data)
 {
 	if (data.objType == ObjectType::Goblin && data.colType == CollisionType::Sphere)
@@ -515,7 +583,7 @@ void Player::HitGoblin(InterSectData data)
 		if (!m_isHit &&
 			m_canHitGoblin)
 		{
-			Damage(1);
+			Damage(GOBLIN_ATTACK_POWER);
 		}
 
 		// 衝突したオブジェクトの情報を取得
@@ -531,10 +599,12 @@ void Player::HitGoblin(InterSectData data)
 		m_bodyCollision->Center = m_position;
 	}
 }
-
-// --------------------------------
-// 敵の武器（金棒）との衝突判定
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// ボスの武器(金棒)の衝突イベント
+/// </summary>
+/// <param name="data">衝突相手のデータ</param>
+// ---------------------------------------------------------
 void Player::HitCudgel(InterSectData data)
 {
 	if (!m_isHit &&
@@ -544,13 +614,16 @@ void Player::HitCudgel(InterSectData data)
 		m_currentState != m_playerDodging.get()
 		)
 	{
-		Damage(1);
+		Damage(BOSS_CUDGEL_POWER);
 	}
 }
 
-// --------------------------------
-// ステージとの衝突判定
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// ステージとの衝突イベント
+/// </summary>
+/// <param name="data">衝突相手のデータ</param>
+// ---------------------------------------------------------
 void Player::HitStage(InterSectData data)
 {
 	if (data.objType == ObjectType::Stage && data.colType == CollisionType::Sphere)
@@ -568,25 +641,34 @@ void Player::HitStage(InterSectData data)
 	}
 }
 
-// --------------------------------
-//  ボスがプレイヤーを攻撃しているか
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// ボスがプレイヤーに対して攻撃ができるのか
+/// </summary>
+/// <param name="flag">フラグ</param>
+// ---------------------------------------------------------
 void Player::CanHitBoss(void* flag)
 {
 	m_canHitBoss = *(bool*)flag;
 }
 
-// --------------------------------
-//  金棒がプレイヤーを攻撃しているか
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// ボスの武器(金棒)がプレイヤーに対して攻撃ができるのか
+/// </summary>
+/// <param name="flag">フラグ</param>
+// ---------------------------------------------------------
 void Player::CanHitCudgel(void* flag)
 {
 	m_canHitCudgel = *(bool*)flag;
 }
 
-// --------------------------------
-//  ゴブリンがプレイヤーを攻撃しているか
-// --------------------------------
+// ---------------------------------------------------------
+/// <summary>
+/// 小鬼がプレイヤーに対して攻撃ができるのか
+/// </summary>
+/// <param name="flag">フラグ</param>
+// ---------------------------------------------------------
 void Player::CanHitGoblin(void* flag)
 {
 	m_canHitCudgel = *(bool*)flag;

@@ -1,24 +1,37 @@
+// --------------------------------------------------
+// 名前:	Player.h
+// 内容:	プレイヤークラス
+//			プレイヤーのステートや衝突判定、描画やアニメーション処理
+// 作成:	池田桜輔
+// --------------------------------------------------
+// インクルード
 #pragma once
-#include "Interface/IState.h"
-#include "Game/Scene/PlayScene.h"
-
-// オブジェクトの基底クラス　============================================
-#include "Interface/IObject.h"
 #include "Interface/IObserver.h"
+#include "Game/Player/State/Header/PlayerIdling.h"
+#include "Game/Player/State/Header/PlayerDodging.h"
+#include "Game/Player/State/Header/PlayerAttacking1.h"
+#include "Game/Player/State/Header/PlayerAttacking2.h"
+#include "Game/Player/State/Header/PlayerNockBacking.h"
 
-// プレイヤーに付与されるもの ===========================================
-class Sword;	// 武器
-class HPSystem;	// HP
+// クラスの前方宣言
+class Sword;
+class HPSystem;
 
-// プレイヤーの状態 =====================================================
-#include "Game/Player/State/Header/Player_Idling.h"			// 待機状態
-#include "Game/Player/State/Header/Player_Dodging.h"		// 回避状態
-#include "Game/Player/State/Header/Player_Attacking_1.h"	// 攻撃状態１
-#include "Game/Player/State/Header/Player_Attacking_2.h"	// 攻撃状態２
-#include "Game/Player/State/Header/Player_NockBacking.h"	// やられ状態
+/// <summary>
+/// プレイヤーのステート
+/// </summary>
+enum class PlayerState : int
+{
+	Idling,		// 待機
+	Dodging,	// 回避
+	Attacking1,	// 攻撃１
+	Attacking2,	// 攻撃２
+	NockBacking,// やられ
+};
 
-class Wall;
-
+/// <summary>
+/// プレイヤークラス
+/// </summary>
 class Player : public IObserver
 {
 	// -----------------
@@ -33,15 +46,30 @@ public:
 	static constexpr float PLAYER_SCALE = 0.1f;
 	// 当たり判定の大きさ
 	static constexpr float COLLISION_RADIUS = 12.0f;
+	// プレイヤーのHP
+	static constexpr float PLAYER_HP = 5.0f;
+	// ２段目以降の攻撃が許されるようになる時間
+	static constexpr float APPLIED_ATTACK_TIME = 1.4f;
+	// 回避ができるようになる時間
+	static constexpr float APPLIED_DODGE_TIME = 0.5f;
+	// 攻撃のクールタイム
+	static constexpr float COOL_TIME = 1.0f;
+	// 次の攻撃ができるようになる時間
+	static constexpr float X_COOL_TIME = 0.7f;
+	// 通常攻撃のアニメーション時間
+	static constexpr float NORMAL_ATTACK_TIME = 0.5f;
 
-	static constexpr float PLAYER_HP = 5.0f;	// プレイヤーのHP
-	static constexpr float APPLIED_ATTACK_TIME = 1.4f;	// ２段目以降の攻撃が許されるようになる時間
-	static constexpr float APPLIED_DODGE_TIME = 0.7f;	// 回避ができるようになる時間
-	static constexpr float COOL_TIME = 1.0f; // 攻撃のクールタイム
-	static constexpr float X_COOL_TIME = 0.7f; // 次の攻撃ができるようになる時間
+	// ボスの攻撃力
+	static constexpr float BOSS_ATTACK_POWER = 1.0f;
+	// ボスの武器(金棒)の攻撃力
+	static constexpr float BOSS_CUDGEL_POWER = 1.0f;
+	// 小鬼の攻撃力
+	static constexpr float GOBLIN_ATTACK_POWER = 1.0f;
 
-	static constexpr float NORMAL_ATTACK_TIME = 0.5f; // 通常攻撃のアニメーション時間
+	// ステートの最大数
+	static constexpr int STATE_MAX = 5;
 
+	// キー入力
 	static constexpr DirectX::SimpleMath::Vector2 INPUT_FLONT = { 0.0f	, 1.0f };	// 前
 	static constexpr DirectX::SimpleMath::Vector2 INPUT_BACK = { 0.0f	, -1.0f };	// 後
 	static constexpr DirectX::SimpleMath::Vector2 INPUT_LEFT = { -1.0f	, 0.0f };	// 左
@@ -51,46 +79,57 @@ public:
 	// アクセサ
 	// -----------------
 public:
-
+	// プレイヤーのオブジェクトを取得
 	Player* GetObject() { return this; }
+	// 座標を取得
+	DirectX::SimpleMath::Vector3 GetPosition()override { return m_position; }
+	// 座標を設定
+	void SetPosition(DirectX::SimpleMath::Vector3 position) { m_position = position; }
+	// 速度
+	DirectX::SimpleMath::Vector3 GetVelocity()	const { return m_velocity; }
+	// 速度
+	void SetSpeed(DirectX::SimpleMath::Vector3 velocity) { m_velocity = velocity; }
+	// 向き
+	DirectX::SimpleMath::Vector3 GetDirection()	const { return m_direction; }
 
-	DirectX::SimpleMath::Vector3 GetPosition()override { return m_position; }	// 座標
-	DirectX::SimpleMath::Vector3 GetVelocity()	const { return m_velocity; }	// 速度
-	DirectX::SimpleMath::Vector3 GetDirection()	const { return m_direction; }	// 向き
-	DirectX::SimpleMath::Vector2 GetinputVector()	const { return m_inputVector; }	// 入力ベクトル
-	float						 GetAngle()	const { return m_angle; }	// 回転角
-	HPSystem* GetPlayerHP()	const { return m_hp.get(); }	// HP
-	DirectX::BoundingSphere* GetBodyCollision() { return m_bodyCollision.get(); }	// 当たり判定
+	// 入力ベクトル
+	DirectX::SimpleMath::Vector2 GetinputVector()	const { return m_inputVector; }
+	// 回転角
+	float GetAngle()	const { return m_angle; }
+	// 回転角
+	void SetAngle(const float angle) { m_angle = angle; }
+	// HP
+	HPSystem* GetPlayerHP()	const { return m_hp.get(); }
+
+	// アニメーション用回転
+	void SetAnimationRotate(DirectX::SimpleMath::Vector3 rotate) { m_animationRotate = rotate; }
+	// 入力ベクトル
+	void SetInputVector(DirectX::SimpleMath::Vector2 inputVector) { m_inputVector = inputVector; }
+	// 加速度
+	void SetAcceleration(DirectX::SimpleMath::Vector3 acceleration) { m_acceleration = acceleration; }
+
 	PlayerIdling* GetPlayerIdlingState()	const { return m_playerIdling.get(); }	// 待機状態
 	PlayerDodging* GetPlayerDodgingState()	const { return m_playerDodging.get(); }	// 回避状態
-	PlayerAttacking_1* GetPlayerAttackingState1()	const { return m_playerAttacking_1.get(); }	// 攻撃状態１
-	PlayerAttacking_2* GetPlayerAttackingState2()	const { return m_playerAttacking_2.get(); }	// 攻撃状態２
+	PlayerAttacking1* GetPlayerAttackingState1()	const { return m_playerAttacking1.get(); }	// 攻撃状態１
+	PlayerAttacking2* GetPlayerAttackingState2()	const { return m_playerAttacking2.get(); }	// 攻撃状態２
 	PlayerNockBacking* GetPlayerNockBackingState()	const { return m_playerNockBacking.get(); }	// やられ状態
 	IPlayer* GetCurrentState()			const { return m_currentState; }	// 現在のステート
 
-	void SetPosition(DirectX::SimpleMath::Vector3 position) { m_position = position; }	// 座標
-	void SetAnimationRotate(DirectX::SimpleMath::Vector3 rotate) { m_animationRotate = rotate; }	// アニメーション用回転
-	void SetInputVector(DirectX::SimpleMath::Vector2 inputVector) { m_inputVector = inputVector; }	// 入力ベクトル
-	void SetSpeed(DirectX::SimpleMath::Vector3 velocity) { m_velocity = velocity; }	// 速度
-	void SetAcceleration(DirectX::SimpleMath::Vector3 acceleration) { m_acceleration = acceleration; }	// 加速度
-	void SetAngle(const float angle) { m_angle = angle; }	// 回転角
-
-	PlayScene* GetPlayScene()const { return m_playScene; }
 
 	// -------------------
 	// 公開関数
 	// -------------------
 public:
 	// コンストラクタ
-	Player(PlayScene* playScene);
+	Player();
 	// デストラクタ
 	~Player();
-	// 新しい状態に遷移する
-	void ChangeState(IPlayer* newState);
+	//  ステートを変更する
+	void ChangeState(PlayerState state);
 	// 初期化処理
 	void Initialize();
 	// 時間計測を行う
-	void TimeComparison(float& nowTime, const float totalTime, IPlayer* newState, const float elapsedTime);
+	void TimeComparison(float& nowTime, const float totalTime, PlayerState state, const float elapsedTime);
 	// 更新処理
 	void Update(const float elapsedTime);
 	// 描画処理
@@ -139,7 +178,6 @@ private:
 	void HitGoblin(InterSectData data);
 	// ステージとの衝突判定
 	void HitStage(InterSectData data);
-
 	// ダメージ
 	void Damage(float damage);
 
@@ -149,65 +187,69 @@ private:
 private:
 	// 武器
 	std::unique_ptr<Sword> m_sword;
-
 	// 位置
-	DirectX::SimpleMath::Vector3	m_position;
+	DirectX::SimpleMath::Vector3 m_position;
 	// 速度
-	DirectX::SimpleMath::Vector3	m_velocity;
+	DirectX::SimpleMath::Vector3 m_velocity;
 	// 入力保持用変数
-	DirectX::SimpleMath::Vector2	m_inputVector;
+	DirectX::SimpleMath::Vector2 m_inputVector;
 	// 向き
-	DirectX::SimpleMath::Vector3	m_direction;
+	DirectX::SimpleMath::Vector3 m_direction;
 	// 加速度
-	DirectX::SimpleMath::Vector3	m_acceleration;
+	DirectX::SimpleMath::Vector3 m_acceleration;
+	// 回転アニメーション
+	DirectX::SimpleMath::Vector3 m_animationRotate;
 	// 回転角
 	float m_angle;
 	// 前後の傾角
 	float m_tilt;
 	// 押し戻し量
-	DirectX::SimpleMath::Vector3	m_pushBackValue;
-	// 移動キーが押されているか
-	bool m_isInputMoveKey;
+	DirectX::SimpleMath::Vector3 m_pushBackValue;
 	// プレイヤー用のワールド行列
 	DirectX::SimpleMath::Matrix m_worldMatrix;
+	// 移動キーが押されているか
+	bool m_isInputMoveKey;
 
-	// ステート関連 =================================================
-	IPlayer* m_currentState;									// 現在のステート
-	std::unique_ptr<PlayerIdling> m_playerIdling;				// 待機状態
-	std::unique_ptr<PlayerDodging> m_playerDodging;				// 回避状態
-	std::unique_ptr<PlayerAttacking_1> m_playerAttacking_1;		// 攻撃状態１
-	std::unique_ptr<PlayerAttacking_2> m_playerAttacking_2;		// 攻撃状態２
-	std::unique_ptr<PlayerNockBacking> m_playerNockBacking;		// やられ状態
+	// 現在のステート
+	IPlayer* m_currentState;
+	// 待機状態
+	std::unique_ptr<PlayerIdling> m_playerIdling;
+	// 回避状態
+	std::unique_ptr<PlayerDodging> m_playerDodging;
+	// 攻撃状態
+	std::unique_ptr<PlayerAttacking1> m_playerAttacking1;
+	// 攻撃状態
+	std::unique_ptr<PlayerAttacking2> m_playerAttacking2;
+	// やられ状態
+	std::unique_ptr<PlayerNockBacking> m_playerNockBacking;
+	// ステートのリスト
+	IPlayer* m_states[STATE_MAX];
 
 	// HPシステム
 	std::unique_ptr<HPSystem> m_hp;
-
 	// ベーシックエフェクト
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
-
 	// 入力レイアウト
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
-
-	// パーティクル
+	// パーティクルの時間
 	float m_particleTime;
+	// 経過時間
 	float m_elapsedTime;
-
-	// プレイシーン(他のオブジェクトの情報の取得などに使う)
-	PlayScene* m_playScene;
-
 	// モデル
 	DirectX::Model* m_model;
 
-	// 体の当たり判定 ////////
-	std::unique_ptr<DirectX::BoundingSphere> m_bodyCollision;	// 衝突判定
-	bool m_isHit;		// 衝突したか
-	float m_coolTime;	// クールタイム
+	// 衝突判定
+	std::unique_ptr<DirectX::BoundingSphere> m_bodyCollision;
+	// 衝突したか
+	bool m_isHit;
+	// 衝突判定のクールタイム
+	float m_coolTime;
 
-	bool m_canHitBoss;		// 衝突可能か
-	bool m_canHitCudgel;		// 衝突可能か
-	bool m_canHitGoblin;		// 衝突可能か
-
-	// アニメーション用変数
-	DirectX::SimpleMath::Vector3 m_animationRotate;
+	// ボスからの攻撃を受けられるか
+	bool m_canHitBoss;
+	// ボスの武器からの攻撃を受けられるか
+	bool m_canHitCudgel;
+	// ゴブリンからの攻撃を受けられるか
+	bool m_canHitGoblin;
 };

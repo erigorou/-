@@ -1,3 +1,12 @@
+// ----------------------------------------------------------
+// 名前;	EventMessenger.cpp
+// 内容:	イベントメッセンジャークラス
+//			オブジェクトごとの保守性を高めるため
+//			オブザーバーシステムを採用
+// 作成:	池田桜輔
+// ----------------------------------------------------------
+
+// インクルード
 #include "pch.h"
 #include "EventMessenger.h"
 
@@ -5,27 +14,39 @@
 std::unordered_map<EventList, std::function<void(void*)>> EventMessenger::s_eventList;
 std::unordered_map<GetterList, std::function<void* ()>> EventMessenger::s_getterList;
 
-// -------------------------------------
-// イベントを登録する
-// -------------------------------------
+// -------------------------------------------------
+/// <summary>
+/// イベントを登録する
+/// </summary>
+/// <param name="event">イベントの種類</param>
+/// <param name="function">登録する関数</param>
+// -------------------------------------------------
 void EventMessenger::Attach(const EventList event, std::function<void(void*)> function)
 {
 	// イベントリストに新しいイベントを登録
 	s_eventList[event] = function;
 }
 
-// -------------------------------------
-// ゲッターを登録
-// -------------------------------------
+// -------------------------------------------------
+/// <summary>
+/// ゲッターの一ベントを登録する
+/// </summary>
+/// <param name="event">イベントの種類</param>
+/// <param name="function">登録する関数</param>
+// -------------------------------------------------
 void EventMessenger::AttachGetter(const GetterList event, std::function<void* ()> function)
 {
 	// イベントリストに新しいイベントを登録
 	s_getterList[event] = function;
 }
 
-// -------------------------------------
-// イベントを実行する
-// -------------------------------------
+// -------------------------------------------------
+/// <summary>
+/// イベントを実行する
+/// </summary>
+/// <param name="event">イベントの種類</param>
+/// <param name="args">イベントの引数</param>
+// -------------------------------------------------
 void EventMessenger::Execute(const EventList event, void* args)
 {
 	// イベントリストが空の場合
@@ -45,17 +66,21 @@ void EventMessenger::Execute(const EventList event, void* args)
 	}
 	else
 	{
-		//// std::string を std::wstring に変換
-		//std::wstring wideEventName(L"未登録のイベント");
+		// std::string を std::wstring に変換
+		std::wstring wideEventName(L"未登録のイベント");
 
-		//// MessageBox に渡す
-		//MessageBox(nullptr, wideEventName.c_str(), L"エラー", MB_OK);
+		// MessageBox に渡す
+		MessageBox(nullptr, wideEventName.c_str(), L"エラー", MB_OK);
 	}
 }
 
-// -------------------------------------
-// ゲッターを実行する
-// -------------------------------------
+// -------------------------------------------------
+/// <summary>
+/// ゲッターを実行する
+/// </summary>
+/// <param name="event">イベントの種類</param>
+/// <returns>イベントの戻り値</returns>
+// -------------------------------------------------
 void* EventMessenger::ExecuteGetter(const GetterList event)
 {
 	// イベントを検索
@@ -76,9 +101,12 @@ void* EventMessenger::ExecuteGetter(const GetterList event)
 	return nullptr;
 }
 
-// -------------------------------------
-// イベントを削除する
-// -------------------------------------
+// -------------------------------------------------
+/// <summary>
+/// 登録されたイベントを解除する
+/// </summary>
+/// <param name="event">解除するイベントの種類</param>
+// -------------------------------------------------
 void EventMessenger::Detach(const EventList event)
 {
 	if (s_eventList.empty()) {
@@ -89,9 +117,11 @@ void EventMessenger::Detach(const EventList event)
 	s_eventList.erase(event);
 }
 
-// -------------------------------------
-// イベントリストをクリアする
-// -------------------------------------
+// -------------------------------------------------
+/// <summary>
+/// イベントリストを殻にする
+/// </summary>
+// -------------------------------------------------
 void EventMessenger::ClearEventList()
 {
 	// 通常イベントをクリア

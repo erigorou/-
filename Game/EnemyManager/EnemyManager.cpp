@@ -70,6 +70,7 @@ void EnemyManager::Initialize()
 	EventMessenger::Attach(EventList::EnemyCanHit, std::bind(&EnemyManager::AllEnemyCanHit, this, std::placeholders::_1));
 	EventMessenger::Attach(EventList::DeleteAllGoblin, std::bind(&EnemyManager::AllGoblinHPZero, this));
 	EventMessenger::Attach(EventList::DeleteEnemy, std::bind(&EnemyManager::DeleteEnemy, this, std::placeholders::_1));
+	EventMessenger::AttachGetter(GetterList::GetTargetPosition, std::bind(&EnemyManager::GetPicupEnemyPosition, this));
 }
 
 // --------------------------------
@@ -195,15 +196,18 @@ DirectX::SimpleMath::Vector3 EnemyManager::GetBossPosition()
 /// </summary>
 /// <returns>ターゲット中の座標</returns>
 // --------------------------------
-DirectX::SimpleMath::Vector3 EnemyManager::GetPicupEnemyPosition()
+void* EnemyManager::GetPicupEnemyPosition()
 {
-	if (m_enemies.empty()) return DirectX::SimpleMath::Vector3{ 0.0f, 0.0f, 200.0f };
-
-	// 敵がいない場合
+	// ターゲットの敵の座標を取得(敵がいない場合)
+	DirectX::SimpleMath::Vector3 position = DirectX::SimpleMath::Vector3{ 0.0f, 0.0f, 200.0f };
+	// 敵がいない場合はそのまま返す
+	if (m_enemies.empty()) return &position;
+	// 敵の配列をオーバーしている場合は0番を見る
 	if (m_enemies.size() - 1 < m_targetEnemyIndex) m_targetEnemyIndex = 0;
-
-	// ターゲットの敵の座標を取得
-	return m_enemies[m_targetEnemyIndex].data->GetPosition();
+	// ターゲットの敵の座標を取得	
+	position = m_enemies[m_targetEnemyIndex].data->GetPosition();
+	// 座標を返す
+	return &position;
 }
 
 // --------------------------------
