@@ -54,8 +54,13 @@ private:
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
 	// テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
+	// スクリーンショット
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_captureTexture;
+
 	// テクスチャの中心座標
 	DirectX::SimpleMath::Vector2 m_texCenter;
+	// スクショテクスチャの中心座標
+	DirectX::SimpleMath::Vector2 m_captureTexCenter;
 
 	// 勝利リザルト
 	std::unique_ptr<WinResult>	m_winResult;

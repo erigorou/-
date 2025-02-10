@@ -32,7 +32,8 @@ Cudgel::Cudgel(Boss* boss)
 	:
 	m_boss(boss),
 	m_currentState(),
-	m_worldMatrix(DirectX::SimpleMath::Matrix::Identity)
+	m_worldMatrix(DirectX::SimpleMath::Matrix::Identity),
+	m_isDead(false)
 {
 }
 
@@ -74,8 +75,10 @@ void Cudgel::Initialize()
 	// モデルを取得する
 	m_model = GameResources::GetInstance()->GetModel("cudgel");
 
-	CreateState();			// ステートの作成
-	CreateCollision();		// 当たり判定の生成
+	// ステートの作成
+	CreateState();
+	// 当たり判定の生成
+	CreateCollision();
 }
 
 // --------------------------------
@@ -144,11 +147,11 @@ void Cudgel::Render(
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
 
+	// 死亡しているなら早期リターン
+	if (m_isDead) return;
+
 	// モデルを描画
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
-
-#ifdef _DEBUG
-#endif // _DEBUG
 }
 
 // --------------------------------

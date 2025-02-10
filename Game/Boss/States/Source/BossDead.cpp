@@ -38,6 +38,7 @@ BossDead::~BossDead()
 // ---------------------------
 void BossDead::Initialize()
 {
+	// 金棒の取得
 	auto object = EventMessenger::ExecuteGetter(GetterList::GetCudgel);
 	m_cudgel = object ? static_cast<Cudgel*>(object) : nullptr;
 }
@@ -63,6 +64,9 @@ void BossDead::PreUpdate()
 
 	// 全ての敵のHPを0にする
 	EventMessenger::Execute(EventList::DeleteAllGoblin, nullptr);
+
+	// ボスに死亡したことを伝える
+	m_cudgel->BossDead();
 }
 
 // ---------------------------
@@ -102,11 +106,15 @@ void BossDead::UpdateAnimation()
 	if (m_tiltAngle <= CAMERA_SHAKE_TIMING)
 	{
 		float shakePower = CAMERA_SHAKE_POWER;
+		// カメラを揺らす
 		EventMessenger::Execute(EventList::ShakeCamera, &shakePower);
 
+		// ボスの位置を取得
 		DirectX::SimpleMath::Vector3 BossPos = m_boss->GetPosition();
-
+		// ダストを生成
 		EventMessenger::Execute(EventList::CreateBashDust, &BossPos);
+		// スクショを取る
+		EventMessenger::Execute(EventList::TakeCapture, nullptr);
 	}
 }
 

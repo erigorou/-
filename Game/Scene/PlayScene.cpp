@@ -38,6 +38,7 @@ PlayScene::PlayScene()
 	: 
 	m_projection{},
 	m_isChangeScene{ false },
+	m_isScreenShot{ false },
 	m_smoothDeltaTime{}
 {
 	GameData::GetInstance()->SetBattleResult(GameData::BATTLE_RESULT::NONE);
@@ -73,6 +74,8 @@ void PlayScene::Initialize()
 
 	// イベントを登録する (シーン終了)
 	EventMessenger::Attach(EventList::EndPlayScene, std::bind(&PlayScene::ChangeResultScene, this));
+	// イベントを登録する (スクリーンショット)
+	EventMessenger::Attach(EventList::TakeCapture, std::bind(&PlayScene::TakeCapture, this));
 }
 
 // ------------------------------------------------------------------------------
@@ -259,6 +262,12 @@ void PlayScene::Render()
 	// 敵（複数）の描画
 	m_enemyManager->Render(view, m_projection);
 
+	if (m_isScreenShot)
+	{
+		// スクリーンショットを取る
+		TakeScreenShot();
+	}
+
 	// パーティクルの描画
 	DrawParticle(view, m_projection);
 	// クエストの描画
@@ -367,7 +376,72 @@ void PlayScene::GameOverChacker()
 		auto data = GameData::GetInstance();
 		data->SetBattleResult(GameData::BATTLE_RESULT::LOSE);
 
-		// リザルトシーンに遷移
-		ChangeResultScene();
+		// シーン遷移フラグを立てる
+		m_isChangeScene = true;
 	}
+}
+
+
+// ------------------------------------------------------------------------------
+/// <summary>
+/// スクリーンショットを取る(テクスチャとして保存する)
+/// </summary>
+// ------------------------------------------------------------------------------
+void PlayScene::TakeScreenShot()
+{
+	// すでにスクリーンショットを取っている場合は何もしない
+	if (m_captureSRV != nullptr) return;
+
+	// デバイスリソースの取得
+	auto device = CommonResources::GetInstance()->GetDeviceResources();
+	ID3D11Device* d3dDevice = device->GetD3DDevice();
+	ID3D11DeviceContext* context = device->GetD3DDeviceContext();
+
+	// 現在のレンダーターゲットビューを取得
+	ID3D11RenderTargetView* currentRTV = device->GetRenderTargetView();
+	Microsoft::WRL::ComPtr<ID3D11Resource> backBuffer;
+	currentRTV->GetResource(&backBuffer);
+
+	// バックバッファテクスチャを取得
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> backBufferTex;
+	backBuffer.As(&backBufferTex);
+
+	// バックバッファのテクスチャ設定を取得
+	D3D11_TEXTURE2D_DESC desc = {};
+	backBufferTex->GetDesc(&desc);
+
+	// GPU 用の DEFAULT テクスチャを作成
+	desc.Usage = D3D11_USAGE_DEFAULT; // GPU で使用可能にする
+	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE; // シェーダーリソースとしてバインド
+	desc.CPUAccessFlags = 0; // CPU からのアクセスは不要
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> gpuTexture;
+	HRESULT hr = d3dDevice->CreateTexture2D(&desc, nullptr, &gpuTexture);
+	if (FAILED(hr)) return;
+
+	// CPU 読み取り用の STAGING テクスチャを作成
+	desc.Usage = D3D11_USAGE_STAGING; // CPU 読み取り専用
+	desc.BindFlags = 0; // バインド不要
+	desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ; // CPU で読み取り可能に設定
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> stagingTexture;
+	hr = d3dDevice->CreateTexture2D(&desc, nullptr, &stagingTexture);
+	if (FAILED(hr)) return;
+
+	// GPU のレンダーターゲットから STAGING テクスチャにデータをコピー
+	context->CopyResource(stagingTexture.Get(), backBufferTex.Get());
+
+	// STAGING テクスチャから DEFAULT テクスチャに再コピー
+	context->CopyResource(gpuTexture.Get(), stagingTexture.Get());
+
+	// シェーダーリソースビューを作成
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+	srvDesc.Format = desc.Format; // フォーマットを設定
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D; // 2D テクスチャとして設定
+	srvDesc.Texture2D.MipLevels = 1; // ミップマップレベル数を指定
+	srvDesc.Texture2D.MostDetailedMip = 0; // 最初のミップマップレベルを指定
+
+	hr = d3dDevice->CreateShaderResourceView(gpuTexture.Get(), &srvDesc, &m_captureSRV);
+	if (FAILED(hr)) return;
+
+	// スクリーンショットを保存
+	GameData::GetInstance()->SetScreenShot(m_captureSRV);
 }

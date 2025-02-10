@@ -19,7 +19,7 @@ namespace mylib
 		static void LoadTexture(
 			ID3D11Device* device,	// デバイス
 			Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& texture,	// テクスチャ
-			const wchar_t* fileName											// ファイル名
+			const wchar_t* fileName										// ファイル名
 		);
 
 		// ------------------------------------------------

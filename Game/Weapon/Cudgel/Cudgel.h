@@ -14,29 +14,36 @@ class Cudgel_Sweeping;
 class Cudgel : public IObject
 {
 public:
+	// 大きさ
+	static const float CUDGEL_SCALE;
+	// 敵との離れている距離
+	static const DirectX::SimpleMath::Vector3 DIRECTION_ENEMY;
+	// 金棒の長さ
+	static const DirectX::SimpleMath::Vector3 CUDGEL_LENGTH;
+	// 金棒の取っ手の位置
+	static const DirectX::SimpleMath::Vector3 CUDGEL_HADLE_POS;
+
 	// このオブジェクトのポインタを渡す
 	void* GetCudgelObject() { return this; }
-
 	// ボスのポインタを渡す
 	Boss* GetBoss() { return m_boss; }
-
-	// 固定値
-	static const float CUDGEL_SCALE;							// 大きさ
-	static const DirectX::SimpleMath::Vector3 DIRECTION_ENEMY;	// 敵との離れている距離
-	static const DirectX::SimpleMath::Vector3 CUDGEL_LENGTH;	// 金棒の長さ
-	static const DirectX::SimpleMath::Vector3 CUDGEL_HADLE_POS;	// 金棒の取っ手の位置
-
-	DirectX::SimpleMath::Vector3	GetPosition()	override { return m_position; }	// 位置の取得
-	DirectX::Model* GetModel()		const { return m_model; }	// モデルの取得
-
-	Cudgel_Idling* GetIdling()		const { return m_idling.get(); }	// 待機
-	Cudgel_Attacking* GetAttacking()	const { return m_attacking.get(); }	// 攻撃
-	Cudgel_Sweeping* GetSweeping()	const { return m_sweeping.get(); }	// 薙ぎ払い
-
+	// ボスが死亡したことを伝える
+	void BossDead() { m_isDead = true; }
+	// 位置の取得
+	DirectX::SimpleMath::Vector3 GetPosition() override { return m_position; }
+	// モデルの取得
+	DirectX::Model* GetModel() const { return m_model; }
+	// 待機
+	Cudgel_Idling* GetIdling() const { return m_idling.get(); }
+	// 攻撃
+	Cudgel_Attacking* GetAttacking() const { return m_attacking.get(); }
+	// 薙ぎ払い
+	Cudgel_Sweeping* GetSweeping() const { return m_sweeping.get(); }
 	// 当たり判定の位置の設定
 	void SetCollisionPosition(DirectX::SimpleMath::Matrix mat) { m_originalBox.Transform(*m_collision.get(), mat); }
 	// ワールド行列の設定
 	void SetWorldMatrix(DirectX::SimpleMath::Matrix mat) { m_worldMatrix = mat; }
+
 
 public:
 	// コンストラクタ
@@ -99,6 +106,9 @@ private:
 	// プレイシーン（当たり判定の処理に使用）
 	PlayScene* m_playScene;
 
-	// 敵
+	// ボス
 	Boss* m_boss;
+
+	// ボスが死亡したか
+	bool m_isDead;
 };

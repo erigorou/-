@@ -58,6 +58,8 @@ public:
 	EnemyManager* GetEnemyManager() { return m_enemyManager.get(); }
 	// クエストマネージャーを取得
 	QuestManager* GetQuestManager() { return m_questManager.get(); }
+	// スクショを取る
+	void TakeCapture() { m_isScreenShot = true; }
 
 	// --------------------------
 	// メンバ関数(公開)
@@ -99,6 +101,9 @@ private:
 	// ゲームオーバー判定
 	void GameOverChacker();
 
+	// スクリーンショットを取る
+	void TakeScreenShot();
+
 	// --------------------------
 	// メンバ変数
 	// --------------------------
@@ -107,7 +112,6 @@ private:
 	DirectX::SimpleMath::Matrix m_projection;
 	// シーン遷移フラグ
 	bool m_isChangeScene;
-
 	// サウンドマネージャー
 	Sound* m_sound;
 	// UIマネージャー
@@ -128,19 +132,20 @@ private:
 	std::unique_ptr<Particle> m_particles;
 	// プレイヤー
 	std::unique_ptr<Player> m_player;
-
 	// 床
 	std::unique_ptr<Floor> m_floor;
 	// 海
 	std::unique_ptr<Sea> m_sea;
-	// 壁（天球の枠）
+	// 壁
 	std::unique_ptr<Wall> m_wall;
-
 	// キーボードの状態
 	DirectX::Keyboard::State m_keyboardState;
 	// キーボードの状態トラッカー
 	DirectX::Keyboard::KeyboardStateTracker m_keyboardStateTracker;
-
 	// ヒットストップのかかるオブジェクト用の変数
 	float m_smoothDeltaTime;
+	// 型抜き画像のみの描画結果を持つ画像のシェーダーリソースビュー
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_captureSRV;
+	// スクショを取るフラグ
+	bool m_isScreenShot;
 };

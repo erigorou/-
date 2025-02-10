@@ -37,6 +37,6 @@ GameData* const GameData::GetInstance()
 // ------------------------------------------------
 GameData::GameData()
 	: m_battleResult{ BATTLE_RESULT::WIN }
-	, m_questIndex{}
+	, m_questIndex{1}
 {
 }

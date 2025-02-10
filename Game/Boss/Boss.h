@@ -64,7 +64,7 @@ public:
 	// Õ“Ë”»’è‚ÌYÀ•W
 	static constexpr float COLISION_POS_Y = 10.0f;
 	// Å‘åHP
-	static constexpr float HP = 25.0f;
+	static constexpr float HP = 1.0f;
 	// “–‚½‚è”»’è‚Ì‘å‚«‚³
 	static constexpr float COLLISION_RADIUS = 20.0f;
 	// ƒ{ƒX‚Ì‚‚³

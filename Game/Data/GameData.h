@@ -46,6 +46,11 @@ public:
 	// 選択したステージのインデックスの取得
 	int GetSelectStage() const { return m_questIndex; }
 
+	// スクリーンショットの設定
+	void SetScreenShot(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> captureSRV) { m_captureSRV = captureSRV; }
+	// スクリーンショットの取得
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> GetScreenShot() const { return m_captureSRV; }
+
 	// ------------------------------
 	// メンバ関数(公開)
 	// ------------------------------
@@ -69,4 +74,7 @@ private:
 	float m_elapsedTime;
 	// クエストのインデックス
 	int m_questIndex;
+
+	// スクショ(テクスチャ)
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_captureSRV;
 };

@@ -29,6 +29,8 @@ ResultScene::ResultScene()
 	, m_winResult{}
 
 {
+	// スクリーンショットを取得
+	m_captureTexture = GameData::GetInstance()->GetScreenShot();
 }
 
 // ---------------------------------------------
@@ -84,6 +86,14 @@ void ResultScene::CreateTextures()
 		m_texture,
 		texSize,
 		m_texCenter
+	);
+
+
+	mylib::Texture::CalculateTextureCenter
+	(
+		m_captureTexture,
+		texSize,
+		m_captureTexCenter
 	);
 }
 
@@ -157,11 +167,26 @@ void ResultScene::Render()
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
 	m_spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, states->NonPremultiplied());
-
-	// TRIDENTロゴの描画位置を決める
+	
 	RECT rect{ CommonResources::GetInstance()->GetDeviceResources()->GetOutputSize() };
-	// 画像の中心を計算する
+	// スクリーンの中心を計算する
 	DirectX::SimpleMath::Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
+
+	// 背景前面にゲームデータがもつスクショを描画
+	if (GameData::GetInstance()->GetScreenShot())
+	{
+		m_spriteBatch->Draw(
+			m_captureTexture.Get(),
+			pos,
+			nullptr,
+			DirectX::Colors::White,
+			0.0f,
+			m_captureTexCenter,
+			1.0f,
+			DirectX::SpriteEffects_None,
+			0.0f
+		);
+	}
 
 	m_spriteBatch->Draw(
 		m_texture.Get(),			// テクスチャ(SRV)

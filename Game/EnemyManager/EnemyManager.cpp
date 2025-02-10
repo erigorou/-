@@ -105,7 +105,8 @@ void EnemyManager::Update(float elapsedTime)
 // --------------------------------
 void EnemyManager::Render(
 	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection)
+	const DirectX::SimpleMath::Matrix& projection
+)
 {
 	if (m_enemies.empty()) return;
 

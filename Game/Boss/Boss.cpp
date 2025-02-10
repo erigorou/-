@@ -330,7 +330,6 @@ void Boss::Finalize()
 {
 	// 削除用衝突判定のデータを作成
 	DeleteCollisionData data = { CollisionType::Sphere, this };
-
 	// 削除イベントを実行
 	EventMessenger::Execute(EventList::DeleteCollision, &data);
 }
@@ -410,6 +409,9 @@ void Boss::CheckAlive()
 		// 死亡状態に変更
 		BossState state = BossState::Dead;
 		ChangeState(&state);
+
+		// 金棒を非表示に
+		m_cudgel->BossDead();
 	}
 }
 
