@@ -1,5 +1,14 @@
-// 当たり判定やるやつ
 
+//
+// 名前:	CollisionManager
+// 内容:	衝突判定を管理するクラス
+//			オブジェクトがCollision生成時に
+//			このクラスに登録され、
+//			当たり判定の更新を行う
+// 作成:	池田桜輔
+// 
+
+// インクルード
 #include "pch.h"
 #include "CollisionManager.h"
 #include "Interface/IObject.h"
@@ -8,9 +17,9 @@
 #include "Game/Messenger/EventMessenger.h"
 #include "Libraries/Mylib/DebugDraw.h"
 
-// -------------------------------------------------------
-// コンストラクタ
-// -------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 CollisionManager::CollisionManager()
 	: m_basicEffect(nullptr)
 	, m_inputLayout(nullptr)
@@ -24,17 +33,21 @@ CollisionManager::CollisionManager()
 	Initialize();
 }
 
-// -------------------------------------------------------
-// デストラクタ
-// -------------------------------------------------------
+
+/// <summary>
+/// デストラクタ
+/// </summary>
+
 CollisionManager::~CollisionManager()
 {
 	Clear();
 }
 
-// -------------------------------------------------------
-// 初期化処理
-// -------------------------------------------------------
+
+/// <summary>
+/// 初期化処理
+/// </summary>
+
 void CollisionManager::Initialize()
 {
 	CommonResources* resources = CommonResources::GetInstance();
@@ -64,22 +77,27 @@ void CollisionManager::Initialize()
 	AddEventMessenger();
 }
 
-// -------------------------------------------------------
-// イベントの登録
-// -------------------------------------------------------
+
+/// <summary>
+/// イベントの登録
+/// </summary>
+
 void CollisionManager::AddEventMessenger()
 {
-	// OBBの登録
+	// OBBの登録イベント
 	EventMessenger::Attach(EventList::AddOBBCollision, std::bind(&CollisionManager::AddCollision<DirectX::BoundingOrientedBox>, this, std::placeholders::_1));
-	// Sphereの登録
+	// Sphereの登録イベント
 	EventMessenger::Attach(EventList::AddSphereCollision, std::bind(&CollisionManager::AddCollision<DirectX::BoundingSphere>, this, std::placeholders::_1));
-	// 衝突判定の削除
+	// 衝突判定の削除イベント
 	EventMessenger::Attach(EventList::DeleteCollision, std::bind(&CollisionManager::DeleteCollision, this, std::placeholders::_1));
 }
 
-// -------------------------------------------------------
-// 更新関数
-// -------------------------------------------------------
+
+/// <summary>
+/// 更新処理
+/// ここで衝突の検知を行う
+/// </summary>
+
 void CollisionManager::Update()
 {
 	// OBBのプロキシと球の当たり判定
@@ -141,9 +159,14 @@ void CollisionManager::Update()
 #endif // !_DEBUG
 }
 
-// -------------------------------------------------------
-// 描画関数
-// -------------------------------------------------------
+
+/// <summary>
+/// 描画処理
+/// デバッグ中の当たり判定の描画を行う
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="projection">プロジェクション行列</param>
+
 void CollisionManager::Render
 (
 	const DirectX::SimpleMath::Matrix& view,
@@ -156,18 +179,25 @@ void CollisionManager::Render
 	DrawCollision(view, projection);
 }
 
-// -------------------------------------------------------
-// 当たり判定をクリア
-// -------------------------------------------------------
+
+/// <summary>
+/// 登録された情報をクリアする
+/// </summary>
+
 void CollisionManager::Clear()
 {
 	m_obbs.clear();
 	m_spheres.clear();
 }
 
-// -------------------------------------------------------
-// 衝突判定を追加する
-// -------------------------------------------------------
+
+
+/// <summary>
+/// 衝突判定を登録する
+/// </summary>
+/// <typeparam name="T">衝突判定の形状　球：有向境界ボックス</typeparam>
+/// <param name="args">CollisionData型</param>
+
 template<typename T>
 void CollisionManager::AddCollision(void* args)
 {
@@ -191,9 +221,13 @@ void CollisionManager::AddCollision(void* args)
 	}
 }
 
-// -------------------------------------------------------
-// OBBのプロキシ球を生成する
-// -------------------------------------------------------
+
+/// <summary>
+/// 有向境界ボックスの処理を軽くするためのプロキシ球を作成
+/// </summary>
+/// <param name="collision">有向境界ボックス</param>
+/// <returns>プロキシ球</returns>
+
 inline std::unique_ptr<DirectX::BoundingSphere> CollisionManager::CreateProxySphere(const DirectX::BoundingOrientedBox* collision)
 {
 	// BoundingSphereをOBBの中心と最大半径で作成
@@ -208,9 +242,12 @@ inline std::unique_ptr<DirectX::BoundingSphere> CollisionManager::CreateProxySph
 	return std::move(proxy);
 }
 
-// -------------------------------------------------------
-/// 当たり判定を削除する
-// -------------------------------------------------------
+
+/// <summary>
+/// 登録された衝突判定を解除する
+/// </summary>
+/// <param name="args">DeleteCollisionData型</param>
+
 void CollisionManager::DeleteCollision(void* args)
 {
 	// argsはDeleteCollisionData構造体へのポインタ
@@ -254,9 +291,15 @@ void CollisionManager::DeleteCollision(void* args)
 	}
 }
 
-// -------------------------------------------------------
-// 衝突判定の範囲の描画
-// -------------------------------------------------------
+
+
+/// <summary>
+/// 衝突判定の描画を行う
+/// デバッグ中のみ有効
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="projection">プロジェクション行列</param>
+
 inline void CollisionManager::DrawCollision(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection)
 {
 	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
@@ -276,20 +319,20 @@ inline void CollisionManager::DrawCollision(DirectX::SimpleMath::Matrix view, Di
 
 	// Collision毎に判定を描画
 
-	for (const auto& obb : m_obbs)
-	{
+	// OBBの描画
+	for (const auto& obb : m_obbs){
 		DX::Draw(m_primitiveBatch.get(), *obb.collision, DirectX::Colors::Red);
 	}
 
-	for (const auto& sphere : m_spheres)
-	{
+	// Sphereの描画
+	for (const auto& sphere : m_spheres){
 		DX::Draw(m_primitiveBatch.get(), *sphere.collision, DirectX::Colors::Blue);
 	}
 
-	for (auto& sphere : m_obbProxies)
-	{
+	// OBBのプロキシ球の描画
+	for (auto& sphere : m_obbProxies){
 		DX::Draw(m_primitiveBatch.get(), *sphere, DirectX::Colors::LimeGreen);
 	}
-	// 秒が終了
+	// 描画終了
 	m_primitiveBatch->End();
 }

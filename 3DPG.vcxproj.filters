@@ -93,13 +93,7 @@
     <ClInclude Include="Game\Screen.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Libraries\MyLib\DebugCamera.h">
-      <Filter>Libraries\MyLib</Filter>
-    </ClInclude>
     <ClInclude Include="Libraries\MyLib\DebugString.h">
-      <Filter>Libraries\MyLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MyLib\InputManager.h">
       <Filter>Libraries\MyLib</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\MyLib\MemoryLeakDetector.h">
@@ -201,7 +195,6 @@
     <ClInclude Include="Game\Player\State\Header\PlayerNockBacking.h" />
     <ClInclude Include="Libraries\MyLib\KeyboardChacker.h" />
     <ClInclude Include="Game\EnemyManager\EnemyManager.h" />
-    <ClInclude Include="Libraries\MyLib\Invincibility\InvincibilityFrames.h" />
     <ClInclude Include="Game\Boss\States\Header\BossStarting.h" />
     <ClInclude Include="Game\Quest\QuestManager.h" />
     <ClInclude Include="Interface\IQuestChecker.h" />
@@ -238,6 +231,7 @@
     <ClInclude Include="Game\Scene\State\LoseResult.h" />
     <ClInclude Include="Game\Scene\State\WinResult.h" />
     <ClInclude Include="Game\Scene\ResultScene.h" />
+    <ClInclude Include="Libraries\MyLib\InputManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -252,13 +246,7 @@
     <ClCompile Include="Libraries\MyLib\DebugDraw.cpp">
       <Filter>Libraries\Microsoft</Filter>
     </ClCompile>
-    <ClCompile Include="Libraries\MyLib\DebugCamera.cpp">
-      <Filter>Libraries\MyLib</Filter>
-    </ClCompile>
     <ClCompile Include="Libraries\MyLib\DebugString.cpp">
-      <Filter>Libraries\MyLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MyLib\InputManager.cpp">
       <Filter>Libraries\MyLib</Filter>
     </ClCompile>
     <ClCompile Include="Game\Scene\PlayScene.cpp">
@@ -337,7 +325,6 @@
     <ClCompile Include="Game\Player\State\Source\PlayerNockBacking.cpp" />
     <ClCompile Include="Game\EnemyManager\EnemyManager.cpp" />
     <ClCompile Include="Interface\IEnemy.h" />
-    <ClCompile Include="Libraries\MyLib\Invincibility\InvincibilityFrames.cpp" />
     <ClCompile Include="Game\Boss\States\Source\BossStarting.cpp" />
     <ClCompile Include="Game\Quest\QuestManager.cpp" />
     <ClCompile Include="Game\Quest\QuestRenderer\QuestRenderer.cpp" />
@@ -356,6 +343,7 @@
     <ClCompile Include="Game\Scene\State\LoseResult.cpp" />
     <ClCompile Include="Game\Scene\State\WinResult.cpp" />
     <ClCompile Include="Game\Scene\ResultScene.cpp" />
+    <ClCompile Include="Libraries\MyLib\InputManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

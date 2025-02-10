@@ -309,11 +309,9 @@
     <ClInclude Include="Libraries\MyLib\Collision.h" />
     <ClInclude Include="Libraries\MyLib\Collision\CollisionManager.h" />
     <ClInclude Include="Libraries\MyLib\CustomShader\CustomShader.h" />
-    <ClInclude Include="Libraries\MyLib\DebugCamera.h" />
     <ClInclude Include="Libraries\MyLib\DebugString.h" />
     <ClInclude Include="Libraries\MyLib\EasingFunctions.h" />
     <ClInclude Include="Libraries\MyLib\InputManager.h" />
-    <ClInclude Include="Libraries\MyLib\Invincibility\InvincibilityFrames.h" />
     <ClInclude Include="Libraries\MyLib\KeyboardChacker.h" />
     <ClInclude Include="Libraries\MyLib\Math.h" />
     <ClInclude Include="Libraries\MyLib\MemoryLeakDetector.h" />
@@ -403,10 +401,8 @@
     <ClCompile Include="Libraries\MyLib\BinaryFile.cpp" />
     <ClCompile Include="Libraries\MyLib\Collision\CollisionManager.cpp" />
     <ClCompile Include="Libraries\MyLib\CustomShader\CustomShader.cpp" />
-    <ClCompile Include="Libraries\MyLib\DebugCamera.cpp" />
     <ClCompile Include="Libraries\MyLib\DebugString.cpp" />
     <ClCompile Include="Libraries\MyLib\InputManager.cpp" />
-    <ClCompile Include="Libraries\MyLib\Invincibility\InvincibilityFrames.cpp" />
     <ClCompile Include="Libraries\MyLib\SkySphere.cpp" />
     <ClCompile Include="Libraries\MyLib\Texture.cpp" />
     <ClCompile Include="Main.cpp" />

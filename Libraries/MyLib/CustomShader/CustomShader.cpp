@@ -1,10 +1,26 @@
+// ----------------------------------------------------------------------------
+//
+// 名前:	CustomShader.cpp
+// 内容:	カスタムシェーダークラス
+//			シェーダーを実装する際の基本的な機能を提供する
+//			読み込み・設定・解放など
+// 制作:	池田桜輔
+//
+// ----------------------------------------------------------------------------
+// インクルード
 #include "pch.h"
 #include "CustomShader.h"
 #include "../BinaryFile.h"
 
-// コンストラクタ
-CustomShader::CustomShader
-(
+/// <summary>
+/// コンストラクタ(生成処理)
+/// </summary>
+/// <param name="device">デバイス情報</param>
+/// <param name="vertexPath">頂点シェーダーのパス</param>
+/// <param name="pixelPath">ピクセルシェーダーのパス</param>
+/// <param name="geometryPath">ジオメトリシェーダーのパス</param>
+/// <param name="inputElements">入力レイアウト</param>
+CustomShader::CustomShader(
 	ID3D11Device* device,
 	const wchar_t* vertexPath,
 	const wchar_t* pixelPath,
@@ -20,8 +36,17 @@ CustomShader::CustomShader
 	if (geometryPath != nullptr) { LoadGeometryShader(device, geometryPath); }
 }
 
-// テクスチャの読み込み
-void CustomShader::LoadTexture(ID3D11Device* device, const wchar_t* path, std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>>& textureArray)
+/// <summary>
+/// テクスチャの読み込み
+/// </summary>
+/// <param name="device">デバイス情報</param>
+/// <param name="path">ファイルパス</param>
+/// <param name="textureArray">テクスチャの配列</param>
+void CustomShader::LoadTexture(
+	ID3D11Device* device,
+	const wchar_t* path,
+	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>>& textureArray
+)
 {
 	// テクスチャを保存する変数
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture;
@@ -40,7 +65,10 @@ void CustomShader::LoadTexture(ID3D11Device* device, const wchar_t* path, std::v
 	textureArray.push_back(texture);
 }
 
-// シェーダの開始
+/// <summary>
+/// シェーダーを設定する
+/// </summary>
+/// <param name="context">デバイスコンテキスト</param>
 void CustomShader::BeginSharder(ID3D11DeviceContext* context)
 {
 	//	作成されているシェーダーの設定
@@ -55,7 +83,10 @@ void CustomShader::BeginSharder(ID3D11DeviceContext* context)
 	}
 }
 
-// シェーダの終了
+/// <summary>
+/// シェーダーの解放
+/// </summary>
+/// <param name="context">デバイスコンテキスト</param>
 void CustomShader::EndSharder(ID3D11DeviceContext* context)
 {
 	//	シェーダの登録を解除
@@ -64,20 +95,30 @@ void CustomShader::EndSharder(ID3D11DeviceContext* context)
 	context->GSSetShader(nullptr, nullptr, 0);
 }
 
-// 頂点シェーダーの読み込み
-void CustomShader::LoadVertexShader(ID3D11Device* device, const wchar_t* filePath, const InputElements& inputElements)
+/// <summary>
+/// 頂点シェーダーの読み込み
+/// インプットレイアウトの作成
+/// </summary>
+/// <param name="device">デバイス情報</param>
+/// <param name="filePath">頂点シェーダーのファイルパス</param>
+/// <param name="inputElements">入力情報</param>
+void CustomShader::LoadVertexShader(
+	ID3D11Device* device, 
+	const wchar_t* filePath,
+	const InputElements& inputElements
+)
 {
-	//	バイナリファイルの読み込み
+	// ファイルの読み込み
 	BinaryFile VSData = BinaryFile::LoadFile(filePath);
 
-	//	頂点シェーダの作成
+	// 頂点シェーダの作成
 	if (FAILED(device->CreateVertexShader(VSData.GetData(), VSData.GetSize(), nullptr, m_vertexShader.GetAddressOf())))
 		MessageBox(0, L"頂点シェーダの生成に失敗しました.", NULL, MB_OK);
 
-	//	入力レイアウトを作成しなくていい
+	// 入力レイアウトを作成しなくていい
 	if (inputElements.size() <= 0) { return; }
 
-	//	入力レイアウトの作成
+	// 入力レイアウトの作成(頂点シェーダーの情報が必要なためここで生成)
 	device->CreateInputLayout(
 		&inputElements.begin()[0],
 		(UINT)inputElements.size(),
@@ -87,7 +128,11 @@ void CustomShader::LoadVertexShader(ID3D11Device* device, const wchar_t* filePat
 	);
 }
 
-// ピクセルシェーダーの読み込み
+/// <summary>
+/// ピクセルシェーダーの読み込み
+/// </summary>
+/// <param name="device">デバイス情報</param>
+/// <param name="filePath">ピクセルシェーダーのファイルパス</param>
 void CustomShader::LoadPixelShader(ID3D11Device* device, const wchar_t* filePath)
 {
 	//	バイナリファイルの読み込み
@@ -98,7 +143,11 @@ void CustomShader::LoadPixelShader(ID3D11Device* device, const wchar_t* filePath
 		MessageBox(0, L"ピクセルシェーダの生成に失敗しました.", NULL, MB_OK);
 }
 
-// ジオメトリシェーダーの読み込み
+/// <summary>
+/// ジオメトリシェーダーの読み込み
+/// </summary>
+/// <param name="device">デバイス情報</param>
+/// <param name="filePath">ジオメトリシェーダーのファイルパス</param>
 void CustomShader::LoadGeometryShader(ID3D11Device* device, const wchar_t* filePath)
 {
 	//	バイナリファイルの読み込み

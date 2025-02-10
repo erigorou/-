@@ -1,161 +1,332 @@
+// ---------------------------------------------------------------
+//
+// 名前:	EasingFunctions.h
+// 内容:	線型補間関数を提供する
+// 制作:	池田桜輔
+// 
+// ---------------------------------------------------------------
+
 #ifndef EASING_FUNCTIONS_H
 #define EASING_FUNCTIONS_H
 
+// インクルード
 #include "Math.h"
-#include <cmath> // For sin, cos, pow
+#include <cmath>
 
 // M_PI が定義されていない場合は手動で定義
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
 
+/// <summary>
+/// イージング関数
+/// </summary>
 class Easing
 {
 public:
-	static float easeInSine(float x) {
-		return 1.0f - static_cast<float>(cos((x * M_PI) / 2.0f));
+	/// <summary>
+	/// イーズインサイン関数
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeInSine(float easing) {
+		return 1.0f - static_cast<float>(cos((easing * M_PI) / 2.0f));
 	}
 
-	static float easeOutSine(float x) {
-		return static_cast<float>(sin((x * M_PI) / 2.0f));
+	/// <summary>
+	/// イーズアウトサイン関数
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeOutSine(float easing) {
+		return static_cast<float>(sin((easing * M_PI) / 2.0f));
 	}
 
-	static float easeInOutSine(float x) {
-		return static_cast<float>(-(cos(M_PI * x) - 1.0) / 2.0);
+	/// <summary>
+	/// イーズインアウトサイン関数
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeInOutSine(float easing) {
+		return static_cast<float>(-(cos(M_PI * easing) - 1.0) / 2.0);
 	}
 
-	static float easeInQuad(float x) {
-		return x * x;
+	/// <summary>
+	/// イーズイン二次関数（加速）
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeInQuad(float easing) {
+		return easing * easing;
 	}
 
-	static float easeOutQuad(float x) {
-		return 1.0f - (1.0f - x) * (1.0f - x);
+	/// <summary>
+	/// イーズインアウト二次関数（加速・減速）
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeInOutQuad(float easing) {
+		return easing < 0.5f ? 2.0f * easing * easing : 1.0f - static_cast<float>(pow(-2.0f * easing + 2.0f, 2) / 2.0);
 	}
 
-	static float easeInOutQuad(float x) {
-		return x < 0.5f ? 2.0f * x * x : 1.0f - static_cast<float>(pow(-2.0f * x + 2.0f, 2) / 2.0);
+	/// <summary>
+	/// イーズインキュービック関数（三次関数・加速）
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeInCubic(float easing) {
+		return easing * easing * easing;
 	}
 
-	static float easeInCubic(float x) {
-		return x * x * x;
+	/// <summary>
+	/// イーズアウトキュービック関数（三次関数・減速）
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeOutCubic(float easing) {
+		return 1.0f - static_cast<float>(pow(1.0f - easing, 3));
 	}
 
-	static float easeOutCubic(float x) {
-		return 1.0f - static_cast<float>(pow(1.0f - x, 3));
+	/// <summary>
+	/// イーズインアウトキュービック関数（三次関数・加速・減速）
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeInOutCubic(float easing) {
+		return easing < 0.5f ? 4.0f * easing * easing * easing : 1.0f - static_cast<float>(pow(-2.0f * easing + 2.0f, 3) / 2.0);
 	}
 
-	static float easeInOutCubic(float x) {
-		return x < 0.5f ? 4.0f * x * x * x : 1.0f - static_cast<float>(pow(-2.0f * x + 2.0f, 3) / 2.0);
+	/// <summary>
+	/// イーズインクォート関数（四次関数・加速）
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeInQuart(float easing) {
+		return easing * easing * easing * easing;
 	}
 
-	static float easeInQuart(float x) {
-		return x * x * x * x;
+	/// <summary>
+	/// イーズアウトクォート関数（四次関数・減速）
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeOutQuart(float easing) {
+		return 1.0f - static_cast<float>(pow(1.0f - easing, 4));
 	}
 
-	static float easeOutQuart(float x) {
-		return 1.0f - static_cast<float>(pow(1.0f - x, 4));
+	/// <summary>
+	/// イーズインアウトクォート関数（四次関数・加速・減速）
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeInOutQuart(float easing) {
+		return easing < 0.5f ? 8.0f * easing * easing * easing * easing : 1.0f - static_cast<float>(pow(-2.0f * easing + 2.0f, 4) / 2.0);
 	}
 
-	static float easeInOutQuart(float x) {
-		return x < 0.5f ? 8.0f * x * x * x * x : 1.0f - static_cast<float>(pow(-2.0f * x + 2.0f, 4) / 2.0);
+	/// <summary>
+	/// イーズインクィント関数（五次関数・加速）
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeInQuint(float easing) {
+		return easing * easing * easing * easing * easing;
 	}
 
-	static float easeInQuint(float x) {
-		return x * x * x * x * x;
+	/// <summary>
+	/// イーズアウトクィント関数（五次関数・減速）
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeOutQuint(float easing) {
+		return 1.0f - static_cast<float>(pow(1.0f - easing, 5));
 	}
 
-	static float easeOutQuint(float x) {
-		return 1.0f - static_cast<float>(pow(1.0f - x, 5));
+	/// <summary>
+	/// イーズインアウトクィント関数（五次関数・加速・減速）
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeInOutQuint(float easing) {
+		return easing < 0.5f ? 16.0f * easing * easing * easing * easing * easing : 1.0f - static_cast<float>(pow(-2.0f * easing + 2.0f, 5) / 2.0);
 	}
 
-	static float easeInOutQuint(float x) {
-		return x < 0.5f ? 16.0f * x * x * x * x * x : 1.0f - static_cast<float>(pow(-2.0f * x + 2.0f, 5) / 2.0);
+	/// <summary>
+	/// イーズインエクスポ関数（指数関数・加速）
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeInExpo(float easing) {
+		return easing == 0 ? 0 : static_cast<float>(pow(2.0, 10.0f * easing - 10.0f));
 	}
 
-	static float easeInExpo(float x) {
-		return x == 0 ? 0 : static_cast<float>(pow(2.0, 10.0f * x - 10.0f));
+	/// <summary>
+	/// イーズアウトエクスポ関数（指数関数・減速）
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeOutExpo(float easing) {
+		return easing == 1 ? 1 : 1.0f - static_cast<float>(pow(2.0, -10.0f * easing));
 	}
 
-	static float easeOutExpo(float x) {
-		return x == 1 ? 1 : 1.0f - static_cast<float>(pow(2.0, -10.0f * x));
+	/// <summary>
+	/// イーズインアウトエクスポ関数（指数関数・加速・減速）
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeInOutExpo(float easing) {
+		return easing == 0 ?
+			0 : easing == 1 ?
+			1 : easing < 0.5f ?
+			static_cast<float>(pow(2.0, 20.0f * easing - 10.0f) / 2.0) : 
+			static_cast<float>((2.0f - pow(2.0, -20.0f * easing + 10.0f)) / 2.0);
 	}
 
-	static float easeInOutExpo(float x) {
-		return x == 0 ? 0 : x == 1 ? 1 : x < 0.5f ? static_cast<float>(pow(2.0, 20.0f * x - 10.0f) / 2.0) : static_cast<float>((2.0f - pow(2.0, -20.0f * x + 10.0f)) / 2.0);
+	/// <summary>
+	/// イーズインサーク関数（円弧関数・加速）
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeInCirc(float easing) {
+		return 1.0f - static_cast<float>(sqrt(1.0f - pow(easing, 2)));
 	}
 
-	static float easeInCirc(float x) {
-		return 1.0f - static_cast<float>(sqrt(1.0f - pow(x, 2)));
+	/// <summary>
+	/// イーズアウトサーク関数（円弧関数・減速）
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeOutCirc(float easing) {
+		return static_cast<float>(sqrt(1.0f - pow(easing - 1.0f, 2)));
 	}
 
-	static float easeOutCirc(float x) {
-		return static_cast<float>(sqrt(1.0f - pow(x - 1.0f, 2)));
+	/// <summary>
+	/// イーズインアウトサーク関数（円弧関数・加速・減速）
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeInOutCirc(float easing) {
+		return easing < 0.5f ? static_cast<float>((1.0f - sqrt(1.0f - pow(2.0f * easing, 2))) / 2.0) : static_cast<float>((sqrt(1.0f - pow(-2.0f * easing + 2.0f, 2)) + 1.0f) / 2.0);
 	}
 
-	static float easeInOutCirc(float x) {
-		return x < 0.5f ? static_cast<float>((1.0f - sqrt(1.0f - pow(2.0f * x, 2))) / 2.0) : static_cast<float>((sqrt(1.0f - pow(-2.0f * x + 2.0f, 2)) + 1.0f) / 2.0);
+	/// <summary>
+	/// イーズインバック関数（オーバーシュート・加速）
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeInBack(float easing) {
+		const float overshoot = 1.70158f;
+		const float factor = overshoot + 1.0f;
+		return factor * easing * easing * easing - overshoot * easing * easing;
 	}
 
-	static float easeInBack(float x) {
-		const float c1 = 1.70158f;
-		const float c3 = c1 + 1.0f;
-		return c3 * x * x * x - c1 * x * x;
+	/// <summary>
+	/// イーズアウトバック関数（オーバーシュート・減速）
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeOutBack(float easing) {
+		const float overshoot = 1.70158f;
+		const float factor = overshoot + 1.0f;
+		return 1.0f + factor * static_cast<float>(pow(easing - 1.0f, 3)) + overshoot * static_cast<float>(pow(easing - 1.0f, 2));
 	}
 
-	static float easeOutBack(float x) {
-		const float c1 = 1.70158f;
-		const float c3 = c1 + 1.0f;
-		return 1.0f + c3 * static_cast<float>(pow(x - 1.0f, 3)) + c1 * static_cast<float>(pow(x - 1.0f, 2));
+	/// <summary>
+	/// イーズインアウトバック関数（オーバーシュート・加速・減速）
+	/// </summary>
+	/// <param name="easing">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeInOutBack(float easing) {
+		const float overshoot = 1.70158f;
+		const float adjustedOvershoot = overshoot * 1.525f;
+		return easing < 0.5f
+			? static_cast<float>((pow(2.0f * easing, 2) * ((adjustedOvershoot + 1.0f) * 2.0f * easing - adjustedOvershoot)) / 2.0)
+			: static_cast<float>((pow(2.0f * easing - 2.0f, 2) * ((adjustedOvershoot + 1.0f) * (2.0f * easing - 2.0f) + adjustedOvershoot) + 2.0f) / 2.0);
 	}
 
-	static float easeInOutBack(float x) {
-		const float c1 = 1.70158f;
-		const float c2 = c1 * 1.525f;
-		return x < 0.5f ? static_cast<float>((pow(2.0f * x, 2) * ((c2 + 1.0f) * 2.0f * x - c2)) / 2.0) : static_cast<float>((pow(2.0f * x - 2.0f, 2) * ((c2 + 1.0f) * (2.0f * x - 2.0f) + c2) + 2.0f) / 2.0);
+	/// <summary>
+	/// イーズイン・エラスティック関数（弾むような加速）
+	/// </summary>
+	/// <param name="progress">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeInElastic(float progress) {
+		const float period = (2.0f * M_PI) / 3.0f;
+		return progress == 0 ? 0 : progress == 1 ? 1 : -static_cast<float>(pow(2.0, 10.0f * progress - 10.0f) * sin((progress * 10.0f - 10.75f) * period));
 	}
 
-	static float easeInElastic(float x) {
-		const float c4 = (2.0f * M_PI) / 3.0f;
-		return x == 0 ? 0 : x == 1 ? 1 : -static_cast<float>(pow(2.0, 10.0f * x - 10.0f) * sin((x * 10.0f - 10.75f) * c4));
+	/// <summary>
+	/// イーズアウト・エラスティック関数（弾むような減速）
+	/// </summary>
+	/// <param name="progress">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeOutElastic(float progress) {
+		const float period = (2.0f * M_PI) / 3.0f;
+		return progress == 0 ? 0 : progress == 1 ? 1 : static_cast<float>(pow(2.0, -10.0f * progress) * sin((progress * 10.0f - 0.75f) * period) + 1.0f);
 	}
 
-	static float easeOutElastic(float x) {
-		const float c4 = (2.0f * M_PI) / 3.0f;
-		return x == 0 ? 0 : x == 1 ? 1 : static_cast<float>(pow(2.0, -10.0f * x) * sin((x * 10.0f - 0.75f) * c4) + 1.0f);
+	/// <summary>
+	/// イーズインアウト・エラスティック関数（弾むような加速・減速）
+	/// </summary>
+	/// <param name="progress">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeInOutElastic(float progress) {
+		const float period = (2.0f * M_PI) / 4.5f;
+		return progress == 0 ? 
+			0 : progress == 1 ?
+			1 : progress < 0.5f ?
+			static_cast<float>(-(pow(2.0, 20.0f * progress - 10.0f) * sin((20.0f * progress - 11.125f) * period)) / 2.0):
+			static_cast<float>((pow(2.0, -20.0f * progress + 10.0f) * sin((20.0f * progress - 11.125f) * period)) / 2.0 + 1.0f);
 	}
 
-	static float easeInOutElastic(float x) {
-		const float c5 = (2.0f * M_PI) / 4.5f;
-		return x == 0 ? 0 : x == 1 ? 1 : x < 0.5f ? static_cast<float>(-(pow(2.0, 20.0f * x - 10.0f) * sin((20.0f * x - 11.125f) * c5)) / 2.0) : static_cast<float>((pow(2.0, -20.0f * x + 10.0f) * sin((20.0f * x - 11.125f) * c5)) / 2.0 + 1.0f);
+	/// <summary>
+	/// イーズイン・バウンス関数（跳ねるような加速）
+	/// </summary>
+	/// <param name="progress">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeInBounce(float progress) {
+		return 1.0f - easeOutBounce(1.0f - progress);
 	}
 
-	static float easeInBounce(float x) {
-		return 1.0f - easeOutBounce(1.0f - x);
-	}
-
-	static float easeOutBounce(float x) {
-		const float n1 = 7.5625f;
-		const float d1 = 2.75f;
-		if (x < 1.0f / d1) {
-			return n1 * x * x;
+	/// <summary>
+	/// イーズアウト・バウンス関数（跳ねるような減速）
+	/// </summary>
+	/// <param name="progress">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeOutBounce(float progress) {
+		const float coefficient = 7.5625f;
+		const float divisor = 2.75f;
+		if (progress < 1.0f / divisor) {
+			return coefficient * progress * progress;
 		}
-		else if (x < 2.0f / d1) {
-			return n1 * (x -= 1.5f / d1) * x + 0.75f;
+		else if (progress < 2.0f / divisor) {
+			return coefficient * (progress -= 1.5f / divisor) * progress + 0.75f;
 		}
-		else if (x < 2.5f / d1) {
-			return n1 * (x -= 2.25f / d1) * x + 0.9375f;
+		else if (progress < 2.5f / divisor) {
+			return coefficient * (progress -= 2.25f / divisor) * progress + 0.9375f;
 		}
 		else {
-			return n1 * (x -= 2.625f / d1) * x + 0.984375f;
+			return coefficient * (progress -= 2.625f / divisor) * progress + 0.984375f;
 		}
 	}
 
-	static float easeInOutBounce(float x) {
-		return x < 0.5
-			? (1 - easeOutBounce(1 - 2 * x)) / 2
-			: (1 + easeOutBounce(2 * x - 1)) / 2;
+	/// <summary>
+	/// イーズインアウト・バウンス関数（跳ねるような加速・減速）
+	/// </summary>
+	/// <param name="progress">補間の進行度（0.0～1.0）</param>
+	/// <returns>補間後の値</returns>
+	static float easeInOutBounce(float progress) {
+		return progress < 0.5
+			? (1 - easeOutBounce(1 - 2 * progress)) / 2
+			: (1 + easeOutBounce(2 * progress - 1)) / 2;
 	}
 
+	/// <summary>
+	/// イーズイン・イーズアウトの中間点を設定する補間関数（前半はOut、後半はIn）
+	/// </summary>
+	/// <param name="t">補間の進行度（0.0～1.0）</param>
+	/// <param name="threshold">前半と後半の切り替えポイント（0.0～1.0）</param>
+	/// <param name="firstSize">補間開始時の値</param>
+	/// <param name="maxSize">補間終了時の値</param>
+	/// <returns>補間後の値</returns>
 	static float easeBetweenIn(float t, float threshold, float firstSize, float maxSize)
 	{
 		// threshold が 0 ~ 1 の範囲外の場合、補正
@@ -169,6 +340,14 @@ public:
 		}
 	}
 
+	/// <summary>
+	/// イーズアウト・イーズインの中間点を設定する補間関数（前半はOut、後半はInOut）
+	/// </summary>
+	/// <param name="t">補間の進行度（0.0～1.0）</param>
+	/// <param name="threshold">前半と後半の切り替えポイント（0.0～1.0）</param>
+	/// <param name="firstSize">補間開始時の値</param>
+	/// <param name="maxSize">補間終了時の値</param>
+	/// <returns>補間後の値</returns>
 	static float easeBetweenOut(float t, float threshold, float firstSize, float maxSize)
 	{
 		// threshold が 0 ~ 1 の範囲外の場合、補正

@@ -1,8 +1,9 @@
 //--------------------------------------------------------------------------------------
-// File: DebugDraw.cpp
-//
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
+// 
+// 名前:	DebugDraw.cpp
+// 内容:	PrimitiveBatchを使用してさまざまなデバッグ形状を描画するためのヘルパー
+// 制作:	Microsoft Corporation
+// 
 //-------------------------------------------------------------------------------------
 
 #include "pch.h"

@@ -1,10 +1,9 @@
 //--------------------------------------------------------------------------------------
-// File: DebugDraw.h
-//
-// Helpers for drawing various debug shapes using PrimitiveBatch
-//
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
+// 
+// 名前:	DebugDraw.h
+// 内容:	PrimitiveBatchを使用してさまざまなデバッグ形状を描画するためのヘルパー
+// 制作:	Microsoft Corporation
+// 
 //-------------------------------------------------------------------------------------
 
 #pragma once
