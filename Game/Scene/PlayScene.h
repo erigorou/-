@@ -8,9 +8,6 @@
 #pragma once
 // インクルード
 #include "IScene.h"
-#include "Game/Camera/Camera.h"
-#include "Libraries/MyLib/SkySphere.h"
-#include "Effects/Particle.h"
 
 // 前方宣言
 class CommonResources;
@@ -24,10 +21,13 @@ class Goblin;
 class Floor;
 class Sea;
 class Wall;
+class SkySphere;
 class PlaySceneUIManager;
 class CollisionManager;
 class EnemyManager;
 class QuestManager;
+class Particle;
+class Camera;
 
 /// <summary>
 /// プレイシーンを更新・描画するクラス

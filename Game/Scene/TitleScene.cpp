@@ -22,7 +22,7 @@
 #include "../Stage/Floor/Floor.h"
 #include "../Stage/Sea/Sea.h"
 #include "../TitleObject/TitleEnemy.h"
-#include "Libraries/MyLib/SkySphere.h"
+#include "../Stage/SkySphere/SkySphere.h"
 
 // ---------------------------------------------------------
 /// <summary>

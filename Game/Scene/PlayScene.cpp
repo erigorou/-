@@ -24,7 +24,10 @@
 #include "Game/Stage/Floor/Floor.h"
 #include "Game/Stage/Sea/Sea.h"
 #include "Game/Stage/Wall/Wall.h"
+#include "Game/Stage/SkySphere/SkySphere.h"
 #include "Game/UI/!PlaySceneUIManager/PlaySceneUIManager.h"
+#include "Effects/Particle.h"
+#include "Game/Camera/Camera.h"
 
 // ------------------------------------------------------------------------------
 /// <summary>

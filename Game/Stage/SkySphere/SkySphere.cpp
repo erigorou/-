@@ -6,7 +6,7 @@
 
 #include "pch.h"
 
-#include "Libraries/MyLib/SkySphere.h"
+#include "SkySphere.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 
