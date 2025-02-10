@@ -228,8 +228,6 @@
     <ClInclude Include="Game\Weapon\WeaponState.h" />
     <ClInclude Include="Game\Messenger\EventList.h" />
     <ClInclude Include="Game\Camera\State\ClearCameraState.h" />
-    <ClInclude Include="Game\Scene\State\LoseResult.h" />
-    <ClInclude Include="Game\Scene\State\WinResult.h" />
     <ClInclude Include="Game\Scene\ResultScene.h" />
     <ClInclude Include="Libraries\MyLib\InputManager.h" />
   </ItemGroup>
@@ -340,8 +338,6 @@
     <ClCompile Include="Effects\EnemyEffect\EnemyEffect.cpp" />
     <ClCompile Include="Game\Camera\State\ClearCameraState.cpp" />
     <ClCompile Include="Game\Quest\QuestList\QuestChangeTarget.h" />
-    <ClCompile Include="Game\Scene\State\LoseResult.cpp" />
-    <ClCompile Include="Game\Scene\State\WinResult.cpp" />
     <ClCompile Include="Game\Scene\ResultScene.cpp" />
     <ClCompile Include="Libraries\MyLib\InputManager.cpp" />
   </ItemGroup>

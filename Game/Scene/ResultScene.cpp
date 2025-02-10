@@ -9,12 +9,11 @@
 #include "pch.h"
 #include "ResultScene.h"
 #include "Game/CommonResources.h"
+#include "Game/GameResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/InputManager.h"
 #include "Libraries/MyLib/Texture.h"
 #include "../Sound/Sound.h"
-#include "State/WinResult.h"
-#include "State/LoseResult.h"
 
 // ---------------------------------------------
 /// <summary>
@@ -26,8 +25,6 @@ ResultScene::ResultScene()
 	, m_texture{}
 	, m_texCenter{}
 	, m_isChangeScene{}
-	, m_winResult{}
-
 {
 	// スクリーンショットを取得
 	m_captureTexture = GameData::GetInstance()->GetScreenShot();
@@ -55,8 +52,6 @@ void ResultScene::Initialize()
 	m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
 	// テクスチャの作成およびデータの取得
 	CreateTextures();
-	// オブジェクトの生成
-	CreateObjects();
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
 }
@@ -71,12 +66,8 @@ void ResultScene::CreateTextures()
 	// デバイスの取得
 	auto device = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
 
-	// テクスチャを読み込む
-	mylib::Texture::LoadTexture(
-		device,
-		m_texture,
-		L"Resources/Textures/SPACEでタイトル.png"
-	);
+	// テクスチャの作成
+	m_texture = GameResources::GetInstance()->GetTexture("result");
 
 	DirectX::SimpleMath::Vector2 texSize{};
 
@@ -88,7 +79,7 @@ void ResultScene::CreateTextures()
 		m_texCenter
 	);
 
-
+	// スクリーンショットのサイズと中心点を計算する
 	mylib::Texture::CalculateTextureCenter
 	(
 		m_captureTexture,
@@ -99,52 +90,12 @@ void ResultScene::CreateTextures()
 
 // ---------------------------------------------
 /// <summary>
-/// オブジェクトを生成する
-/// </summary>
-// ---------------------------------------------
-void ResultScene::CreateObjects()
-{
-	// 勝利リザルトの生成
-	m_winResult = std::make_unique<WinResult>();
-	m_loseResult = std::make_unique<LoseResult>();
-
-	// 初期化
-	m_winResult->Initialize();
-	m_loseResult->Initialize();
-
-	// ゲームデータを取得し、それに応じた結果を出す
-	switch (GameData::GetInstance()->GetBattleResult())
-	{
-		// 勝利
-	case GameData::BATTLE_RESULT::WIN:
-		m_currentState = m_winResult.get();
-		Sound::ChangeBGM(Sound::BGM_TYPE::WIN);
-		break;
-
-		// 敗北
-	case GameData::BATTLE_RESULT::LOSE:
-		m_currentState = m_loseResult.get();
-		Sound::ChangeBGM(Sound::BGM_TYPE::LOSE);
-		break;
-
-		// それ以外
-	default:
-		assert(false && "GameDataのVATTLE_RESULTに正しい結果が入ってません。");
-		break;
-	}
-}
-
-// ---------------------------------------------
-/// <summary>
 /// シーンを更新する
 /// </summary>
 /// <param name="elapsedTime">経過時間</param>
 // ---------------------------------------------
 void ResultScene::Update(float elapsedTime)
 {
-	// 現在のステートを更新する
-	m_currentState->Update(elapsedTime);
-
 	// キーボードステートトラッカーを取得する
 	const auto& kbTracker = CommonResources::GetInstance()->GetInputManager()->GetKeyboardTracker();
 
@@ -171,40 +122,39 @@ void ResultScene::Render()
 	RECT rect{ CommonResources::GetInstance()->GetDeviceResources()->GetOutputSize() };
 	// スクリーンの中心を計算する
 	DirectX::SimpleMath::Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
+	DirectX::SimpleMath::Vector2 pos2{ 350.0f , rect.bottom / 2.0f };
 
-	// 背景前面にゲームデータがもつスクショを描画
-	if (GameData::GetInstance()->GetScreenShot())
-	{
-		m_spriteBatch->Draw(
-			m_captureTexture.Get(),
-			pos,
-			nullptr,
-			DirectX::Colors::White,
-			0.0f,
-			m_captureTexCenter,
-			1.0f,
-			DirectX::SpriteEffects_None,
-			0.0f
-		);
-	}
 
 	m_spriteBatch->Draw(
 		m_texture.Get(),			// テクスチャ(SRV)
 		pos,						// スクリーンの表示位置(originの描画位置)
 		nullptr,					// 矩形(RECT)
 		DirectX::Colors::White,		// 背景色
-		0.0f,						// 回転角(ラジアン)
+		0.0f,// 回転角(ラジアン)
 		m_texCenter,				// テクスチャの基準になる表示位置(描画中心)(origin)
 		1.0f,						// スケール(scale)
 		DirectX::SpriteEffects_None,// エフェクト(effects)
 		0.0f						// レイヤ深度(画像のソートで必要)(layerDepth)
 	);
 
+	// 背景前面にゲームデータがもつスクショを描画
+	if (GameData::GetInstance()->GetScreenShot())
+	{
+		m_spriteBatch->Draw(
+			m_captureTexture.Get(),
+			pos2,
+			nullptr,
+			DirectX::Colors::White,
+			DirectX::XMConvertToRadians(-20.0f),// 回転角(ラジアン)
+			m_captureTexCenter,
+			0.5f,
+			DirectX::SpriteEffects_None,
+			0.0f
+		);
+	}
+
 	// スプライトバッチの終わり
 	m_spriteBatch->End();
-
-	// 勝ち負けの描画
-	m_currentState->Render();
 }
 
 // ---------------------------------------------

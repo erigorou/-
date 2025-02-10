@@ -6,14 +6,16 @@
 // 
 // --------------------------------------------------
 #pragma once
+// インクルード
 #include "IScene.h"
 #include "Game/Data/GameData.h"
 
 // 前方宣言
 class CommonResources;
-class WinResult;
-class LoseResult;
 
+/// <summary>
+/// リザルトシーン
+/// </summary>
 class ResultScene final : public IScene
 {
 	// -----------------------------
@@ -42,8 +44,6 @@ public:
 private:
 	// テクスチャの作成
 	void CreateTextures();
-	// オブジェクトの作成
-	void CreateObjects();
 
 	// -----------------------------
 	// メンバ変数
@@ -62,12 +62,6 @@ private:
 	// スクショテクスチャの中心座標
 	DirectX::SimpleMath::Vector2 m_captureTexCenter;
 
-	// 勝利リザルト
-	std::unique_ptr<WinResult>	m_winResult;
-	// 敗北リザルト
-	std::unique_ptr<LoseResult> m_loseResult;
-	// 現在のステート
-	IScene* m_currentState;
 	// シーン遷移フラグ
 	bool m_isChangeScene;
 	// ゲームデータ

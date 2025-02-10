@@ -340,7 +340,18 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 	// シーン変更がある場合
 	if (m_isChangeScene)
 	{
-		return IScene::SceneID::RESULT;
+		switch (GameData::GetInstance()->GetBattleResult())
+		{
+			// 勝利したばあいはリザルトに遷移
+		case GameData::BATTLE_RESULT::WIN:
+			return IScene::SceneID::RESULT;
+			break;
+
+			// 敗北した場合はそのままタイトルに遷移
+		case GameData::BATTLE_RESULT::LOSE:
+			return IScene::SceneID::TITLE;
+			break;
+		}
 	}
 
 	// シーン変更がない場合

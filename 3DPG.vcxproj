@@ -236,8 +236,6 @@
     <ClInclude Include="Game\Quest\TutorialList\TutorialStart.h" />
     <ClInclude Include="Game\Quest\Tutorial\Tutorial.h" />
     <ClInclude Include="Game\Scene\ResultScene.h" />
-    <ClInclude Include="Game\Scene\State\LoseResult.h" />
-    <ClInclude Include="Game\Scene\State\WinResult.h" />
     <ClInclude Include="Game\Scene\TitleScene.h" />
     <ClInclude Include="Game\Stage\Sea\Sea.h" />
     <ClInclude Include="Game\TitleObject\EnemyTitleIdling.h" />
@@ -349,8 +347,6 @@
     <ClCompile Include="Game\Quest\QuestRenderer\QuestRenderer.cpp" />
     <ClCompile Include="Game\Quest\Tutorial\Tutorial.cpp" />
     <ClCompile Include="Game\Scene\ResultScene.cpp" />
-    <ClCompile Include="Game\Scene\State\LoseResult.cpp" />
-    <ClCompile Include="Game\Scene\State\WinResult.cpp" />
     <ClCompile Include="Game\Scene\TitleScene.cpp" />
     <ClCompile Include="Game\Stage\Sea\Sea.cpp" />
     <ClCompile Include="Game\TitleObject\EnemyTitleIdling.cpp" />

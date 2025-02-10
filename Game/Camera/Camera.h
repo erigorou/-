@@ -43,7 +43,7 @@ public:
 	static constexpr float MINIMAL = 0.01f;
 
 	// ƒJƒƒ‰‚Ì’Ç]ŒW”
-	static constexpr float CAMERA_EYE_RATE = 0.5f;
+	static constexpr float CAMERA_EYE_RATE = 1.0f;
 	// ƒ^[ƒQƒbƒg‚Ì’Ç]ŒW”
 	static constexpr float CAMERA_TARGET_RATE = 0.05f;
 

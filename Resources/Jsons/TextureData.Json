@@ -5,6 +5,7 @@
   "noize": "noizePattern.png",
   "fade": "Load.png",
   "mask": "mask.png",
+  "result": "Result.png",
   "warning": "Warning.png",
   "startButton": "StartButton.png",
   "tutorial": "Quest/TitleTutorial.png",
