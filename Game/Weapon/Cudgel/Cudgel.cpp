@@ -1,33 +1,30 @@
-// ----------------
+// ----------------------------------------------------------
+// 名前:	Cudgel
+// 
+// 内容:	ボス鬼の武器の金棒クラス
+//			更新処理や描画を行う
+// 			ステートマシーンを使用
 //
-// 鬼の金棒
-//
-// ----------------
-
+// 制作:	池田桜輔
+// ----------------------------------------------------------
+// インクルード
 #include "pch.h"
-#include <Model.h>
-#include <cassert>
-// ヘッダー
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Game/GameResources.h"
 #include "Libraries/MyLib/Collision.h"
 #include "Game/Messenger/EventMessenger.h"
-
 #include "Game/Boss/Boss.h"
 #include "Game/Weapon/Cudgel/Cudgel.h"
-#include "header/Cudgel_Idling.h"		// 待機
-#include "header/Cudgel_Attacking.h"	// 攻撃
-#include "header/Cudgel_Sweeping.h"		// 薙ぎ払い
+#include "header/CudgelIdling.h"
+#include "header/CudgelAttacking.h"
+#include "header/CudgelSweeping.h"
 
-const float Cudgel::CUDGEL_SCALE = Boss::BOSS_SCALE * 1.5f;						// 金棒の拡大率
-const DirectX::SimpleMath::Vector3 Cudgel::DIRECTION_ENEMY = { 8.0f, 5.0f, 0.0f };	// 持ち手の距離（敵と比較）
-const DirectX::SimpleMath::Vector3 Cudgel::CUDGEL_LENGTH = { 0.0f, 50.0f, 0.0f };	// 金棒の長さ（一番下から）
-const DirectX::SimpleMath::Vector3 Cudgel::CUDGEL_HADLE_POS = { 0.0f, 10.0f, 0.0f };	// 金棒の取っ手の部分（一番上）
 
-// --------------------------------
-// コンストラクタ
-// --------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="boss"></param>
 Cudgel::Cudgel(Boss* boss)
 	:
 	m_boss(boss),
@@ -37,36 +34,18 @@ Cudgel::Cudgel(Boss* boss)
 {
 }
 
-// --------------------------------
-// デストラクタ
-// --------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 Cudgel::~Cudgel()
 {
 }
 
-// --------------------------------
-// 初期化処理
-// --------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
 void Cudgel::Initialize()
 {
-	CommonResources* resources = CommonResources::GetInstance();
-
-	auto device = resources->GetDeviceResources()->GetD3DDevice();
-	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
-
-	// ベーシックエフェクトを作成する
-	m_basicEffect = std::make_unique<DirectX::BasicEffect>(device);
-	m_basicEffect->SetVertexColorEnabled(true);
-	// 入力レイアウトを作成する
-	DX::ThrowIfFailed(
-		DirectX::CreateInputLayoutFromEffect<DirectX::VertexPositionColor>(
-			device,
-			m_basicEffect.get(),
-			m_inputLayout.ReleaseAndGetAddressOf())
-	);
-	// プリミティブバッチの作成
-	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
-
 	// 金棒のポインタを取得
 	EventMessenger::AttachGetter(GetterList::GetCudgel, std::bind(&Cudgel::GetCudgelObject, this));
 	// 金棒のステートを変更
@@ -81,33 +60,33 @@ void Cudgel::Initialize()
 	CreateCollision();
 }
 
-// --------------------------------
-// 状態の生成
-// --------------------------------
+/// <summary>
+/// 状態の生成
+/// </summary>
 void Cudgel::CreateState()
 {
-	// 状態の生成
-	m_idling = std::make_unique<Cudgel_Idling>(this);		// 待機
-	m_attacking = std::make_unique<Cudgel_Attacking>(this);		// 攻撃
-	m_sweeping = std::make_unique<Cudgel_Sweeping>(this);		// 薙ぎ払い
+	// 待機の生成・初期化・登録
+	m_idling = std::make_unique<CudgelIdling>(this);
+	m_idling->Initialize();
+	m_states.push_back(m_idling.get());
 
-	// 状態の初期化
-	m_idling->Initialize();	// 待機
-	m_attacking->Initialize();	// 攻撃
-	m_sweeping->Initialize();	// 薙ぎ払い
+	// 攻撃の生成・初期化・登録
+	m_attacking = std::make_unique<CudgelAttacking>(this);
+	m_attacking->Initialize();
+	m_states.push_back(m_attacking.get());
+
+	// 薙ぎ払いの生成・初期化・登録
+	m_sweeping = std::make_unique<CudgelSweeping>(this);
+	m_sweeping->Initialize();
+	m_states.push_back(m_sweeping.get());
 
 	// 初期状態を指定
 	m_currentState = m_idling.get();
-
-	// ステートのリストに追加
-	m_states.push_back(m_idling.get());
-	m_states.push_back(m_attacking.get());
-	m_states.push_back(m_sweeping.get());
 }
 
-// --------------------------------
-// 当たり判定の生成
-// --------------------------------
+/// <summary>
+/// 当たり判定生成：登録
+/// </summary>
 void Cudgel::CreateCollision()
 {
 	m_originalBox = Collision::Get_BoundingOrientedBox_FromMODEL(m_model);
@@ -126,18 +105,21 @@ void Cudgel::CreateCollision()
 	EventMessenger::Execute(EventList::AddOBBCollision, &data);
 }
 
-// --------------------------------
-// 更新処理
-// --------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
 void Cudgel::Update(float elapsedTime)
 {
 	// 現在のステートの更新処理
 	m_currentState->Update(elapsedTime);
 }
 
-// --------------------------------
-// 描画処理
-// --------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="projection">プロジェクション行列</param>
 void Cudgel::Render(
 	const DirectX::SimpleMath::Matrix& view,
 	const DirectX::SimpleMath::Matrix& projection
@@ -154,16 +136,17 @@ void Cudgel::Render(
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 }
 
-// --------------------------------
-// 終了処理
-// --------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
 void Cudgel::Finalize()
 {
 }
 
-// --------------------------------
-// ステートの変更
-// --------------------------------
+/// <summary>
+/// ステート変更
+/// </summary>
+/// <param name="state">新しいステート</param>
 void Cudgel::ChangeState(void* state)
 {
 	int index = *static_cast<int*>(state);
@@ -179,6 +162,10 @@ void Cudgel::ChangeState(void* state)
 	m_currentState->PreUpdate();
 }
 
+/// <summary>
+/// 衝突イベント
+/// </summary>
+/// <param name="data">衝突相手</param>
 void Cudgel::HitAction(InterSectData data)
 {
 	m_currentState->HitAction(data);

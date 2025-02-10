@@ -283,9 +283,9 @@
     <ClInclude Include="Game\UI\UIAnchor.h" />
     <ClInclude Include="Game\UI\UserInterface.h" />
     <ClInclude Include="Game\Weapon\Cudgel\Cudgel.h" />
-    <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Attacking.h" />
-    <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Idling.h" />
-    <ClInclude Include="Game\Weapon\Cudgel\Header\Cudgel_Sweeping.h" />
+    <ClInclude Include="Game\Weapon\Cudgel\Header\CudgelAttacking.h" />
+    <ClInclude Include="Game\Weapon\Cudgel\Header\CudgelIdling.h" />
+    <ClInclude Include="Game\Weapon\Cudgel\Header\CudgelSweeping.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\SwordAttacking1.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\SwordAttacking2.h" />
     <ClInclude Include="Game\Weapon\WeaponState.h" />
@@ -387,9 +387,9 @@
     <ClCompile Include="Game\UI\UI.cpp" />
     <ClCompile Include="Game\UI\UserInterface.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Cudgel.cpp" />
-    <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Attacking.cpp" />
-    <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Idling.cpp" />
-    <ClCompile Include="Game\Weapon\Cudgel\Source\Cudgel_Sweeping.cpp" />
+    <ClCompile Include="Game\Weapon\Cudgel\Source\CudgelAttacking.cpp" />
+    <ClCompile Include="Game\Weapon\Cudgel\Source\CudgelIdling.cpp" />
+    <ClCompile Include="Game\Weapon\Cudgel\Source\CudgelSweeping.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Source\SwordAttacking1.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Source\SwordAttacking2.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Source\SwordIdling.cpp" />

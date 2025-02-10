@@ -1,19 +1,28 @@
+// ----------------------------------------------------------
+// 名前:	CudgeSweeping
+// 
+// 内容:	ボス鬼の武器の金棒　薙ぎ払いのステート
+// 			ステートマシーンを使用
+//
+// 制作:	池田桜輔
+// ----------------------------------------------------------
 #pragma once
+// インクルード
 #include "pch.h"
 #include "Interface/IWeapon.h"
 
 class Cudgel;
 class Boss;
-class Easying;
 
 /// <summary>
 /// 攻撃状態
 /// </summary>
-class Cudgel_Sweeping : public IWeapon
+class CudgelSweeping : public IWeapon
 {
-public:
+	// --------------------------
 	// 固定値
-
+	// ---------------------------
+public:
 	// 攻撃の貯めモーションの時間
 	static constexpr float CHARGE_TIME = 0.8f;
 	// 攻撃する前の時間
@@ -35,11 +44,14 @@ public:
 	// 減点から移動する位置
 	static constexpr DirectX::SimpleMath::Vector3 ZERO_DIREC = { 6.0f, 1.0f, 0.0f };
 
+	// ---------------------------
+	// メンバ関数(公開)
+	// ---------------------------
+public:
 	// コンストラクタ
-	Cudgel_Sweeping(Cudgel* cudgel);
-
+	CudgelSweeping(Cudgel* cudgel);
 	// デストラクタ
-	~Cudgel_Sweeping()override;
+	~CudgelSweeping()override;
 	// 初期化処理
 	void Initialize()override;
 	// 事前処理
@@ -50,9 +62,12 @@ public:
 	void PostUpdate()override;
 	// 終了処理
 	void Finalize()override;
-
+	// 衝突イベント
 	void HitAction(InterSectData data)override;
 
+	// ---------------------------
+	// メンバ関数(非公開)
+	// ---------------------------
 private:
 	// Cudgelの回転を計算する関数
 	void UpdateCudgelRotation();
@@ -62,7 +77,6 @@ private:
 	void AttackAnimation();
 	// 終了モーション
 	void EndAnimation();
-
 	// 初期値として使用するワールド行列を計算する関数
 	void CalculateModelMatrix();
 	// Cudgelの攻撃モーションの回転を計算する関数
@@ -70,27 +84,38 @@ private:
 	// 根本と頂点の座標を取得する ※ both ends = 両端
 	void GetCudgelBothEnds();
 
+	// -----------------------------
+	// メンバ変数
+	// -----------------------------
 private:
-	DirectX::SimpleMath::Vector3 m_position;	// 座標
-	DirectX::SimpleMath::Vector3 m_velocity;	// 速度
-	float m_angleRL;							// 左右角度
-	float m_angleUD;							// 上下角度
-	float m_parentAngleRL;						// 親の左右角度
+	// 座標
+	DirectX::SimpleMath::Vector3 m_position;
+	// 速度
+	DirectX::SimpleMath::Vector3 m_velocity;
+	// 左右角度
+	float m_angleRL;
+	// 上下角度
+	float m_angleUD;
+	// 親の左右角度
+	float m_parentAngleRL;
+	// ワールド行列
+	DirectX::SimpleMath::Matrix m_worldMatrix;
+	// 当たり判定用の行列
+	DirectX::SimpleMath::Matrix m_collMatrix;
+	// ステートの経過時間
+	float m_totalSeconds;
 
-	DirectX::SimpleMath::Matrix m_worldMatrix;	// ワールド行列
-	DirectX::SimpleMath::Matrix m_collMatrix;	// 当たり判定用の行列
-	float m_totalSeconds;						// ステートの経過時間
+	// ステートを所有する親
+	Cudgel* m_cudgel;
+	// ボス
+	Boss* m_boss;
 
-	Cudgel* m_cudgel; // ステートを所有する親
-	Boss* m_boss;	// ボス
-
-	// 剣の軌跡のエフェクト
-	// 頂点を保存する用の可変長配列
-	std::vector<DirectX::SimpleMath::Vector3> m_rootPos;	// 根本
-	std::vector<DirectX::SimpleMath::Vector3> m_tipPos;		// 先端
+	// 根本の座標配列
+	std::vector<DirectX::SimpleMath::Vector3> m_rootPos;
+	// 先端の座標配列
+	std::vector<DirectX::SimpleMath::Vector3> m_tipPos;
 	// 効果音を再生したかのフラグ
 	bool m_playSound;
-
 	// プレイヤーがヒットできるかのフラグ
 	bool m_playerCanHit;
 };
