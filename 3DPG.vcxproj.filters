@@ -230,6 +230,8 @@
     <ClInclude Include="Game\Camera\State\ClearCameraState.h" />
     <ClInclude Include="Game\Scene\ResultScene.h" />
     <ClInclude Include="Libraries\MyLib\InputManager.h" />
+    <ClInclude Include="Game\UI\Action\GoTitleButtonAction.h" />
+    <ClInclude Include="Game\UI\Action\EndGameButtonAction.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />

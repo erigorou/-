@@ -266,6 +266,8 @@
     <ClInclude Include="Game\Stage\Wall\Wall.h" />
     <ClInclude Include="Game\TitleObject\TitleEnemy.h" />
     <ClInclude Include="Game\UI\Action\BossFightButtonAction.h" />
+    <ClInclude Include="Game\UI\Action\EndGameButtonAction.h" />
+    <ClInclude Include="Game\UI\Action\GoTitleButtonAction.h" />
     <ClInclude Include="Game\UI\Action\NormalAction.h" />
     <ClInclude Include="Game\UI\Action\TitleLogoAction.h" />
     <ClInclude Include="Game\UI\Action\TutorialButtonAction.h" />

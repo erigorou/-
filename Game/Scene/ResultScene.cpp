@@ -11,9 +11,14 @@
 #include "Game/CommonResources.h"
 #include "Game/GameResources.h"
 #include "DeviceResources.h"
+#include "Game/UI/UserInterface.h"
 #include "Libraries/MyLib/InputManager.h"
 #include "Libraries/MyLib/Texture.h"
 #include "../Sound/Sound.h"
+#include "Game/UI/UIAnchor.h"
+#include "Interface/IAction.h"
+#include "Game/UI/Action/GoTitleButtonAction.h"
+#include "Game/UI/Action/EndGameButtonAction.h"
 
 // ---------------------------------------------
 /// <summary>
@@ -21,10 +26,13 @@
 /// </summary>
 // ---------------------------------------------
 ResultScene::ResultScene()
-	: m_spriteBatch{}
-	, m_texture{}
-	, m_texCenter{}
-	, m_isChangeScene{}
+	: 
+	m_spriteBatch{},
+	m_texture{},
+	m_texCenter{},
+	m_isChangeScene{},
+	m_gameData{},
+	m_result{}
 {
 	// スクリーンショットを取得
 	m_captureTexture = GameData::GetInstance()->GetScreenShot();
@@ -54,6 +62,11 @@ void ResultScene::Initialize()
 	CreateTextures();
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
+	// UIの作成
+	CreateUI();
+
+	// BGMの再生
+	Sound::ChangeBGM(Sound::BGM_TYPE::WIN);
 }
 
 // ---------------------------------------------
@@ -63,9 +76,6 @@ void ResultScene::Initialize()
 // ---------------------------------------------
 void ResultScene::CreateTextures()
 {
-	// デバイスの取得
-	auto device = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
-
 	// テクスチャの作成
 	m_texture = GameResources::GetInstance()->GetTexture("result");
 
@@ -88,6 +98,60 @@ void ResultScene::CreateTextures()
 	);
 }
 
+// ---------------------------------------------------------
+/// <summary>
+/// ユーザーインターフェースの追加
+/// </summary>
+/// <param name="textureName">テクスチャ名</param>
+/// <param name="position">位置</param>
+/// <param name="scale">スケール</param>
+/// <param name="anchor">アンカー</param>
+/// <param name="action">アクション</param>
+// ---------------------------------------------------------
+void ResultScene::AddUserInterface(
+	const std::string textureName,
+	DirectX::SimpleMath::Vector2 position,
+	DirectX::SimpleMath::Vector2 scale,
+	ANCHOR anchor,
+	IAction* action
+)
+{
+	// テクスチャの取得
+	auto texture = GameResources::GetInstance()->GetTexture(textureName);
+	// ユーザーインターフェースの生成
+	auto ui = std::make_unique<UserInterface>();
+	// ユーザーインターフェースの作成
+	ui->Create(texture, position, scale, anchor, action);
+	// ユーザーインターフェースの登録
+	m_uiList.push_back(std::move(ui));
+}
+
+// ---------------------------------------------
+/// <summary>
+/// UIを作成する
+/// </summary>
+// ---------------------------------------------
+void ResultScene::CreateUI()
+{
+	// タイトルに戻るボタンの追加
+	AddUserInterface(
+		"GoTitleUI",
+		DirectX::SimpleMath::Vector2{ RETURN_BUTTON_POSITION },
+		DirectX::SimpleMath::Vector2{ BUTTON_SIZE },
+		ANCHOR::TOP_LEFT,
+		new GoTitleButtonAction()
+	);
+
+	// ゲーム終了ボタンの追加
+	AddUserInterface(
+		"GameEndUI",
+		DirectX::SimpleMath::Vector2{ EXIT_BUTTON_POSITION },
+		DirectX::SimpleMath::Vector2{ BUTTON_SIZE },
+		ANCHOR::TOP_LEFT,
+		new EndGameButtonAction()
+	);
+}
+
 // ---------------------------------------------
 /// <summary>
 /// シーンを更新する
@@ -100,9 +164,14 @@ void ResultScene::Update(float elapsedTime)
 	const auto& kbTracker = CommonResources::GetInstance()->GetInputManager()->GetKeyboardTracker();
 
 	// スペースキーが押されたら
-	if (kbTracker->pressed.Space)
-	{
+	if (kbTracker->pressed.Space){
 		m_isChangeScene = true;
+	}
+
+	// UIの更新
+	for (auto& ui : m_uiList)
+	{
+		ui->Update(elapsedTime);
 	}
 }
 
@@ -118,44 +187,65 @@ void ResultScene::Render()
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
 	m_spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, states->NonPremultiplied());
-	
-	RECT rect{ CommonResources::GetInstance()->GetDeviceResources()->GetOutputSize() };
-	// スクリーンの中心を計算する
-	DirectX::SimpleMath::Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
-	DirectX::SimpleMath::Vector2 pos2{ 350.0f , rect.bottom / 2.0f };
+	// スクリーンショットの描画
+	DrawCaptureTexture();
+	// 背景の描画
+	DrawBackground();
+	// スプライトバッチの終わり
+	m_spriteBatch->End();
 
+	// UIの描画
+	for (auto& ui : m_uiList)
+	{
+		ui->Render();
+	}
+}
 
-	m_spriteBatch->Draw(
-		m_texture.Get(),			// テクスチャ(SRV)
-		pos,						// スクリーンの表示位置(originの描画位置)
-		nullptr,					// 矩形(RECT)
-		DirectX::Colors::White,		// 背景色
-		0.0f,// 回転角(ラジアン)
-		m_texCenter,				// テクスチャの基準になる表示位置(描画中心)(origin)
-		1.0f,						// スケール(scale)
-		DirectX::SpriteEffects_None,// エフェクト(effects)
-		0.0f						// レイヤ深度(画像のソートで必要)(layerDepth)
-	);
+// ---------------------------------------------
+/// <summary>
+/// スクリーンショットを描画する
+/// </summary>
+// ---------------------------------------------
+void ResultScene::DrawCaptureTexture()
+{
 
 	// 背景前面にゲームデータがもつスクショを描画
 	if (GameData::GetInstance()->GetScreenShot())
 	{
 		m_spriteBatch->Draw(
 			m_captureTexture.Get(),
-			pos2,
+			CAPTURE_POSITION,
 			nullptr,
 			DirectX::Colors::White,
-			DirectX::XMConvertToRadians(-20.0f),// 回転角(ラジアン)
+			CAPTURE_ROTATION,
 			m_captureTexCenter,
-			0.5f,
+			CAPTURE_SCALE,
 			DirectX::SpriteEffects_None,
 			0.0f
 		);
 	}
-
-	// スプライトバッチの終わり
-	m_spriteBatch->End();
 }
+
+// ---------------------------------------------
+/// <summary>
+/// 背景を描画する
+/// </summary>
+// ---------------------------------------------
+void ResultScene::DrawBackground()
+{
+	m_spriteBatch->Draw(
+		m_texture.Get(),			// テクスチャ(SRV)
+		BACKGROUND_POSITION,		// スクリーンの表示位置(originの描画位置)
+		nullptr,					// 矩形(RECT)
+		DirectX::Colors::White,		// 背景色
+		BACKGROUND_ROTATION,		// 回転角(ラジアン)
+		m_texCenter,				// テクスチャの基準になる表示位置(描画中心)(origin)
+		BACKGROUND_SCALE,			// スケール(scale)
+		DirectX::SpriteEffects_None,// エフェクト(effects)
+		0.0f						// レイヤ深度(画像のソートで必要)(layerDepth)
+	);
+}
+
 
 // ---------------------------------------------
 /// <summary>

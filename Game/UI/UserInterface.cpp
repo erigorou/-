@@ -9,7 +9,6 @@
 #include "pch.h"
 #include "Game/CommonResources.h"
 #include "UserInterface.h"
-#include "Libraries/MyLib/BinaryFile.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "Interface/IAction.h"
 
