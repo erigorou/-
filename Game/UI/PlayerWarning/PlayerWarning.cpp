@@ -72,7 +72,7 @@ void PlayerWarning::Initialize()
 	m_states = std::make_unique<DirectX::CommonStates>(device);
 
 	// テクスチャを取得
-	m_texture = GameResources::GetInstance()->GetTexture("PlayerWarning");
+	m_texture = GameResources::GetInstance()->GetTexture("warning");
 
 	//	シェーダーにデータを渡すためのコンスタントバッファ生成
 	D3D11_BUFFER_DESC bd;

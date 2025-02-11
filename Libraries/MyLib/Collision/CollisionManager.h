@@ -46,8 +46,8 @@ enum class CollisionType : UINT
 template<typename T>
 struct CollisionData
 {
-	ObjectType		objType;
-	CollisionType	colType;
+	ObjectType objType;
+	CollisionType colType;
 	IObject* object;
 	T* collision;
 
@@ -73,15 +73,12 @@ struct DeleteCollisionData
 
 /// <summary>
 /// 衝突時に相手に渡すデータ
-/// objType : オブジェクトの種類
-/// colType : 衝突判定の形状
-/// ccollision : 衝突判定
 /// </summary>
 struct InterSectData
 {
-	ObjectType					objType;
-	CollisionType				colType;
-	DirectX::BoundingSphere* collision;
+	ObjectType objType;	// オブジェクトの種類
+	CollisionType colType; // 衝突判定の形状
+	DirectX::BoundingSphere* collision; // 当たり判定のポインタ
 };
 
 

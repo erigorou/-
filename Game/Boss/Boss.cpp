@@ -47,6 +47,8 @@ Boss::Boss()
 	, m_pushBackValue{}
 	, m_canHit(false)
 	, m_shakePower{ SHAKE_POWER }
+	, m_currentFace{}
+	, m_model{}
 {
 }
 

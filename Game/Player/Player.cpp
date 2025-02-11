@@ -44,7 +44,8 @@ Player::Player()
 	m_canHitCudgel{ false },
 	m_canHitGoblin{ false },
 	m_animationRotate{},
-	m_isInputMoveKey{ false }
+	m_isInputMoveKey{ false },
+	m_states{}
 {
 }
 
@@ -543,13 +544,13 @@ void Player::Finalize()
 // ---------------------------------------------------------
 void Player::HitAction(InterSectData data)
 {
-	// 体との当たり判定
+	// ボス鬼との当たり判定
 	HitBossBody(data);
 	// 武器との当たり判定
 	HitCudgel(data);
 	// ステージとの当たり判定
 	HitStage(data);
-	// ゴブリンとの当たり判定
+	// 小鬼との当たり判定
 	HitGoblin(data);
 }
 
