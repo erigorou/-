@@ -17,7 +17,7 @@ class PlayScene;
 class Player;
 class PlayerHPUI;
 class EnemyHPUI;
-class Warning;
+class PlayerWarning;
 class Operation;
 
 /// <summary>
@@ -75,7 +75,7 @@ private:
 	// エネミーのHP
 	std::unique_ptr<EnemyHPUI> m_enemyHP;
 	// 警告UI
-	std::unique_ptr<Warning> m_warning;
+	std::unique_ptr<PlayerWarning> m_warning;
 	// 操作説明UI
 	std::unique_ptr<Operation> m_operation;
 };

@@ -136,7 +136,7 @@ void Sound::LoadBGM(BGM_TYPE type, const char* filePath)
 
     // BGMリストに追加
     if (m_bgmList.size() != static_cast<size_t>(type))
-        assert(!"BGMを入れる場所とenumが合いません！！！！！");
+        assert(!"BGMを入れる場所とenumが合いません。");
 
     m_bgmList.push_back(sound);
 }
@@ -159,7 +159,7 @@ void Sound::LoadSE(SE_TYPE type, const char* filePath)
 
     // SEリストに追加
     if (m_seList.size() != static_cast<size_t>(type))
-        assert(!"SEを入れる場所とenumが合いません！！！！！");
+        assert(!"SEを入れる場所とenumが合いません。");
 
     m_seList.push_back(sound);
 }
@@ -180,7 +180,7 @@ void Sound::Update()
     if (s_sound->m_channelBGM == nullptr)
     {
         result = s_sound->m_system->playSound(s_sound->m_soundBGM, nullptr, false, &s_sound->m_channelBGM);
-        assert(result == FMOD_OK && "BGM 再生失敗！");
+        assert(result == FMOD_OK && "BGM 再生失敗");
     }
 
     s_sound->SetBGMVolume(s_sound->m_fadeValue);
@@ -249,7 +249,12 @@ void Sound::ChangeBGM(Sound::BGM_TYPE type)
 
     // 新しいBGMを再生する
     FMOD_RESULT result = s_sound->m_system->playSound(s_sound->m_soundBGM, nullptr, false, &s_sound->m_channelBGM);
-    assert(result == FMOD_OK && "BGM 再生失敗！");
+    if (result != FMOD_OK)
+    {
+        std::string errorMsg = "BGM再生に失敗しました。\nBGM_TYPE: " + std::to_string(static_cast<int>(type));
+        MessageBoxA(nullptr, errorMsg.c_str(), "エラー", MB_OK | MB_ICONERROR);
+        return;
+    }
 
     // 音量調整を行う
     s_sound->SetBGMVolume(1.0f);
@@ -268,8 +273,13 @@ void Sound::PlaySE(Sound::SE_TYPE type)
 
     // SEを再生
     FMOD_RESULT result = s_sound->m_system->playSound(seSound, nullptr, false, &s_sound->m_channelSE);
-    assert(result == FMOD_OK && "SE 再生失敗！");
+    if (result != FMOD_OK)
+    {
+        std::string errorMsg = "SE再生に失敗しました。\nBGM_TYPE: " + std::to_string(static_cast<int>(type));
+        MessageBoxA(nullptr, errorMsg.c_str(), "エラー", MB_OK | MB_ICONERROR);
+        return;
+    }
 
-    // 音量調整を行う（任意）
-    s_sound->SetSEVolume(1.0f);  // 任意の音量を設定できます
+    // 音量調整を行う
+    s_sound->SetSEVolume(1.0f);
 }

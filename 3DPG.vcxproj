@@ -276,7 +276,7 @@
     <ClInclude Include="Game\UI\Operation\OperateUI.h" />
     <ClInclude Include="Game\UI\Operation\Operation.h" />
     <ClInclude Include="Game\UI\PlayerHP\PlayerHPUI.h" />
-    <ClInclude Include="Game\UI\Warning\Warning.h" />
+    <ClInclude Include="Game\UI\PlayerWarning\PlayerWarning.h" />
     <ClInclude Include="Game\UI\!PlaySceneUIManager\PlaySceneUIManager.h" />
     <ClInclude Include="Game\UI\SceneUIManager\QuestSelectSceneUIManager.h" />
     <ClInclude Include="Game\UI\UI.h" />
@@ -383,7 +383,7 @@
     <ClCompile Include="Game\UI\Operation\OperateUI.cpp" />
     <ClCompile Include="Game\UI\Operation\Operation.cpp" />
     <ClCompile Include="Game\UI\PlayerHP\PlayerHPUI.cpp" />
-    <ClCompile Include="Game\UI\Warning\Warning.cpp" />
+    <ClCompile Include="Game\UI\PlayerWarning\PlayerWarning.cpp" />
     <ClCompile Include="Game\UI\UI.cpp" />
     <ClCompile Include="Game\UI\UserInterface.cpp" />
     <ClCompile Include="Game\Weapon\Cudgel\Cudgel.cpp" />

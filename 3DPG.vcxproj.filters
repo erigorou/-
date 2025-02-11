@@ -169,7 +169,7 @@
     <ClInclude Include="Effects\Header\SwordTrailParticle.h" />
     <ClInclude Include="Game\Weapon\Sword\Header\SwordAttacking2.h" />
     <ClInclude Include="Interface\ICameraState.h" />
-    <ClInclude Include="Game\UI\Warning\Warning.h" />
+    <ClInclude Include="Game\UI\PlayerWarning\PlayerWarning.h" />
     <ClInclude Include="Libraries\MyLib\CustomShader\CustomShader.h" />
     <ClInclude Include="Game\Goblin\Goblin.h" />
     <ClInclude Include="Game\Goblin\State\Header\GoblinIdling.h" />
@@ -301,7 +301,7 @@
     <ClCompile Include="Game\Factory\Factory.cpp" />
     <ClCompile Include="Game\Messenger\KeyboardMessenger.cpp" />
     <ClCompile Include="Game\Weapon\Sword\Source\SwordAttacking2.cpp" />
-    <ClCompile Include="Game\UI\Warning\Warning.cpp" />
+    <ClCompile Include="Game\UI\PlayerWarning\PlayerWarning.cpp" />
     <ClCompile Include="Libraries\MyLib\CustomShader\CustomShader.cpp" />
     <ClCompile Include="Game\Goblin\Goblin.cpp" />
     <ClCompile Include="Game\Goblin\State\Score\GoblinAttacking.cpp" />

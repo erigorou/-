@@ -1,13 +1,13 @@
 // ------------------------------------------------------------------
 // 
-// 名前:	Warning.cpp
+// 名前:	PlayerWarning.cpp
 // 機能:	HPが一定値以下になった時に警告を表示するクラス
 // 製作:	池田桜輔
 // 
 // ------------------------------------------------------------------
 // インクルード
 #include "pch.h"
-#include "Warning.h"
+#include "PlayerWarning.h"
 #include "Game/CommonResources.h"
 #include "Game/GameResources.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
@@ -20,7 +20,7 @@
 /// </summary>
 /// <param name="hp">HPシステム</param>
 // ---------------------------------------------------------
-Warning::Warning(HPSystem* hp)
+PlayerWarning::PlayerWarning(HPSystem* hp)
 	:
 	m_hp(hp),
 	m_customShader{},
@@ -38,7 +38,7 @@ Warning::Warning(HPSystem* hp)
 /// デストラクタ
 /// </summary>
 // ---------------------------------------------------------
-Warning::~Warning()
+PlayerWarning::~PlayerWarning()
 {
 	Finalize();
 }
@@ -48,7 +48,7 @@ Warning::~Warning()
 /// 初期化処理
 /// </summary>
 // ---------------------------------------------------------
-void Warning::Initialize()
+void PlayerWarning::Initialize()
 {
 	ID3D11Device* device = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
 
@@ -72,7 +72,7 @@ void Warning::Initialize()
 	m_states = std::make_unique<DirectX::CommonStates>(device);
 
 	// テクスチャを取得
-	m_texture = GameResources::GetInstance()->GetTexture("warning");
+	m_texture = GameResources::GetInstance()->GetTexture("PlayerWarning");
 
 	//	シェーダーにデータを渡すためのコンスタントバッファ生成
 	D3D11_BUFFER_DESC bd;
@@ -94,7 +94,7 @@ void Warning::Initialize()
 /// </summary>
 /// <param name="elapsedTime">経過時間</param>
 // ---------------------------------------------------------
-void Warning::Update(float elapsedTime)
+void PlayerWarning::Update(float elapsedTime)
 {
 	if (m_hp->GetHP() > LOW_HP)
 		return;
@@ -108,7 +108,7 @@ void Warning::Update(float elapsedTime)
 /// 描画処理
 /// </summary>
 // ---------------------------------------------------------
-void Warning::Render()
+void PlayerWarning::Render()
 {
 	using namespace DirectX;
 	ID3D11DeviceContext* context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
@@ -165,6 +165,6 @@ void Warning::Render()
 /// 終了処理
 /// </summary>
 // ---------------------------------------------------------
-void Warning::Finalize()
+void PlayerWarning::Finalize()
 {
 }

@@ -213,15 +213,15 @@ void ResultScene::DrawCaptureTexture()
 	if (GameData::GetInstance()->GetScreenShot())
 	{
 		m_spriteBatch->Draw(
-			m_captureTexture.Get(),
-			CAPTURE_POSITION,
-			nullptr,
-			DirectX::Colors::White,
-			CAPTURE_ROTATION,
-			m_captureTexCenter,
-			CAPTURE_SCALE,
-			DirectX::SpriteEffects_None,
-			0.0f
+			m_captureTexture.Get(),		// テクスチャ(SRV)
+			CAPTURE_POSITION,			// スクリーンの表示位置(originの描画位置)
+			nullptr,					// 矩形(RECT)
+			DirectX::Colors::White,		// 背景色
+			CAPTURE_ROTATION,			// 回転角(ラジアン)
+			m_captureTexCenter,			// テクスチャの基準になる表示位置(描画中心)(origin)
+			CAPTURE_SCALE,				// スケール(scale)
+			DirectX::SpriteEffects_None,// エフェクト(effects)
+			0.0f						// レイヤ深度(画像のソートで必要)(layerDepth)
 		);
 	}
 }

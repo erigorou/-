@@ -16,7 +16,7 @@
 #include "Game/Boss/Boss.h"
 #include "../PlayerHP/PlayerHPUI.h"
 #include "../EnemyHP/EnemyHPUI.h"
-#include "../Warning/Warning.h"
+#include "../PlayerWarning/PlayerWarning.h"
 #include "../Operation/Operation.h"
 
 // -----------------------------------------------------
@@ -193,7 +193,7 @@ void PlaySceneUIManager::CreateWarning()
 	if (playerHP == nullptr) MessageBox(0, L"PlaySceneUIManager : プレイヤーのHPが取得できませんでした。", NULL, MB_OK);
 
 	// 警告UIの生成と初期化
-	m_warning = std::make_unique<Warning>(playerHP);
+	m_warning = std::make_unique<PlayerWarning>(playerHP);
 	m_warning->Initialize();
 }
 
