@@ -187,10 +187,10 @@ void ResultScene::Render()
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
 	m_spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, states->NonPremultiplied());
-	// スクリーンショットの描画
-	DrawCaptureTexture();
 	// 背景の描画
 	DrawBackground();
+	// スクリーンショットの描画
+	DrawCaptureTexture();
 	// スプライトバッチの終わり
 	m_spriteBatch->End();
 

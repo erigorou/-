@@ -55,7 +55,7 @@ void SceneManager::Initialize()
 
 // デバッグならこれ
 #ifdef _DEBUG
-	ChangeScene(IScene::SceneID::PLAY);
+	ChangeScene(IScene::SceneID::TITLE);
 #endif // !_DEBUG
 
 // リリースならこれ

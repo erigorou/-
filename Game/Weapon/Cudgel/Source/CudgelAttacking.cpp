@@ -241,7 +241,7 @@ void CudgelAttacking::UpdateAttackState()
 	// 攻撃モーション
 	else if (Math::InTime(WINDUP_TIME, m_totalSeconds, ATTACK_TIME)) HandleAttackPhase((m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME));
 	// たたきつけた後の待機モーション
-	else if (Math::InTime(ATTACK_ANGLE, m_totalSeconds, STOP_TIME))	KeepStampPhase();
+	else if (Math::InTime(ATTACK_TIME, m_totalSeconds, STOP_TIME))	KeepStampPhase();
 	// 戻りアニメーション
 	else if (Math::InTime(STOP_TIME, m_totalSeconds, RETURN_TIME)) ReturnToOriginalPhase((m_totalSeconds - STOP_TIME) / (RETURN_TIME - STOP_TIME));
 

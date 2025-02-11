@@ -36,6 +36,15 @@ public:
 	// プレイヤーとの最小距離
 	static constexpr float MIN_DISTANCE = 20.0f;
 
+	// 全体の割合
+	static constexpr int TOTAL_RATE = 4;
+	// 薙ぎ払いを行う割合
+	static constexpr int SWEEPING_RATE = 1;
+	// たたきつけを行う割合
+	static constexpr int ATTACKING_RATE = 2;
+	// 何もしない割合
+	static constexpr int IDLING_RATE = 3;
+
 	// ---------------------------
 	// メンバ関数(公開)
 	// ---------------------------
@@ -76,8 +85,6 @@ private:
 	float m_angle;
 	// 総時間
 	float m_totalSeconds;
-	// 終了時間
-	float m_finishTime;
 	// 敵
 	Boss* m_boss;
 	// プレイヤー

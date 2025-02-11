@@ -1,12 +1,11 @@
-
-//
+// -------------------------------------------------------
 // 名前:	CollisionManager
 // 内容:	衝突判定を管理するクラス
 //			オブジェクトがCollision生成時に
 //			このクラスに登録され、
 //			当たり判定の更新を行う
 // 作成:	池田桜輔
-// 
+// -------------------------------------------------------
 
 // インクルード
 #include "pch.h"
@@ -27,27 +26,22 @@ CollisionManager::CollisionManager()
 	, m_obbs()
 	, m_spheres()
 	, m_drawFlag(false)
-
 {
 	// 生成と同時に初期化を行う
 	Initialize();
 }
 
-
 /// <summary>
 /// デストラクタ
 /// </summary>
-
 CollisionManager::~CollisionManager()
 {
 	Clear();
 }
 
-
 /// <summary>
 /// 初期化処理
 /// </summary>
-
 void CollisionManager::Initialize()
 {
 	CommonResources* resources = CommonResources::GetInstance();
@@ -77,11 +71,9 @@ void CollisionManager::Initialize()
 	AddEventMessenger();
 }
 
-
 /// <summary>
 /// イベントの登録
 /// </summary>
-
 void CollisionManager::AddEventMessenger()
 {
 	// OBBの登録イベント
@@ -92,12 +84,10 @@ void CollisionManager::AddEventMessenger()
 	EventMessenger::Attach(EventList::DeleteCollision, std::bind(&CollisionManager::DeleteCollision, this, std::placeholders::_1));
 }
 
-
 /// <summary>
 /// 更新処理
 /// ここで衝突の検知を行う
 /// </summary>
-
 void CollisionManager::Update()
 {
 	// OBBのプロキシと球の当たり判定
@@ -159,14 +149,12 @@ void CollisionManager::Update()
 #endif // !_DEBUG
 }
 
-
 /// <summary>
 /// 描画処理
 /// デバッグ中の当たり判定の描画を行う
 /// </summary>
 /// <param name="view">ビュー行列</param>
 /// <param name="projection">プロジェクション行列</param>
-
 void CollisionManager::Render
 (
 	const DirectX::SimpleMath::Matrix& view,
@@ -179,11 +167,9 @@ void CollisionManager::Render
 	DrawCollision(view, projection);
 }
 
-
 /// <summary>
 /// 登録された情報をクリアする
 /// </summary>
-
 void CollisionManager::Clear()
 {
 	m_obbs.clear();
@@ -191,13 +177,11 @@ void CollisionManager::Clear()
 }
 
 
-
 /// <summary>
 /// 衝突判定を登録する
 /// </summary>
 /// <typeparam name="T">衝突判定の形状　球：有向境界ボックス</typeparam>
 /// <param name="args">CollisionData型</param>
-
 template<typename T>
 void CollisionManager::AddCollision(void* args)
 {
@@ -221,13 +205,11 @@ void CollisionManager::AddCollision(void* args)
 	}
 }
 
-
 /// <summary>
 /// 有向境界ボックスの処理を軽くするためのプロキシ球を作成
 /// </summary>
 /// <param name="collision">有向境界ボックス</param>
 /// <returns>プロキシ球</returns>
-
 inline std::unique_ptr<DirectX::BoundingSphere> CollisionManager::CreateProxySphere(const DirectX::BoundingOrientedBox* collision)
 {
 	// BoundingSphereをOBBの中心と最大半径で作成
@@ -242,12 +224,10 @@ inline std::unique_ptr<DirectX::BoundingSphere> CollisionManager::CreateProxySph
 	return std::move(proxy);
 }
 
-
 /// <summary>
 /// 登録された衝突判定を解除する
 /// </summary>
 /// <param name="args">DeleteCollisionData型</param>
-
 void CollisionManager::DeleteCollision(void* args)
 {
 	// argsはDeleteCollisionData構造体へのポインタ
@@ -291,15 +271,12 @@ void CollisionManager::DeleteCollision(void* args)
 	}
 }
 
-
-
 /// <summary>
 /// 衝突判定の描画を行う
 /// デバッグ中のみ有効
 /// </summary>
 /// <param name="view">ビュー行列</param>
 /// <param name="projection">プロジェクション行列</param>
-
 inline void CollisionManager::DrawCollision(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection)
 {
 	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();

@@ -32,7 +32,6 @@ Camera::Camera(const DirectX::SimpleMath::Vector3& target)
 
 	// カメラのシェイクをイベントに登録
 	EventMessenger::Attach(EventList::ShakeCamera, std::bind(&Camera::SetShake, this, std::placeholders::_1));
-
 	// カメラのステート変更をイベント化
 	EventMessenger::Attach(EventList::ChangeCamera, std::bind(&Camera::ChangeState, this, std::placeholders::_1));
 }

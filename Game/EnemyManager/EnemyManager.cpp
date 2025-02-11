@@ -66,10 +66,13 @@ EnemyManager::~EnemyManager()
 // --------------------------------
 void EnemyManager::Initialize()
 {
-	// イベントメッセンジャーに登録
+	// 敵に攻撃ができるイベントを登録
 	EventMessenger::Attach(EventList::EnemyCanHit, std::bind(&EnemyManager::AllEnemyCanHit, this, std::placeholders::_1));
+	// 全ての小鬼を削除するイベントを登録
 	EventMessenger::Attach(EventList::DeleteAllGoblin, std::bind(&EnemyManager::AllGoblinHPZero, this));
+	// 敵1体を削除するイベントを登録
 	EventMessenger::Attach(EventList::DeleteEnemy, std::bind(&EnemyManager::DeleteEnemy, this, std::placeholders::_1));
+	// カメラのターゲットポイントを入手するイベントを登録
 	EventMessenger::AttachGetter(GetterList::GetTargetPosition, std::bind(&EnemyManager::GetPicupEnemyPosition, this));
 }
 

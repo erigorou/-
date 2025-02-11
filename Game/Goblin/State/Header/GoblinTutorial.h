@@ -18,6 +18,13 @@ class Goblin;
 class GoblinTutorial : public IState
 {
 	// --------------------
+	// 定数
+	// --------------------
+private:
+	// スクリーンショットを取る時間
+	static constexpr float SCREENSHOT_TIME = 3.0f;
+
+	// --------------------
 	// メンバ関数(公開)
 	// --------------------
 public:

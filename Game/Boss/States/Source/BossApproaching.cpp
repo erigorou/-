@@ -23,7 +23,8 @@ BossApproaching::BossApproaching(Boss* boss)
 	m_position{},
 	m_velocity{},
 	m_angle{},
-	m_totalSeconds{}
+	m_totalSeconds{},
+	m_player{}
 {
 }
 
@@ -127,6 +128,7 @@ void BossApproaching::CheckNextState()
 		EventMessenger::Execute(EventList::ShakeCamera, &shakePower);
 		// パーティクルを生成
 		EventMessenger::Execute(EventList::CreateBashDust, &m_position);
+
 		// サウンドを再生
 		Sound::PlaySE(Sound::SE_TYPE::BOSS_MOVE);
 
@@ -137,14 +139,22 @@ void BossApproaching::CheckNextState()
 			BossState state = BossState::Idling;
 
 			// ランダムに次は度の挙動をするか決める
-			int random = Math::RandomInt(0, 4);
-			if (random <= 1)		state = BossState::Sweeping;	// 薙ぎ払い
-			else if (random == 2)	state = BossState::Attacking;	// 攻撃
-			else if (random == 3)	state = BossState::Idling;		// 何もしない
+			int random = Math::RandomInt(0, TOTAL_RATE);
+			// 薙ぎ払い
+			if (random <= SWEEPING_RATE) {
+				state = BossState::Sweeping;
+			}
+			// たたきつけ
+			else if (random == ATTACKING_RATE) {
+				state = BossState::Attacking;
+			}
+			// 何もしない
+			else if (random == IDLING_RATE) {
+				state = BossState::Idling;
+			}
 
 			// 状態を変更
 			EventMessenger::Execute(EventList::ChangeBossState, &state);
-
 			// 以降の処理は行わない
 			return;
 		}

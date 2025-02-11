@@ -6,6 +6,7 @@
 #include "pch.h"
 #include "../Header/GoblinTutorial.h"
 #include "../../Goblin.h"
+#include "Game/Messenger/EventMessenger.h"
 
 // ---------------------------------------------
 /// <summary>
@@ -59,6 +60,11 @@ void GoblinTutorial::Update(const float& elapsedTime)
 {
 	// ŽžŠÔ‚ð‰ÁŽZ‚·‚é
 	m_TotalTime += elapsedTime;
+
+	if (m_TotalTime >= SCREENSHOT_TIME)
+	{
+		EventMessenger::Execute(EventList::TakeCapture, nullptr);
+	}
 }
 
 // ---------------------------------------------
