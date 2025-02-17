@@ -85,11 +85,35 @@ void CollisionManager::AddEventMessenger()
 }
 
 /// <summary>
-/// 更新処理
-/// ここで衝突の検知を行う
+/// 球と球の当たり判定
 /// </summary>
-void CollisionManager::Update()
+inline void CollisionManager::CheckCollisionSphereToSphere()
 {
+	// 球同士による当たり判定(同じ球同士で衝突しないように)
+	for (int i = 0; i < static_cast<int>(m_spheres.size() - 1); i++)
+	{
+		for (int j = i + 1; j < static_cast<int>(m_spheres.size()); j++)
+		{
+			// 球同士の当たり判定
+			if (m_spheres[i].collision->Intersects(*m_spheres[j].collision))
+			{
+				// 衝突したときに相手に渡すデータを作成
+				InterSectData sphereData1 = { m_spheres[i].objType, m_spheres[i].colType, m_spheres[i].collision };
+				InterSectData sphereData2 = { m_spheres[j].objType, m_spheres[j].colType, m_spheres[j].collision };
+
+				// 衝突したときの処理を呼び出す
+				m_spheres[i].object->HitAction(sphereData2);
+				m_spheres[j].object->HitAction(sphereData1);
+			}
+		}
+	}
+}
+
+/// <summary>
+/// OBBと球の当たり判定
+/// </summary>
+inline void CollisionManager::CheckCollisionOBBToSphere()
+{	
 	// OBBのプロキシと球の当たり判定
 	for (int i = 0; i < static_cast<int>(m_obbs.size()); i++)
 	{
@@ -114,26 +138,18 @@ void CollisionManager::Update()
 			}
 		}
 	}
+}
 
-	// 球同士による当たり判定
-	for (int i = 0; i < static_cast<int>(m_spheres.size() - 1); i++)
-	{
-		for (int j = i + 1; j < static_cast<int>(m_spheres.size()); j++)
-		{
-			// 球同士の当たり判定
-			if (m_spheres[i].collision->Intersects(*m_spheres[j].collision))
-			{
-				// 衝突したときに相手に渡すデータを作成
-				InterSectData sphereData1 = { m_spheres[i].objType, m_spheres[i].colType, m_spheres[i].collision };
-				InterSectData sphereData2 = { m_spheres[j].objType, m_spheres[j].colType, m_spheres[j].collision };
-
-				// 衝突したときの処理を呼び出す
-				m_spheres[i].object->HitAction(sphereData2);
-				m_spheres[j].object->HitAction(sphereData1);
-			}
-		}
-	}
-
+/// <summary>
+/// 更新処理
+/// ここで衝突の検知を行う
+/// </summary>
+void CollisionManager::Update()
+{
+	// OBBと球の当たり判定
+	CheckCollisionOBBToSphere();
+	// 球と球の当たり判定
+	CheckCollisionSphereToSphere();
 
 #ifdef _DEBUG
 	// キーボードの状態を取得する

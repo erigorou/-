@@ -28,7 +28,7 @@ public:
 	// 攻撃する前の時間
 	static constexpr float WINDUP_TIME = 0.9f;
 	// 攻撃する時間
-	static constexpr float ATTACK_TIME = 1.5f;
+	static constexpr float ATTACK_TIME = 1.8f;
 	// 攻撃（全体）が終了する時間
 	static constexpr float END_TIME = 2.3f;
 

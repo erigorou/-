@@ -8,7 +8,7 @@ class TutorialStart : public IQuestChecker
 public:
 
 	// テクスチャパスを取得する
-	const wchar_t* GetTexturePath() override { return nullptr; }
+	const wchar_t* GetTexturePath() override { return L"Resources/Textures/Quest/QuestUI_Start.png"; }
 
 	// チュートリアルのテクスチャパスを取得する
 	const wchar_t* GetTutorialTexturePath() override { return L"Resources/Textures/Quest/TutorialStart.png"; }

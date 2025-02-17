@@ -249,7 +249,7 @@ void Boss::Update(float elapsedTime)
 
 #ifdef _DEBUG
 
-	// キー入力を受け付ける。
+	// デバッグ中なら F1~F3でステートを変更
 	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
 
 	if (keyboardState.F1) {

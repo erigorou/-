@@ -118,6 +118,10 @@ public:
 private:
 	// ƒCƒxƒ“ƒg‚Ì“o˜^
 	inline void AddEventMessenger();
+	// ‹…‚Æ‹…‚Ì“–‚½‚è”»’è
+	inline void CheckCollisionSphereToSphere();
+	// OBB‚Æ‹…‚Ì“–‚½‚è”»’è
+	inline void CheckCollisionOBBToSphere();
 	// Õ“Ë”»’è‚Ì•`‰æ
 	inline void DrawCollision(
 		DirectX::SimpleMath::Matrix view,

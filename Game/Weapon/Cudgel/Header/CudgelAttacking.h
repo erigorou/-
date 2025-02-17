@@ -30,9 +30,9 @@ public:
 	// 攻撃の貯めモーションの時間
 	static constexpr float CHARGE_TIME = 0.8f;
 	// 攻撃する前の時間
-	static constexpr float WINDUP_TIME = 0.9f;
+	static constexpr float WINDUP_TIME = 1.0f;
 	// 攻撃する時間
-	static constexpr float ATTACK_TIME = 1.5f;
+	static constexpr float ATTACK_TIME = 1.6f;
 	// 攻撃が終わってから待機する時間
 	static constexpr float STOP_TIME = 2.3f;
 	// 攻撃が終わってから元に戻る時間

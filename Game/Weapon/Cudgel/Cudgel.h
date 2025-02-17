@@ -28,7 +28,7 @@ class Cudgel : public IObject
 	// ---------------------------
 public:
 	// ‘å‚«‚³
-	static constexpr float CUDGEL_SCALE = Boss::BOSS_SCALE * 1.5f;
+	static constexpr float CUDGEL_SCALE = Boss::BOSS_SCALE * 1.4f;
 	// “G‚Æ‚Ì—£‚ê‚Ä‚¢‚é‹——£
 	static constexpr DirectX::SimpleMath::Vector3 DIRECTION_ENEMY = { 8.0f, 5.0f, 0.0f };
 	// ‹à–_‚Ì’·‚³

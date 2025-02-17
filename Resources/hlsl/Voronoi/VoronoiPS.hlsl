@@ -49,6 +49,7 @@ float2 subtleDistortUV(float2 uv, float time)
 
 float4 main(PS_INPUT input) : SV_TARGET
 {
+    // ƒuƒƒbƒN‚Ì”
     float scale = 20.0;
     float2 uv = input.Tex * scale;
 

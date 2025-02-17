@@ -23,7 +23,6 @@
 #include "TutorialList/TutorialStart.h"
 #include "TutorialList/TutorialEnd.h"
 #include "TutorialList/TutorialAttackStart.h"
-#include "TutorialList/TutorialAttackEnd.h"
 #include "TutorialList/TutorialDodgStart.h"
 
 // ---------------------------------------------
@@ -220,7 +219,6 @@ void QuestManager::CreateQuestList_1st()
 	m_questList.push_back(new QuestPlayerMove());
 	m_questList.push_back(new TutorialAttackStart());
 	m_questList.push_back(new QuestPlayerAttack());
-	m_questList.push_back(new TutorialAttackEnd());
 	m_questList.push_back(new QuestPlayerCombo());
 	m_questList.push_back(new TutorialDodgStart());
 	m_questList.push_back(new QuestPlayerAvoid());
