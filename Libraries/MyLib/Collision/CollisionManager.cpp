@@ -97,6 +97,9 @@ inline void CollisionManager::CheckCollisionSphereToSphere()
 			// 球同士の当たり判定
 			if (m_spheres[i].collision->Intersects(*m_spheres[j].collision))
 			{
+				// ゴブリン同士と衝突している場合は処理を行わない
+				if (IsGoblinCollision(m_spheres[i], m_spheres[j])) continue;
+
 				// 衝突したときに相手に渡すデータを作成
 				InterSectData sphereData1 = { m_spheres[i].objType, m_spheres[i].colType, m_spheres[i].collision };
 				InterSectData sphereData2 = { m_spheres[j].objType, m_spheres[j].colType, m_spheres[j].collision };
@@ -139,6 +142,31 @@ inline void CollisionManager::CheckCollisionOBBToSphere()
 		}
 	}
 }
+
+/// <summary>
+/// ゴブリン同士と衝突しているかを検知
+/// </summary>
+/// <param name="collisionA">衝突判定A</param>
+/// <param name="collisionB">衝突判定B</param>
+/// <returns>ゴブリン同士と当たっているか</returns>
+bool CollisionManager::IsGoblinCollision(
+	CollisionData<DirectX::BoundingSphere> collisionA,
+	CollisionData<DirectX::BoundingSphere> collisionB
+)
+{
+	// ゴブリン同士と衝突を行っているか
+	if (collisionA.objType == ObjectType::Goblin && collisionB.objType == ObjectType::Goblin)
+	{
+		// 衝突したときに相手に渡すデータを作成
+		InterSectData goblinData = { collisionA.objType, collisionA.colType, collisionA.collision };
+		// 衝突したときの処理を呼び出す
+		collisionB.object->HitAction(goblinData);
+		return true;
+	}
+
+	return false;
+}
+
 
 /// <summary>
 /// 更新処理

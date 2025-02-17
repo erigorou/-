@@ -260,7 +260,7 @@ void Goblin::HitGoblin(InterSectData data)
 	auto goblinCollision2 = *data.collision;
 
 	// 押し戻し量を計算
-	m_pushBackValue = Math::pushBack_BoundingSphere(goblinCollision, goblinCollision2);
+	m_pushBackValue = Math::pushBack_BoundingSphere(goblinCollision, goblinCollision2) / 2.0f;
 	m_pushBackValue.y = 0.0f;
 	// プレイヤーの位置を押し戻す
 	m_position += m_pushBackValue;

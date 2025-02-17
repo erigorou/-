@@ -122,6 +122,11 @@ private:
 	inline void CheckCollisionSphereToSphere();
 	// OBB‚Æ‹…‚Ì“–‚½‚è”»’è
 	inline void CheckCollisionOBBToSphere();
+	// ¬‹S“¯m‚ÌÕ“Ë’Ê’m
+	inline bool IsGoblinCollision(
+		CollisionData<DirectX::BoundingSphere> collisionA,
+		CollisionData<DirectX::BoundingSphere> collisionB
+	);
 	// Õ“Ë”»’è‚Ì•`‰æ
 	inline void DrawCollision(
 		DirectX::SimpleMath::Matrix view,
