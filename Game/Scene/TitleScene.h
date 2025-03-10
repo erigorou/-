@@ -96,6 +96,8 @@ public:
 	void Finalize() override;
 	// ステート変更処理
 	SceneID GetNextSceneID() const;
+	// 現在のシーンを取得する
+	SceneID GetCurrentSceneID() const override { return SceneID::TITLE; }
 
 	// -----------------------------
 	// メンバ関数(非公開)

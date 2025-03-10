@@ -25,7 +25,6 @@ public:
 	SceneManager();
 	// デストラクタ
 	~SceneManager();
-
 	// 初期化処理
 	void Initialize();
 	// 更新処理
@@ -36,6 +35,9 @@ public:
 	void Finalize();
 	// シーン変更可能にする
 	void SetCanChangeScene() { m_canChangeScene = true; }
+	// escaoeを押された際の各シーンの挙動
+	void EscapeAction();
+
 
 	// -----------------------------
 	// メンバ関数(非公開)
@@ -47,6 +49,9 @@ private:
 	void CreateScene(IScene::SceneID sceneID);
 	// シーンを削除する
 	void DeleteScene();
+
+	// Escapeキーの入力検知
+	void CheckEscapeKey();
 
 	// -----------------------------
 	// メンバ変数
@@ -63,8 +68,17 @@ private:
 
 	// 次のシーンID
 	IScene::SceneID m_nextSceneID;
+	// 現在のシーンID
+	IScene::SceneID m_currentNextSceneID;
+
 	// シーン変更可能かどうか
 	bool m_canChangeScene;
 	// フェード中かどうか
 	bool m_isFade;
+
+	// キーボード入力
+	std::unique_ptr<DirectX::Keyboard> m_keyboard;
+	DirectX::Keyboard::State m_keyboardState;
+	DirectX::Keyboard::KeyboardStateTracker m_keyboardTracker;
+	
 };

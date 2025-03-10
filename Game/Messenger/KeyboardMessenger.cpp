@@ -20,7 +20,6 @@ std::unordered_map<DirectX::Keyboard::Keys, std::vector<std::pair<int, int>>> Ke
 /// <param name="key">使用するキー</param>
 /// <param name="observer">通知する対象</param>
 /// <param name="type">どのように押されたか</param>
-// -------------------------------------------------------
 void KeyboardMessenger::Attach(const DirectX::Keyboard::Keys& key, IObserver* observer, const KeyPressType type)
 {
 	// 観察者リストに観察者を追加する
@@ -34,7 +33,6 @@ void KeyboardMessenger::Attach(const DirectX::Keyboard::Keys& key, IObserver* ob
 /// <param name="key">解除するキー</param>
 /// <param name="observer">通知していた対象</param>
 /// <param name="type">どのように押されていたか</param>
-// -------------------------------------------------------
 void KeyboardMessenger::Detach(const DirectX::Keyboard::Keys& key, IObserver* observer, const KeyPressType type)
 {
 	// 観察者リストから観察者を検索する
@@ -58,7 +56,6 @@ void KeyboardMessenger::Detach(const DirectX::Keyboard::Keys& key, IObserver* ob
 /// キーボードの状態を通知する
 /// </summary>
 /// <param name="keyboardTracker">キーボードトラッカー</param>
-// -------------------------------------------------------
 void KeyboardMessenger::Notify(const DirectX::Keyboard::KeyboardStateTracker& keyboardTracker)
 {
 	auto keyboardState = keyboardTracker.GetLastState();
@@ -90,7 +87,6 @@ void KeyboardMessenger::Notify(const DirectX::Keyboard::KeyboardStateTracker& ke
 /// キーボードの状態を通知する
 /// </summary>
 /// <param name="keyboardState">キーボードステート</param>
-// -------------------------------------------------------
 void KeyboardMessenger::Notify(const DirectX::Keyboard::State& keyboardState)
 {
 	// 観察者リストから観察者を取り出す
@@ -119,7 +115,6 @@ void KeyboardMessenger::Notify(const DirectX::Keyboard::State& keyboardState)
 /// <summary>
 /// 観察者リストをソートする(処理軽量化)
 /// </summary>
-// -------------------------------------------------------
 void KeyboardMessenger::SortObserverList()
 {
 	// 観察者リストをキー（DirectX::Keyboard::Keys）でソートする
@@ -141,7 +136,6 @@ void KeyboardMessenger::SortObserverList()
 /// <summary>
 /// キー範囲リストを生成する(処理軽量化)
 /// </summary>
-// -------------------------------------------------------
 void KeyboardMessenger::CreateKeyRangeList()
 {
 	// キー範囲をクリアする
@@ -178,7 +172,6 @@ void KeyboardMessenger::CreateKeyRangeList()
 /// <summary>
 /// 観察者とキー範囲リストクリアする
 /// </summary>
-// -------------------------------------------------------
 void KeyboardMessenger::Clear()
 {
 	// 観察者リストをクリアする

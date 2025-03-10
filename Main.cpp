@@ -28,7 +28,6 @@ namespace
 LPCWSTR g_szAppName = L"鬼退治";
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
-void ExitGame() noexcept;
 
 // Indicates to hybrid graphics systems to prefer the discrete part by default
 extern "C"
@@ -60,7 +59,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 	}
 	else
 	{
-		ExitGame();
+		PostQuitMessage(0);
 	}
 #endif
 
@@ -312,11 +311,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN:
 	case WM_KEYUP:
 	case WM_SYSKEYUP:
-		Keyboard::ProcessMessage(message, wParam, lParam);
-		if (wParam == VK_ESCAPE)
-		{
-			ExitGame();
-		}
+		//Keyboard::ProcessMessage(message, wParam, lParam);
+		//if (wParam == VK_ESCAPE)
+		//{
+		//	ExitGame();
+		//}
 		break;
 		// ★追記ココまで★
 
@@ -371,13 +370,4 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	}
 
 	return DefWindowProc(hWnd, message, wParam, lParam);
-}
-
-// Exit helper
-void ExitGame() noexcept
-{
-	//// フルスクリーン強制終了
-	//g_game->SetFullscreenState(FALSE);
-	// ゲームの終了
-	PostQuitMessage(0);
 }

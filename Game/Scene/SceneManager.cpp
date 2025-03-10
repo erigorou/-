@@ -15,7 +15,8 @@
 #include "Game/Data/GameData.h"
 #include "Game/GameResources.h"
 #include "../Sound/Sound.h"
-#include <cassert>
+
+#include "Keyboard.h"
 
 //---------------------------------------------------------
 /// <summary>
@@ -26,12 +27,14 @@ SceneManager::SceneManager()
 	: 
 	m_currentScene{},
 	m_nextSceneID(IScene::SceneID::NONE),
+	m_currentNextSceneID(IScene::SceneID::TITLE),
 	m_canChangeScene(false),
 	m_isFade(false)
 {
 	m_gameResources = GameResources::GetInstance();
 	m_sound = Sound::GetInstance();
 }
+
 
 //---------------------------------------------------------
 /// <summary>
@@ -50,6 +53,7 @@ SceneManager::~SceneManager()
 //---------------------------------------------------------
 void SceneManager::Initialize()
 {
+	// フェードを作成
 	m_fade = std::make_unique<Fade>(this);
 	m_fade->Initialize();
 
@@ -71,6 +75,8 @@ void SceneManager::Initialize()
 //---------------------------------------------------------
 void SceneManager::Update(float elapsedTime)
 {
+	// Escapeキーの入力検知
+	CheckEscapeKey();
 	// 秒数の保存
 	GameData::GetInstance()->SetElapsedTime(elapsedTime);
 	// 効果音の再生
@@ -81,15 +87,15 @@ void SceneManager::Update(float elapsedTime)
 	m_fade->Update(elapsedTime);
 
 	// 説明用変数：次のシーン
-	const IScene::SceneID nextSceneID = m_currentScene->GetNextSceneID();
+	m_currentNextSceneID = m_currentScene->GetNextSceneID();
 
 	// シーンを変更しないとき
-	if (nextSceneID == IScene::SceneID::NONE && !m_isFade) return;
+	if (m_currentNextSceneID == IScene::SceneID::NONE && !m_isFade) return;
 
 	// 初回セットアップ
 	if (m_nextSceneID == IScene::SceneID::NONE)
 	{
-		m_nextSceneID = nextSceneID;
+		m_nextSceneID = m_currentNextSceneID;
 		m_isFade = true;
 		m_fade->StartFadeOut();
 		m_canChangeScene = false;
@@ -190,4 +196,42 @@ void SceneManager::DeleteScene()
 	{
 		m_currentScene.reset();
 	}
+}
+
+//---------------------------------------------------------
+/// <summary>
+/// Escapeキーの入力検知
+/// </summary>
+// ---------------------------------------------------------
+void SceneManager::CheckEscapeKey()
+{
+	m_keyboardState = DirectX::Keyboard::Get().GetState();
+	m_keyboardTracker.Update(m_keyboardState);
+
+	// ESCAPEキーが押されたら
+	if (m_keyboardTracker.IsKeyPressed(DirectX::Keyboard::Keys::Escape))
+	{
+		// 各シーンでのESCAPEキーの挙動
+		EscapeAction();
+	}
+}
+
+// ---------------------------------------------------------
+/// <summary>
+/// 各シーンでのESCAPEキーの挙動
+/// </summary>
+// ---------------------------------------------------------
+void SceneManager::EscapeAction()
+{
+	// 現在がタイトルシーンなら
+	if (m_currentScene->GetCurrentSceneID() == IScene::SceneID::TITLE)
+	{
+		// ゲームを終了する
+		PostQuitMessage(0);
+	}
+
+	// 次のシーンをタイトルに変更する
+	m_nextSceneID = IScene::SceneID::TITLE;
+	// フェードアウト開始
+	m_canChangeScene = true;
 }
