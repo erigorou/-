@@ -42,6 +42,4 @@ public:
 	virtual void Finalize() = 0;
 	// 次のシーンＩＤを取得する
 	virtual SceneID GetNextSceneID() const = 0;
-	// 現在のシーンを取得する
-	virtual SceneID GetCurrentSceneID() const = 0;
 };

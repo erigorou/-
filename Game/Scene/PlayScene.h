@@ -60,8 +60,6 @@ public:
 	QuestManager* GetQuestManager() { return m_questManager.get(); }
 	// スクショを取る
 	void TakeCapture() { m_isScreenShot = true; }
-	// シーンIDを取得
-	SceneID GetCurrentSceneID() const override { return SceneID::PLAY; }
 
 	// --------------------------
 	// メンバ関数(公開)

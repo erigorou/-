@@ -10,7 +10,6 @@
 #include "pch.h"
 #include "EventMessenger.h"
 
-
 // イベントリストの初期化
 std::unordered_map<EventList, std::function<void(void*)>> EventMessenger::s_eventList;
 std::unordered_map<GetterList, std::function<void* ()>> EventMessenger::s_getterList;
@@ -35,7 +34,7 @@ void EventMessenger::Attach(const EventList event, std::function<void(void*)> fu
 /// <param name="event">イベントの種類</param>
 /// <param name="function">登録する関数</param>
 // -------------------------------------------------
-void EventMessenger::AttachGetter(const GetterList event, std::function<void*()> function)
+void EventMessenger::AttachGetter(const GetterList event, std::function<void* ()> function)
 {
 	// イベントリストに新しいイベントを登録
 	s_getterList[event] = function;

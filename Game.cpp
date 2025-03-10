@@ -7,6 +7,8 @@
 #include "Game/Screen.h"
 #include "Game/Scene/SceneManager.h"
 
+extern void ExitGame() noexcept;
+
 using namespace DirectX;
 
 using Microsoft::WRL::ComPtr;
@@ -103,6 +105,13 @@ void Game::Update(DX::StepTimer const& timer)
 	// シーンマネージャを更新する
 	m_sceneManager->Update(elapsedTime);
 
+	// 「ECS」キーで終了する
+	if (keyboardState.Escape)
+	{
+		ExitGame();
+	}
+
+	// ★追記ココまで↑↑↑★
 }
 #pragma endregion
 

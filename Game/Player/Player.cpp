@@ -98,10 +98,8 @@ void Player::CreateCollision()
 		this,					// オブジェクトのアドレス
 		m_bodyCollision.get()	// 当たり判定のアドレス
 	};
-
 	// 当たり判定を記録する
 	EventMessenger::Execute(EventList::AddSphereCollision, &data);
-
 }
 
 // ---------------------------------------------------------
