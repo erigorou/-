@@ -43,6 +43,10 @@ void BossIdling::Initialize()
 	// ƒvƒŒƒCƒ„[‚Ìæ“¾
 	void* object = EventMessenger::ExecuteGetter(GetterList::GetPlayer);
 	m_player = object ? static_cast<IObject*>(object) : nullptr;
+
+	DirectX::SimpleMath::Vector3 pos = m_player->GetPosition();
+
+	pos = pos;
 }
 
 // --------------------------------------

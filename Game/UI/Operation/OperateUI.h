@@ -11,7 +11,7 @@
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 
 
-class OperateUI : public IObserver
+class OperateUI : public IObserver, public IObject
 {
 	// -----------------------------
 	// ŒÅ’è’l

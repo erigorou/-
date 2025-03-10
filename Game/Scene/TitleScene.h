@@ -9,6 +9,7 @@
 // インクルード
 #include "pch.h"
 #include "IScene.h"
+#include "Interface/IObserver.h"
 
 // 前方宣言
 class CommonResources;
@@ -25,8 +26,8 @@ class UIAnchor;
 /// <summary>
 /// タイトルシーンクラス
 /// </summary>
-class TitleScene final : public IScene
-{	
+class TitleScene final : public IScene, public IObserver
+{
 	// -----------------------------
 	// 固定値
 	// -----------------------------
@@ -97,10 +98,17 @@ public:
 	// ステート変更処理
 	SceneID GetNextSceneID() const;
 
+	// キーボードの入力を取得
+	void OnKeyPressed(const DirectX::Keyboard::Keys& key) override;
+	// キーボードの入力を取得
+	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
+
 	// -----------------------------
 	// メンバ関数(非公開)
 	// -----------------------------
 private:
+	//　使用するキーを登録
+	void AttachKeyInput();
 	// 射影行列の生成
 	void CreateProjection();
 	// オブジェクト更新処理

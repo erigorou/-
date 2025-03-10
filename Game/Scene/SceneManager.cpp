@@ -16,6 +16,7 @@
 #include "Game/GameResources.h"
 #include "../Sound/Sound.h"
 #include <cassert>
+#include "Game/Messenger/KeyboardMessenger.h"
 
 //---------------------------------------------------------
 /// <summary>
@@ -71,6 +72,9 @@ void SceneManager::Initialize()
 //---------------------------------------------------------
 void SceneManager::Update(float elapsedTime)
 {
+	// キーボード使用検知
+	UpdateKeyboard();
+
 	// 秒数の保存
 	GameData::GetInstance()->SetElapsedTime(elapsedTime);
 	// 効果音の再生
@@ -176,7 +180,14 @@ void SceneManager::CreateScene(IScene::SceneID sceneID)
 		// no break
 	}
 
+	// 観察者リストを初期化する
+	KeyboardMessenger::Clear();
+	// シーンを初期化
 	m_currentScene->Initialize();
+	// 観察者リストをソートする
+	KeyboardMessenger::SortObserverList();
+	// キー範囲リストを生成する
+	KeyboardMessenger::CreateKeyRangeList();
 }
 
 //---------------------------------------------------------
@@ -190,4 +201,65 @@ void SceneManager::DeleteScene()
 	{
 		m_currentScene.reset();
 	}
+}
+
+
+// ------------------------------------------------------------------------------
+/// <summary>
+/// キーが押されたかどうかを判定する
+/// </summary>
+/// <param name="stateTracker">キーボードトラッカー</param>
+/// <returns>押されたかのフラグ</returns>
+// ------------------------------------------------------------------------------
+inline bool IsKeyPress(DirectX::Keyboard::KeyboardStateTracker& stateTracker)
+{
+	// すべてのキーが押されたかどうかをチェック
+	for (int key = 0; key < PlayScene::MAX_KEY; key++)
+	{
+		// 特定のキーが押されているかを確認
+		if (stateTracker.IsKeyPressed(static_cast<DirectX::Keyboard::Keys>(key)))
+		{
+			return true; // 押されたキーがあれば true を返す
+		}
+	}
+	// どのキーも押されていない場合
+	return false;
+}
+
+// ------------------------------------------------------------------------------
+/// <summary>
+/// キーが押されているかどうかを判定する
+/// </summary>
+/// <param name="state">キーボードステート</param>
+/// <returns>押されているかのフラグ</returns>
+// ------------------------------------------------------------------------------
+inline bool IsKeyDown(DirectX::Keyboard::State& state)
+{
+	// キーボードステートへのポインタを取得する
+	auto ptr = reinterpret_cast<uint32_t*>(&state);
+	for (int key = 0; key < 0xff; key++)
+	{
+		const unsigned int buffer = 1u << (key & 0x1f);
+		// キーが押下げられたかどうかを調べる
+		if (ptr[(key >> 5)] && buffer)	 return true;
+	}
+	// キーは押下げられていない
+	return false;
+}
+
+// ------------------------------------------------------------------------------
+/// <summary>
+/// キーボードの入力を更新する
+/// </summary>
+// ------------------------------------------------------------------------------
+void SceneManager::UpdateKeyboard()
+{
+	// キーボードの状態を取得する
+	m_keyboardState = DirectX::Keyboard::Get().GetState();
+	// キーボードステートトラッカーを更新する
+	m_keyboardStateTracker.Update(m_keyboardState);
+
+	// キーボードが押下げられたかどうかを判定する
+	if (IsKeyDown(m_keyboardState))			KeyboardMessenger::Notify(m_keyboardState);
+	if (IsKeyPress(m_keyboardStateTracker))	KeyboardMessenger::Notify(m_keyboardStateTracker);
 }

@@ -138,10 +138,10 @@ private:
 	std::unique_ptr<Sea> m_sea;
 	// 壁
 	std::unique_ptr<Wall> m_wall;
-	// キーボードの状態
-	DirectX::Keyboard::State m_keyboardState;
-	// キーボードの状態トラッカー
-	DirectX::Keyboard::KeyboardStateTracker m_keyboardStateTracker;
+	//// キーボードの状態
+	//DirectX::Keyboard::State m_keyboardState;
+	//// キーボードの状態トラッカー
+	//DirectX::Keyboard::KeyboardStateTracker m_keyboardStateTracker;
 	// ヒットストップのかかるオブジェクト用の変数
 	float m_smoothDeltaTime;
 	// 型抜き画像のみの描画結果を持つ画像のシェーダーリソースビュー

@@ -85,9 +85,6 @@ void PlayScene::Initialize()
 // ------------------------------------------------------------------------------
 void PlayScene::CreateObjects()
 {
-	// メッセンジャーのクリア
-	KeyboardMessenger::Clear();
-
 	// 火っとストップを取得
 	m_hitStop = HitStop::GetInstance();
 	// パーティクルを生成
@@ -115,11 +112,6 @@ void PlayScene::CreateObjects()
 	// UIマネージャーを生成
 	m_uiManager = Factory::CreateUIManager(this);
 
-	// 観察者リストをソートする
-	KeyboardMessenger::SortObserverList();
-	// キー範囲リストを生成する
-	KeyboardMessenger::CreateKeyRangeList();
-
 	// カメラの状態を変更
 	CameraState state = CameraState::Play;
 	EventMessenger::Execute(EventList::ChangeCamera, &state);
@@ -130,79 +122,16 @@ void PlayScene::CreateObjects()
 
 // ------------------------------------------------------------------------------
 /// <summary>
-/// キーが押されたかどうかを判定する
-/// </summary>
-/// <param name="stateTracker">キーボードトラッカー</param>
-/// <returns>押されたかのフラグ</returns>
-// ------------------------------------------------------------------------------
-inline bool IsKeyPress(DirectX::Keyboard::KeyboardStateTracker& stateTracker)
-{
-	// すべてのキーが押されたかどうかをチェック
-	for (int key = 0; key < PlayScene::MAX_KEY; key++)
-	{
-		// 特定のキーが押されているかを確認
-		if (stateTracker.IsKeyPressed(static_cast<DirectX::Keyboard::Keys>(key)))
-		{
-			return true; // 押されたキーがあれば true を返す
-		}
-	}
-	// どのキーも押されていない場合
-	return false;
-}
-
-// ------------------------------------------------------------------------------
-/// <summary>
-/// キーが押されているかどうかを判定する
-/// </summary>
-/// <param name="state">キーボードステート</param>
-/// <returns>押されているかのフラグ</returns>
-// ------------------------------------------------------------------------------
-inline bool IsKeyDown(DirectX::Keyboard::State& state)
-{
-	// キーボードステートへのポインタを取得する
-	auto ptr = reinterpret_cast<uint32_t*>(&state);
-	for (int key = 0; key < 0xff; key++)
-	{
-		const unsigned int buffer = 1u << (key & 0x1f);
-		// キーが押下げられたかどうかを調べる
-		if (ptr[(key >> 5)] && buffer)	 return true;
-	}
-	// キーは押下げられていない
-	return false;
-}
-
-// ------------------------------------------------------------------------------
-/// <summary>
 /// 更新処理
 /// </summary>
 /// <param name="elapsedTime">経過時間</param>
 // ------------------------------------------------------------------------------
 void PlayScene::Update(float elapsedTime)
 {
-	// キーボードの更新処理
-	UpdateKeyboard();
+	//// キーボードの更新処理
+	//UpdateKeyboard();
 	// オブジェクトの更新処理
 	UpdateObjects(elapsedTime);
-}
-
-// ------------------------------------------------------------------------------
-/// <summary>
-/// キーボードの更新処理
-/// </summary>
-// ------------------------------------------------------------------------------
-void PlayScene::UpdateKeyboard()
-{
-	// キーボードの状態を取得する
-	m_keyboardState = DirectX::Keyboard::Get().GetState();
-	// キーボードステートトラッカーを更新する
-	m_keyboardStateTracker.Update(m_keyboardState);
-
-	// キーボードが押下げられたかどうかを判定する
-	if (IsKeyDown(m_keyboardState))			KeyboardMessenger::Notify(m_keyboardState);
-	if (IsKeyPress(m_keyboardStateTracker))	KeyboardMessenger::Notify(m_keyboardStateTracker);
-
-	// スペースキーが押されたらターゲットを変更する
-	if (m_keyboardStateTracker.IsKeyPressed(DirectX::Keyboard::Keys::Space)) m_enemyManager->ChangeCameraTarget();
 }
 
 // ------------------------------------------------------------------------------

@@ -24,6 +24,8 @@
 #include "../TitleObject/TitleEnemy.h"
 #include "../Stage/SkySphere/SkySphere.h"
 
+#include "Game/Messenger/KeyboardMessenger.h"
+
 // ---------------------------------------------------------
 /// <summary>
 /// コンストラクタ
@@ -55,6 +57,8 @@ TitleScene::~TitleScene()
 // ---------------------------------------------------------
 void TitleScene::Initialize()
 {
+	// キー入力を登録
+	AttachKeyInput();
 	// オブジェクトを生成する
 	CreateObjects();
 	// 射影行列を生成する
@@ -95,6 +99,14 @@ void TitleScene::CreateObjects()
 	// UIの生成
 	m_uiManager = std::make_unique<QuestSelectSceneUIManager>();
 	m_uiManager->Initialize();
+}
+
+
+void TitleScene::AttachKeyInput()
+{
+	KeyboardMessenger::Attach(DirectX::Keyboard::Up, this, KeyboardMessenger::KeyPressType::PRESSED);
+	KeyboardMessenger::Attach(DirectX::Keyboard::Down, this, KeyboardMessenger::KeyPressType::PRESSED);
+	KeyboardMessenger::Attach(DirectX::Keyboard::Space, this, KeyboardMessenger::KeyPressType::PRESSED);
 }
 
 // ---------------------------------------------------------
@@ -242,4 +254,12 @@ IScene::SceneID TitleScene::GetNextSceneID() const
 
 	// シーン変更がない場合
 	return IScene::SceneID::NONE;
+}
+
+void TitleScene::OnKeyPressed(const DirectX::Keyboard::Keys& key)
+{
+}
+
+void TitleScene::OnKeyDown(const DirectX::Keyboard::Keys& key)
+{
 }

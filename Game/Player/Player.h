@@ -32,7 +32,7 @@ enum class PlayerState : int
 /// <summary>
 /// プレイヤークラス
 /// </summary>
-class Player : public IObserver
+class Player : public IObserver, public IObject
 {
 	// -----------------
 	// 定数

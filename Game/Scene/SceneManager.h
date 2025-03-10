@@ -48,6 +48,8 @@ private:
 	// シーンを削除する
 	void DeleteScene();
 
+	void UpdateKeyboard();
+
 	// -----------------------------
 	// メンバ変数
 	// -----------------------------
@@ -67,4 +69,9 @@ private:
 	bool m_canChangeScene;
 	// フェード中かどうか
 	bool m_isFade;
+
+	// キーボードの状態
+	DirectX::Keyboard::State m_keyboardState;
+	// キーボードの状態トラッカー
+	DirectX::Keyboard::KeyboardStateTracker m_keyboardStateTracker;
 };
