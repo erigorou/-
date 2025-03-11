@@ -313,10 +313,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_KEYUP:
 	case WM_SYSKEYUP:
 		Keyboard::ProcessMessage(message, wParam, lParam);
-		if (wParam == VK_ESCAPE)
-		{
-			ExitGame();
-		}
+		//if (wParam == VK_ESCAPE)
+		//{
+		//	ExitGame();
+		//}
 		break;
 		// Åöí«ãLÉRÉRÇ‹Ç≈Åö
 

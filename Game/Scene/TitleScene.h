@@ -95,8 +95,10 @@ public:
 	void Render() override;
 	// 終了処理
 	void Finalize() override;
-	// ステート変更処理
+	// 次のシーンIDを取得する
 	SceneID GetNextSceneID() const;
+	// Escapeが押されたときのシーンIDを取得する
+	SceneID GetPrevSceneID() const;
 
 	// キーボードの入力を取得
 	void OnKeyPressed(const DirectX::Keyboard::Keys& key) override;

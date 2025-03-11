@@ -28,7 +28,8 @@ SceneManager::SceneManager()
 	m_currentScene{},
 	m_nextSceneID(IScene::SceneID::NONE),
 	m_canChangeScene(false),
-	m_isFade(false)
+	m_isFade(false),
+	m_isEscape(false)
 {
 	m_gameResources = GameResources::GetInstance();
 	m_sound = Sound::GetInstance();
@@ -85,7 +86,8 @@ void SceneManager::Update(float elapsedTime)
 	m_fade->Update(elapsedTime);
 
 	// 説明用変数：次のシーン
-	const IScene::SceneID nextSceneID = m_currentScene->GetNextSceneID();
+	IScene::SceneID nextSceneID =
+		m_isEscape ? m_currentScene->GetPrevSceneID() : m_currentScene->GetNextSceneID();
 
 	// シーンを変更しないとき
 	if (nextSceneID == IScene::SceneID::NONE && !m_isFade) return;
@@ -102,6 +104,8 @@ void SceneManager::Update(float elapsedTime)
 	// シーン変更フラグをFadeクラスからもらったらtrueにする
 	if (m_canChangeScene)
 	{
+		// Escapeキーの入力をリセット
+		m_isEscape = false;
 		// フェードを終了
 		m_isFade = false;
 		// シーンを変更
@@ -159,21 +163,28 @@ void SceneManager::ChangeScene(IScene::SceneID sceneID)
 //---------------------------------------------------------
 void SceneManager::CreateScene(IScene::SceneID sceneID)
 {
-	assert(m_currentScene == nullptr);
-
+	// シーンを作成
 	switch (sceneID)
 	{
+		// タイトル
 	case IScene::SceneID::TITLE:
 		m_currentScene = std::make_unique<TitleScene>();
 		break;
 
+		// プレイ
 	case IScene::SceneID::PLAY:
 		m_currentScene = std::make_unique<PlayScene>();
 		break;
 
+		// リザルト
 	case IScene::SceneID::RESULT:
 		m_currentScene = std::make_unique<ResultScene>();
 		break;
+
+		// ゲーム終了
+	case IScene::SceneID::END:
+		PostQuitMessage(0);
+		return;
 
 	default:
 		assert(!"SceneManager::CreateScene::シーン名が存在しません！");
@@ -197,12 +208,12 @@ void SceneManager::CreateScene(IScene::SceneID sceneID)
 //---------------------------------------------------------
 void SceneManager::DeleteScene()
 {
-	if (m_currentScene)
+	// シーンが存在する場合　かつ　次のシーンが存在する場合
+	if (m_currentScene && m_nextSceneID != IScene::SceneID::END)
 	{
 		m_currentScene.reset();
 	}
 }
-
 
 // ------------------------------------------------------------------------------
 /// <summary>
@@ -262,4 +273,19 @@ void SceneManager::UpdateKeyboard()
 	// キーボードが押下げられたかどうかを判定する
 	if (IsKeyDown(m_keyboardState))			KeyboardMessenger::Notify(m_keyboardState);
 	if (IsKeyPress(m_keyboardStateTracker))	KeyboardMessenger::Notify(m_keyboardStateTracker);
+
+	// ESCAPEキーが押された場合
+	if (m_keyboardStateTracker.IsKeyPressed(DirectX::Keyboard::Keys::Escape)){
+		OnEscapeKeyEvent();
+	}
+}
+
+// ------------------------------------------------------------------------------
+/// <summary>
+/// Escapeが押されたときのイベント
+/// </summary>
+// ------------------------------------------------------------------------------
+void SceneManager::OnEscapeKeyEvent()
+{
+	m_isEscape = true;
 }

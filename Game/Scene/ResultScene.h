@@ -64,6 +64,8 @@ public:
 	void Finalize() override;
 	// 次のシーンIDを取得する
 	SceneID GetNextSceneID() const;
+	// 前のシーンIDを取得する
+	SceneID GetPrevSceneID() const;
 
 	// -----------------------------
 	// メンバ関数(非公開)

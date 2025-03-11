@@ -273,3 +273,14 @@ IScene::SceneID ResultScene::GetNextSceneID() const
 	// シーン変更がない場合
 	return IScene::SceneID::NONE;
 }
+
+// ---------------------------------------------
+/// <summary>
+/// Escapeが押されたときのシーンIDを取得する
+/// </summary>
+/// <returns>次のシーンID</returns>
+// ---------------------------------------------
+IScene::SceneID ResultScene::GetPrevSceneID() const
+{
+	return IScene::SceneID::TITLE;
+}

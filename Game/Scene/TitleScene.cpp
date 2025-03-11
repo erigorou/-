@@ -256,6 +256,18 @@ IScene::SceneID TitleScene::GetNextSceneID() const
 	return IScene::SceneID::NONE;
 }
 
+// ---------------------------------------------------------
+/// <summary>
+/// Escapeが押された場合のシーンIDを取得する
+/// </summary>
+/// <returns>変更後のシーンID</returns>
+// ---------------------------------------------------------
+IScene::SceneID TitleScene::GetPrevSceneID() const
+{
+	return IScene::SceneID::END;
+}
+
+
 void TitleScene::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 {
 }

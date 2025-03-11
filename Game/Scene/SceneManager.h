@@ -47,8 +47,10 @@ private:
 	void CreateScene(IScene::SceneID sceneID);
 	// シーンを削除する
 	void DeleteScene();
-
+	// キーボードの入力を更新する
 	void UpdateKeyboard();
+	// Escapeが押されたときのイベント
+	void OnEscapeKeyEvent();
 
 	// -----------------------------
 	// メンバ変数
@@ -63,12 +65,18 @@ private:
 	// サウンド管理
 	Sound* m_sound;
 
+	// 現在のシーンID
+	IScene::SceneID m_currentSceneID;
 	// 次のシーンID
 	IScene::SceneID m_nextSceneID;
+
 	// シーン変更可能かどうか
 	bool m_canChangeScene;
 	// フェード中かどうか
 	bool m_isFade;
+	// escキーが押されたかどうか
+	bool m_isEscape;
+
 
 	// キーボードの状態
 	DirectX::Keyboard::State m_keyboardState;

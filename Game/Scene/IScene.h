@@ -24,6 +24,7 @@ public:
 		TITLE,
 		PLAY,
 		RESULT,
+		END
 	};
 
 	// -----------------------------
@@ -40,6 +41,9 @@ public:
 	virtual void Render() = 0;
 	// 終了処理
 	virtual void Finalize() = 0;
-	// 次のシーンＩＤを取得する
+
+	// 次のシーンIDを取得する
 	virtual SceneID GetNextSceneID() const = 0;
+	// 前のシーンIDを取得する
+	virtual SceneID GetPrevSceneID() const = 0;
 };

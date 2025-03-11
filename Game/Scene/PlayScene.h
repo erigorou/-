@@ -88,6 +88,8 @@ private:
 	void CreateObjects();
 	// 次のシーンIDを取得
 	SceneID GetNextSceneID()const;
+	// 前のシーンIDを取得
+	SceneID GetPrevSceneID()const;
 
 	// オブジェクトの更新
 	void UpdateObjects(float elapsedTime);
