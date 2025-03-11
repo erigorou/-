@@ -3,7 +3,6 @@
 #define OBSERVER
 
 #include "pch.h"
-#include "IObject.h"
 
 class IObserver
 {

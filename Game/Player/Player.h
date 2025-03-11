@@ -6,6 +6,7 @@
 // --------------------------------------------------
 // インクルード
 #pragma once
+#include "Interface/IObject.h"
 #include "Interface/IObserver.h"
 #include "Game/Player/State/Header/PlayerIdling.h"
 #include "Game/Player/State/Header/PlayerDodging.h"
@@ -32,7 +33,7 @@ enum class PlayerState : int
 /// <summary>
 /// プレイヤークラス
 /// </summary>
-class Player : public IObserver, public IObject
+class Player : public IObject, public IObserver
 {
 	// -----------------
 	// 定数
@@ -89,7 +90,7 @@ public:
 	// プレイヤーのオブジェクトを取得
 	Player* GetObject() { return this; }
 	// 座標を取得
-	DirectX::SimpleMath::Vector3 GetPosition()override { return m_position; }
+	DirectX::SimpleMath::Vector3 GetPosition() override { return m_position; }
 	// 座標を設定
 	void SetPosition(DirectX::SimpleMath::Vector3 position) { m_position = position; }
 	// 速度を取得

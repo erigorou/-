@@ -45,8 +45,6 @@ void BossIdling::Initialize()
 	m_player = object ? static_cast<IObject*>(object) : nullptr;
 
 	DirectX::SimpleMath::Vector3 pos = m_player->GetPosition();
-
-	pos = pos;
 }
 
 // --------------------------------------
@@ -69,6 +67,7 @@ void BossIdling::PreUpdate()
 
 	// ‰ñ“]‚ðŽæ“¾
 	m_angle = m_boss->GetAngle();
+
 }
 
 // --------------------------------------

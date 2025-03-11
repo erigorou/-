@@ -6,6 +6,7 @@
 #pragma once
 // インクルード
 #include "pch.h"
+#include "Interface/IObject.h"
 #include "Interface/IObserver.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
