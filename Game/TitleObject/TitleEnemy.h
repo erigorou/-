@@ -25,7 +25,7 @@ public:
 	// -----------------------------
 	// —ñ‹“Œ^
 	// -----------------------------
-	enum class BossState
+	enum class BossState : int
 	{
 		IDLING,  // ‘Ò‹@ó‘Ô
 		MOVING,  // ˆÚ“®ó‘Ô

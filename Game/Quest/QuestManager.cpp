@@ -173,6 +173,16 @@ void QuestManager::DrawQuest()
 // ---------------------------------------------
 void QuestManager::Finalize()
 {
+	// チュートリアルの終了処理
+	if (m_tutorial != nullptr)
+	{
+		m_tutorial->Finalize();
+	}
+	// クエストの描画の終了処理
+	if (m_renderer != nullptr)
+	{
+		m_renderer->Finalize();
+	}
 }
 
 // ---------------------------------------------

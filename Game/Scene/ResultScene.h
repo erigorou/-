@@ -8,6 +8,7 @@
 #pragma once
 // インクルード
 #include "IScene.h"
+#include "Interface/IObserver.h"
 #include "Game/Data/GameData.h"
 #include "Game/UI/UIAnchor.h"
 
@@ -19,7 +20,7 @@ class IAction;
 /// <summary>
 /// リザルトシーン
 /// </summary>
-class ResultScene final : public IScene
+class ResultScene final : public IScene, public IObserver
 {
 	// -----------------------------
 	// 固定値
@@ -66,6 +67,11 @@ public:
 	SceneID GetNextSceneID() const;
 	// 前のシーンIDを取得する
 	SceneID GetPrevSceneID() const;
+
+	// キー入力（押された瞬間）
+	void OnKeyPressed(const DirectX::Keyboard::Keys& key) override;
+	// キー入力（押されている間）
+	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
 
 	// -----------------------------
 	// メンバ関数(非公開)

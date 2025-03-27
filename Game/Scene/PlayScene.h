@@ -8,6 +8,7 @@
 #pragma once
 // インクルード
 #include "IScene.h"
+#include "Interface/IObserver.h"
 
 // 前方宣言
 class CommonResources;
@@ -32,7 +33,7 @@ class Camera;
 /// <summary>
 /// プレイシーンを更新・描画するクラス
 /// </summary>
-class PlayScene final : public IScene
+class PlayScene final : public IScene, public IObserver
 {
 	// --------------------------
 	// 固定値
@@ -79,6 +80,10 @@ public:
 	void Finalize() override;
 	// リザルトシーンへの遷移
 	void ChangeResultScene();
+	// キーボードの入力検知
+	void OnKeyPressed(const DirectX::Keyboard::Keys& key) override;
+	// キーボードの入力検知
+	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
 
 	// --------------------------
 	// メンバ関数(非公開)
@@ -140,10 +145,6 @@ private:
 	std::unique_ptr<Sea> m_sea;
 	// 壁
 	std::unique_ptr<Wall> m_wall;
-	//// キーボードの状態
-	//DirectX::Keyboard::State m_keyboardState;
-	//// キーボードの状態トラッカー
-	//DirectX::Keyboard::KeyboardStateTracker m_keyboardStateTracker;
 	// ヒットストップのかかるオブジェクト用の変数
 	float m_smoothDeltaTime;
 	// 型抜き画像のみの描画結果を持つ画像のシェーダーリソースビュー

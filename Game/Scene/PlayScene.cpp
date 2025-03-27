@@ -76,6 +76,9 @@ void PlayScene::Initialize()
 	EventMessenger::Attach(EventList::EndPlayScene, std::bind(&PlayScene::ChangeResultScene, this));
 	// イベントを登録する (スクリーンショット)
 	EventMessenger::Attach(EventList::TakeCapture, std::bind(&PlayScene::TakeCapture, this));
+
+	// キーボードを登録する
+	KeyboardMessenger::Attach(DirectX::Keyboard::Keys::Space, this, KeyboardMessenger::KeyPressType::PRESSED);
 }
 
 // ------------------------------------------------------------------------------
@@ -128,8 +131,6 @@ void PlayScene::CreateObjects()
 // ------------------------------------------------------------------------------
 void PlayScene::Update(float elapsedTime)
 {
-	//// キーボードの更新処理
-	//UpdateKeyboard();
 	// オブジェクトの更新処理
 	UpdateObjects(elapsedTime);
 }
@@ -157,7 +158,6 @@ void PlayScene::UpdateObjects(float elapsedTime)
 	m_questManager->Update(elapsedTime);
 	// カメラの更新
 	UpdateCamera(elapsedTime);
-
 	// パーティクルの更新
 	m_particles->Update(elapsedTime, m_player->GetPosition(), m_player->GetVelocity());
 
@@ -190,13 +190,8 @@ void PlayScene::Render()
 	m_player->Render(view, m_projection);
 	// 敵（複数）の描画
 	m_enemyManager->Render(view, m_projection);
-
-	if (m_isScreenShot)
-	{
-		// スクリーンショットを取る
-		TakeScreenShot();
-	}
-
+	// スクリーンショットを取る
+	if (m_isScreenShot)	TakeScreenShot();
 	// パーティクルの描画
 	DrawParticle(view, m_projection);
 	// クエストの描画
@@ -227,6 +222,11 @@ void PlayScene::DrawParticle(const DirectX::SimpleMath::Matrix& view, DirectX::S
 // ------------------------------------------------------------------------------
 void PlayScene::Finalize()
 {
+	// イベントを解除する
+	EventMessenger::Detach(EventList::EndPlayScene);
+	EventMessenger::Detach(EventList::TakeCapture);
+	// キーボードを解除する
+	KeyboardMessenger::Detach(DirectX::Keyboard::Keys::Space, this, KeyboardMessenger::KeyPressType::PRESSED);
 }
 
 // ------------------------------------------------------------------------------
@@ -271,7 +271,7 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 	{
 		switch (GameData::GetInstance()->GetBattleResult())
 		{
-			// 勝利したばあいはリザルトに遷移
+			// 勝利した場合はリザルトに遷移
 		case GameData::BATTLE_RESULT::WIN:
 			return IScene::SceneID::RESULT;
 			break;
@@ -312,6 +312,30 @@ void PlayScene::ChangeResultScene()
 	// シーン遷移フラグを立てる
 	m_isChangeScene = true;
 }
+
+// ------------------------------------------------------------------------------
+/// <summary>
+/// キーボードの入力検知を行う（押された瞬間）
+/// </summary>
+/// <param name="key">押されたキー</param>
+// ------------------------------------------------------------------------------
+void PlayScene::OnKeyPressed(const DirectX::Keyboard::Keys& key)
+{
+	// Spaceキーでターゲットを変更
+	if (key == DirectX::Keyboard::Keys::Space) m_enemyManager->ChangeCameraTarget();
+}
+
+// ------------------------------------------------------------------------------
+/// <summary>
+/// キーボードの入力検知を行う（押されている間）
+/// </summary>
+/// <param name="key">押されたキー</param>
+// ------------------------------------------------------------------------------
+void PlayScene::OnKeyDown(const DirectX::Keyboard::Keys& key)
+{
+	UNREFERENCED_PARAMETER(key);
+}
+
 
 // ------------------------------------------------------------------------------
 /// <summary>

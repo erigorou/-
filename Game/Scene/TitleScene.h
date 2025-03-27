@@ -117,8 +117,13 @@ private:
 	void UpdateObject(const float elapsedTime);
 	// オブジェクトを生成
 	void CreateObjects();
-	// ステージ選択
-	void SelectStage(DirectX::Keyboard::KeyboardStateTracker* keyboard);
+
+	// spaceキーが押されたときの処理
+	void OnSpaceKey();
+	// 上キーが押されたときの処理
+	void OnUpKey();
+	// 下キーが押されたときの処理
+	void OnDownKey();
 
 	// -----------------------------
 	// メンバ変数

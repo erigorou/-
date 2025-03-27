@@ -12,13 +12,13 @@
 #include "Game/GameResources.h"
 #include "DeviceResources.h"
 #include "Game/UI/UserInterface.h"
-#include "Libraries/MyLib/InputManager.h"
 #include "Libraries/MyLib/Texture.h"
 #include "../Sound/Sound.h"
 #include "Game/UI/UIAnchor.h"
 #include "Interface/IAction.h"
 #include "Game/UI/Action/GoTitleButtonAction.h"
 #include "Game/UI/Action/EndGameButtonAction.h"
+#include "Game/Messenger/KeyboardMessenger.h"
 
 // ---------------------------------------------
 /// <summary>
@@ -67,6 +67,9 @@ void ResultScene::Initialize()
 
 	// BGMの再生
 	Sound::ChangeBGM(Sound::BGM_TYPE::WIN);
+
+	// キーの登録
+	KeyboardMessenger::Attach(DirectX::Keyboard::Keys::Space, this, KeyboardMessenger::KeyPressType::PRESSED);
 }
 
 // ---------------------------------------------
@@ -160,14 +163,6 @@ void ResultScene::CreateUI()
 // ---------------------------------------------
 void ResultScene::Update(float elapsedTime)
 {
-	// キーボードステートトラッカーを取得する
-	const auto& kbTracker = CommonResources::GetInstance()->GetInputManager()->GetKeyboardTracker();
-
-	// スペースキーが押されたら
-	if (kbTracker->pressed.Space){
-		m_isChangeScene = true;
-	}
-
 	// UIの更新
 	for (auto& ui : m_uiList)
 	{
@@ -245,6 +240,35 @@ void ResultScene::DrawBackground()
 		0.0f						// レイヤ深度(画像のソートで必要)(layerDepth)
 	);
 }
+
+
+// ---------------------------------------------
+/// <summary>
+/// キーボードが押された瞬間の処理
+/// </summary>
+/// <param name="key">キー</param>
+// ---------------------------------------------
+void ResultScene::OnKeyPressed(const DirectX::Keyboard::Keys& key)
+{
+	// スペースキーが押されたら
+	if (key == DirectX::Keyboard::Keys::Space)
+	{
+		m_isChangeScene = true;
+	}
+}
+
+
+// ---------------------------------------------
+/// <summary>
+/// キーボードが押されている間の処理
+/// </summary>
+/// <param name="key">キー</param>
+// ---------------------------------------------
+void ResultScene::OnKeyDown(const DirectX::Keyboard::Keys& key)
+{
+	UNREFERENCED_PARAMETER(key);
+}
+
 
 
 // ---------------------------------------------

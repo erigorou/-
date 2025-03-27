@@ -10,7 +10,6 @@
 #include "TitleScene.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
-#include "Libraries/MyLib/InputManager.h"
 #include "../Factory/Factory.h"
 #include "../Sound/Sound.h"
 #include "../Data/GameData.h"
@@ -99,6 +98,10 @@ void TitleScene::CreateObjects()
 	// UIの生成
 	m_uiManager = std::make_unique<QuestSelectSceneUIManager>();
 	m_uiManager->Initialize();
+
+	// ゲームデータにステージを設定
+	auto gameData = GameData::GetInstance();
+	gameData->SetSelectStage(m_selectIndex);
 }
 
 
@@ -138,14 +141,10 @@ void TitleScene::Update(float elapsedTime)
 	// 秒数を加算する
 	m_totalSeconds += elapsedTime;
 
-	// キーボードステートトラッカーを取得する
-	const auto& kbTracker = CommonResources::GetInstance()->GetInputManager()->GetKeyboardTracker();
 	// オブジェクトの更新
 	UpdateObject(elapsedTime);
 	// パーティクルの更新
 	m_particle->Update(elapsedTime, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero);
-	// ステージ選択
-	SelectStage(kbTracker.get());
 }
 
 // ---------------------------------------------------------
@@ -166,34 +165,6 @@ void TitleScene::UpdateObject(const float elapsedTime)
 
 	// UIの更新
 	m_uiManager->Update(elapsedTime);
-}
-
-// ---------------------------------------------------------
-/// <summary>
-/// 更新処理
-/// </summary>
-/// <param name="elapsedTime">経過時間</param>
-// ---------------------------------------------------------
-void TitleScene::SelectStage(DirectX::Keyboard::KeyboardStateTracker* keyboard)
-{
-	// シーン変更中は処理しない
-	if (m_isChangeScene) return;
-
-	// スペースキーが押されたら
-	if (keyboard->pressed.Space)
-	{
-		// シーン変更フラグを立てるのと音楽を鳴らす
-		m_isChangeScene = true;
-		Sound::PlaySE(Sound::SE_TYPE::SYSTEM_OK);
-	}
-
-	// ステージ選択
-	if (keyboard->pressed.Up)	m_selectIndex = Math::Clamp(m_selectIndex - 1, MIN_STAGE_INDEX, MAX_STAGE_INDEX);
-	if (keyboard->pressed.Down)	m_selectIndex = Math::Clamp(m_selectIndex + 1, MIN_STAGE_INDEX, MAX_STAGE_INDEX);
-
-	// ゲームデータにステージを設定
-	auto gameData = GameData::GetInstance();
-	gameData->SetSelectStage(m_selectIndex);
 }
 
 // ---------------------------------------------------------
@@ -267,11 +238,80 @@ IScene::SceneID TitleScene::GetPrevSceneID() const
 	return IScene::SceneID::END;
 }
 
-
+// ---------------------------------------------------------
+/// <summary>
+/// キーボードの入力を取得
+/// </summary>
+/// <param name="key">キー</param>
+// ---------------------------------------------------------
 void TitleScene::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 {
+	// シーン変更中は処理しない
+	if (m_isChangeScene) return;
+
+	// スペースキーが押されたら
+	if (key == DirectX::Keyboard::Space) OnSpaceKey();
+	// 上キーが押されたら
+	if (key == DirectX::Keyboard::Up) OnUpKey();
+	// 下キーが押されたら
+	if (key == DirectX::Keyboard::Down) OnDownKey();
 }
 
+// ---------------------------------------------------------
+/// <summary>
+/// キーボードの入力を取得
+/// </summary>
+/// <param name="key">キー</param>
+// ---------------------------------------------------------
 void TitleScene::OnKeyDown(const DirectX::Keyboard::Keys& key)
 {
+	UNREFERENCED_PARAMETER(key);
+}
+
+
+// ---------------------------------------------------------
+/// <summary>
+/// スペースキーが押されたときの処理
+/// </summary>
+// ---------------------------------------------------------
+void TitleScene::OnSpaceKey()
+{
+	// シーン変更フラグを立てるのと音楽を鳴らす
+	m_isChangeScene = true;
+	Sound::PlaySE(Sound::SE_TYPE::SYSTEM_OK);
+
+	// ゲームデータにステージを設定
+	auto gameData = GameData::GetInstance();
+	gameData->SetSelectStage(m_selectIndex);
+}
+
+
+// ---------------------------------------------------------
+/// <summary>
+/// 上キーが押されたときの処理
+/// </summary>
+// ---------------------------------------------------------
+void TitleScene::OnUpKey()
+{
+	// 選択インデックスを減らす
+	m_selectIndex = Math::Clamp(m_selectIndex - 1, MIN_STAGE_INDEX, MAX_STAGE_INDEX);
+
+	// ゲームデータにステージを設定
+	auto gameData = GameData::GetInstance();
+	gameData->SetSelectStage(m_selectIndex);
+}
+
+// ---------------------------------------------------------
+/// <summary>
+/// 下キーが押されたときの処理
+/// </summary>
+// ---------------------------------------------------------
+void TitleScene::OnDownKey()
+{
+	// 選択インデックスを増やす
+	m_selectIndex = Math::Clamp(m_selectIndex + 1, MIN_STAGE_INDEX, MAX_STAGE_INDEX);
+
+	// ゲームデータにステージを設定
+	auto gameData = GameData::GetInstance();
+	gameData->SetSelectStage(m_selectIndex);
 }
