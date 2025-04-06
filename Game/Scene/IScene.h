@@ -22,6 +22,7 @@ public:
 	{
 		NONE,
 		TITLE,
+		SELECT,
 		PLAY,
 		RESULT,
 		END

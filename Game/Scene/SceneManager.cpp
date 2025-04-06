@@ -11,6 +11,7 @@
 #include "Game/UI/Fade/Fade.h"
 #include "TitleScene.h"
 #include "PlayScene.h"
+#include "SelectScene.h"
 #include "ResultScene.h"
 #include "Game/Data/GameData.h"
 #include "Game/GameResources.h"
@@ -57,7 +58,7 @@ void SceneManager::Initialize()
 
 // デバッグならこれ
 #ifdef _DEBUG
-	ChangeScene(IScene::SceneID::TITLE);
+	ChangeScene(IScene::SceneID::SELECT);
 #endif // !_DEBUG
 
 // リリースならこれ
@@ -169,6 +170,11 @@ void SceneManager::CreateScene(IScene::SceneID sceneID)
 		// タイトル
 	case IScene::SceneID::TITLE:
 		m_currentScene = std::make_unique<TitleScene>();
+		break;
+
+		// セレクト
+	case IScene::SceneID::SELECT:
+		m_currentScene = std::make_unique<SelectScene>();
 		break;
 
 		// プレイ
