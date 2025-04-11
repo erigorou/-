@@ -6,7 +6,10 @@
 // インクルード
 #pragma once
 #include "Interface/ICameraState.h"
+
+// 前方宣言
 #include "State/TitleCameraState.h"
+#include "State/SelectCameraState.h"
 #include "State/PlayCameraState.h"
 #include "State/ClearCameraState.h"
 
@@ -14,6 +17,7 @@
 enum class CameraState
 {
 	Title,
+	Select,
 	Play,
 	Clear
 };
@@ -128,6 +132,8 @@ public:
 	ICameraState* m_currentState;
 	// タイトルステート
 	std::unique_ptr<TitleCameraState> m_titleState;
+	// セレクトステート
+	std::unique_ptr<SelectCameraState> m_selectState;
 	// プレイステート
 	std::unique_ptr<PlayCameraState> m_playState;
 	// クリアステート

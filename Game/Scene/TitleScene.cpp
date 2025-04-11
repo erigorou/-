@@ -13,7 +13,6 @@
 #include "../Factory/Factory.h"
 #include "../Sound/Sound.h"
 #include "../Data/GameData.h"
-#include "Libraries/MyLib/Math.h"
 #include "Effects/Particle.h"
 #include "Game/UI/SceneUIManager/QuestSelectSceneUIManager.h"
 #include "Game/Messenger/EventMessenger.h"
@@ -104,7 +103,11 @@ void TitleScene::CreateObjects()
 	gameData->SetSelectStage(m_selectIndex);
 }
 
-
+// ---------------------------------------------------------
+/// <summary>
+/// キー入力を登録
+/// </summary>
+// ---------------------------------------------------------
 void TitleScene::AttachKeyInput()
 {
 	KeyboardMessenger::Attach(DirectX::Keyboard::Up, this, KeyboardMessenger::KeyPressType::PRESSED);
@@ -220,7 +223,7 @@ IScene::SceneID TitleScene::GetNextSceneID() const
 	// シーン変更がある場合
 	if (m_isChangeScene)
 	{
-		return IScene::SceneID::PLAY;
+		return IScene::SceneID::SELECT;
 	}
 
 	// シーン変更がない場合
@@ -251,10 +254,6 @@ void TitleScene::OnKeyPressed(const DirectX::Keyboard::Keys& key)
 
 	// スペースキーが押されたら
 	if (key == DirectX::Keyboard::Space) OnSpaceKey();
-	// 上キーが押されたら
-	if (key == DirectX::Keyboard::Up) OnUpKey();
-	// 下キーが押されたら
-	if (key == DirectX::Keyboard::Down) OnDownKey();
 }
 
 // ---------------------------------------------------------
@@ -279,37 +278,6 @@ void TitleScene::OnSpaceKey()
 	// シーン変更フラグを立てるのと音楽を鳴らす
 	m_isChangeScene = true;
 	Sound::PlaySE(Sound::SE_TYPE::SYSTEM_OK);
-
-	// ゲームデータにステージを設定
-	auto gameData = GameData::GetInstance();
-	gameData->SetSelectStage(m_selectIndex);
-}
-
-
-// ---------------------------------------------------------
-/// <summary>
-/// 上キーが押されたときの処理
-/// </summary>
-// ---------------------------------------------------------
-void TitleScene::OnUpKey()
-{
-	// 選択インデックスを減らす
-	m_selectIndex = Math::Clamp(m_selectIndex - 1, MIN_STAGE_INDEX, MAX_STAGE_INDEX);
-
-	// ゲームデータにステージを設定
-	auto gameData = GameData::GetInstance();
-	gameData->SetSelectStage(m_selectIndex);
-}
-
-// ---------------------------------------------------------
-/// <summary>
-/// 下キーが押されたときの処理
-/// </summary>
-// ---------------------------------------------------------
-void TitleScene::OnDownKey()
-{
-	// 選択インデックスを増やす
-	m_selectIndex = Math::Clamp(m_selectIndex + 1, MIN_STAGE_INDEX, MAX_STAGE_INDEX);
 
 	// ゲームデータにステージを設定
 	auto gameData = GameData::GetInstance();

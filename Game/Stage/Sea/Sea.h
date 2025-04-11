@@ -52,6 +52,13 @@ public:
 	static constexpr wchar_t PS_PATH[] = L"Resources/cso/VoronoiPS.cso";
 	static constexpr wchar_t GS_PATH[] = L"Resources/cso/VoronoiGS.cso";
 
+	// 海のスケール
+	static constexpr DirectX::SimpleMath::Vector3 SEA_SCALE = { 10000.0f, 10000.0f, 1.0f };
+	// 海板ポリの回転
+	static constexpr float SEA_RPTATION_X_DEG = -90.0f;
+	// 波の速度（割合）
+	static constexpr float SEA_WAVE_SPEED = 0.5f;
+
 	// -----------------------------
 	// 公開メンバ関数
 	// -----------------------------

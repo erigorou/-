@@ -14,8 +14,6 @@
 #include "Game/UI/UIAnchor.h"
 #include "Game/UI/Action/NormalAction.h"
 #include "Game/UI/Action/TitleLogoAction.h"
-#include "Game/UI/Action/TutorialButtonAction.h"
-#include "Game/UI/Action/BossFightButtonAction.h"
 
 // ---------------------------------------------------------
 /// <summary>
@@ -59,24 +57,6 @@ void QuestSelectSceneUIManager::Initialize()
 		DirectX::SimpleMath::Vector2(DEFAULT_SIZE),
 		ANCHOR::BOTTOM_CENTER,
 		new NormalAction()
-	);
-
-	// チュートリアルボタンの追加
-	AddUserInterface(
-		"tutorial",
-		DirectX::SimpleMath::Vector2(TUTORIAL_BUTTON_POSITION),
-		DirectX::SimpleMath::Vector2(DEFAULT_SIZE),
-		ANCHOR::BOTTOM_RIGHT,
-		new TutorialButtonAction()
-	);
-
-	// ボス戦ボタンの追加
-	AddUserInterface(
-		"bossfight",
-		DirectX::SimpleMath::Vector2(BOSS_FIGHT_BUTTON_POSITION),
-		DirectX::SimpleMath::Vector2(DEFAULT_SIZE),
-		ANCHOR::BOTTOM_RIGHT,
-		new BossFightButtonAction()
 	);
 }
 

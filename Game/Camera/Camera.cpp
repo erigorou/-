@@ -8,6 +8,8 @@
 #include "Game/Camera/Camera.h"
 #include "Libraries/MyLib/Math.h"
 #include "Game/Messenger/EventMessenger.h"
+// カメラのステート
+
 
 // ---------------------------------------------
 /// <summary>
@@ -161,6 +163,10 @@ void Camera::CreateState()
 	// タイトルステートの作成
 	m_titleState = std::make_unique<TitleCameraState>(this);
 	m_states.push_back(m_titleState.get());
+
+	// セレクトステートの作成
+	m_selectState = std::make_unique<SelectCameraState>(this);
+	m_states.push_back(m_selectState.get());
 
 	// プレイステートの作成
 	m_playState = std::make_unique<PlayCameraState>(this);

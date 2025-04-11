@@ -206,6 +206,7 @@
     <ClInclude Include="Effects\Source\SwordTrialParticle.h" />
     <ClInclude Include="Effects\Particle.h" />
     <ClInclude Include="Game\Camera\State\PlayCameraState.h" />
+    <ClInclude Include="Game\Camera\State\SelectCameraState.h" />
     <ClInclude Include="Game\Camera\State\TitleCameraState.h" />
     <ClInclude Include="Game\Data\GameData.h" />
     <ClInclude Include="Game\Data\HPSystem.h" />
@@ -235,6 +236,7 @@
     <ClInclude Include="Game\Quest\TutorialList\TutorialStart.h" />
     <ClInclude Include="Game\Quest\Tutorial\Tutorial.h" />
     <ClInclude Include="Game\Scene\ResultScene.h" />
+    <ClInclude Include="Game\Scene\Screen.h" />
     <ClInclude Include="Game\Scene\SelectScene.h" />
     <ClInclude Include="Game\Scene\TitleScene.h" />
     <ClInclude Include="Game\Stage\Sea\Sea.h" />
@@ -329,6 +331,7 @@
     <ClCompile Include="Effects\Source\DustTrailParticle.cpp" />
     <ClCompile Include="Effects\Source\SwordTrailParticle.cpp" />
     <ClCompile Include="Game\Camera\State\PlayCameraState.cpp" />
+    <ClCompile Include="Game\Camera\State\SelectCameraState.cpp" />
     <ClCompile Include="Game\Camera\State\TitleCameraState.cpp" />
     <ClCompile Include="Game\Data\GameData.cpp" />
     <ClCompile Include="Game\Data\HPSystem.cpp" />

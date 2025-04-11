@@ -1,12 +1,15 @@
 // ---------------------------------------------
-// 名前		:PlayCameraState.cpp
-// 内容		:プレイ時のカメラステートクラス
+// 
+// 名前		:SelectCameraState.cpp
+// 内容		:ステージ選択時のカメラステートクラス
 // 作成		:池田桜輔
+// 
 // ---------------------------------------------
+#pragma once
 // インクルード
 #include "pch.h"
-#include "PlayCameraState.h"
-#include "../Camera.h"
+#include "SelectCameraState.h"
+#include "Game/Camera/Camera.h"
 #include "Libraries/MyLib/Math.h"
 
 // ---------------------------------------------
@@ -14,9 +17,11 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="camera">カメラオブジェクト</param>
-// ---------------------------------------------
-PlayCameraState::PlayCameraState(Camera* camera)
+// ----------------------------------------------
+SelectCameraState::SelectCameraState(Camera* camera)
 	: m_camera(camera)
+	, m_cameraY()
+	, m_elapsedTime()
 {
 }
 
@@ -24,8 +29,8 @@ PlayCameraState::PlayCameraState(Camera* camera)
 /// <summary>
 /// デストラクタ
 /// </summary>
-// ---------------------------------------------
-PlayCameraState::~PlayCameraState()
+// ----------------------------------------------
+SelectCameraState::~SelectCameraState()
 {
 }
 
@@ -33,36 +38,40 @@ PlayCameraState::~PlayCameraState()
 /// <summary>
 /// ステートの前更新処理
 /// </summary>
-// ---------------------------------------------
-void PlayCameraState::PreUpdate()
+// ----------------------------------------------
+void SelectCameraState::PreUpdate()
 {
+	// 経過時間をリセット
+	m_elapsedTime = 0.0f;
 }
+
 
 // ---------------------------------------------
 /// <summary>
 /// ステートの更新処理
 /// </summary>
 /// <param name="playerPos">プレイヤーの座標</param>
-/// <param name="enemyPos">敵の座標</param>
-/// <param name="elapsedTime">経過時間</param>
-// ---------------------------------------------
-void PlayCameraState::Update(
+/// /// <param name="enemyPos">敵の座標</param>
+/// /// <param name="elapsedTime">経過時間</param>
+// ----------------------------------------------
+void SelectCameraState::Update(
 	const DirectX::SimpleMath::Vector3& playerPos,
 	const DirectX::SimpleMath::Vector3& enemyPos,
 	float elapsedTime
 )
 {
+	// 経過時間を加算
+	m_elapsedTime += elapsedTime;
+	// カメラのY座標をsin波で上下させる
+	m_cameraY = SINE_HEIGHT * sinf(m_elapsedTime / SINE_PERIOD);
+
 	// プレイヤーから敵への方向ベクトルを計算
 	Vector3 playerToEnemy = enemyPos - playerPos;
 	playerToEnemy.Normalize();
-	// プレイヤと敵の距離を取得
-	float distance = Vector3::Distance(playerPos, enemyPos);
-	// 距離によってカメラの高さを変更
-	float normalizedDistance = std::min(std::max((distance / STAGE_LENGTH), CAMERA_ZOOM_MIN_FACTOR), CAMERA_ZOOM_MAX_FACTOR);
 	// カメラの目標位置を計算
 	Vector3 targetCameraPos = playerPos - playerToEnemy * Camera::CAMERA_DIRECTION;
 	// 高さを距離依存に変更
-	targetCameraPos.y = Camera::CAMERA_POSITION_Y * normalizedDistance;
+	targetCameraPos.y = Camera::CAMERA_POSITION_Y + m_cameraY;
 	// カメラ位置を補間して追従
 	float followSpeed = LERP_RATE;
 	// カメラの位置を補間して追従
@@ -84,6 +93,6 @@ void PlayCameraState::Update(
 /// ステートの後更新処理
 /// </summary>
 // ---------------------------------------------
-void PlayCameraState::PostUpdate()
+void SelectCameraState::PostUpdate()
 {
 }

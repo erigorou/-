@@ -11,6 +11,7 @@
 #include "UserInterface.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "Interface/IAction.h"
+#include "Game/Scene/Screen.h"
 
 // ---------------------------------------------------------
 // 定数
@@ -31,7 +32,7 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> UserInterface::INPUT_LAYOUT =
 UserInterface::UserInterface()
 	:
 	m_totalTime{},
-	m_windowSize{ WINDOW_SIZE },
+	m_windowSize{ Screen::WIDTH, Screen::HEIGHT },
 	m_textureSize{},
 	m_texture{},
 	m_scale(DirectX::SimpleMath::Vector2::One),
@@ -203,7 +204,7 @@ void UserInterface::Render()
 	// Position.z	:アンカータイプ(0～8)の整数で指定
 	// Color.xy　	:アンカー座標(ピクセル指定:1280 ×720)
 	// Color.zw		:画像サイズ
-	// Tex.xy		:ウィンドウサイズ（バッファも同じ。こちらは未使用）
+	// Tex.xy		:ウィンドウサイズ
 	DirectX::VertexPositionColorTexture vertex[1] =
 	{
 		DirectX::VertexPositionColorTexture(
@@ -228,14 +229,14 @@ void UserInterface::Render()
 	context->PSSetConstantBuffers(0, 1, cb);
 
 	//	画像用サンプラーの登録
-	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
+	ID3D11SamplerState* sampler[1] = { m_states->PointWrap()};
 	context->PSSetSamplers(0, 1, sampler);
 	//	半透明描画指定
 	ID3D11BlendState* blendstate = m_states->NonPremultiplied();
 	//	透明判定処理
 	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
 	//	深度バッファに書き込み参照する
-	context->OMSetDepthStencilState(m_states->DepthDefault(), 0);
+	context->OMSetDepthStencilState(m_states->DepthNone(), 0);
 	//	カリングは左周り
 	context->RSSetState(m_states->CullNone());
 	// シェーダをセットする

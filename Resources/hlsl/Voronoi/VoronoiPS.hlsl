@@ -50,7 +50,7 @@ float2 subtleDistortUV(float2 uv, float time)
 float4 main(PS_INPUT input) : SV_TARGET
 {
     // ブロックの数
-    float scale = 20.0;
+    float scale = 150.0;
     float2 uv = input.Tex * scale;
 
     // 基本のUV歪み

@@ -31,6 +31,6 @@ public:
 	{
 		// ƒAƒNƒVƒ‡ƒ““Á‚É‚È‚µ
 		UNREFERENCED_PARAMETER(time);
-		return param;
+		return param; 
 	}
 };

@@ -26,5 +26,11 @@
   "X_KEY": "UI/Operation/X.png",
   "TEXT_KEY": "UI/Operation/TEXT.png",
   "GameEndUI": "GameEnd.png",
-  "GoTitleUI": "GoTitle.png"
+  "GoTitleUI": "GoTitle.png",
+  "SelectEscape": "SelectSceneEscape.png",
+  "SelectSpace": "SelectSceneSpace.png",
+  "StageSelect": "StageSelect.png",
+  "SelectBack": "SelectBack.png",
+  "SelectTutorial": "SelectTutorial.png",
+  "SelectBoss": "SelectBoss.png"
 } 

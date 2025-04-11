@@ -232,6 +232,8 @@
     <ClInclude Include="Game\UI\Action\GoTitleButtonAction.h" />
     <ClInclude Include="Game\UI\Action\EndGameButtonAction.h" />
     <ClInclude Include="Game\Scene\SelectScene.h" />
+    <ClInclude Include="Game\Scene\Screen.h" />
+    <ClInclude Include="Game\Camera\State\SelectCameraState.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -343,6 +345,7 @@
     <ClCompile Include="Game\Scene\ResultScene.cpp" />
     <ClCompile Include="Libraries\MyLib\InputManager.cpp" />
     <ClCompile Include="Game\Scene\SelectScene.cpp" />
+    <ClCompile Include="Game\Camera\State\SelectCameraState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

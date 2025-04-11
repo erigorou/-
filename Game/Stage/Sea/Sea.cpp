@@ -80,7 +80,8 @@ void Sea::Create()
 /// 描画処理
 /// </summary>
 // ---------------------------------------------------------
-void Sea::Render(DirectX::SimpleMath::Matrix view,
+void Sea::Render(
+	DirectX::SimpleMath::Matrix view,
 	DirectX::SimpleMath::Matrix proj)
 {
 	CommonResources* resources = CommonResources::GetInstance();
@@ -97,10 +98,10 @@ void Sea::Render(DirectX::SimpleMath::Matrix view,
 
 	// 渡す用のデータを作成
 	DirectX::SimpleMath::Matrix world = DirectX::SimpleMath::Matrix::Identity;
-	world *= DirectX::SimpleMath::Matrix::CreateScale(DirectX::SimpleMath::Vector3(1000, 1000, 1));
-	world *= DirectX::SimpleMath::Matrix::CreateRotationX(DirectX::XMConvertToRadians(-90));
+	world *= DirectX::SimpleMath::Matrix::CreateScale(SEA_SCALE);
+	world *= DirectX::SimpleMath::Matrix::CreateRotationX(DirectX::XMConvertToRadians(SEA_RPTATION_X_DEG));
 	// 経過時間の更新
-	m_totalTime += GameData::GetInstance()->GetElapsedTime();
+	m_totalTime += GameData::GetInstance()->GetElapsedTime() * SEA_WAVE_SPEED;
 
 	// バッファの作成
 	ConstBuffer cbuff;
