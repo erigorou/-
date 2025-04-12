@@ -229,13 +229,13 @@ void SelectScene::RenderStage()
 	auto view = m_camera->GetViewMatrix();
 
 	// ŠC‚Ì•`‰æ
-//	m_sea->Render(view, m_projection);
+	m_sea->Render(view, m_projection);
 	// •Ç‚Ì•`‰æ
-//	m_wall->Render(view, m_projection);
+	m_wall->Render(view, m_projection);
 	// ’n–Ê‚Ì•`‰æ
-//	m_floor->Render(view, m_projection);
+	m_floor->Render(view, m_projection);
 	// ƒXƒJƒCƒ{ƒbƒNƒX‚Ì•`‰æ
-//	m_skySphere->DrawSkySphere(view, m_projection);
+	m_skySphere->DrawSkySphere(view, m_projection);
 }
 
 

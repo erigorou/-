@@ -116,9 +116,15 @@ void GameResources::LoadTexture()
 		// テクスチャを生成
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture;
 
-		DirectX::CreateWICTextureFromFile(
+		DirectX::CreateWICTextureFromFileEx(
 			device,
 			path.c_str(),
+			0,
+			D3D11_USAGE_DEFAULT,
+			D3D11_BIND_SHADER_RESOURCE,
+			0,
+			0,
+			DirectX::WIC_LOADER_IGNORE_SRGB,
 			nullptr,
 			texture.GetAddressOf()
 		);
