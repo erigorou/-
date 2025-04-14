@@ -25,6 +25,7 @@
 #include "Game/Stage/Wall/Wall.h"
 #include "Game/Stage/Floor/Floor.h"
 #include "Game/Stage/SkySphere/SkySphere.h"
+#include "Game/Stage/SelectSceneObject/SelectSceneObject.h"
 
 // ----------------------------------------------
 /// <summary>
@@ -59,6 +60,9 @@ void SelectScene::Initialize()
 	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 	// スプライトバッチを作成する
 	m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
+	// ボスモデルの取得
+	m_bossModel = GameResources::GetInstance()->GetModel("boss");
+
 	// キーボードの登録
 	RegisterKeyboard();
 	// SelectSceneのUI追加
@@ -82,6 +86,9 @@ void SelectScene::Update(float elapsedTime)
 	{
 		ui->Update(elapsedTime);
 	}
+
+	// ステージオブジェクトの更新
+	m_selectStageObject->Update(elapsedTime);
 }
 
 // ----------------------------------------------
@@ -129,14 +136,6 @@ void SelectScene::Finalize()
 // -------------------------------------------------
 void SelectScene::CreateUI()
 {
-	//// 背景の追加
-	//AddUserInterface(
-	//	"SelectBack",
-	//	BACKGROUND_POSITION,
-	//	BACKGROUND_SIZE,
-	//	ANCHOR::TOP_LEFT,
-	//	new NormalAction()
-	//);
 
 	// EspaceUIの追加
 	AddUserInterface(
@@ -216,6 +215,10 @@ void SelectScene::CreateStage()
 	m_floor = Factory::CreateFloor();
 	// スカイボックスの作成
 	m_skySphere = Factory::CreateSkySphere();
+
+	// ステージオブジェクトの作成
+	m_selectStageObject = std::make_unique<SelectSceneObject>();
+	m_selectStageObject->Initialize();
 }
 
 // -----------------------------------------------
@@ -236,6 +239,8 @@ void SelectScene::RenderStage()
 	m_floor->Render(view, m_projection);
 	// スカイボックスの描画
 	m_skySphere->DrawSkySphere(view, m_projection);
+	// セレクトシーンオブジェクトの描画
+	m_selectStageObject->Render(view, m_projection);
 }
 
 

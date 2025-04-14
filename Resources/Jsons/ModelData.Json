@@ -7,5 +7,7 @@
   "boss": "Oni/Body/oni.cmo",
   "goblin": "Goblin/goblin.cmo",
   "sword": "Weapon/Sword/sword.cmo",
-  "cudgel": "Weapon/Cudgel/cudgel.cmo"
+  "cudgel": "Weapon/Cudgel/cudgel.cmo",
+  "selectTutorial": "Select/SelectTutorial.cmo",
+  "selectBoss": "Select/SelectBoss.cmo"
 }

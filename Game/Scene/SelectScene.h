@@ -24,6 +24,7 @@ class Sea;
 class Wall;
 class Floor;
 class SkySphere;
+class SelectSceneObject;
 
 class SelectScene final : public IScene, public IObserver
 {
@@ -31,10 +32,6 @@ class SelectScene final : public IScene, public IObserver
 	// 固定値
 	// -----------------------------
 public:
-	// ■ﾐ=- 背景 -=ﾐ■
-	static constexpr DirectX::SimpleMath::Vector2 BACKGROUND_POSITION = DirectX::SimpleMath::Vector2(0.0f, 0.0f);
-	static constexpr DirectX::SimpleMath::Vector2 BACKGROUND_SIZE = DirectX::SimpleMath::Vector2(1.0f, 1.0f);
-
 	// ■ﾐ=- EspaceキーのUI -=ﾐ■
 	static constexpr DirectX::SimpleMath::Vector2 ESPACE_POSITION = DirectX::SimpleMath::Vector2(100.0f, (Screen::BOTTOM - 20.0f));
 	static constexpr DirectX::SimpleMath::Vector2 ESPACE_SIZE = DirectX::SimpleMath::Vector2(0.4f, 0.4f);
@@ -62,7 +59,7 @@ public:
 	// 視錐台（遠い）
 	static constexpr float FAR_Z = 50000.0f;
 	// カメラの位置
-	static constexpr DirectX::SimpleMath::Vector3 CAMERA_POSITION = { 0.0f, 100.0f, 100.0f };
+	static constexpr DirectX::SimpleMath::Vector3 CAMERA_POSITION = { 50.0f, 100.0f, 30.0f };
 	// カメラの向き
 	static constexpr DirectX::SimpleMath::Vector3 CAMERA_DIRECTION = { 0.0f, 200.0f, 200.0f };
 
@@ -150,6 +147,8 @@ private:
 	std::unique_ptr<Floor> m_floor;
 	// 空
 	std::unique_ptr<SkySphere> m_skySphere;
+	// セレクトシーンオブジェクト
+	std::unique_ptr<SelectSceneObject> m_selectStageObject;
 
 	// プロジェクション行列
 	DirectX::SimpleMath::Matrix m_projection;
@@ -159,4 +158,9 @@ private:
 
 	// 選択中のステージ番号
 	int m_selectIndex;
+
+
+
+	// モデル
+	DirectX::Model* m_bossModel;
 };
