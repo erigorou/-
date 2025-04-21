@@ -45,10 +45,14 @@ public:
 	static constexpr DirectX::SimpleMath::Vector2 LOGO_SIZE = DirectX::SimpleMath::Vector2(0.6f, 0.6f);
 
 	// ■ﾐ=-　セレクトステージのUI -=ﾐ■
-	static constexpr DirectX::SimpleMath::Vector2 TUTORIAL_POSITION = DirectX::SimpleMath::Vector2(Screen::LEFT + 50.0f, Screen::TOP + 275.0f);
-	static constexpr DirectX::SimpleMath::Vector2 BOSS_POSITION = DirectX::SimpleMath::Vector2(Screen::LEFT + 50.0f, Screen::TOP + 425.0f);
+	static constexpr DirectX::SimpleMath::Vector2 TUTORIAL_POSITION = DirectX::SimpleMath::Vector2(Screen::LEFT - 150.0f, Screen::TOP + 250.0f);
+	static constexpr DirectX::SimpleMath::Vector2 BOSS_POSITION = DirectX::SimpleMath::Vector2(Screen::LEFT - 150.0f, Screen::TOP + 450.0f);
 	// セレクトステージUIの大きさ
-	static constexpr DirectX::SimpleMath::Vector2 SELECT_STAGE_UI_SIZE = DirectX::SimpleMath::Vector2(0.5f, 0.5f);
+	static constexpr DirectX::SimpleMath::Vector2 SELECT_STAGE_UI_SIZE = DirectX::SimpleMath::Vector2(0.6f, 0.6f);
+
+
+	// ステージ選択UIのアニメーションの最大時間
+	static constexpr float SELECT_STAGE_UI_MAX_TIME = 0.25f;
 
 
 	// ■ﾐ=-　カメラの固定値　-=ﾐ■
@@ -59,7 +63,7 @@ public:
 	// 視錐台（遠い）
 	static constexpr float FAR_Z = 50000.0f;
 	// カメラの位置
-	static constexpr DirectX::SimpleMath::Vector3 CAMERA_POSITION = { 50.0f, 100.0f, 30.0f };
+	static constexpr DirectX::SimpleMath::Vector3 CAMERA_POSITION = { -20.0f, 100.0f, 50.0f };
 	// カメラの向き
 	static constexpr DirectX::SimpleMath::Vector3 CAMERA_DIRECTION = { 0.0f, 200.0f, 200.0f };
 
@@ -122,6 +126,8 @@ private:
 	void OnKeyDownArrowUp();
 	// スペースキーが押されたときの処理
 	void OnKeyDownSpace();
+	// 選択中の経過時間を記録する処理
+	void RecordSelectTime(float elapsedTime);
 
 	// ------------------------------
 	// メンバ変数
@@ -159,7 +165,10 @@ private:
 	// 選択中のステージ番号
 	int m_selectIndex;
 
-
+	// チュートリアルの選択時間
+	float m_tutorialSelectTime = 0.0f;
+	// ボスの選択時間
+	float m_bossSelectTime = 0.0f;
 
 	// モデル
 	DirectX::Model* m_bossModel;

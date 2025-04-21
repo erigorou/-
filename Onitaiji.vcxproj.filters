@@ -235,6 +235,8 @@
     <ClInclude Include="Game\Scene\Screen.h" />
     <ClInclude Include="Game\Camera\State\SelectCameraState.h" />
     <ClInclude Include="Game\Stage\SelectSceneObject\SelectSceneObject.h" />
+    <ClInclude Include="Game\UI\Action\SelectTutorialAction.h" />
+    <ClInclude Include="Game\UI\Action\SelectBossAction.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />

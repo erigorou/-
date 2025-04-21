@@ -21,9 +21,9 @@ public:
 
 	// ƒ‚ƒfƒ‹‚ÌˆÊ’u
 	static constexpr DirectX::SimpleMath::Vector3 MODEL_POSITION = DirectX::SimpleMath::Vector3(
-		20.0f,
+		-35.0f,
 		0.0f,
-		70.0f
+		90.0f
 	);
 
 	// -----------------------------

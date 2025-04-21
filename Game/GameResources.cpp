@@ -22,6 +22,9 @@ const wchar_t* GameResources::TEXTURE_BASE_PATH = L"Resources/Textures/";
 // コンストラクタ
 //---------------------------------------------------------
 GameResources::GameResources()
+	:
+	m_modelList(),
+	m_textureList()
 {
 	// Jsonファイルを読み込んでモデルを生成する
 	LoadModelFromJson();
@@ -134,6 +137,9 @@ void GameResources::LoadTexture()
 	}
 }
 
+// ---------------------------------------------------------
+// モデルを取得する
+//---------------------------------------------------------
 DirectX::Model* GameResources::GetModel(std::string key) const
 {
 	// キーを検索

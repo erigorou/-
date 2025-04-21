@@ -46,6 +46,16 @@ public:
 	// 選択したステージのインデックスの取得
 	int GetSelectStage() const { return m_questIndex; }
 
+	// 選択画面でチュートリアルが選択されている秒数を設定する
+	void SetTutorialSelectTime(float time) { m_tutorialSelectTime = time; }
+	// 選択画面でチュートリアルが選択されている秒数を取得する
+	float GetTutorialSelectTime() const { return m_tutorialSelectTime; }
+
+	// 選択画面でボスが選択されている秒数を取得する
+	float GetBossSelectTime() const { return m_bossSelectTime; }
+	// 選択画面でボスが選択されている秒数を設定する
+	void SetBossSelectTime(float time) { m_bossSelectTime = time; }
+
 	// スクリーンショットの設定
 	void SetScreenShot(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> captureSRV) { m_captureSRV = captureSRV; }
 	// スクリーンショットの取得
@@ -74,6 +84,11 @@ private:
 	float m_elapsedTime;
 	// クエストのインデックス
 	int m_questIndex;
+
+	// 選択画面でチュートリアルが選択されている秒数
+	float m_tutorialSelectTime;
+	// 選択画面でボスが選択されている秒数
+	float m_bossSelectTime;
 
 	// スクショ(テクスチャ)
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_captureSRV;

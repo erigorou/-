@@ -20,9 +20,9 @@ class SelectCameraState : public ICameraState
 	// ----------------------------
 private:
 	// sin”g‚ÌüŠú
-	static constexpr float SINE_PERIOD = 4.0f;
+	static constexpr float SINE_PERIOD = 2.0f;
 	// ã‰º•
-	static constexpr float SINE_HEIGHT = 1.0f;
+	static constexpr float SINE_HEIGHT = 2.5f;
 	// •âŠÔ—¦
 	static constexpr float LERP_RATE = 0.075f;
 

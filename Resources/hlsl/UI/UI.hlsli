@@ -1,8 +1,8 @@
 cbuffer ConstBuffer	: register(b0)
 {
 	float2 windowSize;
-    float alpha;
-    float padding;
+    float2 padding;
+    float4 uiColor;
 };
 
 struct VS_INPUT

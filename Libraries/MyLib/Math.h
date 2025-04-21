@@ -237,6 +237,30 @@ public:
 	}
 
 	/// <summary>
+	/// 線形補間を行い、2つの2Dベクトル間の中間ベクトルを返します。
+	/// </summary>
+	/// <param name="start">補間の開始ベクトル</param>
+	/// <param name="end">補間の終了ベクトル</param>
+	/// <param name="t">補間の割合（0.0 ～ 1.0）</param>
+	/// <returns>補間された2Dベクトル</returns>
+	static DirectX::SimpleMath::Vector2 LerpVector(
+		const DirectX::SimpleMath::Vector2& start,
+		const DirectX::SimpleMath::Vector2& end,
+		float t
+	)
+	{
+		// t を範囲 [0, 1] にクランプ
+		t = Clamp(t, 0.0f, 1.0f);
+
+		// 各成分を線形補間
+		return {
+			(1.0f - t) * start.x + t * end.x,
+			(1.0f - t) * start.y + t * end.y
+		};
+	}
+
+
+	/// <summary>
 	/// クランプ関数 min max の間に制限する
 	/// </summary>
 	/// <typeparam name="T">テンプレート</typeparam>

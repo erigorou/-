@@ -17,15 +17,20 @@
 #include "Interface/IAction.h"
 #include "Game/Messenger/KeyboardMessenger.h"
 #include "Libraries/MyLib/Math.h"
-#include "Game/UI/Action/NormalAction.h"
 #include "Game/Factory/Factory.h"
 #include "Game/Camera/Camera.h"
+// アクション
+#include "Game/UI/Action/NormalAction.h"
+#include "Game/UI/Action/SelectTutorialAction.h"
+#include "Game/UI/Action/SelectBossAction.h"
 // ステージ関連
 #include "Game/Stage/Sea/Sea.h"
 #include "Game/Stage/Wall/Wall.h"
 #include "Game/Stage/Floor/Floor.h"
 #include "Game/Stage/SkySphere/SkySphere.h"
 #include "Game/Stage/SelectSceneObject/SelectSceneObject.h"
+
+#include "Libraries/MyLib/DebugString.h"
 
 // ----------------------------------------------
 /// <summary>
@@ -89,6 +94,9 @@ void SelectScene::Update(float elapsedTime)
 
 	// ステージオブジェクトの更新
 	m_selectStageObject->Update(elapsedTime);
+
+	// ステージを選択している時間を記録する
+	RecordSelectTime(elapsedTime);
 }
 
 // ----------------------------------------------
@@ -170,7 +178,7 @@ void SelectScene::CreateUI()
 		TUTORIAL_POSITION,
 		SELECT_STAGE_UI_SIZE,
 		ANCHOR::MIDDLE_LEFT,
-		new NormalAction()
+		new SelectTutorialAction()
 	);
 
 	// ボス戦UIの追加
@@ -179,7 +187,7 @@ void SelectScene::CreateUI()
 		BOSS_POSITION,
 		SELECT_STAGE_UI_SIZE,
 		ANCHOR::MIDDLE_LEFT,
-		new NormalAction()
+		new SelectBossAction()
 	);
 }
 
@@ -241,6 +249,13 @@ void SelectScene::RenderStage()
 	m_skySphere->DrawSkySphere(view, m_projection);
 	// セレクトシーンオブジェクトの描画
 	m_selectStageObject->Render(view, m_projection);
+
+
+#ifdef _DEBUG
+	auto debugString = CommonResources::GetInstance()->GetDebugString();
+	debugString->AddString("tutorialSelectTime : %f" , m_tutorialSelectTime);
+	debugString->AddString("bossSelectTime : %f", m_bossSelectTime);
+#endif // _DEBUG
 }
 
 
@@ -363,6 +378,39 @@ void SelectScene::OnKeyDownSpace()
 {
 	// スペースキーが押されたときの処理
 	m_isChangeScene = true;
+}
+
+// ----------------------------------------------
+/// <summary>
+/// 経過時間を記録する
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
+// -----------------------------------------------
+void SelectScene::RecordSelectTime(float elapsedTime)
+{
+	auto gameData = GameData::GetInstance();
+
+	// チュートリアルの秒数を記録
+	m_tutorialSelectTime = m_selectIndex == 0 ?
+		m_tutorialSelectTime + elapsedTime :
+		m_tutorialSelectTime - elapsedTime ;
+
+	// 上限と下限を設定する
+	m_tutorialSelectTime = Math::Clamp(m_tutorialSelectTime, 0.0f, SELECT_STAGE_UI_MAX_TIME);
+
+	// ゲームデータにチュートリアルの秒数を設定
+	gameData->SetTutorialSelectTime(m_tutorialSelectTime);
+
+	// ボス戦の秒数を記録
+	m_bossSelectTime = m_selectIndex == 1 ?
+		m_bossSelectTime + elapsedTime :
+		m_bossSelectTime - elapsedTime ;
+
+	// 上限と下限を設定する
+	m_bossSelectTime = Math::Clamp(m_bossSelectTime, 0.0f, SELECT_STAGE_UI_MAX_TIME);
+	
+	// ゲームデータにボス戦の秒数を設定
+	gameData->SetBossSelectTime(m_bossSelectTime);
 }
 
 // ---------------------------------------------------------

@@ -26,8 +26,8 @@ public:
 	struct ConstBuffer
 	{
 		DirectX::SimpleMath::Vector2 windowSize;
-		float alpha;
-		float padding;
+		DirectX::SimpleMath::Vector2 padding;
+		DirectX::SimpleMath::Vector4 color;
 	};
 	// インプットレイアウト
 	static const std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT;
@@ -89,8 +89,8 @@ private:
 	DirectX::SimpleMath::Vector2 m_scale;
 	// 座標
 	DirectX::SimpleMath::Vector2 m_position;
-	// アルファ値
-	float m_alpha;
+	// 色情報
+	DirectX::SimpleMath::Vector4 m_color;
 	// シェーダー
 	std::unique_ptr<CustomShader> m_shader;
 	// アンカー
