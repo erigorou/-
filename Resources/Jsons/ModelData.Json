@@ -8,6 +8,7 @@
   "goblin": "Goblin/goblin.cmo",
   "sword": "Weapon/Sword/sword.cmo",
   "cudgel": "Weapon/Cudgel/cudgel.cmo",
-  "selectTutorial": "Select/SelectTutorial.cmo",
-  "selectBoss": "Select/SelectBoss.cmo"
+  "selectTutorialggggggggg": "Select/SelectTutorial.cmo",
+  "selectBoss": "Select/SelectBoss.cmo",
+  "selectTutorial": "Select/SelectEscapeSign.cmo"
 }

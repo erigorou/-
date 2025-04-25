@@ -91,10 +91,8 @@ void SelectScene::Update(float elapsedTime)
 	{
 		ui->Update(elapsedTime);
 	}
-
 	// ステージオブジェクトの更新
 	m_selectStageObject->Update(elapsedTime);
-
 	// ステージを選択している時間を記録する
 	RecordSelectTime(elapsedTime);
 }
@@ -150,15 +148,6 @@ void SelectScene::CreateUI()
 		"SelectEscape",
 		ESPACE_POSITION,
 		ESPACE_SIZE,
-		ANCHOR::MIDDLE_CENTER,
-		new NormalAction()
-	);
-
-	// SpaceUIの追加
-	AddUserInterface(
-		"SelectSpace",
-		SPACE_POSITION,
-		SPACE_SIZE,
 		ANCHOR::MIDDLE_CENTER,
 		new NormalAction()
 	);
@@ -249,13 +238,6 @@ void SelectScene::RenderStage()
 	m_skySphere->DrawSkySphere(view, m_projection);
 	// セレクトシーンオブジェクトの描画
 	m_selectStageObject->Render(view, m_projection);
-
-
-#ifdef _DEBUG
-	auto debugString = CommonResources::GetInstance()->GetDebugString();
-	debugString->AddString("tutorialSelectTime : %f" , m_tutorialSelectTime);
-	debugString->AddString("bossSelectTime : %f", m_bossSelectTime);
-#endif // _DEBUG
 }
 
 

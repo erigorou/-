@@ -77,13 +77,27 @@ void GameResources::LoadModelFromJson()
 
 		// モデルファクトリの生成
 		std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
-		fx->SetDirectory(L"Resources/Models");
 
-		// モデルを生成
-		auto model = DirectX::Model::CreateFromCMO(device, path.c_str(), *fx);
+		// path からフォルダ部分（Selectなど）を取得
+		std::wstring::size_type lastSlash = path.rfind(L'/');
+		if (lastSlash == std::wstring::npos) {
+			lastSlash = path.rfind(L'\\'); // バックスラッシュも試す
+		}
+		std::wstring modelDir = (lastSlash != std::wstring::npos) ? path.substr(0, lastSlash) : L"Resources/Models";
 
-		// モデルをリストに追加
-		m_modelList[key] = std::move(model);
+		// フォルダごとのテクスチャを読み込むために、モデルのディレクトリを指定
+		fx->SetDirectory(modelDir.c_str());
+
+		try
+		{
+			auto model = DirectX::Model::CreateFromCMO(device, path.c_str(), *fx);
+			m_modelList[key] = std::move(model);
+		}
+		catch (const std::exception& e)
+		{
+			OutputDebugStringA(e.what()); // デバッグ出力に表示（Visual Studio の出力ウィンドウで見える）
+			MessageBoxA(nullptr, e.what(), "CreateFromCMO エラー", MB_OK | MB_ICONERROR); // ウィンドウで見る場合
+		}
 	}
 }
 
@@ -103,6 +117,9 @@ void GameResources::LoadTexture()
 	// デバイスを取得
 	auto device = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
 
+	// テクスチャを一時保存するためのポインタを作成
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture;
+
 	// Jsonファイルを読み込む
 	nlohmann::json json = nlohmann::json::parse(ifs);
 
@@ -116,9 +133,7 @@ void GameResources::LoadTexture()
 		// std::stringをstd::wstringに変換
 		std::wstring path = TEXTURE_BASE_PATH + std::wstring(pathStr.begin(), pathStr.end());
 
-		// テクスチャを生成
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture;
-
+		// テクスチャをロードする
 		DirectX::CreateWICTextureFromFileEx(
 			device,
 			path.c_str(),
@@ -136,6 +151,9 @@ void GameResources::LoadTexture()
 		m_textureList[key] = texture;
 	}
 }
+
+
+
 
 // ---------------------------------------------------------
 // モデルを取得する

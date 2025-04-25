@@ -90,6 +90,7 @@ void SelectSceneObject::Render(const DirectX::SimpleMath::Matrix view, const Dir
 		}
 	);
 
+
 	m_models[m_stageNo]->Draw(context, *states, m_worldMatrix, view, proj, false, [&]
 		{
 			// ブレンドステートを設定
@@ -125,6 +126,7 @@ void SelectSceneObject::CalcWorldMatrix()
 {
 	// ワールド行列の計算
 	m_worldMatrix = DirectX::SimpleMath::Matrix::Identity;
+
 	// 回転行列の計算(ヨーピッチロール)
 	m_worldMatrix *= DirectX::SimpleMath::Matrix::CreateFromYawPitchRoll
 	(

@@ -22,7 +22,7 @@
     <RootNamespace>_Onitaiji</RootNamespace>
     <ProjectGuid>{9606f935-c8db-41f0-88df-fe4670116909}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -276,6 +276,7 @@
     <ClInclude Include="Game\UI\Action\SelectTutorialAction.h" />
     <ClInclude Include="Game\UI\Action\TitleLogoAction.h" />
     <ClInclude Include="Game\UI\Action\TutorialButtonAction.h" />
+    <ClInclude Include="Game\UI\EscapeSign\EscapeSign.h" />
     <ClInclude Include="Game\UI\Fade\Fade.h" />
     <ClInclude Include="Game\UI\EnemyHP\EnemyHPUI.h" />
     <ClInclude Include="Game\UI\Operation\OperateUI.h" />
@@ -384,6 +385,7 @@
     <ClCompile Include="Game\Stage\Floor\Floor.cpp" />
     <ClCompile Include="Game\Stage\Wall\Wall.cpp" />
     <ClCompile Include="Game\TitleObject\TitleEnemy.cpp" />
+    <ClCompile Include="Game\UI\EscapeSign\EscapeSign.cpp" />
     <ClCompile Include="Game\UI\Fade\Fade.cpp" />
     <ClCompile Include="Game\UI\!PlaySceneUIManager\PlaySceneUIManager.cpp" />
     <ClCompile Include="Game\UI\SceneUIManager\QuestSelectSceneUIManager.cpp" />

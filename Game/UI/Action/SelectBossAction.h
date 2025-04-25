@@ -30,7 +30,7 @@ private:
 	static constexpr float ACTION_TIME = 0.25f;
 
 	// Y軸の位置
-	static constexpr float Y_POSITION = Screen::TOP + 450.0f;
+	static constexpr float Y_POSITION = Screen::TOP + 500.0f;
 
 	// 開始地点と終了地点
 	static constexpr DirectX::SimpleMath::Vector2 START_POSITION = DirectX::SimpleMath::Vector2(Screen::LEFT, Screen::TOP + Y_POSITION);

@@ -33,15 +33,11 @@ class SelectScene final : public IScene, public IObserver
 	// -----------------------------
 public:
 	// ■ﾐ=- EspaceキーのUI -=ﾐ■
-	static constexpr DirectX::SimpleMath::Vector2 ESPACE_POSITION = DirectX::SimpleMath::Vector2(100.0f, (Screen::BOTTOM - 20.0f));
-	static constexpr DirectX::SimpleMath::Vector2 ESPACE_SIZE = DirectX::SimpleMath::Vector2(0.4f, 0.4f);
-	
-	// ■ﾐ=- SPACEキーのUI -=ﾐ■
-	static constexpr DirectX::SimpleMath::Vector2 SPACE_POSITION = DirectX::SimpleMath::Vector2(Screen::RIGHT - 100.0f, (Screen::BOTTOM - 20.0f));
-	static constexpr DirectX::SimpleMath::Vector2 SPACE_SIZE = DirectX::SimpleMath::Vector2(0.4f, 0.4f);
+	static constexpr DirectX::SimpleMath::Vector2 ESPACE_POSITION = DirectX::SimpleMath::Vector2(Screen::RIGHT - 150.0f, Screen::BOTTOM - 100.0f);
+	static constexpr DirectX::SimpleMath::Vector2 ESPACE_SIZE = DirectX::SimpleMath::Vector2(0.5f, 0.5f);
 
 	// ■ﾐ=- ステージセレクトのUI -=ﾐ■
-	static constexpr DirectX::SimpleMath::Vector2 LOGO_POSITION = DirectX::SimpleMath::Vector2(Screen::LEFT - 100.0f, Screen::TOP);
+	static constexpr DirectX::SimpleMath::Vector2 LOGO_POSITION = DirectX::SimpleMath::Vector2(Screen::LEFT - 100.0f, Screen::TOP - 20);
 	static constexpr DirectX::SimpleMath::Vector2 LOGO_SIZE = DirectX::SimpleMath::Vector2(0.6f, 0.6f);
 
 	// ■ﾐ=-　セレクトステージのUI -=ﾐ■
