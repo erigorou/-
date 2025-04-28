@@ -22,7 +22,7 @@
     <RootNamespace>_Onitaiji</RootNamespace>
     <ProjectGuid>{9606f935-c8db-41f0-88df-fe4670116909}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.22000.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -241,6 +241,7 @@
     <ClInclude Include="Game\Scene\TitleScene.h" />
     <ClInclude Include="Game\Stage\Sea\Sea.h" />
     <ClInclude Include="Game\Stage\SelectSceneObject\SelectSceneObject.h" />
+    <ClInclude Include="Game\Stage\Sign\Sign.h" />
     <ClInclude Include="Game\TitleObject\EnemyTitleIdling.h" />
     <ClInclude Include="Game\TitleObject\EnemyTitleMoving.h" />
     <ClInclude Include="Game\Factory\Factory.h" />
@@ -360,6 +361,7 @@
     <ClCompile Include="Game\Scene\TitleScene.cpp" />
     <ClCompile Include="Game\Stage\Sea\Sea.cpp" />
     <ClCompile Include="Game\Stage\SelectSceneObject\SelectSceneObject.cpp" />
+    <ClCompile Include="Game\Stage\Sign\Sign.cpp" />
     <ClCompile Include="Game\TitleObject\EnemyTitleIdling.cpp" />
     <ClCompile Include="Game\TitleObject\EnemyTitleMoving.cpp" />
     <ClCompile Include="Game\Factory\Factory.cpp" />

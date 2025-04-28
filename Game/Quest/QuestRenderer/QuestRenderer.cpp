@@ -14,6 +14,7 @@
 #include "DeviceResources.h"
 #include "CommonStates.h"
 #include "Game/GameResources.h"
+#include "Game/Sound/Sound.h"
 
 // -------------------------------------------------------
 /// <summary>
@@ -280,6 +281,9 @@ void QuestRenderer::NoSlideTexture()
 	{
 		// クエストの変更
 		m_currentAction = m_slideActions[SLIDE_ACTION::SLIDE_OUT];
+
+		// SEの再生
+		Sound::PlaySE(Sound::SE_TYPE::TUTORIAL_CLEAR);
 	}
 }
 

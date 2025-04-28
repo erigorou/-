@@ -110,6 +110,9 @@ void Sound::CreateBGMList()
 void Sound::CreateSEList()
 {
     LoadSE(SE_TYPE::SYSTEM_OK, SYSTEM_OK_PATH);
+    LoadSE(SE_TYPE::SYSTEM_CANCEL, STSTEM_CANCEL_PATH);
+	LoadSE(SE_TYPE::SELECT_SELECT, SELECT_SELECT_SE_PATH);
+    LoadSE(SE_TYPE::TUTORIAL_CLEAR, TUTORIAL_CLEAR_SE_PATH);
     LoadSE(SE_TYPE::PLAYER_ATTACK, PLAYER_ATTACK_SE_PATH);
     LoadSE(SE_TYPE::PLAYER_ATTACK2, PLAYER_ATTACK2_SE_PATH);
     LoadSE(SE_TYPE::PLAYER_DAMAGED, PLAYER_DAMAGED_SE_PATH);
@@ -155,7 +158,13 @@ void Sound::LoadSE(SE_TYPE type, const char* filePath)
 
     // 仮のサウンドを形成する
     result = m_system->createSound(filePath, FMOD_DEFAULT, nullptr, &sound);
-    assert(result == FMOD_OK);
+    if (result != FMOD_OK)
+    {
+        std::string errorMsg = "SEファイルの読み込みに失敗しました。\nパス: ";
+        errorMsg += filePath;
+        MessageBoxA(nullptr, errorMsg.c_str(), "エラー", MB_ICONERROR | MB_OK);
+        assert(false); // ここで止める
+    }
 
     // SEリストに追加
     if (m_seList.size() != static_cast<size_t>(type))

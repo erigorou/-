@@ -238,6 +238,7 @@
     <ClInclude Include="Game\UI\Action\SelectTutorialAction.h" />
     <ClInclude Include="Game\UI\Action\SelectBossAction.h" />
     <ClInclude Include="Game\UI\EscapeSign\EscapeSign.h" />
+    <ClInclude Include="Game\Stage\Sign\Sign.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -352,6 +353,7 @@
     <ClCompile Include="Game\Camera\State\SelectCameraState.cpp" />
     <ClCompile Include="Game\Stage\SelectSceneObject\SelectSceneObject.cpp" />
     <ClCompile Include="Game\UI\EscapeSign\EscapeSign.cpp" />
+    <ClCompile Include="Game\Stage\Sign\Sign.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

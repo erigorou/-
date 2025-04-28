@@ -143,15 +143,6 @@ void SelectScene::Finalize()
 void SelectScene::CreateUI()
 {
 
-	// EspaceUIの追加
-	AddUserInterface(
-		"SelectEscape",
-		ESPACE_POSITION,
-		ESPACE_SIZE,
-		ANCHOR::MIDDLE_CENTER,
-		new NormalAction()
-	);
-
 	// ステージ選択UI（大見出し）の追加
 	AddUserInterface(
 		"StageSelect",
@@ -334,6 +325,9 @@ void SelectScene::OnKeyDownArrowUp()
 	// ゲームデータにステージを設定
 	auto gameData = GameData::GetInstance();
 	gameData->SetSelectStage(m_selectIndex);
+
+	// SE再生
+	Sound::PlaySE(Sound::SE_TYPE::SELECT_SELECT);
 }
 
 // ----------------------------------------------
@@ -349,6 +343,9 @@ void SelectScene::OnKeyDownArrowDown()
 	// ゲームデータにステージを設定
 	auto gameData = GameData::GetInstance();
 	gameData->SetSelectStage(m_selectIndex);
+
+	// SE再生
+	Sound::PlaySE(Sound::SE_TYPE::SELECT_SELECT);
 }
 
 // ----------------------------------------------
@@ -360,6 +357,9 @@ void SelectScene::OnKeyDownSpace()
 {
 	// スペースキーが押されたときの処理
 	m_isChangeScene = true;
+
+	// SE再生
+	Sound::PlaySE(Sound::SE_TYPE::SYSTEM_OK);
 }
 
 // ----------------------------------------------

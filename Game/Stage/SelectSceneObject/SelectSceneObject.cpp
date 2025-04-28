@@ -12,6 +12,7 @@
 #include "Game/Data/GameData.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
+#include "Game/Stage/Sign/Sign.h"
 
 // -----------------------------------------------
 /// <summary>
@@ -42,6 +43,9 @@ void SelectSceneObject::Initialize()
 {
 	// ƒ‚ƒfƒ‹‚Ìó‚¯æ‚è
 	LoadModel();
+
+	// ŠÅ”Â‚Ì¶¬
+	m_sign = std::make_unique<Sign>();
 }
 
 // -----------------------------------------------
@@ -97,6 +101,9 @@ void SelectSceneObject::Render(const DirectX::SimpleMath::Matrix view, const Dir
 			context->OMSetBlendState(states->AlphaBlend(), nullptr, 0xFFFFFFFF);
 		}
 	);
+
+	// ŠÅ”Â‚ğ•\¦‚·‚é
+	m_sign->DrawSign(view,proj);
 }
 
 // -----------------------------------------------

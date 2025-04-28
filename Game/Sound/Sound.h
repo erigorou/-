@@ -32,6 +32,9 @@ public:
 	enum class SE_TYPE : unsigned int
 	{
 		SYSTEM_OK,
+		SYSTEM_CANCEL,
+		SELECT_SELECT,
+		TUTORIAL_CLEAR,
 		PLAYER_ATTACK,
 		PLAYER_ATTACK2,
 		PLAYER_DAMAGED,
@@ -53,8 +56,16 @@ public:
 	// 敗北BGM
 	static constexpr const char* LOSE_BGM_PATH = "Resources/Sounds/BGM/Lose.mp3";
 
-	// 選択SE
+	// 決定SE
 	static constexpr const char* SYSTEM_OK_PATH = "Resources/Sounds/SE/System/OK.mp3";
+	// 戻るSE
+	static constexpr const char* STSTEM_CANCEL_PATH = "Resources/Sounds/SE/System/Cancel.mp3";
+
+	// セレクトシーンの他選択SE
+	static constexpr const char* SELECT_SELECT_SE_PATH = "Resources/Sounds/SE/Select/Select.mp3";
+	// チュートリアルでのタスククリア時SE
+	static constexpr const char* TUTORIAL_CLEAR_SE_PATH = "Resources/Sounds/SE/Tutorial/Clear.mp3";
+
 	// プレイヤーの攻撃SE
 	static constexpr const char* PLAYER_ATTACK_SE_PATH = "Resources/Sounds/SE/Player/Attack.mp3";
 	// プレイヤーの攻撃SE

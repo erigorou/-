@@ -77,16 +77,7 @@ void GameResources::LoadModelFromJson()
 
 		// モデルファクトリの生成
 		std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
-
-		// path からフォルダ部分（Selectなど）を取得
-		std::wstring::size_type lastSlash = path.rfind(L'/');
-		if (lastSlash == std::wstring::npos) {
-			lastSlash = path.rfind(L'\\'); // バックスラッシュも試す
-		}
-		std::wstring modelDir = (lastSlash != std::wstring::npos) ? path.substr(0, lastSlash) : L"Resources/Models";
-
-		// フォルダごとのテクスチャを読み込むために、モデルのディレクトリを指定
-		fx->SetDirectory(modelDir.c_str());
+		fx->SetDirectory(L"Resources/Models/ddsFile");
 
 		try
 		{

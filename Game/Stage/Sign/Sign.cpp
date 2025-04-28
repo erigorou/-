@@ -1,37 +1,22 @@
-// -------------------------
+// ---------------------------------------------------------
 //
-// 　天球に関するクラス
+// 名前：Sign.h
+// 説明：看板クラス
+// 作者：池田桜輔
 //
-// --------------------------
+// ---------------------------------------------------------
 
+// インクルード
 #include "pch.h"
-
-#include "SkySphere.h"
+#include "Sign.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 
-const float SkySphere::SKYSPHERE_SCALE = 100.f;
 
-// -------------------------------
-//  コンストラクタ
-// -------------------------------
-SkySphere::SkySphere()
-	:
-	m_skySphereModel()
-{
-}
-
-// -------------------------------
-//  デストラクタ
-// -------------------------------
-SkySphere::~SkySphere()
-{
-}
-
-// -------------------------------
-//  ロード処理
-// -------------------------------
-void SkySphere::LoadSkySphereModel()
+/// <summary>
+/// コンストラクタ
+/// </summary>
+Sign::Sign()
 {
 	auto commonResources = CommonResources::GetInstance();
 	auto device = commonResources->GetDeviceResources()->GetD3DDevice();
@@ -41,13 +26,20 @@ void SkySphere::LoadSkySphereModel()
 	fx->SetDirectory(L"Resources/Models/ddsFile");
 
 	// モデルを読み込む
-	m_skySphereModel = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Stage/SkySphere/skySphere.cmo", *fx);
+	m_signModel = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Select/SelectEscapeSign.cmo", *fx);
 }
 
-// -------------------------------
-//  描画処理
-// -------------------------------
-void SkySphere::DrawSkySphere(
+
+/// <summary>
+/// デストラクタ
+/// </summary>
+Sign::~Sign()
+{
+}
+
+
+
+void Sign::DrawSign(
 	DirectX::SimpleMath::Matrix view,
 	DirectX::SimpleMath::Matrix projection
 )
@@ -59,7 +51,7 @@ void SkySphere::DrawSkySphere(
 	auto states = resources->GetCommonStates();
 
 	// モデルのエフェクト情報を更新する処理
-	m_skySphereModel->UpdateEffects([](DirectX::IEffect* effect)
+	m_signModel->UpdateEffects([](DirectX::IEffect* effect)
 		{
 			// ベーシックエフェクトを設定する
 			BasicEffect* basicEffect = dynamic_cast<BasicEffect*>(effect);
@@ -78,9 +70,16 @@ void SkySphere::DrawSkySphere(
 
 	// 初期状態のワールドマトリックスを設定
 	SimpleMath::Matrix world = SimpleMath::Matrix::Identity;
-	// サイズを調整する
-	world *= SimpleMath::Matrix::CreateScale(SKYSPHERE_SCALE);
 
-	// 天球を描画する
-	m_skySphereModel->Draw(context, *states, world, view, projection);
+	// 大きさ変更
+	world *= SimpleMath::Matrix::CreateScale(SIGN_SCALE);
+
+	// 回転
+	world *= SimpleMath::Matrix::CreateRotationY(SIGN_ROTATE);
+
+	// 移動
+	world *= SimpleMath::Matrix::CreateTranslation(SIGN_POSITION);
+
+	// 描画
+	m_signModel->Draw(context, *states, world, view, projection);
 }

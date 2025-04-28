@@ -293,5 +293,9 @@ void SceneManager::UpdateKeyboard()
 // ------------------------------------------------------------------------------
 void SceneManager::OnEscapeKeyEvent()
 {
+	// ƒV[ƒ“‚ğØ‚è‘Ö‚¦‚é
 	m_isEscape = true;
+
+	// Œø‰Ê‰¹‚ÌÄ¶
+	Sound::PlaySE(Sound::SE_TYPE::SYSTEM_CANCEL);
 }

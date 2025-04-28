@@ -295,7 +295,7 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 // ------------------------------------------------------------------------------
 IScene::SceneID PlayScene::GetPrevSceneID() const
 {
-	return IScene::SceneID::TITLE;
+	return IScene::SceneID::SELECT;
 }
 
 // ------------------------------------------------------------------------------
