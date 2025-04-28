@@ -64,7 +64,7 @@ void TitleScene::Initialize()
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
 	// 音楽の変更
-	Sound::ChangeBGM(Sound::BGM_TYPE::TITLE);
+	Sound::ChangeBGM("TitleBGM");
 }
 
 // ---------------------------------------------------------
@@ -277,7 +277,7 @@ void TitleScene::OnSpaceKey()
 {
 	// シーン変更フラグを立てるのと音楽を鳴らす
 	m_isChangeScene = true;
-	Sound::PlaySE(Sound::SE_TYPE::SYSTEM_OK);
+	Sound::PlaySE("OK");
 
 	// ゲームデータにステージを設定
 	auto gameData = GameData::GetInstance();

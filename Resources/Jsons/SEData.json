@@ -1,12 +1,12 @@
 {
-  "OK": "..\\..\\\u5C31\u8077\u4F5C\u54C1\\\u9B3C\u9000\u6CBB\\project\\Resources\\Sounds\\SE\\System\\OK.mp3",
-  "Cancel": "..\\..\\\u5C31\u8077\u4F5C\u54C1\\\u9B3C\u9000\u6CBB\\project\\Resources\\Sounds\\SE\\System\\Cancel.mp3",
-  "Select": "..\\..\\\u5C31\u8077\u4F5C\u54C1\\\u9B3C\u9000\u6CBB\\project\\Resources\\Sounds\\SE\\Select\\Select.mp3",
-  "TutorialClear": "..\\..\\\u5C31\u8077\u4F5C\u54C1\\\u9B3C\u9000\u6CBB\\project\\Resources\\Sounds\\SE\\Tutorial\\Clear.mp3",
-  "PlayerAttack": "..\\..\\\u5C31\u8077\u4F5C\u54C1\\\u9B3C\u9000\u6CBB\\project\\Resources\\Sounds\\SE\\Player\\Attack.mp3",
-  "PlayerAttack2": "..\\..\\\u5C31\u8077\u4F5C\u54C1\\\u9B3C\u9000\u6CBB\\project\\Resources\\Sounds\\SE\\Player\\Attack2.mp3",
-  "PlayerDamage": "..\\..\\\u5C31\u8077\u4F5C\u54C1\\\u9B3C\u9000\u6CBB\\project\\Resources\\Sounds\\SE\\Player\\DamagedSE.mp3",
-  "EnemyAttack": "..\\..\\\u5C31\u8077\u4F5C\u54C1\\\u9B3C\u9000\u6CBB\\project\\Resources\\Sounds\\SE\\Enemy\\Attack.mp3",
-  "EnemyMove": "..\\..\\\u5C31\u8077\u4F5C\u54C1\\\u9B3C\u9000\u6CBB\\project\\Resources\\Sounds\\SE\\Enemy\\Move.mp3",
-  "EnemySweep": "..\\..\\\u5C31\u8077\u4F5C\u54C1\\\u9B3C\u9000\u6CBB\\project\\Resources\\Sounds\\SE\\Enemy\\Sweep.mp3"
+  "OK": "Resources\\Sounds\\SE\\System\\OK.mp3",
+  "Cancel": "Resources\\Sounds\\SE\\System\\Cancel.mp3",
+  "Select": "Resources\\Sounds\\SE\\Select\\Select.mp3",
+  "TutorialClear": "Resources\\Sounds\\SE\\Tutorial\\Clear.mp3",
+  "PlayerAttack": "Resources\\Sounds\\SE\\Player\\Attack.mp3",
+  "PlayerAttack2": "Resources\\Sounds\\SE\\Player\\Attack2.mp3",
+  "PlayerDamage": "Resources\\Sounds\\SE\\Player\\DamagedSE.mp3",
+  "EnemyAttack": "Resources\\Sounds\\SE\\Enemy\\Attack.mp3",
+  "EnemyMove": "Resources\\Sounds\\SE\\Enemy\\Move.mp3",
+  "EnemySweep": "Resources\\Sounds\\SE\\Enemy\\Sweep.mp3"
 }

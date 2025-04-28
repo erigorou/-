@@ -130,7 +130,7 @@ void BossApproaching::CheckNextState()
 		EventMessenger::Execute(EventList::CreateBashDust, &m_position);
 
 		// サウンドを再生
-		Sound::PlaySE(Sound::SE_TYPE::BOSS_MOVE);
+		Sound::PlaySE("EnemyMove");
 
 		// プレイヤーとの距離が近い場合
 		if (DirectX::SimpleMath::Vector3::Distance(m_position, playerPos) <= MIN_DISTANCE)

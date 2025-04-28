@@ -297,5 +297,5 @@ void SceneManager::OnEscapeKeyEvent()
 	m_isEscape = true;
 
 	// Œø‰Ê‰¹‚ÌÄ¶
-	Sound::PlaySE(Sound::SE_TYPE::SYSTEM_CANCEL);
+	Sound::PlaySE("Cancel");
 }

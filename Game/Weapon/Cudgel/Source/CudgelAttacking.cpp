@@ -172,7 +172,7 @@ void CudgelAttacking::HandleAttackPhase(float t)
 	// SE‚ðÄ¶‚·‚é
 	if (t > SOUND_TIME && m_playSound == false)
 	{
-		Sound::PlaySE(Sound::SE_TYPE::BOSS_ATTACK);
+		Sound::PlaySE("EnemyAttack");
 		m_playSound = true;
 	}
 }

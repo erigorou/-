@@ -59,7 +59,7 @@ void PlayerAttacking1::PreUpdate()
 	EventMessenger::Execute(EventList::ChangeSwordState, &state);
 
 	// å¯â âπÇÃçƒê∂
-	Sound::PlaySE(Sound::SE_TYPE::PLAYER_ATTACK);
+	Sound::PlaySE("PlayerAttack");
 }
 
 // ---------------------------------------------

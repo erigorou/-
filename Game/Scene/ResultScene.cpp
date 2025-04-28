@@ -66,7 +66,7 @@ void ResultScene::Initialize()
 	CreateUI();
 
 	// BGMÇÃçƒê∂
-	Sound::ChangeBGM(Sound::BGM_TYPE::WIN);
+	Sound::ChangeBGM("WinBGM");
 
 	// ÉLÅ[ÇÃìoò^
 	KeyboardMessenger::Attach(DirectX::Keyboard::Keys::Space, this, KeyboardMessenger::KeyPressType::PRESSED);

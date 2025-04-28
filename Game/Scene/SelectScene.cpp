@@ -327,7 +327,7 @@ void SelectScene::OnKeyDownArrowUp()
 	gameData->SetSelectStage(m_selectIndex);
 
 	// SEçƒê∂
-	Sound::PlaySE(Sound::SE_TYPE::SELECT_SELECT);
+	Sound::PlaySE("Select");
 }
 
 // ----------------------------------------------
@@ -345,7 +345,7 @@ void SelectScene::OnKeyDownArrowDown()
 	gameData->SetSelectStage(m_selectIndex);
 
 	// SEçƒê∂
-	Sound::PlaySE(Sound::SE_TYPE::SELECT_SELECT);
+	Sound::PlaySE("Select");
 }
 
 // ----------------------------------------------
@@ -359,7 +359,7 @@ void SelectScene::OnKeyDownSpace()
 	m_isChangeScene = true;
 
 	// SEçƒê∂
-	Sound::PlaySE(Sound::SE_TYPE::SYSTEM_OK);
+	Sound::PlaySE("OK");
 }
 
 // ----------------------------------------------

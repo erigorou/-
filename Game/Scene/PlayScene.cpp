@@ -120,7 +120,7 @@ void PlayScene::CreateObjects()
 	EventMessenger::Execute(EventList::ChangeCamera, &state);
 
 	// BGM•ÏX
-	Sound::GetInstance()->ChangeBGM(Sound::BGM_TYPE::PLAY);
+	Sound::GetInstance()->ChangeBGM("PlayBGM");
 }
 
 // ------------------------------------------------------------------------------

@@ -10,6 +10,8 @@
 #include "pch.h"
 #include "Game/Sound/Sound.h"
 #include "Libraries/FMOD/inc/fmod.hpp"
+#include <fstream>
+#include "nlohmann/json.hpp"
 #include "Game/Data/GameData.h"
 
 std::unique_ptr<Sound> Sound::s_sound = nullptr;
@@ -43,8 +45,6 @@ Sound::Sound()
     m_soundBGM(nullptr),
     m_channelBGM(nullptr),
     m_channelSE(nullptr),
-    m_bgmList(),
-    m_seList(),
     m_bgmVolume(DEFAULT_BGM_VOLUME),
     m_seVolume(DEFAULT_SE_VOLUME),
     m_fadeValue(FADE_VALUE)
@@ -79,99 +79,106 @@ void Sound::InitializeFMOD()
     result = m_system->init(32, FMOD_INIT_NORMAL, nullptr);
     assert(result == FMOD_OK);
 
-    // BGMリストを生成する
-    CreateBGMList();
+    // JSONからBGMリストを生成する
+    LoadBGMFromJson();
 
-    // SEリストを生成する
-    CreateSEList();
+    // JSONからSEリストを生成する
+    LoadSEFromJson();
 }
 
 // ---------------------------------------------------------
 /// <summary>
-/// BGMリストを生成する
+/// JSONからBGM用の音声データを取得する
 /// </summary>
 // ---------------------------------------------------------
-void Sound::CreateBGMList()
+void Sound::LoadBGMFromJson()
 {
-    LoadBGM(BGM_TYPE::TITLE, TITLE_BGM_PATH);
-    LoadBGM(BGM_TYPE::PLAY, PLAY_BGM_PATH);
-    LoadBGM(BGM_TYPE::WIN, WIN_BGM_PATH);
-    LoadBGM(BGM_TYPE::LOSE, LOSE_BGM_PATH);
-
-    // 最初のBGMをセットする
-    m_soundBGM = m_bgmList[static_cast<size_t>(BGM_TYPE::TITLE)];
-}
-
-// ---------------------------------------------------------
-/// <summary>
-/// SEリストを生成する
-/// </summary>
-// ---------------------------------------------------------
-void Sound::CreateSEList()
-{
-    LoadSE(SE_TYPE::SYSTEM_OK, SYSTEM_OK_PATH);
-    LoadSE(SE_TYPE::SYSTEM_CANCEL, STSTEM_CANCEL_PATH);
-	LoadSE(SE_TYPE::SELECT_SELECT, SELECT_SELECT_SE_PATH);
-    LoadSE(SE_TYPE::TUTORIAL_CLEAR, TUTORIAL_CLEAR_SE_PATH);
-    LoadSE(SE_TYPE::PLAYER_ATTACK, PLAYER_ATTACK_SE_PATH);
-    LoadSE(SE_TYPE::PLAYER_ATTACK2, PLAYER_ATTACK2_SE_PATH);
-    LoadSE(SE_TYPE::PLAYER_DAMAGED, PLAYER_DAMAGED_SE_PATH);
-    LoadSE(SE_TYPE::BOSS_MOVE, ENEMY_MOVE_SE_PATH);
-    LoadSE(SE_TYPE::BOSS_ATTACK, ENEMY_ATTACK_SE_PATH);
-    LoadSE(SE_TYPE::BOSS_SWEEP, ENEMY_SWEEP_SE_PATH);
-}
-
-// ---------------------------------------------------------
-/// <summary>
-/// BGMファイルを読み込む
-/// </summary>
-/// <param name="type">BGMタイプ</param>
-/// <param name="filePath">BGMファイルのパス</param>
-// ---------------------------------------------------------
-void Sound::LoadBGM(BGM_TYPE type, const char* filePath)
-{
-    FMOD::Sound* sound;
-    FMOD_RESULT result;
-
-    // 仮のサウンドを形成する
-    result = m_system->createSound(filePath, FMOD_LOOP_NORMAL, nullptr, &sound);
-    assert(result == FMOD_OK);
-
-    // BGMリストに追加
-    if (m_bgmList.size() != static_cast<size_t>(type))
-        assert(!"BGMを入れる場所とenumが合いません。");
-
-    m_bgmList.push_back(sound);
-}
-
-// ---------------------------------------------------------
-/// <summary>
-/// SEファイルを読み込む
-/// </summary>
-/// <param name="type">SEタイプ</param>
-/// <param name="filePath">SEファイルのパス</param>
-// ---------------------------------------------------------
-void Sound::LoadSE(SE_TYPE type, const char* filePath)
-{
-    FMOD::Sound* sound;
-    FMOD_RESULT result;
-
-    // 仮のサウンドを形成する
-    result = m_system->createSound(filePath, FMOD_DEFAULT, nullptr, &sound);
-    if (result != FMOD_OK)
+    // JSONファイルを開く
+	std::ifstream ifs(BGM_JSON_PATH);
+    // ファイルを開けない場合はエラーを出す
+    if (!ifs)
     {
-        std::string errorMsg = "SEファイルの読み込みに失敗しました。\nパス: ";
-        errorMsg += filePath;
-        MessageBoxA(nullptr, errorMsg.c_str(), "エラー", MB_ICONERROR | MB_OK);
-        assert(false); // ここで止める
+        MessageBoxA(nullptr, "BGMのJsonファイルが見つかりません" , "エラー", MB_OK);
+        return; // 処理を終了
     }
 
-    // SEリストに追加
-    if (m_seList.size() != static_cast<size_t>(type))
-        assert(!"SEを入れる場所とenumが合いません。");
+    // 仮の受付先を持つ
+    FMOD::Sound* sound;
+    FMOD_RESULT result;
 
-    m_seList.push_back(sound);
+	// Jsonファイルを読み込む
+	nlohmann::json json = nlohmann::json::parse(ifs);
+
+	// Jsonデータを順に処理
+	for (auto it = json.begin(); it != json.end(); ++it)
+	{
+		// キーと値を取得
+		std::string key = it.key();
+		std::string pathStr = it.value();
+
+        // BGMをロードする
+        result = m_system->createSound(pathStr.c_str(), FMOD_DEFAULT, nullptr, &sound);
+        if (result != FMOD_OK)
+        {
+            std::string errorMsg = "BGMファイルの読み込みに失敗しました。\nパス: ";
+            errorMsg += pathStr;
+            MessageBoxA(nullptr, errorMsg.c_str(), "エラー", MB_ICONERROR | MB_OK);
+            assert(false); // ここで止める
+        }
+
+        // ロードしたBGMを登録する
+        m_bgmData[key] = sound;
+	}
+
+    m_soundBGM = m_bgmData["TitleBGM"];
 }
+
+
+// ---------------------------------------------------------
+/// <summary>
+/// JSONからSE用の音声データを取得する
+/// </summary>
+// ---------------------------------------------------------
+void Sound::LoadSEFromJson()
+{
+    // JSONファイルを開く
+    std::ifstream ifs(SE_JSON_PATH);
+    // ファイルを開けない場合はエラーを出す
+    if (!ifs)
+    {
+        MessageBoxA(nullptr, "BGMのJsonファイルが見つかりません", "エラー", MB_OK);
+        return; // 処理を終了
+    }
+
+    // 仮の受付先を持つ
+    FMOD::Sound* sound;
+    FMOD_RESULT result;
+
+    // Jsonファイルを読み込む
+    nlohmann::json json = nlohmann::json::parse(ifs);
+
+    // Jsonデータを順に処理
+    for (auto it = json.begin(); it != json.end(); ++it)
+    {
+        // キーと値を取得
+        std::string key = it.key();
+        std::string pathStr = it.value();
+
+        // BGMをロードする
+        result = m_system->createSound(pathStr.c_str(), FMOD_DEFAULT, nullptr, &sound);
+        if (result != FMOD_OK)
+        {
+            std::string errorMsg = "SEファイルの読み込みに失敗しました。\nパス: ";
+            errorMsg += pathStr;
+            MessageBoxA(nullptr, errorMsg.c_str(), "エラー", MB_ICONERROR | MB_OK);
+            assert(false); // ここで止める
+        }
+
+        // ロードしたBGMを登録する
+        m_seData[key] = sound;
+    }
+}
+
 
 // ---------------------------------------------------------
 /// <summary>
@@ -245,7 +252,7 @@ void Sound::SetSEVolume(float volume)
 /// </summary>
 /// <param name="type">変更するBGMタイプ</param>
 // ---------------------------------------------------------
-void Sound::ChangeBGM(Sound::BGM_TYPE type)
+void Sound::ChangeBGM(const std::string key)
 {
     // すでに再生中のBGMを停止する
     if (s_sound->m_channelBGM != nullptr)
@@ -253,14 +260,23 @@ void Sound::ChangeBGM(Sound::BGM_TYPE type)
         s_sound->m_channelBGM->stop();
     }
 
-    // BGMを変更する
-    s_sound->m_soundBGM = s_sound->m_bgmList[static_cast<size_t>(type)];
+    // 再生するBGMを探索する
+    auto it = s_sound->m_bgmData.find(key);
+    if (it == s_sound->m_bgmData.end())
+    {
+        std::string errorMsg = "BGMが見つかりません。\nキー: " + key;
+        MessageBoxA(nullptr, errorMsg.c_str(), "エラー", MB_OK | MB_ICONERROR);
+        return;
+    }
 
-    // 新しいBGMを再生する
-    FMOD_RESULT result = s_sound->m_system->playSound(s_sound->m_soundBGM, nullptr, false, &s_sound->m_channelBGM);
+    // BGMを取得
+    FMOD::Sound* bgmSound = it->second;
+
+    // BGMを再生
+    FMOD_RESULT result = s_sound->m_system->playSound(bgmSound, nullptr, false, &s_sound->m_channelBGM);
     if (result != FMOD_OK)
     {
-        std::string errorMsg = "BGM再生に失敗しました。\nBGM_TYPE: " + std::to_string(static_cast<int>(type));
+        std::string errorMsg = "BGM再生に失敗しました。\nキー: " + key;
         MessageBoxA(nullptr, errorMsg.c_str(), "エラー", MB_OK | MB_ICONERROR);
         return;
     }
@@ -273,18 +289,27 @@ void Sound::ChangeBGM(Sound::BGM_TYPE type)
 /// <summary>
 /// SEを再生する
 /// </summary>
-/// <param name="type">再生するSEの種類</param>
+/// <param name="key">再生するもの</param>
 // ---------------------------------------------------------
-void Sound::PlaySE(Sound::SE_TYPE type)
+void Sound::PlaySE(const std::string key)
 {
-    // 再生するSEを取得
-    FMOD::Sound* seSound = s_sound->m_seList[static_cast<size_t>(type)];
+    // 再生するSEを探索する
+	auto it = s_sound->m_seData.find(key);
+	if (it == s_sound->m_seData.end())
+	{
+		std::string errorMsg = "SEが見つかりません。\nキー: " + key;
+		MessageBoxA(nullptr, errorMsg.c_str(), "エラー", MB_OK | MB_ICONERROR);
+		return;
+	}
+
+	// SEを取得
+    FMOD::Sound* seSound = it->second;
 
     // SEを再生
     FMOD_RESULT result = s_sound->m_system->playSound(seSound, nullptr, false, &s_sound->m_channelSE);
     if (result != FMOD_OK)
     {
-        std::string errorMsg = "SE再生に失敗しました。\nBGM_TYPE: " + std::to_string(static_cast<int>(type));
+        std::string errorMsg = "SE再生に失敗しました。\nキー: " + key;
         MessageBoxA(nullptr, errorMsg.c_str(), "エラー", MB_OK | MB_ICONERROR);
         return;
     }

@@ -154,7 +154,7 @@ void BossStarting::PlayEffect()
 	float shakePower = SHAKE_POWER;
 	EventMessenger::Execute(EventList::ShakeCamera, &shakePower);
 	// ‰¹º‚ğÄ¶
-	Sound::PlaySE(Sound::SE_TYPE::BOSS_MOVE);
+	Sound::PlaySE("EnemyMove");
 	// ƒtƒ‰ƒO‚ğ—LŒø‚É‚·‚é
 	m_isEndDelay = true;
 }

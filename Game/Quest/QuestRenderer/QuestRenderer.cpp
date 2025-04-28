@@ -283,7 +283,7 @@ void QuestRenderer::NoSlideTexture()
 		m_currentAction = m_slideActions[SLIDE_ACTION::SLIDE_OUT];
 
 		// SEÇÃçƒê∂
-		Sound::PlaySE(Sound::SE_TYPE::TUTORIAL_CLEAR);
+		Sound::PlaySE("TutorialClear");
 	}
 }
 

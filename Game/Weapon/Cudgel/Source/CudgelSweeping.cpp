@@ -154,7 +154,7 @@ void CudgelSweeping::AttackAnimation()
 		if (m_playSound == false)
 		{
 			// 1“x‚¾‚¯Ä¶‚·‚é
-			Sound::PlaySE(Sound::SE_TYPE::BOSS_SWEEP);
+			Sound::PlaySE("EnemySweep");
 			m_playSound = true;
 		}
 	}

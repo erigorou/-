@@ -569,7 +569,7 @@ void Player::Damage(float damage)
 	// ノックバックをする
 	ChangeState(PlayerState::NockBacking);
 	// 効果音を鳴らす
-	Sound::GetInstance()->PlaySE(Sound::SE_TYPE::PLAYER_DAMAGED);
+	Sound::GetInstance()->PlaySE("PlayerDamage");
 }
 
 // ---------------------------------------------------------
