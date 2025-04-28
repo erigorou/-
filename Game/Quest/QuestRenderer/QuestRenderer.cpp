@@ -258,7 +258,7 @@ void QuestRenderer::AddSlideAction()
 {
 	// アクションの追加
 	m_slideActions.push_back([this]() { return NoSlideTexture(); }); // 待機
-	m_slideActions.push_back([this]() { return SlideOutTexture(); }); // スライドアウト
+	m_slideActions.push_back([this]() { return SlideOutTexture();}); // スライドアウト
 	m_slideActions.push_back([this]() { return SlideCoolTime();	 }); // クールタイム
 	m_slideActions.push_back([this]() { return SlideInTexture(); }); // スライドイン
 
