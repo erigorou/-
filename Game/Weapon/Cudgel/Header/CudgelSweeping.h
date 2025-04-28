@@ -30,7 +30,7 @@ public:
 	// 攻撃する時間
 	static constexpr float ATTACK_TIME = 2.0f;
 	// 攻撃（全体）が終了する時間
-	static constexpr float END_TIME = 2.3f;
+	static constexpr float END_TIME = 2.2f;
 
 	// 初期回転角
 	static constexpr float INITIAL_ROTATE_UD = 93.0f;
@@ -69,14 +69,21 @@ public:
 	// メンバ関数(非公開)
 	// ---------------------------
 private:
+	// アクションを登録する
+	void RegistoryAction();
+
 	// Cudgelの回転を計算する関数
 	void UpdateCudgelRotation();
+	// // 攻撃モーションの更新
+	void UpdateAnimation();
 	// チャージアニメーション
-	void ChargeAnimation();
+	bool ChargeAnimation();
+	// 待機アニメーション
+	bool IdleAnimation();
 	// 攻撃モーション
-	void AttackAnimation();
+	bool AttackAnimation();
 	// 終了モーション
-	void EndAnimation();
+	bool EndAnimation();
 	// 初期値として使用するワールド行列を計算する関数
 	void CalculateModelMatrix();
 	// Cudgelの攻撃モーションの回転を計算する関数
@@ -118,4 +125,10 @@ private:
 	bool m_playSound;
 	// プレイヤーがヒットできるかのフラグ
 	bool m_playerCanHit;
+
+	// アクション
+	std::vector<std::function<bool()>> m_actions;
+
+	// 現在のアクション
+	int m_currentAction;
 };

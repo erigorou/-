@@ -49,6 +49,26 @@ void CudgelSweeping::Initialize()
 {
 	// ボスの設定
 	m_boss = m_cudgel->GetBoss();
+
+	// アクションの登録
+	RegistoryAction();
+}
+
+// ------------------------------
+// アクションを登録する
+// ------------------------------
+void CudgelSweeping::RegistoryAction()
+{
+	// アクションの登録処理を行う
+	m_actions = std::vector<std::function<bool()>>{
+		std::bind(&CudgelSweeping::ChargeAnimation, this),
+		std::bind(&CudgelSweeping::IdleAnimation,	this),
+		std::bind(&CudgelSweeping::AttackAnimation, this),
+		std::bind(&CudgelSweeping::EndAnimation,	this)
+	};
+
+	// 最初のアクション番号を指定
+	m_currentAction = 0;
 }
 
 // -----------------------------
@@ -70,6 +90,9 @@ void CudgelSweeping::PreUpdate()
 	m_tipPos.clear();
 	// サウンドの再生フラグをfalseにする
 	m_playSound = false;
+
+	// アクションをリセット
+	m_currentAction = 0;
 }
 
 // --------------------------------
@@ -80,9 +103,11 @@ void CudgelSweeping::Update(float elapsedTime)
 	// 合計時間を計測
 	m_totalSeconds += elapsedTime;
 
-	// アニメーションを更新する
-	UpdateCudgelRotation();
+	// アニメーションの更新
+	UpdateAnimation();
 
+	// 回転軸を計算する
+	UpdateCudgelRotation();
 	// ワールド行列を計算
 	CalculateModelMatrix();
 	// 両端を取得する
@@ -97,6 +122,34 @@ void CudgelSweeping::Update(float elapsedTime)
 	m_cudgel->SetCollisionPosition(m_collMatrix);
 }
 
+
+// ------------------------------
+// アニメーションの更新
+// ------------------------------
+void CudgelSweeping::UpdateAnimation()
+{
+	// ノードが最終まで到達している場合は終了処理を行う
+	if (m_currentAction >= m_actions.size())
+	{
+		// 攻撃不可を通知
+		bool attack = false;
+		EventMessenger::Execute(EventList::PlayerCanDamageCudgel, &attack);
+
+		// ステートを変更
+		CudgelState state = CudgelState::Idle;
+		EventMessenger::Execute(EventList::ChangeCudgelState, &state);
+
+		return;
+	}
+
+	// アクションを実行する
+	if (m_actions[m_currentAction]())
+	{
+		m_currentAction++;
+	}
+}
+
+
 // ------------------------------
 // Cudgelの縦軸の回転の更新関数
 // ------------------------------
@@ -106,75 +159,72 @@ void CudgelSweeping::UpdateCudgelRotation()
 	m_position = m_boss->GetPosition();
 	// 毎度頭でフラグをfalseにする
 	m_playerCanHit = false;
-
-	// 貯めモーション
-	ChargeAnimation();
-	// 攻撃モーション
-	AttackAnimation();
-	// 終了モーション
-	EndAnimation();
-	// プレイヤーに攻撃可能かを通知
-	EventMessenger::Execute(EventList::PlayerCanDamageCudgel, &m_playerCanHit);
 }
+
 
 // --------------------------------
 // ためモーション
 // --------------------------------
-void CudgelSweeping::ChargeAnimation()
+bool CudgelSweeping::ChargeAnimation()
 {
-	// 攻撃前の貯めるアニメーションを行う
-	if (m_totalSeconds <= CHARGE_TIME)
-	{
-		// 秒数を正規化
-		float easing = m_totalSeconds / CHARGE_TIME;
-		// イージングを掛けた回転角を計算
-		m_angleRL = -CHARGE_ROTATE_ANGLE * Easing::easeOutCirc(easing);
-	}
+	// 秒数を正規化
+	float easing = m_totalSeconds / CHARGE_TIME;
+	// イージングを掛けた回転角を計算
+	m_angleRL = -CHARGE_ROTATE_ANGLE * Easing::easeOutCirc(easing);
+
+	// 評価する
+	return m_totalSeconds >= CHARGE_TIME;
 }
+
+
+// --------------------------------
+// 待機モーション
+// --------------------------------
+bool CudgelSweeping::IdleAnimation()
+{
+	// 評価する
+	return m_totalSeconds >= WINDUP_TIME;
+}
+
 
 // --------------------------------
 // 攻撃モーション
 // --------------------------------
-void CudgelSweeping::AttackAnimation()
+bool CudgelSweeping::AttackAnimation()
 {
-	// 攻撃モーション
-	if (Math::InTime(WINDUP_TIME, m_totalSeconds, ATTACK_TIME))
-	{
-		// 攻撃可能を通知
-		bool attack = true;
-		EventMessenger::Execute(EventList::PlayerCanDamageCudgel, &attack);
+	// 攻撃可能を通知
+	bool attack = true;
+	EventMessenger::Execute(EventList::PlayerCanDamageCudgel, &attack);
 
-		// 秒数の正規化
-		float easing = (m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME);
-		// イージングを掛けた回転を計算
-		m_angleRL = CHARGE_ROTATE_ANGLE + WINDUP_ROTATE_ANGLE * Easing::easeOutBack(easing);
-		// プレイヤーに攻撃可能かを通知
-		m_playerCanHit = true;
-		// SEの再生
-		if (m_playSound == false)
-		{
-			// 1度だけ再生する
-			Sound::PlaySE("EnemySweep");
-			m_playSound = true;
-		}
+	// 秒数の正規化
+	float easing = (m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME);
+	// イージングを掛けた回転を計算
+	m_angleRL = CHARGE_ROTATE_ANGLE + WINDUP_ROTATE_ANGLE * Easing::easeOutBack(easing);
+	// プレイヤーに攻撃可能かを通知
+	m_playerCanHit = true;
+	// SEの再生
+	if (m_playSound == false)
+	{
+		// 1度だけ再生する
+		Sound::PlaySE("EnemySweep");
+		m_playSound = true;
 	}
+
+	// 評価する
+	return (m_totalSeconds >= ATTACK_TIME);
 }
 
 // ---------------------------------
 // アニメーション終了
 // ---------------------------------
-void CudgelSweeping::EndAnimation()
+bool CudgelSweeping::EndAnimation()
 {
-	if (m_totalSeconds > END_TIME)
-	{
-		// 攻撃不可を通知
-		bool attack = false;
-		EventMessenger::Execute(EventList::PlayerCanDamageCudgel, &attack);
+	// 攻撃不可能を通知
+	bool attack = false;
+	EventMessenger::Execute(EventList::PlayerCanDamageCudgel, &attack);
 
-		// ステートを変更
-		CudgelState state = CudgelState::Idle;
-		EventMessenger::Execute(EventList::ChangeCudgelState, &state);
-	}
+	// 評価する
+	return m_totalSeconds >= END_TIME;
 }
 
 // ----------------------------------

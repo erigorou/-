@@ -57,12 +57,17 @@ public:
 	// メンバ関数（非公開）
 	// ---------------------------
 private:
+	// アクションの登録
+	void RegistoryAction();
+
 	// アニメーションの更新
 	void UpdateAnimation();
 	// ためモーションの更新
-	void UpdateChargeMotion();
+	bool UpdateChargeMotion();
 	// 薙ぎ払いモーションの更新
-	void UpdateSweepMotion();
+	bool UpdateSweepMotion();
+	// 待機モーション
+	bool UpdateIdleMotion();
 
 	// ---------------------------
 	// メンバ変数
@@ -76,6 +81,12 @@ private:
 	float m_totalSeconds;
 	// 敵
 	Boss* m_boss;
+
+	// アクション
+	std::vector<std::function<bool()>> m_actions;
+
+	// 現在のステート
+	int m_currentAction;
 };
 
 #endif		// BossSweeping_DEFINED

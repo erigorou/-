@@ -18,6 +18,8 @@
 #include "Game/Factory/Factory.h"
 #include "../Data/HPSystem.h"
 
+#include "Libraries/MyLib/DebugString.h"
+
 // ---------------------------------------------------------
 /// <summary>
 /// コンストラクタ
@@ -512,6 +514,20 @@ void Player::Render(
 
 	// 武器を描画する
 	m_sword->Render(view, projection);
+
+#ifdef _DEBUG
+	auto debuglog = CommonResources::GetInstance()->GetDebugString();
+
+	if (m_isHit) 
+		debuglog->AddString("m_ishit");
+
+	if (m_canHitCudgel) 
+		debuglog->AddString("cudgel hit ");
+
+	debuglog->AddString("");
+
+#endif // !_DEBUG
+
 }
 
 // ---------------------------------------------------------
@@ -701,5 +717,5 @@ void Player::CanHitCudgel(void* flag)
 // ---------------------------------------------------------
 void Player::CanHitGoblin(void* flag)
 {
-	m_canHitCudgel = *(bool*)flag;
+	m_canHitGoblin = *(bool*)flag;
 }

@@ -50,7 +50,7 @@ public:
 	// 大きさ
 	static constexpr float PLAYER_SCALE = 0.1f;
 	// 当たり判定の大きさ
-	static constexpr float COLLISION_RADIUS = 12.0f;
+	static constexpr float COLLISION_RADIUS = 16.0f;
 	// プレイヤーのHP
 	static constexpr float PLAYER_HP = 5.0f;
 	// ２段目以降の攻撃が許されるようになる時間

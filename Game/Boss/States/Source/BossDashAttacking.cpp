@@ -24,7 +24,8 @@ BossDashAttacking::BossDashAttacking(Boss* boss)
 	m_boss(boss),
 	m_angle{},
 	m_bodyTilt{},
-	m_totalSeconds{}
+	m_totalSeconds{},
+	m_currentAction{}
 {
 }
 
@@ -51,6 +52,26 @@ void BossDashAttacking::Initialize()
 	// 金棒
 	void* cudgel = EventMessenger::ExecuteGetter(GetterList::GetCudgel);
 	m_cudgel = cudgel ? static_cast<Cudgel*>(cudgel) : nullptr;
+
+	// アクションを登録する
+	RegisterAction();
+}
+
+
+// --------------------------------------
+/// <summary>
+/// アクションの登録処理
+/// </summary>
+// --------------------------------------
+void BossDashAttacking::RegisterAction()
+{
+	// アクションを登録する
+	m_actions = std::vector<std::function<bool()>>{
+		std::bind(&BossDashAttacking::ChargeAction, this),
+		std::bind(&BossDashAttacking::DashAction,	this),
+		std::bind(&BossDashAttacking::WaitAction,	this),
+		std::bind(&BossDashAttacking::ReturnAction, this)
+	};
 }
 
 // --------------------------------------
@@ -73,6 +94,9 @@ void BossDashAttacking::PreUpdate()
 	// 武器のステートを変更
 	CudgelState state = CudgelState::Idle;
 	EventMessenger::Execute(EventList::ChangeCudgelState, &state);
+
+	// アクションのノード番号をリセットする
+	m_currentAction = 0;
 }
 
 // --------------------------------------
@@ -89,15 +113,8 @@ void BossDashAttacking::Update(const float& elapsedTime)
 
 	// 敵の挙動を更新する
 	UpdateAction();
-
-	// 待機状態に遷移
-	if (m_totalSeconds >= TOTAL_TIME)
-	{
-		// ステートを変更（待機状態）
-		BossState state = BossState::Idling;
-		EventMessenger::Execute(EventList::ChangeBossState, &state);
-	}
 }
+
 
 // --------------------------------------
 /// <summary>
@@ -106,11 +123,20 @@ void BossDashAttacking::Update(const float& elapsedTime)
 // --------------------------------------
 void BossDashAttacking::UpdateAction()
 {
-	// ためモーションの時
-	if (m_totalSeconds <= CHARGE_TIME)	ChargeAction();	// 貯め
-	else if (m_totalSeconds <= DASH_TIME)	DashAction();	// ダッシュ
-	else if (m_totalSeconds <= WAIT_TIME)	WaitAction();	// 待機
-	else if (m_totalSeconds <= RETURN_TIME)	ReturnAction();	// 元に戻る
+	// ノードが最終まで到達している場合は終了処理を行う
+	if (m_currentAction >= m_actions.size())
+	{
+		// ステートを変更（待機状態）
+		BossState state = BossState::Idling;
+		EventMessenger::Execute(EventList::ChangeBossState, &state);
+		return;
+	}
+
+	// アクションを実行する
+	if(m_actions[m_currentAction]())
+	{
+		m_currentAction++;
+	}
 }
 
 // --------------------------------------
@@ -118,7 +144,7 @@ void BossDashAttacking::UpdateAction()
 /// 貯め
 /// </summary>
 // --------------------------------------
-void BossDashAttacking::ChargeAction()
+bool BossDashAttacking::ChargeAction()
 {
 	// プレイヤーに攻撃を受けられるフラグを無効化
 	EventMessenger::Execute(EventList::PlayerCanDamageBoss, &m_isAttacking);
@@ -137,6 +163,9 @@ void BossDashAttacking::ChargeAction()
 	// 体の傾きの角度設定
 	m_bodyTilt = DirectX::XMConvertToRadians(-TILT_ANGLE * Easing::easeOutBack(t));
 	m_boss->SetBodyTilt(m_bodyTilt);
+
+	// ノードを評価する
+	return (m_totalSeconds >= CHARGE_TIME);
 }
 
 // --------------------------------------
@@ -144,7 +173,7 @@ void BossDashAttacking::ChargeAction()
 /// ダッシュ
 /// </summary>
 // --------------------------------------
-void BossDashAttacking::DashAction()
+bool BossDashAttacking::DashAction()
 {
 	// アタック中
 	m_isAttacking = true;
@@ -173,6 +202,9 @@ void BossDashAttacking::DashAction()
 	// プレイヤーを傾ける
 	m_bodyTilt = DirectX::XMConvertToRadians(-TILT_ANGLE + TILT_ANGLE_DASH * Easing::easeOutBack(easing));
 	m_boss->SetBodyTilt(m_bodyTilt);
+
+	// ノードを評価する
+	return (m_totalSeconds >= DASH_TIME);
 }
 
 // --------------------------------------
@@ -180,7 +212,7 @@ void BossDashAttacking::DashAction()
 /// 待機
 /// </summary>
 // --------------------------------------
-void BossDashAttacking::WaitAction()
+bool BossDashAttacking::WaitAction()
 {
 	// アタック終わり
 	m_isAttacking = false;
@@ -194,6 +226,9 @@ void BossDashAttacking::WaitAction()
 	// プレイヤーを傾ける
 	m_bodyTilt = DirectX::XMConvertToRadians(TILT_ANGLE - TILT_ANGLE * Easing::easeOutBounce(easing));
 	m_boss->SetBodyTilt(m_bodyTilt);
+
+	// ノードを評価する
+	return (m_totalSeconds >= WAIT_TIME);
 }
 
 // --------------------------------------
@@ -201,7 +236,7 @@ void BossDashAttacking::WaitAction()
 /// 元に戻る
 /// </summary>
 // --------------------------------------
-void BossDashAttacking::ReturnAction()
+bool BossDashAttacking::ReturnAction()
 {
 	// 時間の正規化
 	float easing = (m_totalSeconds - WAIT_TIME) / (RETURN_TIME - WAIT_TIME);
@@ -217,6 +252,9 @@ void BossDashAttacking::ReturnAction()
 
 	m_rotMatrix = DirectX::SimpleMath::Matrix::CreateRotationY(-m_angle);
 	m_boss->SetAngle(m_angle);
+
+	// ノードを評価する
+	return (m_totalSeconds >= RETURN_TIME);
 }
 
 // --------------------------------------

@@ -67,16 +67,19 @@ public:
 	// メンバ関数（非公開）
 	// -----------------------------------
 private:
+	// アクションノードを登録する
+	void RegisterAction();
+
 	// アクションの更新処理
 	void UpdateAction();
 	// 攻撃の貯めモーション
-	void ChargeAction();
+	bool ChargeAction();
 	// ダッシュする
-	void DashAction();
+	bool DashAction();
 	// 待機
-	void WaitAction();
+	bool WaitAction();
 	// 元に戻る
-	void ReturnAction();
+	bool ReturnAction();
 
 	// -----------------------------------
 	// メンバ変数
@@ -102,6 +105,11 @@ private:
 	IObject* m_player;
 	// 金棒
 	Cudgel* m_cudgel;
+
+	// アクション
+	std::vector<std::function<bool()>> m_actions;
+	// 現在のアクション
+	int m_currentAction;
 };
 
 #endif		// BOSS_DASH_ATTACKING_DEFINED

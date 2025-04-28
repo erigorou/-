@@ -19,7 +19,8 @@ BossSweeping::BossSweeping(Boss* Boss)
 	:
 	m_angle{},
 	m_boss(Boss),
-	m_totalSeconds{}
+	m_totalSeconds{},
+	m_currentAction{}
 {
 }
 
@@ -35,6 +36,23 @@ BossSweeping::~BossSweeping()
 // ----------------------------------
 void BossSweeping::Initialize()
 {
+	// アクションの登録処理を行う
+	RegistoryAction();
+}
+
+
+// ----------------------------------
+/// <summary>
+/// アクションの登録処理
+/// </summary>
+// ----------------------------------
+void BossSweeping::RegistoryAction()
+{
+	m_actions = std::vector<std::function<bool()>>{
+		std::bind(&BossSweeping::UpdateChargeMotion,this),
+		std::bind(&BossSweeping::UpdateSweepMotion,	this),
+		std::bind(&BossSweeping::UpdateIdleMotion,	this)
+	};
 }
 
 // ----------------------------------
@@ -53,6 +71,9 @@ void BossSweeping::PreUpdate()
 	// 顔のステートを変更
 	FaceState face = FaceState::Attacking;
 	EventMessenger::Execute(EventList::ChangeBossFace, &face);
+
+	// アクションをリセットする
+	m_currentAction = 0;
 }
 
 // ----------------------------------
@@ -68,47 +89,61 @@ void BossSweeping::Update(const float& elapsedTime)
 	m_boss->SetAngle(DirectX::XMConvertToRadians(m_targetAngle));
 }
 
+
 // ----------------------------------
 // アニメーションの更新
 // ----------------------------------
 void BossSweeping::UpdateAnimation()
 {
-	// ためモーションを実行
-	if (Math::InTime(0.0f, m_totalSeconds, CHARGE_TIME))
-		UpdateChargeMotion();
-
-	// 時間内にいるなら薙ぎ払いモーションを実行
-	else if (Math::InTime(WINDUP_TIME, m_totalSeconds, ATTACK_TIME))
-		UpdateSweepMotion();
-
-	if (m_totalSeconds > END_TIME)
+	// ノードが最終まで到達している場合は終了処理を行う
+	if (m_currentAction >= m_actions.size())
 	{
 		// ステートを変更（待機状態）
 		BossState state = BossState::Idling;
 		EventMessenger::Execute(EventList::ChangeBossState, &state);
+		return;
+	}
+
+	// アクションを実行する
+	if (m_actions[m_currentAction]())
+	{
+		m_currentAction++;
 	}
 }
 
 // ----------------------------------
 // ためモーションの更新
 // ----------------------------------
-void BossSweeping::UpdateChargeMotion()
+bool BossSweeping::UpdateChargeMotion()
 {
 	// ためる時間に対する経過時間の割合
 	float easing = m_totalSeconds / CHARGE_TIME;
 	// イージングを用いた角度の計算
 	m_targetAngle = m_angle - ROTATE_ANGLE * Easing::easeOutCirc(easing);
+
+	return m_totalSeconds >= CHARGE_TIME;
 }
 
 // ----------------------------------
 // 薙ぎ払いモーションの更新
 // ----------------------------------
-void BossSweeping::UpdateSweepMotion()
+bool BossSweeping::UpdateSweepMotion()
 {
 	// 薙ぎ払いモーションの経過時間に対する割合
 	float easing = (m_totalSeconds - WINDUP_TIME) / (ATTACK_TIME - WINDUP_TIME);
 	// イージングを用いた角度の計算
 	m_targetAngle = m_angle - ROTATE_ANGLE + ROTATE_ANGLE * Easing::easeOutBack(easing);
+
+	return m_totalSeconds >= ATTACK_TIME;
+}
+
+
+// ----------------------------------
+// 後隙モーションの更新
+// ----------------------------------
+bool BossSweeping::UpdateIdleMotion()
+{
+	return m_totalSeconds >= END_TIME;
 }
 
 // ----------------------------------
