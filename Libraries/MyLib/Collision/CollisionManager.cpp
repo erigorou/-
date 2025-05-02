@@ -16,6 +16,8 @@
 #include "Game/Messenger/EventMessenger.h"
 #include "Libraries/Mylib/DebugDraw.h"
 
+#include <future>
+
 /// <summary>
 /// コンストラクタ
 /// </summary>
@@ -174,25 +176,33 @@ bool CollisionManager::IsGoblinCollision(
 /// </summary>
 void CollisionManager::Update()
 {
-	// OBBと球の当たり判定
-	CheckCollisionOBBToSphere();
-	// 球と球の当たり判定
-	CheckCollisionSphereToSphere();
+	// 非同期でOBBと球の当たり判定を処理
+	auto futureOBB = std::async(std::launch::async, [this]() {
+		CheckCollisionOBBToSphere();
+		});
 
+	// 非同期で球同士の当たり判定を処理
+	auto futureSphere = std::async(std::launch::async, [this]() {
+		CheckCollisionSphereToSphere();
+		});
+
+	// 非同期処理の完了を待機
+	futureOBB.get();
+	futureSphere.get();
+
+	// デバッグのみで実行可能
 #ifdef _DEBUG
-	// キーボードの状態を取得する
+
+	// キーボードの入力を取得する
 	m_keyboardState = DirectX::Keyboard::Get().GetState();
-	// キーボードステートトラッカーを更新する
 	m_keyboardStateTracker.Update(m_keyboardState);
 
-	// F5キーが押されたら、描画フラグを切り替える
-	if (m_keyboardStateTracker.IsKeyPressed(DirectX::Keyboard::F5))
-	{
+	// F5キーが押されたら当たり判定の描画を切り替える
+	if (m_keyboardStateTracker.IsKeyPressed(DirectX::Keyboard::F5)) {
 		m_drawFlag = !m_drawFlag;
 	}
 #endif // !_DEBUG
 }
-
 /// <summary>
 /// 描画処理
 /// デバッグ中の当たり判定の描画を行う
