@@ -4,6 +4,7 @@
 #include "nlohmann/json.hpp"
 #include "CommonResources.h"
 #include "DeviceResources.h"
+#include <thread>
 
 // ユニークポインタ
 std::unique_ptr<GameResources> GameResources::m_resources = nullptr;
@@ -26,10 +27,14 @@ GameResources::GameResources()
 	m_modelList(),
 	m_textureList()
 {
-	// Jsonファイルを読み込んでモデルを生成する
-	LoadModelFromJson();
-	// テクスチャを読み込む
-	LoadTexture();
+	// モデルを生成する
+	std::thread modelThread(&GameResources::LoadModelFromJson, this);
+	// テクスチャを生成する
+	std::thread textureThread(&GameResources::LoadTexture, this);
+
+	// スレッドの完了を待つ
+	modelThread.join();
+	textureThread.join();
 }
 
 //---------------------------------------------------------

@@ -31,6 +31,35 @@ CollisionManager::CollisionManager()
 {
 	// 生成と同時に初期化を行う
 	Initialize();
+
+	// 別スレッドに衝突処理を登録
+	RegisterThread();
+}
+
+
+/// <summary>
+/// 別スレッドに衝突処理を登録
+/// </summary>
+inline void CollisionManager::RegisterThread()
+{
+	m_collisionThread = std::thread([this]() {
+		while (true)
+		{
+			// ミューテックスロックと条件変数待機
+			std::unique_lock<std::mutex> lock(m_mutex);
+			m_cv.wait(lock, [this]() { return m_updateRequested || m_exitRequested; });
+
+			// 終了が指示された場合はループを抜ける
+			if (m_exitRequested) break;
+
+			// 衝突判定処理を実行（各種コライダ間）
+			CheckCollisionOBBToSphere();
+			CheckCollisionSphereToSphere();
+
+			// 処理完了後にフラグをリセット
+			m_updateRequested = false;
+		}
+	});
 }
 
 /// <summary>
@@ -38,8 +67,32 @@ CollisionManager::CollisionManager()
 /// </summary>
 CollisionManager::~CollisionManager()
 {
+	// 別スレッド終了
+	ExitThread();
+
+	// リセット
 	Clear();
 }
+
+/// <summary>
+/// 別スレッドの終了処理
+/// </summary>
+inline void CollisionManager::ExitThread()
+{
+	// スレッド集亜量指示を出し、条件変数を通知
+	{
+		std::lock_guard<std::mutex> lock(m_mutex);
+		m_exitRequested = true;
+		m_cv.notify_one();
+	}
+
+	// スレッドが生きていればjoinする（終了まで待機する）
+	if(m_collisionThread.joinable())
+	{
+		m_collisionThread.join();
+	}
+}
+
 
 /// <summary>
 /// 初期化処理
@@ -176,19 +229,15 @@ bool CollisionManager::IsGoblinCollision(
 /// </summary>
 void CollisionManager::Update()
 {
-	// 非同期でOBBと球の当たり判定を処理
-	auto futureOBB = std::async(std::launch::async, [this]() {
-		CheckCollisionOBBToSphere();
-		});
+	{
+		// 衝突判定処理の実行をスレッドに通知
+		std::lock_guard<std::mutex> lock(m_mutex);
+		m_updateRequested = true;
+	}
+	
+	// スレッドを起床させる
+	m_cv.notify_one();
 
-	// 非同期で球同士の当たり判定を処理
-	auto futureSphere = std::async(std::launch::async, [this]() {
-		CheckCollisionSphereToSphere();
-		});
-
-	// 非同期処理の完了を待機
-	futureOBB.get();
-	futureSphere.get();
 
 	// デバッグのみで実行可能
 #ifdef _DEBUG

@@ -12,6 +12,11 @@
 #ifndef COLLISION_MANAGER
 #define COLLISION_MANAGER
 
+// インクルード
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+
 // 前方宣言
 class IObject;
 
@@ -116,6 +121,11 @@ public:
 	// メンバ関数(非公開)
 	// -----------------------------
 private:
+	// 別スレッドへの登録
+	inline void RegisterThread();
+	// 別スレッドの終了
+	inline void ExitThread();
+
 	// イベントの登録
 	inline void AddEventMessenger();
 	// 球と球の当たり判定
@@ -160,6 +170,18 @@ private:
 	DirectX::Keyboard::State m_keyboardState;
 	// キーボードトラッカー
 	DirectX::Keyboard::KeyboardStateTracker m_keyboardStateTracker;
+
+
+	// 衝突判定専用のスレッドオブジェクト
+	std::thread m_collisionThread;
+	// スレッド保護用のミューテックス
+	std::mutex m_mutex;
+	// スレッド起床通知のための条件変数
+	std::condition_variable m_cv;
+	// Update関数内における衝突判定要求フラグ
+	bool m_updateRequested = false;
+	// デストラクタでのスレッド終了を支持するフラグ
+	bool m_exitRequested = false;
 };
 
 #endif // !COLLISION_MANAGER
