@@ -24,6 +24,7 @@ GoblinAttacking::GoblinAttacking(Goblin* goblin)
 	, m_rotMatrix{ DirectX::SimpleMath::Matrix::Identity }
 	, m_moveValue{}
 	, m_position{}
+	, m_currentAction{}
 {
 }
 
@@ -43,6 +44,8 @@ GoblinAttacking::~GoblinAttacking()
 // ---------------------------------------------
 void GoblinAttacking::Initialize()
 {
+	// アクションを登録する
+	RegistoryAction();
 }
 
 // ---------------------------------------------
@@ -56,6 +59,9 @@ void GoblinAttacking::PreUpdate()
 	SearchPlayer();
 	// 経過時間をリセットする
 	m_totalTime = 0.0f;
+
+	// 攻撃インデックスをリセットする
+	m_currentAction = 0;
 }
 
 // ---------------------------------------------
@@ -71,11 +77,6 @@ void GoblinAttacking::Update(const float& elapsedTime)
 
 	// アニメーションの更新
 	UpdateAnimation();
-
-	if (m_totalTime > STATE_TIME)
-	{
-		m_goblin->ChangeState(GoblinState::IDLING);
-	}
 }
 
 // ---------------------------------------------
@@ -88,9 +89,19 @@ void GoblinAttacking::UpdateAnimation()
 	// 攻撃中フラグをおろす
 	m_goblin->SetIsAttacking(false);
 
-	ChargeAnimation();
-	AttackAnimation();
-	ReturnAnimation();
+	// アクションが最後の場合は終了する
+	if (m_currentAction >= m_actions.size())
+	{
+		m_goblin->ChangeState(GoblinState::IDLING);
+		return;
+	}
+
+	// アクションを実行する
+	if (m_actions[m_currentAction]())
+	{
+		// 次のアクションに移行する
+		m_currentAction++;
+	}
 }
 
 // ---------------------------------------------
@@ -98,13 +109,13 @@ void GoblinAttacking::UpdateAnimation()
 /// 攻撃アニメーション処理
 /// </summary>
 // ---------------------------------------------
-void GoblinAttacking::ChargeAnimation()
+bool GoblinAttacking::ChargeAnimation()
 {
-	// 時間内出ない場合は終了
-	if (!Math::InTime(0, m_totalTime, CHARGE_TIME)) return;
-
 	// 秒数を正規化
 	float t = m_totalTime / CHARGE_TIME;
+
+	bool flag = false;
+	EventMessenger::Execute(EventList::PlayerCanDamageGoblin, &flag);
 
 	// 大きさyをsin波で変更
 	float sin = Math::NormalizeSin(t);
@@ -115,6 +126,9 @@ void GoblinAttacking::ChargeAnimation()
 
 	// プレイヤーの方向を向く
 	SearchPlayer();
+
+	// 評価する
+	return m_totalTime >= CHARGE_TIME;
 }
 
 // ---------------------------------------------
@@ -122,15 +136,9 @@ void GoblinAttacking::ChargeAnimation()
 /// 攻撃アニメーション処理
 /// </summary>
 // ---------------------------------------------
-void GoblinAttacking::AttackAnimation()
+bool GoblinAttacking::AttackAnimation()
 {
-	bool flag = false;
-	EventMessenger::Execute(EventList::PlayerCanDamageGoblin, &flag);
-
-	// 攻撃時間を過ぎたら終了
-	if (!Math::InTime(CHARGE_TIME, m_totalTime, ATTACK_TIME)) return;
-
-	flag = true;
+	bool flag = true;
 	EventMessenger::Execute(EventList::PlayerCanDamageGoblin, &flag);
 
 	// 秒数を正規化
@@ -150,6 +158,9 @@ void GoblinAttacking::AttackAnimation()
 
 	// 移動量を設定
 	m_goblin->SetPosition(m_movePosition);
+
+	// 評価する
+	return m_totalTime >= ATTACK_TIME;
 }
 
 // ---------------------------------------------
@@ -157,9 +168,9 @@ void GoblinAttacking::AttackAnimation()
 /// 元に戻るアニメーション処理
 /// </summary>
 // ---------------------------------------------
-void GoblinAttacking::ReturnAnimation()
+bool GoblinAttacking::ReturnAnimation()
 {
-	if (!Math::InTime(ATTACK_TIME, m_totalTime, RETURN_TIME))return;
+	return m_totalTime >= RETURN_TIME;
 }
 
 // ---------------------------------------------
@@ -179,6 +190,24 @@ void GoblinAttacking::PostUpdate()
 // ---------------------------------------------
 void GoblinAttacking::Finalize()
 {
+}
+
+// ---------------------------------------------
+/// <summary>
+/// アクションを登録する
+/// </summary>
+// -//------------------------------------------
+void GoblinAttacking::RegistoryAction()
+{
+	// アクションを登録する
+	m_actions = std::vector<std::function<bool()>>{
+		std::bind(&GoblinAttacking::ChargeAnimation, this),
+		std::bind(&GoblinAttacking::AttackAnimation, this),
+		std::bind(&GoblinAttacking::ReturnAnimation, this)
+	};
+
+	// 最初のアクションを最初にする
+	m_currentAction = 0;
 }
 
 // ---------------------------------------------

@@ -58,14 +58,20 @@ public:
 	// メンバ関数(非公開)
 	// --------------------
 private:
+	// アクションを登録する
+	void RegistoryAction();
+
 	// プレイヤーの探索を行う。
 	void SearchPlayer();
 	// アニメーションの更新
 	void UpdateAnimation();
 
-	void ChargeAnimation();
-	void AttackAnimation();
-	void ReturnAnimation();
+	// チャージアニメーション
+	bool ChargeAnimation();
+	// 攻撃アニメーション
+	bool AttackAnimation();
+	// 戻るアニメーション
+	bool ReturnAnimation();
 
 private:
 	// 親
@@ -82,5 +88,11 @@ private:
 	DirectX::SimpleMath::Vector3 m_moveValue;
 	// 移動位置
 	DirectX::SimpleMath::Vector3 m_movePosition;
+
+	// アクション
+	std::vector<std::function<bool()>> m_actions;
+
+	// 現在のアクション
+	int m_currentAction;
 };
 #endif
