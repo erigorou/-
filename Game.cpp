@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "Game/Screen.h"
 #include "Game/Scene/SceneManager.h"
+#include <thread>
 
 extern void ExitGame() noexcept;
 
@@ -24,11 +25,17 @@ Game::Game() noexcept(false)
 	m_sceneManager{}
 {
 	m_deviceResources = std::make_unique<DX::DeviceResources>();
-	// TODO: Provide parameters for swapchain format, depth/stencil format, and backbuffer count.
-	//   Add DX::DeviceResources::c_AllowTearing to opt-in to variable rate displays.
-	//   Add DX::DeviceResources::c_EnableHDR for HDR10 display.
 	m_deviceResources->RegisterDeviceNotify(this);
 	m_commonResources = CommonResources::GetInstance();
+
+	// 最低限のスレッド数がない場合はエラーメッセージを出す。
+	// 最近のPCは4スレッド以上がほとんどなのでそうそう起きることはない。
+	auto count = std::thread::hardware_concurrency();
+	if (count < 3)
+	{
+		MessageBoxA(nullptr, "スレッド数不足によりリソースを生成できませんでした。", "マルチスレッドによるエラー", MB_OK);
+		return; // 処理を終了
+	}
 }
 
 // Initialize the Direct3D resources required to run.
@@ -124,8 +131,8 @@ void Game::Render()
 
 	UNREFERENCED_PARAMETER(context);
 
-	//// デバッグ文字列を作成する：FPS
-	//m_debugString->AddString("fps : %d", m_timer.GetFramesPerSecond());
+	// デバッグ文字列を作成する：FPS
+	m_debugString->AddString("fps : %d", m_timer.GetFramesPerSecond());
 
 	// シーンマネージャを描画する
 	m_sceneManager->Render();

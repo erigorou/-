@@ -15,6 +15,7 @@
 #include "DeviceResources.h"
 #include "Game/Messenger/EventMessenger.h"
 #include "Libraries/Mylib/DebugDraw.h"
+#include "Libraries/Mylib/DebugString.h"
 
 #include <future>
 
@@ -31,7 +32,6 @@ CollisionManager::CollisionManager()
 {
 	// 生成と同時に初期化を行う
 	Initialize();
-
 	// 別スレッドに衝突処理を登録
 	RegisterThread();
 }
@@ -79,12 +79,12 @@ CollisionManager::~CollisionManager()
 /// </summary>
 inline void CollisionManager::ExitThread()
 {
-	// スレッド集亜量指示を出し、条件変数を通知
+	// 条件変数を通知
 	{
 		std::lock_guard<std::mutex> lock(m_mutex);
 		m_exitRequested = true;
-		m_cv.notify_one();
 	}
+	m_cv.notify_one();
 
 	// スレッドが生きていればjoinする（終了まで待機する）
 	if(m_collisionThread.joinable())
@@ -158,10 +158,6 @@ inline void CollisionManager::CheckCollisionSphereToSphere()
 				// 衝突したときに相手に渡すデータを作成
 				InterSectData sphereData1 = { m_spheres[i].objType, m_spheres[i].colType, m_spheres[i].collision };
 				InterSectData sphereData2 = { m_spheres[j].objType, m_spheres[j].colType, m_spheres[j].collision };
-
-				// 衝突したときの処理を呼び出す
-				m_spheres[i].object->HitAction(sphereData2);
-				m_spheres[j].object->HitAction(sphereData1);
 			}
 		}
 	}
@@ -191,8 +187,8 @@ inline void CollisionManager::CheckCollisionOBBToSphere()
 				InterSectData sphereData = { m_spheres[j].objType, m_spheres[i].colType, m_spheres[j].collision };
 
 				// 衝突したときの処理を呼び出す
-				m_obbs[i].object->HitAction(sphereData);
-				m_spheres[j].object->HitAction(obbData);
+				m_obbs[i].object	!= nullptr ? m_obbs[i].object	->HitAction(sphereData)	: void();
+				m_spheres[j].object != nullptr ? m_spheres[j].object->HitAction(obbData)	: void();
 			}
 		}
 	}
@@ -268,6 +264,7 @@ void CollisionManager::Render
 
 	// 衝突判定の描画
 	DrawCollision(view, projection);
+
 }
 
 /// <summary>
@@ -277,6 +274,7 @@ void CollisionManager::Clear()
 {
 	m_obbs.clear();
 	m_spheres.clear();
+	m_obbProxies.clear();
 }
 
 
