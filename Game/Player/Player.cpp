@@ -527,8 +527,72 @@ void Player::Render(
 	debuglog->AddString("");
 
 #endif // !_DEBUG
-
 }
+
+
+// ---------------------------------------------------------
+/// <summary>
+/// モデルを描画する
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="projection">プロジェクション行列</param>
+/// <param name="context">ディファードコンテキスト</param>
+// ---------------------------------------------------------
+void Player::RecordRenderCommands(
+	const DirectX::SimpleMath::Matrix& view,
+	const DirectX::SimpleMath::Matrix& projection,
+	ID3D11DeviceContext* context
+)
+{
+	CommonResources* resources = CommonResources::GetInstance();
+	auto states = resources->GetCommonStates();
+
+	// モデルのエフェクト情報を更新する
+	m_model->UpdateEffects([](DirectX::IEffect* effect)
+		{
+			// ベーシックエフェクトを設定する
+			DirectX::BasicEffect* basicEffect = dynamic_cast<DirectX::BasicEffect*>(effect);
+			if (basicEffect)
+			{
+				// ライトを有効化する
+				basicEffect->SetLightingEnabled(true);
+				// アンビエントライトの設定
+				basicEffect->SetAmbientLightColor(DirectX::Colors::Gray); // 適切なアンビエント色を設定
+				// 必要に応じてライトの設定を行う
+				basicEffect->SetLightEnabled(0, true);
+				basicEffect->SetLightDiffuseColor(0, DirectX::Colors::White);  // ディフューズ色を設定
+				basicEffect->SetLightSpecularColor(0, DirectX::Colors::White); // スペキュラー色を設定
+
+				basicEffect->SetLightEnabled(1, false); // 追加のライトが不要なら無効化
+				basicEffect->SetLightEnabled(2, false); // 追加のライトが不要なら無効化
+				// モデルの自発光色を黒に設定して無効化
+				basicEffect->SetEmissiveColor(DirectX::Colors::Black);
+			}
+		}
+	);
+
+	// モデルを描画する
+	m_model->Draw(context, *states, m_worldMatrix, view, projection);
+
+	// 武器を描画する
+	m_sword->Render(view, projection);
+
+#ifdef _DEBUG
+	auto debuglog = CommonResources::GetInstance()->GetDebugString();
+
+	if (m_isHit)
+		debuglog->AddString("m_ishit");
+
+	if (m_canHitCudgel)
+		debuglog->AddString("cudgel hit ");
+
+	debuglog->AddString("");
+
+#endif // !_DEBUG
+}
+
+
+
 
 // ---------------------------------------------------------
 /// <summary>

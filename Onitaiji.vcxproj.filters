@@ -239,6 +239,8 @@
     <ClInclude Include="Game\UI\Action\SelectBossAction.h" />
     <ClInclude Include="Game\UI\EscapeSign\EscapeSign.h" />
     <ClInclude Include="Game\Stage\Sign\Sign.h" />
+    <ClInclude Include="Interface\IRenderable.h" />
+    <ClInclude Include="Libraries\MyLib\RenderTaskManager\RenderTaskManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -354,6 +356,7 @@
     <ClCompile Include="Game\Stage\SelectSceneObject\SelectSceneObject.cpp" />
     <ClCompile Include="Game\UI\EscapeSign\EscapeSign.cpp" />
     <ClCompile Include="Game\Stage\Sign\Sign.cpp" />
+    <ClCompile Include="Libraries\MyLib\RenderTaskManager\RenderTaskManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

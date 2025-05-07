@@ -16,7 +16,6 @@
 #include "Game/Messenger/EventMessenger.h"
 #include "Libraries/Mylib/DebugDraw.h"
 #include "Libraries/Mylib/DebugString.h"
-
 #include <future>
 
 /// <summary>
@@ -42,6 +41,7 @@ CollisionManager::CollisionManager()
 /// </summary>
 inline void CollisionManager::RegisterThread()
 {
+	// 別スレッドで実行を回し続ける
 	m_collisionThread = std::thread([this]() {
 		while (true)
 		{
@@ -158,6 +158,10 @@ inline void CollisionManager::CheckCollisionSphereToSphere()
 				// 衝突したときに相手に渡すデータを作成
 				InterSectData sphereData1 = { m_spheres[i].objType, m_spheres[i].colType, m_spheres[i].collision };
 				InterSectData sphereData2 = { m_spheres[j].objType, m_spheres[j].colType, m_spheres[j].collision };
+
+				// 衝突したときの処理を呼び出す
+				m_spheres[i].object != nullptr ? m_spheres[i].object->HitAction(sphereData2) : void();
+				m_spheres[j].object != nullptr ? m_spheres[j].object->HitAction(sphereData1) : void();
 			}
 		}
 	}

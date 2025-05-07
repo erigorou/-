@@ -18,6 +18,7 @@
 #include "../Sound/Sound.h"
 #include <cassert>
 #include "Game/Messenger/KeyboardMessenger.h"
+#include "Libraries/MyLib/RenderTaskManager/RenderTaskManager.h"
 
 //---------------------------------------------------------
 /// <summary>
@@ -125,10 +126,14 @@ void SceneManager::Update(float elapsedTime)
 //---------------------------------------------------------
 void SceneManager::Render()
 {
+	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
+
 	// シーンの描画
 	m_currentScene->Render();
 	// フェードの描画
 	m_fade->Render();
+	// レンダリングタスクの実行
+	RenderTaskManager::GetInstance()->ExecuteTasks(context);
 }
 
 //---------------------------------------------------------

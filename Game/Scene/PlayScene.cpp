@@ -28,6 +28,7 @@
 #include "Game/UI/!PlaySceneUIManager/PlaySceneUIManager.h"
 #include "Effects/Particle.h"
 #include "Game/Camera/Camera.h"
+#include "Libraries/MyLib/RenderTaskManager/RenderTaskManager.h"
 
 // ------------------------------------------------------------------------------
 /// <summary>
@@ -174,6 +175,8 @@ void PlayScene::UpdateObjects(float elapsedTime)
 // ------------------------------------------------------------------------------
 void PlayScene::Render()
 {
+	RenderTaskManager* rtm = RenderTaskManager::GetInstance();
+
 	// ビュー行列を取得する
 	const DirectX::SimpleMath::Matrix& view = m_camera->GetViewMatrix();
 	// 当たり判定を描画
@@ -186,8 +189,12 @@ void PlayScene::Render()
 	m_sea->Render(view, m_projection);
 	// 壁の描画
 	m_wall->Render(view, m_projection);
-	// プレイヤーの描画
-	m_player->Render(view, m_projection);
+
+	// 描画を登録
+	rtm->AddTask(m_player.get(), view, m_projection);
+
+	//// プレイヤーの描画
+	//m_player->Render(view, m_projection);
 	// 敵（複数）の描画
 	m_enemyManager->Render(view, m_projection);
 	// スクリーンショットを取る
@@ -419,4 +426,13 @@ void PlayScene::TakeScreenShot()
 
 	// スクリーンショットを保存
 	GameData::GetInstance()->SetScreenShot(m_captureSRV);
+}
+
+// ------------------------------------------------------------------------------
+/// <summary>
+/// オブジェクトの描画タスクを追加する
+/// </summary>
+/// <param name="task">タスク</param>
+void PlayScene::AddRenderTask()
+{
 }

@@ -1,8 +1,18 @@
-/*
-	@file	CommonResources.h
-	@brief	シーンへ渡す、ゲーム内で使用する共通リソース
-*/
+// ------------------------------------------------------------------------
+//
+// 名前: CommonResources.h
+// 概要: シーンへ渡す、ゲーム内で使用する共通リソース
+// 作成: 2024/06/25
+// 
+// ------------------------------------------------------------------------
+
 #pragma once
+// インクルード
+#include <wrl/client.h>
+#include <mutex>
+#include <vector>
+#include <unordered_map>
+#include <thread>
 
 // 前方宣言
 namespace DX
@@ -31,6 +41,11 @@ private:
 
 	mylib::InputManager* m_inputManager;
 
+	// ディファードコンテキスト
+	std::unordered_map<std::thread::id, Microsoft::WRL::ComPtr<ID3D11DeviceContext>> m_deferredContexts;
+	// DeferredContectのリストのロック用変数
+	std::mutex m_contextMutex;
+
 	// リソース
 	static std::unique_ptr<CommonResources> m_resources;
 
@@ -50,6 +65,10 @@ public:
 		mylib::DebugString* debugString,
 		mylib::InputManager* inputManager
 	);
+
+	//ディファードコンテキストを作成する
+	void CreateDeferredContexts(ID3D11Device* device);
+
 
 	// getter
 	DX::StepTimer* GetStepTimer() const
@@ -76,4 +95,6 @@ public:
 	{
 		return m_inputManager;
 	}
+
+	ID3D11DeviceContext* GetDeferredContext();
 };

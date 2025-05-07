@@ -140,8 +140,6 @@ void Game::Render()
 	// デバッグ文字列を描画する
 	m_debugString->Render(m_commonStates.get());
 
-	// ★追記ココまで↑↑↑★
-
 	m_deviceResources->PIXEndEvent();
 
 	// Show the new frame.

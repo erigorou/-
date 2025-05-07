@@ -8,6 +8,7 @@
 #pragma once
 #include "Interface/IObject.h"
 #include "Interface/IObserver.h"
+#include "Interface/IRenderable.h"
 #include "Game/Player/State/Header/PlayerIdling.h"
 #include "Game/Player/State/Header/PlayerDodging.h"
 #include "Game/Player/State/Header/PlayerAttacking1.h"
@@ -33,7 +34,7 @@ enum class PlayerState : int
 /// <summary>
 /// プレイヤークラス
 /// </summary>
-class Player : public IObject, public IObserver
+class Player : public IObject, public IObserver, public IRenderable
 {
 	// -----------------
 	// 定数
@@ -143,6 +144,13 @@ public:
 	void Render(
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& projection);
+
+	void RecordRenderCommands(
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& projection,
+		ID3D11DeviceContext* context) override;
+
+
 	// 終了処理
 	void Finalize();
 	// 回転角の計算
