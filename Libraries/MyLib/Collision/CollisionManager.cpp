@@ -41,8 +41,13 @@ CollisionManager::CollisionManager()
 /// </summary>
 inline void CollisionManager::RegisterThread()
 {
+	// スレッド開始前に終了フラグを初期化
+	m_exitRequested = false;
+	m_updateRequested = false;
+
 	// 別スレッドで実行を回し続ける
-	m_collisionThread = std::thread([this]() {
+	m_collisionThread = std::thread([this]() 
+		{
 		while (true)
 		{
 			// ミューテックスロックと条件変数待機
@@ -50,18 +55,22 @@ inline void CollisionManager::RegisterThread()
 			m_cv.wait(lock, [this]() { return m_updateRequested || m_exitRequested; });
 
 			// 終了が指示された場合はループを抜ける
-			if (m_exitRequested) break;
+			if (m_exitRequested) 
+			{
+				break;
+			}
 
 			// 衝突判定処理を実行（各種コライダ間）
+			// ロックを保持したまま処理を実行
 			CheckCollisionOBBToSphere();
 			CheckCollisionSphereToSphere();
 
 			// 処理完了後にフラグをリセット
 			m_updateRequested = false;
 		}
-	});
+		// スレッド終了時のクリーンアップ処理（必要に応じて）
+		});
 }
-
 /// <summary>
 /// デストラクタ
 /// </summary>
@@ -79,20 +88,31 @@ CollisionManager::~CollisionManager()
 /// </summary>
 inline void CollisionManager::ExitThread()
 {
-	// 条件変数を通知
+	// まず終了リクエストをセット
 	{
 		std::lock_guard<std::mutex> lock(m_mutex);
 		m_exitRequested = true;
 	}
-	m_cv.notify_one();
+
+	// 条件変数を通知して待機中のスレッドを起こす
+	m_cv.notify_all();
 
 	// スレッドが生きていればjoinする（終了まで待機する）
-	if(m_collisionThread.joinable())
+	if (m_collisionThread.joinable())
 	{
-		m_collisionThread.join();
+		try 
+		{
+			m_collisionThread.join();
+		}
+		catch (const std::system_error& e) 
+		{
+			// スレッドjoin失敗のログを出力（実際の環境に合わせて）
+			std::string errorMsg = "Thread join failed: " + std::string(e.what());
+			MessageBoxA(nullptr, errorMsg.c_str(), "エラー", MB_OK | MB_ICONERROR);
+
+		}
 	}
 }
-
 
 /// <summary>
 /// 初期化処理

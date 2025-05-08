@@ -325,8 +325,9 @@
     <ClInclude Include="Libraries\MyLib\MemoryLeakDetector.h" />
     <ClInclude Include="Game\Stage\SkySphere\SkySphere.h" />
     <ClInclude Include="Game\Messenger\KeyboardMessenger.h" />
-    <ClInclude Include="Libraries\MyLib\RenderTaskManager\RenderTaskManager.h" />
+    <ClInclude Include="Libraries\MyLib\RenderJob\RenderJob.h" />
     <ClInclude Include="Libraries\MyLib\Texture.h" />
+    <ClInclude Include="Libraries\MyLib\ThreadedRenderer\ThreadedRenderer.h" />
     <ClInclude Include="Libraries\MyLib\ThreadPool\ThreadPool.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="StepTimer.h" />
@@ -417,8 +418,9 @@
     <ClCompile Include="Libraries\MyLib\DebugString.cpp" />
     <ClCompile Include="Libraries\MyLib\InputManager.cpp" />
     <ClCompile Include="Game\Stage\SkySphere\SkySphere.cpp" />
-    <ClCompile Include="Libraries\MyLib\RenderTaskManager\RenderTaskManager.cpp" />
+    <ClCompile Include="Libraries\MyLib\RenderJob\RenderJob.cpp" />
     <ClCompile Include="Libraries\MyLib\Texture.cpp" />
+    <ClCompile Include="Libraries\MyLib\ThreadedRenderer\ThreadedRenderer.cpp" />
     <ClCompile Include="Libraries\MyLib\ThreadPool\ThreadPool.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Game\Messenger\KeyboardMessenger.cpp" />

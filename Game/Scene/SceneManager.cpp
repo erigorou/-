@@ -18,7 +18,6 @@
 #include "../Sound/Sound.h"
 #include <cassert>
 #include "Game/Messenger/KeyboardMessenger.h"
-#include "Libraries/MyLib/RenderTaskManager/RenderTaskManager.h"
 
 //---------------------------------------------------------
 /// <summary>
@@ -132,8 +131,6 @@ void SceneManager::Render()
 	m_currentScene->Render();
 	// フェードの描画
 	m_fade->Render();
-	// レンダリングタスクの実行
-	RenderTaskManager::GetInstance()->ExecuteTasks(context, CommonResources::GetInstance()->GetAllDeferredContexts());
 }
 
 //---------------------------------------------------------

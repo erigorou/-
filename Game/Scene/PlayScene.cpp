@@ -28,7 +28,6 @@
 #include "Game/UI/!PlaySceneUIManager/PlaySceneUIManager.h"
 #include "Effects/Particle.h"
 #include "Game/Camera/Camera.h"
-#include "Libraries/MyLib/RenderTaskManager/RenderTaskManager.h"
 
 // ------------------------------------------------------------------------------
 /// <summary>
@@ -175,8 +174,6 @@ void PlayScene::UpdateObjects(float elapsedTime)
 // ------------------------------------------------------------------------------
 void PlayScene::Render()
 {
-	RenderTaskManager* rtm = RenderTaskManager::GetInstance();
-
 	// ƒrƒ…[s—ñ‚ðŽæ“¾‚·‚é
 	const DirectX::SimpleMath::Matrix& view = m_camera->GetViewMatrix();
 	// “–‚½‚è”»’è‚ð•`‰æ
@@ -189,13 +186,8 @@ void PlayScene::Render()
 	m_sea->Render(view, m_projection);
 	// •Ç‚Ì•`‰æ
 	m_wall->Render(view, m_projection);
-
-	//// •`‰æ‚ð“o˜^
-	//rtm->AddTask(m_player.get(), view, m_projection);
-
 	// ƒvƒŒƒCƒ„[‚Ì•`‰æ
 	m_player->Render(view, m_projection);
-
 	// “Gi•¡”j‚Ì•`‰æ
 	m_enemyManager->Render(view, m_projection);
 	// ƒXƒNƒŠ[ƒ“ƒVƒ‡ƒbƒg‚ðŽæ‚é
@@ -204,8 +196,8 @@ void PlayScene::Render()
 	DrawParticle(view, m_projection);
 	// ƒNƒGƒXƒg‚Ì•`‰æ
 	m_questManager->DrawQuest();
-	//// UI‚Ì•`‰æ
-	//m_uiManager->Render();
+	// UI‚Ì•`‰æ
+	m_uiManager->Render();
 }
 
 // ------------------------------------------------------------------------------

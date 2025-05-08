@@ -48,29 +48,36 @@ public:
         mylib::InputManager* inputManager
     );
 
-    // ディファードコンテキストを取得する
-    ID3D11DeviceContext* GetDeferredContext();
-
-    // スレッドプールを取得する
-    ThreadPool* GetThreadPool();
-
     // タイマーを取得する
-    DX::StepTimer* GetStepTimer() const;
+    DX::StepTimer* GetStepTimer() const
+    {
+		return m_stepTimer;
+    }
 
     // デバイスリソースを取得する
-    DX::DeviceResources* GetDeviceResources() const;
+    DX::DeviceResources* GetDeviceResources() const
+    {
+		return m_deviceResources;
+    }
 
     // 共通ステートを取得する
-    DirectX::CommonStates* GetCommonStates() const;
+    DirectX::CommonStates* GetCommonStates() const
+    {
+		return m_commonStates;
+    }
 
     // デバッグ文字列を取得する
-    mylib::DebugString* GetDebugString() const;
+    mylib::DebugString* GetDebugString() const
+    {
+		return m_debugString;
+    }
 
     // 入力管理を取得する
-    mylib::InputManager* GetInputManager() const;
+    mylib::InputManager* GetInputManager() const
+    {
+		return m_inputManager;
+    }
 
-    // 全てのディファードコンテキストを取得する
-    std::vector<ID3D11DeviceContext*> GetAllDeferredContexts();
 
     // ------------------
     // メンバ関数（非公開）
@@ -79,8 +86,6 @@ private:
     // コンストラクタ
     CommonResources();
 
-    // ディファードコンテキストを作成する
-    void CreateDeferredContexts(ID3D11Device* device);
 
     // ------------------
     // メンバ変数
@@ -98,10 +103,4 @@ private:
     mylib::DebugString* m_debugString;
     // 入力管理
     mylib::InputManager* m_inputManager;
-    // スレッドプール
-    ThreadPool m_threadPool;
-    // ディファードコンテキスト
-    std::map<std::thread::id, Microsoft::WRL::ComPtr<ID3D11DeviceContext>> m_deferredContexts;
-    // コンテキストへのアクセスを保護するミューテックス
-    std::mutex m_contextMutex;
 };

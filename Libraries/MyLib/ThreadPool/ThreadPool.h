@@ -1,78 +1,79 @@
+// ----------------------------------------------------------------
+//
+// ファイル：ThreadPool.h
+// 機能：マルチスレッド処理を効率的に管理するスレッドプール
+// 作成：2025/05/08
+//
+// ----------------------------------------------------------------
+
 #pragma once
 #include "pch.h"
-#include <functional>
-#include <thread>
 #include <vector>
 #include <queue>
+#include <thread>
 #include <mutex>
+#include <functional>
 #include <condition_variable>
-#include <future>
+#include <atomic>
 
 /// <summary>
-/// マルチスレッドレンダリング用のスレッドプールクラス
+/// スレッドプールクラス - マルチスレッド処理を効率的に管理
 /// </summary>
-class ThreadPool
+class ThreadPool 
 {
-    // -----------------
-    // メンバ関数（公開）
-    // -----------------
+
+	// -----------------------
+	// メンバ関数（公開）
+	// -----------------------
 public:
-    // コンストラクタ
-    explicit ThreadPool(unsigned int threadCount = std::thread::hardware_concurrency());
-
-    // デストラクタ
+    // コンストラクタ - 指定された数のスレッドでプールを初期化
+    ThreadPool(size_t numThreads);
+    // threadを動かす
+    void workerThread();
+    // タスクの取得
+    std::function<void()> GetNextTask();
+    // 完了したタスクを確認
+    void DecrementActiveTaskCount();
+    // デストラクタ - すべてのスレッドを安全に終了
     ~ThreadPool();
-
-    // タスクを追加する
-    template <typename F, typename... Args>
-    auto Enqueue(F&& func, Args&&... args) -> std::future<decltype(func(args...))>
-    {
-        using ReturnType = decltype(func(args...));
-
-        // タスクをラッピングしてfutureで返す
-        auto task = std::make_shared<std::packaged_task<ReturnType()>>(
-            std::bind(std::forward<F>(func), std::forward<Args>(args)...)
-        );
-        std::future<ReturnType> result = task->get_future();
-
-        {
-            std::lock_guard<std::mutex> lock(m_mutex);
-            if (!m_isRunning)
-            {
-                throw std::runtime_error("スレッドプールは既に停止しています");
-            }
-            m_tasks.emplace([task]() { (*task)(); });
-        }
-
-        m_cv.notify_one();
-        return result;
-    }
-
-    // 全てのタスクが完了するまで待機する
+    // タスクをキューに追加するテンプレート関数
+    template<class F>
+    void Enqueue(F&& f);
+    // すべてのタスクの完了を待機
     void WaitAll();
 
-    // スレッド数を取得する
-    unsigned int GetThreadCount() const;
 
-    // -----------------
-    // メンバ関数（非公開）
-    // -----------------
-private:
-    // ワーカースレッド
-    void WorkerThread();
-
-    // -----------------
+    // -----------------------
     // メンバ変数
-    // -----------------
+    // -----------------------
 private:
-    // スレッドプール
-    std::vector<std::thread> m_threads;
+    // ワーカースレッドのコレクション
+    std::vector<std::thread> m_workers;
     // タスクキュー
     std::queue<std::function<void()>> m_tasks;
-    // タスクキューアクセス用ミューテックス
-    std::mutex m_mutex;
-    // タスクキューの待機条件変数
-    std::condition_variable m_cv;
-    // スレッド実行フラグ
-    bool m_isRunning;
+    // タスクキュー操作のためのミューテックス
+    std::mutex m_queueMutex;
+    // スレッド同期用の条件変数
+    std::condition_variable m_condition;
+    // 実行中のタスク数カウンター
+    std::atomic<int> m_activeCount;
+    // タスク完了通知用の条件変数
+    std::condition_variable m_completionCondition;
+    // 完了通知用のミューテックス
+    std::mutex m_completionMutex;
+    // スレッドプール停止フラグ
+    bool m_stop;
 };
+
+
+// テンプレート関数の実装 - ヘッダーファイルに含める必要がある
+template<class F>
+void ThreadPool::Enqueue(F&& f) 
+{
+    {
+        std::unique_lock<std::mutex> lock(m_queueMutex);
+        m_tasks.emplace(std::forward<F>(f));
+        m_activeCount++;
+    }
+    m_condition.notify_one();
+}
