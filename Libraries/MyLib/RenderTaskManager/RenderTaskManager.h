@@ -1,58 +1,60 @@
-// --------------------------------------
+// ----------------------------------------------------------------
 //
-// 名前: RenderTaskManager.h
-// 概要: レンダリングタスクを管理するクラス（完成版）
-// 作成: 2025/05/07
+// 名前：RenderTaskManager.h
+// 機能：レンダリングタスクを管理するクラス
+// 作成：2025/05/07
 //
-// --------------------------------------
+// ----------------------------------------------------------------
 
 // インクルード
 #pragma once
 #include "pch.h"
-#include <thread>
-#include <mutex>
-#include <condition_variable> 
-#include <functional>
-#include <queue>
+#include "Libraries/MyLib/ThreadPool/ThreadPool.h"
 #include "Interface/IRenderable.h"
-#include "Game/CommonResources.h"
+#include <DirectXMath.h>
+#include <queue>
+#include <mutex>
+#include <functional>
 
 /// <summary>
-/// レンダータスクマネージャー（スレッドプール実装）
+/// レンダリングタスクを管理するクラス
 /// </summary>
 class RenderTaskManager
 {
-private:
-    using RenderFunction = std::function<void(ID3D11DeviceContext*)>;
-
-    // タスク構造体
-    struct Task
-    {
-        RenderFunction function;
-    };
-
+    // ------------------
+    // メンバ関数（公開）
+    // ------------------
 public:
     // インスタンスを取得する
     static RenderTaskManager* const GetInstance();
 
-    // コンストラクタとデストラクタ
+    // コンストラクタ
     RenderTaskManager();
+
+    // デストラクタ
     ~RenderTaskManager();
 
-    // タスクの追加
+    // タスクを追加する
     void AddTask(IRenderable* renderable, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj);
-    // タスクの実行
-    void ExecuteTasks(ID3D11DeviceContext* immediateContext);
 
-private:
-    // タスクを実行するスレッド
-    void WorkerThread();
+    // 全てのタスクを実行し、即時コンテキストに結合する
+    void ExecuteTasks(ID3D11DeviceContext* immediateContext, const std::vector<ID3D11DeviceContext*>& deferredContexts);
 
+    // スレッドプールを取得する
+    ThreadPool* GetThreadPool();
+
+    // ------------------
     // メンバ変数
+    // ------------------
+private:
+    // シングルトンインスタンス
     static std::unique_ptr<RenderTaskManager> m_RTM;
-    std::vector<std::thread> m_threads;
-    std::queue<Task> m_taskQueue;
+    // スレッドプール
+    ThreadPool m_threadPool;
+    // タスクキュー
+    std::queue<std::function<void(ID3D11DeviceContext*)>> m_taskQueue;
+    // タスクキューのミューテックス
     std::mutex m_taskMutex;
+    // タスク待機用の条件変数
     std::condition_variable m_taskCV;
-    std::atomic<bool> m_isRunning;
 };

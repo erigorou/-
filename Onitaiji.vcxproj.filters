@@ -241,6 +241,7 @@
     <ClInclude Include="Game\Stage\Sign\Sign.h" />
     <ClInclude Include="Interface\IRenderable.h" />
     <ClInclude Include="Libraries\MyLib\RenderTaskManager\RenderTaskManager.h" />
+    <ClInclude Include="Libraries\MyLib\ThreadPool\ThreadPool.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -357,6 +358,7 @@
     <ClCompile Include="Game\UI\EscapeSign\EscapeSign.cpp" />
     <ClCompile Include="Game\Stage\Sign\Sign.cpp" />
     <ClCompile Include="Libraries\MyLib\RenderTaskManager\RenderTaskManager.cpp" />
+    <ClCompile Include="Libraries\MyLib\ThreadPool\ThreadPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

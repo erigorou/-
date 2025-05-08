@@ -190,11 +190,12 @@ void PlayScene::Render()
 	// •Ç‚Ì•`‰æ
 	m_wall->Render(view, m_projection);
 
-	// •`‰æ‚ğ“o˜^
-	rtm->AddTask(m_player.get(), view, m_projection);
+	//// •`‰æ‚ğ“o˜^
+	//rtm->AddTask(m_player.get(), view, m_projection);
 
-	//// ƒvƒŒƒCƒ„[‚Ì•`‰æ
-	//m_player->Render(view, m_projection);
+	// ƒvƒŒƒCƒ„[‚Ì•`‰æ
+	m_player->Render(view, m_projection);
+
 	// “Gi•¡”j‚Ì•`‰æ
 	m_enemyManager->Render(view, m_projection);
 	// ƒXƒNƒŠ[ƒ“ƒVƒ‡ƒbƒg‚ğæ‚é
@@ -203,8 +204,8 @@ void PlayScene::Render()
 	DrawParticle(view, m_projection);
 	// ƒNƒGƒXƒg‚Ì•`‰æ
 	m_questManager->DrawQuest();
-	// UI‚Ì•`‰æ
-	m_uiManager->Render();
+	//// UI‚Ì•`‰æ
+	//m_uiManager->Render();
 }
 
 // ------------------------------------------------------------------------------

@@ -327,6 +327,7 @@
     <ClInclude Include="Game\Messenger\KeyboardMessenger.h" />
     <ClInclude Include="Libraries\MyLib\RenderTaskManager\RenderTaskManager.h" />
     <ClInclude Include="Libraries\MyLib\Texture.h" />
+    <ClInclude Include="Libraries\MyLib\ThreadPool\ThreadPool.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="StepTimer.h" />
   </ItemGroup>
@@ -418,6 +419,7 @@
     <ClCompile Include="Game\Stage\SkySphere\SkySphere.cpp" />
     <ClCompile Include="Libraries\MyLib\RenderTaskManager\RenderTaskManager.cpp" />
     <ClCompile Include="Libraries\MyLib\Texture.cpp" />
+    <ClCompile Include="Libraries\MyLib\ThreadPool\ThreadPool.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Game\Messenger\KeyboardMessenger.cpp" />
     <ClCompile Include="pch.cpp">

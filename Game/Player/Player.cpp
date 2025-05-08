@@ -1,5 +1,5 @@
 // --------------------------------------------------
-// 名前:	Player.h
+// 名前:	Player.cpp
 // 内容:	プレイヤークラス
 //			プレイヤーのステートや衝突判定、描画やアニメーション処理
 // 作成:	池田桜輔
@@ -514,19 +514,6 @@ void Player::Render(
 
 	// 武器を描画する
 	m_sword->Render(view, projection);
-
-#ifdef _DEBUG
-	auto debuglog = CommonResources::GetInstance()->GetDebugString();
-
-	if (m_isHit) 
-		debuglog->AddString("m_ishit");
-
-	if (m_canHitCudgel) 
-		debuglog->AddString("cudgel hit ");
-
-	debuglog->AddString("");
-
-#endif // !_DEBUG
 }
 
 
@@ -544,8 +531,26 @@ void Player::RecordRenderCommands(
 	ID3D11DeviceContext* context
 )
 {
+	// 共有リソースを取得
 	CommonResources* resources = CommonResources::GetInstance();
+	// 描画状態を取得
 	auto states = resources->GetCommonStates();
+
+	// RenderTargetViewを取得
+	auto rtv = resources->GetDeviceResources()->GetRenderTargetView();
+	// デプスステンシルビューを取得
+	auto dsv = resources->GetDeviceResources()->GetDepthStencilView();
+
+	// ビューポートを取得
+	auto viewport = resources->GetDeviceResources()->GetScreenViewport();
+
+
+	// レンダーターゲットを設定
+	context->OMSetRenderTargets(1, &rtv, dsv);
+	// ビューポートを設定
+	context->RSSetViewports(1, &viewport);
+
+
 
 	// モデルのエフェクト情報を更新する
 	m_model->UpdateEffects([](DirectX::IEffect* effect)
@@ -576,19 +581,6 @@ void Player::RecordRenderCommands(
 
 	// 武器を描画する
 	m_sword->Render(view, projection);
-
-#ifdef _DEBUG
-	auto debuglog = CommonResources::GetInstance()->GetDebugString();
-
-	if (m_isHit)
-		debuglog->AddString("m_ishit");
-
-	if (m_canHitCudgel)
-		debuglog->AddString("cudgel hit ");
-
-	debuglog->AddString("");
-
-#endif // !_DEBUG
 }
 
 

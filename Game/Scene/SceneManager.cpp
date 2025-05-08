@@ -133,7 +133,7 @@ void SceneManager::Render()
 	// フェードの描画
 	m_fade->Render();
 	// レンダリングタスクの実行
-	RenderTaskManager::GetInstance()->ExecuteTasks(context);
+	RenderTaskManager::GetInstance()->ExecuteTasks(context, CommonResources::GetInstance()->GetAllDeferredContexts());
 }
 
 //---------------------------------------------------------

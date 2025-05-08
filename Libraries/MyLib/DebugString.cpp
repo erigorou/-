@@ -66,7 +66,10 @@ void mylib::DebugString::Render(DirectX::CommonStates* states)
 {
 	UNREFERENCED_PARAMETER(states);	// Beginのパラメータ設定用
 
+	if (m_strings.size() <= 0) return;
+
 	m_spriteBatch->Begin();
+
 
 	// 文字列の描画位置
 	DirectX::SimpleMath::Vector2 pos{ DirectX::SimpleMath::Vector2::Zero };
