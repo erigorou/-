@@ -485,6 +485,30 @@ void Player::Render(
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
 
+	ID3D11DeviceContext* deferredContext = nullptr;
+
+
+	HRESULT hr = resources->GetDeviceResources()->GetD3DDevice()->CreateDeferredContext(0, &deferredContext);
+
+	if (FAILED(hr))
+	{
+		MessageBoxA(nullptr, "遅延コンテキストの作成に失敗しました", "エラー", MB_OK | MB_ICONERROR);
+		// エラー時の処理
+		return;
+	}
+
+	// RenderTargetViewを取得
+	auto rtv = resources->GetDeviceResources()->GetRenderTargetView();
+	// デプスステンシルビューを取得
+	auto dsv = resources->GetDeviceResources()->GetDepthStencilView();
+	// ビューポートを取得
+	auto viewport = resources->GetDeviceResources()->GetScreenViewport();
+
+	// レンダーターゲットを設定
+	deferredContext->OMSetRenderTargets(1, &rtv, dsv);
+	// ビューポートを設定
+	deferredContext->RSSetViewports(1, &viewport);
+
 	// モデルのエフェクト情報を更新する
 	m_model->UpdateEffects([](DirectX::IEffect* effect)
 		{
@@ -510,7 +534,33 @@ void Player::Render(
 	);
 
 	// モデルを描画する
-	m_model->Draw(context, *states, m_worldMatrix, view, projection);
+	m_model->Draw(deferredContext, *states, m_worldMatrix, view, projection);
+
+	// デフォードコンテキストのコマンドリストを取得
+	ID3D11CommandList* commandList = nullptr;
+	hr = deferredContext->FinishCommandList(FALSE, &commandList);
+
+	if (FAILED(hr))
+	{
+		MessageBoxA(nullptr, "コマンドリストの作成に失敗しました", "エラー", MB_OK | MB_ICONERROR);
+		// エラー時の処理
+		return;
+	}
+
+	//Immediate Context で実行
+	ID3D11DeviceContext* pImmediateContext = resources->GetDeviceResources()->GetD3DDeviceContext();
+
+	// 記録したコマンドリストを実行
+	pImmediateContext->ExecuteCommandList(commandList, FALSE);
+
+	// commandリストを解放
+	commandList->Release();
+
+	
+	// レンダーターゲットを設定
+	context->OMSetRenderTargets(1, &rtv, dsv);
+	// ビューポートを設定
+	context->RSSetViewports(1, &viewport);
 
 	// 武器を描画する
 	m_sword->Render(view, projection);

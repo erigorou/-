@@ -28,7 +28,7 @@ RenderJob::RenderJob(IRenderable* renderable,
 }
 
 /// <summary>
-/// 描画コマンドの実行 - IRenderableを使用して描画コマンドを記録
+/// 描画コマンドの実行
 /// </summary>
 void RenderJob::Execute() 
 {
