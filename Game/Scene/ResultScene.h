@@ -73,6 +73,11 @@ public:
 	// キー入力（押されている間）
 	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
 
+	// ビュー行列の取得
+	DirectX::SimpleMath::Matrix GetViewMatrix() const override { return DirectX::SimpleMath::Matrix::Identity; }
+	// プロジェクション行列の取得
+	DirectX::SimpleMath::Matrix GetProjectionMatrix() const override { return DirectX::SimpleMath::Matrix::Identity; }
+
 	// -----------------------------
 	// メンバ関数(非公開)
 	// -----------------------------

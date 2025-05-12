@@ -11,6 +11,8 @@
 // 前方宣言
 class CommonResources;
 
+#include "Game/Camera/Camera.h"
+
 /// <summary>
 /// シーンのインターフェース
 /// </summary>
@@ -47,4 +49,9 @@ public:
 	virtual SceneID GetNextSceneID() const = 0;
 	// 前のシーンIDを取得する
 	virtual SceneID GetPrevSceneID() const = 0;
+
+	// ビュー行列を取得
+	virtual DirectX::SimpleMath::Matrix GetViewMatrix() const = 0;
+	// プロジェクション行列を取得
+	virtual DirectX::SimpleMath::Matrix GetProjectionMatrix() const = 0;
 };

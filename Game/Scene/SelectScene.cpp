@@ -18,7 +18,6 @@
 #include "Game/Messenger/KeyboardMessenger.h"
 #include "Libraries/MyLib/Math.h"
 #include "Game/Factory/Factory.h"
-#include "Game/Camera/Camera.h"
 // ƒAƒNƒVƒ‡ƒ“
 #include "Game/UI/Action/NormalAction.h"
 #include "Game/UI/Action/SelectTutorialAction.h"

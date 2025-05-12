@@ -150,7 +150,7 @@ public:
 	void RecordRenderCommands(
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& projection,
-		ID3D11DeviceContext* context) override;
+		ID3D11DeviceContext* defferdContext) override;
 
 
 	// I—¹ˆ—

@@ -77,6 +77,17 @@ public:
 		DirectX::SimpleMath::Vector3	padding;	// 空白
 	};
 
+
+	// -----------------------------
+	// アクセサ
+	// -----------------------------
+public:
+	// ビュー行列を取得
+	DirectX::SimpleMath::Matrix GetViewMatrix() const override { return m_camera->GetViewMatrix(); }
+	// プロジェクション行列を取得
+	DirectX::SimpleMath::Matrix GetProjectionMatrix() const override { return m_projection; }
+
+
 	// -----------------------------
 	// メンバ関数(公開)
 	// -----------------------------

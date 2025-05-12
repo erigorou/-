@@ -123,6 +123,7 @@ void ThreadedRenderer::UnregisterRenderable(IRenderable* renderable)
     }
 }
 
+
 /// <summary>
 /// シーン全体の描画処理
 /// </summary>
@@ -234,7 +235,7 @@ size_t ThreadedRenderer::GetOptimalThreadCount() const {
     // ハードウェア情報が取得できない場合のフォールバック
     if (threadCount == 0) 
     {
-        threadCount = 4; // デフォルト値
+        threadCount = 2; // デフォルト値
     }
 
     // メインスレッドを除いたスレッド数を使用（最低2スレッド）

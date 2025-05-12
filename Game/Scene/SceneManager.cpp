@@ -19,6 +19,8 @@
 #include <cassert>
 #include "Game/Messenger/KeyboardMessenger.h"
 
+#include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
+
 //---------------------------------------------------------
 /// <summary>
 /// コンストラクタ
@@ -32,8 +34,10 @@ SceneManager::SceneManager()
 	m_isFade(false),
 	m_isEscape(false)
 {
+	// シングルトンインスタンスの取得
 	m_gameResources = GameResources::GetInstance();
 	m_sound = Sound::GetInstance();
+	m_threadedRenderer = ThreadedRenderer::GetInstance();
 }
 
 //---------------------------------------------------------
@@ -53,8 +57,14 @@ SceneManager::~SceneManager()
 //---------------------------------------------------------
 void SceneManager::Initialize()
 {
+	auto device = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
+
+	// フェードの作成
 	m_fade = std::make_unique<Fade>(this);
 	m_fade->Initialize();
+
+	// マルチスレッドレンダラーの初期化
+	m_threadedRenderer->Initialize(device);
 
 // デバッグならこれ
 #ifdef _DEBUG
@@ -127,10 +137,18 @@ void SceneManager::Render()
 {
 	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 
+	// 各シーンからviewとprojectionを取得
+	DirectX::SimpleMath::Matrix view = m_currentScene->GetViewMatrix();
+	DirectX::SimpleMath::Matrix projection = m_currentScene->GetProjectionMatrix();
+
 	// シーンの描画
 	m_currentScene->Render();
+
 	// フェードの描画
 	m_fade->Render();
+
+	// スレッドレンダラーの描画
+	m_threadedRenderer->Render(view, projection);
 }
 
 //---------------------------------------------------------

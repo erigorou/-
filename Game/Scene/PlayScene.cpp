@@ -29,6 +29,7 @@
 #include "Effects/Particle.h"
 #include "Game/Camera/Camera.h"
 
+
 // ------------------------------------------------------------------------------
 /// <summary>
 /// コンストラクタ
@@ -186,8 +187,8 @@ void PlayScene::Render()
 	m_sea->Render(view, m_projection);
 	// 壁の描画
 	m_wall->Render(view, m_projection);
-	// プレイヤーの描画
-	m_player->Render(view, m_projection);
+	//// プレイヤーの描画
+	//m_player->Render(view, m_projection);
 	// 敵（複数）の描画
 	m_enemyManager->Render(view, m_projection);
 	// スクリーンショットを取る

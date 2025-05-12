@@ -19,6 +19,7 @@
 #include "../Data/HPSystem.h"
 
 #include "Libraries/MyLib/DebugString.h"
+#include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
 
 // ---------------------------------------------------------
 /// <summary>
@@ -78,6 +79,10 @@ void Player::Initialize()
 	AttachEvent();
 	// 武器の生成
 	m_sword = Factory::CreateSword(this);
+
+	// マルチスレッドに自身を登録
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->RegisterRenderable(this);
 }
 
 // ---------------------------------------------------------
@@ -539,7 +544,6 @@ void Player::Render(
 	// デフォードコンテキストのコマンドリストを取得
 	ID3D11CommandList* commandList = nullptr;
 	hr = deferredContext->FinishCommandList(FALSE, &commandList);
-
 	if (FAILED(hr))
 	{
 		MessageBoxA(nullptr, "コマンドリストの作成に失敗しました", "エラー", MB_OK | MB_ICONERROR);
@@ -569,7 +573,7 @@ void Player::Render(
 
 // ---------------------------------------------------------
 /// <summary>
-/// モデルを描画する
+/// 描画コマンドを登録する
 /// </summary>
 /// <param name="view">ビュー行列</param>
 /// <param name="projection">プロジェクション行列</param>
@@ -578,29 +582,23 @@ void Player::Render(
 void Player::RecordRenderCommands(
 	const DirectX::SimpleMath::Matrix& view,
 	const DirectX::SimpleMath::Matrix& projection,
-	ID3D11DeviceContext* context
+	ID3D11DeviceContext* deferredContext
 )
 {
-	// 共有リソースを取得
 	CommonResources* resources = CommonResources::GetInstance();
-	// 描画状態を取得
 	auto states = resources->GetCommonStates();
 
 	// RenderTargetViewを取得
 	auto rtv = resources->GetDeviceResources()->GetRenderTargetView();
 	// デプスステンシルビューを取得
 	auto dsv = resources->GetDeviceResources()->GetDepthStencilView();
-
 	// ビューポートを取得
 	auto viewport = resources->GetDeviceResources()->GetScreenViewport();
 
-
 	// レンダーターゲットを設定
-	context->OMSetRenderTargets(1, &rtv, dsv);
+	deferredContext->OMSetRenderTargets(1, &rtv, dsv);
 	// ビューポートを設定
-	context->RSSetViewports(1, &viewport);
-
-
+	deferredContext->RSSetViewports(1, &viewport);
 
 	// モデルのエフェクト情報を更新する
 	m_model->UpdateEffects([](DirectX::IEffect* effect)
@@ -627,10 +625,7 @@ void Player::RecordRenderCommands(
 	);
 
 	// モデルを描画する
-	m_model->Draw(context, *states, m_worldMatrix, view, projection);
-
-	// 武器を描画する
-	m_sword->Render(view, projection);
+	m_model->Draw(deferredContext, *states, m_worldMatrix, view, projection);
 }
 
 
@@ -654,6 +649,10 @@ void Player::Finalize()
 		m_states[i]->Finalize();
 		m_states[i] = nullptr;
 	}
+
+	// 描画コマンドの削除
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->UnregisterRenderable(this);
 }
 
 // ---------------------------------------------------------

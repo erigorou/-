@@ -30,6 +30,7 @@ class QuestManager;
 class Particle;
 class Camera;
 
+
 /// <summary>
 /// プレイシーンを更新・描画するクラス
 /// </summary>
@@ -61,6 +62,11 @@ public:
 	QuestManager* GetQuestManager() { return m_questManager.get(); }
 	// スクショを取る
 	void TakeCapture() { m_isScreenShot = true; }
+
+	// ビュー行列を取得
+	DirectX::SimpleMath::Matrix GetViewMatrix() const override { return m_camera->GetViewMatrix(); }
+	// プロジェクション行列を取得
+	DirectX::SimpleMath::Matrix GetProjectionMatrix() const override { return m_projection; }
 
 	// --------------------------
 	// メンバ関数(公開)

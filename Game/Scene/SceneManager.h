@@ -15,6 +15,8 @@ class GameResources;
 class Sound;
 class Fade;
 
+class ThreadedRenderer;
+
 class SceneManager
 {
 	// -----------------------------
@@ -82,4 +84,9 @@ private:
 	DirectX::Keyboard::State m_keyboardState;
 	// キーボードの状態トラッカー
 	DirectX::Keyboard::KeyboardStateTracker m_keyboardStateTracker;
+
+
+	// スレッドレンダラー
+	ThreadedRenderer* m_threadedRenderer;
+
 };

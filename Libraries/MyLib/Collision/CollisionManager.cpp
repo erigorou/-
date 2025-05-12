@@ -69,6 +69,7 @@ inline void CollisionManager::RegisterThread()
 			m_updateRequested = false;
 		}
 		// スレッド終了時のクリーンアップ処理（必要に応じて）
+		Clear();
 		});
 }
 /// <summary>
@@ -76,11 +77,17 @@ inline void CollisionManager::RegisterThread()
 /// </summary>
 CollisionManager::~CollisionManager()
 {
+	// 終了リクエストをセット
+	{
+		std::lock_guard<std::mutex> lock(m_mutex);
+		m_exitRequested = true;
+	}
+
+	// 条件変数を通知して待機中のスレッドを起こす
+	m_cv.notify_all();
+
 	// 別スレッド終了
 	ExitThread();
-
-	// リセット
-	Clear();
 }
 
 /// <summary>
@@ -162,26 +169,44 @@ void CollisionManager::AddEventMessenger()
 /// <summary>
 /// 球と球の当たり判定
 /// </summary>
+// 球と球の当たり判定
 inline void CollisionManager::CheckCollisionSphereToSphere()
 {
+	if (m_exitRequested) return;
+
 	// 球同士による当たり判定(同じ球同士で衝突しないように)
 	for (int i = 0; i < static_cast<int>(m_spheres.size() - 1); i++)
 	{
+		// スレッド処理中に要素が削除された可能性をチェック
+		if (i >= static_cast<int>(m_spheres.size())) break;
+		if (m_spheres[i].object == nullptr) continue;
+
 		for (int j = i + 1; j < static_cast<int>(m_spheres.size()); j++)
 		{
+			// スレッド処理中に要素が削除された可能性をチェック
+			if (j >= static_cast<int>(m_spheres.size())) break;
+			if (m_spheres[j].object == nullptr) continue;
+
 			// 球同士の当たり判定
 			if (m_spheres[i].collision->Intersects(*m_spheres[j].collision))
 			{
-				// ゴブリン同士と衝突している場合は処理を行わない
+				// ゴブリン同士の衝突時は処理を行わない
 				if (IsGoblinCollision(m_spheres[i], m_spheres[j])) continue;
 
 				// 衝突したときに相手に渡すデータを作成
 				InterSectData sphereData1 = { m_spheres[i].objType, m_spheres[i].colType, m_spheres[i].collision };
 				InterSectData sphereData2 = { m_spheres[j].objType, m_spheres[j].colType, m_spheres[j].collision };
 
-				// 衝突したときの処理を呼び出す
-				m_spheres[i].object != nullptr ? m_spheres[i].object->HitAction(sphereData2) : void();
-				m_spheres[j].object != nullptr ? m_spheres[j].object->HitAction(sphereData1) : void();
+				// 再度nullチェックを行う
+				if (m_spheres[i].object != nullptr)
+				{
+					m_spheres[i].object->HitAction(sphereData2);
+				}
+
+				if (m_spheres[j].object != nullptr)
+				{
+					m_spheres[j].object->HitAction(sphereData1);
+				}
 			}
 		}
 	}
@@ -190,33 +215,52 @@ inline void CollisionManager::CheckCollisionSphereToSphere()
 /// <summary>
 /// OBBと球の当たり判定
 /// </summary>
+// OBBと球の当たり判定
 inline void CollisionManager::CheckCollisionOBBToSphere()
-{	
+{
+	if (m_exitRequested) return;
+
 	// OBBのプロキシと球の当たり判定
 	for (int i = 0; i < static_cast<int>(m_obbs.size()); i++)
 	{
+		// スレッド処理中に要素が削除された可能性をチェック
+		if (i >= static_cast<int>(m_obbs.size())) break;
+		if (m_obbs[i].object == nullptr) continue;
+
 		// OBBのプロキシ球の中心をOBBの中心に設定
 		m_obbProxies[i] = CreateProxySphere(m_obbs[i].collision);
 
 		for (int j = 0; j < static_cast<int>(m_spheres.size()); j++)
 		{
+			// スレッド処理中に要素が削除された可能性をチェック
+			if (j >= static_cast<int>(m_spheres.size())) break;
+			if (m_spheres[j].object == nullptr) continue;
+
 			// プロキシと衝突していなければ次の球に移る
-			if (!m_obbProxies[i]->Intersects(*m_spheres[j].collision))	continue;
+			if (!m_obbProxies[i]->Intersects(*m_spheres[j].collision)) continue;
 
 			// OBBと球の当たり判定
 			if (m_obbs[i].collision->Intersects(*m_spheres[j].collision))
 			{
 				// 衝突したときに相手に渡すデータを作成
-				InterSectData obbData = { m_obbs[i].objType, m_obbs[i].colType,	m_obbProxies[i].get() };
+				InterSectData obbData = { m_obbs[i].objType, m_obbs[i].colType, m_obbProxies[i].get() };
 				InterSectData sphereData = { m_spheres[j].objType, m_spheres[i].colType, m_spheres[j].collision };
 
-				// 衝突したときの処理を呼び出す
-				m_obbs[i].object	!= nullptr ? m_obbs[i].object	->HitAction(sphereData)	: void();
-				m_spheres[j].object != nullptr ? m_spheres[j].object->HitAction(obbData)	: void();
+				// 再度nullチェックを行う
+				if (m_obbs[i].object != nullptr)
+				{
+					m_obbs[i].object->HitAction(sphereData);
+				}
+
+				if (m_spheres[j].object != nullptr)
+				{
+					m_spheres[j].object->HitAction(obbData);
+				}
 			}
 		}
 	}
 }
+
 
 /// <summary>
 /// ゴブリン同士と衝突しているかを検知
@@ -355,44 +399,59 @@ inline std::unique_ptr<DirectX::BoundingSphere> CollisionManager::CreateProxySph
 /// <param name="args">DeleteCollisionData型</param>
 void CollisionManager::DeleteCollision(void* args)
 {
+	// Mutexロックを取得してスレッド間の同期を確保
+	std::lock_guard<std::mutex> lock(m_mutex);
+
 	// argsはDeleteCollisionData構造体へのポインタ
 	auto* deleteData = static_cast<DeleteCollisionData*>(args);
 
 	// 不正な引数の場合は終了
 	if (!deleteData) return;
 
+	// オブジェクトのポインタ
+	IObject* targetObject = deleteData->object;
+
+	// オブジェクトが有効かチェック
+	if (targetObject == nullptr) return;
+
 	// OBBの場合はOBBとプロキシ球の両方を削除
 	if (deleteData->collType == CollisionType::OBB)
 	{
-		// 対応するオブジェクトを削除するラムダ式
-		auto EraseMatchingObject = [object = deleteData->object](auto& container)
+		// 削除前にnullptrに置き換える（安全のため）
+		for (auto& obb : m_obbs)
+		{
+			if (obb.object == targetObject)
 			{
-				container.erase(std::remove_if(container.begin(), container.end(), [object](const auto& collision)
-					{
-						return collision.object == object;	// オブジェクトが一致するか判定
-					}),
-					container.end());
-			};
+				obb.object = nullptr;
+			}
+		}
 
-		// OBBのコンテナから削除
-		EraseMatchingObject(m_obbs);
+		// 対応するオブジェクトを削除
+		m_obbs.erase(std::remove_if(m_obbs.begin(), m_obbs.end(),
+			[targetObject](const auto& collision) {
+				return collision.object == targetObject || collision.object == nullptr;
+			}),
+			m_obbs.end());
 	}
 
 	// Sphereの場合はSphereのみ削除
 	else if (deleteData->collType == CollisionType::Sphere)
 	{
-		// 対応するオブジェクトを削除するラムダ式
-		auto EraseMatchingObject = [object = deleteData->object](auto& container)
+		// 削除前にnullptrに置き換える（安全のため）
+		for (auto& sphere : m_spheres)
+		{
+			if (sphere.object == targetObject)
 			{
-				container.erase(std::remove_if(container.begin(), container.end(), [object](const auto& collision)
-					{
-						return collision.object == object;
-					}),
-					container.end());
-			};
+				sphere.object = nullptr;
+			}
+		}
 
-		// Sphereのコンテナから削除
-		EraseMatchingObject(m_spheres);
+		// 対応するオブジェクトを削除
+		m_spheres.erase(std::remove_if(m_spheres.begin(), m_spheres.end(),
+			[targetObject](const auto& collision) {
+				return collision.object == targetObject || collision.object == nullptr;
+			}),
+			m_spheres.end());
 	}
 }
 
