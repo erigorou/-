@@ -112,8 +112,8 @@ public:
 	// 追加関数
 	template<typename T>
 	void AddCollision(void* args);
-	// 削除関数
-	void DeleteCollision(void* args);
+	// 削除要求を登録するメソッド
+	void QueueDeleteCollision(void* args);
 	// 初期化関数
 	void Clear();
 
@@ -134,8 +134,8 @@ private:
 	inline void CheckCollisionOBBToSphere();
 	// 小鬼同士の衝突通知
 	inline bool IsGoblinCollision(
-		CollisionData<DirectX::BoundingSphere> collisionA,
-		CollisionData<DirectX::BoundingSphere> collisionB
+		const CollisionData<DirectX::BoundingSphere>& collisionA,
+		const CollisionData<DirectX::BoundingSphere>& collisionB
 	);
 	// 衝突判定の描画
 	inline void DrawCollision(
@@ -146,6 +146,9 @@ private:
 	inline std::unique_ptr<DirectX::BoundingSphere> CreateProxySphere(
 		const DirectX::BoundingOrientedBox* collision
 	);
+
+	// 実際に削除処理を行うメソッド（内部使用）
+	void ProcessDeleteQueue();
 
 	// -----------------------------
 	// メンバ変数
@@ -182,6 +185,12 @@ private:
 	bool m_updateRequested = false;
 	// デストラクタでのスレッド終了を支持するフラグ
 	bool m_exitRequested = false;
+
+
+    std::vector<DeleteCollisionData> m_pendingDeleteQueue;
+    std::mutex m_deleteQueueMutex;
+    std::atomic<bool> m_isProcessingCollisions;
+    std::condition_variable m_cv_complete;
 };
 
 #endif // !COLLISION_MANAGER
