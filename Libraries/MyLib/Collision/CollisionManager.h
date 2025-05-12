@@ -187,10 +187,14 @@ private:
 	bool m_exitRequested = false;
 
 
-    std::vector<DeleteCollisionData> m_pendingDeleteQueue;
-    std::mutex m_deleteQueueMutex;
-    std::atomic<bool> m_isProcessingCollisions;
-    std::condition_variable m_cv_complete;
+	// 削除処理の待機キュー
+	std::vector<DeleteCollisionData> m_pendingDeleteQueue;
+	// 削除キュー保護用ミューテックス
+	std::mutex m_deleteQueueMutex;
+	// 衝突処理中かどうかのフラグ（主に待機判断に使用）
+	std::atomic<bool> m_isProcessingCollisions;
+	// Update終了通知用の条件変数
+	std::condition_variable m_cv_complete;
 };
 
 #endif // !COLLISION_MANAGER
