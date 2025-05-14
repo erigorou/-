@@ -13,6 +13,7 @@
 #include "pch.h"
 #include "DeviceResources.h"
 #include "Game/CommonResources.h"
+#include "Interface/IRenderable.h"
 
 // 前方宣言
 class SceneManager;
@@ -21,7 +22,7 @@ class CustomShader;
 /// <summary>
 ///	フェードクラス
 /// </summary>
-class Fade
+class Fade : public IRenderable
 {
 	// -----------------------------
 	// 固定値
@@ -91,6 +92,11 @@ public:
 	void Update(float elapsedTime);
 	// 描画処理
 	void Render();
+	// 描画コマンドを登録
+	void RecordRenderCommands(
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& proj,
+		ID3D11DeviceContext* deferredContext) override;
 
 	// -----------------------------
 	// メンバ関数(非公開)
@@ -109,7 +115,7 @@ private:
 	// フェード量を計算する
 	float CalcrateFadeValue(float easing);
 	// 型抜き画像の描画処理
-	void DrawStencilImage();
+	void DrawStencilImage(ID3D11DeviceContext* deferredContext, DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>* batch);
 
 	// -----------------------------
 	// メンバ変数
