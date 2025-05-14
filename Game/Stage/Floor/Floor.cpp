@@ -10,6 +10,7 @@
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Game/GameResources.h"
+#include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
 
 // --------------------------------------------------
 /// <summary>
@@ -42,6 +43,10 @@ Floor::Floor()
 
 	// テクスチャの読み込み
 	m_texture = GameResources::GetInstance()->GetTexture("floor");
+
+	// マルチスレッドに自身を登録
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->RegisterRenderable(this);
 }
 
 // --------------------------------------------------
@@ -51,6 +56,9 @@ Floor::Floor()
 /// --------------------------------------------------
 Floor::~Floor()
 {
+	// 描画コマンドの削除
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->UnregisterRenderable(this);
 }
 
 // --------------------------------------------------
@@ -121,6 +129,65 @@ void Floor::Render(
 	// サンプラーステートの設定
 	ID3D11SamplerState* sampler[1] = { states->LinearWrap() };
 	context->PSSetSamplers(0, 1, sampler);
+
+	// 半透明部分を描画
+	m_Batch->Begin();
+
+	// 円を描画
+	for (int i = 0; i < SEGMENTS; ++i)
+	{
+		m_Batch->DrawTriangle(vertices[i], vertices[(i + 1) % SEGMENTS], vertices[0]);
+	}
+
+	m_Batch->End();
+}
+
+/// <summary>
+/// 描画コマンドを登録する
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="proj">プロジェクション行列</param>
+/// <param name="deferredContext">コンテキスト</param>
+void Floor::RecordRenderCommands(
+	const DirectX::SimpleMath::Matrix& view,
+	const DirectX::SimpleMath::Matrix& proj,
+	ID3D11DeviceContext* deferredContext)
+{
+	CommonResources* resources = CommonResources::GetInstance();
+	auto states = resources->GetCommonStates();
+
+	// RenderTargetViewを取得
+	auto rtv = resources->GetDeviceResources()->GetRenderTargetView();
+	// デプスステンシルビューを取得
+	auto dsv = resources->GetDeviceResources()->GetDepthStencilView();
+	// ビューポートを取得
+	auto viewport = resources->GetDeviceResources()->GetScreenViewport();
+
+	// レンダーターゲットを設定
+	deferredContext->OMSetRenderTargets(1, &rtv, dsv);
+	// ビューポートを設定
+	deferredContext->RSSetViewports(1, &viewport);
+
+	// プリミティブバッチの作成
+	m_Batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>>(deferredContext);
+
+	// 頂点情報（円の頂点）
+	std::vector<DirectX::VertexPositionTexture> vertices(SEGMENTS);
+	GenerateCircleVertices(vertices.data(), RADIUS, SEGMENTS);
+
+	// 完全不透明のみ描画する設定
+	m_BatchEffect->SetAlphaFunction(D3D11_COMPARISON_NOT_EQUAL);
+	m_BatchEffect->SetReferenceAlpha(0);
+	m_BatchEffect->SetWorld(DirectX::SimpleMath::Matrix::Identity);
+	m_BatchEffect->SetView(view);
+	m_BatchEffect->SetProjection(proj);
+	m_BatchEffect->SetTexture(m_texture.Get());
+	m_BatchEffect->Apply(deferredContext);
+	deferredContext->IASetInputLayout(m_inputLayout.Get());
+
+	// サンプラーステートの設定
+	ID3D11SamplerState* sampler[1] = { states->LinearWrap() };
+	deferredContext->PSSetSamplers(0, 1, sampler);
 
 	// 半透明部分を描画
 	m_Batch->Begin();

@@ -8,6 +8,8 @@
 
 #include "pch.h"
 #include "ThreadedRenderer.h"
+#include "Game/CommonResources.h"
+#include "DeviceResources.h"
 
 // シングルトンインスタンス
 ThreadedRenderer* ThreadedRenderer::s_instance = nullptr;
@@ -97,7 +99,7 @@ void ThreadedRenderer::RegisterRenderable(IRenderable* renderable)
     if (it == m_renderables.end()) 
     {
         // リストに追加
-        m_renderables.push_back(renderable);
+        m_renderables.emplace_back(renderable);
     }
 }
 
@@ -110,6 +112,16 @@ void ThreadedRenderer::UnregisterRenderable(IRenderable* renderable)
     if (!renderable) 
     {
         return;
+    }
+
+    // 遅延コンテキストリセット
+    for (auto& ctx : m_deferredContexts)
+    {
+        if (ctx)
+        {
+            // すべてのステートをクリア
+            ctx->ClearState();
+        }
     }
 
     // スレッドセーフな操作
@@ -129,10 +141,10 @@ void ThreadedRenderer::UnregisterRenderable(IRenderable* renderable)
 /// </summary>
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">プロジェクション行列</param>
-void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) 
+void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj)
 {
     // パラメータチェック
-    if (!m_device || !m_immediateContext || !m_threadPool) 
+    if (!m_device || !m_immediateContext || !m_threadPool)
     {
         OutputDebugStringA("ThreadedRenderer: システムが初期化されていません\n");
         return;
@@ -140,15 +152,15 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
 
     // 有効な遅延コンテキストの数を確認
     size_t validContextCount = 0;
-    for (const auto& ctx : m_deferredContexts) 
+    for (const auto& ctx : m_deferredContexts)
     {
-        if (ctx != nullptr) 
+        if (ctx != nullptr)
         {
             validContextCount++;
         }
     }
 
-    if (validContextCount == 0) 
+    if (validContextCount == 0)
     {
         OutputDebugStringA("ThreadedRenderer: 有効な遅延コンテキストがありません\n");
         return;
@@ -167,7 +179,7 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
 
     // オブジェクト数が少ない場合は処理を最適化
     size_t objectCount = renderablesCopy.size();
-    if (objectCount == 0) 
+    if (objectCount == 0)
     {
         return; // 描画するものがない
     }
@@ -176,48 +188,58 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
     size_t contextIndex = 0;
     size_t usedContextCount = std::min(objectCount, validContextCount);
 
+    // 共通のリソースを取得
+    auto resources = CommonResources::GetInstance();
+    auto rtv = resources->GetDeviceResources()->GetRenderTargetView();
+    auto dsv = resources->GetDeviceResources()->GetDepthStencilView();
+    auto viewport = resources->GetDeviceResources()->GetScreenViewport();
+
     // レンダリングジョブの作成とタスクの登録
-    for (size_t i = 0; i < objectCount; ++i) 
+    for (size_t i = 0; i < objectCount; ++i)
     {
         // 遅延コンテキストをラウンドロビン方式で割り当て
         contextIndex = i % usedContextCount;
 
         // 使用可能なコンテキストを取得
         auto deferredContext = m_deferredContexts[contextIndex].Get();
-        if (!deferredContext) 
+        if (!deferredContext)
         {
             continue;
         }
+
+        // 重要: 各遅延コンテキストでレンダリングターゲットとビューポートを設定
+        deferredContext->OMSetRenderTargets(1, &rtv, dsv);
+        deferredContext->RSSetViewports(1, &viewport);
 
         // レンダリングジョブの作成
         auto job = std::make_unique<RenderJob>(renderablesCopy[i], view, proj, deferredContext);
 
         // スレッドプールにタスクを追加
-        m_threadPool->Enqueue([job = job.get()]() 
+        m_threadPool->Enqueue([job = job.get()]()
             {
-            job->Execute();
+                job->Execute();
             });
 
         // 後で使用するためにジョブを保持
-        renderJobs.push_back(std::move(job));
+        renderJobs.emplace_back(std::move(job));
     }
 
     // すべてのレンダリングタスクの完了を待機
     m_threadPool->WaitAll();
 
     // コマンドリストの収集
-    for (const auto& job : renderJobs) 
+    for (const auto& job : renderJobs)
     {
         ID3D11CommandList* cmdList = job->GetCommandList();
         if (cmdList) {
-            commandLists.push_back(cmdList);
+            commandLists.emplace_back(cmdList);
         }
     }
 
     // イミディエートコンテキストでコマンドリストを実行
-    for (auto cmdList : commandLists) 
+    for (auto cmdList : commandLists)
     {
-        if (cmdList) 
+        if (cmdList)
         {
             m_immediateContext->ExecuteCommandList(cmdList, FALSE);
         }

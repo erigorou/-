@@ -25,5 +25,5 @@ public:
 	virtual void RecordRenderCommands(
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& proj,
-		ID3D11DeviceContext* defferedConetxt) = 0;
+		ID3D11DeviceContext* deferredContext) = 0;
 };

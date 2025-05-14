@@ -16,6 +16,7 @@
 #include <thread>
 #include <mutex>
 #include <condition_variable>
+#include "Interface/IRenderable.h"
 
 // 前方宣言
 class IObject;
@@ -90,7 +91,7 @@ struct InterSectData
 /// <summary>
 /// 衝突判定を管理するクラス
 /// </summary>
-class CollisionManager
+class CollisionManager : public IRenderable
 {
 	// -----------------------------
 	// メンバ関数(公開)
@@ -142,6 +143,13 @@ private:
 		DirectX::SimpleMath::Matrix view,
 		DirectX::SimpleMath::Matrix projection
 	);
+	// 描画コマンドの登録
+	void RecordRenderCommands(
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& proj,
+		ID3D11DeviceContext* deferredContext)override;
+
+
 	// 有向境界ボックスのプロキシ球体を生成
 	inline std::unique_ptr<DirectX::BoundingSphere> CreateProxySphere(
 		const DirectX::BoundingOrientedBox* collision

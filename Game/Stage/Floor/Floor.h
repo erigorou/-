@@ -4,8 +4,9 @@
 
 #pragma once
 #include "pch.h"
+#include "Interface/IRenderable.h"
 
-class Floor
+class Floor : public IRenderable
 {
 public:
 	// -----------------------------
@@ -34,6 +35,13 @@ public:
 	);
 	// •`‰æˆ—
 	void Render(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj); 
+
+	// •`‰æƒRƒ}ƒ“ƒh“o˜^
+	void RecordRenderCommands(
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& proj,
+		ID3D11DeviceContext* deferredContext) override;
+
 	// I—¹ˆ—
 	void Finalize();
 

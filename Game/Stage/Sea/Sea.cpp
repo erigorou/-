@@ -12,6 +12,7 @@
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "../../Data/GameData.h"
+#include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
 
 // ---------------------------------------------------------
 /// <summary>
@@ -23,6 +24,10 @@ Sea::Sea()
 	m_totalTime{}
 {
 	Create();
+
+	// マルチスレッドに登録
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->RegisterRenderable(this);
 }
 
 // ---------------------------------------------------------
@@ -32,6 +37,17 @@ Sea::Sea()
 // ---------------------------------------------------------
 Sea::~Sea()
 {
+	// 描画コマンドの削除
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->UnregisterRenderable(this);
+
+	// シェーダーの解放
+	m_customShader.reset();
+
+	// バッファの解放
+	m_batch.reset();
+	m_states.reset();
+	m_CBuffer.Reset();
 }
 
 // ---------------------------------------------------------
@@ -53,9 +69,6 @@ void Sea::Create()
 			GS_PATH,
 			InputElements
 		);
-
-	// プリミティブバッチの生成
-	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(context);
 
 	// コモンステートの生成
 	m_states = std::make_unique<DirectX::CommonStates>(device);
@@ -139,4 +152,85 @@ void Sea::Render(
 
 	// シェーダーの登録を解除
 	m_customShader->EndSharder(context);
+}
+
+/// <summary>
+/// 描画コマンドを登録する
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="proj">プロジェクション行列</param>
+/// <param name="deferredContext">ディファードコンテキスト</param>
+void Sea::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view,
+	const DirectX::SimpleMath::Matrix& proj,
+	ID3D11DeviceContext* deferredContext)
+{
+	CommonResources* resources = CommonResources::GetInstance();
+	auto states = resources->GetCommonStates();
+
+	// RenderTargetViewを取得
+	auto rtv = resources->GetDeviceResources()->GetRenderTargetView();
+	// デプスステンシルビューを取得
+	auto dsv = resources->GetDeviceResources()->GetDepthStencilView();
+	// ビューポートを取得
+	auto viewport = resources->GetDeviceResources()->GetScreenViewport();
+
+	// レンダーターゲットを設定
+	deferredContext->OMSetRenderTargets(1, &rtv, dsv);
+	// ビューポートを設定
+	deferredContext->RSSetViewports(1, &viewport);
+
+	// 頂点情報(板ポリゴンの４頂点の座標情報）
+	DirectX::VertexPositionColorTexture vertex[4] =
+	{
+		DirectX::VertexPositionColorTexture(
+			DirectX::SimpleMath::Vector3(0.0f,  0.0f, 0.0f),
+			DirectX::SimpleMath::Vector4(0.0f,0.0f,0.0f,1.0f),
+			DirectX::SimpleMath::Vector2(0.0f, 0.0f)),
+	};
+
+	// 渡す用のデータを作成
+	DirectX::SimpleMath::Matrix world = DirectX::SimpleMath::Matrix::Identity;
+	world *= DirectX::SimpleMath::Matrix::CreateScale(SEA_SCALE);
+	world *= DirectX::SimpleMath::Matrix::CreateRotationX(DirectX::XMConvertToRadians(SEA_RPTATION_X_DEG));
+	// 経過時間の更新
+	m_totalTime += GameData::GetInstance()->GetElapsedTime() * SEA_WAVE_SPEED;
+
+	// バッファの作成
+	ConstBuffer cbuff;
+	cbuff.matWorld = world.Transpose();
+	cbuff.matView = view.Transpose();
+	cbuff.matProj = proj.Transpose();
+	cbuff.diffuse = DirectX::SimpleMath::Vector4(1, 1, 1, 1);
+	cbuff.easing = DirectX::SimpleMath::Vector4(0, 0, 0, 0);
+	cbuff.time = DirectX::SimpleMath::Vector4(m_totalTime, 0, 0, 0);
+
+	// 受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）
+	deferredContext->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);
+
+	// シェーダーにバッファを渡す
+	ID3D11Buffer* cb[1] = { m_CBuffer.Get() };
+	deferredContext->VSSetConstantBuffers(0, 1, cb);
+	deferredContext->GSSetConstantBuffers(0, 1, cb);
+	deferredContext->PSSetConstantBuffers(0, 1, cb);
+
+	// 半透明描画指定
+	ID3D11BlendState* blendstate = m_states->NonPremultiplied();
+	// 透明判定処理
+	deferredContext->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
+	// 深度バッファに書き込み参照する
+	deferredContext->OMSetDepthStencilState(m_states->DepthDefault(), 0);
+	// カリングは左周り
+	deferredContext->RSSetState(m_states->CullCounterClockwise());
+	// シェーダーの登録
+	m_customShader->BeginSharder(deferredContext);
+
+	// 描画
+	DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture> batch(deferredContext);
+
+	batch.Begin();
+	batch.Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], 4);
+	batch.End();
+
+	// シェーダーの登録を解除
+	m_customShader->EndSharder(deferredContext);
 }

@@ -12,6 +12,7 @@
 #pragma once
 // インクルード
 #include "pch.h"
+#include "Interface/IRenderable.h"
 
 // 前方宣言
 class CustomShader;
@@ -19,7 +20,7 @@ class CustomShader;
 /// <summary>
 /// 海の描画を担当するクラス
 /// </summary>
-class Sea
+class Sea : public IRenderable
 {
 	// -----------------------------
 	// 定数
@@ -70,6 +71,12 @@ public:
 
 	// 描画処理
 	void Render(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj);
+
+	// 描画コマンド登録
+	void RecordRenderCommands(
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& proj,
+		ID3D11DeviceContext* deferredContext) override;
 
 	// -----------------------------
 	// 非公開メンバ関数

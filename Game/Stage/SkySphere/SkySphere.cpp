@@ -9,6 +9,7 @@
 #include "SkySphere.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
+#include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
 
 const float SkySphere::SKYSPHERE_SCALE = 100.f;
 
@@ -19,6 +20,9 @@ SkySphere::SkySphere()
 	:
 	m_skySphereModel()
 {
+	// マルチスレッドに自身を登録
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->RegisterRenderable(this);
 }
 
 // -------------------------------
@@ -26,6 +30,9 @@ SkySphere::SkySphere()
 // -------------------------------
 SkySphere::~SkySphere()
 {
+	// 描画コマンドの削除
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->UnregisterRenderable(this);
 }
 
 // -------------------------------
@@ -83,4 +90,58 @@ void SkySphere::DrawSkySphere(
 
 	// 天球を描画する
 	m_skySphereModel->Draw(context, *states, world, view, projection);
+}
+
+
+/// <summary>
+/// 描画コマンドを登録する
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="proj">プロジェクション行列</param>
+/// <param name="deferredContext">ディファードコンテキスト</param>
+void SkySphere::RecordRenderCommands(
+	const DirectX::SimpleMath::Matrix& view,
+	const DirectX::SimpleMath::Matrix& proj,
+	ID3D11DeviceContext* deferredContext)
+{
+	CommonResources* resources = CommonResources::GetInstance();
+	auto states = resources->GetCommonStates();
+
+	// RenderTargetViewを取得
+	auto rtv = resources->GetDeviceResources()->GetRenderTargetView();
+	// デプスステンシルビューを取得
+	auto dsv = resources->GetDeviceResources()->GetDepthStencilView();
+	// ビューポートを取得
+	auto viewport = resources->GetDeviceResources()->GetScreenViewport();
+
+	// レンダーターゲットを設定
+	deferredContext->OMSetRenderTargets(1, &rtv, dsv);
+	// ビューポートを設定
+	deferredContext->RSSetViewports(1, &viewport);
+
+	// モデルのエフェクト情報を更新する処理
+	m_skySphereModel->UpdateEffects([](DirectX::IEffect* effect)
+		{
+			// ベーシックエフェクトを設定する
+			DirectX::BasicEffect* basicEffect = dynamic_cast<DirectX::BasicEffect*>(effect);
+			if (basicEffect)
+			{
+				// 個別のライトをすべて無効化する
+				basicEffect->SetLightEnabled(0, false);
+				basicEffect->SetLightEnabled(1, false);
+				basicEffect->SetLightEnabled(2, false);
+
+				// モデルを自発光させる
+				basicEffect->SetEmissiveColor(DirectX::Colors::White);
+			}
+		}
+	);
+
+	// 初期状態のワールドマトリックスを設定
+	DirectX::SimpleMath::Matrix world = DirectX::SimpleMath::Matrix::Identity;
+	// サイズを調整する
+	world *= DirectX::SimpleMath::Matrix::CreateScale(SKYSPHERE_SCALE);
+
+	// 天球を描画する
+	m_skySphereModel->Draw(deferredContext, *states, world, view, proj);
 }

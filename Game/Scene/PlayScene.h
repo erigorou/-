@@ -10,7 +10,7 @@
 #include "IScene.h"
 #include "Interface/IObserver.h"
 
-// 前方宣言
+// 前方宣言結果
 class CommonResources;
 class Sound;
 class HitStop;
@@ -116,9 +116,6 @@ private:
 
 	// スクリーンショットを取る
 	void TakeScreenShot();
-
-	// オブジェクトの描画タスクを追加する
-	void AddRenderTask();
 
 	// --------------------------
 	// メンバ変数

@@ -206,6 +206,11 @@ void SelectScene::CreateStage()
 	// ステージオブジェクトの作成
 	m_selectStageObject = std::make_unique<SelectSceneObject>();
 	m_selectStageObject->Initialize();
+
+	// ゲームデータにアクセス
+	auto gameData = GameData::GetInstance();
+	// ステージの選択インデックスを取得
+	m_selectIndex = gameData->GetSelectStage();
 }
 
 // -----------------------------------------------

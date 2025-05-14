@@ -1,14 +1,21 @@
 #pragma once
 
 #include "pch.h"
+#include "Interface/IRenderable.h"
 
-class SkySphere
+class SkySphere : public IRenderable
 {
 public:
+	// -----------------------------
 	// 固定値
+	// -----------------------------
 	static const float SKYSPHERE_SCALE;
 
 public:
+	// -------------------------
+	// メンバ関数(公開)
+	// -------------------------
+
 	// コンストラクタ
 	SkySphere();
 	// デストラクタ
@@ -26,6 +33,15 @@ public:
 		DirectX::SimpleMath::Matrix projection
 	);
 
+	// 描画コマンド登録
+	void RecordRenderCommands(
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& proj,
+		ID3D11DeviceContext* deferredContext) override;
+
+	// ---------------------------
+	// メンバ変数
+	// ---------------------------
 private:
 	// SkyeSphereのモデル
 	std::unique_ptr<DirectX::Model> m_skySphereModel;

@@ -123,7 +123,6 @@ public:
 	// 攻撃ステートを取得
 	IPlayer* GetPlayerAttackingState2() const { return m_playerAttacking2.get(); }	
 
-
 	// -------------------
 	// 公開関数
 	// -------------------
@@ -145,7 +144,11 @@ public:
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& projection);
 
-	void RenderWithContext(ID3D11DeviceContext* context, DirectX::CommonStates* states, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection);
+	void RenderWithContext(
+		ID3D11DeviceContext* context,
+		DirectX::CommonStates* states,
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& projection);
 
 	void RecordRenderCommands(
 		const DirectX::SimpleMath::Matrix& view,

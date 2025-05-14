@@ -12,6 +12,7 @@
 #include "Game/GameResources.h"
 #include "Wall.h"
 #include "Game/Messenger/EventMessenger.h"
+#include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
 
 // ---------------------------------------------------------
 /// <summary>
@@ -47,6 +48,10 @@ void Wall::Initialize()
 
 	// 当たり判定の生成
 	CreateCollision();
+
+	// マルチスレッドに自身を登録
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->RegisterRenderable(this);
 }
 
 // ---------------------------------------------------------
@@ -116,6 +121,37 @@ void Wall::Render(
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
 }
 
+/// <summary>
+/// 描画コマンド登録
+/// </summary>
+/// <param name="view">ビューポート</param>
+/// <param name="proj">プロジェクション行列</param>
+/// <param name="defferedConetxt">ディファードコンテキスト</param>
+void Wall::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, ID3D11DeviceContext* deferredContext)
+{
+	// ワールド行列の更新処理
+	UpdateWorldMatrix();
+
+	CommonResources* resources = CommonResources::GetInstance();
+	auto states = resources->GetCommonStates();
+
+	// RenderTargetViewを取得
+	auto rtv = resources->GetDeviceResources()->GetRenderTargetView();
+	// デプスステンシルビューを取得
+	auto dsv = resources->GetDeviceResources()->GetDepthStencilView();
+	// ビューポートを取得
+	auto viewport = resources->GetDeviceResources()->GetScreenViewport();
+
+	// レンダーターゲットを設定
+	deferredContext->OMSetRenderTargets(1, &rtv, dsv);
+	// ビューポートを設定
+	deferredContext->RSSetViewports(1, &viewport);
+
+	// 描画コマンドを登録する
+	m_model->Draw(deferredContext, *states, m_worldMatrix, view, proj);
+}
+
+
 // ---------------------------------------------------------
 /// <summary>
 /// 終了処理
@@ -126,6 +162,10 @@ void Wall::Finalize()
 	// 衝突判定をManagerから削除
 	EventMessenger::Execute(EventList::DeleteCollision, this);
 	EventMessenger::Execute(EventList::DeleteCollision, this);
+
+	// 描画コマンドの削除
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->UnregisterRenderable(this);
 }
 
 // ---------------------------------------------------------

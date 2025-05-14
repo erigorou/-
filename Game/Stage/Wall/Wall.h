@@ -9,11 +9,12 @@
 #pragma once
 // インクルード
 #include "Interface/IObject.h"
+#include "Interface/IRenderable.h"
 
 /// <summary>
 /// ステージの境界壁を描画するクラス
 /// </summary>
-class Wall : public IObject
+class Wall : public IObject, public IRenderable
 {
 	// ------------------------
 	// 固定値
@@ -47,6 +48,13 @@ public:
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& projection
 	);
+
+	// 描画コマンド登録
+	void RecordRenderCommands(
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& proj,
+		ID3D11DeviceContext* deferredConetxt)override;
+
 	// 終了処理
 	void Finalize();
 	// 衝突処理

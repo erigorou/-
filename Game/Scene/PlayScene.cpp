@@ -179,16 +179,7 @@ void PlayScene::Render()
 	const DirectX::SimpleMath::Matrix& view = m_camera->GetViewMatrix();
 	// 当たり判定を描画
 	m_collisionManager->Render(view, m_projection);
-	// 空の描画
-	m_skySphere->DrawSkySphere(view, m_projection);
-	// 地面の描画
-	m_floor->Render(view, m_projection);
-	// 海の描画
-	m_sea->Render(view, m_projection);
-	// 壁の描画
-	m_wall->Render(view, m_projection);
-	//// プレイヤーの描画
-	//m_player->Render(view, m_projection);
+ 
 	// 敵（複数）の描画
 	m_enemyManager->Render(view, m_projection);
 	// スクリーンショットを取る
@@ -420,13 +411,4 @@ void PlayScene::TakeScreenShot()
 
 	// スクリーンショットを保存
 	GameData::GetInstance()->SetScreenShot(m_captureSRV);
-}
-
-// ------------------------------------------------------------------------------
-/// <summary>
-/// オブジェクトの描画タスクを追加する
-/// </summary>
-/// <param name="task">タスク</param>
-void PlayScene::AddRenderTask()
-{
 }

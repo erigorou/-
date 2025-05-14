@@ -25,6 +25,16 @@ public:
 	//	入力要素配列
 	using InputElements = std::vector<D3D11_INPUT_ELEMENT_DESC>;
 
+
+	// ------------------------------
+	// アクセサ
+	// ------------------------------
+public:
+	// 頂点シェーダーの取得
+	Microsoft::WRL::ComPtr<ID3D11VertexShader> GetVertexShader() const { return m_vertexShader; }
+
+
+
 	// -----------------------------
 	// メンバ関数(公開)
 	// -----------------------------

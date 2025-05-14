@@ -16,6 +16,7 @@
 #include "Game/Messenger/EventMessenger.h"
 #include "Libraries/Mylib/DebugDraw.h"
 #include "Libraries/Mylib/DebugString.h"
+#include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
 #include <future>
 
 /// <summary>
@@ -37,6 +38,10 @@ CollisionManager::CollisionManager()
 	Initialize();
 	// 別スレッドに衝突処理を登録
 	RegisterThread();
+
+	// マルチスレッドレンダリングに登録
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->RegisterRenderable(this);
 }
 
 /// <summary>
@@ -99,6 +104,10 @@ CollisionManager::~CollisionManager()
 
 	// リセット
 	Clear();
+
+	// マルチスレッドレンダリングから解除
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->UnregisterRenderable(this);
 }
 
 /// <summary>
@@ -580,4 +589,54 @@ inline void CollisionManager::DrawCollision(DirectX::SimpleMath::Matrix view, Di
 	}
 	// 描画終了
 	m_primitiveBatch->End();
+}
+
+/// <summary>
+/// 描画コマンドを登録する
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="proj">プロジェクション行列</param>
+/// <param name="deferredContext">ディファードコンテキスト</param>
+void CollisionManager::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, ID3D11DeviceContext* deferredContext)
+{
+	// デバッグ描画のフラグが立っていない場合は何もしない
+	if (!m_drawFlag) return;
+
+	auto states = CommonResources::GetInstance()->GetCommonStates();
+
+	// 描画設定を行う
+	deferredContext->OMSetBlendState(states->Opaque(), nullptr, 0xFFFFFFFF);
+	deferredContext->OMSetDepthStencilState(states->DepthDefault(), 0);
+	deferredContext->RSSetState(states->CullNone());
+	deferredContext->IASetInputLayout(m_inputLayout.Get());
+	// ビュー行列と射影行列を設定
+	m_basicEffect->SetView(view);
+	m_basicEffect->SetProjection(proj);
+	m_basicEffect->Apply(deferredContext);
+
+	// プリミティブバッチ作成
+	DirectX::PrimitiveBatch<DirectX::VertexPositionColor> batch = DirectX::PrimitiveBatch<DirectX::VertexPositionColor>(deferredContext);
+
+	// 描画開始
+	batch.Begin();
+
+	// OBBの描画
+	for (const auto& obb : m_obbs) {
+		if (obb.collision)
+			DX::Draw(&batch, *obb.collision, DirectX::Colors::Red);
+	}
+
+	// Sphereの描画
+	for (const auto& sphere : m_spheres) {
+		if (sphere.collision)
+			DX::Draw(&batch, *sphere.collision, DirectX::Colors::Blue);
+	}
+
+	// OBBのプロキシ球の描画
+	for (auto& sphere : m_obbProxies) {
+		if (sphere)
+			DX::Draw(&batch, *sphere, DirectX::Colors::LimeGreen);
+	}
+	// 描画終了
+	batch.End();
 }
