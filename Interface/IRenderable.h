@@ -15,6 +15,22 @@
 /// </summary>
 class IRenderable
 {
+// -------------------
+// レイヤー
+// -------------------
+public:
+	// レイヤーの定義
+	enum class Layer : UINT
+	{
+		SkySphere = 0,
+		Sea,
+		Wall,
+		Floor,
+		Object,
+		Fade,
+		UI,
+	};
+
 // ------------------
 // メンバ関数（公開）
 // ------------------
@@ -26,4 +42,6 @@ public:
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& proj,
 		ID3D11DeviceContext* deferredContext) = 0;
+	// 表示レイヤーを取得する
+	virtual Layer GetLayer() const = 0;
 };

@@ -123,6 +123,12 @@ public:
 	// 攻撃ステートを取得
 	IPlayer* GetPlayerAttackingState2() const { return m_playerAttacking2.get(); }	
 
+	// 描画レイヤーを取得する
+	Layer GetLayer() const override
+	{
+		return Layer::Object;
+	}
+
 	// -------------------
 	// 公開関数
 	// -------------------

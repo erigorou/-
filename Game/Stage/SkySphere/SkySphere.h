@@ -11,6 +11,18 @@ public:
 	// -----------------------------
 	static const float SKYSPHERE_SCALE;
 
+
+public:
+	// -----------------------------
+	// アクセサ
+	// -----------------------------
+	// 描画レイヤーを取得する
+	Layer GetLayer() const override
+	{
+		return Layer::SkySphere;
+	}
+
+
 public:
 	// -------------------------
 	// メンバ関数(公開)

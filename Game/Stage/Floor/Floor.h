@@ -20,6 +20,16 @@ public:
 	static constexpr float NORMALIZE = 0.5f;
 
 	// -----------------------------
+	// アクセサ
+	// -----------------------------
+public:
+	// 描画レイヤーを取得する
+	Layer GetLayer() const override
+	{
+		return Layer::Floor;
+	}
+
+	// -----------------------------
 	// メンバ関数（公開）
 	// -----------------------------
 public:

@@ -72,6 +72,16 @@ public:
 	static constexpr float FADE_THRESHOLD = 0.7f;
 
 	// -----------------------------
+	// アクセサ
+	// -----------------------------
+public:
+	// 描画レイヤーを取得する
+	Layer GetLayer() const override
+	{
+		return Layer::Fade;
+	}
+
+	// -----------------------------
 	// メンバ関数(公開)
 	// -----------------------------
 public:

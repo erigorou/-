@@ -94,6 +94,16 @@ struct InterSectData
 class CollisionManager : public IRenderable
 {
 	// -----------------------------
+	// アクセサ
+	// -----------------------------
+public:
+	// 描画レイヤーを取得する
+	Layer GetLayer() const override
+	{
+		return Layer::Object;
+	}
+
+	// -----------------------------
 	// メンバ関数(公開)
 	// -----------------------------
 public:

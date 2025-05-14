@@ -173,6 +173,13 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
         renderablesCopy = m_renderables;
     }
 
+	// レンダラブルオブジェクトをレイヤーでソート
+    std::sort(renderablesCopy.begin(), renderablesCopy.end(),
+        [](IRenderable* a, IRenderable* b)
+        {
+            return static_cast<UINT>(a->GetLayer()) < static_cast<UINT>(b->GetLayer());
+        });
+
     // レンダリングジョブとコマンドリストを格納する配列
     std::vector<std::unique_ptr<RenderJob>> renderJobs;
     std::vector<ID3D11CommandList*> commandLists;

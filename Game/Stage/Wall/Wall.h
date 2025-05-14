@@ -29,6 +29,16 @@ public:
 	// モデルを移動させる位置
 	static constexpr DirectX::SimpleMath::Vector3 WALL_POS = { 0.0f, -60.0f, 0.0f };
 
+	// -----------------------------
+	// アクセサ
+	// -----------------------------
+public:
+	// 描画レイヤーを取得する
+	Layer GetLayer() const override
+	{
+		return Layer::Wall;
+	}
+
 	// ------------------------
 	// メンバ関数(公開)
 	// ------------------------
