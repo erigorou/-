@@ -12,6 +12,7 @@
 #include "Game/Data/HPSystem.h"
 #include "Game/GameResources.h"
 #include "Game/CommonResources.h"
+#include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
 
 // ----------------------------
 /// <summary>
@@ -24,6 +25,10 @@ PlayerHPUI::PlayerHPUI(HPSystem* hpSystem)
     m_spriteBatch{},
     m_playerHP{}
 {
+	// マルチスレッドに登録
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->RegisterRenderable(this);
+
 }
 
 // ----------------------------
@@ -33,6 +38,9 @@ PlayerHPUI::PlayerHPUI(HPSystem* hpSystem)
 // ----------------------------
 PlayerHPUI::~PlayerHPUI()
 {
+	// マルチスレッドから削除
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->UnregisterRenderable(this);
 }
 
 // ----------------------------
@@ -97,6 +105,45 @@ void PlayerHPUI::Render()
     // スプライトバッチを終了する
     m_spriteBatch->End();
 
+}
+
+// ----------------------------
+/// <summary>
+/// 描画コマンドを登録する
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="proj">プロジェクション行列</param>
+/// <param name="deferredContext">ディファードコンテキスト</param>
+// ---------------------------
+void PlayerHPUI::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, ID3D11DeviceContext* deferredContext)
+{
+	// スプライトバッチの作成
+	auto batch = DirectX::SpriteBatch(deferredContext);
+
+    // 最大HPを取得
+    float MAXHP = static_cast<float>(m_playerHPclass->GetMaxHP());
+
+    // 描画位置のオフセット値や緑ゲージの幅を計算する
+    LONG offset = static_cast<LONG>(LEFT_POSITION);
+    LONG width = static_cast<LONG>(offset + MAX_WIDTH * (m_playerHP / MAXHP));
+
+    // ゲージの範囲の設定
+    RECT outline{ offset, TOP_POSITION, offset + MAX_WIDTH, BOTTOM_POSITION };
+    RECT back{ offset, TOP_POSITION, offset + MAX_WIDTH, BOTTOM_POSITION };
+    RECT gauge{ offset, TOP_POSITION, width, BOTTOM_POSITION };
+
+    // 描画開始
+    batch.Begin();
+
+	// 背面の描画
+	batch.Draw(m_backTexture.Get(), back, DirectX::Colors::White);
+	// ゲージ部分
+	batch.Draw(m_texture.Get(), gauge, DirectX::Colors::White);
+	// ゲージの枠
+	batch.Draw(m_frameTexture.Get(), outline, DirectX::Colors::White);
+
+	// 描画終了
+    batch.End();
 }
 
 // ----------------------------

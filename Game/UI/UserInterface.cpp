@@ -12,6 +12,7 @@
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "Interface/IAction.h"
 #include "Game/Scene/Screen.h"
+#include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
 
 // ---------------------------------------------------------
 // 定数
@@ -41,6 +42,9 @@ UserInterface::UserInterface()
 	m_anchor(ANCHOR::TOP_LEFT),
 	m_action(nullptr)
 {
+	// 別スレッドに描画を任せる
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->RegisterRenderable(this);
 }
 
 // ---------------------------------------------------------
@@ -50,6 +54,18 @@ UserInterface::UserInterface()
 // ---------------------------------------------------------
 UserInterface::~UserInterface()
 {
+	// スレッドから削除
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->UnregisterRenderable(this);
+
+	// シェーダーの解放
+	m_shader.reset();
+	// バッファの解放
+	m_batch.reset();
+	// ステートの解放
+	m_states.reset();
+	// テクスチャの解放
+	m_texture.Reset();
 }
 
 // ---------------------------------------------------------
@@ -253,4 +269,68 @@ void UserInterface::Render()
 	m_batch->End();
 	//	シェーダーを取り消す
 	m_shader->EndSharder(context);
+}
+
+// ---------------------------------------------------------
+/// <summary>
+/// 描画コマンドを記録
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="proj">プロジェクション行列</param>
+/// <param name="deferredContext">ディファードコンテキスト</param>
+// ----------------------------------------------------------
+void UserInterface::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, ID3D11DeviceContext* deferredContext)
+{
+	auto batch = DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>(deferredContext);
+
+	// 頂点情報
+	// Position.xy	:拡縮用スケール
+	// Position.z	:アンカータイプ(0～8)の整数で指定
+	// Color.xy　	:アンカー座標(ピクセル指定:1280 ×720)
+	// Color.zw		:画像サイズ
+	// Tex.xy		:ウィンドウサイズ
+	DirectX::VertexPositionColorTexture vertex[1] =
+	{
+		DirectX::VertexPositionColorTexture(
+			DirectX::SimpleMath::Vector3(m_scale.x, m_scale.y, static_cast<float>(m_anchor)),
+			DirectX::SimpleMath::Vector4(m_position.x, m_position.y, m_textureSize.x, m_textureSize.y),
+			DirectX::SimpleMath::Vector2(m_windowSize.x, m_windowSize.y))
+	};
+
+	//	シェーダーに渡す追加のバッファを作成する。(ConstBuffer）
+	ConstBuffer cbuff;
+	cbuff.windowSize = DirectX::SimpleMath::Vector2(m_windowSize.x, m_windowSize.y);
+	cbuff.padding = DirectX::SimpleMath::Vector2(0.0f, 0.0f);
+	cbuff.color = DirectX::SimpleMath::Vector4(m_color.x, m_color.y, m_color.z, m_color.w);
+
+	//	受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）
+	deferredContext->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);
+
+	//	シェーダーにバッファを渡す
+	ID3D11Buffer* cb[1] = { m_CBuffer.Get() };
+	deferredContext->VSSetConstantBuffers(0, 1, cb);
+	deferredContext->GSSetConstantBuffers(0, 1, cb);
+	deferredContext->PSSetConstantBuffers(0, 1, cb);
+
+	//	画像用サンプラーの登録
+	ID3D11SamplerState* sampler[1] = { m_states->PointWrap() };
+	deferredContext->PSSetSamplers(0, 1, sampler);
+	//	半透明描画指定
+	ID3D11BlendState* blendstate = m_states->NonPremultiplied();
+	//	透明判定処理
+	deferredContext->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
+	//	深度バッファに書き込み参照する
+	deferredContext->OMSetDepthStencilState(m_states->DepthNone(), 0);
+	//	カリングは左周り
+	deferredContext->RSSetState(m_states->CullNone());
+	// シェーダをセットする
+	m_shader->BeginSharder(deferredContext);
+	//	ピクセルシェーダにテクスチャを登録する。
+	deferredContext->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
+	//	板ポリゴンを描画
+	batch.Begin();
+	batch.Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], 1);
+	batch.End();
+	//	シェーダーを取り消す
+	m_shader->EndSharder(deferredContext);
 }

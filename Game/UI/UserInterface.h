@@ -12,11 +12,12 @@
 #include "Game/UI/UIAnchor.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "Interface/IAction.h"
+#include "Interface/IRenderable.h"
 
 /// <summary>
 /// UIの表示を行うクラス
 /// </summary>
-class UserInterface
+class UserInterface : public IRenderable
 {
 	// ------------------------------
 	// 定数
@@ -36,6 +37,14 @@ public:
 	static constexpr wchar_t VS_PATH[] = L"Resources/cso/UIVS.cso";
 	static constexpr wchar_t PS_PATH[] = L"Resources/cso/UIPS.cso";
 	static constexpr wchar_t GS_PATH[] = L"Resources/cso/UIGS.cso";
+
+
+	// -----------------------------
+	// アクセサ
+	// -----------------------------
+public:
+	// 描画レイを取得
+	Layer GetLayer() const override { return Layer::UI; }
 
 	// -----------------------------
 	// メンバ関数(公開)
@@ -57,6 +66,11 @@ public:
 	void Update(const float time);
 	// 描画処理
 	void Render();
+	// 描画コマンドを記録
+	void RecordRenderCommands(
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& proj,
+		ID3D11DeviceContext* deferredContext) override;
 
 	// -----------------------------
 	// メンバ関数(非公開)

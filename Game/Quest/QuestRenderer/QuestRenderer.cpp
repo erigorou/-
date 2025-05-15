@@ -15,6 +15,7 @@
 #include "CommonStates.h"
 #include "Game/GameResources.h"
 #include "Game/Sound/Sound.h"
+#include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
 
 // -------------------------------------------------------
 /// <summary>
@@ -34,6 +35,9 @@ QuestRenderer::QuestRenderer(QuestManager* manager)
 	m_canChanegQuest(false),
 	m_clearFlag(false)
 {
+	// マルチスレッドに登録
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->RegisterRenderable(this);
 }
 
 // -------------------------------------------------------
@@ -44,6 +48,10 @@ QuestRenderer::QuestRenderer(QuestManager* manager)
 QuestRenderer::~QuestRenderer()
 {
 	Finalize();
+
+	// マルチスレッドから削除
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->UnregisterRenderable(this);
 }
 
 // -------------------------------------------------------
@@ -113,15 +121,15 @@ void QuestRenderer::Draw()
 		)
 	};
 
-	// 定数バッファの設定
-	UpdateConstantBuffer();
+	//// 定数バッファの設定
+	//UpdateConstantBuffer();
 
 	// 画像用サンプラーの登録
 	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
 	context->PSSetSamplers(0, 1, sampler);
 
-	// レンダーステートの設定
-	SetRenderState();
+	//// レンダーステートの設定
+	//SetRenderState();
 
 	// シェーダー開始
 	m_shader->BeginSharder(context);
@@ -137,6 +145,55 @@ void QuestRenderer::Draw()
 
 	// シェーダー終了
 	m_shader->EndSharder(context);
+}
+
+// -------------------------------------------------------
+/// <summary>
+/// 描画コマンドを記録する
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="proj">プロジェクション行列</param>
+/// <param name="deferredContext">ディファードコンテキスト</param>
+// --------------------------------------------------------
+void QuestRenderer::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, ID3D11DeviceContext* deferredContext)
+{
+	auto batch = DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>(deferredContext);
+
+	// 頂点情報の設定
+	DirectX::VertexPositionColorTexture vertex[1] =
+	{
+		DirectX::VertexPositionColorTexture
+		(
+			DirectX::SimpleMath::Vector3(m_scale.x, m_scale.y, static_cast<float>(ANCHOR::TOP_LEFT))
+		,	DirectX::SimpleMath::Vector4(m_position.x, m_position.y, WIDTH, HEIGHT)
+		,	DirectX::SimpleMath::Vector2(WINDOW_WIDTH, WINDOW_HEIGHT)
+		)
+	};
+
+	// 定数バッファの設定
+	UpdateConstantBuffer(deferredContext);
+
+	// 画像用サンプラーの登録
+	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
+	deferredContext->PSSetSamplers(0, 1, sampler);
+
+	// レンダーステートの設定
+	SetRenderState(deferredContext);
+
+	// シェーダー開始
+	m_shader->BeginSharder(deferredContext);
+
+	// テクスチャの設定
+	deferredContext->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
+	deferredContext->PSSetShaderResources(1, 1, m_dissolveTexture.GetAddressOf());
+	
+	//	板ポリゴンを描画
+	batch.Begin();
+	batch.Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], 1);
+	batch.End();
+
+	// シェーダー終了
+	m_shader->EndSharder(deferredContext);
 }
 
 // -------------------------------------------------------
@@ -208,11 +265,8 @@ void QuestRenderer::ConstantBuffer()
 /// 定数バッファの更新処理
 /// </summary>
 // -------------------------------------------------------
-void QuestRenderer::UpdateConstantBuffer()
+void QuestRenderer::UpdateConstantBuffer(ID3D11DeviceContext* context)
 {
-	// コンテキストの取得
-	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-
 	// 定数バッファの設定
 	CBuffer cbuff;
 	cbuff.windowSize = DirectX::SimpleMath::Vector4(WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0.0f);
@@ -235,11 +289,8 @@ void QuestRenderer::UpdateConstantBuffer()
 /// レンダーステートの設定処理
 /// </summary>
 // -------------------------------------------------------
-void QuestRenderer::SetRenderState()
+void QuestRenderer::SetRenderState(ID3D11DeviceContext* context)
 {
-	// コンテキストの取得
-	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-
 	//	画像用サンプラーの登録
 	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
 	context->PSSetSamplers(0, 1, sampler);

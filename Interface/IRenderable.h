@@ -27,8 +27,8 @@ public:
 		Wall,
 		Floor,
 		Object,
-		Fade,
 		UI,
+		Fade,
 	};
 
 // ------------------

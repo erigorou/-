@@ -12,6 +12,7 @@
 // インクルード
 #include "pch.h"
 #include "DeviceResources.h"
+#include "Interface/IRenderable.h"
 
 // 前方宣言
 class HPSystem;
@@ -20,7 +21,7 @@ class CustomShader;
 /// <summary>
 /// プレイヤーHPUIクラス
 /// </summary>
-class PlayerHPUI
+class PlayerHPUI : public IRenderable
 {
     // ------------------------------
 	// 固定値
@@ -34,6 +35,13 @@ private:
     static constexpr int BOTTOM_POSITION = 80;
 	// X座標(左)
     static constexpr int LEFT_POSITION = 50;
+
+	// ------------------------------
+	// アクセサ
+	// ------------------------------
+public:
+	// 描画レイを取得
+	Layer GetLayer() const override { return Layer::UI; }
 
     // ------------------------------
     // メンバ関数
@@ -49,6 +57,11 @@ public:
     void Update();
     // 描画処理
     void Render();
+    // 描画コマンドを取得
+    void RecordRenderCommands(
+        const DirectX::SimpleMath::Matrix& view,
+        const DirectX::SimpleMath::Matrix& proj,
+        ID3D11DeviceContext* deferredContext) override;
     // 終了処理
     void Finalize();
 

@@ -6,6 +6,7 @@
 // インクルード
 #pragma once
 #include "pch.h"
+#include "Interface/IRenderable.h"
 
 // 前方宣言
 class QuestManager;
@@ -24,7 +25,7 @@ enum SLIDE_ACTION : int
 /// <summary>
 /// チュートリアル中の操作案内の描画を行うクラス
 /// </summary>
-class QuestRenderer
+class QuestRenderer : public IRenderable
 {
 	// --------------------
 	// 固定値
@@ -90,6 +91,9 @@ public:
 	// クエストの変更が可能か
 	bool CanChangeQuest() { return m_canChanegQuest; }
 
+	// 描画レイを取得
+	Layer GetLayer() const override { return Layer::UI; }
+
 	// --------------------
 	// メンバ関数(公開)
 	// --------------------
@@ -104,6 +108,11 @@ public:
 	void Update(float elapsedTime);
 	// 描画処理
 	void Draw();
+	// 描画コマンドを記録
+	void RecordRenderCommands(
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& proj,
+		ID3D11DeviceContext* deferredContext) override;
 	// 終了処理
 	void Finalize();
 
@@ -116,9 +125,9 @@ private:
 	// コンスタントバッファの作成
 	void ConstantBuffer();
 	// 定数バッファの更新処理
-	void UpdateConstantBuffer();
+	void UpdateConstantBuffer(ID3D11DeviceContext* context);
 	// 描画設定
-	void SetRenderState();
+	void SetRenderState(ID3D11DeviceContext* context);
 	// 画像をスライドさせない
 	void NoSlideTexture();
 	// 画像をスライドアウトさせる
@@ -147,9 +156,9 @@ private:
 	// ディゾルブ
 	float m_dissolve;
 	// 経過時間
-	float	m_currentTime;
+	float m_currentTime;
 	// 経過時間
-	float	m_elapsedTime;
+	float m_elapsedTime;
 	// クエストのクリアフラグ
 	bool m_clearFlag;
 	// クエストの変更が可能か
@@ -170,5 +179,7 @@ private:
 	// プリミティブバッチ
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_batch;
 	// コンスタントバッファ
-	Microsoft::WRL::ComPtr<ID3D11Buffer>	m_CBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_CBuffer;
+
+
 };
