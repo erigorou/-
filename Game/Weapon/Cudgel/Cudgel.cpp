@@ -19,6 +19,7 @@
 #include "header/CudgelIdling.h"
 #include "header/CudgelAttacking.h"
 #include "header/CudgelSweeping.h"
+#include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
 
 
 /// <summary>
@@ -32,6 +33,9 @@ Cudgel::Cudgel(Boss* boss)
 	m_worldMatrix(DirectX::SimpleMath::Matrix::Identity),
 	m_isDead(false)
 {
+	// スレッドプールに登録
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->RegisterRenderable(this);
 }
 
 /// <summary>
@@ -39,6 +43,9 @@ Cudgel::Cudgel(Boss* boss)
 /// </summary>
 Cudgel::~Cudgel()
 {
+	// スレッドプールから登録解除
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->UnregisterRenderable(this);
 }
 
 /// <summary>
@@ -134,6 +141,24 @@ void Cudgel::Render(
 
 	// モデルを描画
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
+}
+
+/// <summary>
+/// 
+/// </summary>
+/// <param name="view"></param>
+/// <param name="proj"></param>
+/// <param name="deferredContext"></param>
+void Cudgel::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, ID3D11DeviceContext* deferredContext)
+{
+	// 共通リソースから取得
+	auto states = CommonResources::GetInstance()->GetCommonStates();
+
+	// 死亡しているなら早期リターン
+	if (m_isDead) return;
+
+	// モデルを描画
+	m_model->Draw(deferredContext, *states, m_worldMatrix, view, proj);
 }
 
 /// <summary>

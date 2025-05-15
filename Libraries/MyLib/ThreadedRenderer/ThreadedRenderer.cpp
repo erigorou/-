@@ -198,12 +198,6 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
     size_t contextIndex = 0;
     size_t usedContextCount = std::min(objectCount, validContextCount);
 
-    // 共通のリソースを取得
-    auto resources = CommonResources::GetInstance();
-    auto rtv = resources->GetDeviceResources()->GetRenderTargetView();
-    auto dsv = resources->GetDeviceResources()->GetDepthStencilView();
-    auto viewport = resources->GetDeviceResources()->GetScreenViewport();
-
     // レンダリングジョブの作成とタスクの登録
     for (size_t i = 0; i < objectCount; ++i)
     {
@@ -216,6 +210,12 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
         {
             continue;
         }
+
+        // 共通のリソースを取得
+        auto resources = CommonResources::GetInstance();
+        auto rtv = resources->GetDeviceResources()->GetRenderTargetView();
+        auto dsv = resources->GetDeviceResources()->GetDepthStencilView();
+        auto viewport = resources->GetDeviceResources()->GetScreenViewport();
 
         // 重要: 各遅延コンテキストでレンダリングターゲットとビューポートを設定
         deferredContext->OMSetRenderTargets(1, &rtv, dsv);

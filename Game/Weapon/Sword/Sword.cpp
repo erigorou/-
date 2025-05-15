@@ -22,6 +22,8 @@
 #include "Game/Weapon/Sword/Header/SwordAttacking1.h"
 #include "Game/Weapon/Sword/Header/SwordAttacking2.h"
 
+#include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
+
 // --------------------------------------------
 // 固定値
 // --------------------------------------------
@@ -39,6 +41,9 @@ Sword::Sword(Player* player)
 	m_originalBox{},
 	m_canAttack{ false }
 {
+	// スレッドプールに登録
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->RegisterRenderable(this);
 }
 
 // --------------------------------------------
@@ -46,6 +51,9 @@ Sword::Sword(Player* player)
 // --------------------------------------------
 Sword::~Sword()
 {
+	// スレッドプールから登録解除
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->UnregisterRenderable(this);
 }
 
 // --------------------------------------------
@@ -137,6 +145,22 @@ void Sword::Render(
 
 	// モデルを描画する
 	m_model->Draw(context, *states, m_worldMatrix, view, projection);
+}
+
+// --------------------------------------------
+/// <summary>
+/// 描画コマンドを記録する
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="projection">プロジェクション行列</param>
+/// <param name="deferredContext">ディファードコンテキスト</param>
+void Sword::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection, ID3D11DeviceContext* deferredContext)
+{
+	// 共通リソースから取得
+	auto states = CommonResources::GetInstance()->GetCommonStates();
+
+	// モデルを描画
+	m_model->Draw(deferredContext, *states, m_worldMatrix, view, projection);
 }
 
 // --------------------------------------------

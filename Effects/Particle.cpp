@@ -12,6 +12,7 @@
 #include "Effects/Header/DustTrailParticle.h"
 #include "Effects/Header/SwordTrailParticle.h"
 #include <random>
+#include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
 
 // --------------------------------------------------------
 /// <summary>
@@ -29,6 +30,10 @@ Particle::Particle()
 	EventMessenger::Attach(EventList::CreateBashDust, std::bind(&Particle::CreateBashDust, this, std::placeholders::_1));
 	// 武器の残像を出すイベントを登録
 	EventMessenger::Attach(EventList::CreateWeaponTrail, std::bind(&Particle::CreateSwordTrail, this, std::placeholders::_1));
+
+	// マルチスレッドに登録
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->RegisterRenderable(this);
 }
 
 // --------------------------------------------------------
@@ -38,6 +43,14 @@ Particle::Particle()
 // --------------------------------------------------------
 Particle::~Particle()
 {
+	// マルチスレッドから削除
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->UnregisterRenderable(this);
+
+	// イベントメッセンジャーから削除
+	EventMessenger::Detach(EventList::CreateTrailDust);
+	EventMessenger::Detach(EventList::CreateBashDust);
+	EventMessenger::Detach(EventList::CreateWeaponTrail);
 }
 
 // --------------------------------------------------------
@@ -49,7 +62,6 @@ void Particle::Create()
 {
 	// リソースの取得
 	auto device = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
-	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 
 	//	シェーダーの作成
 	CreateShader();
@@ -57,8 +69,6 @@ void Particle::Create()
 	// 画像を取得
 	m_texture = GameResources::GetInstance()->GetTexture("dust");
 
-	//	プリミティブバッチの作成
-	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(context);
 	//  スタッツの作成
 	m_states = std::make_unique<DirectX::CommonStates>(device);
 }
@@ -264,12 +274,11 @@ void Particle::Render(
 	DirectX::SimpleMath::Matrix proj
 )
 {
-	using namespace DirectX;
 	CommonResources* resources = CommonResources::GetInstance();
 	auto states = resources->GetCommonStates();
 	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 
-	SimpleMath::Vector3 cameraDir = m_cameraTarget - m_cameraPosition;
+	DirectX::SimpleMath::Vector3 cameraDir = m_cameraTarget - m_cameraPosition;
 	cameraDir.Normalize(); // カメラの方向を正規化
 
 	ID3D11SamplerState* sampler[1] = { states->LinearWrap() };// サンプラーステートの設定
@@ -286,8 +295,46 @@ void Particle::Render(
 	//	インプットレイアウトの登録
 	context->IASetInputLayout(m_inputLayout.Get());
 
-	DrawSwordParticle(view, proj);				// 剣の残像の描画
-	DrawDustParticle(view, proj, cameraDir);	// 土埃の描画
+	//DrawSwordParticle(view, proj);				// 剣の残像の描画
+	//DrawDustParticle(view, proj, cameraDir);	// 土埃の描画
+}
+
+// --------------------------------------------------------
+/// <summary>
+/// 描画コマンドを登録する
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="proj">プロジェクション行列</param>
+/// <param name="deferredContext">ディファードコンテキスト</param>
+// --------------------------------------------------------
+void Particle::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, ID3D11DeviceContext* deferredContext)
+{
+	// 共通リストから取得する
+	auto resources = CommonResources::GetInstance();
+	auto states = resources->GetCommonStates();
+
+	DirectX::SimpleMath::Vector3 cameraDir = m_cameraTarget - m_cameraPosition;
+	cameraDir.Normalize(); // カメラの方向を正規化
+
+	ID3D11SamplerState* sampler[1] = { states->LinearWrap() };// サンプラーステートの設定
+	deferredContext->PSSetSamplers(0, 1, sampler);
+
+	ID3D11BlendState* blendstate = m_states->NonPremultiplied();// 半透明描画指定
+	deferredContext->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);// 透明判定処理
+	deferredContext->OMSetDepthStencilState(m_states->DepthDefault(), 0);// 深度バッファはなし
+	deferredContext->RSSetState(m_states->CullNone());// カリングなし
+
+	//	ピクセルシェーダにテクスチャを登録する。
+	deferredContext->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
+
+	//	インプットレイアウトの登録
+	deferredContext->IASetInputLayout(m_inputLayout.Get());
+
+	// 剣の残像の描画
+	DrawSwordParticle(view, proj, deferredContext);
+
+	// 土埃の描画
+	DrawDustParticle(view, proj, cameraDir, deferredContext);
 }
 
 // --------------------------------------------------------
@@ -297,9 +344,9 @@ void Particle::Render(
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">プロジェクション行列</param>
 // --------------------------------------------------------
-void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj)
+void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj, ID3D11DeviceContext* deferredContext)
 {
-	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
+	auto batch = DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>(deferredContext);
 
 	// 剣のパーティクルのためのコンスタントバッファの作成
 	ConstBuffer cbuff;
@@ -309,26 +356,26 @@ void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::Simp
 	cbuff.Diffuse = DirectX::SimpleMath::Vector4(1, 1, 1, 1);
 
 	// コンスタントバッファの更新
-	context->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);
+	deferredContext->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);
 	ID3D11Buffer* cb[1] = { m_CBuffer.Get() };
-	context->VSSetConstantBuffers(0, 1, cb);
-	context->PSSetConstantBuffers(0, 1, cb);
+	deferredContext->VSSetConstantBuffers(0, 1, cb);
+	deferredContext->PSSetConstantBuffers(0, 1, cb);
 
 	// シェーダーの開始
-	m_swordShader->BeginSharder(context);
+	m_swordShader->BeginSharder(deferredContext);
 
 	// ブレンドステートの設定
 	ID3D11BlendState* blendstate = m_states->NonPremultiplied(); //  半透明描画指定
-	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF); // 透明判定処理
-	context->OMSetDepthStencilState(m_states->DepthRead(), 0);// 深度バッファはなし
-	context->RSSetState(m_states->CullNone());// カリングなし
+	deferredContext->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF); // 透明判定処理
+	deferredContext->OMSetDepthStencilState(m_states->DepthRead(), 0);// 深度バッファはなし
+	deferredContext->RSSetState(m_states->CullNone());// カリングなし
 
 	//	画像用サンプラーの登録
 	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
-	context->PSSetSamplers(0, 1, sampler);
+	deferredContext->PSSetSamplers(0, 1, sampler);
 
 	// 剣の残像パーティクルを描画
-	m_batch->Begin();
+	batch.Begin();
 
 	// 色を変化させるためのイージング変数
 	float t = 0.0f;
@@ -348,12 +395,12 @@ void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::Simp
 		ver[0].color = DirectX::SimpleMath::Color(1, 1, 1, value2);		// 左上
 		ver[3].color = DirectX::SimpleMath::Color(1, 0.8, 0.8, 0);		// 左下
 
-		m_batch->DrawQuad(ver[0], ver[1], ver[2], ver[3]);
+		batch.DrawQuad(ver[0], ver[1], ver[2], ver[3]);
 	}
 
-	m_batch->End();
+	batch.End();
 
-	m_swordShader->EndSharder(context);
+	m_swordShader->EndSharder(deferredContext);
 }
 
 // --------------------------------------------------------
@@ -366,9 +413,12 @@ void Particle::DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::Simp
 void Particle::DrawDustParticle(
 	DirectX::SimpleMath::Matrix view,
 	DirectX::SimpleMath::Matrix proj,
-	DirectX::SimpleMath::Vector3 cameraDir
+	DirectX::SimpleMath::Vector3 cameraDir,
+	ID3D11DeviceContext* deferredContext
 )
 {
+	auto batch = DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>(deferredContext);
+
 	// 土埃パーティクルのためのコンスタントバッファの作成
 	ConstBuffer cbuff;
 	cbuff.matView = view.Transpose();
@@ -377,19 +427,18 @@ void Particle::DrawDustParticle(
 	cbuff.Diffuse = DirectX::SimpleMath::Vector4(1, 1, 1, 1);
 
 	// コンスタントバッファの更新
-	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-	context->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);
+	deferredContext->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);
 	ID3D11Buffer* cb[1] = { m_CBuffer.Get() };
-	context->VSSetConstantBuffers(0, 1, cb);
-	context->GSSetConstantBuffers(0, 1, cb);
-	context->PSSetConstantBuffers(0, 1, cb);
+	deferredContext->VSSetConstantBuffers(0, 1, cb);
+	deferredContext->GSSetConstantBuffers(0, 1, cb);
+	deferredContext->PSSetConstantBuffers(0, 1, cb);
 
 	// シェーダーの開始
-	m_dustShader->BeginSharder(context);
+	m_dustShader->BeginSharder(deferredContext);
 
 	//	画像用サンプラーの登録
 	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
-	context->PSSetSamplers(0, 1, sampler);
+	deferredContext->PSSetSamplers(0, 1, sampler);
 
 	// 土埃パーティクルの頂点リストをクリア
 	m_dustVertices.clear();
@@ -419,13 +468,13 @@ void Particle::DrawDustParticle(
 			});
 
 		// パーティクルの描画
-		m_batch->Begin();
-		m_batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &m_dustVertices[0], m_dustVertices.size());
-		m_batch->End();
+		batch.Begin();
+		batch.Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &m_dustVertices[0], m_dustVertices.size());
+		batch.End();
 	}
 
 	// シェーダーの終了
-	m_dustShader->EndSharder(context);
+	m_dustShader->EndSharder(deferredContext);
 }
 
 // --------------------------------------------------------

@@ -185,9 +185,6 @@
     <ClInclude Include="Game\UI\Operation\Operation.h" />
     <ClInclude Include="Game\UI\Operation\OperateUI.h" />
     <ClInclude Include="Game\UI\UI.h" />
-    <ClInclude Include="Interface\IFace.h" />
-    <ClInclude Include="Game\Boss\Face\Header\BossFaceIdling.h" />
-    <ClInclude Include="Game\Boss\Face\Header\BossFaceAttacking.h" />
     <ClInclude Include="Game\Data\HPSystem.h" />
     <ClInclude Include="Game\Stage\Sea\Sea.h" />
     <ClInclude Include="Game\HitStop\HitStop.h" />
@@ -243,6 +240,7 @@
     <ClInclude Include="Libraries\MyLib\ThreadPool\ThreadPool.h" />
     <ClInclude Include="Libraries\MyLib\RenderJob\RenderJob.h" />
     <ClInclude Include="Libraries\MyLib\ThreadedRenderer\ThreadedRenderer.h" />
+    <ClInclude Include="Game\Boss\Face\BossFace.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -327,8 +325,6 @@
     <ClCompile Include="Game\UI\Operation\Operation.cpp" />
     <ClCompile Include="Game\UI\Operation\OperateUI.cpp" />
     <ClCompile Include="Game\UI\UI.cpp" />
-    <ClCompile Include="Game\Boss\Face\Source\BossFaceIdling.cpp" />
-    <ClCompile Include="Game\Boss\Face\Source\BossFaceAttacking.cpp" />
     <ClCompile Include="Game\Data\HPSystem.cpp" />
     <ClCompile Include="Game\Stage\Sea\Sea.cpp" />
     <ClCompile Include="Game\HitStop\HitStop.cpp" />
@@ -361,6 +357,7 @@
     <ClCompile Include="Libraries\MyLib\ThreadPool\ThreadPool.cpp" />
     <ClCompile Include="Libraries\MyLib\RenderJob\RenderJob.cpp" />
     <ClCompile Include="Libraries\MyLib\ThreadedRenderer\ThreadedRenderer.cpp" />
+    <ClCompile Include="Game\Boss\Face\BossFace.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

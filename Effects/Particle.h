@@ -5,12 +5,13 @@
 
 #include "pch.h"
 #include <list>
+#include "Interface/IRenderable.h"
 
 class CustomShader;
 class DustTrailParticle;
 class SwordTrailParticle;
 
-class Particle
+class Particle : public IRenderable
 {
 	// ----------------------------
 	// 構造体
@@ -59,6 +60,14 @@ private:
 	static constexpr float  SMASH_DUST_RADIUS = 1.0f;
 
 	// ----------------------------
+	// アクセサ
+	// ----------------------------
+public:
+	// レイヤーを取得
+	Layer GetLayer() const override { return Layer::Object; }
+
+
+	// ----------------------------
 	// メンバ関数（公開）
 	// ----------------------------
 public:
@@ -74,6 +83,11 @@ public:
 	void Render(
 		DirectX::SimpleMath::Matrix view,
 		DirectX::SimpleMath::Matrix proj);
+	// 描画コマンドを登録する
+	void RecordRenderCommands(
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& proj,
+		ID3D11DeviceContext* deferredContext) override;
 	// ビルボード行列の作成
 	void CreateBillboard(
 		DirectX::SimpleMath::Vector3 target,
@@ -91,9 +105,16 @@ public:
 	// ----------------------------
 private:
 	// 剣パーティクルの描画設定
-	void DrawSwordParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj);
+	void DrawSwordParticle(
+		DirectX::SimpleMath::Matrix view,
+		DirectX::SimpleMath::Matrix proj,
+		ID3D11DeviceContext* deferredContext);
 	// 煙パーティクルの描画設定
-	void DrawDustParticle(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj, DirectX::SimpleMath::Vector3 cameraDir);
+	void DrawDustParticle(
+		DirectX::SimpleMath::Matrix view,
+		DirectX::SimpleMath::Matrix proj,
+		DirectX::SimpleMath::Vector3 cameraDir,
+		ID3D11DeviceContext* deferredContext);
 	// シェーダーの作成
 	inline void CreateShader();
 
@@ -105,8 +126,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_CBuffer;
 	// 入力レイアウト
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
-	//	プリミティブバッチ
-	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_batch;
 	//	コモンステート
 	std::unique_ptr<DirectX::CommonStates> m_states;
 	//	テクスチャハンドル

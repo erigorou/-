@@ -37,7 +37,7 @@ public:
 public:
 	// デストラクタ
 	virtual ~IRenderable() = default;
-	// 描画処理
+	// 描画コマンドを記録する
 	virtual void RecordRenderCommands(
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& proj,

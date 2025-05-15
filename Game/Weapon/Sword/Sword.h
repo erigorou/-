@@ -4,6 +4,7 @@
 #include "Interface/IWeapon.h"
 #include "Game/Scene/PlayScene.h"
 #include "Interface/IObject.h"
+#include "Interface/IRenderable.h"
 #include "Game/Weapon/WeaponState.h"
 
 class SwordIdling;
@@ -11,7 +12,7 @@ class SwordAttacking1;
 class SwordAttacking2;
 class Player;
 
-class Sword : public IObject
+class Sword : public IObject, public IRenderable
 {
 	// ------------------------------------
 	// 固定値
@@ -42,6 +43,11 @@ public:
 	// 当たり判定の位置の設定
 	void SetCollisionPosition(DirectX::SimpleMath::Matrix mat) { m_originalBox.Transform(*m_collision.get(), mat); }
 
+	// 表示レイヤーを取得する
+	Layer GetLayer() const override{
+		return Layer::Object;
+	}
+
 	// ------------------------------------
 	// メンバ関数(公開)
 	// ------------------------------------
@@ -58,6 +64,12 @@ public:
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& projection
 	);
+	// 描画コマンドを記録する
+	void RecordRenderCommands(
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& projection,
+		ID3D11DeviceContext* deferredContext) override;
+
 	// 終了処理
 	void Finalize();
 

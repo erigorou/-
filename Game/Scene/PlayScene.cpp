@@ -166,6 +166,9 @@ void PlayScene::UpdateObjects(float elapsedTime)
 	m_collisionManager->Update();
 	// ゲームオーバー判定
 	GameOverChacker();
+
+	// ビルボード行列の計算
+	m_particles->CreateBillboard(m_camera->GetTargetPosition(), m_camera->GetEyePosition(), DirectX::SimpleMath::Vector3::Up);
 }
 
 // ------------------------------------------------------------------------------
@@ -177,11 +180,7 @@ void PlayScene::Render()
 {
 	// ビュー行列を取得する
 	const DirectX::SimpleMath::Matrix& view = m_camera->GetViewMatrix();
-	// 当たり判定を描画
-	m_collisionManager->Render(view, m_projection);
  
-	// 敵（複数）の描画
-	m_enemyManager->Render(view, m_projection);
 	// スクリーンショットを取る
 	if (m_isScreenShot)	TakeScreenShot();
 	// パーティクルの描画

@@ -26,9 +26,7 @@
 #include "States/Header/BossApproaching.h"
 #include "States/Header/BossDead.h"
 // 顔
-#include "Face/Header/BossFaceIdling.h"
-#include "Face/Header/BossFaceAttacking.h"
-
+#include "Face/BossFace.h"
 #include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
 
 // --------------------------------
@@ -49,7 +47,6 @@ Boss::Boss()
 	, m_pushBackValue{}
 	, m_canHit(false)
 	, m_shakePower{ SHAKE_POWER }
-	, m_currentFace{}
 	, m_model{}
 {
 	// マルチスレッドレンダリングに登録する
@@ -169,14 +166,8 @@ void Boss::CreateState()
 // --------------------------------
 void Boss::CreateFace()
 {
-	// 通常状態
-	m_faceIdling = std::make_unique<BossFaceIdling>(this);
-	m_faces.push_back(m_faceIdling.get());
-	// 攻撃状態
-	m_faceAttacking = std::make_unique<BossFaceAttacking>(this);
-	m_faces.push_back(m_faceAttacking.get());
-	// 初期の顔を待機顔に割り当てる
-	m_currentFace = m_faceIdling.get();
+	// 顔を作成
+	m_face = std::make_unique<BossFace>();
 }
 
 // --------------------------------
@@ -235,7 +226,7 @@ void Boss::ChangeFace(void* face)
 	// int型に変換
 	int index = *static_cast<int*>(face);
 	// 新規の状態を現在の状態に設定する
-	m_currentFace = m_faces[index];
+	m_face->ChangeFace(index);
 }
 
 // --------------------------------
@@ -247,6 +238,7 @@ void Boss::AttachEvent()
 {
 	// 状態変更のイベント
 	EventMessenger::Attach(EventList::ChangeBossState, std::bind(&Boss::ChangeState, this, std::placeholders::_1));
+	
 	// 顔変更のイベント
 	EventMessenger::Attach(EventList::ChangeBossFace, std::bind(&Boss::ChangeFace, this, std::placeholders::_1));
 }
@@ -319,6 +311,9 @@ void Boss::CalcrationWorldMatrix()
 	// スケールと平行移動を適用
 	m_worldMatrix *= Matrix::CreateScale(BOSS_SCALE);	// サイズ調整
 	m_worldMatrix *= Matrix::CreateTranslation(m_position);	// 位置設定
+
+	// 顔にも移動を適用
+	m_face->SetWorldMatrix(m_worldMatrix);
 }
 
 // --------------------------------
@@ -340,12 +335,7 @@ void Boss::Render(
 
 	// 深度値を参照して書き込む
 	context->OMSetDepthStencilState(states->DepthDefault(), 0);
-	// 顔の描画
-	m_currentFace->DrawFace(m_worldMatrix, view, projection);
-	// ダメージのエフェクトを付与
-	m_effect->DrawWithEffect(m_model, m_worldMatrix, view, projection);
-	// 金棒の描画
-	m_cudgel->Render(view, projection);
+
 }
 
 /// <summary>
@@ -356,12 +346,11 @@ void Boss::Render(
 /// <param name="deferredContext">ディファードコンテキスト</param>
 void Boss::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, ID3D11DeviceContext* deferredContext)
 {
-	// 描画に必要なデータを取得する
+	// ボス本体の描画コマンドを実行
 	m_effect->RecordRenderCommands(view, proj, deferredContext, m_model, m_worldMatrix);
 
-
-	static int index = 0;
-	index++;
+	// 顔の描画コマンドを実行
+	m_face->RecordRenderCommands(view,proj, deferredContext);
 }
 
 // --------------------------------

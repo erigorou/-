@@ -7,7 +7,6 @@
 #pragma once
 // インクルード
 #include "Interface/IState.h"
-#include "Interface/IFace.h"
 #include "Interface/IEnemy.h"
 #include "Interface/IRenderable.h"
 
@@ -17,8 +16,7 @@ class EnemyEffect;
 class HPSystem;
 class Cudgel;
 // 顔
-class BossFaceIdling;
-class BossFaceAttacking;
+class BossFace;
 // ステート
 class BossStarting;
 class BossIdling;
@@ -196,14 +194,8 @@ private:
 	// 状態の配列
 	std::vector<IState*> m_states;
 
-	// 現在の顔
-	IFace* m_currentFace;
-	// 待機顔
-	std::unique_ptr<BossFaceIdling>	m_faceIdling;
-	// 攻撃顔
-	std::unique_ptr<BossFaceAttacking>	m_faceAttacking;
-	// 顔の配列
-	std::vector<IFace*> m_faces;
+	// 顔
+	std::unique_ptr<BossFace> m_face;
 
 	// 敵のダメージエフェクト
 	std::unique_ptr<EnemyEffect> m_effect;

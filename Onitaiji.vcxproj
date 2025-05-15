@@ -198,6 +198,7 @@
     </Xdcmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Boss\Face\BossFace.h" />
     <ClInclude Include="Game\Camera\State\ClearCameraState.h" />
     <ClInclude Include="DeviceResources.h" />
     <ClInclude Include="Effects\EnemyEffect\EnemyEffect.h" />
@@ -211,8 +212,6 @@
     <ClInclude Include="Game\Data\GameData.h" />
     <ClInclude Include="Game\Data\HPSystem.h" />
     <ClInclude Include="Game\EnemyManager\EnemyManager.h" />
-    <ClInclude Include="Game\Boss\Face\Header\BossFaceAttacking.h" />
-    <ClInclude Include="Game\Boss\Face\Header\BossFaceIdling.h" />
     <ClInclude Include="Game\Boss\States\Header\BossDashAttacking.h" />
     <ClInclude Include="Game\Boss\States\Header\BossDead.h" />
     <ClInclude Include="Game\Boss\States\Header\BossStarting.h" />
@@ -298,7 +297,6 @@
     <ClInclude Include="Game\Weapon\WeaponState.h" />
     <ClInclude Include="Interface\IAction.h" />
     <ClInclude Include="Interface\ICameraState.h" />
-    <ClInclude Include="Interface\IFace.h" />
     <ClInclude Include="Interface\IHitPoint.h" />
     <ClInclude Include="Interface\IObject.h" />
     <ClInclude Include="Interface\IObserver.h" />
@@ -333,6 +331,7 @@
     <ClInclude Include="StepTimer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Boss\Face\BossFace.cpp" />
     <ClCompile Include="Game\Camera\State\ClearCameraState.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="Effects\EnemyEffect\EnemyEffect.cpp" />
@@ -345,8 +344,6 @@
     <ClCompile Include="Game\Data\GameData.cpp" />
     <ClCompile Include="Game\Data\HPSystem.cpp" />
     <ClCompile Include="Game\EnemyManager\EnemyManager.cpp" />
-    <ClCompile Include="Game\Boss\Face\Source\BossFaceAttacking.cpp" />
-    <ClCompile Include="Game\Boss\Face\Source\BossFaceIdling.cpp" />
     <ClCompile Include="Game\Boss\States\Source\BossDashAttacking.cpp" />
     <ClCompile Include="Game\Boss\States\Source\BossDead.cpp" />
     <ClCompile Include="Game\Boss\States\Source\BossStarting.cpp" />

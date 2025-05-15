@@ -11,6 +11,7 @@
 // インクルード
 #include "Interface/IWeapon.h"
 #include "Interface/IObject.h"
+#include "Interface/IRenderable.h"
 
 // 前方宣言
 class Boss;
@@ -21,7 +22,7 @@ class CudgelSweeping;
 /// <summary>
 /// ボス鬼の金棒クラス
 /// </summary>
-class Cudgel : public IObject
+class Cudgel : public IObject , public IRenderable
 {
 	// --------------------------
 	// 固定値
@@ -61,6 +62,9 @@ public:
 	// ワールド行列の設定
 	void SetWorldMatrix(DirectX::SimpleMath::Matrix mat) { m_worldMatrix = mat; }
 
+	// レイヤーを取得する
+	Layer GetLayer() const override { return Layer::Object; }
+
 	// ---------------------------
 	// メンバ関数(公開)
 	// ---------------------------
@@ -78,6 +82,14 @@ public:
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& projection
 	);
+
+	// 描画コマンドの登録
+	void RecordRenderCommands(
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& proj,
+		ID3D11DeviceContext* deferredContext
+	) override;
+
 	// 終了処理
 	void Finalize();
 	// 当たったときの処理
