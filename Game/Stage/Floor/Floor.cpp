@@ -156,18 +156,6 @@ void Floor::RecordRenderCommands(
 	CommonResources* resources = CommonResources::GetInstance();
 	auto states = resources->GetCommonStates();
 
-	// RenderTargetViewを取得
-	auto rtv = resources->GetDeviceResources()->GetRenderTargetView();
-	// デプスステンシルビューを取得
-	auto dsv = resources->GetDeviceResources()->GetDepthStencilView();
-	// ビューポートを取得
-	auto viewport = resources->GetDeviceResources()->GetScreenViewport();
-
-	// レンダーターゲットを設定
-	deferredContext->OMSetRenderTargets(1, &rtv, dsv);
-	// ビューポートを設定
-	deferredContext->RSSetViewports(1, &viewport);
-
 	// プリミティブバッチの作成
 	m_Batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>>(deferredContext);
 

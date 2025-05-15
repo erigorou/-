@@ -29,6 +29,8 @@
 #include "Face/Header/BossFaceIdling.h"
 #include "Face/Header/BossFaceAttacking.h"
 
+#include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
+
 // --------------------------------
 /// <summary>
 /// コンストラクタ
@@ -50,6 +52,9 @@ Boss::Boss()
 	, m_currentFace{}
 	, m_model{}
 {
+	// マルチスレッドレンダリングに登録する
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->RegisterRenderable(this);
 }
 
 // --------------------------------
@@ -64,6 +69,10 @@ Boss::~Boss()
 	m_approaching->Finalize();
 	m_dead->Finalize();
 	m_dashAttacking->Finalize();
+
+	// マルチスレッドレンダリングから解除
+	auto threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->UnregisterRenderable(this);
 }
 
 // --------------------------------
@@ -77,6 +86,22 @@ void Boss::Initialize()
 	m_cudgel = Factory::CreateCudgel(this);
 	// モデルを取得
 	m_model = GameResources::GetInstance()->GetModel("boss");
+
+	// エフェクトの設定
+	m_model->UpdateEffects([&](DirectX::IEffect* effect)
+		{
+			auto basicEffect = dynamic_cast<DirectX::BasicEffect*>(effect);
+			if (basicEffect)
+			{
+				basicEffect->SetLightingEnabled(true); // ライト有効化
+				basicEffect->SetPerPixelLighting(true); // ピクセル単位のライティング有効化
+				basicEffect->SetTextureEnabled(false); // テクスチャの無効化
+				basicEffect->SetVertexColorEnabled(false); // 頂点カラーの無効化
+				basicEffect->SetFogEnabled(false); // フォグの無効化
+			}
+		}
+	);
+
 	// HPを設定
 	m_hp = std::make_unique<HPSystem>(HP);
 	// ステートの作成
@@ -321,6 +346,22 @@ void Boss::Render(
 	m_effect->DrawWithEffect(m_model, m_worldMatrix, view, projection);
 	// 金棒の描画
 	m_cudgel->Render(view, projection);
+}
+
+/// <summary>
+/// 描画コマンド記録する
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="proj">プロジェクション行列</param>
+/// <param name="deferredContext">ディファードコンテキスト</param>
+void Boss::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, ID3D11DeviceContext* deferredContext)
+{
+	// 描画に必要なデータを取得する
+	m_effect->RecordRenderCommands(view, proj, deferredContext, m_model, m_worldMatrix);
+
+
+	static int index = 0;
+	index++;
 }
 
 // --------------------------------

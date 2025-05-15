@@ -175,10 +175,13 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
 
 	// レンダラブルオブジェクトをレイヤーでソート
     std::sort(renderablesCopy.begin(), renderablesCopy.end(),
-        [](IRenderable* a, IRenderable* b)
+        [](IRenderable* a, IRenderable* b) 
         {
-            return static_cast<UINT>(a->GetLayer()) < static_cast<UINT>(b->GetLayer());
-        });
+            UINT la = static_cast<UINT>(a->GetLayer());
+            UINT lb = static_cast<UINT>(b->GetLayer());
+            return (la == lb) ? (a < b) : (la < lb);
+        }
+    );
 
     // レンダリングジョブとコマンドリストを格納する配列
     std::vector<std::unique_ptr<RenderJob>> renderJobs;
@@ -246,6 +249,7 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
     // イミディエートコンテキストでコマンドリストを実行
     for (auto cmdList : commandLists)
     {
+    
         if (cmdList)
         {
             m_immediateContext->ExecuteCommandList(cmdList, FALSE);

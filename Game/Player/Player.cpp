@@ -588,18 +588,6 @@ void Player::RecordRenderCommands(
 	CommonResources* resources = CommonResources::GetInstance();
 	auto states = resources->GetCommonStates();
 
-	// RenderTargetViewを取得
-	auto rtv = resources->GetDeviceResources()->GetRenderTargetView();
-	// デプスステンシルビューを取得
-	auto dsv = resources->GetDeviceResources()->GetDepthStencilView();
-	// ビューポートを取得
-	auto viewport = resources->GetDeviceResources()->GetScreenViewport();
-
-	// レンダーターゲットを設定
-	deferredContext->OMSetRenderTargets(1, &rtv, dsv);
-	// ビューポートを設定
-	deferredContext->RSSetViewports(1, &viewport);
-
 	// モデルのエフェクト情報を更新する
 	m_model->UpdateEffects([](DirectX::IEffect* effect)
 		{

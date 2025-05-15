@@ -5,6 +5,7 @@
 #include "pch.h"
 
 class CustomShader;
+#include <mutex>
 
 class EnemyEffect
 {
@@ -64,6 +65,16 @@ public:
 		const DirectX::SimpleMath::Matrix& proj
 	);
 
+
+	// 描画コマンドの登録
+	void RecordRenderCommands(
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& proj,
+		ID3D11DeviceContext* deferredContext,
+		DirectX::Model* model,
+		const DirectX::SimpleMath::Matrix world
+	);
+
 	// ----------------------------
 	// メンバ関数（非公開）
 	// ----------------------------
@@ -89,4 +100,5 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_buffer;
 	// 現在のエフェクト
 	ENEMY_EFFECT m_currentEffect;
+
 };

@@ -111,13 +111,13 @@ void EnemyManager::Render(
 	const DirectX::SimpleMath::Matrix& projection
 )
 {
-	if (m_enemies.empty()) return;
+	//if (m_enemies.empty()) return;
 
-	// ゴブリン、ボスの描画
-	for (auto& enemy : m_enemies)
-	{
-		enemy.data->Render(view, projection);
-	}
+	//// ゴブリン、ボスの描画
+	//for (auto& enemy : m_enemies)
+	//{
+	//	enemy.data->Render(view, projection);
+	//}
 }
 
 // --------------------------------
@@ -393,14 +393,17 @@ void EnemyManager::GenerateEnemyFromJson()
 		GenerateEnemy(position, enemyType);
 	}
 
+	// チュートリアルが選択された場合
 	if (m_selectQuestIndex == 0)
 	{
-		// チュートリアル用にステートを変更する
-		auto goblin = dynamic_cast<Goblin*>(m_enemies[0].data.get());
-		goblin->ChangeState(GoblinState::TUTORIAL);
+		for (auto& enemy : m_enemies)
+		{
+			// ゴブリンタイプ以外ならスキップ
+			if (enemy.type != EnemyType::Goblin) continue;
 
-		// チュートリアル用にステートを変更する
-		goblin = dynamic_cast<Goblin*>(m_enemies[1].data.get());
-		goblin->ChangeState(GoblinState::TUTORIAL);
+			// チュートリアル用にステートを変更する
+			auto goblin = dynamic_cast<Goblin*>(enemy.data.get());
+			goblin->ChangeState(GoblinState::TUTORIAL);
+		}
 	}
 }

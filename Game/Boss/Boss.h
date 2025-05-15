@@ -9,6 +9,7 @@
 #include "Interface/IState.h"
 #include "Interface/IFace.h"
 #include "Interface/IEnemy.h"
+#include "Interface/IRenderable.h"
 
 // 前方宣言
 class PlayScene;
@@ -49,7 +50,7 @@ enum class FaceState
 /// <summary>
 /// ボスのステート
 /// </summary>
-class Boss : public IEnemy
+class Boss : public IEnemy, public IRenderable
 {
 	// --------------------------------
 	//  固定値
@@ -96,11 +97,13 @@ public:
 	// 衝突可能
 	void CanHit(bool flag) override { m_canHit = flag; }
 
-public:
 	// 刀のダメージを受ける許可を出す
 	void CanHitSword() { m_canHit = true; }
 	// 刀のダメージを受ける許可を取り消す
 	void CanNotHitSword() { m_canHit = false; }
+
+	// レイヤーを取得
+	Layer GetLayer() const override { return Layer::Object; }
 
 	// --------------------------------
 	//  メンバ関数(公開)
@@ -120,6 +123,13 @@ public:
 	void Update(float elapsedTime);
 	// 描画処理
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection);
+	// 描画コマンドの記録
+	void RecordRenderCommands(
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& proj,
+		ID3D11DeviceContext* deferredContext
+	)override;
+
 	// 終了処理
 	void Finalize();
 	// 死亡処理を行う

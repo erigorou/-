@@ -12,6 +12,7 @@
 #include "Interface/IObject.h"
 #include "Interface/IState.h"
 #include "Interface/IEnemy.h"
+#include "Interface/IRenderable.h"
 
 // 前方宣言
 class HPSystem;
@@ -35,7 +36,7 @@ enum class GoblinState
 /// <summary>
 /// 小鬼を実装するクラス
 /// </summary>
-class Goblin : public IEnemy
+class Goblin : public IEnemy, public IRenderable
 {
 	// ---------------
 	// 固定値
@@ -83,6 +84,9 @@ public:
 	// 攻撃中かどうかを設定
 	void SetIsAttacking(bool isAttacking) { m_nowAttacking = isAttacking; }
 
+	// レイヤーを取得する
+	Layer GetLayer() const override { return Layer::Object; }
+
 	// -----------------------
 	// メンバ関数(公開)
 	// -----------------------
@@ -102,6 +106,12 @@ public:
 		const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& projection
 	);
+	// 描画コマンドの登録
+	void RecordRenderCommands(
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& projection,
+		ID3D11DeviceContext* context) override;
+
 	// 終了処理
 	void Finalize();
 	// 衝突可能
@@ -155,7 +165,7 @@ private:
 	// ワールド座標
 	DirectX::SimpleMath::Matrix m_worldMatrix;
 	// モデル
-	DirectX::Model* m_model;
+	std::unique_ptr<DirectX::Model> m_model;
 	// 押し戻し量
 	DirectX::SimpleMath::Vector3 m_pushBackValue;
 

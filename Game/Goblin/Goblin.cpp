@@ -11,6 +11,8 @@
 #include "Interface/IState.h"
 #include "Game/Data/HPSystem.h"
 #include "Game/GameResources.h"
+#include "Game/CommonResources.h"
+#include "DeviceResources.h"
 #include "../Boss/Boss.h"
 #include "Effects/EnemyEffect/EnemyEffect.h"
 #include "Game/HitStop/HitStop.h"
@@ -19,6 +21,7 @@
 #include "State/Header/GoblinAttacking.h"
 #include "State/Header/GoblinDead.h"
 #include "State/Header/GoblinTutorial.h"
+#include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
 
 // ---------------
 // 固定値
@@ -45,6 +48,9 @@ Goblin::Goblin()
 	m_canHit{ false },
 	m_coolTime{}
 {
+	// マルチスレッドレンダリングを実行
+	ThreadedRenderer* threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->RegisterRenderable(this);
 }
 
 // -------------------------------------------------------
@@ -54,6 +60,24 @@ Goblin::Goblin()
 // -------------------------------------------------------
 Goblin::~Goblin()
 {
+	// マルチスレッドレンダリングを解除
+	ThreadedRenderer* threadedRenderer = ThreadedRenderer::GetInstance();
+	threadedRenderer->UnregisterRenderable(this);
+
+	// ステートの削除
+	m_idling.reset();
+	m_attacking.reset();
+	m_dead.reset();
+	m_tutorial.reset();
+
+	// 衝突判定の削除
+	m_bodyCollision.reset();
+
+	// HPシステムの削除
+	m_hp.reset();
+
+	// エフェクトの削除
+	m_enemyEffect.reset();
 }
 
 // -------------------------------------------------------
@@ -63,8 +87,29 @@ Goblin::~Goblin()
 // -------------------------------------------------------
 void Goblin::Initialize()
 {
-	// モデルの読み込み
-	m_model = GameResources::GetInstance()->GetModel("goblin");
+	auto device = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
+
+	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
+	fx->SetDirectory(L"Resources/Models/ddsFile");
+
+	// モデルを取得する（同一モデルを触らないようにするために必要な処理）
+	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Goblin/goblin.cmo", *fx);
+
+
+	// エフェクトの設定
+	m_model->UpdateEffects([&](DirectX::IEffect* effect)
+		{
+			auto basicEffect = dynamic_cast<DirectX::BasicEffect*>(effect);
+			if (basicEffect)
+			{
+				basicEffect->SetLightingEnabled(true); // ライト有効化
+				basicEffect->SetPerPixelLighting(true); // ピクセル単位のライティング有効化
+				basicEffect->SetTextureEnabled(false); // テクスチャの無効化
+				basicEffect->SetVertexColorEnabled(false); // 頂点カラーの無効化
+				basicEffect->SetFogEnabled(false); // フォグの無効化
+			}
+		}
+	);
 
 	// ステートの作成
 	CreateState();
@@ -197,7 +242,19 @@ void Goblin::MoveCollision()
 // -------------------------------------------------------
 void Goblin::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection)
 {
-	m_enemyEffect->DrawWithEffect(m_model, m_worldMatrix, view, projection);
+	m_enemyEffect->DrawWithEffect(m_model.get(), m_worldMatrix, view, projection);
+}
+
+/// <summary>
+/// 描画コマンドの記録
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="projection">プロジェクション行列</param>
+/// <param name="context">ディファードコンテキスト</param>
+void Goblin::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection, ID3D11DeviceContext* context)
+{
+	// ステートの描画コマンドを登録
+	m_enemyEffect->RecordRenderCommands(view, projection, context, m_model.get(), m_worldMatrix);
 }
 
 // -------------------------------------------------------
