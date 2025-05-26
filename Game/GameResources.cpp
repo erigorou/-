@@ -30,7 +30,7 @@ GameResources::GameResources()
 	// モデルを生成する
 	std::thread modelThread(&GameResources::LoadModelFromJson, this);
 	// テクスチャを生成する
-	std::thread textureThread(&GameResources::LoadTexture, this);
+	std::thread textureThread(&GameResources::LoadTextureFromJson, this);
 
 	// スレッドの完了を待つ
 	modelThread.join();
@@ -100,7 +100,7 @@ void GameResources::LoadModelFromJson()
 // --------------------------------------------------------
 // Jsonファイルを読み込んでテクスチャを生成する
 // --------------------------------------------------------
-void GameResources::LoadTexture()
+void GameResources::LoadTextureFromJson()
 {
 	// Jsonファイルを開く
 	std::ifstream ifs(TEXTURE_JSON);

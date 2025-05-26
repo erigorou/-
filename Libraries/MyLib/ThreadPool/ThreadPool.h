@@ -66,7 +66,11 @@ private:
 };
 
 
-// テンプレート関数の実装 - ヘッダーファイルに含める必要がある
+/// <summary>
+/// タスクをスレッドプールに追加するテンプレート関数
+/// </summary>
+/// <typeparam name="F">テンプレートfunction</typeparam>
+/// <param name="f">テンプレートfunction</param>
 template<class F>
 void ThreadPool::Enqueue(F&& f) 
 {

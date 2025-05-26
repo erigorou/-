@@ -90,15 +90,6 @@ inline void CollisionManager::RegisterThread()
 /// </summary>
 CollisionManager::~CollisionManager()
 {
-	// 終了リクエストをセット
-	{
-		std::lock_guard<std::mutex> lock(m_mutex);
-		m_exitRequested = true;
-	}
-
-	// 条件変数を通知して待機中のスレッドを起こす
-	m_cv.notify_all();
-
 	// 別スレッド終了
 	ExitThread();
 
@@ -339,6 +330,7 @@ void CollisionManager::ProcessDeleteQueue()
 
 	// キューをロックして処理
 	std::vector<DeleteCollisionData> localQueue;
+
 	{
 		std::lock_guard<std::mutex> lock(m_deleteQueueMutex);
 		// キューの内容をローカルにコピーしてからクリア
@@ -549,7 +541,7 @@ inline std::unique_ptr<DirectX::BoundingSphere> CollisionManager::CreateProxySph
 
 /// <summary>
 /// 衝突判定の描画を行う
-/// デバッグ中のみ有効
+/// デバッグ中のみ有効F
 /// </summary>
 /// <param name="view">ビュー行列</param>
 /// <param name="projection">プロジェクション行列</param>

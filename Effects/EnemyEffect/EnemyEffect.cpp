@@ -77,71 +77,73 @@ void EnemyEffect::DrawWithEffect(
 	const DirectX::SimpleMath::Matrix& proj
 )
 {
+	// 使わない
+	return;
 
-	// 必要情報の取得
-	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = CommonResources::GetInstance()->GetCommonStates();
+	//// 必要情報の取得
+	//auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
+	//auto states = CommonResources::GetInstance()->GetCommonStates();
 
-	// 定数バッファの更新
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	context->Map(m_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	ConstBuffer* cb = static_cast<ConstBuffer*>(mappedResource.pData);
+	//// 定数バッファの更新
+	//D3D11_MAPPED_SUBRESOURCE mappedResource;
+	//context->Map(m_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	//ConstBuffer* cb = static_cast<ConstBuffer*>(mappedResource.pData);
 
-	// 定数バッファの更新処理
-	UpdateConstBuffer(cb);
+	//// 定数バッファの更新処理
+	//UpdateConstBuffer(cb);
 
-	context->Unmap(m_buffer.Get(), 0);
+	//context->Unmap(m_buffer.Get(), 0);
 
-	ID3D11SamplerState* sampler[1] = { };
-	context->PSSetSamplers(0, 1, sampler);
+	//ID3D11SamplerState* sampler[1] = { };
+	//context->PSSetSamplers(0, 1, sampler);
 
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture = GameResources::GetInstance()->GetTexture("noize");
+	//Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture = GameResources::GetInstance()->GetTexture("noize");
 
-	// モデルの描画
-	model->Draw(context, *states, world, view, proj, false, [&]
-		{
-			// エフェクトの設定
-			model->UpdateEffects([&](DirectX::IEffect* effect)
-				{
-					auto basicEffect = dynamic_cast<DirectX::BasicEffect*>(effect);
-					if (basicEffect)
-					{
-						basicEffect->SetLightingEnabled(true); // ライト有効化
-						basicEffect->SetPerPixelLighting(true); // ピクセル単位のライティング有効化
-						basicEffect->SetTextureEnabled(false); // テクスチャの無効化
-						basicEffect->SetVertexColorEnabled(false); // 頂点カラーの無効化
-						basicEffect->SetFogEnabled(false); // フォグの無効化
-					}
-				}
-			);
+	//// モデルの描画
+	//model->Draw(context, *states, world, view, proj, false, [&]
+	//	{
+	//		// エフェクトの設定
+	//		model->UpdateEffects([&](DirectX::IEffect* effect)
+	//			{
+	//				auto basicEffect = dynamic_cast<DirectX::BasicEffect*>(effect);
+	//				if (basicEffect)
+	//				{
+	//					basicEffect->SetLightingEnabled(true); // ライト有効化
+	//					basicEffect->SetPerPixelLighting(true); // ピクセル単位のライティング有効化
+	//					basicEffect->SetTextureEnabled(false); // テクスチャの無効化
+	//					basicEffect->SetVertexColorEnabled(false); // 頂点カラーの無効化
+	//					basicEffect->SetFogEnabled(false); // フォグの無効化
+	//				}
+	//			}
+	//		);
 
-			// シェーダーを当てるときは共通の計算を行う
-			if (m_currentEffect != ENEMY_EFFECT::NONE)
-			{
-				// 定数バッファを設定
-				ID3D11Buffer* cbuff = { m_buffer.Get() };
-				// シェーダーにバッファを渡す
-				context->PSSetConstantBuffers(1, 1, &cbuff);
-				//	ピクセルシェーダにテクスチャを登録する。
-				context->PSSetShaderResources(0, 1, texture.GetAddressOf());
-				// ブレンドステートを設定
-				context->OMSetBlendState(states->AlphaBlend(), nullptr, 0xFFFFFFFF);
-			}
+	//		// シェーダーを当てるときは共通の計算を行う
+	//		if (m_currentEffect != ENEMY_EFFECT::NONE)
+	//		{
+	//			// 定数バッファを設定
+	//			ID3D11Buffer* cbuff = { m_buffer.Get() };
+	//			// シェーダーにバッファを渡す
+	//			context->PSSetConstantBuffers(1, 1, &cbuff);
+	//			//	ピクセルシェーダにテクスチャを登録する。
+	//			context->PSSetShaderResources(0, 1, texture.GetAddressOf());
+	//			// ブレンドステートを設定
+	//			context->OMSetBlendState(states->AlphaBlend(), nullptr, 0xFFFFFFFF);
+	//		}
 
-			// ダメージを食らった時のエフェクトを適用
-			if (m_currentEffect == ENEMY_EFFECT::DAMAGE)
-			{
-				// シェーダーの開始
-				m_damageShader->BeginSharder(context);
-			}
-			// 死亡時のエフェクトを適用
-			else if (m_currentEffect == ENEMY_EFFECT::DEAD)
-			{
-				// シェーダーの開始
-				m_deadShader->BeginSharder(context);
-			}
-		}
-	);
+	//		// ダメージを食らった時のエフェクトを適用
+	//		if (m_currentEffect == ENEMY_EFFECT::DAMAGE)
+	//		{
+	//			// シェーダーの開始
+	//			m_damageShader->BeginSharder(context);
+	//		}
+	//		// 死亡時のエフェクトを適用
+	//		else if (m_currentEffect == ENEMY_EFFECT::DEAD)
+	//		{
+	//			// シェーダーの開始
+	//			m_deadShader->BeginSharder(context);
+	//		}
+	//	}
+	//);
 }
 
 

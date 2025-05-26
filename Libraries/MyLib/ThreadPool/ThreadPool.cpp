@@ -13,7 +13,10 @@
 /// スレッドプールのコンストラクタ
 /// </summary>
 /// <param name="numThreads">作成するスレッドの数</param>
-ThreadPool::ThreadPool(size_t numThreads) : m_stop(false), m_activeCount(0) 
+ThreadPool::ThreadPool(size_t numThreads) 
+    : 
+    m_stop{ false },
+    m_activeCount{}
 {
     // 指定された数のワーカースレッドを作成
     for (size_t i = 0; i < numThreads; ++i) 

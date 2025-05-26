@@ -89,7 +89,7 @@ void PlayScene::Initialize()
 // ------------------------------------------------------------------------------
 void PlayScene::CreateObjects()
 {
-	// 火っとストップを取得
+	// ヒットストップを取得
 	m_hitStop = HitStop::GetInstance();
 	// パーティクルを生成
 	m_collisionManager = Factory::CreateCollisionManager();

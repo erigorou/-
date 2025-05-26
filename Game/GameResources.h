@@ -45,7 +45,7 @@ private:
 	void LoadModelFromJson();
 
 	// テクスチャを読み込む
-	void LoadTexture();
+	void LoadTextureFromJson();
 
 	// ------------------------
 	// 内部変数
