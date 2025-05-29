@@ -8,9 +8,8 @@ sampler Sampler : register(s0);
 // 頂点シェーダ用構造体
 struct VS_Input
 {
-    float4 Position : SV_Position;
+    float3 Position : POSITION;
     float3 Normal   : NORMAL;
-    //float2 TexCoord : TEXCOORD0;
 };
 
 
@@ -19,7 +18,6 @@ struct PS_Input
 {
     float4 PositionWS : TEXCOORD0;
     float3 NormalWS : TEXCOORD1;
-    //float2 TexCoord : TEXCOORD2;
     float4 PositionPS : SV_Position;
 };
 

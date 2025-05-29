@@ -1,8 +1,8 @@
-// ----------------------------------------------------------------
+ï»¿// ----------------------------------------------------------------
 //
-// ƒtƒ@ƒCƒ‹FThreadedRenderer.cpp
-// ‹@”\Fƒ}ƒ‹ƒ`ƒXƒŒƒbƒhƒŒƒ“ƒ_ƒŠƒ“ƒOƒVƒXƒeƒ€‚ÌƒƒCƒ“ƒNƒ‰ƒX
-// ì¬F2025/05/08
+// ãƒ•ã‚¡ã‚¤ãƒ«ï¼šThreadedRenderer.cpp
+// æ©Ÿèƒ½ï¼šãƒãƒ«ãƒã‚¹ãƒ¬ãƒƒãƒ‰ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚·ã‚¹ãƒ†ãƒ ã®ãƒ¡ã‚¤ãƒ³ã‚¯ãƒ©ã‚¹
+// ä½œæˆï¼š2025/05/08
 //
 // ----------------------------------------------------------------
 
@@ -11,11 +11,11 @@
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 
-// ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒX
+// ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 ThreadedRenderer* ThreadedRenderer::s_instance = nullptr;
 
 /// <summary>
-/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 /// </summary>
 ThreadedRenderer::ThreadedRenderer()
     : 
@@ -25,65 +25,65 @@ ThreadedRenderer::ThreadedRenderer()
 }
 
 /// <summary>
-/// ƒfƒXƒgƒ‰ƒNƒ^
+/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 /// </summary>
 ThreadedRenderer::~ThreadedRenderer() 
 {
-    // ƒXƒŒƒbƒhƒv[ƒ‹‚Ì‰ğ•ú‚Í©“®“I‚És‚í‚ê‚é
+    // ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ—ãƒ¼ãƒ«ã®è§£æ”¾ã¯è‡ªå‹•çš„ã«è¡Œã‚ã‚Œã‚‹
 }
 
 /// <summary>
-/// ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒX‚Ìæ“¾
+/// ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®å–å¾—
 /// </summary>
 ThreadedRenderer* ThreadedRenderer::GetInstance() 
 {
-    // ¶¬‚³‚ê‚Ä‚¢‚È‚¢ê‡
+    // ç”Ÿæˆã•ã‚Œã¦ã„ãªã„å ´åˆ
     if (s_instance == nullptr) 
     {
-        // ‰Šú¶¬
+        // åˆæœŸç”Ÿæˆ
         s_instance = new ThreadedRenderer();
     }
-	// Šù‘¶‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ•Ô‚·
+	// æ—¢å­˜ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’è¿”ã™
     return s_instance;
 }
 
 /// <summary>
-/// ƒVƒXƒeƒ€‚Ì‰Šú‰»
+/// ã‚·ã‚¹ãƒ†ãƒ ã®åˆæœŸåŒ–
 /// </summary>
-/// <param name="device">DirectX 11 ƒfƒoƒCƒX</param>
+/// <param name="device">DirectX 11 ãƒ‡ãƒã‚¤ã‚¹</param>
 void ThreadedRenderer::Initialize(ID3D11Device* device) 
 {
-    // ƒfƒoƒCƒX‚Ì•Û‘¶
+    // ãƒ‡ãƒã‚¤ã‚¹ã®ä¿å­˜
     m_device = device;
 
-    // ƒCƒ~ƒfƒBƒG[ƒgƒRƒ“ƒeƒLƒXƒg‚Ìæ“¾
+    // ã‚¤ãƒŸãƒ‡ã‚£ã‚¨ãƒ¼ãƒˆã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã®å–å¾—
     device->GetImmediateContext(&m_immediateContext);
 
-    // Å“K‚ÈƒXƒŒƒbƒh”‚ğæ“¾
+    // æœ€é©ãªã‚¹ãƒ¬ãƒƒãƒ‰æ•°ã‚’å–å¾—
     size_t threadCount = GetOptimalThreadCount();
 
-    // ƒXƒŒƒbƒhƒv[ƒ‹‚Ìì¬
+    // ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ—ãƒ¼ãƒ«ã®ä½œæˆ
     m_threadPool = std::make_unique<ThreadPool>(threadCount);
 
-    // ’x‰„ƒRƒ“ƒeƒLƒXƒg‚ğƒXƒŒƒbƒh”•ªì¬
+    // é…å»¶ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚’ã‚¹ãƒ¬ãƒƒãƒ‰æ•°åˆ†ä½œæˆ
     m_deferredContexts.resize(threadCount);
     for (size_t i = 0; i < threadCount; ++i) 
     {
-        // ’x‰„ƒRƒ“ƒeƒLƒXƒg‚Ìì¬
+        // é…å»¶ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã®ä½œæˆ
         HRESULT hr = device->CreateDeferredContext(0, &m_deferredContexts[i]);
         if (FAILED(hr)) 
         {
-            MessageBoxA(nullptr, "’x‰„ƒRƒ“ƒeƒLƒXƒg‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½", "ƒGƒ‰[", MB_OK | MB_ICONERROR);
-            // ƒGƒ‰[‚Ìˆ—
+            MessageBoxA(nullptr, "é…å»¶ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ", "ã‚¨ãƒ©ãƒ¼", MB_OK | MB_ICONERROR);
+            // ã‚¨ãƒ©ãƒ¼æ™‚ã®å‡¦ç†
             m_deferredContexts[i] = nullptr;
         }
     }
 }
 
 /// <summary>
-/// ƒŒƒ“ƒ_ƒ‰ƒuƒ‹ƒIƒuƒWƒFƒNƒg‚Ì“o˜^
+/// ãƒ¬ãƒ³ãƒ€ãƒ©ãƒ–ãƒ«ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç™»éŒ²
 /// </summary>
-/// <param name="renderable">“o˜^‚·‚éIRenderableƒIƒuƒWƒFƒNƒg</param>
+/// <param name="renderable">ç™»éŒ²ã™ã‚‹IRenderableã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ</param>
 void ThreadedRenderer::RegisterRenderable(IRenderable* renderable) 
 {
     if (!renderable) 
@@ -91,22 +91,22 @@ void ThreadedRenderer::RegisterRenderable(IRenderable* renderable)
         return;
     }
 
-    // ƒXƒŒƒbƒhƒZ[ƒt‚È‘€ì
+    // ã‚¹ãƒ¬ãƒƒãƒ‰ã‚»ãƒ¼ãƒ•ãªæ“ä½œ
     std::lock_guard<std::mutex> lock(m_renderablesMutex);
 
-    // Šù‚É“o˜^‚³‚ê‚Ä‚¢‚È‚¢‚©Šm”F
+    // æ—¢ã«ç™»éŒ²ã•ã‚Œã¦ã„ãªã„ã‹ç¢ºèª
     auto it = std::find(m_renderables.begin(), m_renderables.end(), renderable);
     if (it == m_renderables.end()) 
     {
-        // ƒŠƒXƒg‚É’Ç‰Á
+        // ãƒªã‚¹ãƒˆã«è¿½åŠ 
         m_renderables.emplace_back(renderable);
     }
 }
 
 /// <summary>
-/// ƒŒƒ“ƒ_ƒ‰ƒuƒ‹ƒIƒuƒWƒFƒNƒg‚Ì“o˜^‰ğœ
+/// ãƒ¬ãƒ³ãƒ€ãƒ©ãƒ–ãƒ«ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç™»éŒ²è§£é™¤
 /// </summary>
-/// <param name="renderable">“o˜^‰ğœ‚·‚éIRenderableƒIƒuƒWƒFƒNƒg</param>
+/// <param name="renderable">ç™»éŒ²è§£é™¤ã™ã‚‹IRenderableã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ</param>
 void ThreadedRenderer::UnregisterRenderable(IRenderable* renderable) 
 {
     if (!renderable) 
@@ -114,20 +114,20 @@ void ThreadedRenderer::UnregisterRenderable(IRenderable* renderable)
         return;
     }
 
-    // ’x‰„ƒRƒ“ƒeƒLƒXƒgƒŠƒZƒbƒg
+    // é…å»¶ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆãƒªã‚»ãƒƒãƒˆ
     for (auto& ctx : m_deferredContexts)
     {
         if (ctx)
         {
-            // ‚·‚×‚Ä‚ÌƒXƒe[ƒg‚ğƒNƒŠƒA
+            // ã™ã¹ã¦ã®ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ã‚¯ãƒªã‚¢
             ctx->ClearState();
         }
     }
 
-    // ƒXƒŒƒbƒhƒZ[ƒt‚È‘€ì
+    // ã‚¹ãƒ¬ãƒƒãƒ‰ã‚»ãƒ¼ãƒ•ãªæ“ä½œ
     std::lock_guard<std::mutex> lock(m_renderablesMutex);
 
-    // ƒIƒuƒWƒFƒNƒg‚ğŒŸõ‚µ‚Äíœ
+    // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ¤œç´¢ã—ã¦å‰Šé™¤
     auto it = std::find(m_renderables.begin(), m_renderables.end(), renderable);
     if (it != m_renderables.end()) 
     {
@@ -137,20 +137,20 @@ void ThreadedRenderer::UnregisterRenderable(IRenderable* renderable)
 
 
 /// <summary>
-/// ƒV[ƒ“‘S‘Ì‚Ì•`‰æˆ—
+/// ã‚·ãƒ¼ãƒ³å…¨ä½“ã®æç”»å‡¦ç†
 /// </summary>
-/// <param name="view">ƒrƒ…[s—ñ</param>
-/// <param name="proj">ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ</param>
+/// <param name="view">ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—</param>
+/// <param name="proj">ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—</param>
 void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj)
 {
-    // ƒpƒ‰ƒ[ƒ^ƒ`ƒFƒbƒN
+    // ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒã‚§ãƒƒã‚¯
     if (!m_device || !m_immediateContext || !m_threadPool)
     {
-        OutputDebugStringA("ThreadedRenderer: ƒVƒXƒeƒ€‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ\n");
+        OutputDebugStringA("ThreadedRenderer: ã‚·ã‚¹ãƒ†ãƒ ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“\n");
         return;
     }
 
-    // —LŒø‚È’x‰„ƒRƒ“ƒeƒLƒXƒg‚Ì”‚ğŠm”F
+    // æœ‰åŠ¹ãªé…å»¶ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã®æ•°ã‚’ç¢ºèª
     size_t validContextCount = 0;
     for (const auto& ctx : m_deferredContexts)
     {
@@ -162,18 +162,18 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
 
     if (validContextCount == 0)
     {
-        OutputDebugStringA("ThreadedRenderer: —LŒø‚È’x‰„ƒRƒ“ƒeƒLƒXƒg‚ª‚ ‚è‚Ü‚¹‚ñ\n");
+        OutputDebugStringA("ThreadedRenderer: æœ‰åŠ¹ãªé…å»¶ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆãŒã‚ã‚Šã¾ã›ã‚“\n");
         return;
     }
 
-    // ƒŒƒ“ƒ_ƒ‰ƒuƒ‹ƒIƒuƒWƒFƒNƒg‚ÌƒRƒs[‚ğì¬iƒXƒŒƒbƒhƒZ[ƒt‚Éj
+    // ãƒ¬ãƒ³ãƒ€ãƒ©ãƒ–ãƒ«ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚³ãƒ”ãƒ¼ã‚’ä½œæˆï¼ˆã‚¹ãƒ¬ãƒƒãƒ‰ã‚»ãƒ¼ãƒ•ã«ï¼‰
     std::vector<IRenderable*> renderablesCopy;
     {
         std::lock_guard<std::mutex> lock(m_renderablesMutex);
         renderablesCopy = m_renderables;
     }
 
-	// ƒŒƒ“ƒ_ƒ‰ƒuƒ‹ƒIƒuƒWƒFƒNƒg‚ğƒŒƒCƒ„[‚Åƒ\[ƒg
+	// ãƒ¬ãƒ³ãƒ€ãƒ©ãƒ–ãƒ«ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ãƒ¬ã‚¤ãƒ¤ãƒ¼ã§ã‚½ãƒ¼ãƒˆ
     std::sort(renderablesCopy.begin(), renderablesCopy.end(),
         [](IRenderable* a, IRenderable* b) 
         {
@@ -183,61 +183,65 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
         }
     );
 
-    // ƒŒƒ“ƒ_ƒŠƒ“ƒOƒWƒ‡ƒu‚ÆƒRƒ}ƒ“ƒhƒŠƒXƒg‚ğŠi”[‚·‚é”z—ñ
+    // ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¸ãƒ§ãƒ–ã¨ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã‚’æ ¼ç´ã™ã‚‹é…åˆ—
     std::vector<std::unique_ptr<RenderJob>> renderJobs;
     std::vector<ID3D11CommandList*> commandLists;
 
-    // ƒIƒuƒWƒFƒNƒg”‚ª­‚È‚¢ê‡‚Íˆ—‚ğÅ“K‰»
+    // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæ•°ãŒå°‘ãªã„å ´åˆã¯å‡¦ç†ã‚’æœ€é©åŒ–
     size_t objectCount = renderablesCopy.size();
     if (objectCount == 0)
     {
-        return; // •`‰æ‚·‚é‚à‚Ì‚ª‚È‚¢
+        return; // æç”»ã™ã‚‹ã‚‚ã®ãŒãªã„
     }
 
-    // ’x‰„ƒRƒ“ƒeƒLƒXƒg‚ğg—p‰Â”\‚ÈƒRƒ“ƒeƒLƒXƒg‚Ì”‚¾‚¯g—p
+    // é…å»¶ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚’ä½¿ç”¨å¯èƒ½ãªã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã®æ•°ã ã‘ä½¿ç”¨
     size_t contextIndex = 0;
     size_t usedContextCount = std::min(objectCount, validContextCount);
 
-    // ƒŒƒ“ƒ_ƒŠƒ“ƒOƒWƒ‡ƒu‚Ìì¬‚Æƒ^ƒXƒN‚Ì“o˜^
+    // ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¸ãƒ§ãƒ–ã®ä½œæˆã¨ã‚¿ã‚¹ã‚¯ã®ç™»éŒ²
     for (size_t i = 0; i < objectCount; ++i)
     {
-        // ’x‰„ƒRƒ“ƒeƒLƒXƒg‚ğƒ‰ƒEƒ“ƒhƒƒrƒ“•û®‚ÅŠ„‚è“–‚Ä
+        // é…å»¶ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚’ãƒ©ã‚¦ãƒ³ãƒ‰ãƒ­ãƒ“ãƒ³æ–¹å¼ã§å‰²ã‚Šå½“ã¦
         contextIndex = i % usedContextCount;
 
-        // g—p‰Â”\‚ÈƒRƒ“ƒeƒLƒXƒg‚ğæ“¾
+        // ä½¿ç”¨å¯èƒ½ãªã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚’å–å¾—
         auto deferredContext = m_deferredContexts[contextIndex].Get();
         if (!deferredContext)
         {
             continue;
         }
 
-        // ‹¤’Ê‚ÌƒŠƒ\[ƒX‚ğæ“¾
+        // å…±é€šã®ãƒªã‚½ãƒ¼ã‚¹ã‚’å–å¾—
         auto resources = CommonResources::GetInstance();
         auto rtv = resources->GetDeviceResources()->GetRenderTargetView();
         auto dsv = resources->GetDeviceResources()->GetDepthStencilView();
         auto viewport = resources->GetDeviceResources()->GetScreenViewport();
 
-        // d—v: Še’x‰„ƒRƒ“ƒeƒLƒXƒg‚ÅƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚Æƒrƒ…[ƒ|[ƒg‚ğİ’è
+        // é‡è¦: å„é…å»¶ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã§ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¨ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆã‚’è¨­å®š
         deferredContext->OMSetRenderTargets(1, &rtv, dsv);
         deferredContext->RSSetViewports(1, &viewport);
 
-        // ƒŒƒ“ƒ_ƒŠƒ“ƒOƒWƒ‡ƒu‚Ìì¬
+        // ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¸ãƒ§ãƒ–ã®ä½œæˆ
         auto job = std::make_unique<RenderJob>(renderablesCopy[i], view, proj, deferredContext);
 
-        // ƒXƒŒƒbƒhƒv[ƒ‹‚Éƒ^ƒXƒN‚ğ’Ç‰Á
+        // ãƒ‡ãƒãƒƒã‚°
+        if (renderablesCopy[i]->GetLayer() != IRenderable::Layer::Object) continue;
+
+
+        // ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ—ãƒ¼ãƒ«ã«ã‚¿ã‚¹ã‚¯ã‚’è¿½åŠ 
         m_threadPool->Enqueue([job = job.get()]()
             {
                 job->Execute();
             });
 
-        // Œã‚Åg—p‚·‚é‚½‚ß‚ÉƒWƒ‡ƒu‚ğ•Û
+        // å¾Œã§ä½¿ç”¨ã™ã‚‹ãŸã‚ã«ã‚¸ãƒ§ãƒ–ã‚’ä¿æŒ
         renderJobs.emplace_back(std::move(job));
     }
 
-    // ‚·‚×‚Ä‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^ƒXƒN‚ÌŠ®—¹‚ğ‘Ò‹@
+    // ã™ã¹ã¦ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ã‚¹ã‚¯ã®å®Œäº†ã‚’å¾…æ©Ÿ
     m_threadPool->WaitAll();
 
-    // ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ÌûW
+    // ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®åé›†
     for (const auto& job : renderJobs)
     {
         ID3D11CommandList* cmdList = job->GetCommandList();
@@ -246,10 +250,9 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
         }
     }
 
-    // ƒCƒ~ƒfƒBƒG[ƒgƒRƒ“ƒeƒLƒXƒg‚ÅƒRƒ}ƒ“ƒhƒŠƒXƒg‚ğÀs
+    // ã‚¤ãƒŸãƒ‡ã‚£ã‚¨ãƒ¼ãƒˆã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã§ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã‚’å®Ÿè¡Œ
     for (auto cmdList : commandLists)
     {
-    
         if (cmdList)
         {
             m_immediateContext->ExecuteCommandList(cmdList, FALSE);
@@ -258,19 +261,19 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
 }
 
 /// <summary>
-/// ƒVƒXƒeƒ€‚ÉÅ“K‚ÈƒXƒŒƒbƒh”‚ğæ“¾
+/// ã‚·ã‚¹ãƒ†ãƒ ã«æœ€é©ãªã‚¹ãƒ¬ãƒƒãƒ‰æ•°ã‚’å–å¾—
 /// </summary>
-/// <returns>Å“K‚ÈƒXƒŒƒbƒh”</returns>
+/// <returns>æœ€é©ãªã‚¹ãƒ¬ãƒƒãƒ‰æ•°</returns>
 size_t ThreadedRenderer::GetOptimalThreadCount() const {
-    // ƒn[ƒhƒEƒFƒA‚Ì•À—ñˆ—”\—Í‚ğæ“¾
+    // ãƒãƒ¼ãƒ‰ã‚¦ã‚§ã‚¢ã®ä¸¦åˆ—å‡¦ç†èƒ½åŠ›ã‚’å–å¾—
     unsigned int threadCount = std::thread::hardware_concurrency();
 
-    // ƒn[ƒhƒEƒFƒAî•ñ‚ªæ“¾‚Å‚«‚È‚¢ê‡‚ÌƒtƒH[ƒ‹ƒoƒbƒN
+    // ãƒãƒ¼ãƒ‰ã‚¦ã‚§ã‚¢æƒ…å ±ãŒå–å¾—ã§ããªã„å ´åˆã®ãƒ•ã‚©ãƒ¼ãƒ«ãƒãƒƒã‚¯
     if (threadCount == 0) 
     {
-        threadCount = 2; // ƒfƒtƒHƒ‹ƒg’l
+        threadCount = 2; // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤
     }
 
-    // ƒƒCƒ“ƒXƒŒƒbƒh‚ğœ‚¢‚½ƒXƒŒƒbƒh”‚ğg—piÅ’á2ƒXƒŒƒbƒhj
+    // ãƒ¡ã‚¤ãƒ³ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’é™¤ã„ãŸã‚¹ãƒ¬ãƒƒãƒ‰æ•°ã‚’ä½¿ç”¨ï¼ˆæœ€ä½2ã‚¹ãƒ¬ãƒƒãƒ‰ï¼‰
     return std::max<size_t>(2, threadCount - 1);
 }

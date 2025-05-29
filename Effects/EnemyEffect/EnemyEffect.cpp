@@ -162,69 +162,69 @@ void EnemyEffect::RecordRenderCommands(
 	DirectX::Model* model,
 	const DirectX::SimpleMath::Matrix world)
 {
-	// 必要情報の取得
 	auto resources = CommonResources::GetInstance();
 	auto states = resources->GetCommonStates();
-	auto device = resources->GetDeviceResources()->GetD3DDevice();
+	auto rtv = resources->GetDeviceResources()->GetRenderTargetView();
+	auto dsv = resources->GetDeviceResources()->GetDepthStencilView();
+	auto viewport = resources->GetDeviceResources()->GetScreenViewport();
 
-	// モデルファクトリの生成
-	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
-	fx->SetDirectory(L"Resources/Models/ddsFile");
-
-	std::unique_ptr<DirectX::Model> modelRef = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Goblin/goblin.cmo", *fx);
+	// ViewportとRTをセット（必要）
+	deferredContext->OMSetRenderTargets(1, &rtv, dsv);
+	deferredContext->RSSetViewports(1, &viewport);
 
 	// 定数バッファの更新
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	deferredContext->Map(m_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	ConstBuffer* cb = static_cast<ConstBuffer*>(mappedResource.pData);
-
-	// 定数バッファの更新処理
-	UpdateConstBuffer(cb);
-
-	// シェーダーの設定
-		if (m_currentEffect != ENEMY_EFFECT::NONE)
-		{
-			// 頂点シェーダー・ピクセルシェーダーを設定（CustomShaderを使っている前提）
-			if (m_currentEffect == ENEMY_EFFECT::DAMAGE)
-			{
-				m_damageShader->BeginSharder(deferredContext);
-			}
-			else if (m_currentEffect == ENEMY_EFFECT::DEAD)
-			{
-				m_deadShader->BeginSharder(deferredContext);
-			}
-
-			// 定数バッファをピクセルシェーダーにセット
-		ID3D11Buffer* cbuff = m_buffer.Get();
-		deferredContext->PSSetConstantBuffers(1, 1, &cbuff);
-
-		// テクスチャセット（必要なら）
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture = GameResources::GetInstance()->GetTexture("noize");
-		deferredContext->PSSetShaderResources(0, 1, texture.GetAddressOf());
-
-		// サンプラーセット（もし使うなら）
-		ID3D11SamplerState* sampler = states->LinearWrap();
-		deferredContext->PSSetSamplers(0, 1, &sampler);
-
-		// ブレンドステート設定
-		deferredContext->OMSetBlendState(states->AlphaBlend(), nullptr, 0xFFFFFFFF);
-		}
-
-	// モデルを描画
-	model->Draw(deferredContext, *states, world, view, proj, false);
-
-	// シェーダー解除（もし必要なら）
-	if (m_currentEffect != ENEMY_EFFECT::NONE)
 	{
-		if (m_currentEffect == ENEMY_EFFECT::DAMAGE)
+		D3D11_MAPPED_SUBRESOURCE mappedResource;
+		deferredContext->Map(m_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+		UpdateConstBuffer(static_cast<ConstBuffer*>(mappedResource.pData));
+		deferredContext->Unmap(m_buffer.Get(), 0);
+
+		ID3D11Buffer* cbuffer = m_buffer.Get();
+		deferredContext->PSSetConstantBuffers(1, 1, &cbuffer);
+	}
+
+	// テクスチャとサンプラー設定（必要に応じて）
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture = GameResources::GetInstance()->GetTexture("noize");
+	deferredContext->PSSetShaderResources(0, 1, texture.GetAddressOf());
+
+	ID3D11SamplerState* sampler = states->LinearWrap();
+	deferredContext->PSSetSamplers(0, 1, &sampler);
+
+	// ブレンドステート（アルファブレンド）
+	deferredContext->OMSetBlendState(states->AlphaBlend(), nullptr, 0xFFFFFFFF);
+
+	if (m_currentEffect == ENEMY_EFFECT::NONE)
+	{
+		model->Draw(deferredContext, *states, world, view, proj, false);
+		return;
+	}
+
+	// エフェクトごとのシェーダーを設定
+	if (m_currentEffect == ENEMY_EFFECT::DAMAGE)
+		m_damageShader->BeginSharder(deferredContext);
+	else if (m_currentEffect == ENEMY_EFFECT::DEAD)
+		m_deadShader->BeginSharder(deferredContext);
+
+	// モデルの手動描画（メッシュループ）
+	for (auto& mesh : model->meshes)
+	{
+		for (auto& part : mesh->meshParts)
 		{
-			m_damageShader->EndSharder(deferredContext);
-		}
-		else if (m_currentEffect == ENEMY_EFFECT::DEAD)
-		{
-			m_deadShader->EndSharder(deferredContext);
+			UINT stride = part->vertexStride;
+			UINT offset = 0;
+			deferredContext->IASetVertexBuffers(0, 1, part->vertexBuffer.GetAddressOf(), &stride, &offset);
+			deferredContext->IASetIndexBuffer(part->indexBuffer.Get(), part->indexFormat, 0);
+			deferredContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+			deferredContext->DrawIndexed(part->indexCount, part->startIndex, part->vertexOffset);
 		}
 	}
+
+	// シェーダー解除（必要なら）
+	if (m_currentEffect == ENEMY_EFFECT::DAMAGE)
+		m_damageShader->EndSharder(deferredContext);
+	else if (m_currentEffect == ENEMY_EFFECT::DEAD)
+		m_deadShader->EndSharder(deferredContext);
 }
 
 // ---------------------------------------------
