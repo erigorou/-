@@ -191,33 +191,46 @@ void EnemyEffect::RecordRenderCommands(
 	deferredContext->PSSetSamplers(0, 1, &sampler);
 
 	// ブレンドステート（アルファブレンド）
-	deferredContext->OMSetBlendState(states->AlphaBlend(), nullptr, 0xFFFFFFFF);
+	deferredContext->OMSetBlendState(states->AlphaBlend(), nullptr, 0x00000000);
 
 	if (m_currentEffect == ENEMY_EFFECT::NONE)
 	{
+		// エフェクトなしの場合は通常の描画
 		model->Draw(deferredContext, *states, world, view, proj, false);
 		return;
 	}
-
-	// エフェクトごとのシェーダーを設定
-	if (m_currentEffect == ENEMY_EFFECT::DAMAGE)
-		m_damageShader->BeginSharder(deferredContext);
-	else if (m_currentEffect == ENEMY_EFFECT::DEAD)
-		m_deadShader->BeginSharder(deferredContext);
-
-	// モデルの手動描画（メッシュループ）
-	for (auto& mesh : model->meshes)
+	else
 	{
-		for (auto& part : mesh->meshParts)
-		{
-			UINT stride = part->vertexStride;
-			UINT offset = 0;
-			deferredContext->IASetVertexBuffers(0, 1, part->vertexBuffer.GetAddressOf(), &stride, &offset);
-			deferredContext->IASetIndexBuffer(part->indexBuffer.Get(), part->indexFormat, 0);
-			deferredContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		// シェーダーを付けたモデルの描画を行う
+		model->Draw(deferredContext, *states, world, view, proj, false, [&]
+			{
+				// シェーダーを当てるときは共通の計算を行う
+				if (m_currentEffect != ENEMY_EFFECT::NONE)
+				{
+					// 定数バッファを設定
+					ID3D11Buffer* cbuff = { m_buffer.Get() };
+					// シェーダーにバッファを渡す
+					deferredContext->PSSetConstantBuffers(1, 1, &cbuff);
+					//	ピクセルシェーダにテクスチャを登録する。
+					deferredContext->PSSetShaderResources(0, 1, texture.GetAddressOf());
+					// ブレンドステートを設定
+					deferredContext->OMSetBlendState(states->AlphaBlend(), nullptr, 0xFFFFFFFF);
+				}
 
-			deferredContext->DrawIndexed(part->indexCount, part->startIndex, part->vertexOffset);
-		}
+				// ダメージを食らった時のエフェクトを適用
+				if (m_currentEffect == ENEMY_EFFECT::DAMAGE)
+				{
+					// シェーダーの開始
+					m_damageShader->BeginSharder(deferredContext);
+				}
+				// 死亡時のエフェクトを適用
+				else if (m_currentEffect == ENEMY_EFFECT::DEAD)
+				{
+					// シェーダーの開始
+					m_deadShader->BeginSharder(deferredContext);
+				}
+			}
+		);
 	}
 
 	// シェーダー解除（必要なら）
@@ -225,6 +238,7 @@ void EnemyEffect::RecordRenderCommands(
 		m_damageShader->EndSharder(deferredContext);
 	else if (m_currentEffect == ENEMY_EFFECT::DEAD)
 		m_deadShader->EndSharder(deferredContext);
+
 }
 
 // ---------------------------------------------
