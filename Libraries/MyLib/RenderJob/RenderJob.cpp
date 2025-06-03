@@ -41,11 +41,11 @@ void RenderJob::Execute()
     // レンダラブルオブジェクトに描画コマンドを記録させる
     m_renderable->RecordRenderCommands(m_view, m_proj, m_deferredContext.Get());
 
-    // コマンドリストの生成
-    HRESULT hr = m_deferredContext->FinishCommandList(FALSE, &m_commandList);
-    if (FAILED(hr)) 
-    {
-        // エラー処理 - デバッグ出力
-        MessageBoxA(nullptr, "RenderJob: コマンドリストの作成に失敗しました", "エラー", MB_OK | MB_ICONERROR);
-    }
+    //// コマンドリストの生成
+    //HRESULT hr = m_deferredContext->FinishCommandList(FALSE, &m_commandList);
+    //if (FAILED(hr)) 
+    //{
+    //    // エラー処理 - デバッグ出力
+    //    MessageBoxA(nullptr, "RenderJob: コマンドリストの作成に失敗しました", "エラー", MB_OK | MB_ICONERROR);
+    //}
 }

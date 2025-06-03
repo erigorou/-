@@ -29,7 +29,6 @@ ThreadedRenderer::ThreadedRenderer()
 /// </summary>
 ThreadedRenderer::~ThreadedRenderer() 
 {
-    // スレッドプールの解放は自動的に行われる
 }
 
 /// <summary>
@@ -86,10 +85,7 @@ void ThreadedRenderer::Initialize(ID3D11Device* device)
 /// <param name="renderable">登録するIRenderableオブジェクト</param>
 void ThreadedRenderer::RegisterRenderable(IRenderable* renderable) 
 {
-    if (!renderable) 
-    {
-        return;
-    }
+    if (!renderable) return;
 
     // スレッドセーフな操作
     std::lock_guard<std::mutex> lock(m_renderablesMutex);
@@ -109,10 +105,7 @@ void ThreadedRenderer::RegisterRenderable(IRenderable* renderable)
 /// <param name="renderable">登録解除するIRenderableオブジェクト</param>
 void ThreadedRenderer::UnregisterRenderable(IRenderable* renderable) 
 {
-    if (!renderable) 
-    {
-        return;
-    }
+    if (!renderable) return;
 
     // 遅延コンテキストリセット
     for (auto& ctx : m_deferredContexts)
@@ -154,8 +147,21 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
     size_t validContextCount = 0;
     for (const auto& ctx : m_deferredContexts)
     {
-        if (ctx != nullptr)
+        if (ctx)
         {
+            // 有効なコンテキストをカウント
+
+            // 共通のリソースを取得
+            auto resources = CommonResources::GetInstance();
+            auto rtv = resources->GetDeviceResources()->GetRenderTargetView();
+            auto dsv = resources->GetDeviceResources()->GetDepthStencilView();
+            auto viewport = resources->GetDeviceResources()->GetScreenViewport();
+
+            // 各遅延コンテキストでレンダリングターゲットとビューポートを設定
+            ctx->OMSetRenderTargets(1, &rtv, dsv);
+            ctx->RSSetViewports(1, &viewport);
+
+			// 有効なコンテキストをカウント
             validContextCount++;
         }
     }
@@ -173,9 +179,9 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
         renderablesCopy = m_renderables;
     }
 
-	// レンダラブルオブジェクトをレイヤーでソート
+    // レンダラブルオブジェクトをレイヤーでソート
     std::sort(renderablesCopy.begin(), renderablesCopy.end(),
-        [](IRenderable* a, IRenderable* b) 
+        [](IRenderable* a, IRenderable* b)
         {
             UINT la = static_cast<UINT>(a->GetLayer());
             UINT lb = static_cast<UINT>(b->GetLayer());
@@ -183,82 +189,70 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
         }
     );
 
-    // レンダリングジョブとコマンドリストを格納する配列
-    std::vector<std::unique_ptr<RenderJob>> renderJobs;
-    std::vector<ID3D11CommandList*> commandLists;
-
-    // オブジェクト数が少ない場合は処理を最適化
     size_t objectCount = renderablesCopy.size();
     if (objectCount == 0)
     {
         return; // 描画するものがない
     }
 
-    // 遅延コンテキストを使用可能なコンテキストの数だけ使用
-    size_t contextIndex = 0;
+    // 使用する遅延コンテキスト数は描画対象数と有効コンテキスト数の小さい方
     size_t usedContextCount = std::min(objectCount, validContextCount);
 
-    // レンダリングジョブの作成とタスクの登録
+    // DeferredContextごとに描画対象をグループ化
+    std::vector<std::vector<IRenderable*>> renderableGroups(usedContextCount);
     for (size_t i = 0; i < objectCount; ++i)
     {
-        // 遅延コンテキストをラウンドロビン方式で割り当て
-        contextIndex = i % usedContextCount;
-
-        // 使用可能なコンテキストを取得
-        auto deferredContext = m_deferredContexts[contextIndex].Get();
-        if (!deferredContext)
-        {
-            continue;
-        }
-
-        // 共通のリソースを取得
-        auto resources = CommonResources::GetInstance();
-        auto rtv = resources->GetDeviceResources()->GetRenderTargetView();
-        auto dsv = resources->GetDeviceResources()->GetDepthStencilView();
-        auto viewport = resources->GetDeviceResources()->GetScreenViewport();
-
-        // 重要: 各遅延コンテキストでレンダリングターゲットとビューポートを設定
-        deferredContext->OMSetRenderTargets(1, &rtv, dsv);
-        deferredContext->RSSetViewports(1, &viewport);
-
-        // レンダリングジョブの作成
-        auto job = std::make_unique<RenderJob>(renderablesCopy[i], view, proj, deferredContext);
-
-        // デバッグ
-        if (renderablesCopy[i]->GetLayer() != IRenderable::Layer::Object) continue;
-
-
-        // スレッドプールにタスクを追加
-        m_threadPool->Enqueue([job = job.get()]()
-            {
-                job->Execute();
-            });
-
-        // 後で使用するためにジョブを保持
-        renderJobs.emplace_back(std::move(job));
+        size_t contextIdx = i % usedContextCount;
+        renderableGroups[contextIdx].emplace_back(renderablesCopy[i]);
     }
 
-    // すべてのレンダリングタスクの完了を待機
+    // コマンドリスト格納用配列（各コンテキスト分）
+    std::vector<ID3D11CommandList*> commandLists(usedContextCount, nullptr);
+
+    // 各グループをスレッドプールで並列処理
+    for (size_t i = 0; i < usedContextCount; ++i)
+    {
+        ID3D11DeviceContext* deferredContext = m_deferredContexts[i].Get();
+        auto& renderables = renderableGroups[i];
+
+        if (!deferredContext || renderables.empty()) continue;
+
+        m_threadPool->Enqueue([&, i, deferredContext, renderables, view, proj]() {
+            // 各IRenderableのRenderJobを実行
+            for (auto* renderable : renderables)
+            {
+                RenderJob job(renderable, view, proj, deferredContext);
+                job.Execute();
+            }
+
+            // コマンドリスト生成
+            ID3D11CommandList* cmdList = nullptr;
+            HRESULT hr = deferredContext->FinishCommandList(FALSE, &cmdList);
+            if (SUCCEEDED(hr) && cmdList)
+            {
+                commandLists[i] = cmdList;
+            }
+            else
+            {
+                OutputDebugStringA("ThreadedRenderer: コマンドリスト作成に失敗\n");
+            }
+        });
+    }
+
+    // 全スレッドの完了待ち
     m_threadPool->WaitAll();
 
-    // コマンドリストの収集
-    for (const auto& job : renderJobs)
-    {
-        ID3D11CommandList* cmdList = job->GetCommandList();
-        if (cmdList) {
-            commandLists.emplace_back(cmdList);
-        }
-    }
-
     // イミディエートコンテキストでコマンドリストを実行
-    for (auto cmdList : commandLists)
+    for (auto* cmdList : commandLists)
     {
         if (cmdList)
         {
             m_immediateContext->ExecuteCommandList(cmdList, FALSE);
+            cmdList->Release();
         }
     }
 }
+
 
 /// <summary>
 /// システムに最適なスレッド数を取得
