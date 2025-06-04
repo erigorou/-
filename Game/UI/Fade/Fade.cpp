@@ -63,7 +63,6 @@ Fade::~Fade()
 	m_maskShader.reset();
 
 	// バッファの解放
-	m_batch.reset();
 	m_states.reset();
 	m_CBuffer.Reset();
 	m_captureRTV.Reset();
@@ -90,8 +89,6 @@ void Fade::Initialize()
 	m_stencilImage = GameResources::GetInstance()->GetTexture("mask");
 	// シェーダーの生成
 	CreateShader();
-	// プリミティブバッチの生成
-	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(context);
 	// コモンステートの生成
 	m_states = std::make_unique<DirectX::CommonStates>(device);
 }
@@ -374,10 +371,11 @@ void Fade::DrawStencilImage(ID3D11DeviceContext* deferredContext, DirectX::Primi
 	//	シェーダの解除
 	m_maskShader->EndSharder(deferredContext);
 
-	//	保持しておいたデフォルト設定に戻して、画面描画が正常に出来るようにしておく
+	// 保持しておいたデフォルト設定に戻して、画面描画が正常に出来るようにしておく
 	deferredContext->OMSetRenderTargets(1, &defaultRTV, pDSV);
-	// 使用した物を解放
-	deferredContext->ClearDepthStencilView(pDSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 0.0f, 0);
+
+	//// 使用した物を解放
+	//deferredContext->ClearDepthStencilView(pDSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 0.0f, 0);
 }
 
 // ------------------------------------------------------
@@ -387,75 +385,9 @@ void Fade::DrawStencilImage(ID3D11DeviceContext* deferredContext, DirectX::Primi
 // ------------------------------------------------------
 void Fade::Render()
 {
-	// 使う予定なし
-
-	//// デバイスリソースの取得
-	//auto deviceResources = CommonResources::GetInstance()->GetDeviceResources();
-
-	//using namespace DirectX;
-
-	//// 型抜き画像の描画
-	//DrawStencilImage(nullptr,nullptr);
-
-	//float easing = 0.0f;
-	//easing = std::max(0.0f, 1.0f - (m_totalTime / FADE_TIME));
-	//easing = std::max(0.0001f, Easing::easeInCubic(easing));
-	//GameData::GetInstance()->SetFadeValue(1 - easing);
-
-	//ID3D11DeviceContext1* context = deviceResources->GetD3DDeviceContext();
-
-	//VertexPositionColorTexture vertex[4] =
-	//{
-	//	VertexPositionColorTexture(SimpleMath::Vector3(0.0f, 0.0f, 0.0f),SimpleMath::Vector4::One, SimpleMath::Vector2(0.0f, 0.0f)),
-	//};
-
-	//// シェーダーに渡す情報の媒体を作成する
-	//ConstBuffer cbuff;
-
-	//// 渡すデータを登録する
-	//cbuff.matView = SimpleMath::Matrix::Identity;				// スクリーン座標で描画するため不要
-	//cbuff.matProj = SimpleMath::Matrix::Identity;				// スクリーン座標で描画するため不要
-	//cbuff.matWorld = SimpleMath::Matrix::Identity;				// スクリーン座標で描画するため不要
-	//cbuff.Diffuse = SimpleMath::Vector4::One;					// テクスチャの色
-	//cbuff.time = SimpleMath::Vector4(easing, 0.0f, 0.0f, 0.0f);	// フェードの時間（第一要素のみ使用）
-
-	////	シェーダの開始
-	//m_customShader->BeginSharder(context);
-
-	////	受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）
-	//context->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);
-
-	//// シェーダーにバッファを渡す
-	//ID3D11Buffer* ccb[1] = { m_CBuffer.Get() };
-	//context->VSSetConstantBuffers(0, 1, ccb);
-	//context->GSSetConstantBuffers(0, 1, ccb);
-	//context->PSSetConstantBuffers(0, 1, ccb);
-
-	////	画像用サンプラーの登録
-	//ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
-	//context->PSSetSamplers(0, 1, sampler);
-	////	半透明描画指定
-	//ID3D11BlendState* blendstate = m_states->NonPremultiplied();
-	////	透明判定処理
-	//context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
-
-	////	深度バッファに書き込み参照する
-	//context->OMSetDepthStencilState(m_states->DepthDefault(), 0);
-	////	カリングは正面のみ行う
-	//context->RSSetState(m_states->CullCounterClockwise());
-
-	////	ピクセルシェーダにテクスチャを登録する。
-	//context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
-	//// マスク画像をピクセルシェーダに登録する
-	//context->PSSetShaderResources(1, 1, m_captureSRV.GetAddressOf());
-
-	//// 板ポリゴンで描画
-	//m_batch->Begin();
-	//m_batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], 4);
-	//m_batch->End();
-
-	////	シェーダーの解除
-	//m_customShader->EndSharder(context);
+	// RecordRenderCommandsを使用する
+    // シングルスレッドで今まで描画してきたので一応残している感じ
+	// 完全にマルチスレッドに移行するならこの関数も削除する
 }
 
 /// <summary>
@@ -466,22 +398,23 @@ void Fade::Render()
 /// <param name="deferredContext">ディファードコンテキスト</param>
 void Fade::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, ID3D11DeviceContext* deferredContext)
 {
+
 	// 描画に必要な共通データを取得する
 	CommonResources* resources = CommonResources::GetInstance();
 	auto deviceResources = resources->GetDeviceResources();
 	auto states = resources->GetCommonStates();
 
-	//// RenderTargetViewを取得
-	//auto rtv = resources->GetDeviceResources()->GetRenderTargetView();
-	//// デプスステンシルビューを取得
-	//auto dsv = resources->GetDeviceResources()->GetDepthStencilView();
-	//// ビューポートを取得
-	//auto viewport = resources->GetDeviceResources()->GetScreenViewport();
+	// RenderTargetViewを取得
+	auto rtv = resources->GetDeviceResources()->GetRenderTargetView();
+	// デプスステンシルビューを取得
+	auto dsv = resources->GetDeviceResources()->GetDepthStencilView();
+	// ビューポートを取得
+	auto viewport = resources->GetDeviceResources()->GetScreenViewport();
 
-	//// レンダーターゲットを設定
-	//deferredContext->OMSetRenderTargets(1, &rtv, dsv);
-	//// ビューポートを設定
-	//deferredContext->RSSetViewports(1, &viewport);
+	// レンダーターゲットを設定
+	deferredContext->OMSetRenderTargets(1, &rtv, dsv);
+	// ビューポートを設定
+	deferredContext->RSSetViewports(1, &viewport);
 
 	// プリミティブバッチを作成する
 	DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture> batch = DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>(deferredContext);
@@ -489,6 +422,7 @@ void Fade::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const D
 	// 型抜き画像の描画
 	DrawStencilImage(deferredContext, &batch);
 
+	// フェード処理
 	float easing = 0.0f;
 	easing = std::max(0.0f, 1.0f - (m_totalTime / FADE_TIME));
 	easing = std::max(0.0001f, Easing::easeInCubic(easing));

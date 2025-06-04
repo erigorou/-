@@ -149,8 +149,6 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
     {
         if (ctx)
         {
-            // 有効なコンテキストをカウント
-
             // 共通のリソースを取得
             auto resources = CommonResources::GetInstance();
             auto rtv = resources->GetDeviceResources()->GetRenderTargetView();
@@ -161,7 +159,6 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
             ctx->OMSetRenderTargets(1, &rtv, dsv);
             ctx->RSSetViewports(1, &viewport);
 
-			// 有効なコンテキストをカウント
             validContextCount++;
         }
     }
@@ -179,16 +176,6 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
         renderablesCopy = m_renderables;
     }
 
-    // レンダラブルオブジェクトをレイヤーでソート
-    std::sort(renderablesCopy.begin(), renderablesCopy.end(),
-        [](IRenderable* a, IRenderable* b)
-        {
-            UINT la = static_cast<UINT>(a->GetLayer());
-            UINT lb = static_cast<UINT>(b->GetLayer());
-            return (la == lb) ? (a < b) : (la < lb);
-        }
-    );
-
     size_t objectCount = renderablesCopy.size();
     if (objectCount == 0)
     {
@@ -198,18 +185,34 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
     // 使用する遅延コンテキスト数は描画対象数と有効コンテキスト数の小さい方
     size_t usedContextCount = std::min(objectCount, validContextCount);
 
-    // DeferredContextごとに描画対象をグループ化
-    std::vector<std::vector<IRenderable*>> renderableGroups(usedContextCount);
-    for (size_t i = 0; i < objectCount; ++i)
-    {
-        size_t contextIdx = i % usedContextCount;
-        renderableGroups[contextIdx].emplace_back(renderablesCopy[i]);
+    // ----------------------------------------------------------------
+    // ここからレイヤーごとに描画オブジェクトをグルーピングし、
+    // 各レイヤー単位でコンテキストにラウンドロビン割り振り
+    // ----------------------------------------------------------------
+
+    // レイヤーごとに描画オブジェクトをグルーピング
+    std::map<UINT, std::vector<IRenderable*>> layerGroups;
+    for (auto* r : renderablesCopy) {
+        layerGroups[static_cast<UINT>(r->GetLayer())].push_back(r);
     }
+
+    // 各レイヤー単位でコンテキストに割り振る（ラウンドロビン）
+    std::vector<std::vector<IRenderable*>> renderableGroups(usedContextCount);
+    size_t contextIdx = 0;
+    for (auto& [layer, group] : layerGroups) {
+        for (auto* r : group) {
+            renderableGroups[contextIdx].push_back(r);
+            contextIdx = (contextIdx + 1) % usedContextCount;
+        }
+    }
+
+    // ----------------------------------------------------------------
+    // 各コンテキストのレンダリング処理をスレッドプールで並列実行
+    // ----------------------------------------------------------------
 
     // コマンドリスト格納用配列（各コンテキスト分）
     std::vector<ID3D11CommandList*> commandLists(usedContextCount, nullptr);
 
-    // 各グループをスレッドプールで並列処理
     for (size_t i = 0; i < usedContextCount; ++i)
     {
         ID3D11DeviceContext* deferredContext = m_deferredContexts[i].Get();
@@ -236,7 +239,7 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
             {
                 OutputDebugStringA("ThreadedRenderer: コマンドリスト作成に失敗\n");
             }
-        });
+            });
     }
 
     // 全スレッドの完了待ち

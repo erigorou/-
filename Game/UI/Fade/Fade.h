@@ -149,8 +149,6 @@ private:
 	float m_easingValue;
 	// コンスタントバッファ
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_CBuffer;
-	// 頂点情報
-	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_batch;
 	// コモンステート
 	std::unique_ptr<DirectX::CommonStates> m_states;
 	// カスタムシェーダー
