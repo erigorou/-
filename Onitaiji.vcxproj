@@ -316,6 +316,7 @@
     <ClInclude Include="Libraries\MyLib\Collision\CollisionManager.h" />
     <ClInclude Include="Libraries\MyLib\CustomShader\CustomShader.h" />
     <ClInclude Include="Libraries\MyLib\DebugString.h" />
+    <ClInclude Include="Libraries\MyLib\DeferredContextPool\DeferredContextPool.h" />
     <ClInclude Include="Libraries\MyLib\EasingFunctions.h" />
     <ClInclude Include="Libraries\MyLib\InputManager.h" />
     <ClInclude Include="Libraries\MyLib\KeyboardChacker.h" />
@@ -413,6 +414,7 @@
     <ClCompile Include="Libraries\MyLib\Collision\CollisionManager.cpp" />
     <ClCompile Include="Libraries\MyLib\CustomShader\CustomShader.cpp" />
     <ClCompile Include="Libraries\MyLib\DebugString.cpp" />
+    <ClCompile Include="Libraries\MyLib\DeferredContextPool\DeferredContextPool.cpp" />
     <ClCompile Include="Libraries\MyLib\InputManager.cpp" />
     <ClCompile Include="Game\Stage\SkySphere\SkySphere.cpp" />
     <ClCompile Include="Libraries\MyLib\RenderJob\RenderJob.cpp" />

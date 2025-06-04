@@ -74,9 +74,6 @@ private:
     // イミディエートコンテキスト
     ID3D11DeviceContext* m_immediateContext;
 
-    // 遅延コンテキストのプール
-    std::vector<Microsoft::WRL::ComPtr<ID3D11DeviceContext>> m_deferredContexts;
-
     // シングルトンインスタンス
     static ThreadedRenderer* s_instance;
 };

@@ -10,6 +10,7 @@
 #include "ThreadedRenderer.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
+#include "../DeferredContextPool/DeferredContextPool.h"
 
 // シングルトンインスタンス
 ThreadedRenderer* ThreadedRenderer::s_instance = nullptr;
@@ -22,6 +23,8 @@ ThreadedRenderer::ThreadedRenderer()
     m_device(nullptr),
     m_immediateContext(nullptr) 
 {
+	// 遅延コンテキストプールの初期化
+    DeferredContextPool::GetInstance();
 }
 
 /// <summary>
@@ -63,20 +66,6 @@ void ThreadedRenderer::Initialize(ID3D11Device* device)
 
     // スレッドプールの作成
     m_threadPool = std::make_unique<ThreadPool>(threadCount);
-
-    // 遅延コンテキストをスレッド数分作成
-    m_deferredContexts.resize(threadCount);
-    for (size_t i = 0; i < threadCount; ++i) 
-    {
-        // 遅延コンテキストの作成
-        HRESULT hr = device->CreateDeferredContext(0, &m_deferredContexts[i]);
-        if (FAILED(hr)) 
-        {
-            MessageBoxA(nullptr, "遅延コンテキストの作成に失敗しました", "エラー", MB_OK | MB_ICONERROR);
-            // エラー時の処理
-            m_deferredContexts[i] = nullptr;
-        }
-    }
 }
 
 /// <summary>
@@ -96,6 +85,9 @@ void ThreadedRenderer::RegisterRenderable(IRenderable* renderable)
     {
         // リストに追加
         m_renderables.emplace_back(renderable);
+
+        // レンダラブルオブジェクトを遅延コンテキストプールに登録
+		DeferredContextPool::GetInstance()->RegisterRenderable(renderable);
     }
 }
 
@@ -108,14 +100,7 @@ void ThreadedRenderer::UnregisterRenderable(IRenderable* renderable)
     if (!renderable) return;
 
     // 遅延コンテキストリセット
-    for (auto& ctx : m_deferredContexts)
-    {
-        if (ctx)
-        {
-            // すべてのステートをクリア
-            ctx->ClearState();
-        }
-    }
+	DeferredContextPool::GetInstance()->ResetAllContexts();
 
     // スレッドセーフな操作
     std::lock_guard<std::mutex> lock(m_renderablesMutex);
@@ -125,7 +110,10 @@ void ThreadedRenderer::UnregisterRenderable(IRenderable* renderable)
     if (it != m_renderables.end()) 
     {
         m_renderables.erase(it);
-    }
+
+		// レンダラブルオブジェクトを遅延コンテキストプールから登録解除
+		DeferredContextPool::GetInstance()->ReleaseDeferredContext(renderable);
+	}
 }
 
 
@@ -143,8 +131,6 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
         return;
     }
 
-    // 有効な遅延コンテキストの数を確認
-    size_t validContextCount = 0;
     for (const auto& ctx : m_deferredContexts)
     {
         if (ctx)
@@ -158,15 +144,7 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
             // 各遅延コンテキストでレンダリングターゲットとビューポートを設定
             ctx->OMSetRenderTargets(1, &rtv, dsv);
             ctx->RSSetViewports(1, &viewport);
-
-            validContextCount++;
         }
-    }
-
-    if (validContextCount == 0)
-    {
-        OutputDebugStringA("ThreadedRenderer: 有効な遅延コンテキストがありません\n");
-        return;
     }
 
     // レンダラブルオブジェクトのコピーを作成（スレッドセーフに）
