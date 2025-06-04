@@ -13,6 +13,7 @@
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Game/Stage/Sign/Sign.h"
+#include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
 
 // -----------------------------------------------
 /// <summary>
@@ -24,6 +25,8 @@ SelectSceneObject::SelectSceneObject()
 	m_stageNo(),
 	m_worldMatrix(DirectX::SimpleMath::Matrix::Identity)
 {
+	// マルチスレッドに登録
+	ThreadedRenderer::GetInstance()->RegisterRenderable(this);
 }
 
 // -----------------------------------------------
@@ -95,6 +98,7 @@ void SelectSceneObject::Render(const DirectX::SimpleMath::Matrix view, const Dir
 	);
 
 
+
 	m_models[m_stageNo]->Draw(context, *states, m_worldMatrix, view, proj, false, [&]
 		{
 			// ブレンドステートを設定
@@ -108,10 +112,52 @@ void SelectSceneObject::Render(const DirectX::SimpleMath::Matrix view, const Dir
 
 // -----------------------------------------------
 /// <summary>
+/// 描画コマンドを記録する
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="proj">プロジェクション行列</param>
+/// <param name="deferredContext">遅延コンテキスト</param>
+void SelectSceneObject::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, ID3D11DeviceContext* deferredContext)
+{
+	if (m_models[m_stageNo] == nullptr) return;
+
+	auto states = CommonResources::GetInstance()->GetCommonStates();
+
+	// エフェクトの設定
+	m_models[m_stageNo]->UpdateEffects([&](DirectX::IEffect* effect)
+		{
+			auto basicEffect = dynamic_cast<DirectX::BasicEffect*>(effect);
+			if (basicEffect)
+			{
+				basicEffect->SetLightingEnabled(false); // ライト有効化
+				basicEffect->SetPerPixelLighting(true); // ピクセル単位のライティング有効化
+				basicEffect->SetTextureEnabled(false); // テクスチャの無効化
+				basicEffect->SetVertexColorEnabled(false); // 頂点カラーの無効化
+				basicEffect->SetFogEnabled(false); // フォグの無効化
+			}
+		}
+	);
+
+
+	m_models[m_stageNo]->Draw(deferredContext, *states, m_worldMatrix, view, proj, false, [&]
+		{
+			// ブレンドステートを設定
+			deferredContext->OMSetBlendState(states->AlphaBlend(), nullptr, 0xFFFFFFFF);
+		}
+	);
+
+	// 看板を表示する
+	m_sign->DrawSign(view, proj);
+}
+
+// -----------------------------------------------
+/// <summary>
 /// 終了処理
 /// </summary>
 void SelectSceneObject::Finalize()
 {
+	// マルチスレッドから登録解除
+	ThreadedRenderer::GetInstance()->UnregisterRenderable(this);
 }
 
 // -----------------------------------------------

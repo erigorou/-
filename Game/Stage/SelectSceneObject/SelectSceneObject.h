@@ -9,6 +9,7 @@
 #pragma once
 // インクルード
 #include "pch.h"
+#include "Interface/IRenderable.h"
 
 // 前方宣言
 class Sign;
@@ -17,7 +18,7 @@ class Sign;
 /// <summary>
 /// セレクトシーンで表示するオブジェクトを管理するクラス
 /// </summary>
-class SelectSceneObject
+class SelectSceneObject : public IRenderable
 {
 	// -----------------------------
 	// 定数
@@ -34,6 +35,14 @@ public:
 	);
 
 	// -----------------------------
+	// アクセサ
+	// -----------------------------
+public:
+	// レイヤーを取得する
+	Layer GetLayer() const override { return Layer::Object; }
+
+
+	// -----------------------------
 	// メンバ関数（公開）
 	// -----------------------------
 public:
@@ -47,6 +56,11 @@ public:
 	void Update(float elapsedTime);
 	// 描画処理
 	void Render(const DirectX::SimpleMath::Matrix view, const DirectX::SimpleMath::Matrix proj);
+	// 描画コマンドを記録する
+	void RecordRenderCommands(
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& proj,
+		ID3D11DeviceContext* deferredContext) override;
 	// 終了処理
 	void Finalize();
 

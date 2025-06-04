@@ -13,6 +13,7 @@
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "CommonStates.h"
+#include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
 
 // -------------------------------------------------------
 /// <summary>
@@ -32,6 +33,8 @@ Tutorial::Tutorial(QuestManager* manager)
 	m_canUseTimer{ true },
 	m_alphaFlag{ false }
 {
+	// マルチスレッドに登録
+	ThreadedRenderer::GetInstance()->RegisterRenderable(this);
 }
 
 // -------------------------------------------------------
@@ -143,14 +146,14 @@ void Tutorial::Draw()
 	};
 
 	// 定数バッファの設定
-	UpdateConstantBuffer();
+	UpdateConstantBuffer(context);
 
 	// 画像用サンプラーの登録
 	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
 	context->PSSetSamplers(0, 1, sampler);
 
 	// レンダーステートの設定
-	SetRenderState();
+	SetRenderState(context);
 
 	// シェーダー開始
 	m_shader->BeginSharder(context);
@@ -167,6 +170,48 @@ void Tutorial::Draw()
 	m_shader->EndSharder(context);
 }
 
+/// <summary>
+/// 描画コマンドを記録する
+/// </summary>
+/// <param name="view"></param>
+/// <param name="proj"></param>
+/// <param name="deferredContext"></param>
+void Tutorial::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, ID3D11DeviceContext* deferredContext)
+{
+	auto batch = DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>(deferredContext);
+
+	// 頂点情報の設定
+	DirectX::VertexPositionColorTexture vertex[1] =
+	{
+		DirectX::VertexPositionColorTexture
+		(
+			DirectX::SimpleMath::Vector3(m_scale.x, m_scale.y, static_cast<float>(ANCHOR::TOP_LEFT))
+		,	DirectX::SimpleMath::Vector4(m_position.x, m_position.y, WIDTH, HEIGHT)
+		,	DirectX::SimpleMath::Vector2(WINDOW_WIDTH, WINDOW_HEIGHT)
+		)
+	};
+
+	// 定数バッファの設定
+	UpdateConstantBuffer(deferredContext);
+
+	// レンダーステートの設定
+	SetRenderState(deferredContext);
+
+	// シェーダー開始
+	m_shader->BeginSharder(deferredContext);
+
+	// テクスチャの設定
+	deferredContext->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
+
+	//	板ポリゴンを描画
+	batch.Begin();
+	batch.Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], 1);
+	batch.End();
+
+	// シェーダー終了
+	m_shader->EndSharder(deferredContext);
+}
+
 // -------------------------------------------------------
 /// <summary>
 /// 終了処理
@@ -174,6 +219,9 @@ void Tutorial::Draw()
 // -------------------------------------------------------
 void Tutorial::Finalize()
 {
+	// マルチスレッドから解除
+	ThreadedRenderer::GetInstance()->UnregisterRenderable(this);
+
 	// テクスチャの解放
 	m_texture.Reset();
 	// シェーダーの解放
@@ -267,11 +315,8 @@ void Tutorial::ConstantBuffer()
 /// 定数バッファの更新処理
 /// </summary>
 // -------------------------------------------------------
-void Tutorial::UpdateConstantBuffer()
+void Tutorial::UpdateConstantBuffer(ID3D11DeviceContext* deferredContext)
 {
-	// コンテキストの取得
-	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-
 	// 定数バッファの設定
 	CBuffer cbuff;
 	cbuff.windowSize = DirectX::SimpleMath::Vector4(WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0.0f);
@@ -279,13 +324,13 @@ void Tutorial::UpdateConstantBuffer()
 	cbuff.padding = DirectX::SimpleMath::Vector3::Zero;
 
 	// 受け渡し用バッファの内容更新
-	context->UpdateSubresource(m_CBuffer.Get(), 0, nullptr, &cbuff, 0, 0);
+	deferredContext->UpdateSubresource(m_CBuffer.Get(), 0, nullptr, &cbuff, 0, 0);
 
 	// シェーダーにバッファを渡す
 	ID3D11Buffer* cb[1] = { m_CBuffer.Get() };
-	context->VSSetConstantBuffers(0, 1, cb);
-	context->GSSetConstantBuffers(0, 1, cb);
-	context->PSSetConstantBuffers(0, 1, cb);
+	deferredContext->VSSetConstantBuffers(0, 1, cb);
+	deferredContext->GSSetConstantBuffers(0, 1, cb);
+	deferredContext->PSSetConstantBuffers(0, 1, cb);
 }
 
 // -------------------------------------------------------
@@ -293,15 +338,14 @@ void Tutorial::UpdateConstantBuffer()
 /// レンダーステートの設定処理
 /// </summary>
 // -------------------------------------------------------
-void Tutorial::SetRenderState()
+void Tutorial::SetRenderState(ID3D11DeviceContext* deferredContext)
 {
-	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 
 	//	画像用サンプラーの登録
 	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
-	context->PSSetSamplers(0, 1, sampler);
-	ID3D11BlendState* blendstate = m_states->NonPremultiplied(); 	//	半透明描画指定
-	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);		// 透明処理
-	context->OMSetDepthStencilState(m_states->DepthNone(), 0);		// 深度バッファに書き込み参照しない
-	context->RSSetState(m_states->CullClockwise());					// カリングは左回り
+	deferredContext->PSSetSamplers(0, 1, sampler);
+	ID3D11BlendState* blendstate = m_states->NonPremultiplied(); 		//	半透明描画指定
+	deferredContext->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);	// 透明処理
+	deferredContext->OMSetDepthStencilState(m_states->DepthNone(), 0);	// 深度バッファに書き込み参照しない
+	deferredContext->RSSetState(m_states->CullClockwise());				// カリングは左回り
 }

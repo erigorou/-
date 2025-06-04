@@ -11,6 +11,7 @@
 // インクルード
 #include "pch.h"
 #include "DeviceResources.h"
+#include "Interface/IRenderable.h"
 
 // 前方宣言
 class HPSystem;
@@ -18,7 +19,7 @@ class HPSystem;
 /// <summary>
 /// ボスHPUIクラス
 /// </summary>
-class EnemyHPUI
+class EnemyHPUI : public IRenderable
 {
 	// ------------------------------
 	// 固定値
@@ -30,6 +31,14 @@ private:
 	static constexpr int TOP_POSITION = 650;
 	// テクスチャの位置
 	static constexpr int BOTTOM_POSITION = 680;
+
+
+	// ------------------------------
+	// アクセサ
+	// ------------------------------
+public:
+	// レイヤーを取得する
+	Layer GetLayer() const override { return Layer::UI; }
 
 	// ------------------------------
 	// メンバ関数
@@ -45,6 +54,11 @@ public:
 	void Update();
 	// 描画処理
 	void Render();
+	// 描画コマンドを記録する
+	void RecordRenderCommands(
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& proj,
+		ID3D11DeviceContext* deferredContext) override;
 	// 終了処理
 	void Finalize();
 

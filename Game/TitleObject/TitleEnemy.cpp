@@ -15,6 +15,7 @@
 #include "EnemyTitleMoving.h"
 #include "EnemyTitleIdling.h"
 #include "Interface/IState.h"
+#include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
 
 // ---------------------------------------------------------
 /// <summary>
@@ -32,6 +33,8 @@ TitleEnemy::TitleEnemy()
 	m_angle{},
 	m_worldMatrix{ DirectX::SimpleMath::Matrix::Identity }
 {
+	// マルチスレッドに登録
+	ThreadedRenderer::GetInstance()->RegisterRenderable(this);
 }
 
 // ---------------------------------------------------------
@@ -157,6 +160,23 @@ void TitleEnemy::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::
 
 }
 
+/// <summary>
+/// 描画コマンドを記録する
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="proj">プロジェクション行列</param>
+/// <param name="deferredContext">遅延コンテキスト</param>
+void TitleEnemy::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, ID3D11DeviceContext* deferredContext)
+{
+	// コモンステートを取得
+	auto states = CommonResources::GetInstance()->GetCommonStates();
+
+	// 深度値を参照して書き込む
+	deferredContext->OMSetDepthStencilState(states->DepthDefault(), 0);
+	// モデルの描画コマンドを記録
+	m_model->Draw(deferredContext, *states, m_worldMatrix, view, proj);
+}
+
 // ---------------------------------------------------------
 /// <summary>
 /// 終了処理
@@ -164,4 +184,6 @@ void TitleEnemy::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::
 // ---------------------------------------------------------
 void TitleEnemy::Finalize()
 {
+	// マルチスレッドから登録解除
+	ThreadedRenderer::GetInstance()->UnregisterRenderable(this);
 }

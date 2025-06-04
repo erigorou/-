@@ -13,6 +13,8 @@
 #include "Game/CommonResources.h"
 #include "Game/GameResources.h"
 
+#include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
+
 // ----------------------------
 /// <summary>
 /// コンストラクタ
@@ -27,6 +29,8 @@ EnemyHPUI::EnemyHPUI(HPSystem* hpSystem)
 	m_spriteBatch{}, 
 	m_enemyHP{}
 {
+	// マルチスレッドに登録
+	ThreadedRenderer::GetInstance()->RegisterRenderable(this);
 }
 
 // ----------------------------
@@ -36,6 +40,7 @@ EnemyHPUI::EnemyHPUI(HPSystem* hpSystem)
 // ----------------------------
 EnemyHPUI::~EnemyHPUI()
 {
+	Finalize();
 }
 
 // ----------------------------
@@ -107,11 +112,54 @@ void EnemyHPUI::Render()
 
 // ----------------------------
 /// <summary>
+/// 描画コマンドを記録する関数
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="proj">射影行列</param>
+/// <param name="deferredContext">デファードコンテキスト</param>
+// ----------------------------
+void EnemyHPUI::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, ID3D11DeviceContext* deferredContext)
+{
+	auto spriteBatch = std::make_unique<DirectX::SpriteBatch>(deferredContext);
+
+	// 敵のHPを取得
+	m_enemyHP = m_enemyHPclass->GetHP();
+	// 最大HPを取得
+	float MAXHP = m_enemyHPclass->GetMaxHP();
+
+	// 描画位置のオフセット値や緑ゲージの幅を計算する
+	LONG offset = static_cast<LONG>(Screen::CENTER_X - (MAX_WIDTH / 2));
+	LONG width = static_cast<LONG>(offset + MAX_WIDTH * (m_enemyHP / MAXHP));
+
+	// ゲージの範囲の設定
+	RECT outline{ offset, TOP_POSITION, offset + MAX_WIDTH, BOTTOM_POSITION };
+	RECT back{ offset, TOP_POSITION, offset + MAX_WIDTH, BOTTOM_POSITION };
+	RECT gauge{ offset, TOP_POSITION, width, BOTTOM_POSITION };
+
+	// スプライトバッチを開始する
+	spriteBatch->Begin();
+
+	// 背面の描画
+	spriteBatch->Draw(m_backTexture.Get(), back, DirectX::Colors::White);
+	// ゲージ部分
+	spriteBatch->Draw(m_texture.Get(), gauge, DirectX::Colors::White);
+	// ゲージの枠
+	spriteBatch->Draw(m_frameTexture.Get(), outline, DirectX::Colors::White);
+
+	// スプライトバッチを終了する
+	spriteBatch->End();
+}
+
+// ----------------------------
+/// <summary>
 /// 終了関数
 /// </summary>
 // ----------------------------
 void EnemyHPUI::Finalize()
 {
+	// マルチスレッドから登録解除
+	ThreadedRenderer::GetInstance()->UnregisterRenderable(this);
+
 	m_spriteBatch.reset();
 	m_texture.Reset();
 	m_enemyHPclass = nullptr;

@@ -5,13 +5,13 @@
 // ---------------------------------------------------------------------------------------
 #pragma once
 #include "pch.h"
-
+#include "Interface/IRenderable.h"
 
 class QuestManager;
 class CustomShader;
 class DeviceResources;
 
-class Tutorial
+class Tutorial : public IRenderable
 {
 	// --------------------
 	// 固定値
@@ -68,6 +68,9 @@ public:
 	// タイマーフラグの取得
 	bool GetTimerIsEnd() { return !m_timerPlay; }
 
+	// レイヤーを取得
+	Layer GetLayer() const override { return Layer::UI; }
+
 	// --------------------
 	// メンバ関数(公開)
 	// --------------------
@@ -82,6 +85,12 @@ public:
 	void Update(float elapsedTime);
 	// 描画処理
 	void Draw();
+	// 描画コマンドを記録する
+	void RecordRenderCommands(
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& proj,
+		ID3D11DeviceContext* deferredContext) override;
+
 	// 終了処理
 	void Finalize();
 	// タイマーの開始
@@ -98,9 +107,9 @@ private:
 	// コンスタントバッファの作成
 	void ConstantBuffer();
 	// 定数バッファの更新処理
-	void UpdateConstantBuffer();
+	void UpdateConstantBuffer(ID3D11DeviceContext* deferredContext);
 	// 描画設定
-	void SetRenderState();
+	void SetRenderState(ID3D11DeviceContext* deferredContext);
 	// タイマーの更新処理
 	void UpdateTimer(float elapsedTime);
 	// α値の更新処理
