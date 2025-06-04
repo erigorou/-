@@ -40,4 +40,12 @@ void RenderJob::Execute()
 
     // レンダラブルオブジェクトに描画コマンドを記録させる
     m_renderable->RecordRenderCommands(m_view, m_proj, m_deferredContext.Get());
+
+    // コマンドリストを作成する
+	m_deferredContext->FinishCommandList(false, &m_commandList);
+
+	if (!m_commandList)
+	{
+		throw std::runtime_error("コマンドリスト、上手く作れてません！");
+	}
 }
