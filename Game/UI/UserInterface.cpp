@@ -60,8 +60,6 @@ UserInterface::~UserInterface()
 
 	// シェーダーの解放
 	m_shader.reset();
-	// バッファの解放
-	m_batch.reset();
 	// ステートの解放
 	m_states.reset();
 	// テクスチャの解放
@@ -135,8 +133,6 @@ void UserInterface::Create(
 	// テクスチャの大きさを取得
 	GetTextureSize(texture);
 
-	//	プリミティブバッチの作成
-	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(context);
 	// コモンステートの生成
 	m_states = std::make_unique<DirectX::CommonStates>(device);
 }
@@ -263,10 +259,10 @@ void UserInterface::Render()
 	m_shader->BeginSharder(context);
 	//	ピクセルシェーダにテクスチャを登録する。
 	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
-	//	板ポリゴンを描画
-	m_batch->Begin();
-	m_batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], 1);
-	m_batch->End();
+	////	板ポリゴンを描画
+	//m_batch->Begin();
+	//m_batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], 1);
+	//m_batch->End();
 	//	シェーダーを取り消す
 	m_shader->EndSharder(context);
 }

@@ -43,7 +43,9 @@ public:
 	// -----------------------------
 public:
 	// 描画レイを取得
-	UINT GetLayer() const override { return static_cast<UINT>(Layer::UI); }
+	UINT GetLayer() const override { return m_layer; }
+	// レイヤーの設定
+	void SetLayer(const UINT layer){ m_layer = layer; }
 
 	// -----------------------------
 	// メンバ関数(公開)
@@ -90,8 +92,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_CBuffer;
 	// 入力レイアウト
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
-	// プリミティブバッチ
-	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_batch;
 	//コモンステート
 	std::unique_ptr<DirectX::CommonStates> m_states;
 	// ウィンドウのサイズ
@@ -112,4 +112,7 @@ private:
 	IAction* m_action;
 	// テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
+
+	// レイヤー
+	UINT m_layer = static_cast<UINT>(Layer::UI);
 };

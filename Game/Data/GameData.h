@@ -63,7 +63,7 @@ public:
 	// スクリーンショットの取得
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> GetScreenShot() const { return m_captureSRV; }
 	// スクリーンショットの削除
-	void ClearScreenShot() { m_captureSRV.Reset(); }
+	void ClearScreenShot() { m_captureSRV.Reset(); m_isCapture = false; }
 	// スクリーンショットの許可フラグの取得
 	bool IsCaptureFlag() const { return m_isCapture; }
 

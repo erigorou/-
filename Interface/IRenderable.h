@@ -23,12 +23,12 @@ public:
 	enum class Layer : UINT
 	{
 		SkySphere = 0,
-		Sea,
-		Wall,
-		Floor,
-		Object,
-		UI,
-		Fade,
+		Sea = 10,
+		Wall = 20,
+		Floor = 30,
+		Object = 100,
+		UI = 300,
+		Fade = 1000,
 	};
 
 // ------------------

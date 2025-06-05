@@ -12,9 +12,11 @@
 #include "Game/Data/GameData.h"
 #include "Game/UI/UIAnchor.h"
 
+
 // 前方宣言
 class CommonResources;
 class UserInterface;
+class ScreenShotUserInterface;
 class IAction;
 
 /// <summary>
@@ -90,14 +92,14 @@ private:
 		DirectX::SimpleMath::Vector2 position,
 		DirectX::SimpleMath::Vector2 scale,
 		ANCHOR anchor,
-		IAction* action
+		IAction* action,
+		UINT layer = 300
 	);
+
 	// ユーザーインターフェースの追加
 	void CreateUI();
 	// スクショの描画
 	void DrawCaptureTexture();
-	// 背景の描画
-	void DrawBackground();
 
 	// -----------------------------
 	// メンバ変数
@@ -116,6 +118,9 @@ private:
 	DirectX::SimpleMath::Vector2 m_captureTexCenter;
 	// ユーザーインターフェースリスト
 	std::vector<std::unique_ptr<UserInterface>> m_uiList;
+
+	// スクリーンショットのUI
+	std::unique_ptr<ScreenShotUserInterface> m_screenShotUI;
 
 	// シーン遷移フラグ
 	bool m_isChangeScene;

@@ -12,6 +12,7 @@
 #include "Game/GameResources.h"
 #include "DeviceResources.h"
 #include "Game/UI/UserInterface.h"
+#include "Game/UI/ScreenShot/ScreenShotUserInterface.h"
 #include "Libraries/MyLib/Texture.h"
 #include "../Sound/Sound.h"
 #include "Game/UI/UIAnchor.h"
@@ -116,15 +117,19 @@ void ResultScene::AddUserInterface(
 	DirectX::SimpleMath::Vector2 position,
 	DirectX::SimpleMath::Vector2 scale,
 	ANCHOR anchor,
-	IAction* action
-)
+	IAction* action,
+	UINT layer)
 {
 	// テクスチャの取得
-	auto texture = GameResources::GetInstance()->GetTexture(textureName);
+	ID3D11ShaderResourceView* texture = nullptr;
+	texture = GameResources::GetInstance()->GetTexture(textureName);
+
 	// ユーザーインターフェースの生成
 	auto ui = std::make_unique<UserInterface>();
 	// ユーザーインターフェースの作成
 	ui->Create(texture, position, scale, anchor, action);
+	// レイヤーの設定
+	ui->SetLayer(layer);
 	// ユーザーインターフェースの登録
 	m_uiList.push_back(std::move(ui));
 }
@@ -142,7 +147,8 @@ void ResultScene::CreateUI()
 		DirectX::SimpleMath::Vector2{ BACKGROUND_POSITION },
 		DirectX::SimpleMath::Vector2{ BACKGROUND_SCALE },
 		ANCHOR::MIDDLE_CENTER,
-		nullptr
+		nullptr,
+		300
 	);
 
 	// タイトルに戻るボタンの追加
@@ -151,7 +157,8 @@ void ResultScene::CreateUI()
 		DirectX::SimpleMath::Vector2{ RETURN_BUTTON_POSITION },
 		DirectX::SimpleMath::Vector2{ BUTTON_SIZE },
 		ANCHOR::TOP_LEFT,
-		new GoTitleButtonAction()
+		new GoTitleButtonAction(),
+		310
 	);
 
 	// ゲーム終了ボタンの追加
@@ -160,7 +167,17 @@ void ResultScene::CreateUI()
 		DirectX::SimpleMath::Vector2{ EXIT_BUTTON_POSITION },
 		DirectX::SimpleMath::Vector2{ BUTTON_SIZE },
 		ANCHOR::TOP_LEFT,
-		new EndGameButtonAction()
+		new EndGameButtonAction(),
+		320
+	);
+
+	// スクリーンショットのUIを作成
+	m_screenShotUI = std::make_unique<ScreenShotUserInterface>();
+	m_screenShotUI->Create(
+		CAPTURE_POSITION,								// 位置
+		CAPTURE_ROTATION,								// 回転
+		m_captureTexCenter,								// 中心
+		DirectX::SimpleMath::Vector2{ CAPTURE_SCALE }	// スケール
 	);
 }
 
@@ -191,8 +208,7 @@ void ResultScene::Render()
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
 	m_spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, states->NonPremultiplied());
-	// 背景の描画
-	DrawBackground();
+
 	// スクリーンショットの描画
 	DrawCaptureTexture();
 	// スプライトバッチの終わり
@@ -212,7 +228,6 @@ void ResultScene::Render()
 // ---------------------------------------------
 void ResultScene::DrawCaptureTexture()
 {
-
 	// 背景前面にゲームデータがもつスクショを描画
 	if (GameData::GetInstance()->GetScreenShot())
 	{
@@ -228,26 +243,6 @@ void ResultScene::DrawCaptureTexture()
 			0.0f						// レイヤ深度(画像のソートで必要)(layerDepth)
 		);
 	}
-}
-
-// ---------------------------------------------
-/// <summary>
-/// 背景を描画する
-/// </summary>
-// ---------------------------------------------
-void ResultScene::DrawBackground()
-{
-	m_spriteBatch->Draw(
-		m_texture.Get(),			// テクスチャ(SRV)
-		BACKGROUND_POSITION,		// スクリーンの表示位置(originの描画位置)
-		nullptr,					// 矩形(RECT)
-		DirectX::Colors::White,		// 背景色
-		BACKGROUND_ROTATION,		// 回転角(ラジアン)
-		m_texCenter,				// テクスチャの基準になる表示位置(描画中心)(origin)
-		BACKGROUND_SCALE,			// スケール(scale)
-		DirectX::SpriteEffects_None,// エフェクト(effects)
-		0.0f						// レイヤ深度(画像のソートで必要)(layerDepth)
-	);
 }
 
 

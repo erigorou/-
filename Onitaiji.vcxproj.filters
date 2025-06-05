@@ -243,6 +243,7 @@
     <ClInclude Include="Game\Boss\Face\BossFace.h" />
     <ClInclude Include="Libraries\MyLib\DeferredContextPool\DeferredContextPool.h" />
     <ClInclude Include="Libraries\MyLib\ScreenShot.h" />
+    <ClInclude Include="Game\UI\ScreenShot\ScreenShotUserInterface.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -361,6 +362,7 @@
     <ClCompile Include="Libraries\MyLib\ThreadedRenderer\ThreadedRenderer.cpp" />
     <ClCompile Include="Game\Boss\Face\BossFace.cpp" />
     <ClCompile Include="Libraries\MyLib\DeferredContextPool\DeferredContextPool.cpp" />
+    <ClCompile Include="Game\UI\ScreenShot\ScreenShotUserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
