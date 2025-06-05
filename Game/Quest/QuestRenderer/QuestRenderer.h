@@ -92,7 +92,7 @@ public:
 	bool CanChangeQuest() { return m_canChanegQuest; }
 
 	// •`‰æƒŒƒC‚ğæ“¾
-	Layer GetLayer() const override { return Layer::UI; }
+	UINT GetLayer() const override { return static_cast<UINT>(Layer::UI); }
 
 	// --------------------
 	// ƒƒ“ƒoŠÖ”(ŒöŠJ)

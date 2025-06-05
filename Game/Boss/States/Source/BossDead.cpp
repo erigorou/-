@@ -12,6 +12,7 @@
 #include "Game/Messenger/EventMessenger.h"
 #include "Game/Boss/States/Header/BossDead.h"
 #include "Game/Camera/Camera.h"
+#include "Game/Data/GameData.h"
 
 // ---------------------------
 // コンストラクタ
@@ -113,8 +114,9 @@ void BossDead::UpdateAnimation()
 		DirectX::SimpleMath::Vector3 BossPos = m_boss->GetPosition();
 		// ダストを生成
 		EventMessenger::Execute(EventList::CreateBashDust, &BossPos);
-		// スクショを取る
-		EventMessenger::Execute(EventList::TakeCapture, nullptr);
+
+		// スクショを取れるようにする
+		GameData::GetInstance()->SetCaptureFlag(true);
 	}
 }
 

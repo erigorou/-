@@ -9,16 +9,30 @@
 #include "pch.h"
 #include "Interface/IEnemy.h"
 
+
 // 前方宣言
 class Boss;
 class Goblin;
 class IObject;
 class PlayScene;
 
+#ifdef _DEBUG
+#include "Interface/IObserver.h"
+
+/// <summary>
+/// 敵の管理クラス
+/// </summary>
+class EnemyManager : public IObserver
+#endif // _DEBUG
+
+
+#ifndef _DEBUG
 /// <summary>
 /// 敵の管理クラス
 /// </summary>
 class EnemyManager
+#endif // !_DEBUG
+
 {
 	// ---------------------------
 	// 構造体
@@ -87,6 +101,9 @@ public:
 	void GenerateEnemy(const DirectX::SimpleMath::Vector3& position, EnemyType type);
 	// 全てのゴブリンのHPを0にする
 	void AllGoblinHPZero();
+	// 全ての敵のHPを0にする
+	void AllEnemyHPZero();
+
 	// 敵１体の削除
 	void DeleteEnemy(void* pointer);
 	// カメラのターゲットの設定
@@ -96,6 +113,15 @@ public:
 
 	// 全ての敵に被ダメ可能を通達
 	void AllEnemyCanHit(void* flag);
+
+#ifdef _DEBUG
+	// キーボードが押されたときの処理
+	void OnKeyDown(const DirectX::Keyboard::Keys& key) override;
+
+	// キーボードが押された瞬間の処理
+	void OnKeyPressed(const DirectX::Keyboard::Keys& key) override;
+#endif // _DEBUG
+
 
 	// ---------------------------
 	// メンバ関数(out)

@@ -17,10 +17,7 @@ public:
 	// アクセサ
 	// -----------------------------
 	// 描画レイヤーを取得する
-	Layer GetLayer() const override
-	{
-		return Layer::SkySphere;
-	}
+	UINT GetLayer() const override { return static_cast<UINT>(Layer::SkySphere); }
 
 
 public:

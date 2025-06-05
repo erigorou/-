@@ -27,7 +27,7 @@ public:
 	// ----------------------------
 public:
 	// 表示レイヤーを取得する
-	Layer GetLayer() const override { return Layer::Object; }
+	UINT GetLayer() const override { return static_cast<UINT>(Layer::Object); }
 
 	// ワールド行列を設定する
 	void SetWorldMatrix(const DirectX::SimpleMath::Matrix& world) { m_world = world; }

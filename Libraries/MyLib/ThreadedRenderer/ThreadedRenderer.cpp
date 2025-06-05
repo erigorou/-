@@ -12,6 +12,9 @@
 #include "DeviceResources.h"
 #include "../DeferredContextPool/DeferredContextPool.h"
 
+#include "Game/Messenger/EventMessenger.h"
+#include "Libraries/MyLib/ScreenShot.h"
+
 // シングルトンインスタンス
 ThreadedRenderer* ThreadedRenderer::s_instance = nullptr;
 
@@ -21,7 +24,8 @@ ThreadedRenderer* ThreadedRenderer::s_instance = nullptr;
 ThreadedRenderer::ThreadedRenderer()
     : 
     m_device(nullptr),
-    m_immediateContext(nullptr) 
+    m_immediateContext(nullptr),
+    m_threadPool(nullptr)
 {
 	// 遅延コンテキストプールの初期化
     DeferredContextPool::GetInstance();
@@ -242,6 +246,12 @@ void ThreadedRenderer::Render(const DirectX::SimpleMath::Matrix& view, const Dir
             cmdList->Release();
         }
     }
+
+	// 遅延コンテキストのリセット
+	DeferredContextPool::GetInstance()->ResetAllContexts();
+
+    // スクショを撮影
+	ScreenShot::TakeScreenshot();
 }
 
 

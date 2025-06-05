@@ -38,13 +38,12 @@ public:
 	static constexpr wchar_t PS_PATH[] = L"Resources/cso/UIPS.cso";
 	static constexpr wchar_t GS_PATH[] = L"Resources/cso/UIGS.cso";
 
-
 	// -----------------------------
 	// アクセサ
 	// -----------------------------
 public:
 	// 描画レイを取得
-	Layer GetLayer() const override { return Layer::UI; }
+	UINT GetLayer() const override { return static_cast<UINT>(Layer::UI); }
 
 	// -----------------------------
 	// メンバ関数(公開)

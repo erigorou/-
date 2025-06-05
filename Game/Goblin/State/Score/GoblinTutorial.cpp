@@ -7,6 +7,7 @@
 #include "../Header/GoblinTutorial.h"
 #include "../../Goblin.h"
 #include "Game/Messenger/EventMessenger.h"
+#include "Game/Data/GameData.h"
 
 // ---------------------------------------------
 /// <summary>
@@ -48,6 +49,8 @@ void GoblinTutorial::PreUpdate()
 {
 	m_goblin->SetIsAttacking(false);
 	m_TotalTime = 0.0f;
+
+	GameData::GetInstance()->IsCaptureFlag();
 }
 
 // ---------------------------------------------
@@ -60,11 +63,6 @@ void GoblinTutorial::Update(const float& elapsedTime)
 {
 	// ŽžŠÔ‚ð‰ÁŽZ‚·‚é
 	m_TotalTime += elapsedTime;
-
-	if (m_TotalTime >= SCREENSHOT_TIME)
-	{
-		EventMessenger::Execute(EventList::TakeCapture, nullptr);
-	}
 }
 
 // ---------------------------------------------

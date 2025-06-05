@@ -141,12 +141,6 @@ void SceneManager::Render()
 	DirectX::SimpleMath::Matrix view = m_currentScene->GetViewMatrix();
 	DirectX::SimpleMath::Matrix projection = m_currentScene->GetProjectionMatrix();
 
-	//// シーンの描画
-	//m_currentScene->Render();
-
-	//// フェードの描画
-	//m_fade->Render();
-
 	// スレッドレンダラーの描画
 	m_threadedRenderer->Render(view, projection);
 }

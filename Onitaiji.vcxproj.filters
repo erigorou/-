@@ -242,6 +242,7 @@
     <ClInclude Include="Libraries\MyLib\ThreadedRenderer\ThreadedRenderer.h" />
     <ClInclude Include="Game\Boss\Face\BossFace.h" />
     <ClInclude Include="Libraries\MyLib\DeferredContextPool\DeferredContextPool.h" />
+    <ClInclude Include="Libraries\MyLib\ScreenShot.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />

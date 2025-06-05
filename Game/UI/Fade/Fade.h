@@ -76,10 +76,7 @@ public:
 	// -----------------------------
 public:
 	// 描画レイヤーを取得する
-	Layer GetLayer() const override
-	{
-		return Layer::Fade;
-	}
+	UINT GetLayer() const override { return static_cast<UINT>(Layer::Fade); }
 
 	// -----------------------------
 	// メンバ関数(公開)

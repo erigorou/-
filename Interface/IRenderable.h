@@ -43,5 +43,5 @@ public:
 		const DirectX::SimpleMath::Matrix& proj,
 		ID3D11DeviceContext* deferredContext) = 0;
 	// •\¦ƒŒƒCƒ„[‚ğæ“¾‚·‚é
-	virtual Layer GetLayer() const = 0;
+	virtual UINT GetLayer() const = 0;
 };

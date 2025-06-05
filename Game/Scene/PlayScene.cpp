@@ -28,6 +28,7 @@
 #include "Game/UI/!PlaySceneUIManager/PlaySceneUIManager.h"
 #include "Effects/Particle.h"
 #include "Game/Camera/Camera.h"
+#include "Libraries/MyLib/ThreadPool/ThreadPool.h"
 
 
 // ------------------------------------------------------------------------------
@@ -61,6 +62,9 @@ PlayScene::~PlayScene()
 // ------------------------------------------------------------------------------
 void PlayScene::Initialize()
 {
+	// GameDataのスクショ情報を削除する
+	GameData::GetInstance()->ClearScreenShot();
+
 	// デバッグカメラを作成する
 	RECT rect{ CommonResources::GetInstance()->GetDeviceResources()->GetOutputSize() };
 
@@ -75,8 +79,6 @@ void PlayScene::Initialize()
 
 	// イベントを登録する (シーン終了)
 	EventMessenger::Attach(EventList::EndPlayScene, std::bind(&PlayScene::ChangeResultScene, this));
-	// イベントを登録する (スクリーンショット)
-	EventMessenger::Attach(EventList::TakeCapture, std::bind(&PlayScene::TakeCapture, this));
 
 	// キーボードを登録する
 	KeyboardMessenger::Attach(DirectX::Keyboard::Keys::Space, this, KeyboardMessenger::KeyPressType::PRESSED);
@@ -181,8 +183,9 @@ void PlayScene::Render()
 	// ビュー行列を取得する
 	const DirectX::SimpleMath::Matrix& view = m_camera->GetViewMatrix();
  
-	// スクリーンショットを取る
-	if (m_isScreenShot)	TakeScreenShot();
+	//// スクリーンショットを取る
+	//if (m_isScreenShot)	TakeScreenShot();
+
 	// パーティクルの描画
 	DrawParticle(view, m_projection);
 	// クエストの描画
@@ -215,7 +218,7 @@ void PlayScene::Finalize()
 {
 	// イベントを解除する
 	EventMessenger::Detach(EventList::EndPlayScene);
-	EventMessenger::Detach(EventList::TakeCapture);
+
 	// キーボードを解除する
 	KeyboardMessenger::Detach(DirectX::Keyboard::Keys::Space, this, KeyboardMessenger::KeyPressType::PRESSED);
 }
@@ -355,8 +358,8 @@ void PlayScene::GameOverChacker()
 // ------------------------------------------------------------------------------
 void PlayScene::TakeScreenShot()
 {
-	// すでにスクリーンショットを取っている場合は何もしない
-	if (m_captureSRV != nullptr) return;
+	// スクショがある or キャプチャが必要ない場合は何もしない
+	if (m_captureSRV && !m_isScreenShot) return;
 
 	// デバイスリソースの取得
 	auto device = CommonResources::GetInstance()->GetDeviceResources();

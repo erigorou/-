@@ -51,7 +51,7 @@ public:
 	void SetWorldMatrix(DirectX::SimpleMath::Matrix mat) { m_worldMatrix = mat; }
 
 	// レイヤーを取得する
-	Layer GetLayer() const override { return Layer::Object; }
+	UINT GetLayer() const override { return static_cast<UINT>(Layer::Object); }
 	
 	// -----------------------------
 	// メンバ関数(公開)

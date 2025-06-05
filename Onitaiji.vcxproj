@@ -325,6 +325,7 @@
     <ClInclude Include="Game\Stage\SkySphere\SkySphere.h" />
     <ClInclude Include="Game\Messenger\KeyboardMessenger.h" />
     <ClInclude Include="Libraries\MyLib\RenderJob\RenderJob.h" />
+    <ClInclude Include="Libraries\MyLib\ScreenShot.h" />
     <ClInclude Include="Libraries\MyLib\Texture.h" />
     <ClInclude Include="Libraries\MyLib\ThreadedRenderer\ThreadedRenderer.h" />
     <ClInclude Include="Libraries\MyLib\ThreadPool\ThreadPool.h" />

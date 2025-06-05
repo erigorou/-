@@ -124,10 +124,7 @@ public:
 	IPlayer* GetPlayerAttackingState2() const { return m_playerAttacking2.get(); }	
 
 	// •`‰æƒŒƒCƒ„[‚ğæ“¾‚·‚é
-	Layer GetLayer() const override
-	{
-		return Layer::Object;
-	}
+	UINT GetLayer() const override { return static_cast<UINT>(Layer::Object); }
 
 	// -------------------
 	// ŒöŠJŠÖ”

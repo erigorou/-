@@ -39,7 +39,7 @@ public:
 	// -----------------------------
 public:
 	// ƒŒƒCƒ„[‚ğæ“¾‚·‚é
-	Layer GetLayer() const override { return Layer::Object; }
+	UINT GetLayer() const override { return static_cast<UINT>(Layer::Object); }
 
 
 	// -----------------------------

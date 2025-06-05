@@ -24,10 +24,7 @@ public:
 	// -----------------------------
 public:
 	// 描画レイヤーを取得する
-	Layer GetLayer() const override
-	{
-		return Layer::Floor;
-	}
+	UINT GetLayer() const override { return static_cast<UINT>(Layer::Floor); }
 
 	// -----------------------------
 	// メンバ関数（公開）

@@ -45,8 +45,6 @@ enum class EventList
 	ChangeCamera,
 	// プレイシーン終了
 	EndPlayScene,
-	// スクリーンショットを撮る
-	TakeCapture
 };
 
 // --------------------------------

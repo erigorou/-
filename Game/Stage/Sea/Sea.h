@@ -66,10 +66,7 @@ public:
 	// -----------------------------
 public:
 	// 描画レイヤーを取得する
-	Layer GetLayer() const override
-	{
-		return Layer::Sea;
-	}
+	UINT GetLayer() const override { return static_cast<UINT>(Layer::Sea); }
 
 	// -----------------------------
 	// 公開メンバ関数

@@ -21,13 +21,20 @@
 /// </summary>
 class ThreadedRenderer 
 {
+    // -----------------------
+    // アクセサ
+    // -----------------------
+public:
+    // シングルトンインスタンスの取得
+    static ThreadedRenderer* GetInstance();
+
+    // スクリーンショットを取る
+	void TakeScreenshot();
+
 	// -----------------------
 	// メンバ関数（公開）
 	// -----------------------
 public:
-    //シングルトンインスタンスの取得
-    static ThreadedRenderer* GetInstance();
-
     // システムの初期化
     void Initialize(ID3D11Device* device);
 
@@ -58,22 +65,20 @@ private:
 	// メンバ変数（非公開）
 	// ------------------------
 private:
+    // シングルトンインスタンス
+    static ThreadedRenderer* s_instance;
 
     // スレッドプール
     std::unique_ptr<ThreadPool> m_threadPool;
-
     // レンダラブルオブジェクトのリスト
     std::vector<IRenderable*> m_renderables;
-
     // レンダラブルリスト用ミューテックス
     std::mutex m_renderablesMutex;
-
     // DirectXデバイス
     ID3D11Device* m_device;
-
     // イミディエートコンテキスト
     ID3D11DeviceContext* m_immediateContext;
 
-    // シングルトンインスタンス
-    static ThreadedRenderer* s_instance;
+    // リザルトに乗せるスクショ撮影のフラグ
+	bool m_takeScreenshot;
 };

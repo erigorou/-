@@ -136,6 +136,15 @@ void ResultScene::AddUserInterface(
 // ---------------------------------------------
 void ResultScene::CreateUI()
 {
+	// 背景の追加
+	AddUserInterface(
+		"result",
+		DirectX::SimpleMath::Vector2{ BACKGROUND_POSITION },
+		DirectX::SimpleMath::Vector2{ BACKGROUND_SCALE },
+		ANCHOR::MIDDLE_CENTER,
+		nullptr
+	);
+
 	// タイトルに戻るボタンの追加
 	AddUserInterface(
 		"GoTitleUI",

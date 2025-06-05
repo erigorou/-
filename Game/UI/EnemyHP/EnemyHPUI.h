@@ -32,13 +32,12 @@ private:
 	// テクスチャの位置
 	static constexpr int BOTTOM_POSITION = 680;
 
-
 	// ------------------------------
 	// アクセサ
 	// ------------------------------
 public:
 	// レイヤーを取得する
-	Layer GetLayer() const override { return Layer::UI; }
+	UINT GetLayer() const override { return static_cast<UINT>(Layer::UI); }
 
 	// ------------------------------
 	// メンバ関数

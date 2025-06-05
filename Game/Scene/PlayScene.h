@@ -61,7 +61,7 @@ public:
 	// クエストマネージャーを取得
 	QuestManager* GetQuestManager() { return m_questManager.get(); }
 	// スクショを取る
-	void TakeCapture() { m_isScreenShot = true; }
+	void OnCaptureFlag() { m_isScreenShot = true; }
 
 	// ビュー行列を取得
 	DirectX::SimpleMath::Matrix GetViewMatrix() const override { return m_camera->GetViewMatrix(); }

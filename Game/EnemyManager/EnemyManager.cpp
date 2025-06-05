@@ -17,6 +17,11 @@
 #include "nlohmann/json.hpp"
 #include <fstream>
 
+#ifdef _DEBUG
+#include "Game/Messenger/KeyboardMessenger.h"
+#endif // !_DEBUG
+
+
 // --------------------------------
 /// <summary>
 /// コンストラクタ
@@ -34,6 +39,11 @@ EnemyManager::EnemyManager()
 
 	// Jsonファイルから敵を生成
 	GenerateEnemyFromJson();
+
+#ifdef _DEBUG
+	KeyboardMessenger::Attach(DirectX::Keyboard::Keys::F8, this, KeyboardMessenger::KeyPressType::PRESSED);
+#endif // _DEBUG
+
 }
 
 // --------------------------------
@@ -111,13 +121,6 @@ void EnemyManager::Render(
 	const DirectX::SimpleMath::Matrix& projection
 )
 {
-	//if (m_enemies.empty()) return;
-
-	//// ゴブリン、ボスの描画
-	//for (auto& enemy : m_enemies)
-	//{
-	//	enemy.data->Render(view, projection);
-	//}
 }
 
 // --------------------------------
@@ -234,6 +237,22 @@ void EnemyManager::AllGoblinHPZero()
 
 // ---------------------------------------------
 /// <summary>
+/// 全ての敵のHPを0にする処理
+/// </summary>
+// ---------------------------------------------
+void EnemyManager::AllEnemyHPZero()
+{
+	// 敵のHPを0にする
+	for (auto& enemy : m_enemies)
+	{
+		// 最大HP分のダメージを全体に与える
+		enemy.data->GetHPSystem()->Damage(enemy.data->GetHPSystem()->GetHP());
+	}
+}
+
+
+// ---------------------------------------------
+/// <summary>
 /// 敵1体を削除する処理
 /// </summary>
 /// <param name="pointer">削除する対象のポインタ</param>
@@ -321,6 +340,35 @@ void EnemyManager::AllEnemyCanHit(void* flag)
 		enemy.data->CanHit(*static_cast<bool*>(flag));
 	}
 }
+
+#ifdef _DEBUG
+// --------------------------------
+/// <summary>
+/// キーボードが押されたときの処理
+/// </summary>
+/// <param name="key">押されたキー</param>
+// ---------------------------------
+void EnemyManager::OnKeyDown(const DirectX::Keyboard::Keys& key)
+{
+	UNREFERENCED_PARAMETER(key);
+}
+
+// --------------------------------
+/// <summary>
+/// キーボードが押された瞬間の処理
+/// </summary>
+/// <param name="key">押されたキー</param>
+// ----------------------------------
+void EnemyManager::OnKeyPressed(const DirectX::Keyboard::Keys& key)
+{
+	// F8キーが押された場合
+	if (key == DirectX::Keyboard::Keys::F8)
+	{
+		// 全ての敵を破壊する
+		AllEnemyHPZero();
+	}
+}
+#endif // _DEBUG
 
 // --------------------------------
 /// <summary>

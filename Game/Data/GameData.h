@@ -56,10 +56,16 @@ public:
 	// 選択画面でボスが選択されている秒数を設定する
 	void SetBossSelectTime(float time) { m_bossSelectTime = time; }
 
+	// スクリーンショットの撮影許可を発行
+	void SetCaptureFlag(bool isCapture) { m_isCapture = isCapture; }
 	// スクリーンショットの設定
 	void SetScreenShot(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> captureSRV) { m_captureSRV = captureSRV; }
 	// スクリーンショットの取得
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> GetScreenShot() const { return m_captureSRV; }
+	// スクリーンショットの削除
+	void ClearScreenShot() { m_captureSRV.Reset(); }
+	// スクリーンショットの許可フラグの取得
+	bool IsCaptureFlag() const { return m_isCapture; }
 
 	// ------------------------------
 	// メンバ関数(公開)
@@ -92,4 +98,6 @@ private:
 
 	// スクショ(テクスチャ)
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_captureSRV;
+	// スクショ許可
+	bool m_isCapture = false;
 };

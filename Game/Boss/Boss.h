@@ -101,7 +101,7 @@ public:
 	void CanNotHitSword() { m_canHit = false; }
 
 	// レイヤーを取得
-	Layer GetLayer() const override { return Layer::Object; }
+	UINT GetLayer() const override { return static_cast<UINT>(Layer::Object); }
 
 	// --------------------------------
 	//  メンバ関数(公開)
