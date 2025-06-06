@@ -171,9 +171,6 @@ void PlayScene::UpdateObjects(float elapsedTime)
 	m_collisionManager->Update();
 	// ゲームオーバー判定
 	GameOverChacker();
-
-	// ビルボード行列の計算
-	m_particles->CreateBillboard(m_camera->GetTargetPosition(), m_camera->GetEyePosition(), DirectX::SimpleMath::Vector3::Up);
 }
 
 // ------------------------------------------------------------------------------

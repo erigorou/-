@@ -148,6 +148,9 @@ void TitleScene::Update(float elapsedTime)
 	UpdateObject(elapsedTime);
 	// パーティクルの更新
 	m_particle->Update(elapsedTime, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero);
+
+	// ビルボード行列の計算
+	m_particle->CreateBillboard(m_camera->GetTargetPosition(), m_camera->GetEyePosition(), DirectX::SimpleMath::Vector3::Up);
 }
 
 // ---------------------------------------------------------
