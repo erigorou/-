@@ -10,6 +10,7 @@
 #pragma once
 // インクルード
 #include "pch.h"
+#include "Interface/IRenderable.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 
@@ -19,7 +20,7 @@ class HPSystem;
 /// <summary>
 /// プレイヤーHPが一定値以下になった時に警告を表示するクラス
 /// </summary>
-class PlayerWarning
+class PlayerWarning : public IRenderable
 {
 	// -----------------------------
 	// 固定値
@@ -55,6 +56,13 @@ private:
 	};
 
 	// -----------------------------
+	// アクセサ
+	// -----------------------------
+public:
+	// レイヤーの取得
+	UINT GetLayer() const override { return static_cast<UINT>(Layer::UI); }
+
+	// -----------------------------
 	// メンバ関数(公開)
 	// -----------------------------
 public:
@@ -68,6 +76,13 @@ public:
 	void Update(float elapsedTime);
 	// 描画処理
 	void Render();
+
+	// 描画コマンドの記録
+	void RecordRenderCommands(
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& proj,
+		ID3D11DeviceContext* deferredContext) override;
+
 	// 終了処理
 	void Finalize();
 

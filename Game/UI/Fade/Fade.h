@@ -97,8 +97,6 @@ public:
 	void Initialize();
 	// XVˆ—
 	void Update(float elapsedTime);
-	// •`‰æˆ—
-	void Render();
 	// •`‰æƒRƒ}ƒ“ƒh‚ğ“o˜^
 	void RecordRenderCommands(
 		const DirectX::SimpleMath::Matrix& view,

@@ -151,6 +151,9 @@ void PlayScene::UpdateObjects(float elapsedTime)
 	// ヒットストップの残り時間を取得
 	float smoothDeltaTime = m_hitStop->GetSmoothDeltaTime();
 
+	// ビルボード行列の計算
+	m_particles->CreateBillboard(m_camera->GetTargetPosition(), m_camera->GetEyePosition(), DirectX::SimpleMath::Vector3::Up);
+
 	// UIマネジャーの更新
 	m_uiManager->Update(elapsedTime);
 	// プレイヤーの更新
@@ -171,21 +174,6 @@ void PlayScene::UpdateObjects(float elapsedTime)
 
 	// ビルボード行列の計算
 	m_particles->CreateBillboard(m_camera->GetTargetPosition(), m_camera->GetEyePosition(), DirectX::SimpleMath::Vector3::Up);
-}
-
-// ------------------------------------------------------------------------------
-/// <summary>
-/// パーティクルの描画
-/// </summary>
-/// <param name="view">ビュー行列</param>
-/// <param name="projection">プロジェクション行列</param>
-// ------------------------------------------------------------------------------
-void PlayScene::DrawParticle(const DirectX::SimpleMath::Matrix& view, DirectX::SimpleMath::Matrix projection)
-{
-	// ビルボード行列の計算
-	m_particles->CreateBillboard(m_camera->GetTargetPosition(), m_camera->GetEyePosition(), DirectX::SimpleMath::Vector3::Up);
-	// パーティクルの描画
-	m_particles->Render(view, projection);
 }
 
 // ------------------------------------------------------------------------------

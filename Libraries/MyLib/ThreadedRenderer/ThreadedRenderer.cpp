@@ -93,6 +93,9 @@ void ThreadedRenderer::RegisterRenderable(IRenderable* renderable)
         // レンダラブルオブジェクトを遅延コンテキストプールに登録
 		DeferredContextPool::GetInstance()->RegisterRenderable(renderable);
     }
+
+    std::string msg = "マルチスレッドに登録されているアイテムの数: " + std::to_string(DeferredContextPool::GetInstance()->GetAllDeferredContexts().size()) + "\n";
+    OutputDebugStringA(msg.c_str());
 }
 
 /// <summary>
@@ -118,6 +121,9 @@ void ThreadedRenderer::UnregisterRenderable(IRenderable* renderable)
 		// レンダラブルオブジェクトを遅延コンテキストプールから登録解除
 		DeferredContextPool::GetInstance()->ReleaseDeferredContext(renderable);
 	}
+
+    std::string msg = "マルチスレッドに登録されているアイテムの数: " + std::to_string(DeferredContextPool::GetInstance()->GetAllDeferredContexts().size()) + "\n";
+    OutputDebugStringA(msg.c_str());
 }
 
 

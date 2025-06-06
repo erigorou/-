@@ -52,8 +52,6 @@ public:
 	void InitializeQuest();
 	// 更新処理
 	void Update(float elapsedTime);
-	// クエストの描画
-	void DrawQuest();
 	// クエストの終了
 	void Finalize();
 	// クエストを一つ更新する

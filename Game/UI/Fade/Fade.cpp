@@ -80,8 +80,6 @@ void Fade::Initialize()
 	auto resources = CommonResources::GetInstance();
 	// デバイスの取得
 	auto device = resources->GetDeviceResources()->GetD3DDevice();
-	// コンテキストの取得
-	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 
 	// フェードテクスチャの取得
 	m_texture = GameResources::GetInstance()->GetTexture("fade");
@@ -378,18 +376,6 @@ void Fade::DrawStencilImage(ID3D11DeviceContext* deferredContext, DirectX::Primi
 	//deferredContext->ClearDepthStencilView(pDSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 0.0f, 0);
 }
 
-// ------------------------------------------------------
-/// <summary>
-/// 描画処理
-/// </summary>
-// ------------------------------------------------------
-void Fade::Render()
-{
-	// RecordRenderCommandsを使用する
-    // シングルスレッドで今まで描画してきたので一応残している感じ
-	// 完全にマルチスレッドに移行するならこの関数も削除する
-}
-
 /// <summary>
 /// 描画コマンドを記憶する
 /// </summary>
@@ -398,11 +384,11 @@ void Fade::Render()
 /// <param name="deferredContext">ディファードコンテキスト</param>
 void Fade::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, ID3D11DeviceContext* deferredContext)
 {
+	UNREFERENCED_PARAMETER(view);
+	UNREFERENCED_PARAMETER(proj);
 
 	// 描画に必要な共通データを取得する
 	CommonResources* resources = CommonResources::GetInstance();
-	auto deviceResources = resources->GetDeviceResources();
-	auto states = resources->GetCommonStates();
 
 	// RenderTargetViewを取得
 	auto rtv = resources->GetDeviceResources()->GetRenderTargetView();

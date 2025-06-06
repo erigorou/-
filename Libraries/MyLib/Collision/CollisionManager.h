@@ -112,11 +112,6 @@ public:
 	void Initialize();
 	// XVˆ—
 	void Update();
-	// •`‰æˆ—
-	void Render(
-		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection
-	);
 	// ’Ç‰ÁŠÖ”
 	template<typename T>
 	void AddCollision(void* args);
@@ -144,11 +139,6 @@ private:
 	inline bool IsGoblinCollision(
 		const CollisionData<DirectX::BoundingSphere>& collisionA,
 		const CollisionData<DirectX::BoundingSphere>& collisionB
-	);
-	// Õ“Ë”»’è‚Ì•`‰æ
-	inline void DrawCollision(
-		DirectX::SimpleMath::Matrix view,
-		DirectX::SimpleMath::Matrix projection
 	);
 	// •`‰æƒRƒ}ƒ“ƒh‚Ì“o˜^
 	void RecordRenderCommands(

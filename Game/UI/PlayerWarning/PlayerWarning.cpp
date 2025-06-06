@@ -13,6 +13,7 @@
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "Game/Data/HPSystem.h"
 #include "CommonStates.h"
+#include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
 
 // ---------------------------------------------------------
 /// <summary>
@@ -31,6 +32,8 @@ PlayerWarning::PlayerWarning(HPSystem* hp)
 	m_elapsedTime{},
 	m_totalTime{}
 {
+	// マルチスレッドに登録
+	ThreadedRenderer::GetInstance()->RegisterRenderable(this);
 }
 
 // ---------------------------------------------------------
@@ -160,6 +163,78 @@ void PlayerWarning::Render()
 	m_customShader->EndSharder(context);
 }
 
+
+// ---------------------------------------------------------
+/// <summary>
+/// 描画コマンドの記録
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="proj">射影行列</param>
+/// <param name="deferredContext">遅延コンテキスト</param>
+// ---------------------------------------------------------
+void PlayerWarning::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, ID3D11DeviceContext* deferredContext)
+{
+	UNREFERENCED_PARAMETER(view);
+	UNREFERENCED_PARAMETER(proj);
+
+	if (m_hp->GetHP() > LOW_HP)
+		return;
+
+	auto batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(deferredContext);
+
+	// 頂点情報
+	DirectX::VertexPositionColorTexture vertex[4] =
+	{ 
+		DirectX::VertexPositionColorTexture(
+			DirectX::SimpleMath::Vector3::Zero,
+			DirectX::SimpleMath::Vector4::One,
+			DirectX::XMFLOAT2(0.0f, 0.0f)
+		) 
+	};
+
+	// バッファの作成
+	ConstBuffer cbuff;
+	cbuff.matWorld = DirectX::SimpleMath::Matrix::Identity;
+	cbuff.matView = DirectX::SimpleMath::Matrix::Identity;
+	cbuff.matProj = DirectX::SimpleMath::Matrix::Identity;
+	cbuff.diffuse = DirectX::SimpleMath::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	cbuff.easing = DirectX::SimpleMath::Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+	cbuff.time = DirectX::SimpleMath::Vector4(m_totalTime, 0.0f, 0.0f, 0.0f);
+
+	// コンスタントバッファの設定
+	deferredContext->UpdateSubresource(m_CBuffer.Get(), 0, nullptr, &cbuff, 0, 0);
+
+	// シェーダーの開始
+	m_customShader->BeginSharder(deferredContext);
+
+	// シェーダーにバッファを渡す
+	ID3D11Buffer* cb[1] = { m_CBuffer.Get() };
+	deferredContext->VSSetConstantBuffers(0, 1, cb);
+	deferredContext->GSSetConstantBuffers(0, 1, cb);
+	deferredContext->PSSetConstantBuffers(0, 1, cb);
+
+	// サンプラーステートの設定
+	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
+	deferredContext->PSSetSamplers(0, 1, sampler);
+
+	// ブレンドステートの設定
+	ID3D11BlendState* blendstate = m_states->NonPremultiplied();
+	deferredContext->OMSetDepthStencilState(m_states->DepthDefault(), 0);
+	deferredContext->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
+	deferredContext->RSSetState(m_states->CullNone());
+
+	// テクスチャの設定
+	deferredContext->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
+
+	// 描画
+	batch->Begin();
+	batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], 4);
+	batch->End();
+
+	// シェーダーの終了
+	m_customShader->EndSharder(deferredContext);
+}
+
 // ---------------------------------------------------------
 /// <summary>
 /// 終了処理
@@ -167,4 +242,6 @@ void PlayerWarning::Render()
 // ---------------------------------------------------------
 void PlayerWarning::Finalize()
 {
+	// マルチスレッドからの登録解除
+	ThreadedRenderer::GetInstance()->UnregisterRenderable(this);
 }

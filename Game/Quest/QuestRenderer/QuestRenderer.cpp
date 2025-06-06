@@ -102,53 +102,6 @@ void QuestRenderer::Update(float elapsedTime)
 
 // -------------------------------------------------------
 /// <summary>
-/// 描画処理
-/// </summary>
-// -------------------------------------------------------
-void QuestRenderer::Draw()
-{
-	// コンテキストの取得
-	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-
-	// 頂点情報の設定
-	DirectX::VertexPositionColorTexture vertex[1] =
-	{
-		DirectX::VertexPositionColorTexture
-		(
-			DirectX::SimpleMath::Vector3(m_scale.x, m_scale.y, static_cast<float>(ANCHOR::TOP_LEFT))
-		,	DirectX::SimpleMath::Vector4(m_position.x, m_position.y, WIDTH, HEIGHT)
-		,	DirectX::SimpleMath::Vector2(WINDOW_WIDTH, WINDOW_HEIGHT)
-		)
-	};
-
-	//// 定数バッファの設定
-	//UpdateConstantBuffer();
-
-	// 画像用サンプラーの登録
-	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
-	context->PSSetSamplers(0, 1, sampler);
-
-	//// レンダーステートの設定
-	//SetRenderState();
-
-	// シェーダー開始
-	m_shader->BeginSharder(context);
-
-	// テクスチャの設定
-	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
-	context->PSSetShaderResources(1, 1, m_dissolveTexture.GetAddressOf());
-
-	//	板ポリゴンを描画
-	m_batch->Begin();
-	m_batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], 1);
-	m_batch->End();
-
-	// シェーダー終了
-	m_shader->EndSharder(context);
-}
-
-// -------------------------------------------------------
-/// <summary>
 /// 描画コマンドを記録する
 /// </summary>
 /// <param name="view">ビュー行列</param>
@@ -157,6 +110,9 @@ void QuestRenderer::Draw()
 // --------------------------------------------------------
 void QuestRenderer::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, ID3D11DeviceContext* deferredContext)
 {
+	UNREFERENCED_PARAMETER(view);
+	UNREFERENCED_PARAMETER(proj);
+
 	auto batch = DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>(deferredContext);
 
 	// 頂点情報の設定

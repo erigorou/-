@@ -83,8 +83,6 @@ public:
 	void Initialize(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>);
 	// 更新処理
 	void Update(float elapsedTime);
-	// 描画処理
-	void Draw();
 	// 描画コマンドを記録する
 	void RecordRenderCommands(
 		const DirectX::SimpleMath::Matrix& view,

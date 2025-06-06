@@ -117,6 +117,9 @@ void PlayerHPUI::Render()
 // ---------------------------
 void PlayerHPUI::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, ID3D11DeviceContext* deferredContext)
 {
+	UNREFERENCED_PARAMETER(view);
+	UNREFERENCED_PARAMETER(proj);
+
 	// スプライトバッチの作成
 	auto batch = DirectX::SpriteBatch(deferredContext);
 

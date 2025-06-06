@@ -59,7 +59,6 @@ void Sea::Create()
 {
 	CommonResources* resources = CommonResources::GetInstance();
 	auto device = resources->GetDeviceResources()->GetD3DDevice();
-	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 
 	// カスタムシェーダー群の生成処理
 	m_customShader = std::make_unique<CustomShader>
@@ -99,9 +98,6 @@ void Sea::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view,
 	const DirectX::SimpleMath::Matrix& proj,
 	ID3D11DeviceContext* deferredContext)
 {
-	CommonResources* resources = CommonResources::GetInstance();
-	auto states = resources->GetCommonStates();
-
 	// 頂点情報(板ポリゴンの４頂点の座標情報）
 	DirectX::VertexPositionColorTexture vertex[4] =
 	{

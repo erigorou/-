@@ -18,6 +18,7 @@
 #include "Libraries/Mylib/DebugString.h"
 #include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
 #include <future>
+#include "StepTimer.h"
 
 /// <summary>
 /// コンストラクタ
@@ -243,7 +244,7 @@ inline void CollisionManager::CheckCollisionOBBToSphere()
 			m_obbProxies[i] = CreateProxySphere(m_obbs[i].collision);
 		}
 		catch (const std::exception& e) {
-			// プロキシ球作成失敗時はこのOBBをスキップ
+			OutputDebugStringA(("プロキシ球作成失敗: " + std::string(e.what()) + "\n").c_str());
 			continue;
 		}
 
@@ -423,24 +424,6 @@ void CollisionManager::Update()
 }
 
 /// <summary>
-/// 描画処理
-/// デバッグ中の当たり判定の描画を行う
-/// </summary>
-/// <param name="view">ビュー行列</param>
-/// <param name="projection">プロジェクション行列</param>
-void CollisionManager::Render
-(
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection
-)
-{
-	if (!m_drawFlag) return;
-
-	// 衝突判定の描画
-	DrawCollision(view, projection);
-}
-
-/// <summary>
 /// 登録された情報をクリアする
 /// </summary>
 void CollisionManager::Clear()
@@ -537,50 +520,6 @@ inline std::unique_ptr<DirectX::BoundingSphere> CollisionManager::CreateProxySph
 	);
 
 	return std::make_unique<DirectX::BoundingSphere>(collision->Center, radius);
-}
-
-/// <summary>
-/// 衝突判定の描画を行う
-/// デバッグ中のみ有効F
-/// </summary>
-/// <param name="view">ビュー行列</param>
-/// <param name="projection">プロジェクション行列</param>
-inline void CollisionManager::DrawCollision(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection)
-{
-	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = CommonResources::GetInstance()->GetCommonStates();
-
-	// 描画設定を行う
-	context->OMSetBlendState(states->Opaque(), nullptr, 0xFFFFFFFF);
-	context->OMSetDepthStencilState(states->DepthDefault(), 0);
-	context->RSSetState(states->CullNone());
-	context->IASetInputLayout(m_inputLayout.Get());
-	// ビュー行列と射影行列を設定
-	m_basicEffect->SetView(view);
-	m_basicEffect->SetProjection(projection);
-	m_basicEffect->Apply(context);
-	// 描画開始
-	m_primitiveBatch->Begin();
-
-	// OBBの描画
-	for (const auto& obb : m_obbs) {
-		if (obb.collision)
-			DX::Draw(m_primitiveBatch.get(), *obb.collision, DirectX::Colors::Red);
-	}
-
-	// Sphereの描画
-	for (const auto& sphere : m_spheres) {
-		if (sphere.collision)
-			DX::Draw(m_primitiveBatch.get(), *sphere.collision, DirectX::Colors::Blue);
-	}
-
-	// OBBのプロキシ球の描画
-	for (auto& sphere : m_obbProxies) {
-		if (sphere)
-			DX::Draw(m_primitiveBatch.get(), *sphere, DirectX::Colors::LimeGreen);
-	}
-	// 描画終了
-	m_primitiveBatch->End();
 }
 
 /// <summary>

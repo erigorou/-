@@ -135,8 +135,6 @@ void SceneManager::Update(float elapsedTime)
 //---------------------------------------------------------
 void SceneManager::Render()
 {
-	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-
 	// ŠeƒV[ƒ“‚©‚çview‚Æprojection‚ðŽæ“¾
 	DirectX::SimpleMath::Matrix view = m_currentScene->GetViewMatrix();
 	DirectX::SimpleMath::Matrix projection = m_currentScene->GetProjectionMatrix();

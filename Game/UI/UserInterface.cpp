@@ -115,7 +115,6 @@ void UserInterface::Create(
 	IAction* action)
 {
 	auto device = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
-	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 
 	// ‰ŠúÀ•W‚Ìİ’è
 	m_position = position;
@@ -277,6 +276,8 @@ void UserInterface::Render()
 // ----------------------------------------------------------
 void UserInterface::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, ID3D11DeviceContext* deferredContext)
 {
+	UNREFERENCED_PARAMETER(view);
+	UNREFERENCED_PARAMETER(proj);
 	auto batch = DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>(deferredContext);
 
 	// ’¸“_î•ñ

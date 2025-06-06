@@ -120,6 +120,8 @@ void EnemyHPUI::Render()
 // ----------------------------
 void EnemyHPUI::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, ID3D11DeviceContext* deferredContext)
 {
+	UNREFERENCED_PARAMETER(view);
+	UNREFERENCED_PARAMETER(proj);
 	auto spriteBatch = std::make_unique<DirectX::SpriteBatch>(deferredContext);
 
 	// “G‚ÌHP‚ðŽæ“¾

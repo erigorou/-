@@ -107,8 +107,6 @@ private:
 	// キーボードの更新
 	void UpdateKeyboard();
 
-	// パーティクルの描画
-	void DrawParticle(const DirectX::SimpleMath::Matrix& view, DirectX::SimpleMath::Matrix projection);
 	// ゲームオーバー判定
 	void GameOverChacker();
 

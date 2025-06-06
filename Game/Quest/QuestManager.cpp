@@ -146,25 +146,6 @@ void QuestManager::ChangeNextQuest()
 	}
 }
 
-// ---------------------------------------------
-/// <summary>
-/// クエストの描画
-/// </summary>
-// ---------------------------------------------
-void QuestManager::DrawQuest()
-{
-	if (m_renderer != nullptr)
-	{
-		// クエストの描画
-		m_renderer->Draw();
-	}
-
-	// チュートリアルの描画
-	if (m_tutorial != nullptr)
-	{
-		m_tutorial->Draw();
-	}
-}
 
 // ---------------------------------------------
 /// <summary>

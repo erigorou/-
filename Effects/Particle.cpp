@@ -264,43 +264,6 @@ void Particle::CreateShader()
 
 // --------------------------------------------------------
 /// <summary>
-/// 描画処理
-/// </summary>
-/// <param name="view">ビュー行列</param>
-/// <param name="proj">プロジェクション行列</param>
-// --------------------------------------------------------
-void Particle::Render(
-	DirectX::SimpleMath::Matrix view,
-	DirectX::SimpleMath::Matrix proj
-)
-{
-	CommonResources* resources = CommonResources::GetInstance();
-	auto states = resources->GetCommonStates();
-	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
-
-	DirectX::SimpleMath::Vector3 cameraDir = m_cameraTarget - m_cameraPosition;
-	cameraDir.Normalize(); // カメラの方向を正規化
-
-	ID3D11SamplerState* sampler[1] = { states->LinearWrap() };// サンプラーステートの設定
-	context->PSSetSamplers(0, 1, sampler);
-
-	ID3D11BlendState* blendstate = m_states->NonPremultiplied();// 半透明描画指定
-	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);// 透明判定処理
-	context->OMSetDepthStencilState(m_states->DepthDefault(), 0);// 深度バッファはなし
-	context->RSSetState(m_states->CullNone());// カリングなし
-
-	//	ピクセルシェーダにテクスチャを登録する。
-	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
-
-	//	インプットレイアウトの登録
-	context->IASetInputLayout(m_inputLayout.Get());
-
-	//DrawSwordParticle(view, proj);				// 剣の残像の描画
-	//DrawDustParticle(view, proj, cameraDir);	// 土埃の描画
-}
-
-// --------------------------------------------------------
-/// <summary>
 /// 描画コマンドを登録する
 /// </summary>
 /// <param name="view">ビュー行列</param>
