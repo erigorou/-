@@ -234,7 +234,6 @@
     <ClInclude Include="Game\Stage\SelectSceneObject\SelectSceneObject.h" />
     <ClInclude Include="Game\UI\Action\SelectTutorialAction.h" />
     <ClInclude Include="Game\UI\Action\SelectBossAction.h" />
-    <ClInclude Include="Game\UI\EscapeSign\EscapeSign.h" />
     <ClInclude Include="Game\Stage\Sign\Sign.h" />
     <ClInclude Include="Interface\IRenderable.h" />
     <ClInclude Include="Libraries\MyLib\ThreadPool\ThreadPool.h" />
@@ -355,7 +354,6 @@
     <ClCompile Include="Game\Scene\SelectScene.cpp" />
     <ClCompile Include="Game\Camera\State\SelectCameraState.cpp" />
     <ClCompile Include="Game\Stage\SelectSceneObject\SelectSceneObject.cpp" />
-    <ClCompile Include="Game\UI\EscapeSign\EscapeSign.cpp" />
     <ClCompile Include="Game\Stage\Sign\Sign.cpp" />
     <ClCompile Include="Libraries\MyLib\ThreadPool\ThreadPool.cpp" />
     <ClCompile Include="Libraries\MyLib\RenderJob\RenderJob.cpp" />

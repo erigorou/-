@@ -77,9 +77,6 @@ public:
 	// デストラクタ
 	~Sea();
 
-	// 描画処理
-	void Render(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj);
-
 	// 描画コマンド登録
 	void RecordRenderCommands(
 		const DirectX::SimpleMath::Matrix& view,

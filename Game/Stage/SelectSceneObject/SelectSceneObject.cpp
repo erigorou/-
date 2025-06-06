@@ -71,47 +71,6 @@ void SelectSceneObject::Update(float elapsedTime)
 
 // -----------------------------------------------
 /// <summary>
-/// 描画処理
-/// </summary>
-/// <param name="view">ビュー行列</param>
-/// /// <param name="proj">射影行列</param>
-void SelectSceneObject::Render(const DirectX::SimpleMath::Matrix view, const DirectX::SimpleMath::Matrix proj)
-{
-	if (m_models[m_stageNo] == nullptr) return;
-
-	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = CommonResources::GetInstance()->GetCommonStates();
-
-	// エフェクトの設定
-	m_models[m_stageNo]->UpdateEffects([&](DirectX::IEffect* effect)
-		{
-			auto basicEffect = dynamic_cast<DirectX::BasicEffect*>(effect);
-			if (basicEffect)
-			{
-				basicEffect->SetLightingEnabled(false); // ライト有効化
-				basicEffect->SetPerPixelLighting(true); // ピクセル単位のライティング有効化
-				basicEffect->SetTextureEnabled(false); // テクスチャの無効化
-				basicEffect->SetVertexColorEnabled(false); // 頂点カラーの無効化
-				basicEffect->SetFogEnabled(false); // フォグの無効化
-			}
-		}
-	);
-
-
-
-	m_models[m_stageNo]->Draw(context, *states, m_worldMatrix, view, proj, false, [&]
-		{
-			// ブレンドステートを設定
-			context->OMSetBlendState(states->AlphaBlend(), nullptr, 0xFFFFFFFF);
-		}
-	);
-
-	// 看板を表示する
-	m_sign->DrawSign(view,proj);
-}
-
-// -----------------------------------------------
-/// <summary>
 /// 描画コマンドを記録する
 /// </summary>
 /// <param name="view">ビュー行列</param>
@@ -145,9 +104,6 @@ void SelectSceneObject::RecordRenderCommands(const DirectX::SimpleMath::Matrix& 
 			deferredContext->OMSetBlendState(states->AlphaBlend(), nullptr, 0xFFFFFFFF);
 		}
 	);
-
-	// 看板を表示する
-	m_sign->DrawSign(view, proj);
 }
 
 // -----------------------------------------------

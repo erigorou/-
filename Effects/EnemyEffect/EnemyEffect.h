@@ -62,15 +62,6 @@ public:
 	~EnemyEffect();
 	// 更新処理
 	void Update(float elapsedTime);
-	// 体パーツの描画
-	void DrawWithEffect(
-		DirectX::Model* model,
-		const DirectX::SimpleMath::Matrix world,
-		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& proj
-	);
-
-
 	// 描画コマンドの登録
 	void RecordRenderCommands(
 		const DirectX::SimpleMath::Matrix& view,

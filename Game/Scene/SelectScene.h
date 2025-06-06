@@ -91,8 +91,6 @@ public:
 	void Initialize() override;
 	// 更新処理
 	void Update(float elapsedTime) override;
-	// 描画処理
-	void Render() override;
 	// 終了処理
 	void Finalize() override;
 	// 次のシーンIDを取得する
@@ -121,8 +119,6 @@ private:
 	void CreateUI();
 	// ステージの生成
 	void CreateStage();
-	// ステージの描画
-	void RenderStage();
 	// 使用キーボードの登録
 	void RegisterKeyboard();
 	// 下キーが押されたときの処理

@@ -21,8 +21,6 @@ public:
 	virtual void Initialize(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 size) = 0;
 	// XVŠÖ”
 	virtual void Update() = 0;
-	// •`‰æŠÖ”5
-	virtual void Render() = 0;
 	// I—¹ŠÖ”
 	virtual void Finalize() = 0;
 

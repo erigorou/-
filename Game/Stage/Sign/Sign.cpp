@@ -11,6 +11,7 @@
 #include "Sign.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
+#include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
 
 
 /// <summary>
@@ -18,6 +19,9 @@
 /// </summary>
 Sign::Sign()
 {
+	// マルチスレッドに登録
+	ThreadedRenderer::GetInstance()->RegisterRenderable(this);
+
 	auto commonResources = CommonResources::GetInstance();
 	auto device = commonResources->GetDeviceResources()->GetD3DDevice();
 
@@ -35,26 +39,27 @@ Sign::Sign()
 /// </summary>
 Sign::~Sign()
 {
+	// マルチスレッドから登録解除
+	ThreadedRenderer::GetInstance()->UnregisterRenderable(this);
 }
 
 
-
-void Sign::DrawSign(
-	DirectX::SimpleMath::Matrix view,
-	DirectX::SimpleMath::Matrix projection
-)
+/// <summary>
+/// 描画コマンドを記録する
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="proj">プロジェクション行列</param>
+/// <param name="deferredContext">遅延コンテキスト</param>
+void Sign::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, ID3D11DeviceContext* deferredContext)
 {
-	using namespace DirectX;
-
 	CommonResources* resources = CommonResources::GetInstance();
-	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = resources->GetCommonStates();
 
 	// モデルのエフェクト情報を更新する処理
 	m_signModel->UpdateEffects([](DirectX::IEffect* effect)
 		{
 			// ベーシックエフェクトを設定する
-			BasicEffect* basicEffect = dynamic_cast<BasicEffect*>(effect);
+			DirectX::BasicEffect* basicEffect = dynamic_cast<DirectX::BasicEffect*>(effect);
 			if (basicEffect)
 			{
 				// 個別のライトをすべて無効化する
@@ -63,23 +68,23 @@ void Sign::DrawSign(
 				basicEffect->SetLightEnabled(2, false);
 
 				// モデルを自発光させる
-				basicEffect->SetEmissiveColor(Colors::White);
+				basicEffect->SetEmissiveColor(DirectX::Colors::White);
 			}
 		}
 	);
 
 	// 初期状態のワールドマトリックスを設定
-	SimpleMath::Matrix world = SimpleMath::Matrix::Identity;
+	DirectX::SimpleMath::Matrix world = DirectX::SimpleMath::Matrix::Identity;
 
 	// 大きさ変更
-	world *= SimpleMath::Matrix::CreateScale(SIGN_SCALE);
+	world *= DirectX::SimpleMath::Matrix::CreateScale(SIGN_SCALE);
 
 	// 回転
-	world *= SimpleMath::Matrix::CreateRotationY(SIGN_ROTATE);
+	world *= DirectX::SimpleMath::Matrix::CreateRotationY(SIGN_ROTATE);
 
 	// 移動
-	world *= SimpleMath::Matrix::CreateTranslation(SIGN_POSITION);
+	world *= DirectX::SimpleMath::Matrix::CreateTranslation(SIGN_POSITION);
 
 	// 描画
-	m_signModel->Draw(context, *states, world, view, projection);
+	m_signModel->Draw(deferredContext, *states, world, view, proj);
 }

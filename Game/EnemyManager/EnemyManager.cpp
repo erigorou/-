@@ -111,20 +111,6 @@ void EnemyManager::Update(float elapsedTime)
 
 // --------------------------------
 /// <summary>
-/// 描画処理
-/// </summary>
-/// <param name="view">ビュー行列</param>
-/// <param name="projection">プロジェクション行列</param>
-// --------------------------------
-void EnemyManager::Render(
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection
-)
-{
-}
-
-// --------------------------------
-/// <summary>
 /// 終了処理
 /// </summary>
 // --------------------------------

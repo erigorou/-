@@ -172,31 +172,6 @@ void TitleScene::UpdateObject(const float elapsedTime)
 
 // ---------------------------------------------------------
 /// <summary>
-/// 更新処理
-/// </summary>
-/// <param name="elapsedTime">経過時間</param>
-// ---------------------------------------------------------
-void TitleScene::Render()
-{
-	// ビュー行列を取得する
-	auto view = m_camera->GetViewMatrix();
-	// 床の描画
-	m_floor->Render(view, m_projection);
-	// 海の描画
-	m_sea->Render(view, m_projection);
-	// 敵の描画
-	m_enemy->Render(view, m_projection);
-	// 天球の描画
-	m_skySphere->DrawSkySphere(view, m_projection);
-	// パーティクルの描画
-	m_particle->CreateBillboard(m_camera->GetEyePosition(), DirectX::SimpleMath::Vector3::Zero, m_camera->GetUpVector());
-	m_particle->Render(view, m_projection);
-	// UIの描画
-	m_uiManager->Render();
-}
-
-// ---------------------------------------------------------
-/// <summary>
 /// 終了処理
 /// </summary>
 // ---------------------------------------------------------

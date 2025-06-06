@@ -9,12 +9,13 @@
 
 // インクルード
 #include "pch.h"
+#include "Interface/IRenderable.h"
 
 
 /// <summary>
 /// 看板クラス
 /// </summary>
-class Sign
+class Sign : public IRenderable
 {
 	// -------------------------------
 	// 定数
@@ -29,6 +30,13 @@ public:
 	// 看板の位置
 	static constexpr DirectX::SimpleMath::Vector3 SIGN_POSITION = DirectX::SimpleMath::Vector3(-35.0f, 0.0f, 50.0f);
 
+	// --------------------------------
+	// アクセサ
+	// --------------------------------
+public:
+	// レイヤーの取得
+	UINT GetLayer() const { return static_cast<UINT>(Layer::Object); }
+
 	// -------------------------------
 	// メンバ関数（公開）
 	// -------------------------------
@@ -37,10 +45,11 @@ public:
 	Sign();
 	// デストラクタ
 	~Sign();
-	// 看板の描画
-	void DrawSign(
-		DirectX::SimpleMath::Matrix view,
-		DirectX::SimpleMath::Matrix projection
+	// 描画コマンドの記録
+	void RecordRenderCommands(
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& proj,
+		ID3D11DeviceContext* deferredContext
 	);
 
 	// -------------------------------

@@ -50,11 +50,6 @@ public:
 	~Wall();
 	// ‰Šú‰»
 	void Initialize();
-	// •`‰æˆ—
-	void Render(
-		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection
-	);
 
 	// •`‰æƒRƒ}ƒ“ƒh“o˜^
 	void RecordRenderCommands(

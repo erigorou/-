@@ -40,8 +40,6 @@ public:
 		float radius, 
 		int segments
 	);
-	// •`‰æˆ—
-	void Render(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj); 
 
 	// •`‰æƒRƒ}ƒ“ƒh“o˜^
 	void RecordRenderCommands(

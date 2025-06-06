@@ -142,16 +142,6 @@ public:
 	void TimeComparison(float& nowTime, const float totalTime, PlayerState state, const float elapsedTime);
 	// XVˆ—
 	void Update(const float elapsedTime);
-	// •`‰æˆ—
-	void Render(
-		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection);
-
-	void RenderWithContext(
-		ID3D11DeviceContext* context,
-		DirectX::CommonStates* states,
-		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection);
 
 	void RecordRenderCommands(
 		const DirectX::SimpleMath::Matrix& view,

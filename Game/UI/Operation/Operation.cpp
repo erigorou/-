@@ -89,11 +89,6 @@ void Operation::Update(float elapsedTime)
 // ---------------------------------------------------------
 void Operation::Render()
 {
-	for (size_t i = 0; i < m_operateUIs.size(); i++)
-	{
-		m_operateUIs[i]->Render();
-	}
-
 	// テキストUIの描画
 	m_textUI->Render();
 }

@@ -233,18 +233,6 @@ void Goblin::MoveCollision()
 	m_bodyCollision->Center = pos;
 }
 
-// -------------------------------------------------------
-/// <summary>
-/// 描画処理
-/// </summary>
-/// <param name="view">ビュー行列</param>
-/// <param name="projection">プロジェクション行列</param>
-// -------------------------------------------------------
-void Goblin::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection)
-{
-	m_enemyEffect->DrawWithEffect(m_model.get(), m_worldMatrix, view, projection);
-}
-
 /// <summary>
 /// 描画コマンドの記録
 /// </summary>

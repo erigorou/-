@@ -175,27 +175,6 @@ void PlayScene::UpdateObjects(float elapsedTime)
 
 // ------------------------------------------------------------------------------
 /// <summary>
-/// プレイシーンのオブジェクトの描画処理
-/// </summary>
-// ------------------------------------------------------------------------------
-void PlayScene::Render()
-{
-	// ビュー行列を取得する
-	const DirectX::SimpleMath::Matrix& view = m_camera->GetViewMatrix();
- 
-	//// スクリーンショットを取る
-	//if (m_isScreenShot)	TakeScreenShot();
-
-	// パーティクルの描画
-	DrawParticle(view, m_projection);
-	// クエストの描画
-	m_questManager->DrawQuest();
-	// UIの描画
-	m_uiManager->Render();
-}
-
-// ------------------------------------------------------------------------------
-/// <summary>
 /// パーティクルの描画
 /// </summary>
 /// <param name="view">ビュー行列</param>

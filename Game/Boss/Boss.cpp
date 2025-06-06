@@ -316,28 +316,6 @@ void Boss::CalcrationWorldMatrix()
 	m_face->SetWorldMatrix(m_worldMatrix);
 }
 
-// --------------------------------
-/// <summary>
-/// 描画処理
-/// </summary>
-/// <param name="view">ビュー行列</param>
-/// <param name="projection">プロジェクション行列</param>
-// --------------------------------
-void Boss::Render(
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection
-)
-{
-	// 描画に必要なデータを取得する
-	CommonResources* resources = CommonResources::GetInstance();
-	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = resources->GetCommonStates();
-
-	// 深度値を参照して書き込む
-	context->OMSetDepthStencilState(states->DepthDefault(), 0);
-
-}
-
 /// <summary>
 /// 描画コマンド記録する
 /// </summary>

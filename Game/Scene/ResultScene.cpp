@@ -198,31 +198,6 @@ void ResultScene::Update(float elapsedTime)
 
 // ---------------------------------------------
 /// <summary>
-/// 描画する
-/// </summary>
-// ---------------------------------------------
-void ResultScene::Render()
-{
-	// コモンステートを取得する
-	auto states = CommonResources::GetInstance()->GetCommonStates();
-
-	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
-	m_spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, states->NonPremultiplied());
-
-	// スクリーンショットの描画
-	DrawCaptureTexture();
-	// スプライトバッチの終わり
-	m_spriteBatch->End();
-
-	// UIの描画
-	for (auto& ui : m_uiList)
-	{
-		ui->Render();
-	}
-}
-
-// ---------------------------------------------
-/// <summary>
 /// スクリーンショットを描画する
 /// </summary>
 // ---------------------------------------------

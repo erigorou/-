@@ -101,11 +101,6 @@ public:
 	void CreateCollision();
 	// XVˆ—
 	void Update(float elapsedTime);
-	// •`‰æˆ—
-	void Render(
-		const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& projection
-	);
 	// •`‰æƒRƒ}ƒ“ƒh‚Ì“o˜^
 	void RecordRenderCommands(
 		const DirectX::SimpleMath::Matrix& view,

@@ -13,6 +13,7 @@
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 #include "CommonStates.h"
 #include "Game/GameResources.h"
+#include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
 
 // ---------------------------------------------------------
 /// <summary>
@@ -31,6 +32,9 @@ OperateUI::OperateUI(std::string_view key)
 	m_totalTime{},
 	m_downKey(false)
 {
+	// スレッドレンダラーに登録
+	ThreadedRenderer::GetInstance()->RegisterRenderable(this);
+
 	// テクスチャを取得
 	m_texture = GameResources::GetInstance()->GetTexture(static_cast<std::string>(key));
 }
@@ -42,6 +46,8 @@ OperateUI::OperateUI(std::string_view key)
 // ---------------------------------------------------------
 OperateUI::~OperateUI()
 {
+	// スレッドレンダラーから登録解除
+	ThreadedRenderer::GetInstance()->UnregisterRenderable(this);
 }
 
 // ---------------------------------------------------------
@@ -88,13 +94,14 @@ void OperateUI::Initialize()
 
 // ---------------------------------------------------------
 /// <summary>
-/// 描画処理
+/// 描画コマンドの記憶
 /// </summary>
-// ---------------------------------------------------------
-void OperateUI::Render()
+/// <param name="view">ビュー行列</param>
+/// <param name="proj">プロジェクション行列</param>
+/// <param name="deferredContext">遅延コンテキスト</param>
+void OperateUI::RecordRenderCommands(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, ID3D11DeviceContext* deferredContext)
 {
-	using namespace DirectX;
-	ID3D11DeviceContext* context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
+	auto batch = DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>(deferredContext);
 
 	// キーが押されている場合
 	if (m_downKey)
@@ -107,56 +114,56 @@ void OperateUI::Render()
 	}
 
 	// 頂点情報
-	VertexPositionColorTexture vertex[4] =
+	DirectX::VertexPositionColorTexture vertex[4] =
 	{
-		VertexPositionColorTexture(
-		SimpleMath::Vector3::Zero,
-		SimpleMath::Vector4::One,
-		XMFLOAT2(0.0f, 0.0f)
+		DirectX::VertexPositionColorTexture(
+		DirectX::SimpleMath::Vector3::Zero,
+		DirectX::SimpleMath::Vector4::One,
+		DirectX::XMFLOAT2(0.0f, 0.0f)
 		)
 	};
 
 	// バッファの作成
 	ConstBuffer cbuff;
-	cbuff.matWorld = SimpleMath::Matrix::Identity;
-	cbuff.matView = SimpleMath::Matrix::Identity;
-	cbuff.matProj = SimpleMath::Matrix::Identity;
-	cbuff.diffuse = SimpleMath::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-	cbuff.easing = SimpleMath::Vector4(0.0f, 0.0f, 0.0f, 0.0f);
-	cbuff.time = SimpleMath::Vector4(m_totalTime, 0.0f, 0.0f, 0.0f);
+	cbuff.matWorld = DirectX::SimpleMath::Matrix::Identity;
+	cbuff.matView = DirectX::SimpleMath::Matrix::Identity;
+	cbuff.matProj = DirectX::SimpleMath::Matrix::Identity;
+	cbuff.diffuse = DirectX::SimpleMath::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	cbuff.easing = DirectX::SimpleMath::Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+	cbuff.time = DirectX::SimpleMath::Vector4(m_totalTime, 0.0f, 0.0f, 0.0f);
 
 	// コンスタントバッファの設定
-	context->UpdateSubresource(m_CBuffer.Get(), 0, nullptr, &cbuff, 0, 0);
+	deferredContext->UpdateSubresource(m_CBuffer.Get(), 0, nullptr, &cbuff, 0, 0);
 
 	// シェーダーの開始
-	m_customShader->BeginSharder(context);
+	m_customShader->BeginSharder(deferredContext);
 
 	// シェーダーにバッファを渡す
 	ID3D11Buffer* cb[1] = { m_CBuffer.Get() };
-	context->VSSetConstantBuffers(0, 1, cb);
-	context->GSSetConstantBuffers(0, 1, cb);
-	context->PSSetConstantBuffers(0, 1, cb);
+	deferredContext->VSSetConstantBuffers(0, 1, cb);
+	deferredContext->GSSetConstantBuffers(0, 1, cb);
+	deferredContext->PSSetConstantBuffers(0, 1, cb);
 
 	// サンプラーステートの設定
 	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
-	context->PSSetSamplers(0, 1, sampler);
+	deferredContext->PSSetSamplers(0, 1, sampler);
 
 	// ステートの設定
 	ID3D11BlendState* blendstate = m_states->NonPremultiplied();
-	context->OMSetDepthStencilState(m_states->DepthDefault(), 0);
-	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
-	context->RSSetState(m_states->CullNone());
+	deferredContext->OMSetDepthStencilState(m_states->DepthDefault(), 0);
+	deferredContext->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
+	deferredContext->RSSetState(m_states->CullNone());
 
 	// テクスチャの設定
-	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
+	deferredContext->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
 
 	// 描画
-	m_batch->Begin();
-	m_batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], 4);
-	m_batch->End();
+	batch.Begin();
+	batch.Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], 4);
+	batch.End();
 
 	// シェーダーの終了
-	m_customShader->EndSharder(context);
+	m_customShader->EndSharder(deferredContext);
 }
 
 // ---------------------------------------------------------

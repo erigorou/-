@@ -139,27 +139,6 @@ void TitleEnemy::Update(float elapsedTime)
 		*= DirectX::SimpleMath::Matrix::CreateTranslation(m_position);
 }
 
-// ---------------------------------------------------------
-/// <summary>
-/// 表示処理
-/// </summary>
-/// <param name="view">ビュー行列</param>
-/// <param name="projection">射影行列</param>
-// ---------------------------------------------------------
-void TitleEnemy::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection)
-{
-	// デバイスコンテキストを取得
-	auto context = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-	// コモンステートを取得
-	auto states = CommonResources::GetInstance()->GetCommonStates();
-
-	// 深度値を参照して書き込む
-	context->OMSetDepthStencilState(states->DepthDefault(), 0);
-	// モデルの描画
-	m_model->Draw(context, *states, m_worldMatrix, view, projection);
-
-}
-
 /// <summary>
 /// 描画コマンドを記録する
 /// </summary>

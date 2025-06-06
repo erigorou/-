@@ -92,8 +92,6 @@ public:
 	void Initialize();
 	// XVˆ—
 	void Update(float elapsedTime);
-	// •`‰æˆ—
-	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection);
 	// I—¹ˆ—
 	void Finalize();
 

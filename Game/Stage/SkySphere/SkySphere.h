@@ -36,12 +36,6 @@ public:
 	// ƒ‚ƒfƒ‹‚ðŽæ“¾‚·‚é
 	void LoadSkySphereModel();
 
-	// ƒ‚ƒfƒ‹‚Ì•`‰æ
-	void DrawSkySphere(
-		DirectX::SimpleMath::Matrix view,
-		DirectX::SimpleMath::Matrix projection
-	);
-
 	// •`‰æƒRƒ}ƒ“ƒh“o˜^
 	void RecordRenderCommands(
 		const DirectX::SimpleMath::Matrix& view,

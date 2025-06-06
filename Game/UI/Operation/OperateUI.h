@@ -8,11 +8,12 @@
 #include "pch.h"
 #include "Interface/IObject.h"
 #include "Interface/IObserver.h"
+#include "Interface/IRenderable.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/CustomShader/CustomShader.h"
 
 
-class OperateUI : public IObserver, public IObject
+class OperateUI : public IObserver, public IObject, public IRenderable
 {
 	// -----------------------------
 	// 固定値
@@ -49,6 +50,13 @@ public:
 	};
 
 	// -----------------------------
+	// アクセサ
+	// -----------------------------
+public:
+	// レイヤーの取得
+	UINT GetLayer() const override { return static_cast<UINT>(Layer::UI); }
+
+	// -----------------------------
 	// メンバ関数(公開)
 	// -----------------------------
 public:
@@ -58,8 +66,13 @@ public:
 	~OperateUI();
 	// 初期化処理
 	void Initialize();
-	// 描画処理
-	void Render();
+
+	// 描画コマンドの記憶
+	void RecordRenderCommands(
+		const DirectX::SimpleMath::Matrix& view,
+		const DirectX::SimpleMath::Matrix& proj,
+		ID3D11DeviceContext* deferredContext) override;
+
 	// 終了処理
 	void Finalize();
 	// どのキーが押されたか

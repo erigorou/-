@@ -67,8 +67,6 @@ public:
 	void ChangeState(BossState state);
 	// 更新処理
 	void Update(float elapsedTime);
-	// 描画処理
-	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection);
 	// 描画コマンドを記録する
 	void RecordRenderCommands(
 		const DirectX::SimpleMath::Matrix& view,

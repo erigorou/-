@@ -102,25 +102,6 @@ void Wall::UpdateWorldMatrix()
 	m_worldMatrix *= DirectX::SimpleMath::Matrix::CreateTranslation(WALL_POS);
 }
 
-// ---------------------------------------------------------
-/// <summary>
-/// 描画処理
-/// </summary>
-// ---------------------------------------------------------
-void Wall::Render(
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection)
-{
-	CommonResources* resources = CommonResources::GetInstance();
-	auto context = resources->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = resources->GetCommonStates();
-
-	// ワールド行列の更新処理
-	UpdateWorldMatrix();
-	// モデルを描画する
-	m_model->Draw(context, *states, m_worldMatrix, view, projection);
-}
-
 /// <summary>
 /// 描画コマンド登録
 /// </summary>

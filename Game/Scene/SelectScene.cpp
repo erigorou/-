@@ -98,29 +98,6 @@ void SelectScene::Update(float elapsedTime)
 
 // ----------------------------------------------
 /// <summary>
-/// 描画処理
-/// </summary>
-// ----------------------------------------------
-void SelectScene::Render()
-{
-	// ステージの描画
-	RenderStage();
-
-	// コモンステートを取得する
-	auto states = CommonResources::GetInstance()->GetCommonStates();
-	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
-	m_spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, states->NonPremultiplied());
-	// スプライトバッチの終わり
-	m_spriteBatch->End();
-	// UIの描画
-	for (auto& ui : m_uiList)
-	{
-		ui->Render();
-	}
-}
-
-// ----------------------------------------------
-/// <summary>
 /// 終了処理
 /// </summary>
 // ----------------------------------------------
@@ -211,28 +188,6 @@ void SelectScene::CreateStage()
 	auto gameData = GameData::GetInstance();
 	// ステージの選択インデックスを取得
 	m_selectIndex = gameData->GetSelectStage();
-}
-
-// -----------------------------------------------
-/// <summary>
-/// ステージの描画
-/// </summary>
-// ------------------------------------------------
-void SelectScene::RenderStage()
-{
-	// カメラの必要情報を取得
-	auto view = m_camera->GetViewMatrix();
-
-	// 海の描画
-	m_sea->Render(view, m_projection);
-	// 壁の描画
-	m_wall->Render(view, m_projection);
-	// 地面の描画
-	m_floor->Render(view, m_projection);
-	// スカイボックスの描画
-	m_skySphere->DrawSkySphere(view, m_projection);
-	// セレクトシーンオブジェクトの描画
-	m_selectStageObject->Render(view, m_projection);
 }
 
 
