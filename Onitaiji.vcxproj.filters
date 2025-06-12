@@ -243,6 +243,9 @@
     <ClInclude Include="Libraries\MyLib\DeferredContextPool\DeferredContextPool.h" />
     <ClInclude Include="Libraries\MyLib\ScreenShot.h" />
     <ClInclude Include="Game\UI\ScreenShot\ScreenShotUserInterface.h" />
+    <ClInclude Include="Libraries\MyLib\BehaviorTree\Interface\IBehaviorNode.h" />
+    <ClInclude Include="Libraries\MyLib\BehaviorTree\Interface\IcompositeNode.h" />
+    <ClInclude Include="Libraries\MyLib\BehaviorTree\ActionNode.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
