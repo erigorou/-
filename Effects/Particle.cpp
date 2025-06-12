@@ -170,7 +170,7 @@ void Particle::CreateBashDust(void* center)
 		// 中心からのベクトルを正規化して方向を保持
 		DirectX::SimpleMath::Vector3 normalizedVectorFromCenter = vectorFromCenter / distanceFromCenter;
 		// ベクトルを外側に広げるためのスケールを適用
-		float scaleFactor = 2.0f + (distanceFromCenter / SMASH_DUST_RADIUS);
+		float scaleFactor = 1.0f + (distanceFromCenter / SMASH_DUST_RADIUS);
 		DirectX::SimpleMath::Vector3 adjustedVelocity = normalizedVectorFromCenter * scaleFactor;
 		// 速度ベクトルを生成
 		DirectX::SimpleMath::Vector3 velocity = -adjustedVelocity;
@@ -190,9 +190,9 @@ void Particle::CreateBashDust(void* center)
 			DirectX::SimpleMath::Vector3{ -velocity.x * XZspeed, Yspeed , -velocity.z * XZspeed } *2, // 速度
 			DirectX::SimpleMath::Vector3(0.1f, 0.1f, 0.1f),	// 加速度
 			DirectX::SimpleMath::Vector3::One, // 初期スケール
-			DirectX::SimpleMath::Vector3{ 10.0f, 25.0f, 10.0f }, // 最終スケール
+			DirectX::SimpleMath::Vector3{ 12.5f, 25.0f, 12.5f }, // 最終スケール
 			DirectX::SimpleMath::Color(1.f, 1.f, 1.f, 1.f), // 初期カラー
-			DirectX::SimpleMath::Color(1.f, 1.f, 1.f, -1.f) // 最終カラー
+			DirectX::SimpleMath::Color(1.f, 1.f, 1.f, -0.5f) // 最終カラー
 		);
 
 		m_dustTrail.push_back(pB);
@@ -395,6 +395,9 @@ void Particle::DrawDustParticle(
 	deferredContext->VSSetConstantBuffers(0, 1, cb);
 	deferredContext->GSSetConstantBuffers(0, 1, cb);
 	deferredContext->PSSetConstantBuffers(0, 1, cb);
+
+	// 深度値の設定
+	deferredContext->OMSetDepthStencilState(m_states->DepthRead(), 0);
 
 	// シェーダーの開始
 	m_dustShader->BeginSharder(deferredContext);

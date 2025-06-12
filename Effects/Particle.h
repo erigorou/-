@@ -51,20 +51,20 @@ private:
 	static constexpr  wchar_t DUST_GS[] = L"Resources/cso/DustGS.cso";
 
 	// パーティクルの最大数
-	static constexpr int	MAX_SMASH_ATTACK_DUST = 25;
+	static constexpr int	MAX_SMASH_ATTACK_DUST = 75;
 	// 土埃のY軸の最小速度
 	static constexpr float	MIN_SMASH_DUST_SPEED_Y = 1.0f;
 	// 土埃のY軸の最大速度
-	static constexpr float	MAX_SMASH_DUST_SPEED_Y = 5.0f;
+	static constexpr float	MAX_SMASH_DUST_SPEED_Y = 7.5f;
 	// 土埃の最小半径
-	static constexpr float  SMASH_DUST_RADIUS = 1.0f;
+	static constexpr float  SMASH_DUST_RADIUS = 7.5f;
 
 	// ----------------------------
 	// アクセサ
 	// ----------------------------
 public:
 	// レイヤーを取得
-	UINT GetLayer() const override { return static_cast<UINT>(Layer::Object); }
+	UINT GetLayer() const override { return static_cast<UINT>(Layer::Object) + 1; }
 
 
 	// ----------------------------
