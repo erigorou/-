@@ -27,9 +27,9 @@ public:
 	// コンストラクタ
 	ActionNode(std::function<NodeState(float)> action);
 	// デストラクタ
-	~ActionNode() override = default;
+	~ActionNode() override;
 	// 初期化処理
-	void Initialize() override;
+	void Initialize() override {};
 	// 更新処理
 	NodeState Update(float elapsedTime) override;
 	// 終了処理

@@ -246,6 +246,12 @@
     <ClInclude Include="Libraries\MyLib\BehaviorTree\Interface\IBehaviorNode.h" />
     <ClInclude Include="Libraries\MyLib\BehaviorTree\Interface\IcompositeNode.h" />
     <ClInclude Include="Libraries\MyLib\BehaviorTree\ActionNode.h" />
+    <ClInclude Include="Libraries\MyLib\BehaviorTree\DecoratorNode.h" />
+    <ClInclude Include="Libraries\MyLib\BehaviorTree\Root.h" />
+    <ClInclude Include="Libraries\MyLib\BehaviorTree\SelectorNode.h" />
+    <ClInclude Include="Libraries\MyLib\BehaviorTree\SequenceNode.h" />
+    <ClInclude Include="Game\Boss\Behavior\BossBehavior.h" />
+    <ClInclude Include="Game\Boss\Behavior\ExecutionNode.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -364,6 +370,13 @@
     <ClCompile Include="Game\Boss\Face\BossFace.cpp" />
     <ClCompile Include="Libraries\MyLib\DeferredContextPool\DeferredContextPool.cpp" />
     <ClCompile Include="Game\UI\ScreenShot\ScreenShotUserInterface.cpp" />
+    <ClCompile Include="Libraries\MyLib\BehaviorTree\ActionNode.cpp" />
+    <ClCompile Include="Libraries\MyLib\BehaviorTree\DecoratorNode.cpp" />
+    <ClCompile Include="Libraries\MyLib\BehaviorTree\Root.cpp" />
+    <ClCompile Include="Libraries\MyLib\BehaviorTree\SelectorNode.cpp" />
+    <ClCompile Include="Libraries\MyLib\BehaviorTree\SequenceNode.cpp" />
+    <ClCompile Include="Game\Boss\Behavior\BossBehavior.cpp" />
+    <ClCompile Include="Game\Boss\Behavior\ExecutionNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

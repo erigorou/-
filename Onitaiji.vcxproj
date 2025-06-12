@@ -198,6 +198,8 @@
     </Xdcmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Boss\Behavior\BossBehavior.h" />
+    <ClInclude Include="Game\Boss\Behavior\ExecutionNode.h" />
     <ClInclude Include="Game\Boss\Face\BossFace.h" />
     <ClInclude Include="Game\Camera\State\ClearCameraState.h" />
     <ClInclude Include="DeviceResources.h" />
@@ -310,8 +312,12 @@
     <ClInclude Include="Game\Weapon\Sword\Sword.h" />
     <ClInclude Include="Interface\IState.h" />
     <ClInclude Include="Libraries\MyLib\BehaviorTree\ActionNode.h" />
+    <ClInclude Include="Libraries\MyLib\BehaviorTree\DecoratorNode.h" />
     <ClInclude Include="Libraries\MyLib\BehaviorTree\Interface\IBehaviorNode.h" />
     <ClInclude Include="Libraries\MyLib\BehaviorTree\Interface\IcompositeNode.h" />
+    <ClInclude Include="Libraries\MyLib\BehaviorTree\Root.h" />
+    <ClInclude Include="Libraries\MyLib\BehaviorTree\SelectorNode.h" />
+    <ClInclude Include="Libraries\MyLib\BehaviorTree\SequenceNode.h" />
     <ClInclude Include="Libraries\MyLib\DebugDraw.h" />
     <ClInclude Include="Libraries\MyLib\BinaryFile.h" />
     <ClInclude Include="Libraries\MyLib\Collision.h" />
@@ -336,6 +342,8 @@
     <ClInclude Include="StepTimer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Boss\Behavior\BossBehavior.cpp" />
+    <ClCompile Include="Game\Boss\Behavior\ExecutionNode.cpp" />
     <ClCompile Include="Game\Boss\Face\BossFace.cpp" />
     <ClCompile Include="Game\Camera\State\ClearCameraState.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
@@ -413,6 +421,10 @@
     <ClCompile Include="Game\Weapon\Sword\Sword.cpp" />
     <ClCompile Include="Interface\IEnemy.h" />
     <ClCompile Include="Libraries\MyLib\BehaviorTree\ActionNode.cpp" />
+    <ClCompile Include="Libraries\MyLib\BehaviorTree\DecoratorNode.cpp" />
+    <ClCompile Include="Libraries\MyLib\BehaviorTree\Root.cpp" />
+    <ClCompile Include="Libraries\MyLib\BehaviorTree\SelectorNode.cpp" />
+    <ClCompile Include="Libraries\MyLib\BehaviorTree\SequenceNode.cpp" />
     <ClCompile Include="Libraries\MyLib\DebugDraw.cpp" />
     <ClCompile Include="Libraries\MyLib\BinaryFile.cpp" />
     <ClCompile Include="Libraries\MyLib\Collision\CollisionManager.cpp" />

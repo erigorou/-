@@ -22,9 +22,9 @@ public:
 	// ノードの状態
 	enum class NodeState
 	{
-		Running,  // 実行中
-		Succeeded, // 成功
-		Failed,    // 失敗
+		RUNNING,	// 実行中
+		SUCCESS,	// 成功
+		FAILURE,	// 失敗
 	};
 
 
@@ -39,6 +39,7 @@ public:
 	virtual void Initialize() = 0;
 	// 更新処理
 	virtual NodeState Update(float elapsedTime) = 0;
+
 	// 終了処理
 	virtual void Finalize() = 0;
 
