@@ -95,7 +95,6 @@ void Goblin::Initialize()
 	// モデルを取得する（同一モデルを触らないようにするために必要な処理）
 	m_model = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Goblin/goblin.cmo", *fx);
 
-
 	// エフェクトの設定
 	m_model->UpdateEffects([&](DirectX::IEffect* effect)
 		{

@@ -127,7 +127,6 @@ void BossBehavior::CreateBehaviorTree()
 	halfHpOverSelectorNode->AddNode(std::move(inAttackRangeDecoratorNode));
 	// 攻撃範囲外なら近づくセレクターを追加
 	halfHpOverSelectorNode->AddNode(std::move(approachSelectorNode));
-	
 
 
 	//___________________________________________
@@ -178,6 +177,7 @@ void BossBehavior::CreateBehaviorTree()
 
 	//_____________________________________________________
 	//
+	// 
 	// HPが半分以上か以下かで分岐するノードの作成
 	//_____________________________________________________
 
@@ -222,7 +222,9 @@ void BossBehavior::RunBehavior()
 
 
 //////////////////////////////////////////////////
+// 
 // ★ == アクションノードを作成するクラス群 == ★
+// 
 //////////////////////////////////////////////////
 
 
@@ -287,7 +289,9 @@ std::unique_ptr<ActionNode> BossBehavior::CreateApproachActionNode()
 
 
 ///////////////////////////////////////////////////////////////////////
+// 
 // ★ == コンディションを持ったデコレータノードを作成するクラス群 == ★
+//
 ///////////////////////////////////////////////////////////////////////
 
 
