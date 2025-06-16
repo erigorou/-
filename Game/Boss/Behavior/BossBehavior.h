@@ -16,8 +16,9 @@
 class Root;
 class Boss;
 class ActionNode;
-class DecorationNode;
-
+class ExecutionNode;
+class DecoratorNode;
+class BossCondition;
 
 /// <summary>
 /// ボスのビヘイビアツリーを管理するクラス
@@ -57,21 +58,35 @@ private:
 	// ビヘイビアツリーを作成
 	void CreateBehaviorTree();
 
-	// ★ ================================= ★通常
+
+	//_________________________________
+	// 
+	// アクションノード
+	//_________________________________
+	
 	// 待機状態
-	void CreateIdleActionNode();
-
-	// ★================================= ★攻撃系
+	std::unique_ptr<ActionNode> CreateIdleActionNode();
 	// 降り下ろし攻撃
-	void CreateAttackActionNode();
+	std::unique_ptr<ActionNode> CreateAttackActionNode();
 	// 薙ぎ払い攻撃
-	void CreateSweepActionNode();
+	std::unique_ptr<ActionNode> CreateSweepActionNode();
 	// ダッシュ攻撃
-	void CreateDashActionNode();
-
-	// ★================================ ★移動系
+	std::unique_ptr<ActionNode> CreateDashActionNode();
 	// 近づく
-	void CreateApproachActionNode();
+	std::unique_ptr<ActionNode> CreateApproachActionNode();
+
+	//_________________________________
+	//
+	// デコレーター
+	//_________________________________
+
+	// ボスのHPが半分以上の時に実行するデコレーター
+	std::unique_ptr<DecoratorNode> CreateHalfHpDecorator();
+	// ボスの攻撃範囲内にいる時に実行するデコレーター
+	std::unique_ptr<DecoratorNode> CreateInAttackRangeDecorator();
+	// 2分の1で成功するデコレーター
+	std::unique_ptr<DecoratorNode> CreateHalfSuccessDecorator();
+
 
 
 	// -----------------------
@@ -83,6 +98,10 @@ private:
 
 	// ルートノード
 	std::unique_ptr<ICompositeNode> m_rootNode;
+	// 実行ノードクラス
+	std::unique_ptr<ExecutionNode> m_executionNode;
+	// 条件ノードクラス
+	std::unique_ptr<BossCondition> m_conditionNode;
 
 	// 現在の状態
 	IBehaviorNode::NodeState m_currentState;

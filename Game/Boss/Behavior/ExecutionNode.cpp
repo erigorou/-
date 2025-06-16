@@ -33,59 +33,63 @@ ExecutionNode::~ExecutionNode()
 /// <summary>
 /// ステート変更（敵）：待機
 /// </summary>
-void ExecutionNode::BossEnemyIdleAction()
+IBehaviorNode::NodeState ExecutionNode::BossEnemyIdleAction()
 {
 	// ボスの状態を待機に変更
 	BossState state = BossState::Idling;
 	EventMessenger::Execute(EventList::ChangeBossState, &state);
+
+	return IBehaviorNode::NodeState::SUCCESS;
 }
 
 
 /// <summary>
 /// ステート変更（敵）：叩きつけ
 /// </summary>
-void ExecutionNode::BossEnemyAttackAction()
+IBehaviorNode::NodeState ExecutionNode::BossEnemyAttackAction()
 {
 	// ボスの状態を攻撃に変更
 	BossState state = BossState::Attacking;
 	EventMessenger::Execute(EventList::ChangeBossState, &state);
+
+	return IBehaviorNode::NodeState::SUCCESS;
 }
+
 
 /// <summary>
 /// ステート変更（敵）：薙ぎ払い
 /// </summary>
-void ExecutionNode::BossEnemySweepAttackAction()
+IBehaviorNode::NodeState ExecutionNode::BossEnemySweepAttackAction()
 {
 	// ボスの状態を薙ぎ払いに変更
 	BossState state = BossState::Sweeping;
 	EventMessenger::Execute(EventList::ChangeBossState, &state);
+
+	return IBehaviorNode::NodeState::SUCCESS;
 }
 
 
 /// <summary>
 /// ステート変更（敵）：突進
 /// </summary>
-void ExecutionNode::BossEnemyDashAttackAction()
+IBehaviorNode::NodeState ExecutionNode::BossEnemyDashAttackAction()
 {
 	// ボスの状態を突進に変更
 	BossState state = BossState::DashAttacking;
 	EventMessenger::Execute(EventList::ChangeBossState, &state);
+
+	return IBehaviorNode::NodeState::SUCCESS;
 }
 
 
 /// <summary>
 /// ステート変更（敵）：近づく
 /// </summary>
-void ExecutionNode::BossEnemyApproachAction()
+IBehaviorNode::NodeState ExecutionNode::BossEnemyApproachAction()
 {
 	// ボスの状態を近づくに変更
 	BossState state = BossState::Approaching;
 	EventMessenger::Execute(EventList::ChangeBossState, &state);
+
+	return IBehaviorNode::NodeState::SUCCESS;
 }
-
-
-
-
-
-
-

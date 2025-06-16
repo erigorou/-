@@ -252,6 +252,7 @@
     <ClInclude Include="Libraries\MyLib\BehaviorTree\SequenceNode.h" />
     <ClInclude Include="Game\Boss\Behavior\BossBehavior.h" />
     <ClInclude Include="Game\Boss\Behavior\ExecutionNode.h" />
+    <ClInclude Include="Game\Boss\Behavior\BossCondition.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -377,6 +378,7 @@
     <ClCompile Include="Libraries\MyLib\BehaviorTree\SequenceNode.cpp" />
     <ClCompile Include="Game\Boss\Behavior\BossBehavior.cpp" />
     <ClCompile Include="Game\Boss\Behavior\ExecutionNode.cpp" />
+    <ClCompile Include="Game\Boss\Behavior\BossCondition.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

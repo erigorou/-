@@ -9,6 +9,7 @@
 // ----------------------------------------------------------------------------------
 
 #pragma once
+#include "Libraries/MyLib/BehaviorTree/Interface/IBehaviorNode.h"
 #include "Game/Messenger/EventMessenger.h"
 #include "Game/Messenger/EventList.h"
 
@@ -23,15 +24,15 @@ class ExecutionNode final
 	// -----------------------
 public:
 	// ステート変更（敵）：待機
-	void BossEnemyIdleAction();
+	IBehaviorNode::NodeState BossEnemyIdleAction();
 	// ステート変更（敵）：叩きつけ
-	void BossEnemyAttackAction();
+	IBehaviorNode::NodeState BossEnemyAttackAction();
 	// ステート変更（敵）：薙ぎ払い
-	void BossEnemySweepAttackAction();
+	IBehaviorNode::NodeState BossEnemySweepAttackAction();
 	// ステート変更（敵）：突進
-	void BossEnemyDashAttackAction();
+	IBehaviorNode::NodeState BossEnemyDashAttackAction();
 	// ステート変更（敵）：近づく
-	void BossEnemyApproachAction();
+	IBehaviorNode::NodeState BossEnemyApproachAction();
 
 	//------------------------
 	// メンバ関数(公開)
