@@ -12,6 +12,7 @@
 #include "pch.h"
 #include "BossCondition.h"
 #include "Interface/IObject.h"
+#include "Game/Boss/Boss.h"
 
 #include "Game/Messenger/EventMessenger.h"
 #include "Libraries/MyLib/Math.h"
@@ -22,7 +23,12 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-BossCondition::BossCondition()
+BossCondition::BossCondition(Boss* boss)
+	:
+	m_boss(boss),
+	m_player(nullptr),
+	m_playerPos{},
+	m_bossPos{}
 {
 	// 必要な情報を取得する
 	GetNecessaryInfo();
@@ -46,10 +52,6 @@ void BossCondition::GetNecessaryInfo()
 	// プレイヤーの取得
 	void* object = EventMessenger::ExecuteGetter(GetterList::GetPlayer);
 	m_player = object ? static_cast<IObject*>(object) : nullptr;
-
-	// ボスの取得
-	object = EventMessenger::ExecuteGetter(GetterList::GetBoss);
-	m_boss = object ? static_cast<IObject*>(object) : nullptr;
 }
 
 
@@ -85,10 +87,10 @@ bool BossCondition::IsInCloseRange()
 bool BossCondition::IsHalfSuccess()
 {
 	// 0か1をランダムに取得
-	int random = Math::RandomInt(0, 1);
+	int random = Math::RandomInt(0, 100);
 
-	// 0なら成功
-	return random == 0;
+	// 偶数なら成功
+	return random % 2 == 0;
 }
 
 
@@ -98,10 +100,8 @@ bool BossCondition::IsHalfSuccess()
 /// <returns>正誤</returns>
 bool BossCondition::IsHpOverHalf()
 {
-	// ボスを取得
-	Boss* boss = static_cast<Boss*>(m_boss);
 	// ボスのHPSystemを取得
-	HPSystem* hpSystem = boss->GetBossHP();
+	HPSystem* hpSystem = m_boss->GetBossHP();
 	// HPを取得
 	float currentHp = hpSystem->GetHP();
 	float maxHp = hpSystem->GetMaxHP();

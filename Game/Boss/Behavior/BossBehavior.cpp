@@ -25,7 +25,6 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-/// <param name="boss"></param>
 BossBehavior::BossBehavior(Boss* boss)
 	: 
 	m_boss(boss)
@@ -75,7 +74,7 @@ void BossBehavior::CreateBehaviorTree()
 	m_executionNode = std::make_unique<ExecutionNode>();
 
 	// 条件ノードの作成
-	m_conditionNode = std::make_unique<BossCondition>();
+	m_conditionNode = std::make_unique<BossCondition>(m_boss);
 
 	//___________________________________________
 	//

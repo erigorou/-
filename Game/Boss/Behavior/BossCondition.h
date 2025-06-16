@@ -10,6 +10,7 @@
 
 // 前方宣言
 class IObject;
+class Boss;
 
 
 class BossCondition final
@@ -37,7 +38,7 @@ public:
 	// -----------------------
 public:
 	// コンストラクタ
-	BossCondition();
+	BossCondition(Boss* boss);
 	// デストラクタ
 	~BossCondition();
 
@@ -55,7 +56,7 @@ private:
 	// プレイヤーオブジェクトのポインタ
 	IObject* m_player;
 	// ボスオブジェクトのポインタ
-	IObject* m_boss;
+	Boss* m_boss;
 
 	// プレイヤーの座標
 	DirectX::SimpleMath::Vector3 m_playerPos;

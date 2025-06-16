@@ -95,8 +95,8 @@ private:
 	// メンバ変数
 	// -----------------------
 private:
-	// ボスのポインタ
-	Boss* m_boss = nullptr;
+	// ボス
+	Boss* m_boss;
 
 	// ルートノード
 	std::unique_ptr<ICompositeNode> m_rootNode;

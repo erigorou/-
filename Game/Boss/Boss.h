@@ -26,6 +26,9 @@ class BossDashAttacking;
 class BossApproaching;
 class BossDead;
 
+// ビヘイビアツリー
+class BossBehavior;
+
 // 敵の状態
 enum class BossState
 {
@@ -102,6 +105,9 @@ public:
 
 	// レイヤーを取得
 	UINT GetLayer() const override { return static_cast<UINT>(Layer::Object); }
+
+	// ビヘイビアツリーの実行
+	void RunBehaviorTree();
 
 	// --------------------------------
 	//  メンバ関数(公開)
@@ -212,4 +218,8 @@ private:
 	bool m_canHit;
 	// カメラの揺らすちから
 	float m_shakePower;
+
+
+	// ビヘイビアツリー
+	std::unique_ptr<BossBehavior> m_behaviorTree;
 };

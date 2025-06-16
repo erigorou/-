@@ -81,8 +81,17 @@ void BossIdling::Update(const float& elapsedTime)
 	m_totalSeconds += elapsedTime;
 	// アニメーションの更新
 	UpdateAnimation();
-	// 次のステートに遷移するかを検知
-	CheckNextState();
+
+	// ビヘイビアツリーの実行
+	if (m_totalSeconds >= TOTAL_TIME)
+	{
+		// ボスの行動を更新
+		m_boss->RunBehaviorTree();
+	}
+
+
+	//// 次のステートに遷移するかを検知
+	//CheckNextState();
 }
 
 // --------------------------------------

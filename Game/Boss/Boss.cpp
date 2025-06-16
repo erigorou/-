@@ -29,6 +29,9 @@
 #include "Face/BossFace.h"
 #include "Libraries/MyLib/ThreadedRenderer/ThreadedRenderer.h"
 
+// ビヘイビアツリー
+#include "Behavior/BossBehavior.h"
+
 // --------------------------------
 /// <summary>
 /// コンストラクタ
@@ -111,6 +114,11 @@ void Boss::Initialize()
 	CreateCollision();
 	// イベントの登録
 	AttachEvent();
+
+	// ビヘイビアツリーの生成
+	m_behaviorTree = std::make_unique<BossBehavior>(this);
+	// ビヘイビアツリーの初期化
+	m_behaviorTree->Initialize();
 }
 
 // --------------------------------
@@ -432,4 +440,14 @@ void Boss::CheckAlive()
 // --------------------------------
 void Boss::DeadAction()
 {
+}
+
+// ---------------------------------
+/// <summary>
+/// ビヘイビアツリーの実行
+/// </summary>
+// ----------------------------------
+void Boss::RunBehaviorTree()
+{
+	m_behaviorTree->RunBehavior();
 }
