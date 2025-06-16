@@ -25,13 +25,13 @@ class ActionNode final : public IBehaviorNode
 public:
 
 	// コンストラクタ
-	ActionNode(std::function<NodeState(float)> action);
+	ActionNode(std::function<NodeState()> action);
 	// デストラクタ
 	~ActionNode() override;
 	// 初期化処理
 	void Initialize() override {};
 	// 更新処理
-	NodeState Update(float elapsedTime) override;
+	NodeState Update() override;
 	// 終了処理
 	void Finalize() override;
 
@@ -42,5 +42,5 @@ public:
 private:
 
 	// 実行アクション
-	std::function<IBehaviorNode::NodeState(float)> m_executionNode;
+	std::function<IBehaviorNode::NodeState()> m_executionNode;
 };

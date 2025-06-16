@@ -38,7 +38,7 @@ public:
 	// ‰Šú‰»ˆ—
 	virtual void Initialize() = 0;
 	// XVˆ—
-	virtual NodeState Update(float elapsedTime) = 0;
+	virtual NodeState Update() = 0;
 
 	// I—¹ˆ—
 	virtual void Finalize() = 0;

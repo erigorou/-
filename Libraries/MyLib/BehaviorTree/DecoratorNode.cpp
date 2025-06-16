@@ -17,7 +17,7 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="fun">登録する関数</param>
-DecoratorNode::DecoratorNode(std::function<bool(float)> fun)
+DecoratorNode::DecoratorNode(std::function<bool()> fun)
 	: 
 	m_childNode{},
 	m_condition{}
@@ -48,17 +48,16 @@ void DecoratorNode::Initialize()
 /// <summary>
 /// 更新処理
 /// </summary>
-/// <param name="elapsedTime">経過時間</param>
 /// <returns>実行結果</returns>
-IBehaviorNode::NodeState DecoratorNode::Update(float elapsedTime)
+IBehaviorNode::NodeState DecoratorNode::Update()
 {
-	if (!m_condition(elapsedTime))
+	if (!m_condition())
 	{
 		return IBehaviorNode::NodeState::FAILURE;
 	}
 
 	// 子ノードの実行
-	return m_childNode->Update(elapsedTime);
+	return m_childNode->Update();
 }
 
 

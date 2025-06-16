@@ -209,7 +209,7 @@ void BossBehavior::RunBehavior()
 	case IBehaviorNode::NodeState::SUCCESS:
 		break;
 	case IBehaviorNode::NodeState::FAILURE:
-		m_rootNode->Update(0.0f);
+		m_rootNode->Update();
 		break;
 	default:
 		break;

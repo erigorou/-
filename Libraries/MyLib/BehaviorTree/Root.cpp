@@ -45,10 +45,10 @@ void Root::Initialize()
 /// </summary>
 /// <param name="elapsedTime"></param>
 /// <returns></returns>
-IBehaviorNode::NodeState Root::Update(float elapsedTime)
+IBehaviorNode::NodeState Root::Update()
 {
 	// 子ノードの実行
-	return m_childNode->Update(elapsedTime);
+	return m_childNode->Update();
 }
 
 

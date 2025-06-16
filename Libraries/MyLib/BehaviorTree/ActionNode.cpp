@@ -16,7 +16,7 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="action">実行する関数</param>
-ActionNode::ActionNode(std::function<NodeState(float)> action)
+ActionNode::ActionNode(std::function<NodeState()> action)
 	: 
 	m_executionNode(action)
 {
@@ -35,11 +35,10 @@ ActionNode::~ActionNode()
 /// <summary>
 /// 更新処理
 /// </summary>
-/// <param name="elapsedTime">1Fの経過時間</param>
 /// <returns>登録された実行ノードの結果</returns>
-IBehaviorNode::NodeState ActionNode::Update(float elapsedTime)
+IBehaviorNode::NodeState ActionNode::Update()
 {
-	return m_executionNode(elapsedTime);
+	return m_executionNode();
 }
 
 /// <summary>

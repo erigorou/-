@@ -35,13 +35,13 @@ public:
 	// -----------------------
 public:
 	// コンストラクタ
-	DecoratorNode(std::function<bool(float)> fun);
+	DecoratorNode(std::function<bool()> fun);
 	// デストラクタ
 	~DecoratorNode() override;
 	// 初期化処理
 	void Initialize() override;
 	// 更新処理
-	IBehaviorNode::NodeState Update(float elapsedTime) override;
+	IBehaviorNode::NodeState Update() override;
 	// 終了処理
 	void Finalize() override;
 	// ノードの追加
@@ -56,6 +56,6 @@ private:
 	std::unique_ptr<IBehaviorNode> m_childNode;
 
 	// 条件を判定する関数
-	std::function<bool(float)> m_condition;
+	std::function<bool()> m_condition;
 
 };

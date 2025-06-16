@@ -45,14 +45,13 @@ void SelectorNode::Initialize()
 /// <summary>
 /// 更新処理
 /// </summary>
-/// <param name="elapsedTime">1Fの経過時間</param>
 /// <returns>実行結果</returns>
-IBehaviorNode::NodeState SelectorNode::Update(float elapsedTime)
+IBehaviorNode::NodeState SelectorNode::Update()
 {
 	// 一つずつ検証する
 	for (auto& child : m_childNodes)
 	{
-		switch (child->Update(elapsedTime))
+		switch (child->Update())
 		{
 		// 成功した場合
 		case IBehaviorNode::NodeState::SUCCESS:
