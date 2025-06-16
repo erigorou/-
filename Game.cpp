@@ -137,10 +137,11 @@ void Game::Render()
 	// シーンマネージャを描画する
 	m_sceneManager->Render();
 
-	// デバッグ文字列を描画する
-	m_debugString->Render(m_commonStates.get());
 
 	m_deviceResources->PIXEndEvent();
+
+	// デバッグ文字列を描画する
+	m_debugString->Render(m_commonStates.get());
 
 	// Show the new frame.
 	m_deviceResources->Present();

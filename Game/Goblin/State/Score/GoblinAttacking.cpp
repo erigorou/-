@@ -170,6 +170,9 @@ bool GoblinAttacking::AttackAnimation()
 // ---------------------------------------------
 bool GoblinAttacking::ReturnAnimation()
 {
+	bool flag = false;
+	EventMessenger::Execute(EventList::PlayerCanDamageGoblin, &flag);
+
 	return m_totalTime >= RETURN_TIME;
 }
 

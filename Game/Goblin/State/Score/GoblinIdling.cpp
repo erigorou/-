@@ -55,6 +55,9 @@ void GoblinIdling::PreUpdate()
 
 	// ランダムにクールタイムを設定する
 	m_coolTime = Math::RandomFloat(MIN_COOLTIME, MAX_COOLTIME);
+
+	bool flag = false;
+	EventMessenger::Execute(EventList::PlayerCanDamageGoblin, &flag);
 }
 
 // ---------------------------------------------
