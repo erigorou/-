@@ -135,26 +135,9 @@ void BossApproaching::CheckNextState()
 		// プレイヤーとの距離が近い場合
 		if (DirectX::SimpleMath::Vector3::Distance(m_position, playerPos) <= MIN_DISTANCE)
 		{
-			// ボスの状態を保存する変数
-			BossState state = BossState::Idling;
+			// ビヘイビアツリーを実行
+			m_boss->RunBehaviorTree();
 
-			// ランダムに次は度の挙動をするか決める
-			int random = Math::RandomInt(0, TOTAL_RATE);
-			// 薙ぎ払い
-			if (random <= SWEEPING_RATE) {
-				state = BossState::Sweeping;
-			}
-			// たたきつけ
-			else if (random == ATTACKING_RATE) {
-				state = BossState::Attacking;
-			}
-			// 何もしない
-			else if (random == IDLING_RATE) {
-				state = BossState::Idling;
-			}
-
-			// 状態を変更
-			EventMessenger::Execute(EventList::ChangeBossState, &state);
 			// 以降の処理は行わない
 			return;
 		}

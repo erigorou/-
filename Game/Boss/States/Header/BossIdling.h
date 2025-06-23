@@ -64,8 +64,6 @@ public:
 private:
 	// アニメーションの更新
 	void UpdateAnimation();
-	// 次のステートに移行するかを検知
-	void CheckNextState();
 
 	// ---------------------------
 	// メンバ変数

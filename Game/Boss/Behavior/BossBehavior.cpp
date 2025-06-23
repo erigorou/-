@@ -15,11 +15,11 @@
 #include "ExecutionNode.h"
 #include "BossCondition.h"
 
-#include "Libraries/MyLib/BehaviorTree/ActionNode.h"
-#include "Libraries/MyLib/BehaviorTree/DecoratorNode.h"
-#include "Libraries/MyLib/BehaviorTree/Root.h"
-#include "Libraries/MyLib/BehaviorTree/SelectorNode.h"
-#include "Libraries/MyLib/BehaviorTree/SequenceNode.h"
+#include "Libraries/MyLib/BehaviorTree/Node/ActionNode/ActionNode.h"
+#include "Libraries/MyLib/BehaviorTree/Node/DecoratorNode/DecoratorNode.h"
+#include "Libraries/MyLib/BehaviorTree/Node/RootNode/Root.h"
+#include "Libraries/MyLib/BehaviorTree/Node/SelectorNode/SelectorNode.h"
+#include "Libraries/MyLib/BehaviorTree/Node/SequenceNode/SequenceNode.h"
 
 
 /// <summary>

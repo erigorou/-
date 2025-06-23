@@ -88,10 +88,6 @@ void BossIdling::Update(const float& elapsedTime)
 		// ボスの行動を更新
 		m_boss->RunBehaviorTree();
 	}
-
-
-	//// 次のステートに遷移するかを検知
-	//CheckNextState();
 }
 
 // --------------------------------------
@@ -127,53 +123,6 @@ void BossIdling::UpdateAnimation()
 
 // --------------------------------------
 /// <summary>
-/// 次のステートに遷移するかを検知
-/// </summary>
-// --------------------------------------
-void BossIdling::CheckNextState()
-{
-	// プレイヤーの座標を取得
-	Vector3 playerPos = m_player->GetPosition();
-	Vector3 parentPos = m_boss->GetPosition();
-
-	// １秒で行動を変更する
-	if (m_totalSeconds >= TOTAL_TIME)
-	{
-		// ランダムで行動を変更する
-		int random = Math::RandomInt(0, TOTAL_RATE);
-		// プレイヤーとの距離を計算
-		float distance = Vector3::Distance(parentPos, playerPos);
-		// 次のボスのステート
-		BossState state = BossState::Idling;
-
-		// 遠い距離の場合
-		if (distance > FAR_DISTANCE)
-		{
-			// 追従
-			if (random % 2 == 0) state = BossState::Approaching;
-			// ダッシュ攻撃
-			else state = BossState::DashAttacking;
-		}
-		// 近い距離の場合
-		else
-		{
-			// 薙ぎ払い
-			if (random <= SWEEPING_RATE) state = BossState::Sweeping;
-			// 攻撃
-			else if (random <= ATTACKING_RATE) state = BossState::Attacking;
-			// ダッシュ攻撃
-			else if (random <= DASH_ATTACK_RATE) state = BossState::DashAttacking;
-			// 何もしない
-			else if (random <= IDLING_RATE) state = BossState::Idling;
-		}
-
-		// ボスのステートを変更
-		EventMessenger::Execute(EventList::ChangeBossState, &state);
-	}
-}
-
-// --------------------------------------
-/// <summary>
 /// 設定処理(out)
 /// </summary>
 // --------------------------------------
@@ -188,4 +137,6 @@ void BossIdling::PostUpdate()
 // --------------------------------------
 void BossIdling::Finalize()
 {
+	// プレイヤーの削除
+	m_player = nullptr;
 }

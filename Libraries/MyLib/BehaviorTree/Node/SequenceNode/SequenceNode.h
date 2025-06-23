@@ -1,43 +1,31 @@
 // ----------------------------------------------------------------------------------
 //
-// 名前:	DecoratorNode.h
-// 説明:    ビヘイビアツリーの条件判定ノード
-//			条件を通れば子のステートを返す
-//			通らなければFailureを返す
+// 名前:	SequenceNode.h
+// 説明:    ビヘイビアツリーのノード
+//			順に個を実行する
+//			全ての子が実行できるとSuccess
+//			子が失敗したらすぐにFailureを返す 
 // 作成:	池田桜輔
 // 日付:    2025/06/02
 //
 // ----------------------------------------------------------------------------------
-// インクルード
 #pragma once
-#include "Interface/IcompositeNode.h"
+#include "../../Interface/IcompositeNode.h"
 
 
 /// <summary>
-/// ビヘイビアツリーの条件判定ノード
+/// ビヘイビアのシーケンスノード
 /// </summary>
-class DecoratorNode final : public ICompositeNode
+class SequenceNode final : public ICompositeNode
 {
-	//------------------------
-	// 固定値
-	// -----------------------
-public:
-
-
-	//------------------------
-	// アクセサ
-	// -----------------------
-public:
-
-
 	//------------------------
 	// メンバ関数(公開)
 	// -----------------------
 public:
 	// コンストラクタ
-	DecoratorNode(std::function<bool()> fun);
+	SequenceNode();
 	// デストラクタ
-	~DecoratorNode() override;
+	~SequenceNode() override;
 	// 初期化処理
 	void Initialize() override;
 	// 更新処理
@@ -47,15 +35,14 @@ public:
 	// ノードの追加
 	void AddNode(std::unique_ptr<IBehaviorNode> node) override;
 
-
 	// -----------------------
 	// メンバ変数
 	// -----------------------
 private:
-	// 子ノード
-	std::unique_ptr<IBehaviorNode> m_childNode;
+	// 子ノード配列
+	std::vector<std::unique_ptr<IBehaviorNode>> m_childNodes;
 
-	// 条件を判定する関数
-	std::function<bool()> m_condition;
+	// 実行中ノードの格納変数
+	IBehaviorNode* m_runningNode = nullptr;
 
 };

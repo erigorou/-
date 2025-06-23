@@ -10,7 +10,7 @@
 
 // インクルード
 #pragma once
-#include "Libraries/MyLib/BehaviorTree/Interface/IBehaviorNode.h"
+#include "../../Interface/IBehaviorNode.h"
 #include <functional>
 
 

@@ -10,7 +10,7 @@
 //
 // ----------------------------------------------------------------------------------
 #pragma once
-#include "Interface/ICompositeNode.h"
+#include "../../Interface/IcompositeNode.h"
 
 /// <summary>
 ///ビヘイビアツリーのセレクターノード
