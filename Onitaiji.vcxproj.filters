@@ -253,6 +253,7 @@
     <ClInclude Include="Game\Boss\Behavior\BossBehavior.h" />
     <ClInclude Include="Game\Boss\Behavior\ExecutionNode.h" />
     <ClInclude Include="Game\Boss\Behavior\BossCondition.h" />
+    <ClInclude Include="Libraries\MyLib\BehaviorTree\JsonLoader\BehaviorNodeLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -379,6 +380,7 @@
     <ClCompile Include="Game\Boss\Behavior\BossBehavior.cpp" />
     <ClCompile Include="Game\Boss\Behavior\ExecutionNode.cpp" />
     <ClCompile Include="Game\Boss\Behavior\BossCondition.cpp" />
+    <ClCompile Include="Libraries\MyLib\BehaviorTree\JsonLoader\BehaviorNodeLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -407,6 +409,7 @@
     <None Include="Resources\hlsl\Quest\Quest.hlsli" />
     <None Include="Resources\hlsl\DeadEffect\Common.hlsli" />
     <None Include="Resources\hlsl\Tutorial\Tutorial.hlsli" />
+    <None Include="Resources\Jsons\Behavior\BossBehaviorNode.json" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\hlsl\Sword\SwordTrailPS.hlsl" />

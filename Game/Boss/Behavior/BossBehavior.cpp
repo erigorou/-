@@ -15,11 +15,15 @@
 #include "ExecutionNode.h"
 #include "BossCondition.h"
 
+// BTのノード
 #include "Libraries/MyLib/BehaviorTree/Node/ActionNode/ActionNode.h"
 #include "Libraries/MyLib/BehaviorTree/Node/DecoratorNode/DecoratorNode.h"
 #include "Libraries/MyLib/BehaviorTree/Node/RootNode/Root.h"
 #include "Libraries/MyLib/BehaviorTree/Node/SelectorNode/SelectorNode.h"
 #include "Libraries/MyLib/BehaviorTree/Node/SequenceNode/SequenceNode.h"
+
+// 読み込み
+#include "Libraries/MyLib/BehaviorTree/JsonLoader/BehaviorNodeLoader.h"
 
 
 /// <summary>
@@ -66,134 +70,44 @@ void BossBehavior::Finalize()
 
 
 /// <summary>
+/// 関数マップを作成
+/// </summary>
+void BossBehavior::CreateFunctionMap()
+{
+	// アクションノードのマップ
+	m_actionMap = {
+		{"Idle", std::bind(&ExecutionNode::BossEnemyIdleAction, m_executionNode.get())},
+		{"Attack", std::bind(&ExecutionNode::BossEnemyAttackAction, m_executionNode.get())},
+		{"Sweep", std::bind(&ExecutionNode::BossEnemySweepAttackAction, m_executionNode.get())},
+		{"Dash", std::bind(&ExecutionNode::BossEnemyDashAttackAction, m_executionNode.get())},
+		{"Approach", std::bind(&ExecutionNode::BossEnemyApproachAction, m_executionNode.get())}
+	};
+
+	// 条件ノードのマップ
+	m_conditionMap = {
+		{"IsHpOverHalf", std::bind(&BossCondition::IsHpOverHalf, m_conditionNode.get())},
+		{"IsInCloseRange", std::bind(&BossCondition::IsInCloseRange, m_conditionNode.get())},
+		{"IsHalfSuccess", std::bind(&BossCondition::IsHalfSuccess, m_conditionNode.get())}
+	};
+}
+
+/// <summary>
 /// ビヘイビアツリーの生成
 /// </summary>
 void BossBehavior::CreateBehaviorTree()
 {
+	// 状態の初期化
+	m_currentState = IBehaviorNode::NodeState::FAILURE;
+
 	// 実行ノードの作成
 	m_executionNode = std::make_unique<ExecutionNode>();
-
 	// 条件ノードの作成
 	m_conditionNode = std::make_unique<BossCondition>(m_boss);
 
-	//___________________________________________
-	//
-	// HPが半分以上の場合のビヘイビアの構築
-	//___________________________________________
-
-	// ★攻撃★
-	// 1/2　→　叩きつけ
-	auto attackDecoratorNode = CreateHalfSuccessDecorator();
-	attackDecoratorNode->AddNode(CreateAttackActionNode());
-	// 1/2　→　薙ぎ払い
-	auto sweepDecoratorNode = CreateHalfSuccessDecorator();
-	sweepDecoratorNode->AddNode(CreateSweepActionNode());
-	// 待機
-	auto idleActionNode = CreateIdleActionNode();
-
-	// 攻撃セレクター
-	auto attackSelectorNode = std::make_unique<SelectorNode>();
-	// 叩きつけデコレータを追加
-	attackSelectorNode->AddNode(std::move(attackDecoratorNode));
-	// 薙ぎ払いデコレータを追加
-	attackSelectorNode->AddNode(std::move(sweepDecoratorNode));
-	// 待機アクションを追加
-	attackSelectorNode->AddNode(std::move(idleActionNode));
-
-
-
-	// ★近づく★
-	// 1/2　→　近づく
-	auto approachActionNode = CreateHalfHpDecorator();
-	approachActionNode->AddNode(CreateApproachActionNode());
-	// ダッシュ攻撃
-	auto dashActionNode = CreateDashActionNode();
-
-	// 近づくセレクター
-	auto approachSelectorNode = std::make_unique<SelectorNode>();
-	// 近づくアクションを追加
-	approachSelectorNode->AddNode(std::move(approachActionNode));
-	// ダッシュ攻撃アクションを追加
-	approachSelectorNode->AddNode(std::move(dashActionNode));
-
-
-	// ★HPが半分以上★
-	// 攻撃範囲内にいるなら攻撃セレクター、違うなら近づくセレクターを実行するセレクター
-	auto inAttackRangeDecoratorNode = CreateInAttackRangeDecorator();
-	inAttackRangeDecoratorNode->AddNode(std::move(attackSelectorNode));
-
-	auto halfHpOverSelectorNode = std::make_unique<SelectorNode>();
-	// 攻撃範囲内にいるなら攻撃セレクターを追加
-	halfHpOverSelectorNode->AddNode(std::move(inAttackRangeDecoratorNode));
-	// 攻撃範囲外なら近づくセレクターを追加
-	halfHpOverSelectorNode->AddNode(std::move(approachSelectorNode));
-
-
-	//___________________________________________
-	//
-	// HPが半分以下の場合のビヘイビアの構築
-	//___________________________________________
-
-	// ★攻撃★
-	
-	// 薙ぎ払いアクションを追加
-	sweepDecoratorNode = CreateHalfSuccessDecorator();
-	sweepDecoratorNode->AddNode(CreateSweepActionNode());
-	// 叩きつけアクションを追加
-	attackDecoratorNode = CreateHalfSuccessDecorator();
-	attackDecoratorNode->AddNode(CreateAttackActionNode());
-
-	// 攻撃セレクター
-	auto attackSelectorNode2 = std::make_unique<SelectorNode>();
-	// 薙ぎ払いデコレータを追加
-	attackSelectorNode2->AddNode(std::move(sweepDecoratorNode));
-	// 叩きつけデコレータを追加
-	attackSelectorNode2->AddNode(std::move(attackDecoratorNode));
-
-
-	// ★近づく★
-	// 近づくアクションを追加
-	auto approachDecoratorNode = CreateHalfSuccessDecorator();
-	approachDecoratorNode->AddNode(CreateApproachActionNode());
-
-	// ダッシュ攻撃アクションを追加
-	auto dashDecoratorNode = CreateHalfSuccessDecorator();
-	dashDecoratorNode->AddNode(CreateDashActionNode());
-
-
-	// ★HPが半分以下★
-	// 攻撃範囲内にいるなら攻撃セレクター、違うなら近づくセレクターを実行するセレクター
-	auto inAttackRangeDecoratorNode2 = CreateInAttackRangeDecorator();
-	inAttackRangeDecoratorNode2->AddNode(std::move(attackSelectorNode2));
-
-	// HP半分以下のセレクター
-	auto halfHpUnderSelectorNode = std::make_unique<SelectorNode>();
-	// 攻撃範囲内にいるなら攻撃セレクターを追加
-	halfHpUnderSelectorNode->AddNode(std::move(inAttackRangeDecoratorNode2));
-	// 攻撃範囲外なら近づくセレクターを追加
-	halfHpUnderSelectorNode->AddNode(std::move(approachDecoratorNode));
-
-
-
-	//_____________________________________________________
-	//
-	// 
-	// HPが半分以上か以下かで分岐するノードの作成
-	//_____________________________________________________
-
-	// ボスのHPが半分以上かどうかで分岐するセレクター
-	auto selectorNode = std::make_unique<SelectorNode>();
-	selectorNode->AddNode(std::move(halfHpOverSelectorNode));
-	selectorNode->AddNode(std::move(halfHpUnderSelectorNode));
-
-	// ルートノードの作成
-	m_rootNode = std::make_unique<Root>();
-	// ルートノードにセレクターを追加
-	m_rootNode->AddNode(std::move(selectorNode));
-
-
-	// 状態の初期化
-	m_currentState = IBehaviorNode::NodeState::FAILURE;
+	// 関数マップの作成
+	CreateFunctionMap();
+	// JSONからBTを構築
+	m_rootNode = BehaviorNodeLoader::LoadFromFile("Resources/Jsons/Behavior/BossBehaviorNode.json", m_actionMap, m_conditionMap);
 }
 
 

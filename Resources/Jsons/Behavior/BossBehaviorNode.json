@@ -1,0 +1,98 @@
+{
+  "type": "Selector",
+  "children": [
+    {
+      "type": "Decorator",
+      "condition": "IsHpOverHalf",
+      "child": {
+        "type": "Selector",
+        "children": [
+          {
+            "type": "Decorator",
+            "condition": "IsInCloseRange",
+            "child": {
+              "type": "Selector",
+              "children": [
+                {
+                  "type": "Decorator",
+                  "condition": "IsHalfSuccess",
+                  "child": {
+                    "type": "Action",
+                    "action": "Attack"
+                  }
+                },
+                {
+                  "type": "Decorator",
+                  "condition": "IsHalfSuccess",
+                  "child": {
+                    "type": "Action",
+                    "action": "Sweep"
+                  }
+                },
+                {
+                  "type": "Action",
+                  "action": "Idle"
+                }
+              ]
+            }
+          },
+          {
+            "type": "Selector",
+            "children": [
+              {
+                "type": "Decorator",
+                "condition": "IsHalfSuccess",
+                "child": {
+                  "type": "Action",
+                  "action": "Approach"
+                }
+              },
+              {
+                "type": "Action",
+                "action": "Dash"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "Selector",
+      "children": [
+        {
+          "type": "Decorator",
+          "condition": "IsInCloseRange",
+          "child": {
+            "type": "Selector",
+            "children": [
+              {
+                "type": "Decorator",
+                "condition": "IsHalfSuccess",
+                "child": {
+                  "type": "Action",
+                  "action": "Sweep"
+                }
+              },
+              {
+                "type": "Decorator",
+                "condition": "IsHalfSuccess",
+                "child": {
+                  "type": "Action",
+                  "action": "Attack"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "Decorator",
+          "condition": "IsHalfSuccess",
+          "child": {
+            "type": "Action",
+            "action": "Approach"
+          }
+        }
+      ]
+    }
+  ]
+}

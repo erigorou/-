@@ -26,12 +26,6 @@ class BossCondition;
 class BossBehavior final
 {
 	//------------------------
-	// 固定値
-	// -----------------------
-public:
-
-
-	//------------------------
 	// アクセサ
 	// -----------------------
 public:
@@ -57,6 +51,9 @@ public:
 	// メンバ関数(非公開)
 	// -----------------------
 private:
+	// 関数マップを作成
+	void CreateFunctionMap();
+
 	// ビヘイビアツリーを作成
 	void CreateBehaviorTree();
 
@@ -90,7 +87,6 @@ private:
 	std::unique_ptr<DecoratorNode> CreateHalfSuccessDecorator();
 
 
-
 	// -----------------------
 	// メンバ変数
 	// -----------------------
@@ -107,4 +103,9 @@ private:
 
 	// 現在の状態
 	IBehaviorNode::NodeState m_currentState;
+
+	// 行動マップ
+	std::unordered_map<std::string, std::function<IBehaviorNode::NodeState()>> m_actionMap;
+	// 条件マップ
+	std::unordered_map<std::string, std::function<bool()>> m_conditionMap;
 };
