@@ -15,8 +15,10 @@
 #include "Game/Messenger/EventMessenger.h"
 #include "Libraries/MyLib/ScreenShot.h"
 
+
 // シングルトンインスタンス
 ThreadedRenderer* ThreadedRenderer::s_instance = nullptr;
+
 
 /// <summary>
 /// コンストラクタ
@@ -31,12 +33,14 @@ ThreadedRenderer::ThreadedRenderer()
     DeferredContextPool::GetInstance();
 }
 
+
 /// <summary>
 /// デストラクタ
 /// </summary>
 ThreadedRenderer::~ThreadedRenderer() 
 {
 }
+
 
 /// <summary>
 /// シングルトンインスタンスの取得
@@ -52,6 +56,7 @@ ThreadedRenderer* ThreadedRenderer::GetInstance()
 	// 既存のインスタンスを返す
     return s_instance;
 }
+
 
 /// <summary>
 /// システムの初期化
@@ -71,6 +76,7 @@ void ThreadedRenderer::Initialize(ID3D11Device* device)
     // スレッドプールの作成
     m_threadPool = std::make_unique<ThreadPool>(threadCount);
 }
+
 
 /// <summary>
 /// レンダラブルオブジェクトの登録
@@ -97,6 +103,7 @@ void ThreadedRenderer::RegisterRenderable(IRenderable* renderable)
     std::string msg = "マルチスレッドに登録されているアイテムの数: " + std::to_string(DeferredContextPool::GetInstance()->GetAllDeferredContexts().size()) + "\n";
     OutputDebugStringA(msg.c_str());
 }
+
 
 /// <summary>
 /// レンダラブルオブジェクトの登録解除

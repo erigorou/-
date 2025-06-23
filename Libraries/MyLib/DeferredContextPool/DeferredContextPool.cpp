@@ -45,6 +45,8 @@ DeferredContextPool::DeferredContextPool()
 /// </summary>
 DeferredContextPool::~DeferredContextPool()
 {
+	// 全てのコンテキストを解放
+	Clear();
 }
 
 

@@ -212,8 +212,8 @@ void Boss::ChangeState(void* state)
 	// int型に変換
 	int index = *static_cast<int*>(state);
 
-	//// ステートの変更
-	//if (m_currentState == m_states[index]) return;
+	// 死亡している場合は変更を無視する
+	if (m_currentState == m_dead.get()) return;
 
 	// 新規の状態遷移前に事後更新を行う
 	m_currentState->PostUpdate();
