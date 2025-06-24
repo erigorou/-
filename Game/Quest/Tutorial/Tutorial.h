@@ -69,7 +69,7 @@ public:
 	bool GetTimerIsEnd() { return !m_timerPlay; }
 
 	// レイヤーを取得
-	UINT GetLayer() const override { return static_cast<UINT>(Layer::UI); }
+	UINT GetLayer() const override { return static_cast<UINT>(Layer::UI) + 50; }
 
 	// --------------------
 	// メンバ関数(公開)

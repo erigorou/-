@@ -49,8 +49,6 @@ void GoblinTutorial::PreUpdate()
 {
 	m_goblin->SetIsAttacking(false);
 	m_TotalTime = 0.0f;
-
-	GameData::GetInstance()->IsCaptureFlag();
 }
 
 // ---------------------------------------------
@@ -72,6 +70,8 @@ void GoblinTutorial::Update(const float& elapsedTime)
 // ---------------------------------------------
 void GoblinTutorial::PostUpdate()
 {
+	// ƒXƒNƒVƒ‡‚ðŽæ‚ê‚é‚æ‚¤‚É‚·‚é
+	GameData::GetInstance()->SetCaptureFlag(true);
 }
 
 // ---------------------------------------------
