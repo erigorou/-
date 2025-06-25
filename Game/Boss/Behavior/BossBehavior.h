@@ -25,6 +25,13 @@ class BossCondition;
 /// </summary>
 class BossBehavior final
 {
+	// -----------------------
+	// 固定値
+	// -----------------------
+public:
+	static constexpr const char* BEHAVIOR_FILE_PATH = "Resources/Jsons/Behavior/BossBehaviorNode.json";
+
+
 	//------------------------
 	// アクセサ
 	// -----------------------

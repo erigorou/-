@@ -107,7 +107,7 @@ void BossBehavior::CreateBehaviorTree()
 	// 関数マップの作成
 	CreateFunctionMap();
 	// JSONからBTを構築
-	m_rootNode = BehaviorNodeLoader::LoadFromFile("Resources/Jsons/Behavior/BossBehaviorNode.json", m_actionMap, m_conditionMap);
+	m_rootNode = BehaviorNodeLoader::LoadFromFile(BEHAVIOR_FILE_PATH, m_actionMap, m_conditionMap);
 }
 
 
